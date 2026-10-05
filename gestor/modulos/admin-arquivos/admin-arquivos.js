@@ -157,14 +157,15 @@ $(document).ready(function () {
 
 		// ===== Busca instantânea (client-side) sobre os itens já carregados
 		var $busca = $('#c2f-search');
-		var $buscaIcon = $('.c2f-search-icon');
-		var $buscaClear = $('.c2f-search-clear');
+		// req-240: os dois ícones são consultados na hora do uso. O Lucide troca o `<i>` por um `<svg>`
+		// depois da carga; uma referência guardada aqui ficava apontando para o elemento descartado e o
+		// botão de limpar nunca aparecia.
+		var $caixaBusca = $('.c2f-search-box');
 
 		function aplicarBusca() {
 			if (!$busca.length) return;
 			var q = ($busca.val() || '').trim().toLowerCase();
-			$buscaClear.toggleClass('hidden', q === '');
-			$buscaIcon.toggleClass('hidden', q !== '');
+			$caixaBusca.find('.c2f-search-clear').toggleClass('hidden', q === '');
 			$lista.find('.c2f-item').each(function () {
 				var nome = ($(this).attr('data-nome') || '').toLowerCase();
 				$(this).toggleClass('c2f-hidden-search', q !== '' && nome.indexOf(q) === -1);
@@ -172,7 +173,7 @@ $(document).ready(function () {
 		}
 
 		$busca.on('input', aplicarBusca);
-		$buscaClear.on('click', function () { $busca.val(''); aplicarBusca(); $busca.trigger('focus'); });
+		$caixaBusca.on('click', '.c2f-search-clear', function () { $busca.val(''); aplicarBusca(); $busca.trigger('focus'); });
 
 		function coletarFiltros() {
 			var filtros = {};
@@ -229,7 +230,7 @@ $(document).ready(function () {
 			return '' +
 				'<div class="c2f-item c2f-folder" data-tipo="pasta" data-caminho="' + cam + '" data-nome="' + adminArquivosEsc(p.nome) + '">' +
 				'  <div class="c2f-check"><input type="checkbox" class="c2f-sel" aria-label="' + adminArquivosEsc(p.nome) + '"></div>' +
-				'  <div class="c2f-thumb c2f-folder-open"><i class="folder icon huge text-amber-500"></i></div>' +
+				'  <div class="c2f-thumb c2f-folder-open"><i data-lucide="folder" class="size-16 text-amber-500" aria-hidden="true"></i></div>' +
 				'  <div class="c2f-meta">' +
 				'    <div class="c2f-name" title="' + adminArquivosEsc(p.nome) + '">' + adminArquivosEsc(p.nome) + '</div>' +
 				'    <div class="c2f-sub c2f-col-date">' + adminArquivosEsc(p.data) + '</div>' +
@@ -237,8 +238,8 @@ $(document).ready(function () {
 				'    <div class="c2f-sub c2f-col-size">—</div>' +
 				'  </div>' +
 				'  <div class="c2f-actions">' +
-				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
-				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
+				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i></button>' +
+				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -247,8 +248,8 @@ $(document).ready(function () {
 			var cam = adminArquivosEsc(a.caminho);
 			var img = a.imgSrc || iconePadrao[a.tipo] || iconePadrao.file;
 			var acaoSelecionar = cfg.paginaIframe
-				? '<button class="rounded border bg-white p-1 text-sky-700 c2f-select" title="' + adminArquivosEsc(t('list-button-select')) + '"><i class="check icon"></i></button>'
-				: '<button class="rounded border bg-white p-1 c2f-copy" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i class="linkify icon"></i></button>';
+				? '<button class="rounded border bg-white p-1 text-sky-700 c2f-select" title="' + adminArquivosEsc(t('list-button-select')) + '"><i data-lucide="check" class="size-4" aria-hidden="true"></i></button>'
+				: '<button class="rounded border bg-white p-1 c2f-copy" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i data-lucide="link" class="size-4" aria-hidden="true"></i></button>';
 			return '' +
 				'<div class="c2f-item c2f-file" data-tipo="arquivo" data-caminho="' + cam + '" data-nome="' + adminArquivosEsc(a.nome) + '"' +
 				'     data-url="' + adminArquivosEsc(a.url) + '" data-mime="' + adminArquivosEsc(a.mime) + '" data-tipoarq="' + adminArquivosEsc(a.tipo) + '">' +
@@ -262,8 +263,8 @@ $(document).ready(function () {
 				'  </div>' +
 				'  <div class="c2f-actions">' +
 				acaoSelecionar +
-				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
-				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
+				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i></button>' +
+				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -299,6 +300,7 @@ $(document).ready(function () {
 				var cam = $item.attr('data-caminho');
 				if (!Object.prototype.hasOwnProperty.call(estado.selecionados, cam)) return;
 				$item.find('.c2f-sel').prop('checked', true);
+				$item.addClass('c2f-selecionado');
 			});
 
 			// Estado vazio
@@ -377,6 +379,7 @@ $(document).ready(function () {
 						localStorage.setItem(LS_DIR, estado.dir);
 						atualizarAddHref();
 						renderLista(dados, append);
+						renderUso(dados.uso);
 					} else {
 						console.log('ERROR - listar - ' + dados.status);
 					}
@@ -454,22 +457,22 @@ $(document).ready(function () {
 			// copiar URL, além de renomear e excluir.
 			var acoes = '';
 			if (cfg.paginaIframe) {
-				acoes += '<button class="rounded bg-sky-700 px-3 py-2 text-white c2f-gal-select"><i class="check icon"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
+				acoes += '<button class="rounded bg-sky-700 px-3 py-2 text-white c2f-gal-select"><i data-lucide="check" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
 			} else {
-				acoes += '<button class="rounded border px-3 py-2 c2f-gal-copy"><i class="linkify icon"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
+				acoes += '<button class="rounded border px-3 py-2 c2f-gal-copy"><i data-lucide="link" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
 			}
-			acoes += '<a class="rounded border px-3 py-2 c2f-gal-open" target="_blank" rel="noopener"><i class="external alternate icon"></i> ' + adminArquivosEsc(t('open-new-tab')) + '</a>';
-			acoes += '<button class="rounded border px-3 py-2 c2f-gal-rename"><i class="edit icon"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
-			acoes += '<button class="rounded bg-rose-700 px-3 py-2 text-white c2f-gal-del"><i class="trash icon"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
+			acoes += '<a class="rounded border px-3 py-2 c2f-gal-open" target="_blank" rel="noopener"><i data-lucide="external-link" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('open-new-tab')) + '</a>';
+			acoes += '<button class="rounded border px-3 py-2 c2f-gal-rename"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
+			acoes += '<button class="rounded bg-rose-700 px-3 py-2 text-white c2f-gal-del"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
 
 			var html =
 				'<dialog class="c2f-gallery-modal" id="c2f-gallery-modal">' +
 				'  <button type="button" class="c2f-gallery-close" aria-label="' + adminArquivosEsc(window.c2fControles.texto('fechar')) + '">×</button>' +
 				'  <div class="c2f-gallery-header"><span class="c2f-gallery-name"></span> <span class="c2f-gallery-counter"></span></div>' +
 				'  <div class="content c2f-gallery-content">' +
-				'    <button class="rounded border p-2 c2f-gallery-prev" aria-label="Previous"><i class="chevron left icon"></i></button>' +
+				'    <button class="rounded border p-2 c2f-gallery-prev" aria-label="Previous"><i data-lucide="chevron-left" class="size-5" aria-hidden="true"></i></button>' +
 				'    <div class="c2f-gallery-stage"><img class="c2f-gallery-img" src=""></div>' +
-				'    <button class="rounded border p-2 c2f-gallery-next" aria-label="Next"><i class="chevron right icon"></i></button>' +
+				'    <button class="rounded border p-2 c2f-gallery-next" aria-label="Next"><i data-lucide="chevron-right" class="size-5" aria-hidden="true"></i></button>' +
 				'  </div>' +
 				'  <div class="c2f-gallery-strip"></div>' +
 				'  <div class="c2f-gallery-actions">' + acoes + '</div>' +
@@ -663,6 +666,8 @@ $(document).ready(function () {
 			var cam = $item.attr('data-caminho');
 			if (this.checked) estado.selecionados[cam] = registroSelecionado($item);
 			else delete estado.selecionados[cam];
+			// req-240: o cartão mostra que está selecionado, não só a caixinha.
+			$item.toggleClass('c2f-selecionado', this.checked);
 			atualizarBarraSelecao();
 		});
 
@@ -688,6 +693,7 @@ $(document).ready(function () {
 		function limparSelecao() {
 			estado.selecionados = {};
 			$lista.find('.c2f-sel').prop('checked', false);
+			$lista.find('.c2f-item').removeClass('c2f-selecionado');
 			$('#c2f-select-all').prop('checked', false);
 			atualizarBarraSelecao();
 		}
@@ -712,6 +718,84 @@ $(document).ready(function () {
 			for (var k in estado.selecionados) if (estado.selecionados.hasOwnProperty(k)) itens.push(estado.selecionados[k]);
 			if (itens.length === 0) return;
 			excluirItens(itens);
+		});
+
+		// ===== req-240: espaço usado e cota (só aparece quando o servidor informa)
+
+		function renderUso(uso) {
+			var caixa = document.getElementById('c2f-usage');
+			if (!caixa) return;
+			if (!uso) { caixa.classList.add('hidden'); return; }
+			var temCota = uso.cota >= 0;
+			var cheio = temCota && uso.percentual >= 90;
+			document.getElementById('c2f-usage-text').textContent = temCota ? uso.fmt + ' ' + t('usage-of') + ' ' + uso.cotaFmt : uso.fmt;
+			var trilho = document.getElementById('c2f-usage-track');
+			var barra = document.getElementById('c2f-usage-fill');
+			trilho.classList.toggle('hidden', !temCota);
+			trilho.setAttribute('aria-valuenow', String(uso.percentual));
+			barra.style.width = uso.percentual + '%';
+			barra.classList.toggle('bg-sky-600', !cheio);
+			barra.classList.toggle('bg-rose-600', cheio);
+			caixa.classList.remove('hidden');
+		}
+
+		// ===== req-240: mover por recortar e colar (a lista recortada sobrevive à troca de pasta)
+
+		var recortados = [];
+
+		function atualizarBarraMover() {
+			$('#c2f-move-count').text(recortados.length);
+			$('#c2f-move-bar').toggleClass('hidden', recortados.length === 0).toggleClass('flex', recortados.length > 0);
+		}
+
+		$('#c2f-cut-selected').on('click', function () {
+			var itens = [];
+			for (var k in estado.selecionados) {
+				if (estado.selecionados.hasOwnProperty(k)) itens.push({ caminho: estado.selecionados[k].caminho, tipo: estado.selecionados[k].tipo });
+			}
+			if (itens.length === 0) return;
+			recortados = itens;
+			limparSelecao();
+			atualizarBarraMover();
+		});
+
+		$('#c2f-move-cancel').on('click', function () {
+			recortados = [];
+			atualizarBarraMover();
+		});
+
+		$('#c2f-move-paste').on('click', function () {
+			if (recortados.length === 0) return;
+			var botao = this;
+			botao.disabled = true;
+			$.ajax({
+				type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
+				data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'mover', destino: estado.dir, itens: JSON.stringify(recortados) },
+				success: function (resp) {
+					botao.disabled = false;
+					var ok = 0, existem = 0, falhas = 0;
+					var resultados = (resp && resp.resultados) || [];
+					for (var i = 0; i < resultados.length; i++) {
+						if (resultados[i].status === 'Ok') ok++;
+						else if (resultados[i].status === 'Exists') existem++;
+						else if (resultados[i].status !== 'Same') falhas++;
+					}
+					if (!resp || resp.status !== 'Ok') falhas = recortados.length;
+					recortados = [];
+					atualizarBarraMover();
+					if (window.c2fControles) {
+						if (ok > 0) window.c2fControles.aviso(ok + ' ' + t('move-done'), 'sucesso');
+						if (existem > 0) window.c2fControles.aviso(existem + ' ' + t('move-exists'), 'alerta');
+						if (falhas > 0) window.c2fControles.aviso(falhas + ' ' + t('move-error'), 'erro');
+					}
+					carregar(false);
+				},
+				error: function (txt) {
+					botao.disabled = false;
+					if (txt.status === 401) { window.open(gestor.raiz + ((txt.responseJSON && txt.responseJSON.redirect) ? txt.responseJSON.redirect : 'signin/'), '_self'); return; }
+					alertaSimples(t('move-error'));
+				}
+			});
 		});
 
 		// ===== Exclusão (individual/lote), com tratamento de pasta não-vazia

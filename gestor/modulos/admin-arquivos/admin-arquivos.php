@@ -25,6 +25,72 @@ function admin_arquivos_base(){
 }
 
 /**
+ * req-240: pasta, relativa aos conteúdos, a que o usuário atual está restrito ('' = tudo).
+ *
+ * O core não decide quem é restrito: o projeto responde pelo filtro `admin-arquivos` / `escopo`
+ * (no conn2flow-site, o multiusuário devolve `files/<id do usuário>`). Sem filtro registrado, o
+ * gerenciador continua vendo a árvore inteira.
+ */
+function admin_arquivos_escopo(){
+	static $escopo = null;
+	if ($escopo !== null) return $escopo;
+
+	$valor = function_exists('hook_apply_filters') ? hook_apply_filters('admin-arquivos', 'escopo', '') : '';
+	$seguro = arquivo_caminho_relativo_seguro(is_string($valor) ? $valor : '');
+	$escopo = $seguro === false ? '' : $seguro;
+
+	if ($escopo !== '') {
+		admin_arquivos_criar_dir_herdando_permissao(admin_arquivos_base() . $escopo);
+	}
+	return $escopo;
+}
+
+/** req-240: pasta pedida, trazida para dentro do escopo do usuário. */
+function admin_arquivos_dir($pedido){
+	return arquivo_caminho_confinar($pedido, admin_arquivos_escopo());
+}
+
+/** req-240: o caminho (já sanitizado) pertence ao escopo do usuário? */
+function admin_arquivos_no_escopo($rel){
+	$escopo = admin_arquivos_escopo();
+	if ($escopo === '') return true;
+	return $rel === $escopo || strncmp((string)$rel, $escopo . '/', strlen($escopo) + 1) === 0;
+}
+
+/**
+ * req-240: cota de disco do usuário em bytes, pelo filtro `admin-arquivos` / `cota-bytes`.
+ * Negativo = sem limite (padrão).
+ */
+function admin_arquivos_cota(){
+	static $cota = null;
+	if ($cota !== null) return $cota;
+	$valor = function_exists('hook_apply_filters') ? hook_apply_filters('admin-arquivos', 'cota-bytes', -1) : -1;
+	$cota = is_numeric($valor) ? (float)$valor : -1.0;
+	return $cota;
+}
+
+/**
+ * req-240: espaço usado e cota, para o indicador da listagem e para barrar o envio acima do limite.
+ * Só mede o disco quando há escopo ou cota: medir a árvore inteira a cada tela seria caro e inútil.
+ *
+ * @return array|null [bytes, fmt, cota, cotaFmt, percentual] ou null quando não se aplica.
+ */
+function admin_arquivos_uso(){
+	$escopo = admin_arquivos_escopo();
+	$cota = admin_arquivos_cota();
+	if ($escopo === '' && $cota < 0) return null;
+
+	$bytes = arquivo_dir_tamanho(admin_arquivos_base() . $escopo);
+	return Array(
+		'bytes' => $bytes,
+		'fmt' => admin_arquivos_formatar_bytes($bytes),
+		'cota' => $cota,
+		'cotaFmt' => $cota >= 0 ? admin_arquivos_formatar_bytes($cota) : '',
+		'percentual' => $cota > 0 ? min(100, (int)round($bytes * 100 / $cota)) : ($cota == 0 ? 100 : 0),
+	);
+}
+
+/**
  * Cria um diretório herdando a permissão do pai (recursivamente).
  */
 function admin_arquivos_criar_dir_herdando_permissao($dir) {
@@ -42,11 +108,14 @@ function admin_arquivos_criar_dir_herdando_permissao($dir) {
  * @return array Lista [{nome, caminho}] começando pela raiz.
  */
 function admin_arquivos_breadcrumb($rel){
-	$itens = Array(Array('nome' => '', 'caminho' => '', 'raiz' => true));
-	if ($rel === '') return $itens;
+	// req-240: com escopo, a raiz da trilha é a pasta do usuário e o que fica acima dela não aparece.
+	$escopo = admin_arquivos_escopo();
+	$itens = Array(Array('nome' => '', 'caminho' => $escopo, 'raiz' => true));
+	if ($rel === '' || $rel === $escopo) return $itens;
 
-	$acc = '';
-	foreach (explode('/', $rel) as $seg) {
+	$acc = $escopo;
+	$resto = $escopo === '' ? $rel : substr($rel, strlen($escopo) + 1);
+	foreach (explode('/', $resto) as $seg) {
 		$acc = $acc === '' ? $seg : $acc . '/' . $seg;
 		$itens[] = Array('nome' => $seg, 'caminho' => $acc);
 	}
@@ -288,13 +357,15 @@ function admin_arquivos_ler_pasta($dirRel, $paginaAtual, $filtros){
 	global $_GESTOR;
 
 	$base = admin_arquivos_base();
+	// req-240: a pasta pedida nunca sai do escopo do usuário.
+	$dirRel = admin_arquivos_dir($dirRel);
 	$abs = arquivo_caminho_resolver($base, $dirRel);
 
 	// Pasta inválida/inexistente (ex.: cache de última pasta que foi excluída):
-	// cai graciosamente para a raiz de conteúdos em vez de listar vazio.
+	// cai graciosamente para a raiz (a do escopo, se houver) em vez de listar vazio.
 	if ($abs === false || !is_dir($abs)) {
-		$dirRel = '';
-		$abs = arquivo_caminho_resolver($base, '');
+		$dirRel = admin_arquivos_escopo();
+		$abs = arquivo_caminho_resolver($base, $dirRel);
 	}
 
 	$dirSeguro = arquivo_caminho_relativo_seguro($dirRel);
@@ -416,6 +487,7 @@ function admin_arquivos_ler_pasta($dirRel, $paginaAtual, $filtros){
 		'totalPaginas' => $totalPaginas,
 		'paginaAtual' => $paginaAtual,
 		'thumbsMissing' => $thumbsMissing,
+		'uso' => admin_arquivos_uso(),
 	);
 }
 
@@ -433,6 +505,9 @@ function admin_arquivos_i18n(){
 		'thumbs-processing','col-name','col-date','col-type','col-size','empty-folder',
 		'upload-error-size','upload-error-extension','copied','preview-size',
 		'destination-folder','create-here',
+		// req-240
+		'move-cut','move-paste','move-cancel','move-pending','move-done','move-exists','move-error',
+		'usage-label','usage-of','upload-error-content','upload-error-quota',
 	);
 	$map = Array();
 	foreach ($ids as $id) {
@@ -479,7 +554,8 @@ function admin_arquivos_listar_arquivos(){
 	$_GESTOR['javascript-vars']['adminArquivos'] = Array(
 		'contentsUrl' => $_GESTOR['url-full'],
 		'dirExplicito' => $dirExplicito,
-		'dirInicial' => ($dirExplicito ? (arquivo_caminho_relativo_seguro($_REQUEST['dir']) ?: '') : ''),
+		'dirInicial' => ($dirExplicito ? admin_arquivos_dir($_REQUEST['dir']) : admin_arquivos_escopo()),
+		'escopo' => admin_arquivos_escopo(),
 		'maxPorPagina' => $maxPorPagina,
 		'loteMiniaturas' => isset($modulo['lista']['lote_miniaturas']) ? (int)$modulo['lista']['lote_miniaturas'] : 5,
 		'paginaIframe' => $_GESTOR['paginaIframe'] ? true : false,
@@ -604,7 +680,8 @@ function admin_arquivos_upload(){
 	$_GESTOR['javascript-vars']['adminArquivos'] = Array(
 		'contentsUrl' => $_GESTOR['url-full'],
 		'dirExplicito' => $dirExplicito,
-		'dirInicial' => ($dirExplicito ? (arquivo_caminho_relativo_seguro($_REQUEST['dir']) ?: '') : ''),
+		'dirInicial' => ($dirExplicito ? admin_arquivos_dir($_REQUEST['dir']) : admin_arquivos_escopo()),
+		'escopo' => admin_arquivos_escopo(),
 		'maxUploadBytes' => isset($modulo['upload']['max_bytes']) ? (int)$modulo['upload']['max_bytes'] : 10000000,
 		'paginaIframe' => $_GESTOR['paginaIframe'] ? true : false,
 		'i18n' => admin_arquivos_i18n(),
@@ -698,9 +775,33 @@ function admin_arquivos_ajax_upload_file(){
 		return;
 	}
 
+	// ===== req-240: o conteúdo tem de ser o que a extensão diz (executável renomeado para .png não entra).
+	if (!arquivo_assinatura_confere($tmp, $nomeOriginal)) {
+		@unlink($tmp);
+		$_GESTOR['ajax-json'] = Array(
+			'error' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'upload-error-content')),
+			'status' => 'Error',
+		);
+		return;
+	}
+
+	// ===== req-240: cota de disco do usuário (definida pelo projeto; negativa = sem limite).
+	$cota = admin_arquivos_cota();
+	if ($cota >= 0) {
+		$uso = admin_arquivos_uso();
+		if (($uso ? $uso['bytes'] : 0) + $size > $cota) {
+			@unlink($tmp);
+			$_GESTOR['ajax-json'] = Array(
+				'error' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'upload-error-quota')),
+				'status' => 'Error',
+			);
+			return;
+		}
+	}
+
 	// ===== Pasta de destino (validada contra path traversal).
 	$base = admin_arquivos_base();
-	$dirRel = isset($_REQUEST['dir']) ? (arquivo_caminho_relativo_seguro($_REQUEST['dir']) ?: '') : '';
+	$dirRel = admin_arquivos_dir(isset($_REQUEST['dir']) ? $_REQUEST['dir'] : '');
 	$absDir = arquivo_caminho_resolver($base, $dirRel);
 	if ($absDir === false) {
 		@unlink($tmp);
@@ -733,6 +834,12 @@ function admin_arquivos_ajax_upload_file(){
 		@unlink($tmp);
 		$_GESTOR['ajax-json'] = Array('error' => 'Error - '.$_FILES['files']['error'][0], 'status' => 'Error');
 		return;
+	}
+
+	// ===== req-240: SVG é servido do mesmo domínio do painel; sai sem script, eventos e conteúdo externo.
+	if (strtolower($ext) === 'svg') {
+		$svg = @file_get_contents($absArquivo);
+		if ($svg !== false) @file_put_contents($absArquivo, arquivo_svg_sanitizar($svg));
 	}
 
 	// ===== Miniatura imediata (best-effort) para imagens.
@@ -768,7 +875,7 @@ function admin_arquivos_ajax_miniaturas(){
 	$resultados = Array();
 	foreach ($lista as $rel) {
 		$relSeguro = arquivo_caminho_relativo_seguro($rel);
-		if ($relSeguro === false) { $resultados[] = Array('caminho' => $rel, 'ok' => false); continue; }
+		if ($relSeguro === false || !admin_arquivos_no_escopo($relSeguro)) { $resultados[] = Array('caminho' => $rel, 'ok' => false); continue; }
 
 		$abs = arquivo_caminho_resolver($base, $relSeguro);
 		if ($abs === false || !is_file($abs)) { $resultados[] = Array('caminho' => $relSeguro, 'ok' => false); continue; }
@@ -811,6 +918,8 @@ function admin_arquivos_ajax_excluir(){
 
 		$relSeguro = arquivo_caminho_relativo_seguro($rel);
 		if ($relSeguro === false || $relSeguro === '') { $resultados[] = Array('caminho' => $rel, 'status' => 'Invalid'); continue; }
+		// req-240: fora do escopo do usuário, ou a própria raiz do escopo, não se exclui.
+		if (!admin_arquivos_no_escopo($relSeguro) || $relSeguro === admin_arquivos_escopo()) { $resultados[] = Array('caminho' => $rel, 'status' => 'Invalid'); continue; }
 
 		$abs = arquivo_caminho_resolver($base, $relSeguro);
 		if ($abs === false) { $resultados[] = Array('caminho' => $relSeguro, 'status' => 'Invalid'); continue; }
@@ -880,7 +989,7 @@ function admin_arquivos_ajax_pasta_criar(){
 	global $_GESTOR;
 
 	$base = admin_arquivos_base();
-	$dirRel = isset($_REQUEST['dir']) ? (arquivo_caminho_relativo_seguro($_REQUEST['dir']) ?: '') : '';
+	$dirRel = admin_arquivos_dir(isset($_REQUEST['dir']) ? $_REQUEST['dir'] : '');
 	$nome = arquivo_nome_sanitizar(isset($_REQUEST['nome']) ? $_REQUEST['nome'] : '');
 
 	if ($nome === '') {
@@ -925,6 +1034,11 @@ function admin_arquivos_ajax_renomear(){
 	$nome = arquivo_nome_sanitizar(isset($_REQUEST['nome']) ? $_REQUEST['nome'] : '');
 
 	if ($relSeguro === false || $relSeguro === '' || $nome === '') {
+		$_GESTOR['ajax-json'] = Array('status' => 'Invalid');
+		return;
+	}
+	// req-240: só dentro do escopo do usuário, e nunca a raiz dele.
+	if (!admin_arquivos_no_escopo($relSeguro) || $relSeguro === admin_arquivos_escopo()) {
 		$_GESTOR['ajax-json'] = Array('status' => 'Invalid');
 		return;
 	}
@@ -992,7 +1106,7 @@ function admin_arquivos_ajax_categorias_arquivo(){
 	global $_GESTOR;
 
 	$relSeguro = arquivo_caminho_relativo_seguro(isset($_REQUEST['caminho']) ? $_REQUEST['caminho'] : '');
-	if ($relSeguro === false || $relSeguro === '') {
+	if ($relSeguro === false || $relSeguro === '' || !admin_arquivos_no_escopo($relSeguro)) {
 		$_GESTOR['ajax-json'] = Array('status' => 'Invalid');
 		return;
 	}
@@ -1004,6 +1118,74 @@ function admin_arquivos_ajax_categorias_arquivo(){
 	} else {
 		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'categorias' => admin_arquivos_categorias_do_caminho($relSeguro));
 	}
+}
+
+/**
+ * req-240: move arquivos e pastas (em lote) para outra pasta, levando miniaturas e categorias.
+ * Recurso herdado do módulo `arquivos` do site, que o `admin-arquivos` substitui.
+ */
+function admin_arquivos_ajax_mover(){
+	global $_GESTOR;
+
+	$base = admin_arquivos_base();
+	$destinoRel = admin_arquivos_dir(isset($_REQUEST['destino']) ? $_REQUEST['destino'] : '');
+	$absDestino = arquivo_caminho_resolver($base, $destinoRel);
+	if ($absDestino === false || !is_dir($absDestino)) {
+		$_GESTOR['ajax-json'] = Array('status' => 'InvalidDestination');
+		return;
+	}
+
+	$itens = Array();
+	if (isset($_REQUEST['itens'])) {
+		$decodificado = json_decode(stripslashes($_REQUEST['itens']), true);
+		if (is_array($decodificado)) $itens = $decodificado;
+	}
+
+	$resultados = Array();
+	foreach ($itens as $item) {
+		$rel = is_array($item) ? (isset($item['caminho']) ? $item['caminho'] : '') : (string)$item;
+		$relSeguro = arquivo_caminho_relativo_seguro($rel);
+
+		if ($relSeguro === false || $relSeguro === '' || !admin_arquivos_no_escopo($relSeguro) || $relSeguro === admin_arquivos_escopo()) {
+			$resultados[] = Array('caminho' => $rel, 'status' => 'Invalid');
+			continue;
+		}
+
+		$abs = arquivo_caminho_resolver($base, $relSeguro);
+		if ($abs === false || !file_exists($abs)) { $resultados[] = Array('caminho' => $relSeguro, 'status' => 'NotFound'); continue; }
+
+		$ehPasta = is_dir($abs);
+		$nome = basename($relSeguro);
+		$relNovo = ($destinoRel === '' ? '' : $destinoRel . '/') . $nome;
+
+		// Já está na pasta de destino, ou a pasta iria para dentro dela mesma.
+		if ($relNovo === $relSeguro) { $resultados[] = Array('caminho' => $relSeguro, 'status' => 'Same'); continue; }
+		if ($ehPasta && ($destinoRel === $relSeguro || strncmp($destinoRel, $relSeguro . '/', strlen($relSeguro) + 1) === 0)) {
+			$resultados[] = Array('caminho' => $relSeguro, 'status' => 'Invalid');
+			continue;
+		}
+
+		$absNovo = arquivo_caminho_resolver($base, $relNovo);
+		if ($absNovo === false) { $resultados[] = Array('caminho' => $relSeguro, 'status' => 'Invalid'); continue; }
+		if (file_exists($absNovo)) { $resultados[] = Array('caminho' => $relSeguro, 'status' => 'Exists'); continue; }
+
+		if (!@rename($abs, $absNovo)) { $resultados[] = Array('caminho' => $relSeguro, 'status' => 'Error'); continue; }
+
+		// A miniatura de um arquivo mora na `mini/` da pasta dele: acompanha o arquivo.
+		if (!$ehPasta && arquivo_tipo_por_extensao($relSeguro) === 'image') {
+			$absMiniAntiga = $base . arquivo_mini_caminho_relativo($relSeguro);
+			$absMiniNova = $base . arquivo_mini_caminho_relativo($relNovo);
+			if (is_file($absMiniAntiga)) {
+				admin_arquivos_criar_dir_herdando_permissao(dirname($absMiniNova));
+				@rename($absMiniAntiga, $absMiniNova);
+			}
+		}
+
+		admin_arquivos_categorias_mover($relSeguro, $relNovo, $ehPasta);
+		$resultados[] = Array('caminho' => $relSeguro, 'novo' => $relNovo, 'tipo' => $ehPasta ? 'pasta' : 'arquivo', 'status' => 'Ok');
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'destino' => $destinoRel, 'resultados' => $resultados);
 }
 
 // ==== Start
@@ -1024,6 +1206,7 @@ function admin_arquivos_start(){
 			case 'excluir': admin_arquivos_ajax_excluir(); break;
 			case 'pasta-criar': admin_arquivos_ajax_pasta_criar(); break;
 			case 'renomear': admin_arquivos_ajax_renomear(); break;
+			case 'mover': admin_arquivos_ajax_mover(); break;
 			case 'categorias-arquivo': admin_arquivos_ajax_categorias_arquivo(); break;
 		}
 

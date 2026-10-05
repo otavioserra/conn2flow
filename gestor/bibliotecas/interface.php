@@ -1929,7 +1929,8 @@ function interface_formulario_campos($params = false){
 					$imagepickJS['modal'] = Array(
 						'head' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-head')),
 						'cancel' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-cancel')),
-						'url' => $_GESTOR['url-full'] . 'arquivos/?paginaIframe=sim',
+						// req-240: o gerenciador de arquivos do sistema é o admin-arquivos (o `arquivos` era de projeto e foi aposentado).
+						'url' => $_GESTOR['url-full'] . 'admin-arquivos/?paginaIframe=sim',
 					);
 					
 					$imagepickJS['alertas'] = Array(

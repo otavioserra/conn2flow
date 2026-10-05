@@ -10,7 +10,7 @@ const expressao = opcao('eval') ? fs.readFileSync(opcao('eval'), 'utf8') : '';
 const largura = parseInt(opcao('largura') || '1366', 10);
 const captura = opcao('shot');
 
-const jar = fs.readFileSync(path.join(core, 'temp/agent-cookies.txt'), 'utf8').split(/\r?\n/)
+const jar = fs.readFileSync(opcao('jar') ? path.resolve(opcao('jar')) : path.join(core, 'temp/agent-cookies.txt'), 'utf8').split(/\r?\n/)
   .filter(l => l.startsWith('#HttpOnly_') || (l && !l.startsWith('#'))).map(l => {
     const p = l.replace(/^#HttpOnly_/, '').split('\t');
     return {domain: p[0].replace(/^\./, ''), path: p[2], secure: p[3] === 'TRUE', httpOnly: l.startsWith('#HttpOnly_'), name: p[5], value: p[6]};

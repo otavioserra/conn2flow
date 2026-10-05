@@ -288,4 +288,9 @@ BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum
 - **`ln -s` no Git Bash copia o diretório em vez de ligar** (copiou `node_modules` inteiro para a worktree). Junção: `New-Item -ItemType Junction` no PowerShell. O `vendor/` da raiz da árvore principal está vazio; o PHPUnit usado foi `../conn2flow-req234/vendor/bin/phpunit`.
 - **Suíte do site**: não há `phpunit.xml` na raiz; usar `--configuration sdd/validation/req238-phpunit.xml`.
 - **Separar autoria de derivado no `git status` de outro agente**: tirar `precompiled.css`, `.min.js`, `db/data/` e, nos JSON de módulo, as linhas de `version`/`checksum`. De 303 arquivos alterados, 52 eram autoria.
-- **Alerta de tamanho**: 290 linhas; a poda é obrigatória aos 300.
+- **Roteiro de validação nunca mira coisa real para provar uma recusa.** Uma sondagem de "excluir fora do escopo" apontava para `contents/favicon`; rodada como administrador (sem escopo) apagou a pasta do Lab. Alvo de sondagem destrutiva é sempre um caminho inexistente (`Invalid` x `NotFound` já prova a regra). Recuperação: `project:sync-files`, porque `contents/` do projeto é versionado.
+- **`admin-arquivos` (req-240)**: escopo e cota vêm dos filtros `admin-arquivos` / `escopo` e `cota-bytes` (o site responde no `multiusuario.hooks.php`); o caminho devolvido ao seletor continua relativo aos conteúdos. Página Tailwind em iframe usa `layout-iframe-tailwindcss` (o `layout-iframes` é Fomantic e a folha dele vence as utilities).
+- **Lucide troca o `<i>` por `<svg>`**: referência jQuery guardada antes da carga aponta para elemento descartado. Consultar na hora do uso.
+- **`modulos_operacoes` tem chave única por `(id, language)`**: operação pertence a um módulo só; muda-se o dono, não se duplica. No site, operações e acessos por perfil vêm de `db/data/*Data.json` estáticos, não de sementes em `resources/`.
+- **Manifesto de módulo**: alguns escapam barras no JSON e outros não (`admin-atualizacoes` x `admin-arquivos`); regravar com as mesmas opções ou o diff vira ruído. `perl -0` com `\n\n` não casa em arquivo CRLF.
+- **Alerta de tamanho**: 296 linhas; a poda é obrigatória aos 300.

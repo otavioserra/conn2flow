@@ -35,9 +35,9 @@
         "minificado": 12990
     },
     "gestor/assets/global/admin-tailwind.js": {
-        "sha1": "0a91932491f116a97ee1fd073a1de07eb0b8e52f",
-        "origem": 20969,
-        "minificado": 7948
+        "sha1": "6cb951741bea2e100881a9416b2cf37eb86e4bcf",
+        "origem": 21788,
+        "minificado": 8287
     },
     "gestor/assets/global/admin-topbar.js": {
         "sha1": "7b7200a9fde87716adab8b8dfaff33ce2ab31498",
@@ -145,9 +145,9 @@
         "minificado": 1020
     },
     "gestor/modulos/admin-arquivos/admin-arquivos.js": {
-        "sha1": "9c49e01e3931d6341012d950692945f5cf9e3245",
-        "origem": 41455,
-        "minificado": 23910
+        "sha1": "fb5c928add3c5661c35885d81f78f892ce48cdd1",
+        "origem": 44547,
+        "minificado": 26366
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
         "sha1": "4a940d3ff15388f7ea746e98bda46293f3a4c9a1",

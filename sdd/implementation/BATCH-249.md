@@ -1,6 +1,6 @@
 # BATCH-249 — REQ-240: harmonização global do Design System Tailwind (Core)
 
-- Status: in-progress. Pilares 1 a 6 e primeiro adendo (`admin-atualizacoes`) implementados, publicados no Lab e validados; segundo adendo (unificação dos arquivos no `admin-arquivos`) em andamento.
+- Status: implemented-pending-homologation. Pilares 1 a 6 e os dois adendos (`admin-atualizacoes` e unificação dos arquivos no `admin-arquivos`) implementados, publicados no Lab e validados em 2026-10-05.
 - Projeto: conn2flow
 - Raiz: `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`
 - Requisição: [REQ-240](../human-requests/req-240.md), com dois adendos do Engenheiro Chefe (seções 6 e 7). Coordenação: conn2flow-site, REQ-106 / [BATCH-100](../../../conn2flow-site/sdd/implementation/BATCH-100.md).
@@ -21,8 +21,10 @@ A REQ-239 rodou em paralelo e terminou sem commit. Com autorização do Engenhei
 - [x] Pilar 6: nenhum overflow horizontal a 1366 e 390 px.
 - [x] Adendo 1: `admin-atualizacoes` redesenhado, com as opções da req-201 expostas.
 - [x] Vitest e PHPUnit do core e do site sem falhas.
-- [x] Pipeline oficial do Lab (três rodadas, saída 0) e varredura de navegador em 257 telas.
-- [ ] Adendo 2: `admin-arquivos` como único módulo de arquivos; aposentar o `arquivos` do site.
+- [x] Pipeline oficial do Lab (oito rodadas ao longo do lote, saída 0) e varredura de navegador em 257 telas.
+- [x] Adendo 2: `admin-arquivos` como único módulo de arquivos; `arquivos` do site aposentado.
+- [x] Adendo 2: modo iframe (seletor) do `admin-arquivos` e ícones corrigidos.
+- [ ] API de arquivos no `admin-arquivos` (a do módulo antigo saiu com ele; ver limites).
 - [ ] Homologação humana.
 
 ## O que a auditoria mostrou
@@ -75,7 +77,24 @@ A tela mostrava as opções como flags de CLI cruas, sem agrupamento; `--wipe` f
 
 Ficou de fora, como proposta: disparar o rollback pela tela. A rotina existe (`rollbackExecucao`, `--rollback` e `/_api/system/rollback`), mas é ação destrutiva nova pela web e merece requisição própria.
 
+### Adendo 2 — `admin-arquivos` como único módulo de arquivos
+
+O `arquivos` do site guardava registros em banco, isolava cada usuário numa pasta, aplicava cota de disco e validava o conteúdo enviado; o `admin-arquivos` lê a árvore física e não tinha nada disso. O que mudou no core:
+
+- **Escopo e cota por filtros de hook.** O módulo consulta `admin-arquivos` / `escopo` (pasta a que o usuário fica restrito) e `admin-arquivos` / `cota-bytes`. O core não sabe quem é restrito: sem filtro registrado, tudo continua como era. O site responde pelos dois no gancho de multiusuário (BATCH-100).
+- **Confinamento em todos os pontos de entrada**: navegar, enviar, criar pasta, renomear, excluir, miniaturas, categorias e mover. Caminho fora do escopo cai na raiz do usuário; ação sobre item de fora, ou sobre a própria raiz, responde `Invalid`. A trilha esconde o que fica acima da raiz.
+- **Validação do conteúdo enviado** (`bibliotecas/arquivo.php`): `arquivo_assinatura_confere()` recusa arquivo cujo começo contradiz a extensão (executável renomeado para `.png`); `arquivo_svg_sanitizar()` tira `<script>`, eventos `on*`, `javascript:` e `<foreignObject>` de SVG; modelos `glb`/`gltf` são conferidos.
+- **Mover** arquivos e pastas por recortar e colar, levando miniaturas e categorias.
+- **Indicador de espaço usado**, com a cota quando houver.
+- **Seletor padrão do `interface`**: apontava para `arquivos/`, módulo que nem existe no core; agora aponta para `admin-arquivos/`.
+- **Modo iframe.** O roteador trocava qualquer página em iframe pelo `layout-iframes`, que é Fomantic: a folha do Fomantic vencia as utilities (o botão de adicionar perdia o fundo), o Lucide não era carregado (nenhum ícone `data-lucide` aparecia) e a biblioteca de controles ficava de fora (o próprio módulo a usa para confirmar exclusão). Página Tailwind em iframe passa a usar o `layout-iframe-tailwindcss`, que ganhou o Lucide e o script que desenha os ícones; `admin-tailwind.js` desenha ícones também sem a casca do painel.
+- **Ícones e busca**: todos os ícones do módulo com `data-lucide` explícito (inclusive os montados em JS; a pasta dos cartões saía com 16 px); dicas nos botões de visualização; a lupa caía para baixo do campo e o botão de limpar a busca nunca aparecia (o JS guardava referência ao `<i>` que o Lucide substitui).
+
+- **Seleção múltipla e hover** (pedidos do Engenheiro Chefe durante a validação): o cartão selecionado ganha borda, fundo e contorno (antes só a caixinha mudava, e no seletor isso passava despercebido); nos modos compactos as ações de hover saem do meio da miniatura e ficam numa faixa na base dela.
+
 ### Guardas de teste
+
+`tests/Unit/PHP/ArquivoUploadReq240Test.php` (8 testes): assinatura que bate e que contradiz a extensão, extensão sem assinatura, SVG com e sem vetores, confinamento ao escopo (inclusive vizinho com o mesmo prefixo de nome e `..`), tamanho de pasta sem as miniaturas.
 
 `tests/Unit/PHP/IconesLucideReq240Test.php` (6 testes): todo ícone declarado por módulo tem tradução; toda tradução existe no pacote Lucide embarcado; nenhum `data-lucide="circle"` de marcador de lugar; select do painel usa a classe padronizada; toda página de módulo tem `<div>` balanceado.
 
@@ -84,16 +103,32 @@ Ficou de fora, como proposta: disparar o rollback pela tela. A rotina existe (`r
 | Verificação | Resultado |
 | --- | --- |
 | `IconesLucideReq240Test` antes da correção | falha, listando os 9 nomes sem tradução |
-| Core PHPUnit (árvore principal) | 1.605 testes, 15.885 asserções, sem falhas; 5 pulados e 7 depreciações já existentes |
+| Core PHPUnit (árvore principal) | 1.613 testes, 15.931 asserções, sem falhas; 5 pulados e 7 depreciações já existentes |
+| `admin-arquivos` como usuário restrito (`cliente-pro`, plano cloud-nano) | raiz e trilha presas na pasta dele, cota de 1 GB exibida; 8 tentativas de fuga caem na raiz dele; PNG falso e `.php` recusados; SVG gravado sem `<script>` nem `onload`; mover, excluir e renomear fora do escopo, e excluir a própria raiz, respondem `Invalid` |
+| `admin-arquivos` como administrador | árvore inteira, sem indicador de uso; mesmo roteiro, nada real tocado |
+| `admin-arquivos` em iframe, antes | 0 ícones Lucide desenhados, folha do Fomantic carregada, `c2fControles` ausente |
+| `admin-arquivos` em iframe, depois | 75 ícones desenhados, nenhum por desenhar, sem Fomantic, busca e limpar funcionando |
 | Core Vitest | 46 arquivos, 541 testes |
-| Pipeline `project:update-all conn2flow-site-local --confirmar-remoto` | três rodadas, saída 0 |
+| Pipeline `project:update-all conn2flow-site-local --confirmar-remoto` | oito rodadas ao longo do lote, saída 0 |
 | Varredura de navegador, 1ª rodada | 257 telas; círculos em 4 telas, ícones não desenhados em 2, selects fora do padrão em 4, cabeçalhos em 2, overflow em 1 |
 | Varredura de navegador, 2ª rodada | círculos 0, ícones não desenhados 0, selects 0, cabeçalhos 0, overflow 0 |
 | `admin-atualizacoes` com interação | botão desabilitado até escolher o modo, rótulo traduzido, abas alternando, nenhum marcador cru, 17 ícones desenhados, sem overflow a 390 px |
 
 Roteiros: [varredura](../validation/req240-browser.cjs), [resumo](../validation/req240-browser-summary.cjs), [sonda](../validation/req240-probe.cjs). Dados: [resultado](../validation/req240-browser-results.json) e [capturas](../validation/evidence-req240/resumo-segunda-varredura.txt). A varredura descobre as rotas nos manifestos; 72 das 257 redirecionam por precisar de um registro (telas de edição sem `id`), e nas listagens o roteiro segue o primeiro link de edição.
 
+## Incidente no Lab durante a validação (2026-10-05)
+
+O roteiro `req240-arquivos-eval.js` tinha sondagens de "ação fora do escopo" que miravam a pasta `favicon`, pensadas para o usuário restrito. Rodado primeiro como administrador, que não tem escopo, a sondagem de exclusão apagou de verdade `contents/favicon` do Lab (três PNGs).
+
+- Recuperação: os três arquivos são versionados em `conn2flow-site/gestor/contents/favicon/` e foram repostos por `project:sync-files conn2flow-site-local`. As cópias que o servidor guardava tinham os mesmos três arquivos, com os mesmos tamanhos; nada exclusivo do Lab se perdeu. A logo voltou a responder 200.
+- Correção do roteiro: as sondagens passam a mirar um caminho inexistente (`Invalid` com escopo, `NotFound` sem), e a exclusão da raiz do escopo roda sem `recursivo`. Nenhuma delas pode mais mover, renomear ou apagar algo real.
+
 ## Limites e achados fora do escopo
+
+- **API de arquivos.** O módulo antigo expunha `/_api/arquivos/*` (envio, listagem, pastas). Ela saiu com o módulo e não foi portada: grava arquivos por token e não havia como exercitá-la no Lab nesta sessão. O único consumidor encontrado é o roteiro `ai-workspace/pt-br/scripts/3d-catalog/3d-catalog-test-ptbr.sh` do site, que deixa de funcionar na etapa de envio.
+- **Nome de pasta de usuário.** O escopo é `<id do usuário>/` na raiz dos conteúdos, como o módulo antigo já fazia. Um usuário cujo id coincida com uma pasta do sistema (`mini`, `plugins`, `favicon`…) veria essa pasta. O comportamento é herdado; não foi criada regra nova.
+- O seletor do catálogo 3D foi trocado no PHP dos três módulos, mas a abertura do seletor a partir de uma tela do catálogo não foi exercitada no navegador.
+- O `admin-arquivos` foi conferido em pt-br; o inglês recebeu as mesmas mudanças por arquivo.
 
 - O resumo da varredura ainda lista "P3 bloco principal sem cartão branco" em 50 telas de listagem: é falso-positivo do medidor (ele parte de um elemento fora do cartão). As listagens foram conferidas por captura e são cartões brancos. O medidor foi ajustado depois da segunda rodada e não foi reexecutado.
 - "Marcador cru no texto" em 19 telas: 17 são editores de modelo mostrando os próprios placeholders, de propósito. Os dois reais eram do `gateways-pagamentos` (corrigido no BATCH-100).

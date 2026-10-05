@@ -3171,7 +3171,9 @@ function gestor_roteador(){
 			// req-219: toda página do painel Tailwind usa a biblioteca de controles (campos, botões, dicas, ponte).
 			// Ela entrava só pelo fluxo do `interface` (interface_iniciar/finalizar); telas que não passam por
 			// ele, como o painel inicial (dashboard), ficavam sem o CSS e sem a ponte.
-			if(strpos((string)($paginas[0]['layout_id'] ?? ''), 'layout-administrativo-tailwind') === 0 && empty($_GESTOR['paginaIframe'])){
+			// req-240: vale também em iframe (seletor de arquivos). A página Tailwind aberta em iframe usa os
+			// mesmos controles (diálogos de confirmação, dicas, selects); sem eles o seletor perdia funções.
+			if(strpos((string)($paginas[0]['layout_id'] ?? ''), 'layout-administrativo-tailwind') === 0){
 				gestor_incluir_biblioteca('controles');
 				if(function_exists('controles_incluir')) controles_incluir();
 			}
@@ -3209,10 +3211,22 @@ function gestor_roteador(){
 				$layout_css_compiled = (isset($_GESTOR['layout']['css_compiled']) ? $_GESTOR['layout']['css_compiled'] : '');
 			} else if($paginas[0]['layout_id']){
 				if($_GESTOR['paginaIframe']){
+					// req-240: página Tailwind em iframe usa o layout mínimo Tailwind. O `layout-iframes` é
+					// Fomantic: trazia a folha inteira do Fomantic (que vence as utilities do Tailwind) e
+					// nenhum ícone Lucide era desenhado no seletor de arquivos.
+					$layoutIframe = strpos((string)$paginas[0]['layout_id'], 'layout-administrativo-tailwind') === 0
+						? 'layout-iframe-tailwindcss' : 'layout-iframes';
 					$layouts = gestor_layout(Array(
-						'id' => 'layout-iframes',
+						'id' => $layoutIframe,
 						'return_css' => true,
 					));
+					// Layout mínimo ainda não sincronizado neste ambiente: volta ao de sempre.
+					if(empty($layouts['html']) && $layoutIframe !== 'layout-iframes'){
+						$layouts = gestor_layout(Array(
+							'id' => 'layout-iframes',
+							'return_css' => true,
+						));
+					}
 				} else {
 					$layouts = gestor_layout(Array(
 						'id' => $paginas[0]['layout_id'],

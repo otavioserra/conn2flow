@@ -92,9 +92,22 @@
         return false;
     }
 
+    // req-240: página aberta em iframe (o seletor de arquivos) não tem a casca do painel, mas tem ícones:
+    // sem isto os `<i data-lucide>` ficavam invisíveis no modo seletor.
+    function iniciarSemCasca() {
+        if (!document.body) return;
+        if (!desenharIcones()) window.addEventListener('load', desenharIcones);
+        var pendente = false;
+        new MutationObserver(function (mutations) {
+            if (pendente || !mutations.some(function (m) { return Array.from(m.addedNodes).some(function (n) { return n.nodeType === 1 && n.tagName !== 'svg'; }); })) return;
+            pendente = true;
+            requestAnimationFrame(function () { pendente = false; desenharIcones(); });
+        }).observe(document.body, {childList: true, subtree: true});
+    }
+
     function iniciar() {
         var shell = document.getElementById('c2f-admin-shell');
-        if (!shell) return;
+        if (!shell) { iniciarSemCasca(); return; }
 
         if (!desenharIcones()) window.addEventListener('load', desenharIcones);
         var redrawPending = false;

@@ -319,6 +319,152 @@ if (!function_exists('arquivo_mime_por_extensao')) {
 	}
 }
 
+if (!function_exists('arquivo_assinatura_confere')) {
+	/**
+	 * Confere se o conteúdo de um arquivo bate com a extensão que ele declara (bytes mágicos).
+	 *
+	 * Bloquear extensão perigosa não impede um executável renomeado para `.png`. Para os formatos com
+	 * assinatura conhecida, o começo do arquivo tem de ser o do formato. Extensão sem assinatura
+	 * cadastrada passa: aqui só se recusa o que comprovadamente não é o que diz ser.
+	 *
+	 * @param string $caminho Caminho absoluto do arquivo já gravado (ou temporário).
+	 * @param string $nome Nome do arquivo, de onde sai a extensão declarada.
+	 * @return bool False quando o conteúdo contradiz a extensão.
+	 */
+	function arquivo_assinatura_confere($caminho, $nome) {
+		$ext = strtolower(pathinfo((string)$nome, PATHINFO_EXTENSION));
+
+		$prefixos = array(
+			'jpg' => array("\xFF\xD8\xFF"), 'jpeg' => array("\xFF\xD8\xFF"),
+			'png' => array("\x89PNG\r\n\x1A\n"),
+			'gif' => array('GIF87a', 'GIF89a'),
+			'bmp' => array('BM'),
+			'ico' => array("\x00\x00\x01\x00"),
+			'pdf' => array('%PDF-'),
+			'zip' => array("PK\x03\x04", "PK\x05\x06"),
+			'docx' => array("PK\x03\x04"), 'xlsx' => array("PK\x03\x04"), 'pptx' => array("PK\x03\x04"),
+			'odt' => array("PK\x03\x04"), 'ods' => array("PK\x03\x04"),
+			'glb' => array('glTF'),
+			'ogg' => array('OggS'), 'oga' => array('OggS'), 'ogv' => array('OggS'), 'opus' => array('OggS'),
+			'flac' => array('fLaC'),
+			'webm' => array("\x1A\x45\xDF\xA3"), 'mkv' => array("\x1A\x45\xDF\xA3"),
+		);
+		$riff = array('webp' => 'WEBP', 'wav' => 'WAVE', 'avi' => 'AVI ');
+		$texto = array('svg', 'gltf');
+
+		if (!isset($prefixos[$ext]) && !isset($riff[$ext]) && !in_array($ext, $texto, true)) {
+			return true;
+		}
+
+		$handle = @fopen((string)$caminho, 'rb');
+		if (!$handle) return false;
+		$cabecalho = (string)fread($handle, in_array($ext, $texto, true) ? 4096 : 16);
+		fclose($handle);
+
+		if (isset($riff[$ext])) {
+			return strlen($cabecalho) >= 12 && substr($cabecalho, 0, 4) === 'RIFF' && substr($cabecalho, 8, 4) === $riff[$ext];
+		}
+
+		if ($ext === 'svg') {
+			return stripos($cabecalho, '<svg') !== false;
+		}
+
+		if ($ext === 'gltf') {
+			$json = json_decode((string)@file_get_contents((string)$caminho), true);
+			return is_array($json) && isset($json['asset']);
+		}
+
+		foreach ($prefixos[$ext] as $prefixo) {
+			if (strncmp($cabecalho, $prefixo, strlen($prefixo)) === 0) return true;
+		}
+		return false;
+	}
+}
+
+if (!function_exists('arquivo_svg_sanitizar')) {
+	/**
+	 * Remove de um SVG o que executa código quando o arquivo é aberto no navegador.
+	 *
+	 * SVG é XML que aceita `<script>`, manipuladores `on*`, `javascript:` e HTML arbitrário em
+	 * `<foreignObject>`. Servido do mesmo domínio do painel, vira XSS armazenado.
+	 *
+	 * @param string $conteudo Conteúdo do SVG.
+	 * @return string Conteúdo sem os vetores conhecidos.
+	 */
+	function arquivo_svg_sanitizar($conteudo) {
+		$conteudo = (string)$conteudo;
+
+		$conteudo = preg_replace('/<script\b[^>]*>.*?<\/script\s*>/is', '', $conteudo);
+		$conteudo = preg_replace('/<script\b[^>]*\/?>/is', '', $conteudo);
+		$conteudo = preg_replace('/<foreignObject\b[^>]*>.*?<\/foreignObject\s*>/is', '', $conteudo);
+		$conteudo = preg_replace('/<(embed|object|iframe)\b[^>]*>.*?<\/\1\s*>/is', '', $conteudo);
+		$conteudo = preg_replace('/<(embed|object|iframe)\b[^>]*\/?>/is', '', $conteudo);
+
+		// Manipuladores de evento, com e sem aspas.
+		$conteudo = preg_replace('/\s+on[a-z]+\s*=\s*"[^"]*"/i', '', $conteudo);
+		$conteudo = preg_replace("/\s+on[a-z]+\s*=\s*'[^']*'/i", '', $conteudo);
+		$conteudo = preg_replace('/\s+on[a-z]+\s*=\s*[^\s>]+/i', '', $conteudo);
+
+		// Endereços que executam script e referências externas em href/xlink:href.
+		$conteudo = preg_replace('/((?:xlink:)?href)\s*=\s*(["\'])\s*(?:javascript|data|vbscript):[^"\']*\2/i', '$1="#"', $conteudo);
+		$conteudo = preg_replace('/(xlink:href)\s*=\s*(["\'])(?!#)[^"\']*\2/i', '$1="#"', $conteudo);
+
+		return (string)$conteudo;
+	}
+}
+
+if (!function_exists('arquivo_caminho_confinar')) {
+	/**
+	 * Mantém um caminho relativo dentro de uma pasta de escopo.
+	 *
+	 * Usado quando o usuário só pode ver uma subárvore dos conteúdos. Caminho inválido, vazio ou
+	 * fora do escopo devolve a própria raiz do escopo; nunca um caminho acima dela.
+	 *
+	 * @param string $rel Caminho relativo pedido.
+	 * @param string $escopo Pasta de escopo, relativa aos conteúdos ('' = sem restrição).
+	 * @return string Caminho relativo seguro, dentro do escopo.
+	 */
+	function arquivo_caminho_confinar($rel, $escopo) {
+		$escopo = arquivo_caminho_relativo_seguro($escopo);
+		if ($escopo === false) $escopo = '';
+		$rel = arquivo_caminho_relativo_seguro($rel);
+		if ($rel === false) $rel = '';
+
+		if ($escopo === '') return $rel;
+		if ($rel === $escopo || strncmp($rel, $escopo . '/', strlen($escopo) + 1) === 0) return $rel;
+		return $escopo;
+	}
+}
+
+if (!function_exists('arquivo_dir_tamanho')) {
+	/**
+	 * Soma o tamanho dos arquivos de uma pasta, recursivamente, sem as miniaturas (`mini/`).
+	 *
+	 * @param string $abs Caminho absoluto da pasta.
+	 * @return int Total em bytes (0 se a pasta não existe).
+	 */
+	function arquivo_dir_tamanho($abs) {
+		$abs = (string)$abs;
+		if (!is_dir($abs)) return 0;
+
+		$total = 0;
+		$itens = @scandir($abs);
+		if ($itens === false) return 0;
+		foreach ($itens as $nome) {
+			if ($nome === '.' || $nome === '..' || $nome === 'mini') continue;
+			$item = $abs . DIRECTORY_SEPARATOR . $nome;
+			if (is_link($item)) continue;
+			if (is_dir($item)) {
+				$total += arquivo_dir_tamanho($item);
+			} else {
+				$tamanho = @filesize($item);
+				if ($tamanho !== false) $total += (int)$tamanho;
+			}
+		}
+		return $total;
+	}
+}
+
 // ===== Funções principais
 
 

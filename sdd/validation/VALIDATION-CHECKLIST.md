@@ -4,10 +4,11 @@
 
 - [x] Pilares 1 a 6: ícones, abas, cartões, selects e alertas, tabelas e 390 px.
 - [x] Adendo 1: `admin-atualizacoes` redesenhado, com as opções da req-201 na tela.
-- [x] Core PHP 1.605 e JS 541; Site PHP 13 e JS 13, sem falhas.
-- [x] Pipeline do Lab com saída 0 (três rodadas) e 257 telas varridas em 1366 e 390 px.
+- [x] Core PHP 1.613 e JS 541; Site PHP 13 e JS 13, sem falhas.
+- [x] Pipeline do Lab com saída 0 (oito rodadas) e 257 telas varridas em 1366 e 390 px.
 - [x] Guardas novas: `IconesLucideReq240Test` (core) e `HarmonizacaoReq106Test` (site), com prova negativa.
-- [ ] Adendo 2: `admin-arquivos` como único módulo de arquivos.
+- [x] Adendo 2: `admin-arquivos` como único módulo de arquivos; isolamento do usuário restrito provado no Lab; modo iframe corrigido.
+- [ ] API de arquivos no `admin-arquivos`.
 - [ ] Homologação humana.
 
 Detalhes: [BATCH-249](../implementation/BATCH-249.md) e [resultado da varredura](req240-browser-results.json).

@@ -36,7 +36,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.19",
+                    "version": "1.22",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -60,10 +60,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "d3115b5e369510be762ee0f715c2b64c",
-                        "css": "72beb37b687aac50b99c0db2a2bef95c",
+                        "html": "6ce3226175d624c6f1448c194736db2f",
+                        "css": "caf808cffce16bf71876da27e1fb33a0",
                         "css_precompiled": "",
-                        "combined": "beca89f8837ab2d94d759963781de829"
+                        "combined": "4726e41ee78de071341d0be5024a4ef0"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -545,6 +545,61 @@
                     "id": "open-new-tab",
                     "value": "Abrir",
                     "type": "string"
+                },
+                {
+                    "id": "move-cut",
+                    "value": "Recortar",
+                    "type": "string"
+                },
+                {
+                    "id": "move-paste",
+                    "value": "Colar aqui",
+                    "type": "string"
+                },
+                {
+                    "id": "move-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "move-pending",
+                    "value": "item(ns) recortado(s). Abra a pasta de destino e cole.",
+                    "type": "string"
+                },
+                {
+                    "id": "move-done",
+                    "value": "item(ns) movido(s).",
+                    "type": "string"
+                },
+                {
+                    "id": "move-exists",
+                    "value": "item(ns) não movido(s): já existe um com o mesmo nome no destino.",
+                    "type": "string"
+                },
+                {
+                    "id": "move-error",
+                    "value": "item(ns) não pôde(puderam) ser movido(s).",
+                    "type": "string"
+                },
+                {
+                    "id": "usage-label",
+                    "value": "Espaço usado",
+                    "type": "string"
+                },
+                {
+                    "id": "usage-of",
+                    "value": "de",
+                    "type": "string"
+                },
+                {
+                    "id": "upload-error-content",
+                    "value": "O conteúdo do arquivo não corresponde ao tipo indicado pela extensão.",
+                    "type": "string"
+                },
+                {
+                    "id": "upload-error-quota",
+                    "value": "Limite de armazenamento atingido. Remova arquivos ou amplie o plano.",
+                    "type": "string"
                 }
             ]
         },
@@ -559,7 +614,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.19",
+                    "version": "1.22",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -583,10 +638,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "1dec04b290ba8f2f22356a345c9d0582",
-                        "css": "72beb37b687aac50b99c0db2a2bef95c",
+                        "html": "6ce3226175d624c6f1448c194736db2f",
+                        "css": "caf808cffce16bf71876da27e1fb33a0",
                         "css_precompiled": "",
-                        "combined": "a59011c297ee7d9cd990a2172121e374"
+                        "combined": "4726e41ee78de071341d0be5024a4ef0"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -1068,9 +1123,64 @@
                     "id": "open-new-tab",
                     "value": "Open",
                     "type": "string"
+                },
+                {
+                    "id": "move-cut",
+                    "value": "Cut",
+                    "type": "string"
+                },
+                {
+                    "id": "move-paste",
+                    "value": "Paste here",
+                    "type": "string"
+                },
+                {
+                    "id": "move-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "move-pending",
+                    "value": "item(s) cut. Open the destination folder and paste.",
+                    "type": "string"
+                },
+                {
+                    "id": "move-done",
+                    "value": "item(s) moved.",
+                    "type": "string"
+                },
+                {
+                    "id": "move-exists",
+                    "value": "item(s) not moved: one with the same name already exists in the destination.",
+                    "type": "string"
+                },
+                {
+                    "id": "move-error",
+                    "value": "item(s) could not be moved.",
+                    "type": "string"
+                },
+                {
+                    "id": "usage-label",
+                    "value": "Space used",
+                    "type": "string"
+                },
+                {
+                    "id": "usage-of",
+                    "value": "of",
+                    "type": "string"
+                },
+                {
+                    "id": "upload-error-content",
+                    "value": "The file content does not match the type indicated by its extension.",
+                    "type": "string"
+                },
+                {
+                    "id": "upload-error-quota",
+                    "value": "Storage limit reached. Remove files or upgrade the plan.",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "e684bae48531b625"
+    "asset_version": "5b87bd73c2b8e806"
 }

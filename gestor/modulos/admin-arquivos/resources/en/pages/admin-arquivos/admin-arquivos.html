@@ -9,13 +9,12 @@
         <div class="flex items-center justify-end lg:col-span-2">
             <div class="flex gap-1 c2f-views">
                 <button class="c2f-view-btn rounded border px-2 py-1" data-view="large"
-                    data-content="@[[view-large]]@"><i data-lucide="layout-grid" class="size-4" aria-hidden="true"></i></button>
+                    data-content="@[[view-large]]@" data-c2f-dica="@[[view-large]]@" aria-label="@[[view-large]]@"><i data-lucide="layout-grid" class="size-4" aria-hidden="true"></i></button>
                 <button class="c2f-view-btn rounded border px-2 py-1" data-view="medium"
-                    data-content="@[[view-medium]]@"><i data-lucide="grid-2x2" class="size-4" aria-hidden="true"></i></button>
+                    data-content="@[[view-medium]]@" data-c2f-dica="@[[view-medium]]@" aria-label="@[[view-medium]]@"><i data-lucide="grid-2x2" class="size-4" aria-hidden="true"></i></button>
                 <button class="c2f-view-btn rounded border px-2 py-1" data-view="small"
-                    data-content="@[[view-small]]@"><i data-lucide="grid-3x3" class="size-4" aria-hidden="true"></i></button>
-                <button class="c2f-view-btn rounded border px-2 py-1" data-view="list" data-content="@[[view-list]]@"><i
-                        class="list icon"></i></button>
+                    data-content="@[[view-small]]@" data-c2f-dica="@[[view-small]]@" aria-label="@[[view-small]]@"><i data-lucide="grid-3x3" class="size-4" aria-hidden="true"></i></button>
+                <button class="c2f-view-btn rounded border px-2 py-1" data-view="list" data-content="@[[view-list]]@" data-c2f-dica="@[[view-list]]@" aria-label="@[[view-list]]@"><i data-lucide="list" class="size-4" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>
@@ -23,8 +22,8 @@
     <div class="relative c2f-search-box">
         <input class="w-full rounded border border-slate-300 bg-white py-2 pl-9 pr-9" type="text" id="c2f-search"
             placeholder="@[[search-files-placeholder]]@" autocomplete="off">
-        <i class="search icon c2f-search-icon"></i>
-        <i class="times circle link icon c2f-search-clear hidden"></i>
+        <i data-lucide="search" class="size-4 icon c2f-search-icon" aria-hidden="true"></i>
+        <i data-lucide="circle-x" class="size-4 link icon c2f-search-clear hidden"></i>
     </div>
 
     <!-- normal-tools < -->
@@ -33,8 +32,7 @@
             href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/adicionar/#paginaIframe#" data-id="adicionar">
             <i data-lucide="upload" class="size-4" aria-hidden="true"></i> @[[add-button-label]]@
         </a>
-        <button class="inline-flex items-center gap-2 rounded border border-slate-300 bg-white px-3 py-2" id="c2f-new-folder"><i
-                class="folder plus icon"></i> @[[folder-new]]@</button>
+        <button class="inline-flex items-center gap-2 rounded border border-slate-300 bg-white px-3 py-2" id="c2f-new-folder"><i data-lucide="folder-plus" class="size-4" aria-hidden="true"></i> @[[folder-new]]@</button>
         <label class="ml-auto inline-flex items-center gap-2 c2f-select-all-box">
             <input type="checkbox" id="c2f-select-all">@[[select-all]]@
         </label>
@@ -45,11 +43,31 @@
         id="c2f-selection-bar">
         <span><b id="c2f-selection-count">0</b> @[[selected-count-label]]@</span>
         <div class="c2f-selection-actions">
-            <button class="hidden rounded bg-sky-700 px-3 py-1 text-white" id="c2f-pick-selected"><i
-                    class="check icon"></i>
+            <button class="hidden rounded bg-sky-700 px-3 py-1 text-white" id="c2f-pick-selected"><i data-lucide="check" class="size-4" aria-hidden="true"></i>
                 @[[pick-selected]]@</button>
+            <button class="rounded border border-slate-300 bg-white px-3 py-1 text-slate-800" id="c2f-cut-selected"><i data-lucide="scissors" class="size-4" aria-hidden="true"></i>
+                @[[move-cut]]@</button>
             <button class="rounded bg-rose-700 px-3 py-1 text-white" id="c2f-delete-selected"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i>
                 @[[delete-selected]]@</button>
+        </div>
+    </div>
+
+    <div class="hidden flex-wrap items-center justify-between gap-2 rounded border border-sky-300 bg-sky-50 p-3" id="c2f-move-bar" role="status">
+        <span><i data-lucide="scissors" class="size-4" aria-hidden="true"></i> <b id="c2f-move-count">0</b> @[[move-pending]]@</span>
+        <div class="flex flex-wrap items-center gap-2">
+            <button class="rounded bg-sky-700 px-3 py-1 text-white" id="c2f-move-paste"><i data-lucide="clipboard-paste" class="size-4" aria-hidden="true"></i>
+                @[[move-paste]]@</button>
+            <button class="rounded border border-slate-300 bg-white px-3 py-1 text-slate-800" id="c2f-move-cancel">@[[move-cancel]]@</button>
+        </div>
+    </div>
+
+    <div class="hidden rounded border border-slate-200 bg-white p-3" id="c2f-usage">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-700">
+            <span class="font-medium">@[[usage-label]]@</span>
+            <span id="c2f-usage-text"></span>
+        </div>
+        <div class="mt-2 h-2 overflow-hidden rounded bg-slate-200" id="c2f-usage-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="@[[usage-label]]@">
+            <div class="h-full bg-sky-600" id="c2f-usage-fill" style="width:0%"></div>
         </div>
     </div>
 

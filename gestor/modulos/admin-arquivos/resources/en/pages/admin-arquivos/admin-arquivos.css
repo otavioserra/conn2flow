@@ -468,3 +468,82 @@
         margin: 0 2px !important;
     }
 }
+
+/* ===== req-240: barra de ferramentas, busca e botões na folha do painel ===== */
+
+.c2f-files-app {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.c2f-search-box {
+    position: relative;
+    margin: 0;
+}
+
+.c2f-search-box .c2f-search-icon,
+.c2f-search-box .c2f-search-clear {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.c2f-search-box .c2f-search-icon {
+    left: 12px;
+    pointer-events: none;
+}
+
+.c2f-search-box .c2f-search-clear {
+    right: 12px;
+}
+
+.c2f-search-box .c2f-search-clear.hidden {
+    display: none !important;
+}
+
+.c2f-view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-color: #cbd5e1;
+    background: #fff;
+    color: #475569;
+}
+
+.c2f-view-btn.active {
+    border-color: #0284c7;
+    background: #f0f9ff;
+    color: #0369a1;
+}
+
+.c2f-folder-tools > a,
+.c2f-folder-tools > button,
+.c2f-selection-actions button,
+#c2f-move-bar button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* req-240: item selecionado fica evidente (seleção múltipla, inclusive no seletor em iframe). */
+.c2f-item.c2f-selecionado {
+    border-color: #0284c7;
+    background: #f0f9ff;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, .45);
+}
+
+.c2f-item.c2f-selecionado .c2f-check {
+    background: #0284c7;
+}
+
+/* req-240: nos modos compactos as ações de hover ficam numa faixa na base da miniatura, como opções
+   secundárias; o meio da imagem fica livre para o clique principal. A caixa do overlay não muda de
+   tamanho (a grade continua sem tremer): só o alinhamento e o fundo. */
+.view-medium .c2f-actions,
+.view-small .c2f-actions {
+    align-items: flex-end;
+    padding-bottom: 5px;
+    background: linear-gradient(to top, rgba(15, 23, 42, .62), rgba(15, 23, 42, 0) 46%);
+}

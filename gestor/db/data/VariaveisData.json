@@ -3807,6 +3807,105 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "move-cut",
+        "valor": "Recortar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "move-paste",
+        "valor": "Colar aqui",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "move-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "move-pending",
+        "valor": "item(ns) recortado(s). Abra a pasta de destino e cole.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "move-done",
+        "valor": "item(ns) movido(s).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "move-exists",
+        "valor": "item(ns) não movido(s): já existe um com o mesmo nome no destino.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "move-error",
+        "valor": "item(ns) não pôde(puderam) ser movido(s).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "usage-label",
+        "valor": "Espaço usado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "usage-of",
+        "valor": "de",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "upload-error-content",
+        "valor": "O conteúdo do arquivo não corresponde ao tipo indicado pela extensão.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "upload-error-quota",
+        "valor": "Limite de armazenamento atingido. Remova arquivos ou amplie o plano.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-arquivos",
         "id": "add-button-label",
@@ -4549,6 +4648,105 @@
         "modulo": "admin-arquivos",
         "id": "open-new-tab",
         "valor": "Open",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "move-cut",
+        "valor": "Cut",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "move-paste",
+        "valor": "Paste here",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "move-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "move-pending",
+        "valor": "item(s) cut. Open the destination folder and paste.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "move-done",
+        "valor": "item(s) moved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "move-exists",
+        "valor": "item(s) not moved: one with the same name already exists in the destination.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "move-error",
+        "valor": "item(s) could not be moved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "usage-label",
+        "valor": "Space used",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "usage-of",
+        "valor": "of",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "upload-error-content",
+        "valor": "The file content does not match the type indicated by its extension.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "upload-error-quota",
+        "valor": "Storage limit reached. Remove files or upgrade the plan.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
