@@ -1,0 +1,22 @@
+{
+  "request": "req-237",
+  "date": "2026-10-05",
+  "branch": "feat/req-237-exec",
+  "core": {
+    "repository": "conn2flow",
+    "root": "C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow",
+    "implementation_commit": "3f77e621391606396b9f7a94a9b026f540ea5c70",
+    "preserved_base": "8e7cb1c9",
+    "explicit_files": 141
+  },
+  "site": {
+    "repository": "conn2flow-site",
+    "root": "C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow-site",
+    "implementation_commit": "ff695bcc0a6b45481c94067f0744fed53d5d8a51",
+    "preserved_base": "2deacc38",
+    "explicit_files": 298,
+    "preserved_stash": "6a6519a63e69fb17d9b58c05b35d57abe164591f"
+  },
+  "lab_pipeline_exit": 0,
+  "human_review": "pending"
+}
