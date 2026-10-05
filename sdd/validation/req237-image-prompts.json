@@ -1,0 +1,140 @@
+{
+  "generator": "built-in image_gen",
+  "references": [
+    "admin-arquivos.webp",
+    "admin-cron.webp",
+    "admin-componentes.webp"
+  ],
+  "jobs": [
+    {
+      "repository": "conn2flow",
+      "id": "admin-atualizacoes",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A frosted-glass cloud above two smooth ceramic curved synchronization arrows and a small update tray."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "admin-categorias",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: An organized taxonomy tree of rounded glass category tiles connected with cyan lines and a pair of ceramic tags."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "admin-environment",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A rounded ceramic server rack with frosted-glass environment sliders and two precision gears."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "admin-layouts",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Three frosted-glass wireframe page panels with geometric content blocks showing distinct page layouts."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "admin-modos-ia",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A luminous neural network of cyan and violet glass spheres connected around a central ceramic model core."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "admin-plugins",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Rounded ceramic interlocking extension puzzle pieces and glowing cyan plug connectors."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "contatos",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: An open ceramic inbox holding one frosted-glass envelope and two small rounded message cards."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "cookie-consent",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A large frosted-glass privacy shield behind a ceramic cookie disk with abstract glowing consent toggles."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "forms-search",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A cyan frosted-glass magnifying lens above tidy ceramic form record cards with abstract line entries."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "modulos",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: An organized catalog of rounded ceramic application cubes with abstract geometric symbols and glass tiles."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "modulos-grupos",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Three rounded frosted-glass folders grouping small ceramic module cubes with luminous cyan connections."
+    },
+    {
+      "repository": "conn2flow",
+      "id": "variables",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A frosted-glass dictionary drawer of ceramic key/value blocks and abstract paired brace symbols, no letters."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "3d-catalog-groups",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Three frosted-glass collection trays organizing ceramic spheres, cubes and triangular 3D models."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "analytics-manager",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A frosted-glass analytics panel with cyan ceramic growth bars, violet pie segments and a glowing upward trend."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "arquivos",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A ceramic storage drive behind two translucent media folders containing geometric image and video tiles."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "host-user-manager",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Three abstract ceramic profile bust symbols with a translucent hosting server and a luminous access key."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "my-orders",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A rounded ceramic shopping bag with a translucent receipt and ordered package cubes."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "product-types",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: An ordered matrix of rounded ceramic product variant cubes differing by shape and cyan/violet accents."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "sales-reports",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A frosted-glass financial report sheet with ceramic rising bars, a pie chart and smooth coin disks."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "store",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A rounded ceramic digital storefront with a cyan/violet awning and translucent product display shelves."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "stripe-products",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Two unbranded frosted-glass payment cards alongside ceramic product blocks and recurring-plan rings."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "subscriptions-config",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Rounded ceramic gears framing a translucent recurring billing calendar and glass configuration sliders."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "subscriptions-service-stages",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A stepped sequence of ceramic service platforms connected by luminous cyan paths and a glass completion marker."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "subscriptions-service-types",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Three distinct frosted-glass subscription plan cards with layered ceramic service symbols."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "subscriptions-status",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: Three frosted-glass status badges with ceramic checkmark, pause and cross symbols, restrained cyan/violet accents."
+    },
+    {
+      "repository": "conn2flow-site",
+      "id": "user-subscription",
+      "prompt": "Use case: stylized-concept. Conn2Flow square module cover 1024x1024. Match the existing admin-arquivos/admin-cron/admin-componentes series precisely: seamless deep midnight navy-blue background (#061c4c), a rounded-square polished dark blue isometric platform with pearly beveled edges and cyan/violet luminous trim, pearl frosted glass and soft rounded white ceramic objects, restrained luminous cyan and electric violet reflections, orthographic 3D isometric camera about 30 degrees, upper-left soft studio key light, soft contact shadows. Main subject centered on the platform within middle 70 percent, generous 15 percent margins, entire base and objects visible, polished product render readable as a small thumbnail. No text, letters, numbers, brands, logos, watermarks, people, faces, or outer borders. Subject: A frosted-glass premium membership card with a luminous crown symbol and a ceramic recurring subscription ring."
+    }
+  ]
+}

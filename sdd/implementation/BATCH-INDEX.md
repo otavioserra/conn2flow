@@ -88,3 +88,5 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 REQ-236: [BATCH-245](BATCH-245.md), in-review — integração sequencial REQ-222/223/224, Dashboard V3.1 e homologação conjunta com o Site REQ-101.
 
 Não abra um novo batch funcional sem atualizar este índice. Se o escopo mudar de forma normativa, registre primeiro a mudança em `sdd/change-requests/`.
+
+REQ-237: [BATCH-246](BATCH-246.md), in-review — consolidação das bases Core/Site, 33 novas capas isométricas, Dashboard V3.2 e conclusão Site REQ-100. Execução isolada nas worktrees `conn2flow-req237-exec` / `conn2flow-site-req237-exec`.

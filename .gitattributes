@@ -1,0 +1,4 @@
+# Partition manifests hash the exact bytes; checkout must preserve them.
+gestor/db/data/*.part-*.json -text
+*.sh text eol=lf
+c2f text eol=lf

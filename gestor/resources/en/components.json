@@ -2,308 +2,334 @@
     {
         "name": "Settings Form Interface",
         "id": "interface-formulario-configuracoes",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "3199b5729d98894749ed80159b589829",
-            "css": "87e1823d50f899396806b9b566ac6185",
-            "combined": "87deaded13c8c1d42ea9099220fdbb2d"
+            "html": "97aba77b64d307a77caf58f658d9da2a",
+            "css": "31f47e457d8193518413a8882a355b73",
+            "css_precompiled": "",
+            "combined": "5a1282d8c4dade58eaed0bddd658d974"
         }
     },
     {
         "name": "Widget Template",
         "id": "widget-template",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "f172c23c8b4e32e0b58b02e36f477ec1",
-            "css": "ba0557b0e23e65afcce0a8da039e4a9b",
-            "combined": "3c8a1ea1e7bc4b23aa2b2427d5ab3151"
+            "html": "5a978c00a56dced35536328e67e9c65f",
+            "css": "3891a26f5c9e3640f42e4b2b7752462b",
+            "css_precompiled": "",
+            "combined": "75109f337e29a5490f1a3237e5ae6136"
         }
     },
     {
         "name": "Uncommon Edit Form Interface",
         "id": "interface-formulario-edicao-incomum",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "e6b7dde3afb34325a5444ecc2a5d85c9",
-            "css": "a1c884e20814045be6503eec311e42e4",
-            "combined": "4a89b31995370463199f8202692331eb"
+            "html": "23a3663ad779c7fdaaf050052afdf4c2",
+            "css": "09cb7a475aa6dd7d1ab15cd13cf60b2e",
+            "css_precompiled": "",
+            "combined": "b40a230b2f45a86df04d4ec9c442f88d"
         }
     },
     {
         "name": "Uncommon Inclusion Form Interface",
         "id": "interface-formulario-inclusao-incomum",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "bea79dcb0fb62a2cabff2d757b8747f9",
-            "css": "1141c974d1568502c3a4f3847cdb8951",
-            "combined": "095bc1b128ef8f72c4de0d38d902e396"
+            "html": "868b6fef9951e71e79949c65e6da7c6a",
+            "css": "450114044370c3e0721c33a0a844e980",
+            "css_precompiled": "",
+            "combined": "3a2f8ca6cd07f02ef50d398f212b4a3e"
         }
     },
     {
         "name": "Simple Modal",
         "id": "modal-simples",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "2a5e8f5920ab09841f6deaa40c4da5b3",
+            "html": "1b7c348d5daf974191dae9642623e47e",
             "css": "",
-            "combined": "2a5e8f5920ab09841f6deaa40c4da5b3"
+            "css_precompiled": "",
+            "combined": "1b7c348d5daf974191dae9642623e47e"
         }
     },
     {
         "name": "Visualization Form Interface",
         "id": "interface-formulario-visualizacao",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "a65e4072aa789b09dc73d08c560fb164",
-            "css": "e1507d655c9c10e868884f3333705a88",
-            "combined": "c62bca625999d62ad3ed93337d5c836d"
+            "html": "4f283610af4f5b0cd27c54cc98f98a0e",
+            "css": "266f3c531ac71faf91898995225c9e28",
+            "css_precompiled": "",
+            "combined": "7c2bf4e337ac9c01166e26630fe7f18b"
         }
     },
     {
         "name": "Generic Modal Interface",
         "id": "interface-modal-generico",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "27a2d26f94e8a8d26703af830c9d59de",
+            "html": "25f54805a5b3d1366d6057143764865b",
             "css": "",
-            "combined": "27a2d26f94e8a8d26703af830c9d59de"
+            "css_precompiled": "",
+            "combined": "25f54805a5b3d1366d6057143764865b"
         }
     },
     {
         "name": "Top Button Interface",
         "id": "botao-superior-interface",
-        "version": "1.7",
+        "version": "1.8",
         "checksum": {
-            "html": "17898f8cf079921914072cfa54971eb7",
+            "html": "53c4b611141dd7f591d54c7b3008b9e0",
             "css": "",
-            "combined": "17898f8cf079921914072cfa54971eb7"
+            "css_precompiled": "",
+            "combined": "53c4b611141dd7f591d54c7b3008b9e0"
         }
     },
     {
         "name": "Alert Modal Interface",
         "id": "interface-alerta-modal",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "d89b05f7e9b207dd68d220ac34139054",
+            "html": "89732bcc975705e2ff50c499244fdfd7",
             "css": "",
-            "combined": "d89b05f7e9b207dd68d220ac34139054"
+            "css_precompiled": "",
+            "combined": "89732bcc975705e2ff50c499244fdfd7"
         }
     },
     {
         "name": "Loading Modal Interface",
         "id": "interface-carregando-modal",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "1d16c13c587473483b214ec3e89ebd37",
+            "html": "f7d75901619c35b3568665d6003c1a29",
             "css": "",
-            "combined": "1d16c13c587473483b214ec3e89ebd37"
+            "css_precompiled": "",
+            "combined": "f7d75901619c35b3568665d6003c1a29"
         }
     },
     {
         "name": "Deletion Modal Interface",
         "id": "interface-delecao-modal",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "287f5889ff37648f8c8199fa33171957",
+            "html": "a3b284f547a337d172f49cfaeb87ebd1",
             "css": "",
-            "combined": "287f5889ff37648f8c8199fa33171957"
+            "css_precompiled": "",
+            "combined": "a3b284f547a337d172f49cfaeb87ebd1"
         }
     },
     {
         "name": "Inclusion Form Interface",
         "id": "interface-formulario-inclusao",
-        "version": "1.7",
+        "version": "1.8",
         "checksum": {
-            "html": "8631955e04fb5eeea7213c2eecba1d23",
-            "css": "1141c974d1568502c3a4f3847cdb8951",
-            "combined": "46d94b7b0079634b3c161acdde17aebe"
+            "html": "41f3cbdb398d6ccc650d77a7711e310e",
+            "css": "450114044370c3e0721c33a0a844e980",
+            "css_precompiled": "",
+            "combined": "78368f2fa013d96a8e452b5e7fcf9deb"
         }
     },
     {
         "name": "List Without Records Interface",
         "id": "interface-listar-sem-registros",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "e2858f73a3111c956cc7a1e133101c71",
+            "html": "e8462ec01dad97574524ec384390a76e",
             "css": "",
-            "combined": "e2858f73a3111c956cc7a1e133101c71"
+            "css_precompiled": "",
+            "combined": "e8462ec01dad97574524ec384390a76e"
         }
     },
     {
         "name": "List Interface",
         "id": "interface-listar",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "76139d15005ba763f72ad7adf8bf1170",
-            "css": "1bfde9d1340f09d7e268ea6d9bd1842f",
-            "combined": "be7af36110e4ab3059bebb545a4cd32a"
+            "html": "9bc3e5ca46c5256619783e4f6c14bf1a",
+            "css": "42057d47cd0b59f1ec47bfc7dc31ec8e",
+            "css_precompiled": "",
+            "combined": "fb28566390d26530eaa24f4a314bb99b"
         }
     },
     {
         "name": "List Files Without Records Interface",
         "id": "interface-listar-arquivos-sem-registros",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "7d70490316138921e6e6a3b4745ae9e8",
+            "html": "3223d8c19f59ffdf87d0df2be764d5c4",
             "css": "",
-            "combined": "7d70490316138921e6e6a3b4745ae9e8"
+            "css_precompiled": "",
+            "combined": "3223d8c19f59ffdf87d0df2be764d5c4"
         }
     },
     {
         "name": "New Registration Email Layout",
         "id": "layout-email-novo-cadastro",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "2d34df7b576664dfa9d6cc07556857bf",
+            "html": "de038f79db0f7317662ba6af725a7c2f",
             "css": "",
-            "combined": "2d34df7b576664dfa9d6cc07556857bf"
+            "css_precompiled": "",
+            "combined": "de038f79db0f7317662ba6af725a7c2f"
         }
     },
     {
         "name": "Iframe Modal Interface",
         "id": "interface-iframe-modal",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "0eeeae1b953bccc0d26a0f1cc335803a",
-            "css": "0745e249a8e1258353142b9bcb1a2438",
-            "combined": "be737048e45d0347399310fc86221b63"
+            "html": "b6e5cf2b9f19bd874dcddd65c402aec6",
+            "css": "d7607f7c72347ea15d8561a91b8fbdbb",
+            "css_precompiled": "",
+            "combined": "5876c08564bd3aaf370d9730d8bf02af"
         }
     },
     {
         "name": "Iframe Modal Interface Tailwind",
         "id": "interface-iframe-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "ceeccb53c21e4729513ffa032a40978d",
+            "html": "abdc62d6310f7310731b2bc18567e4ea",
             "css": "",
             "css_precompiled": "",
-            "combined": "ceeccb53c21e4729513ffa032a40978d"
+            "combined": "abdc62d6310f7310731b2bc18567e4ea"
         }
     },
     {
         "name": "Image Widget",
         "id": "widget-imagem",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "2a5bcc1bef0cf237c1c6c68dea8c4fc0",
-            "css": "ba0557b0e23e65afcce0a8da039e4a9b",
-            "combined": "a5fb5159f4d72e07013009b953fd8bcc"
+            "html": "6cabbfe7806ac4308ecf4118d2d2b06c",
+            "css": "3891a26f5c9e3640f42e4b2b7752462b",
+            "css_precompiled": "",
+            "combined": "4e183116c6ab0a09e459496a922c8279"
         }
     },
     {
         "name": "Image Widget Tailwind",
         "id": "widget-imagem-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "22429c7136692b2510fa120db2948c30",
+            "html": "0fa29c17186e29809e469b3f6a574bbd",
             "css": "",
             "css_precompiled": "",
-            "combined": "22429c7136692b2510fa120db2948c30"
+            "combined": "0fa29c17186e29809e469b3f6a574bbd"
         }
     },
     {
         "name": "Main System Menu",
         "id": "menu-principal-sistema",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "36a4c96e830aeb10a3e1def0eda27a81",
-            "css": "65f8cb8d07537f63b7a7441edd3be9a7",
-            "combined": "691184bb2932627a29fe9a20ab8b11e3"
+            "html": "126096472d7e7298e534cbad2f0fe288",
+            "css": "362d8c56b2941ec86ee81d0000697196",
+            "css_precompiled": "",
+            "combined": "f08a90600159d7e6df59239bf30d11ee"
         }
     },
     {
         "name": "Edit Form Interface",
         "id": "interface-formulario-edicao",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "d6bcb1b60eff05294d6621332f5ecfc7",
-            "css": "a1c884e20814045be6503eec311e42e4",
-            "combined": "da5b735d609f7f0b93e77c7f355b1942"
+            "html": "7864ef872f6b15ac8c86da06364b9ad1",
+            "css": "09cb7a475aa6dd7d1ab15cd13cf60b2e",
+            "css_precompiled": "",
+            "combined": "43297b84870a85c19be147d9b5f9faac"
         }
     },
     {
         "name": "Temporary Authorization Form Interface",
         "id": "interface-formulario-autorizacao-provisoria",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "59811a7d383533a272e2a9829498b948",
+            "html": "663fe479ec12deac2602976353b83a63",
             "css": "",
-            "combined": "59811a7d383533a272e2a9829498b948"
+            "css_precompiled": "",
+            "combined": "663fe479ec12deac2602976353b83a63"
         }
     },
     {
         "name": "Email Signature Layout",
         "id": "layout-emails-assinatura",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "6fb70793f76c0e284407ba7976d09f0c",
+            "html": "7e0b59df27adde088131a2fc3691d8bf",
             "css": "",
-            "combined": "6fb70793f76c0e284407ba7976d09f0c"
+            "css_precompiled": "",
+            "combined": "7e0b59df27adde088131a2fc3691d8bf"
         }
     },
     {
         "name": "Forgot Password Email Layout",
         "id": "layout-email-esqueceu-senha",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "3b1eec6166f6e1238f8e9fe4ea896670",
-            "css": "2f40d13cf61ff32dcb801f3fec1d211f",
-            "combined": "70fce18474154cbd1414bb0ca9e38e30"
+            "html": "dd0df0aaac8a12b6b8fedd248582f0ea",
+            "css": "e4b0bc753ae73edf1aea03238ac8b8bb",
+            "css_precompiled": "",
+            "combined": "60b7b80b4bc696a2e80845e5f762e93a"
         }
     },
     {
         "name": "Backup Dropdown Interface",
         "id": "interface-backup-dropdown",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "f771df80f24f82a024044243859cb8c6",
+            "html": "8fea7d61c681010d329d5962655d4499",
             "css": "",
-            "combined": "f771df80f24f82a024044243859cb8c6"
+            "css_precompiled": "",
+            "combined": "8fea7d61c681010d329d5962655d4499"
         }
     },
     {
         "name": "Interface Backup Dropdown Tailwind",
         "id": "interface-backup-dropdown-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "8d805dadbf3a3dc260a3ad3acc4c0c67",
+            "html": "70a007a4ede87512080bf9311e57028a",
             "css": "",
             "css_precompiled": "",
-            "combined": "8d805dadbf3a3dc260a3ad3acc4c0c67"
+            "combined": "70a007a4ede87512080bf9311e57028a"
         }
     },
     {
         "name": "Password Reset Email Layout",
         "id": "layout-email-senha-redefinida",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "7388f7d12d41517c3e1ebf26e86e6104",
+            "html": "df4732cddb632d0b56dba9b0dadb4923",
             "css": "",
-            "combined": "7388f7d12d41517c3e1ebf26e86e6104"
+            "css_precompiled": "",
+            "combined": "df4732cddb632d0b56dba9b0dadb4923"
         }
     },
     {
         "name": "Configuration - Fields",
         "id": "configuracao-campos",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "99affcafe43354d5089cd8a74745444b",
-            "css": "4183f8ca0236bdb2a6b7d5fd983eba86",
+            "html": "a82599cc07007fbf09c7ff477f2afa9c",
+            "css": "b2c6c1e2d606c3274a0ed1d94433277a",
             "css_precompiled": "",
-            "combined": "d94c6cd7c467538800971228f2d4e548"
+            "combined": "dd4f351fd475e87f226f483e62f25463"
         }
     },
     {
         "name": "Configuration - Widget",
         "id": "configuracao-widget",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "2cde8ebb8df19f322c63502b52b680c0",
-            "css": "e76c325ef114d06f7eaa79aaa025fe38",
-            "combined": "28f8b14ad793bbf24fc3a8bd83d71987"
+            "html": "681ab5be7c639535500ed4bb1d3fb539",
+            "css": "138c05d3f444f1c9087fc6f66be3f466",
+            "css_precompiled": "",
+            "combined": "fd914544c9ba260ec111b88aa9fef09e"
         }
     },
     {
@@ -333,187 +359,195 @@
     {
         "name": "Simple Interface",
         "id": "interface-simples",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "c72a3014205057d167c44d5446e04c63",
-            "css": "87e1823d50f899396806b9b566ac6185",
-            "combined": "88719ccde04fdaf208484442cb848d2f"
+            "html": "c14ec2a6396d7c9fab00243ff6c02139",
+            "css": "31f47e457d8193518413a8882a355b73",
+            "css_precompiled": "",
+            "combined": "3072742d575aa7528f31fa283bbb13e5"
         }
     },
     {
         "name": "Print Without Data",
         "id": "impressao-sem-dados",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "b15a5de4c0e6c5da3141020822e0482e",
+            "html": "6d890a78feedb5912b36950cd77c528b",
             "css": "",
-            "combined": "b15a5de4c0e6c5da3141020822e0482e"
+            "css_precompiled": "",
+            "combined": "6d890a78feedb5912b36950cd77c528b"
         }
     },
     {
         "name": "AI Prompt",
         "id": "ia-prompt",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "5806b935ecb5ef6950479dda494497f9",
-            "css": "c0e38fffa143bbb5fcd30ca4541d5179",
-            "combined": "928298f2ada71f828696b5b6e9b13e4b"
+            "html": "849cd35786a744625647b644fa44e5a9",
+            "css": "1221e34b060bf1cdcd78f39f9e9738dc",
+            "css_precompiled": "",
+            "combined": "e9e8cb460c2c6a23d34de85c1b8210ba"
         }
     },
     {
         "name": "AI Prompt Tailwind",
         "id": "ia-prompt-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "9481d62deaa28222f3d1c376cb7e7dec",
+            "html": "302559452c230c200a2cec5c1073ba78",
             "css": "",
             "css_precompiled": "",
-            "combined": "9481d62deaa28222f3d1c376cb7e7dec"
+            "combined": "302559452c230c200a2cec5c1073ba78"
         }
     },
     {
         "name": "IA Prompt Modais",
         "id": "ia-prompt-modais",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "98b4ea2fcbc26f430304f435f44396a0",
+            "html": "6fec31d9b3dc8f3f727e823c8bb870de",
             "css": "",
-            "combined": "98b4ea2fcbc26f430304f435f44396a0"
+            "css_precompiled": "",
+            "combined": "6fec31d9b3dc8f3f727e823c8bb870de"
         }
     },
     {
         "name": "AI Prompt Modals Tailwind",
         "id": "ia-prompt-modais-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "bb554641dcf9ba1b03a599ac9205c4a9",
+            "html": "c91a508b07d2b15a4734843423d1fe51",
             "css": "",
             "css_precompiled": "",
-            "combined": "bb554641dcf9ba1b03a599ac9205c4a9"
+            "combined": "c91a508b07d2b15a4734843423d1fe51"
         }
     },
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.15",
+        "version": "1.16",
         "checksum": {
-            "html": "d92b8d4cb453fcc23b6453add584457d",
+            "html": "531b40d6756e29fc5a602ce5303606ac",
             "css": "1fb7d1b67165d5f5578c4130c5dcd1ef",
             "css_precompiled": "",
-            "combined": "874153ae6eb3a2715d5aa9cc9f035367"
+            "combined": "8427423e09adc14196e7529061ead80d"
         }
     },
     {
         "name": "HTML Editor Tailwind",
         "id": "html-editor-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "d34647bffa5fb20a073555aa41f2ab4d",
+            "html": "baa6559c6690b9f34fd7b43104dac0e3",
             "css": "1fb7d1b67165d5f5578c4130c5dcd1ef",
             "css_precompiled": "",
-            "combined": "92ad8d5a4c4f4abfb083b171b56ae6d5"
+            "combined": "9bf70ce14b7cffedc3b993be59b2f78d"
         }
     },
     {
         "name": "HTML Editor Modal",
         "id": "html-editor-modal",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "0cca5b1d463a26d14fffe6f0c4c1b1a0",
+            "html": "8016bbf2c4017a269eebda7a627c4983",
             "css": "",
-            "combined": "0cca5b1d463a26d14fffe6f0c4c1b1a0"
+            "css_precompiled": "",
+            "combined": "8016bbf2c4017a269eebda7a627c4983"
         }
     },
     {
         "name": "HTML Editor Modal Tailwind",
         "id": "html-editor-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "d4a8260570080838ec2b528d9488656a",
+            "html": "e7d7ec9bdc891b713fa9f2cbbd5e7bfc",
             "css": "",
             "css_precompiled": "",
-            "combined": "d4a8260570080838ec2b528d9488656a"
+            "combined": "e7d7ec9bdc891b713fa9f2cbbd5e7bfc"
         }
     },
     {
         "name": "HTML Editor Page Modification",
         "id": "html-editor-page-modification",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "c98d9ed016acefeb0f182527df53aaba",
+            "html": "9b0ce28746cdd17964373df70fac7e14",
             "css": "",
-            "combined": "c98d9ed016acefeb0f182527df53aaba"
+            "css_precompiled": "",
+            "combined": "9b0ce28746cdd17964373df70fac7e14"
         }
     },
     {
         "name": "HTML Editor Page Modification Tailwind",
         "id": "html-editor-page-modification-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "34ed95cfacbcdbbc0bc39b8943c9aa94",
+            "html": "4f1509c36434a945efb3921b7516fbc1",
             "css": "",
             "css_precompiled": "",
-            "combined": "34ed95cfacbcdbbc0bc39b8943c9aa94"
+            "combined": "4f1509c36434a945efb3921b7516fbc1"
         }
     },
     {
         "name": "HTML Editor Visual Modal",
         "id": "html-editor-visual-modal",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "e8abab90e3418cc158524bf60f47394d",
+            "html": "8769a870ccf978dea9eae5723f0e02e3",
             "css": "",
-            "combined": "e8abab90e3418cc158524bf60f47394d"
+            "css_precompiled": "",
+            "combined": "8769a870ccf978dea9eae5723f0e02e3"
         }
     },
     {
         "name": "HTML Editor Visual Modal Tailwind",
         "id": "html-editor-visual-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "5043b4cd2850af6e8d7f1c7d49353de8",
+            "html": "914d7d2e592ef2b40625087ca4b9e250",
             "css": "",
             "css_precompiled": "",
-            "combined": "5043b4cd2850af6e8d7f1c7d49353de8"
+            "combined": "914d7d2e592ef2b40625087ca4b9e250"
         }
     },
     {
         "name": "HTML Editor Templates",
         "id": "html-editor-modelos",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "d6cf4ad76b2c1d359979161a0f0890dc",
-            "css": "dea9254a7fff284b390256e4fbc84984",
+            "html": "ceb528c53bcef23fa8da21ac461ffffe",
+            "css": "5006dea1658dc2acdfc8501d7af4ae45",
             "css_precompiled": "",
-            "combined": "23d1d3c1ea0f1ddcae79ab315b51641c"
+            "combined": "a2ae722148c58644d26edb3585bf19f9"
         }
     },
     {
         "name": "HTML Editor Templates Tailwind",
         "id": "html-editor-modelos-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "b264ac3aa7304641fa0693e355a56c39",
+            "html": "60d946ef8ec50c1be4cfdf32248d5203",
             "css": "",
             "css_precompiled": "",
-            "combined": "b264ac3aa7304641fa0693e355a56c39"
+            "combined": "60d946ef8ec50c1be4cfdf32248d5203"
         }
     },
     {
         "name": "HTML Editor Publisher Simulation",
         "id": "html-editor-publisher-simulation",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "e1c0b0c428ece84817a9a12971ceafd5",
+            "html": "3809168da54aa7072080001225e0a0be",
             "css": "",
-            "combined": "e1c0b0c428ece84817a9a12971ceafd5"
+            "css_precompiled": "",
+            "combined": "3809168da54aa7072080001225e0a0be"
         }
     },
     {
@@ -540,24 +574,24 @@
         "name": "AI No Server Tailwind",
         "id": "ia-sem-servidor-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "39fcdeaaef8315adb14bae9158bf11cd",
+            "html": "9b3fed0cca83159e30793e4f9d374ad4",
             "css": "",
             "css_precompiled": "",
-            "combined": "39fcdeaaef8315adb14bae9158bf11cd"
+            "combined": "9b3fed0cca83159e30793e4f9d374ad4"
         }
     },
     {
         "name": "Form UI",
         "id": "form-ui",
         "framework_css": "tailwindcss",
-        "version": "1.16",
+        "version": "1.17",
         "checksum": {
-            "html": "e22c3639b1143c9c813c6ca70bc6eca8",
+            "html": "ba6f867390fd5bd8997663af7cb10a67",
             "css": "",
             "css_precompiled": "",
-            "combined": "e22c3639b1143c9c813c6ca70bc6eca8"
+            "combined": "ba6f867390fd5bd8997663af7cb10a67"
         }
     },
     {
@@ -585,23 +619,24 @@
     {
         "name": "HTML Editor SEO and Sharing",
         "id": "html-editor-seo",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "02d78f3b83dc41dea01b22d9d1e45ae8",
+            "html": "b3a3603495e42e4db220fb8b5cc53398",
             "css": "",
-            "combined": "02d78f3b83dc41dea01b22d9d1e45ae8"
+            "css_precompiled": "",
+            "combined": "b3a3603495e42e4db220fb8b5cc53398"
         }
     },
     {
         "name": "HTML Editor SEO Tailwind",
         "id": "html-editor-seo-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "081ff7cac85fbcaa64d40ffe1524f07f",
+            "html": "5f1f93cf30f089c64dcedc1d3d9bec77",
             "css": "",
             "css_precompiled": "",
-            "combined": "081ff7cac85fbcaa64d40ffe1524f07f"
+            "combined": "5f1f93cf30f089c64dcedc1d3d9bec77"
         }
     },
     {
@@ -620,84 +655,84 @@
         "name": "Interface Edit Form Tailwind",
         "id": "interface-formulario-edicao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "1fc0bb5da375997b420c91ad733a9f06",
+            "html": "b1d495c9da7785000ce275e3ba377978",
             "css": "",
             "css_precompiled": "",
-            "combined": "1fc0bb5da375997b420c91ad733a9f06"
+            "combined": "b1d495c9da7785000ce275e3ba377978"
         }
     },
     {
         "name": "Interface View Form Tailwind",
         "id": "interface-formulario-visualizacao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "07cb7b5442030b39fd905f83d30aaddb",
+            "html": "417a667d8d95b8c65baa8581052c7c69",
             "css": "",
             "css_precompiled": "",
-            "combined": "07cb7b5442030b39fd905f83d30aaddb"
+            "combined": "417a667d8d95b8c65baa8581052c7c69"
         }
     },
     {
         "name": "Inclusion Form Interface Tailwind",
         "id": "interface-formulario-inclusao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "006f371798f666360fbe55adc561bdfa",
+            "html": "bab1e75daa19605f1a18d6c1fd64e511",
             "css": "",
             "css_precompiled": "",
-            "combined": "006f371798f666360fbe55adc561bdfa"
+            "combined": "bab1e75daa19605f1a18d6c1fd64e511"
         }
     },
     {
         "name": "Interface Loading Modal Tailwind",
         "id": "interface-carregando-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "d53ee6cb3b687f4e267ac3f61bf2f062",
+            "html": "0e8f825d21b1c4b30d8936b3257c35bd",
             "css": "",
             "css_precompiled": "",
-            "combined": "d53ee6cb3b687f4e267ac3f61bf2f062"
+            "combined": "0e8f825d21b1c4b30d8936b3257c35bd"
         }
     },
     {
         "name": "Interface Alert Modal Tailwind",
         "id": "interface-alerta-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "e993a23a5c0a78c944b982c601efe051",
+            "html": "2d0bf5ac7fd4834de27a646fc07f714b",
             "css": "",
             "css_precompiled": "",
-            "combined": "e993a23a5c0a78c944b982c601efe051"
+            "combined": "2d0bf5ac7fd4834de27a646fc07f714b"
         }
     },
     {
         "name": "Interface Delete Modal Tailwind",
         "id": "interface-delecao-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "fc9c9bc69064786ebd09754c61a0c15b",
+            "html": "84af07e6e3da281548eb56097fc67fe6",
             "css": "",
             "css_precompiled": "",
-            "combined": "fc9c9bc69064786ebd09754c61a0c15b"
+            "combined": "84af07e6e3da281548eb56097fc67fe6"
         }
     },
     {
         "name": "Interface Provisional Authorization Tailwind",
         "id": "interface-formulario-autorizacao-provisoria-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "88cc86f3a9bbccacd0e9faa15a829b23",
+            "html": "15be5b5f446a8a4194f6d95acea1d0d7",
             "css": "",
             "css_precompiled": "",
-            "combined": "88cc86f3a9bbccacd0e9faa15a829b23"
+            "combined": "15be5b5f446a8a4194f6d95acea1d0d7"
         }
     },
     {
@@ -715,12 +750,12 @@
         "name": "Interface List Tailwind",
         "id": "interface-listar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "b3232b9cae4083015ffcc211b4841919",
+            "html": "bb01afed5e1621f617c25b00384f4f4e",
             "css": "",
             "css_precompiled": "",
-            "combined": "b3232b9cae4083015ffcc211b4841919"
+            "combined": "bb01afed5e1621f617c25b00384f4f4e"
         }
     },
     {
@@ -793,6 +828,18 @@
             "css": "",
             "css_precompiled": "",
             "combined": "36055c65e7f5b46cac70771f8e95d5e7"
+        }
+    },
+    {
+        "id": "interface-formulario-configuracoes-tailwind",
+        "name": "Interface Settings Form Tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "f3e2be4296ad0a0393816f135b114ec4",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "f3e2be4296ad0a0393816f135b114ec4"
         }
     }
 ]

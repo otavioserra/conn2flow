@@ -21,7 +21,7 @@
                     "name": "Admin Atualizações",
                     "id": "admin-atualizacoes",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes/",
+                    "path": "admin-atualizacoes\/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
@@ -29,8 +29,8 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-atualizacoes.php",
-                        "../../../../admin-atualizacoes.js"
+                        "..\/..\/..\/..\/admin-atualizacoes.php",
+                        "..\/..\/..\/..\/admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "O controlador monta linhas e painéis de choques com utilitários Tailwind.",
                     "tailwind_dependencies": [
@@ -67,15 +67,15 @@
                     "name": "Admin Atualizações - Detalhe",
                     "id": "admin-atualizacoes-detalhe",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes/detalhe/",
+                    "path": "admin-atualizacoes\/detalhe\/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
                     "version": "1.4",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-atualizacoes.php",
-                        "../../../../admin-atualizacoes.js"
+                        "..\/..\/..\/..\/admin-atualizacoes.php",
+                        "..\/..\/..\/..\/admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "O controlador monta diffs e estados de choque com utilitários Tailwind.",
                     "tailwind_dependencies": [
@@ -113,21 +113,23 @@
                 {
                     "name": "Atualizações - Lista",
                     "id": "atualizacoes-lista",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "f0ef8db462abf5d6ad84004055c93a2d",
+                        "html": "40cb8238eb1499ccb9c466da5ccb880b",
                         "css": "",
-                        "combined": "f0ef8db462abf5d6ad84004055c93a2d"
+                        "css_precompiled": "",
+                        "combined": "40cb8238eb1499ccb9c466da5ccb880b"
                     }
                 },
                 {
                     "name": "Atualizações - Detalhe",
                     "id": "atualizacoes-detalhe-comp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "d15a8a39cceb60aed8b27527b750cac2",
+                        "html": "2165f501c194d36a1b7944cf7901805b",
                         "css": "",
-                        "combined": "d15a8a39cceb60aed8b27527b750cac2"
+                        "css_precompiled": "",
+                        "combined": "2165f501c194d36a1b7944cf7901805b"
                     }
                 },
                 {
@@ -363,7 +365,7 @@
                 },
                 {
                     "id": "updates-clash-help",
-                    "value": "Arquivos que a atualização não sobrescreveu (sobrepostos pelo projeto ou por um plugin, ou editados no servidor) e retiradas que não puderam acontecer. A versão nova fica guardada em backups/overrides/.",
+                    "value": "Arquivos que a atualização não sobrescreveu (sobrepostos pelo projeto ou por um plugin, ou editados no servidor) e retiradas que não puderam acontecer. A versão nova fica guardada em backups\/overrides\/.",
                     "type": "string"
                 },
                 {
@@ -545,7 +547,7 @@
                     "name": "Admin Updates",
                     "id": "admin-atualizacoes",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes/",
+                    "path": "admin-atualizacoes\/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
@@ -553,8 +555,8 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-atualizacoes.php",
-                        "../../../../admin-atualizacoes.js"
+                        "..\/..\/..\/..\/admin-atualizacoes.php",
+                        "..\/..\/..\/..\/admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "The controller assembles update-history rows and clash panels with Tailwind utilities.",
                     "tailwind_dependencies": [
@@ -591,15 +593,15 @@
                     "name": "Admin Updates - Detail",
                     "id": "admin-atualizacoes-detalhe",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes/detalhe/",
+                    "path": "admin-atualizacoes\/detalhe\/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
                     "version": "1.4",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-atualizacoes.php",
-                        "../../../../admin-atualizacoes.js"
+                        "..\/..\/..\/..\/admin-atualizacoes.php",
+                        "..\/..\/..\/..\/admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "The controller assembles clash details and decisions with Tailwind utilities.",
                     "tailwind_dependencies": [
@@ -637,21 +639,23 @@
                 {
                     "name": "Updates - List",
                     "id": "atualizacoes-lista",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "314d1a3e3dfdc9625e3fcf29d67f7a08",
+                        "html": "be19a101f7138be7d79cae7af7cafe5b",
                         "css": "",
-                        "combined": "314d1a3e3dfdc9625e3fcf29d67f7a08"
+                        "css_precompiled": "",
+                        "combined": "be19a101f7138be7d79cae7af7cafe5b"
                     }
                 },
                 {
                     "name": "Updates - Detail",
                     "id": "atualizacoes-detalhe-comp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "d15a8a39cceb60aed8b27527b750cac2",
+                        "html": "2165f501c194d36a1b7944cf7901805b",
                         "css": "",
-                        "combined": "d15a8a39cceb60aed8b27527b750cac2"
+                        "css_precompiled": "",
+                        "combined": "2165f501c194d36a1b7944cf7901805b"
                     }
                 },
                 {
@@ -887,7 +891,7 @@
                 },
                 {
                     "id": "updates-clash-help",
-                    "value": "Files the update did not overwrite (overridden by the project or a plugin, or edited on the server) and removals that could not happen. The new version is kept under backups/overrides/.",
+                    "value": "Files the update did not overwrite (overridden by the project or a plugin, or edited on the server) and removals that could not happen. The new version is kept under backups\/overrides\/.",
                     "type": "string"
                 },
                 {

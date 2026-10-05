@@ -5,11 +5,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-com-2-colunas.webp",
-        "version": "1.16",
+        "version": "1.17",
         "checksum": {
-            "html": "0972774e63b3932367636a4a825f9879",
+            "html": "de6744b6a8c1f77f36bb4c49e8f7c0ab",
             "css": "",
-            "combined": "0972774e63b3932367636a4a825f9879"
+            "css_precompiled": "",
+            "combined": "de6744b6a8c1f77f36bb4c49e8f7c0ab"
         }
     },
     {
@@ -18,11 +19,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-com-2-colunas-alternativo.webp",
-        "version": "1.19",
+        "version": "1.20",
         "checksum": {
-            "html": "6a7d9e272eb17619e579eb8ec272aaa4",
+            "html": "262a0688356044d5c0c1d7b59d4fd49f",
             "css": "",
-            "combined": "6a7d9e272eb17619e579eb8ec272aaa4"
+            "css_precompiled": "",
+            "combined": "262a0688356044d5c0c1d7b59d4fd49f"
         }
     },
     {
@@ -31,11 +33,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-destaque.webp",
-        "version": "1.10",
+        "version": "1.11",
         "checksum": {
-            "html": "c284f0841cfd39fc3aeced3a7980bbb0",
+            "html": "20b010beee4f65bc5c236eafe0a20a4f",
             "css": "",
-            "combined": "c284f0841cfd39fc3aeced3a7980bbb0"
+            "css_precompiled": "",
+            "combined": "20b010beee4f65bc5c236eafe0a20a4f"
         }
     },
     {
@@ -44,11 +47,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-destaque-alternativo.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "52e3afac73c101595bd672d57d339437",
+            "html": "7f362a266c9f8dadb6e3d79ce8a8366c",
             "css": "",
-            "combined": "52e3afac73c101595bd672d57d339437"
+            "css_precompiled": "",
+            "combined": "7f362a266c9f8dadb6e3d79ce8a8366c"
         }
     },
     {
@@ -57,11 +61,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-com-3-colunas.webp",
-        "version": "1.8",
+        "version": "1.9",
         "checksum": {
-            "html": "c70445984df9d49093b7d2814ed33ae5",
+            "html": "55748f367091d2227b5acfac8bb1bfef",
             "css": "",
-            "combined": "c70445984df9d49093b7d2814ed33ae5"
+            "css_precompiled": "",
+            "combined": "55748f367091d2227b5acfac8bb1bfef"
         }
     },
     {
@@ -70,11 +75,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-com-3-colunas-alternativo.webp",
-        "version": "1.9",
+        "version": "1.10",
         "checksum": {
-            "html": "2162b99e0f765e568caf739e7817fb07",
+            "html": "96618b73242af6827db843bfd5dca437",
             "css": "",
-            "combined": "2162b99e0f765e568caf739e7817fb07"
+            "css_precompiled": "",
+            "combined": "96618b73242af6827db843bfd5dca437"
         }
     },
     {
@@ -83,11 +89,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-com-abas.webp",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "46a767aa4c2af9bd20588084f3f35018",
+            "html": "4635b38d246c1e6d3706a3a836a339ce",
             "css": "",
-            "combined": "46a767aa4c2af9bd20588084f3f35018"
+            "css_precompiled": "",
+            "combined": "4635b38d246c1e6d3706a3a836a339ce"
         }
     },
     {
@@ -96,11 +103,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-com-abas-alternativo.webp",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "f561b707a7a6f241e1eb181eec91d111",
+            "html": "6e5e39f113367860197065b0c7055533",
             "css": "",
-            "combined": "f561b707a7a6f241e1eb181eec91d111"
+            "css_precompiled": "",
+            "combined": "6e5e39f113367860197065b0c7055533"
         }
     },
     {
@@ -109,11 +117,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-hero-moderno.webp",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "1f08e05bd9f6a169da4b6052bee64d58",
+            "html": "de6fa6a84b7e94522b2919a5de0efcbd",
             "css": "",
-            "combined": "1f08e05bd9f6a169da4b6052bee64d58"
+            "css_precompiled": "",
+            "combined": "de6fa6a84b7e94522b2919a5de0efcbd"
         }
     },
     {
@@ -122,11 +131,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-hero-moderno-alternativo.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "d8b08a1f2c9561328d49cfa755cf0527",
+            "html": "546a3f415decb916b49b5c91d5fdb6e9",
             "css": "",
-            "combined": "d8b08a1f2c9561328d49cfa755cf0527"
+            "css_precompiled": "",
+            "combined": "546a3f415decb916b49b5c91d5fdb6e9"
         }
     },
     {
@@ -161,11 +171,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-stats-moderno.webp",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "b685feec3821566b739a28a5c3163003",
+            "html": "2110f59cd70c209dcb88a14464077b60",
             "css": "",
-            "combined": "b685feec3821566b739a28a5c3163003"
+            "css_precompiled": "",
+            "combined": "2110f59cd70c209dcb88a14464077b60"
         }
     },
     {
@@ -174,11 +185,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-stats-moderno-alternativo.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "ba8ef28f67bf8489d1cb34c473628318",
+            "html": "bfe3c2c3f48282f7b581152c3a41cf44",
             "css": "",
-            "combined": "ba8ef28f67bf8489d1cb34c473628318"
+            "css_precompiled": "",
+            "combined": "bfe3c2c3f48282f7b581152c3a41cf44"
         }
     },
     {
@@ -187,11 +199,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-cta-gradiente.webp",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "073ed02388af48fdd5f8715e5d3af959",
+            "html": "2ab3067c12c86d398f189bb1f9915bbe",
             "css": "",
-            "combined": "073ed02388af48fdd5f8715e5d3af959"
+            "css_precompiled": "",
+            "combined": "2ab3067c12c86d398f189bb1f9915bbe"
         }
     },
     {
@@ -265,11 +278,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-contato-mapa.webp",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "636fca686ae84dcf7d6c55ec713ebf7f",
+            "html": "3b23d32567bfb2d0aa92515060f9b078",
             "css": "",
-            "combined": "636fca686ae84dcf7d6c55ec713ebf7f"
+            "css_precompiled": "",
+            "combined": "3b23d32567bfb2d0aa92515060f9b078"
         }
     },
     {
@@ -278,11 +292,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-contato-mapa-alternativo.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "1a6d096e37022af8c0a9c9864e477c1d",
+            "html": "86bc27e27aca42dc839ee7951d9ecfb3",
             "css": "",
-            "combined": "1a6d096e37022af8c0a9c9864e477c1d"
+            "css_precompiled": "",
+            "combined": "86bc27e27aca42dc839ee7951d9ecfb3"
         }
     },
     {
@@ -291,11 +306,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-galeria-masonry.webp",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "36553de650db60dc25aef6c3fa6a2911",
+            "html": "ed6b1b5d1839aae159fbf989503d2fde",
             "css": "",
-            "combined": "36553de650db60dc25aef6c3fa6a2911"
+            "css_precompiled": "",
+            "combined": "ed6b1b5d1839aae159fbf989503d2fde"
         }
     },
     {
@@ -304,11 +320,12 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-galeria-masonry-alternativo.webp",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "32edbb9d415efa41fe407180f9772c52",
+            "html": "d002db5957d31a1a933c1bea564dfcb9",
             "css": "",
-            "combined": "32edbb9d415efa41fe407180f9772c52"
+            "css_precompiled": "",
+            "combined": "d002db5957d31a1a933c1bea564dfcb9"
         }
     },
     {

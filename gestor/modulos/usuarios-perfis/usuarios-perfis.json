@@ -85,12 +85,12 @@
                 {
                     "name": "Usuários Perfis - Adicionar",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "5a0a709f6b90b28f190c537c344f1c9b",
+                        "html": "8b49864a7865cef71ae77ef727415137",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5a0a709f6b90b28f190c537c344f1c9b"
+                        "combined": "8b49864a7865cef71ae77ef727415137"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/adicionar\/",
@@ -139,12 +139,12 @@
                 {
                     "name": "Usuários Perfis - Editar",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "ecd15548d814822df29cd1560c8045f4",
+                        "html": "d274469759974157be3d8282b48b74f7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ecd15548d814822df29cd1560c8045f4"
+                        "combined": "d274469759974157be3d8282b48b74f7"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/editar\/",
@@ -207,12 +207,12 @@
                     "name": "Autocomplete Página Inicial Tailwind",
                     "id": "home-page-autocomplete-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "ded508536089a4ab06ae0c5da61d67b8",
+                        "html": "fd7e8bc4f843cef46ee15c6c0d69e307",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ded508536089a4ab06ae0c5da61d67b8"
+                        "combined": "fd7e8bc4f843cef46ee15c6c0d69e307"
                     }
                 }
             ],
@@ -355,12 +355,12 @@
                 {
                     "name": "User Profiles - Add",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "5a0a709f6b90b28f190c537c344f1c9b",
+                        "html": "8b49864a7865cef71ae77ef727415137",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5a0a709f6b90b28f190c537c344f1c9b"
+                        "combined": "8b49864a7865cef71ae77ef727415137"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/adicionar\/",
@@ -409,12 +409,12 @@
                 {
                     "name": "User Profiles - Edit",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "ecd15548d814822df29cd1560c8045f4",
+                        "html": "d274469759974157be3d8282b48b74f7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ecd15548d814822df29cd1560c8045f4"
+                        "combined": "d274469759974157be3d8282b48b74f7"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/editar\/",
@@ -477,12 +477,12 @@
                     "name": "Home Page Autocomplete Tailwind",
                     "id": "home-page-autocomplete-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "ded508536089a4ab06ae0c5da61d67b8",
+                        "html": "fd7e8bc4f843cef46ee15c6c0d69e307",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ded508536089a4ab06ae0c5da61d67b8"
+                        "combined": "fd7e8bc4f843cef46ee15c6c0d69e307"
                     }
                 }
             ],

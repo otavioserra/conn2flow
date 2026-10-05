@@ -21,20 +21,22 @@ final class DashboardCoversReq233Test extends TestCase
                 . DIRECTORY_SEPARATOR . 'dashboard-cards-tailwind.html';
             $html = (string)file_get_contents($htmlPath);
 
-            // Alturas das capas conforme req-236: 11rem em M e 14.5rem em G
+            // Alturas das capas conforme req-237.
             self::assertMatchesRegularExpression(
-                '/#dashboard-sortable-cards\.density-m \.dashboard-card-header\s*\{\s*height:\s*11rem/s',
+                '/#dashboard-sortable-cards\.density-m \.dashboard-card-header\s*\{\s*height:\s*13\.2rem/s',
                 $css,
-                "Densidade M deve ter altura de 11rem (176px) em {$language}."
+                "Densidade M deve ter altura de 13.2rem em {$language}."
             );
             self::assertMatchesRegularExpression(
-                '/#dashboard-sortable-cards\.density-g \.dashboard-card-header\s*\{\s*height:\s*14\.5rem/s',
+                '/#dashboard-sortable-cards\.density-g \.dashboard-card-header\s*\{\s*height:\s*17\.5rem/s',
                 $css,
-                "Densidade G deve ter altura de 14.5rem (232px) em {$language}."
+                "Densidade G deve ter altura de 17.5rem em {$language}."
             );
 
             // Enquadramento de cover
             self::assertStringContainsString('object-fit: cover', $css);
+            self::assertStringContainsString('object-position: center -20px !important', $css);
+            self::assertStringContainsString('height: calc(100% + 20px)', $css);
 
             // Drag handle flutuante não intrusivo
             self::assertStringContainsString('top: 0.625rem', $css, "Alça de arrasto deve ter top 0.625rem (top-2.5) em {$language}.");

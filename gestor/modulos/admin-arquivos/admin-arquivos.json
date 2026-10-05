@@ -32,7 +32,7 @@
                     "name": "Admin Arquivos",
                     "id": "admin-arquivos",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos/",
+                    "path": "admin-arquivos\/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
@@ -40,7 +40,7 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-arquivos.js"
+                        "..\/..\/..\/..\/admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -72,14 +72,14 @@
                     "name": "Admin Arquivos - Adicionar",
                     "id": "admin-arquivos-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos/adicionar/",
+                    "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
                     "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-arquivos.js"
+                        "..\/..\/..\/..\/admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -106,7 +106,7 @@
                     "name": "Emissão teste",
                     "id": "emissao-teste",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos/emissao-teste/",
+                    "path": "admin-arquivos\/emissao-teste\/",
                     "type": "system",
                     "without_permission": true,
                     "version": "1.0",
@@ -121,11 +121,12 @@
                 {
                     "name": "Arquivos Lista",
                     "id": "arquivos-lista",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "194dd3e01babbb9da63521ece47f08a7",
+                        "html": "7fb861d588aebb98b48ff04511e06943",
                         "css": "",
-                        "combined": "194dd3e01babbb9da63521ece47f08a7"
+                        "css_precompiled": "",
+                        "combined": "7fb861d588aebb98b48ff04511e06943"
                     }
                 }
             ],
@@ -292,7 +293,7 @@
                 },
                 {
                     "id": "filter-info",
-                    "value": "Selecione um período e/ou uma ou mais categoria(s) caso queira filtrar o resultado por esses dados. Depois, clique no botão <b>Filtrar</b> para ver os resultados.",
+                    "value": "Selecione um período e\/ou uma ou mais categoria(s) caso queira filtrar o resultado por esses dados. Depois, clique no botão <b>Filtrar<\/b> para ver os resultados.",
                     "type": "string"
                 },
                 {
@@ -554,7 +555,7 @@
                     "name": "Admin Files",
                     "id": "admin-arquivos",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos/",
+                    "path": "admin-arquivos\/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
@@ -562,7 +563,7 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-arquivos.js"
+                        "..\/..\/..\/..\/admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -594,14 +595,14 @@
                     "name": "Admin Files - Add",
                     "id": "admin-arquivos-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos/adicionar/",
+                    "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
                     "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-arquivos.js"
+                        "..\/..\/..\/..\/admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -628,7 +629,7 @@
                     "name": "Test Emission",
                     "id": "emissao-teste",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos/emissao-teste/",
+                    "path": "admin-arquivos\/emissao-teste\/",
                     "type": "system",
                     "without_permission": true,
                     "version": "1.0",
@@ -643,11 +644,12 @@
                 {
                     "name": "Files List",
                     "id": "arquivos-lista",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "194dd3e01babbb9da63521ece47f08a7",
+                        "html": "7fb861d588aebb98b48ff04511e06943",
                         "css": "",
-                        "combined": "194dd3e01babbb9da63521ece47f08a7"
+                        "css_precompiled": "",
+                        "combined": "7fb861d588aebb98b48ff04511e06943"
                     }
                 }
             ],
@@ -814,7 +816,7 @@
                 },
                 {
                     "id": "filter-info",
-                    "value": "Select a period and/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter</b> button to see the results.",
+                    "value": "Select a period and\/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter<\/b> button to see the results.",
                     "type": "string"
                 },
                 {

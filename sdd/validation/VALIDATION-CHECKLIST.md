@@ -1,5 +1,18 @@
 # Validation Checklist
 
+## BATCH-246 — req-237
+
+- [x] Bases Core/Site preservadas e compilação oficial sequencial no Lab.
+- [x] 19 novas capas Core e 14 Site, 1024×1024, menos de 100.000 bytes; 70 assets conferidos.
+- [x] Dashboard pt-br/en: alturas M/G, topo -20px, links de capa/SVG, arrasto isolado e preferências restauradas.
+- [x] Site REQ-100 concluída, 98/98 checks; cinco fixtures removidas.
+- [x] Core JS 532 e PHP 1.594 sem falhas; Site JS 13 e PHP 7 aprovados.
+- [x] Pipeline final saída 0 e manutenção desligada; screenshots desktop/390px e revisão sem bloqueantes.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-246](../implementation/BATCH-246.md) e [inventário](req237-validation.json).
+
+
 ## BATCH-243 — Tabelas JSON particionadas (req-234)
 
 - [x] Biblioteca `db-data.php` com as quatro funções requeridas e carregamento pelo bootstrap/entradas CLI.

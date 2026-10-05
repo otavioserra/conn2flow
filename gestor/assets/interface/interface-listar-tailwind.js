@@ -33,7 +33,8 @@
             var base = new URL(config.url, new URL(global.gestor.raiz, global.location.href));
             var url = new URL(opcao.url || '', base);
             if (url.origin !== global.location.origin || !/^https?:$/.test(url.protocol)) return null;
-            url.searchParams.set(config.id, id);
+            // The interface routes receive `id`, even when the SQL primary key has another name.
+            url.searchParams.set('id', id);
             if (!opcao.url) url.searchParams.set('opcao', opcao.opcao);
             if (opcao.opcao === 'status') url.searchParams.set('status', opcao.status_mudar);
             if (opcao.opcao === 'excluir' || opcao.opcao === 'status') {

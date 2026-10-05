@@ -13,16 +13,16 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-environment/",
+                    "path": "admin-environment\/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.30",
+                    "version": "1.31",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-environment.php",
-                        "../../../../admin-environment.js"
+                        "..\/..\/..\/..\/admin-environment.php",
+                        "..\/..\/..\/..\/admin-environment.js"
                     ],
                     "tailwind_sources_reason": "The controller and client render profile badges, results and configuration controls.",
                     "tailwind_dependencies": [
@@ -44,9 +44,9 @@
                     ],
                     "checksum": {
                         "html": "be96918e8b388b48bd7c2b42bccbedc5",
-                        "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
+                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
                         "css_precompiled": "",
-                        "combined": "bb268a0e82a71572a25c494aa4c329a8"
+                        "combined": "6071e498bcb42bae3ea9c00103abf457"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -185,7 +185,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token and/or Server Key (secret) is invalid.",
+                    "value": "Token and\/or Server Key (secret) is invalid.",
                     "type": "string"
                 },
                 {
@@ -267,16 +267,16 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-environment/",
+                    "path": "admin-environment\/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.32",
+                    "version": "1.33",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-environment.php",
-                        "../../../../admin-environment.js"
+                        "..\/..\/..\/..\/admin-environment.php",
+                        "..\/..\/..\/..\/admin-environment.js"
                     ],
                     "tailwind_sources_reason": "The controller and client render profile badges, results and configuration controls.",
                     "tailwind_dependencies": [
@@ -298,9 +298,9 @@
                     ],
                     "checksum": {
                         "html": "0a7a9046642f2e6c4c20ec806e89c9f1",
-                        "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
+                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
                         "css_precompiled": "",
-                        "combined": "404e06c04201c202aea285503c300b54"
+                        "combined": "5aef5aff216aafa757454098edf02e0c"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -439,7 +439,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token e/ou Server Key (secret) de resposta é inválido.",
+                    "value": "Token e\/ou Server Key (secret) de resposta é inválido.",
                     "type": "string"
                 },
                 {

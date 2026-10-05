@@ -1,22 +1,22 @@
 {
     "version": 1,
-    "system": "f443efb15f187206",
+    "system": "df2a2a295e5b6a27",
     "owners": {
         "configuracao": "6a13141e6e0e54e4",
-        "dashboard": "2edf8df4f9a3fb59",
-        "datatables": "1f891b34018f0e5a",
+        "dashboard": "a98d24f7fc417edd",
+        "datatables": "113195fae8162254",
         "favicon": "8587a3f200e38cbe",
-        "global": "75a58354c4c41106",
-        "images": "24911cddaa3f5975",
-        "interface": "32143a9de431b928",
-        "interface-v2": "a9a73a48a7084cab",
-        "jQuery-File-Upload-10.32.0": "b4d1102d60e5702c",
-        "jQuery-Mask-Plugin-v1.14.16": "7c1dba1bc4269bbe",
-        "modulos": "37129596d49b7552",
-        "paypal": "cbfd3a1b46258e21",
-        "stripe": "62ada1759544f5a7",
-        "tailwindcss": "eb74aaabfae0b547",
+        "global": "ce29707cb2515960",
+        "images": "60d97a722a21ccf9",
+        "interface": "44a15bb742265ee5",
+        "interface-v2": "e37bf583264ff3c3",
+        "jQuery-File-Upload-10.32.0": "d742d36cb990aa65",
+        "jQuery-Mask-Plugin-v1.14.16": "9b9b32d7c5bbb7f2",
+        "modulos": "8a0cb670fffb5ead",
+        "paypal": "0238dd2dfce88bce",
+        "stripe": "88a205bb4e7609fd",
+        "tailwindcss": "37a3625019bf7405",
         "templates": "4dd6d231504de973",
-        "widgets": "27bd1142f936916f"
+        "widgets": "dce9f96e7c9cd34e"
     }
 }

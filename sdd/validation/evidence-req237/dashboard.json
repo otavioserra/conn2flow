@@ -1,0 +1,557 @@
+{
+  "started_at": "2026-10-05T16:12:18.324Z",
+  "checks": [
+    {
+      "name": "Authenticated dashboard",
+      "ok": true
+    },
+    {
+      "name": "Density p height",
+      "ok": true,
+      "data": 36
+    },
+    {
+      "name": "Density m height",
+      "ok": true,
+      "data": 211.1875
+    },
+    {
+      "name": "Density g height",
+      "ok": true,
+      "data": 280
+    },
+    {
+      "name": "Covers load, align to top and rise 20px",
+      "ok": true,
+      "data": [
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        },
+        {
+          "loaded": true,
+          "fit": "cover",
+          "position": "50% -20px",
+          "transform": "none",
+          "filled": true
+        }
+      ]
+    },
+    {
+      "name": "All headers alias Access and isolate handles",
+      "ok": true
+    },
+    {
+      "name": "Module titles and accessible names resolve",
+      "ok": true
+    },
+    {
+      "name": "Cover click navigates to module",
+      "ok": true,
+      "data": "https://conn2flow.local/admin-arquivos/"
+    },
+    {
+      "name": "Fallback icon click navigates to module",
+      "ok": true
+    },
+    {
+      "name": "Drag changes order without navigation",
+      "ok": true
+    },
+    {
+      "name": "Reordered modules survive reload",
+      "ok": true
+    },
+    {
+      "name": "390px without horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "No Fomantic assets",
+      "ok": true
+    },
+    {
+      "name": "No browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "Restore dashboard_cards_order",
+      "ok": true
+    },
+    {
+      "name": "Restore dashboard_densidade",
+      "ok": true
+    },
+    {
+      "name": "Restore dashboard_aba_ativa",
+      "ok": true
+    }
+  ],
+  "summary": "17/17"
+}

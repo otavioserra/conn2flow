@@ -50,11 +50,12 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "94f8de1e247cbdcbb0044ff2bf5e5ba6",
+                        "html": "342d6ee189354c99ce8f6c8acfead141",
                         "css": "9c8a7eedf3f858634d69e180597797d4",
-                        "combined": "eba847b09c2cb0db4f3bdd2b213c3c0f"
+                        "css_precompiled": "",
+                        "combined": "ff364bab3e5f93da40756e3eadf59aff"
                     }
                 },
                 {
@@ -62,11 +63,12 @@
                     "id": "menus-vertical-sidebar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "6848d1431ea861d07939c40d39c5c8ad",
+                        "html": "79a53962f576c1b00967ab7f4c59dfa5",
                         "css": "",
-                        "combined": "6848d1431ea861d07939c40d39c5c8ad"
+                        "css_precompiled": "",
+                        "combined": "79a53962f576c1b00967ab7f4c59dfa5"
                     }
                 },
                 {
@@ -74,11 +76,12 @@
                     "id": "menus-footer-colunas",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "3e1d485d8e1d778ce039f64f66619214",
+                        "html": "e0f1b78592b88386af32c572a198fda0",
                         "css": "",
-                        "combined": "3e1d485d8e1d778ce039f64f66619214"
+                        "css_precompiled": "",
+                        "combined": "e0f1b78592b88386af32c572a198fda0"
                     }
                 },
                 {
@@ -86,11 +89,12 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "b5747773344b91a896d8727aa6dcc533",
+                        "html": "b62d647f4a9c9b52b1b6ba1cb4f5e3ec",
                         "css": "",
-                        "combined": "b5747773344b91a896d8727aa6dcc533"
+                        "css_precompiled": "",
+                        "combined": "b62d647f4a9c9b52b1b6ba1cb4f5e3ec"
                     }
                 },
                 {
@@ -98,11 +102,12 @@
                     "id": "menus-breadcrumb",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "569185d32912c5421696eb2be1bc5cfb",
+                        "html": "6efec7885d7f80616b54386a4259b635",
                         "css": "",
-                        "combined": "569185d32912c5421696eb2be1bc5cfb"
+                        "css_precompiled": "",
+                        "combined": "6efec7885d7f80616b54386a4259b635"
                     }
                 },
                 {
@@ -110,11 +115,12 @@
                     "id": "menus-mobile-hamburguer",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "c319e4b83ec10e4e3d16f7949209126d",
+                        "html": "3596c058572fd0c7091c8cf6bb613132",
                         "css": "",
-                        "combined": "c319e4b83ec10e4e3d16f7949209126d"
+                        "css_precompiled": "",
+                        "combined": "3596c058572fd0c7091c8cf6bb613132"
                     }
                 }
             ],
@@ -602,11 +608,12 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "27085a0120275859bde3c67ee1f3171b",
+                        "html": "a8d04dcddb6dcd4af18ce94841325d40",
                         "css": "9c8a7eedf3f858634d69e180597797d4",
-                        "combined": "d42d5f053c9db1daa320d1bd35bd584e"
+                        "css_precompiled": "",
+                        "combined": "2f03046095ded3a2912a0eee20d9fdf7"
                     }
                 },
                 {
@@ -614,11 +621,12 @@
                     "id": "menus-vertical-sidebar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "33a67113d8dea18262731833d73c12ed",
+                        "html": "436948e1fa840c27c044aa346036bb65",
                         "css": "",
-                        "combined": "33a67113d8dea18262731833d73c12ed"
+                        "css_precompiled": "",
+                        "combined": "436948e1fa840c27c044aa346036bb65"
                     }
                 },
                 {
@@ -626,11 +634,12 @@
                     "id": "menus-footer-colunas",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "762227a45a9d5d8a9741f8ead5a75f2f",
+                        "html": "25106df0b3c725e52328d94200bb8972",
                         "css": "",
-                        "combined": "762227a45a9d5d8a9741f8ead5a75f2f"
+                        "css_precompiled": "",
+                        "combined": "25106df0b3c725e52328d94200bb8972"
                     }
                 },
                 {
@@ -638,11 +647,12 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "aa77ba96bae9837d0ea368de28385824",
+                        "html": "f1413f51986e27087773f621758d86aa",
                         "css": "",
-                        "combined": "aa77ba96bae9837d0ea368de28385824"
+                        "css_precompiled": "",
+                        "combined": "f1413f51986e27087773f621758d86aa"
                     }
                 },
                 {
@@ -650,11 +660,12 @@
                     "id": "menus-breadcrumb",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "a5483ecc23795aa71e9d03b240c7505a",
+                        "html": "3bf3fdb5673900c2d90ebdf4584bb2a8",
                         "css": "",
-                        "combined": "a5483ecc23795aa71e9d03b240c7505a"
+                        "css_precompiled": "",
+                        "combined": "3bf3fdb5673900c2d90ebdf4584bb2a8"
                     }
                 },
                 {
@@ -662,11 +673,12 @@
                     "id": "menus-mobile-hamburguer",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "92ec5f829faf9ef9d03c25935e933a7c",
+                        "html": "27565d5ec29788d546397f679fea42f0",
                         "css": "",
-                        "combined": "92ec5f829faf9ef9d03c25935e933a7c"
+                        "css_precompiled": "",
+                        "combined": "27565d5ec29788d546397f679fea42f0"
                     }
                 }
             ],
@@ -1122,5 +1134,5 @@
             ]
         }
     },
-    "asset_version": "398352b2c68335b6"
+    "asset_version": "64dca6c1815319ff"
 }

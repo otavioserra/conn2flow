@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-05",
+  "lab": "https://conn2flow.local",
+  "pipeline": {
+    "command": "project:update-all conn2flow-site-local --confirmar-remoto",
+    "exit": 0,
+    "sequential": true,
+    "maintenance_off": true
+  },
+  "covers": {
+    "core_new": 19,
+    "core_total": 33,
+    "site_new": 14,
+    "site_total": 37,
+    "size": "1024x1024",
+    "max_new_bytes": 95008
+  },
+  "tests": {
+    "core_js": 532,
+    "core_php": 1594,
+    "core_php_assertions": 15799,
+    "core_php_deprecations": 4,
+    "phpunit_deprecations": 3,
+    "skipped": 4,
+    "site_js": 13,
+    "site_php": 7,
+    "site_php_assertions": 1022,
+    "dashboard_e2e": "17/17",
+    "site_e2e": "98/98",
+    "fixtures_removed": 5
+  },
+  "preservation": {
+    "site_stash": "6a6519a63e69fb17d9b58c05b35d57abe164591f",
+    "prior_site_covers": 23,
+    "public_portal_source_files_verified": 51,
+    "subscription_public_php_unchanged": true
+  },
+  "known_warnings": [
+    "Empty admin-categorias.js produces empty minification output.",
+    "784 existing public resources lack tailwind_bundle.",
+    "10 pre-existing extra catalog JS files on the Lab destination.",
+    "Core PHPUnit exits 1 for existing deprecations/skipped tests; zero failures/errors."
+  ]
+}

@@ -1,10 +1,11 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "requests": [
     "req-227",
-    "site/req-102"
+    "site/req-102",
+    "req-237"
   ],
-  "date": "2026-10-04",
+  "date": "2026-10-05",
   "generator": "built-in image_gen",
   "max_bytes_exclusive": 120000,
   "assets": [
@@ -147,6 +148,218 @@
       "bytes": 78494,
       "quality": 90,
       "sha256": "ff6bc10991855ceecc1b8cfec71fd5fe616a5b4144d58fce4e1d8578dcc26766"
+    },
+    {
+      "id": "admin-atualizacoes",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-atualizacoes.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 73234,
+      "quality": 90,
+      "sha256": "44da98b1fd2150e12fb36c596fc56ba2b4a470f85e92b661e6a9731e38d83f3e",
+      "request": "req-237"
+    },
+    {
+      "id": "admin-categorias",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-categorias.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 79360,
+      "quality": 90,
+      "sha256": "f3f5989a3d5304cedf5c9872a329f454289f3cbf01f90014ef6192f09a4187c4",
+      "request": "req-237"
+    },
+    {
+      "id": "admin-environment",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-environment.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 70512,
+      "quality": 90,
+      "sha256": "ba6f3b0cc59edef1c633a5e8984f87659e5e6e1986407fdfe6db8ba053b959d0",
+      "request": "req-237"
+    },
+    {
+      "id": "admin-layouts",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-layouts.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 77542,
+      "quality": 90,
+      "sha256": "4beae2b3db7fa4353eca42434efccebc378312cb3ddde22e329f87466de08233",
+      "request": "req-237"
+    },
+    {
+      "id": "admin-modos-ia",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-modos-ia.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 92428,
+      "quality": 90,
+      "sha256": "ad68923025d1d73a75a69929d445cc6fbeaa7c3ccc57d4d611ec0fad066c30af",
+      "request": "req-237"
+    },
+    {
+      "id": "admin-plugins",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-plugins.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 68732,
+      "quality": 90,
+      "sha256": "b562328555cf098c2e4dc496a1a6a315290223cb1dcba97efda2df8617d04582",
+      "request": "req-237"
+    },
+    {
+      "id": "contatos",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/contatos.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 55090,
+      "quality": 90,
+      "sha256": "1678bb49c09ff039d09c5d8cbd2279db721cead3e12ea8fd5d93dad7dd1f9473",
+      "request": "req-237"
+    },
+    {
+      "id": "cookie-consent",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/cookie-consent.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 69096,
+      "quality": 90,
+      "sha256": "0aaee80c1c791deafb816a5e5fae141685e904066e702c6ee3d5651f00a98f0e",
+      "request": "req-237"
+    },
+    {
+      "id": "forms-search",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/forms-search.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 73738,
+      "quality": 90,
+      "sha256": "85bdbfabace0d7f0163498adb39e9c338ea1b5347843944c52d07a5c31bba662",
+      "request": "req-237"
+    },
+    {
+      "id": "modulos",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/modulos.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 95008,
+      "quality": 88,
+      "sha256": "c32c70516e16dff4ce98efbdd88d7abd9f1369d296a790606c81dc5382c4fdbd",
+      "request": "req-237"
+    },
+    {
+      "id": "modulos-grupos",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/modulos-grupos.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 76928,
+      "quality": 90,
+      "sha256": "cb8a2cd71952b77559495010fdcc801a975ebab9f0be16ad0d97a901976778f2",
+      "request": "req-237"
+    },
+    {
+      "id": "variables",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/variables.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 70198,
+      "quality": 90,
+      "sha256": "6d88dd1b2b9a7baece2eb92ea0e39c3a3b004acb0545eaf2028f99f0c85ff105",
+      "request": "req-237"
+    },
+    {
+      "id": "modulos-operacoes",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/modulos-operacoes.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 61072,
+      "quality": 90,
+      "sha256": "30599c9b1107920d6d137445c0094acc363fa549e45ea5341298b5782a8c3535",
+      "request": "req-237"
+    },
+    {
+      "id": "pages-index",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/pages-index.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 70970,
+      "quality": 90,
+      "sha256": "0d03201b81736a1def683c7a3d4e502b9ffea4eb38d7c636731365d89cc6456c",
+      "request": "req-237"
+    },
+    {
+      "id": "perfil-usuario",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/perfil-usuario.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 69186,
+      "quality": 90,
+      "sha256": "7a0cb7c5f7b92313f086110136f414b53b1f2e5f4e9b2fac6e007613bb9c1f8f",
+      "request": "req-237"
+    },
+    {
+      "id": "publisher",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/publisher.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 58778,
+      "quality": 90,
+      "sha256": "f7a6ebaa3abe471953af1866214057ccef6f8ba5bfa5a8811c059323795ee4ff",
+      "request": "req-237"
+    },
+    {
+      "id": "publisher-highlights",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/publisher-highlights.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 64086,
+      "quality": 90,
+      "sha256": "a4210bea60418dea7df633d211af24e0261ca4a8fb5f6de9f7e02c8764a89a60",
+      "request": "req-237"
+    },
+    {
+      "id": "publisher-index",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/publisher-index.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 89748,
+      "quality": 90,
+      "sha256": "9dfbf60f6028a4818232f923f9be1f1a830342cbeb810aaa69f239ae75a9aca2",
+      "request": "req-237"
+    },
+    {
+      "id": "publisher-pages",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/publisher-pages.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 67636,
+      "quality": 90,
+      "sha256": "c9aa84487b3b39e31755bff2a3f7f97fdde9627841f565f1dedbed630a868d85",
+      "request": "req-237"
     }
-  ]
+  ],
+  "request_byte_limits": {
+    "req-237": 100000
+  }
 }

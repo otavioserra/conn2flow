@@ -36,7 +36,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/",
+                    "path": "modulos\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -84,15 +84,15 @@
                 {
                     "name": "Módulos - Adicionar",
                     "id": "modulos-adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "1a5fa3c6ced32679591f378ee0bf82a8",
+                        "html": "746dc47f94ea24f7bb2200e56bb27445",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "1a5fa3c6ced32679591f378ee0bf82a8"
+                        "combined": "746dc47f94ea24f7bb2200e56bb27445"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/adicionar/",
+                    "path": "modulos\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
@@ -134,15 +134,15 @@
                 {
                     "name": "Módulos - Editar",
                     "id": "modulos-editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "84f5d89855ea84cd87a3ba671c8f84b5",
+                        "html": "df096df492bc98e8c9858f0ea3da05e7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "84f5d89855ea84cd87a3ba671c8f84b5"
+                        "combined": "df096df492bc98e8c9858f0ea3da05e7"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/editar/",
+                    "path": "modulos\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
@@ -184,22 +184,22 @@
                 {
                     "name": "Módulos - Variáveis",
                     "id": "modulos-variaveis",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
                         "html": "9fea2225d675c471d1b018a4ce48ce8c",
-                        "css": "a67c7f7ada890bdeca6f064ce2ace341",
+                        "css": "44d19aa88ee9abed08f25ab4b7a93ae2",
                         "css_precompiled": "",
-                        "combined": "596c0cac6384c3522a0eb20f5494a57b"
+                        "combined": "3722e298e530a163e526407d3a5a9b9a"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/variaveis/",
+                    "path": "modulos\/variaveis\/",
                     "type": "system",
                     "option": "variaveis",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../modulos.php",
-                        "../../../../modulos.js"
+                        "..\/..\/..\/..\/modulos.php",
+                        "..\/..\/..\/..\/modulos.js"
                     ],
                     "tailwind_sources_reason": "The page controller and client render the module configuration controls.",
                     "tailwind_dependencies": [
@@ -246,7 +246,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/sincronizar-bancos/",
+                    "path": "modulos\/sincronizar-bancos\/",
                     "type": "system",
                     "option": "sincronizar-bancos"
                 },
@@ -260,7 +260,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/copiar-variaveis/",
+                    "path": "modulos\/copiar-variaveis\/",
                     "type": "system",
                     "option": "copiar-variaveis"
                 }
@@ -323,7 +323,7 @@
                 },
                 {
                     "id": "form-icon-tailwind-label",
-                    "value": "Ícone (Tailwind CSS / Lucide)",
+                    "value": "Ícone (Tailwind CSS \/ Lucide)",
                     "type": "string"
                 },
                 {
@@ -333,7 +333,7 @@
                 },
                 {
                     "id": "form-icon-2-tailwind-label",
-                    "value": "Ícone Ancorado (Tailwind CSS / Lucide)",
+                    "value": "Ícone Ancorado (Tailwind CSS \/ Lucide)",
                     "type": "string"
                 },
                 {
@@ -416,7 +416,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/",
+                    "path": "modulos\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -464,15 +464,15 @@
                 {
                     "name": "Modules - Add",
                     "id": "modulos-adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "1a5fa3c6ced32679591f378ee0bf82a8",
+                        "html": "746dc47f94ea24f7bb2200e56bb27445",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "1a5fa3c6ced32679591f378ee0bf82a8"
+                        "combined": "746dc47f94ea24f7bb2200e56bb27445"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/adicionar/",
+                    "path": "modulos\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
@@ -514,15 +514,15 @@
                 {
                     "name": "Modules - Edit",
                     "id": "modulos-editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "84f5d89855ea84cd87a3ba671c8f84b5",
+                        "html": "df096df492bc98e8c9858f0ea3da05e7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "84f5d89855ea84cd87a3ba671c8f84b5"
+                        "combined": "df096df492bc98e8c9858f0ea3da05e7"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/editar/",
+                    "path": "modulos\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
@@ -564,22 +564,22 @@
                 {
                     "name": "Modules - Variables",
                     "id": "modulos-variaveis",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "4b1ab0f478ac56a5253f7a13e6088f1a",
-                        "css": "a67c7f7ada890bdeca6f064ce2ace341",
+                        "css": "44d19aa88ee9abed08f25ab4b7a93ae2",
                         "css_precompiled": "",
-                        "combined": "3680849111bea8e4a9e4b2c9b9cfbc16"
+                        "combined": "f98cffcfada4b241ecde56ec5b34597b"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos/variaveis/",
+                    "path": "modulos\/variaveis\/",
                     "type": "system",
                     "option": "variaveis",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../modulos.php",
-                        "../../../../modulos.js"
+                        "..\/..\/..\/..\/modulos.php",
+                        "..\/..\/..\/..\/modulos.js"
                     ],
                     "tailwind_sources_reason": "The page controller and client render the module configuration controls.",
                     "tailwind_dependencies": [
@@ -626,7 +626,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/sincronizar-bancos/",
+                    "path": "modulos\/sincronizar-bancos\/",
                     "type": "system",
                     "option": "sincronizar-bancos"
                 },
@@ -640,7 +640,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/copiar-variaveis/",
+                    "path": "modulos\/copiar-variaveis\/",
                     "type": "system",
                     "option": "copiar-variaveis"
                 }

@@ -1140,7 +1140,9 @@ function interface_historico($params = false){
 			$botao_carregar_mais = '';
 			
 			if($total > $max_dados_por_pagina){
-				$botao_carregar_mais = '<div class="ui grid"><div class="column center aligned"><button class="ui button blue" id="_gestor-interface-edit-historico-mais">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'historic-button-load-more')).'</button></div></div>';
+				$botao_carregar_mais = function_exists('gestor_framework_css_atual') && gestor_framework_css_atual()['modo'] === 'tailwindcss'
+					? '<div class="flex justify-center"><button type="button" class="c2fc-botao c2fc-botao-primario" id="_gestor-interface-edit-historico-mais">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'historic-button-load-more')).'</button></div>'
+					: '<div class="ui grid"><div class="column center aligned"><button class="ui button blue" id="_gestor-interface-edit-historico-mais">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'historic-button-load-more')).'</button></div></div>';
 			}
 			
 			$historico_linha .= '.</div></div></div>'.$botao_carregar_mais.'</div>';
@@ -4777,7 +4779,7 @@ function interface_config_finalizar($params = false){
 	// ===== Formulário de edição
 	
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-configuracoes',
+		'id' => interface_componente_variante('interface-formulario-configuracoes'),
 	));
 	
 	// ===== Popular toda as variáveis do layout.

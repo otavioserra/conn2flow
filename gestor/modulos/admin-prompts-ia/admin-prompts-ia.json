@@ -31,7 +31,7 @@
                     "name": "Admin Prompts IA - Listar",
                     "id": "admin-prompts-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-prompts-ia\/",
+                    "path": "admin-prompts-ia/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -71,7 +71,7 @@
                     "name": "Admin Prompts IA - Adicionar",
                     "id": "admin-prompts-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-prompts-ia\/adicionar\/",
+                    "path": "admin-prompts-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -101,7 +101,7 @@
                     "name": "Admin Prompts IA - Editar",
                     "id": "admin-prompts-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-prompts-ia\/editar\/",
+                    "path": "admin-prompts-ia/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.8",
@@ -183,7 +183,7 @@
                     "name": "Admin AI Prompts - List",
                     "id": "admin-prompts-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-prompts-ia\/",
+                    "path": "admin-prompts-ia/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -223,7 +223,7 @@
                     "name": "Admin AI Prompts - Add",
                     "id": "admin-prompts-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-prompts-ia\/adicionar\/",
+                    "path": "admin-prompts-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -253,7 +253,7 @@
                     "name": "Admin AI Prompts - Edit",
                     "id": "admin-prompts-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-prompts-ia\/editar\/",
+                    "path": "admin-prompts-ia/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.8",
@@ -330,5 +330,5 @@
             ]
         }
     },
-    "asset_version": "98934b00544e886a"
+    "asset_version": "e5fc6280e775c4e4"
 }

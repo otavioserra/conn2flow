@@ -61,11 +61,12 @@
                     "name": "Base E-mail",
                     "id": "base-email",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "6b607bac08f7fd2a232bdb7666549c91",
+                        "html": "2a3a4ba8d6c7007c65ba27cfd61f73c3",
                         "css": "264aa703cd8ab87718946d4459f30d4a",
-                        "combined": "5e752bad7892e224bdb1c5e1e35d460d"
+                        "css_precompiled": "",
+                        "combined": "a29844c89ce6575a48ea48baad94586b"
                     }
                 },
                 {
@@ -202,5 +203,5 @@
             ]
         }
     },
-    "asset_version": "aab928f0bdc210bf"
+    "asset_version": "c57eb38bd9a0d5f6"
 }

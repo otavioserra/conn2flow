@@ -29,6 +29,16 @@ beforeEach(() => {
 });
 
 describe('Listagem Tailwind (req-220)', () => {
+  it('usa o parâmetro de rota id quando a chave SQL tem nome próprio (req-237)', async () => {
+    const cfg = config(); cfg.id = 'id_subscriptions_service_stages';
+    window.c2fListaTailwind.iniciar(raiz, cfg); await pronto();
+    const edit = new URL(raiz.querySelector('[data-lista-acao="editar"]').href);
+    expect(edit.searchParams.get('id')).toBe('a&?b');
+    expect(edit.searchParams.has(cfg.id)).toBe(false);
+    const status = new URL(raiz.querySelector('[data-lista-acao="desativar"]').href);
+    expect(status.searchParams.get('id')).toBe('a&?b');
+    expect(status.searchParams.get('_csrf_token')).toBe('teste');
+  });
   it('envia contrato AJAX, índices de coluna e nenhum nome SQL do navegador', async () => {
     montar(); await pronto();
     const [url, opts] = window.fetch.mock.calls[0];

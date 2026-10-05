@@ -151,12 +151,12 @@
                     "id": "forms-contato-basico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "6558ae285389a6c924fc47da2761a45c",
+                        "html": "cd761b4b03e93eaf7554b2281c3f0ab6",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6558ae285389a6c924fc47da2761a45c"
+                        "combined": "cd761b4b03e93eaf7554b2281c3f0ab6"
                     }
                 },
                 {
@@ -164,12 +164,12 @@
                     "id": "forms-newsletter-newsletter",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "abaff8075fe73ea59651fc0704f3ee27",
+                        "html": "654fb412661aec1f7eed5b984d3c1628",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "abaff8075fe73ea59651fc0704f3ee27"
+                        "combined": "654fb412661aec1f7eed5b984d3c1628"
                     }
                 },
                 {
@@ -177,12 +177,12 @@
                     "id": "forms-registro-usuario",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "59b284421b35c9107e27a32641d9f2f8",
+                        "html": "d4a6ff22dde11bc0c73c2c89440b2998",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "59b284421b35c9107e27a32641d9f2f8"
+                        "combined": "d4a6ff22dde11bc0c73c2c89440b2998"
                     }
                 },
                 {
@@ -190,12 +190,12 @@
                     "id": "forms-pesquisa-satisfacao",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "a1e0b81519818a26babcca86f67a7b78",
+                        "html": "c623739ce657233b31b892f85bb11d41",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "a1e0b81519818a26babcca86f67a7b78"
+                        "combined": "c623739ce657233b31b892f85bb11d41"
                     }
                 },
                 {
@@ -203,12 +203,12 @@
                     "id": "forms-suporte-tecnico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "4e297360c0274cffe73b6a3c1e727a02",
+                        "html": "0c52fa96cdb4b9f31a00d3fefdcb1f3e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4e297360c0274cffe73b6a3c1e727a02"
+                        "combined": "0c52fa96cdb4b9f31a00d3fefdcb1f3e"
                     }
                 }
             ],
@@ -916,12 +916,12 @@
                     "id": "forms-contato-basico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "dc4437f0ff6309b28132ce4e2b50b8ac",
+                        "html": "ec633a3a7ce9766fc44302151393084a",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dc4437f0ff6309b28132ce4e2b50b8ac"
+                        "combined": "ec633a3a7ce9766fc44302151393084a"
                     }
                 },
                 {
@@ -929,12 +929,12 @@
                     "id": "forms-newsletter-newsletter",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "4e168e306c8697b3cc8cf1482071c2f1",
+                        "html": "0e4a4f035331527602248cd599468d95",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4e168e306c8697b3cc8cf1482071c2f1"
+                        "combined": "0e4a4f035331527602248cd599468d95"
                     }
                 },
                 {
@@ -942,12 +942,12 @@
                     "id": "forms-registro-usuario",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "95f3a70fc234fa14bfc139435e64de40",
+                        "html": "e21332afbb5b5b0948bf987680e38e3b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "95f3a70fc234fa14bfc139435e64de40"
+                        "combined": "e21332afbb5b5b0948bf987680e38e3b"
                     }
                 },
                 {
@@ -955,12 +955,12 @@
                     "id": "forms-pesquisa-satisfacao",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "c507f3e698453f40ce1fbbae6fb4881c",
+                        "html": "43688d34ed42731c2b4eab5d0b00d2af",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "c507f3e698453f40ce1fbbae6fb4881c"
+                        "combined": "43688d34ed42731c2b4eab5d0b00d2af"
                     }
                 },
                 {
@@ -968,12 +968,12 @@
                     "id": "forms-suporte-tecnico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "16b67573d441c301ef899efa83a30b5f",
+                        "html": "f9c726d6a3c5fb1055d97d986a16e612",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "16b67573d441c301ef899efa83a30b5f"
+                        "combined": "f9c726d6a3c5fb1055d97d986a16e612"
                     }
                 }
             ],
@@ -1562,5 +1562,5 @@
             ]
         }
     },
-    "asset_version": "5fe5d165ddfce1d8"
+    "asset_version": "74ace09b3812422d"
 }
