@@ -1,0 +1,57 @@
+{
+  "started_at": "2026-10-05T10:39:59.427Z",
+  "checks": [
+    {
+      "name": "Dashboard authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "Title precedes tabs",
+      "ok": true
+    },
+    {
+      "name": "Single cover M 176px",
+      "ok": true,
+      "data": {
+        "images": 1,
+        "svg": 0,
+        "height": 176,
+        "fit": "cover"
+      }
+    },
+    {
+      "name": "Cover G 232px",
+      "ok": true
+    },
+    {
+      "name": "Tooltip aligned left and unclipped",
+      "ok": true,
+      "data": {
+        "left": "0px",
+        "transform": "none",
+        "z": "100030",
+        "pos": "bottom left",
+        "overflow": "visible"
+      }
+    },
+    {
+      "name": "Scenario completes",
+      "ok": false,
+      "data": "Error: No active widget record available in Lab\n    at C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\sdd\\validation\\req236-dashboard-e2e.cjs:32:18"
+    },
+    {
+      "name": "Restore dashboard_widgets_layout",
+      "ok": true
+    },
+    {
+      "name": "Restore dashboard_densidade",
+      "ok": true
+    },
+    {
+      "name": "Restore dashboard_aba_ativa",
+      "ok": true
+    }
+  ],
+  "summary": "8/9"
+}
