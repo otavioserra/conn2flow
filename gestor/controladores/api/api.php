@@ -601,10 +601,7 @@ function api_project_recover() {
         if ($zip->open($zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             throw new Exception('Falha ao criar arquivo ZIP de recuperação');
         }
-        $jsonFiles = glob($temp_base . '*Data.json') ?: [];
-        foreach ($jsonFiles as $jf) {
-            $zip->addFile($jf, basename($jf));
-        }
+        db_data_zip_add_tables($zip, $temp_base);
         if ($recover_contents) {
             api_zip_add_directory($zip, $_GESTOR['ROOT_PATH'] . 'contents', 'contents');
         }

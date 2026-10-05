@@ -32,6 +32,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/../../../bibliotecas/db-data.php';
+
 // ========================= UTILITÁRIOS DE BAIXO NÍVEL =========================
 
 /** Remove BOM UTF-8 do início do conteúdo, quando presente. */
@@ -441,25 +443,20 @@ function rdr_processar(string $sourceDir, string $gestorDir): array {
 
     $sourceDir = rtrim($sourceDir, '/\\');
     $stats['contents'] = rdr_sincronizar_contents($sourceDir, $gestorDir);
-    $dataFiles = glob($sourceDir . DIRECTORY_SEPARATOR . '*Data.json') ?: [];
-    if (!$dataFiles) {
+    $tables = db_data_list_tables($sourceDir);
+    if (!$tables) {
         rdr_log('RDR_SEM_DATA_JSON em ' . $sourceDir);
         return $stats;
     }
 
-    foreach ($dataFiles as $dataFile) {
-        $tabela = rdr_data_file_to_table($dataFile);
+    foreach ($tables as $tabela) {
         if (!isset($configs[$tabela])) {
             $stats['ignoradas'][] = $tabela;
             rdr_log("RDR_SKIP tabela=$tabela (sem config sync_resources)");
             continue;
         }
         $cfg = $configs[$tabela];
-        $registros = rdr_json_read($dataFile);
-        if (!is_array($registros)) {
-            rdr_log("RDR_SKIP tabela=$tabela (Data.json inválido)");
-            continue;
-        }
+        $registros = db_data_read_table($tabela, $sourceDir);
 
         // Agrupa metadados por idioma e grava arquivos físicos de imediato.
         $porLang = [];
