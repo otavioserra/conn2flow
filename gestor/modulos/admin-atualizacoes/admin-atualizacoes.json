@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.4",
+    "versao": "1.0.5",
     "bibliotecas": [
         "interface",
         "html"
@@ -20,12 +20,41 @@
                 {
                     "name": "Admin Atualizações",
                     "id": "admin-atualizacoes",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-atualizacoes/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
-                    "version": "1.2",
+                    "version": "1.3",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
+                    ],
+                    "tailwind_sources_reason": "O controlador monta linhas e painéis de choques com utilitários Tailwind.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "atualizacoes-lista-tailwind",
+                            "scope": "module"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "3b4111f3cd39194b7053bfbffa69ba62",
                         "css": "",
@@ -35,11 +64,40 @@
                 {
                     "name": "Admin Atualizações - Detalhe",
                     "id": "admin-atualizacoes-detalhe",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
-                    "version": "1.2",
+                    "version": "1.3",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
+                    ],
+                    "tailwind_sources_reason": "O controlador monta diffs e estados de choque com utilitários Tailwind.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "atualizacoes-detalhe-comp-tailwind",
+                            "scope": "module"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "57671f489f494af3ded385b978e857a9",
                         "css": "",
@@ -66,6 +124,28 @@
                         "html": "d15a8a39cceb60aed8b27527b750cac2",
                         "css": "",
                         "combined": "d15a8a39cceb60aed8b27527b750cac2"
+                    }
+                },
+                {
+                    "name": "Atualizações - Lista Tailwind",
+                    "id": "atualizacoes-lista-tailwind",
+                    "version": "1.0",
+                    "framework_css": "tailwindcss",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Atualizações - Detalhe Tailwind",
+                    "id": "atualizacoes-detalhe-comp-tailwind",
+                    "version": "1.0",
+                    "framework_css": "tailwindcss",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 }
             ],
@@ -228,6 +308,46 @@
                 {
                     "id": "updates-advanced-options",
                     "value": "Opções Avançadas",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-guide",
+                    "value": "1) Escolha o modo, 2) ajuste as opções e 3) inicie.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-none",
+                    "value": "Nenhum modo selecionado",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-wipe-confirm",
+                    "value": "A opção --wipe removerá arquivos não protegidos. Deseja continuar?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tables-placeholder",
+                    "value": "paginas,variaveis",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-logs-retention-placeholder",
+                    "value": "14",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tag-placeholder",
+                    "value": "gestor-v1.14.0",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-domain-label",
+                    "value": "Domínio",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-domain-placeholder",
+                    "value": "localhost",
                     "type": "string"
                 },
                 {
@@ -418,12 +538,41 @@
                 {
                     "name": "Admin Updates",
                     "id": "admin-atualizacoes",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-atualizacoes/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
-                    "version": "1.2",
+                    "version": "1.3",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
+                    ],
+                    "tailwind_sources_reason": "The controller assembles update-history rows and clash panels with Tailwind utilities.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "atualizacoes-lista-tailwind",
+                            "scope": "module"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "3b4111f3cd39194b7053bfbffa69ba62",
                         "css": "",
@@ -433,11 +582,40 @@
                 {
                     "name": "Admin Updates - Detail",
                     "id": "admin-atualizacoes-detalhe",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
-                    "version": "1.2",
+                    "version": "1.3",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
+                    ],
+                    "tailwind_sources_reason": "The controller assembles clash details and decisions with Tailwind utilities.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "atualizacoes-detalhe-comp-tailwind",
+                            "scope": "module"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "57671f489f494af3ded385b978e857a9",
                         "css": "",
@@ -464,6 +642,28 @@
                         "html": "d15a8a39cceb60aed8b27527b750cac2",
                         "css": "",
                         "combined": "d15a8a39cceb60aed8b27527b750cac2"
+                    }
+                },
+                {
+                    "name": "Updates - List Tailwind",
+                    "id": "atualizacoes-lista-tailwind",
+                    "version": "1.0",
+                    "framework_css": "tailwindcss",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Updates - Detail Tailwind",
+                    "id": "atualizacoes-detalhe-comp-tailwind",
+                    "version": "1.0",
+                    "framework_css": "tailwindcss",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 }
             ],
@@ -626,6 +826,46 @@
                 {
                     "id": "updates-advanced-options",
                     "value": "Advanced Options",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-guide",
+                    "value": "1) Choose a mode, 2) adjust the options, and 3) start.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-none",
+                    "value": "No mode selected",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-wipe-confirm",
+                    "value": "The --wipe option will remove non-protected files. Are you sure you want to continue?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tables-placeholder",
+                    "value": "pages,variables",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-logs-retention-placeholder",
+                    "value": "14",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tag-placeholder",
+                    "value": "gestor-v1.14.0",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-domain-label",
+                    "value": "Domain",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-domain-placeholder",
+                    "value": "localhost",
                     "type": "string"
                 },
                 {
@@ -811,5 +1051,5 @@
             ]
         }
     },
-    "asset_version": "bec55e049cf704d8"
+    "asset_version": "938639cda7d67bf1"
 }

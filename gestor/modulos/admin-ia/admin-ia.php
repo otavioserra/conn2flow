@@ -50,7 +50,7 @@ function admin_ia_listar(){
             $cel_servidores = modelo_var_troca_tudo($cel_servidores,'#id#',$servidor['id_servidores_ia']);
             $cel_servidores = modelo_var_troca($cel_servidores,'#nome#',$servidor['nome']);
             $cel_servidores = modelo_var_troca($cel_servidores,'#tipo#',$servidor['tipo']);
-            $cel_servidores = modelo_var_troca($cel_servidores,'#padrao#',($servidor['padrao'] == '1' ? '<span class="ui green text">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')).'</span>' : '<span class="ui red text">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')).'</span>'));
+            $cel_servidores = modelo_var_troca($cel_servidores,'#padrao#',($servidor['padrao'] == '1' ? '<span class="c2fc-selo c2fc-selo-ativo">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')).'</span>' : '<span class="c2fc-selo c2fc-selo-inativo">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')).'</span>'));
             $cel_servidores = modelo_var_troca($cel_servidores,'#status#',$servidor['status'] == 'A' ? 'Ativo' : 'Inativo');
             $cel_servidores = modelo_var_troca($cel_servidores,'#data-criacao#',date('d/m/Y H:i', strtotime($servidor['data_criacao'])));
             
@@ -187,16 +187,17 @@ function admin_ia_editar(){
                 $isEnabled = empty($globalModels) ? true : (($globalModels[$modelo['name']] ?? 0) === 1);
                 $checked = $isEnabled ? 'checked="checked"' : '';
 
-                $modelosCheckboxesHtml .= '<div class="field"><div class="ui toggle checkbox">'
+                $modelosCheckboxesHtml .= '<label class="c2fc-chave">'
                     . '<input type="checkbox" name="global_model[]" value="' . $modelName . '" ' . $checked . '>'
-                    . '<label><strong>' . $displayName . '</strong> <small style="color: #999;">(' . $modelName . ')</small><br>'
-                    . '<small>' . $description . '</small></label>'
-                    . '</div></div>';
+                    . '<span class="c2fc-chave-trilho"></span>'
+                    . '<span class="c2fc-chave-rotulo"><strong>' . $displayName . '</strong> <small>(' . $modelName . ')</small>'
+                    . '<br><small>' . $description . '</small></span>'
+                    . '</label>';
             }
         }
     }
     if (empty($modelosCheckboxesHtml)) {
-        $modelosCheckboxesHtml = '<p>Nenhum modelo disponível.</p>';
+        $modelosCheckboxesHtml = '<p>'.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'ui-models-empty')).'</p>';
     }
     $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[global_models_checkboxes]]', $modelosCheckboxesHtml);
 }
@@ -760,6 +761,7 @@ function admin_ia_start(){
 
         interface_ajax_finalizar();
     } else {
+                $_GESTOR['tailwind-page-bundle'] = true;
         admin_ia_interfaces_padroes();
 
         interface_iniciar();

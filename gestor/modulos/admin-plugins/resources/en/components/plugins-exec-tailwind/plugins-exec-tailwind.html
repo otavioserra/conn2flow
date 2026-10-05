@@ -1,0 +1,67 @@
+<div class="space-y-6 rounded border border-slate-200 bg-white p-4" id="admin-plugins-exec-root"
+    data-endpoint="?ajax=1&modulo=admin-plugins&ajax-opcao=update" data-status-active="@[[ui-status-active]]@"
+    data-status-inactive="@[[ui-status-inactive]]@" data-status-unknown="@[[ui-status-unknown]]@"
+    data-log-action-running="@[[ui-log-action-running]]@" data-log-action-starting="@[[ui-log-action-starting]]@"
+    data-log-action-error="@[[ui-log-action-error]]@" data-log-unknown-error="@[[ui-log-unknown-error]]@"
+    data-log-action-success="@[[ui-log-action-success]]@" data-log-output="@[[ui-log-output]]@"
+    data-log-detail="@[[ui-log-detail]]@" data-log-communication-error="@[[ui-log-communication-error]]@"
+    data-log-last-update="@[[ui-log-last-update]]@">
+    <div>
+        <h2 class="text-lg font-semibold text-slate-900">@[[ui-exec-page-title]]@</h2>
+        <p class="mt-1 text-sm text-slate-600">@[[ui-exec-page-description]]@</p>
+    </div>
+
+    <section class="space-y-3">
+        <h3 class="text-base font-semibold text-slate-800">@[[ui-exec-info]]@</h3>
+        <dl class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+                <dt class="text-xs font-medium text-slate-500">ID</dt>
+                <dd class="text-sm text-slate-900" id="plugin-id-display">#id#</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">@[[form-name-label]]@</dt>
+                <dd class="text-sm text-slate-900" id="plugin-name-display">#nome#</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">@[[metadata-origin-type]]@</dt>
+                <dd class="text-sm text-slate-900" id="plugin-origem-display">#origem_tipo#</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-medium text-slate-500">@[[field-status]]@</dt>
+                <dd><span class="inline-flex rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
+                        id="plugin-status-display">#status#</span></dd>
+            </div>
+        </dl>
+    </section>
+
+    <section class="space-y-3">
+        <h3 class="text-base font-semibold text-slate-800">@[[ui-exec-actions]]@</h3>
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <button
+                class="rounded bg-emerald-700 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50"
+                id="plugin-install-btn" data-action="instalar" type="button">@[[ui-exec-install]]@</button>
+            <button
+                class="rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-50"
+                id="plugin-update-btn" data-action="atualizar" type="button">@[[ui-exec-update]]@</button>
+            <button
+                class="rounded bg-slate-700 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                id="plugin-reprocess-btn" data-action="reprocessar" type="button">@[[ui-exec-reprocess]]@</button>
+        </div>
+    </section>
+
+    <section class="space-y-3">
+        <h3 class="text-base font-semibold text-slate-800">@[[ui-exec-log]]@</h3>
+        <div class="hidden space-y-1" id="plugin-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+            aria-valuenow="0">
+            <div class="h-2 overflow-hidden rounded bg-slate-200">
+                <div class="h-full bg-sky-700 transition-[width]" data-progress-fill style="width:0%"></div>
+            </div>
+            <p class="text-xs text-slate-600">@[[ui-exec-progress]]@</p>
+        </div>
+        <pre class="hidden max-h-[40vh] overflow-auto rounded bg-slate-950 p-3 font-mono text-xs text-slate-100"
+            id="plugin-log-output" aria-live="polite"></pre>
+    </section>
+
+    <a class="inline-flex rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        href="../editar/?id=#id#">@[[ui-exec-back]]@</a>
+</div>

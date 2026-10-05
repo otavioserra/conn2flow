@@ -307,6 +307,30 @@
         }
     },
     {
+        "name": "Configuration - Fields Tailwind",
+        "id": "configuracao-campos-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.0",
+        "checksum": {
+            "html": "",
+            "css": "",
+            "css_precompiled": "",
+            "combined": ""
+        }
+    },
+    {
+        "name": "Configuration - Widget Tailwind",
+        "id": "configuracao-widget-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.0",
+        "checksum": {
+            "html": "",
+            "css": "",
+            "css_precompiled": "",
+            "combined": ""
+        }
+    },
+    {
         "name": "Simple Interface",
         "id": "interface-simples",
         "version": "1.3",

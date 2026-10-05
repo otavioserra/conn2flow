@@ -184,16 +184,55 @@
                 {
                     "name": "Módulos - Variáveis",
                     "id": "modulos-variaveis",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
                         "html": "db7409643fa9dc0ae84a343afd19b492",
                         "css": "a67c7f7ada890bdeca6f064ce2ace341",
                         "combined": "7d77c18e83b0b24c2bdde93b29428dd5"
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/variaveis\/",
                     "type": "system",
-                    "option": "variaveis"
+                    "option": "variaveis",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../modulos.php",
+                        "../../../../modulos.js"
+                    ],
+                    "tailwind_sources_reason": "The page controller and client render the module configuration controls.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-widget-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-campos-tailwind",
+                            "scope": "global"
+                        }
+                    ]
                 },
                 {
                     "name": "Módulos Administração de Sistema - Sincronizar Bancos",
@@ -523,16 +562,55 @@
                 {
                     "name": "Modules - Variables",
                     "id": "modulos-variaveis",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
                         "html": "a70113314be53c8b9ccfe73a3ec4e61a",
                         "css": "a67c7f7ada890bdeca6f064ce2ace341",
                         "combined": "a7a5a699f6ddbf8448edcdfcd2e369ac"
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/variaveis\/",
                     "type": "system",
-                    "option": "variaveis"
+                    "option": "variaveis",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../modulos.php",
+                        "../../../../modulos.js"
+                    ],
+                    "tailwind_sources_reason": "The page controller and client render the module configuration controls.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-widget-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-campos-tailwind",
+                            "scope": "global"
+                        }
+                    ]
                 },
                 {
                     "name": "System Administration Modules - Synchronize Databases",
@@ -683,5 +761,5 @@
             ]
         }
     },
-    "asset_version": "4d81aed6970f9384"
+    "asset_version": "bb09078d8047f186"
 }

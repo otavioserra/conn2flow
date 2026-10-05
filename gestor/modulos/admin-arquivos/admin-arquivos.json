@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.8",
+    "versao": "1.1.9",
     "bibliotecas": [
         "interface",
         "html",
@@ -31,12 +31,34 @@
                 {
                     "name": "Admin Arquivos",
                     "id": "admin-arquivos",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-arquivos/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.16",
+                    "version": "1.17",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-arquivos.js"
+                    ],
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "6c62f332f08ba17ad7f6b2b07bf86469",
                         "css": "f3b1f04418fd7979ad9ecbf3e5285634",
@@ -47,11 +69,28 @@
                 {
                     "name": "Admin Arquivos - Adicionar",
                     "id": "admin-arquivos-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.5",
+                    "version": "1.6",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-arquivos.js"
+                    ],
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "0a378bbc2501de51816ef6f545904f1e",
                         "css": "d31d76fb8265d4e421328464d29c85c6",
@@ -509,12 +548,34 @@
                 {
                     "name": "Admin Files",
                     "id": "admin-arquivos",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-arquivos/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.16",
+                    "version": "1.17",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-arquivos.js"
+                    ],
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "6c62f332f08ba17ad7f6b2b07bf86469",
                         "css": "f3b1f04418fd7979ad9ecbf3e5285634",
@@ -525,11 +586,28 @@
                 {
                     "name": "Admin Files - Add",
                     "id": "admin-arquivos-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.5",
+                    "version": "1.6",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-arquivos.js"
+                    ],
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "0a378bbc2501de51816ef6f545904f1e",
                         "css": "d31d76fb8265d4e421328464d29c85c6",

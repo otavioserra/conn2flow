@@ -153,19 +153,7 @@ $(document).ready(function () {
 		var $barra = $('#c2f-thumbs-bar');
 		var $more = $('#c2f-more');
 
-		// ===== Filtros server-side (calendário + dropdowns Fomantic)
-		var textCal = {
-			days: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-			months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-			monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-			today: 'Hoje', now: 'Agora', am: 'AM', pm: 'PM'
-		};
-		if ($('#rangestart').length) $('#rangestart').calendar({ text: textCal, type: 'month', endCalendar: $('#rangeend') });
-		if ($('#rangeend').length) $('#rangeend').calendar({ text: textCal, type: 'month', startCalendar: $('#rangestart') });
-		$('.ui.dropdown').dropdown();
-		$('.c2f-filter-accordion').accordion();
-		$('#c2f-files-app .ui.checkbox').checkbox();
-		$('.segment .button').popup({ delay: { show: 150, hide: 0 }, position: 'top right', variation: 'inverted' });
+		// ===== Filtros server-side
 
 		// ===== Busca instantânea (client-side) sobre os itens já carregados
 		var $busca = $('#c2f-search');
@@ -188,10 +176,13 @@ $(document).ready(function () {
 
 		function coletarFiltros() {
 			var filtros = {};
-			if ($('#rangestart').length && $('#rangestart').calendar('get date')) filtros.dataDe = $('#rangestart').calendar('get date');
-			if ($('#rangeend').length && $('#rangeend').calendar('get date')) filtros.dataAte = $('#rangeend').calendar('get date');
-			if ($('#categories').length && $('#categories').dropdown('get value').length > 0) filtros.categorias = $('#categories').dropdown('get value');
-			if ($('#order').length) filtros.order = $('#order').dropdown('get value');
+			var dataDe = $('#rangestart').val();
+			var dataAte = $('#rangeend').val();
+			var categorias = $('#categories').val();
+			if (dataDe) filtros.dataDe = dataDe;
+			if (dataAte) filtros.dataAte = dataAte;
+			if (categorias && categorias.length > 0) filtros.categorias = categorias;
+			if ($('#order').length) filtros.order = $('#order').val();
 			return filtros;
 		}
 
@@ -237,8 +228,8 @@ $(document).ready(function () {
 			var cam = adminArquivosEsc(p.caminho);
 			return '' +
 				'<div class="c2f-item c2f-folder" data-tipo="pasta" data-caminho="' + cam + '" data-nome="' + adminArquivosEsc(p.nome) + '">' +
-				'  <div class="c2f-check"><div class="ui checkbox"><input type="checkbox" class="c2f-sel"><label></label></div></div>' +
-				'  <div class="c2f-thumb c2f-folder-open"><i class="folder icon huge yellow"></i></div>' +
+				'  <div class="c2f-check"><input type="checkbox" class="c2f-sel" aria-label="' + adminArquivosEsc(p.nome) + '"></div>' +
+				'  <div class="c2f-thumb c2f-folder-open"><i class="folder icon huge text-amber-500"></i></div>' +
 				'  <div class="c2f-meta">' +
 				'    <div class="c2f-name" title="' + adminArquivosEsc(p.nome) + '">' + adminArquivosEsc(p.nome) + '</div>' +
 				'    <div class="c2f-sub c2f-col-date">' + adminArquivosEsc(p.data) + '</div>' +
@@ -246,8 +237,8 @@ $(document).ready(function () {
 				'    <div class="c2f-sub c2f-col-size">—</div>' +
 				'  </div>' +
 				'  <div class="c2f-actions">' +
-				'    <button class="ui mini icon button c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
-				'    <button class="ui mini icon red button c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
+				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
+				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -256,12 +247,12 @@ $(document).ready(function () {
 			var cam = adminArquivosEsc(a.caminho);
 			var img = a.imgSrc || iconePadrao[a.tipo] || iconePadrao.file;
 			var acaoSelecionar = cfg.paginaIframe
-				? '<button class="ui mini icon blue button c2f-select" title="' + adminArquivosEsc(t('list-button-select')) + '"><i class="check icon"></i></button>'
-				: '<button class="ui mini icon button c2f-copy" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i class="linkify icon"></i></button>';
+				? '<button class="rounded border bg-white p-1 text-sky-700 c2f-select" title="' + adminArquivosEsc(t('list-button-select')) + '"><i class="check icon"></i></button>'
+				: '<button class="rounded border bg-white p-1 c2f-copy" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i class="linkify icon"></i></button>';
 			return '' +
 				'<div class="c2f-item c2f-file" data-tipo="arquivo" data-caminho="' + cam + '" data-nome="' + adminArquivosEsc(a.nome) + '"' +
 				'     data-url="' + adminArquivosEsc(a.url) + '" data-mime="' + adminArquivosEsc(a.mime) + '" data-tipoarq="' + adminArquivosEsc(a.tipo) + '">' +
-				'  <div class="c2f-check"><div class="ui checkbox"><input type="checkbox" class="c2f-sel"><label></label></div></div>' +
+				'  <div class="c2f-check"><input type="checkbox" class="c2f-sel" aria-label="' + adminArquivosEsc(a.nome) + '"></div>' +
 				'  <div class="c2f-thumb"><img class="c2f-img" data-caminho="' + cam + '" src="' + adminArquivosEsc(img) + '" alt="' + adminArquivosEsc(a.nome) + '"></div>' +
 				'  <div class="c2f-meta">' +
 				'    <div class="c2f-name" title="' + adminArquivosEsc(a.nome) + '">' + adminArquivosEsc(a.nome) + '</div>' +
@@ -271,8 +262,8 @@ $(document).ready(function () {
 				'  </div>' +
 				'  <div class="c2f-actions">' +
 				acaoSelecionar +
-				'    <button class="ui mini icon button c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
-				'    <button class="ui mini icon red button c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
+				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
+				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -296,8 +287,6 @@ $(document).ready(function () {
 				$lista.html(html);
 			}
 
-			$lista.find('.ui.checkbox').checkbox();
-
 			// BATCH-140: todo re-render (trocar de modo, filtrar, paginar) reconstrói o HTML e os
 			// checkboxes nascem desmarcados — enquanto `estado.selecionados` continua cheio. A barra
 			// dizia "2 selecionados" sobre duas caixas visualmente vazias, e o despacho em lote
@@ -309,7 +298,7 @@ $(document).ready(function () {
 				// nasceria marcado sem nunca ter sido selecionado.
 				var cam = $item.attr('data-caminho');
 				if (!Object.prototype.hasOwnProperty.call(estado.selecionados, cam)) return;
-				$item.find('.c2f-sel').prop('checked', true).closest('.ui.checkbox').checkbox('set checked');
+				$item.find('.c2f-sel').prop('checked', true);
 			});
 
 			// Estado vazio
@@ -418,10 +407,9 @@ $(document).ready(function () {
 
 		$('#c2f-filter').on('click', function () { estado.pagina = 0; carregar(false); });
 		$('#c2f-clear').on('click', function () {
-			if ($('#rangestart').length) $('#rangestart').calendar('clear');
-			if ($('#rangeend').length) $('#rangeend').calendar('clear');
-			if ($('#categories').length) $('#categories').dropdown('clear');
-			if ($('#order').length) $('#order').dropdown('set selected', 'alphabetical-asc');
+			$('#rangestart, #rangeend').val('');
+			if ($('#categories').length) $('#categories').val([]).trigger('change');
+			if ($('#order').length) $('#order').val('alphabetical-asc').trigger('change');
 			estado.pagina = 0; carregar(false);
 		});
 
@@ -466,26 +454,26 @@ $(document).ready(function () {
 			// copiar URL, além de renomear e excluir.
 			var acoes = '';
 			if (cfg.paginaIframe) {
-				acoes += '<button class="ui blue button c2f-gal-select"><i class="check icon"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
+				acoes += '<button class="rounded bg-sky-700 px-3 py-2 text-white c2f-gal-select"><i class="check icon"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
 			} else {
-				acoes += '<button class="ui button c2f-gal-copy"><i class="linkify icon"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
+				acoes += '<button class="rounded border px-3 py-2 c2f-gal-copy"><i class="linkify icon"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
 			}
-			acoes += '<a class="ui button c2f-gal-open" target="_blank" rel="noopener"><i class="external alternate icon"></i> ' + adminArquivosEsc(t('open-new-tab')) + '</a>';
-			acoes += '<button class="ui button c2f-gal-rename"><i class="edit icon"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
-			acoes += '<button class="ui red button c2f-gal-del"><i class="trash icon"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
+			acoes += '<a class="rounded border px-3 py-2 c2f-gal-open" target="_blank" rel="noopener"><i class="external alternate icon"></i> ' + adminArquivosEsc(t('open-new-tab')) + '</a>';
+			acoes += '<button class="rounded border px-3 py-2 c2f-gal-rename"><i class="edit icon"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
+			acoes += '<button class="rounded bg-rose-700 px-3 py-2 text-white c2f-gal-del"><i class="trash icon"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
 
 			var html =
-				'<div class="ui fullscreen modal c2f-gallery-modal" id="c2f-gallery-modal">' +
-				'  <i class="close icon"></i>' +
-				'  <div class="header"><span class="c2f-gallery-name"></span> <span class="c2f-gallery-counter"></span></div>' +
+				'<dialog class="c2f-gallery-modal" id="c2f-gallery-modal">' +
+				'  <button type="button" class="c2f-gallery-close" aria-label="' + adminArquivosEsc(window.c2fControles.texto('fechar')) + '">×</button>' +
+				'  <div class="c2f-gallery-header"><span class="c2f-gallery-name"></span> <span class="c2f-gallery-counter"></span></div>' +
 				'  <div class="content c2f-gallery-content">' +
-				'    <button class="ui circular icon button c2f-gallery-prev"><i class="chevron left icon"></i></button>' +
+				'    <button class="rounded border p-2 c2f-gallery-prev" aria-label="Previous"><i class="chevron left icon"></i></button>' +
 				'    <div class="c2f-gallery-stage"><img class="c2f-gallery-img" src=""></div>' +
-				'    <button class="ui circular icon button c2f-gallery-next"><i class="chevron right icon"></i></button>' +
+				'    <button class="rounded border p-2 c2f-gallery-next" aria-label="Next"><i class="chevron right icon"></i></button>' +
 				'  </div>' +
 				'  <div class="c2f-gallery-strip"></div>' +
-				'  <div class="actions c2f-gallery-actions">' + acoes + '</div>' +
-				'</div>';
+				'  <div class="c2f-gallery-actions">' + acoes + '</div>' +
+				'</dialog>';
 			$(html).appendTo('body');
 
 			var $m = $('#c2f-gallery-modal');
@@ -495,6 +483,8 @@ $(document).ready(function () {
 				galeria.idx = parseInt($(this).attr('data-idx'), 10) || 0;
 				mostrarGaleria();
 			});
+			$m.on('click', '.c2f-gallery-close', function () { $m[0].close(); });
+			$m.on('click', function (e) { if (e.target === $m[0]) $m[0].close(); });
 
 			// ===== Ações do item exibido
 
@@ -502,54 +492,56 @@ $(document).ready(function () {
 				var it = galeriaItemAtual(); if (!it) return;
 				var dados = { id: it.caminho, caminho: it.caminho, imgSrc: it.thumb, nome: it.nome, data: it.data, tipo: it.mime };
 				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), '*');
-				$m.modal('hide');
+				$m[0].close();
 			});
 
 			$m.on('click', '.c2f-gal-copy', function () {
 				var it = galeriaItemAtual(); if (!it) return;
-				navigator.clipboard.writeText(it.url);
-				$(this).popup({ content: t('copied'), on: 'manual' }).popup('show');
-				var self = this;
-				setTimeout(function () { try { $(self).popup('hide'); } catch (err) {} }, 900);
+				navigator.clipboard.writeText(it.url).then(function () {
+					if (window.c2fControles) window.c2fControles.aviso(t('copied'), 'info');
+				}).catch(function (err) { console.error(err); });
 			});
 
 			$m.on('click', '.c2f-gal-rename', function () {
 				var it = galeriaItemAtual(); if (!it) return;
-				var novo = window.prompt(t('folder-rename'), it.nome);
-				if (novo === null) return;
-				novo = novo.trim();
-				if (!novo || novo === it.nome) return;
-				$.ajax({
-					type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
-					data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'renomear', caminho: it.caminho, nome: novo },
-					success: function (resp) {
-						if (resp.status === 'Ok' && resp.item) {
-							it.caminho = resp.item.caminho;
-							it.url = resp.item.url;
-							it.nome = resp.item.nome;
-							if (resp.item.imgSrc) it.thumb = resp.item.imgSrc;
-							galeria.dirty = true;
-							mostrarGaleria();
-						} else {
-							alertaSimples(resp.status);
+				window.c2fControles.dialogo.perguntar(t('folder-rename'), it.nome).then(function (novo) {
+					if (novo === null) return;
+					novo = novo.trim();
+					if (!novo || novo === it.nome) return;
+					$.ajax({
+						type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
+						data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'renomear', caminho: it.caminho, nome: novo },
+						success: function (resp) {
+							if (resp.status === 'Ok' && resp.item) {
+								it.caminho = resp.item.caminho;
+								it.url = resp.item.url;
+								it.nome = resp.item.nome;
+								if (resp.item.imgSrc) it.thumb = resp.item.imgSrc;
+								galeria.dirty = true;
+								mostrarGaleria();
+							} else {
+								alertaSimples(resp.status);
+							}
 						}
-					}
+					});
 				});
 			});
 
 			$m.on('click', '.c2f-gal-del', function () {
 				var it = galeriaItemAtual(); if (!it) return;
-				if (!window.confirm(t('delete-confirm'))) return;
-				$.ajax({
-					type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
-					data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'excluir', itens: JSON.stringify([{ caminho: it.caminho, tipo: 'arquivo' }]), recursivo: 'false' },
-					success: function () {
-						galeria.dirty = true;
-						galeria.itens.splice(galeria.idx, 1);
-						if (galeria.itens.length === 0) { $m.modal('hide'); return; }
-						if (galeria.idx >= galeria.itens.length) galeria.idx = galeria.itens.length - 1;
-						mostrarGaleria();
-					}
+				window.c2fControles.dialogo.confirmar(t('delete-confirm'), { perigo: true }).then(function (confirmado) {
+					if (!confirmado) return;
+					$.ajax({
+						type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
+						data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'excluir', itens: JSON.stringify([{ caminho: it.caminho, tipo: 'arquivo' }]), recursivo: 'false' },
+						success: function () {
+							galeria.dirty = true;
+							galeria.itens.splice(galeria.idx, 1);
+							if (galeria.itens.length === 0) { $m[0].close(); return; }
+							if (galeria.idx >= galeria.itens.length) galeria.idx = galeria.itens.length - 1;
+							mostrarGaleria();
+						}
+					});
 				});
 			});
 		}
@@ -587,27 +579,25 @@ $(document).ready(function () {
 			}
 			if (galeria.itens.length === 0) return;
 			mostrarGaleria();
-			$('#c2f-gallery-modal').modal({
-				onHidden: function () {
-					$(document).off('keydown.c2fgal');
-					// Reflete rename/exclusão feitos dentro da galeria ao fechar.
-					if (galeria.dirty) { galeria.dirty = false; carregar(false); }
-				}
-			}).modal('show');
+			var modal = $('#c2f-gallery-modal')[0];
+			modal.addEventListener('close', function () {
+				$(document).off('keydown.c2fgal');
+				if (galeria.dirty) { galeria.dirty = false; carregar(false); }
+			}, { once: true });
+			modal.showModal();
 			$(document).off('keydown.c2fgal').on('keydown.c2fgal', function (e) {
 				if (e.key === 'ArrowLeft') passoGaleria(-1);
 				else if (e.key === 'ArrowRight') passoGaleria(1);
-				else if (e.key === 'Escape') $('#c2f-gallery-modal').modal('hide');
+				else if (e.key === 'Escape') { e.preventDefault(); modal.close(); }
 			});
 		}
 
 		$lista.on('click', '.c2f-copy', function (e) {
 			e.stopPropagation();
 			var url = $(this).closest('.c2f-item').attr('data-url');
-			navigator.clipboard.writeText(url);
-			$(this).popup({ content: t('copied'), on: 'manual' }).popup('show');
-			var self = this;
-			setTimeout(function () { try { $(self).popup('hide'); } catch (err) {} }, 900);
+			navigator.clipboard.writeText(url).then(function () {
+				if (window.c2fControles) window.c2fControles.aviso(t('copied'), 'info');
+			}).catch(function (err) { console.error(err); });
 		});
 
 		$lista.on('click', '.c2f-select', function (e) {
@@ -635,17 +625,18 @@ $(document).ready(function () {
 			e.stopPropagation();
 			var $item = $(this).closest('.c2f-item');
 			var atual = $item.attr('data-nome');
-			var novo = window.prompt(t('folder-rename'), atual);
-			if (novo === null) return;
-			novo = novo.trim();
-			if (!novo || novo === atual) return;
-			$.ajax({
-				type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
-				data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'renomear', caminho: $item.attr('data-caminho'), nome: novo },
-				success: function (resp) {
-					if (resp.status === 'Ok') carregar(false);
-					else alertaSimples(resp.status);
-				}
+			window.c2fControles.dialogo.perguntar(t('folder-rename'), atual).then(function (novo) {
+				if (novo === null) return;
+				novo = novo.trim();
+				if (!novo || novo === atual) return;
+				$.ajax({
+					type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
+					data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'renomear', caminho: $item.attr('data-caminho'), nome: novo },
+					success: function (resp) {
+						if (resp.status === 'Ok') carregar(false);
+						else alertaSimples(resp.status);
+					}
+				});
 			});
 		});
 
@@ -696,8 +687,8 @@ $(document).ready(function () {
 		// Zera a seleção no estado E no DOM (itens e "selecionar todos"), para que o próximo lote comece limpo.
 		function limparSelecao() {
 			estado.selecionados = {};
-			$lista.find('.c2f-sel').prop('checked', false).closest('.ui.checkbox').checkbox('set unchecked');
-			$('#c2f-select-all').prop('checked', false).closest('.ui.checkbox').checkbox('set unchecked');
+			$lista.find('.c2f-sel').prop('checked', false);
+			$('#c2f-select-all').prop('checked', false);
 			atualizarBarraSelecao();
 		}
 
@@ -726,54 +717,56 @@ $(document).ready(function () {
 		// ===== Exclusão (individual/lote), com tratamento de pasta não-vazia
 
 		function excluirItens(itens, recursivo) {
-			$('.ui.modal.confirm').modal({
-				onApprove: function () {
-					$.ajax({
-						type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
-						data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'excluir', itens: JSON.stringify(itens), recursivo: recursivo ? 'true' : 'false' },
-						success: function (resp) {
-							var naoVazias = [];
-							if (resp && resp.resultados) {
-								for (var k = 0; k < resp.resultados.length; k++) {
-									if (resp.resultados[k].status === 'NotEmpty') naoVazias.push(resp.resultados[k].caminho);
-								}
+			window.c2fControles.dialogo.confirmar(t('delete-confirm'), { perigo: true }).then(function (confirmado) {
+				if (!confirmado) return;
+				$.ajax({
+					type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
+					data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'excluir', itens: JSON.stringify(itens), recursivo: recursivo ? 'true' : 'false' },
+					success: function (resp) {
+						var naoVazias = [];
+						if (resp && resp.resultados) {
+							for (var k = 0; k < resp.resultados.length; k++) {
+								if (resp.resultados[k].status === 'NotEmpty') naoVazias.push(resp.resultados[k].caminho);
 							}
-							estado.selecionados = {};
-							if (naoVazias.length > 0 && !recursivo) {
-								if (window.confirm(t('folder-not-empty-confirm'))) {
+						}
+						estado.selecionados = {};
+						if (naoVazias.length > 0 && !recursivo) {
+							window.c2fControles.dialogo.confirmar(t('folder-not-empty-confirm'), { perigo: true }).then(function (excluirConteudo) {
+								if (excluirConteudo) {
 									var reenviar = [];
 									for (var j = 0; j < naoVazias.length; j++) reenviar.push({ caminho: naoVazias[j], tipo: 'pasta' });
 									excluirItens(reenviar, true);
-									return;
-								}
-							}
-							carregar(false);
+								} else carregar(false);
+							});
+							return;
 						}
-					});
-				}
-			}).modal('show');
+						carregar(false);
+					}
+				});
+			});
 		}
 
 		// ===== Nova pasta
 
 		$('#c2f-new-folder').on('click', function () {
-			var nome = window.prompt(t('folder-name-placeholder'), '');
-			if (nome === null) return;
-			nome = nome.trim();
-			if (!nome) return;
-			$.ajax({
-				type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
-				data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'pasta-criar', dir: estado.dir, nome: nome },
-				success: function (resp) {
-					if (resp.status === 'Ok') carregar(false);
-					else alertaSimples(resp.status);
-				}
+			window.c2fControles.dialogo.perguntar(t('folder-name-placeholder'), '').then(function (nome) {
+				if (nome === null) return;
+				nome = nome.trim();
+				if (!nome) return;
+				$.ajax({
+					type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
+					data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'pasta-criar', dir: estado.dir, nome: nome },
+					success: function (resp) {
+						if (resp.status === 'Ok') carregar(false);
+						else alertaSimples(resp.status);
+					}
+				});
 			});
 		});
 
 		function alertaSimples(msg) {
-			if (typeof alerta === 'function') alerta({ msg: msg });
-			else console.log('admin-arquivos: ' + msg);
+			if (window.c2fControles) window.c2fControles.aviso(msg, 'erro');
+			else console.error('admin-arquivos: ' + msg);
 		}
 
 		// ===== Boot da listagem
@@ -792,6 +785,16 @@ $(document).ready(function () {
 		// ausência, da última pasta acessada em cache (localStorage). Sem navegação aqui.
 		var upDir = cfg.dirExplicito ? (cfg.dirInicial || '') : (localStorage.getItem('adminArquivosDir') || '');
 		var upState = { dir: upDir, total: 0, subTotal: 0, files: [] };
+
+		function atualizarProgresso($container, percentual, rotulo, erro) {
+			var $progresso = $container.find('.c2f-progress').first();
+			if (!$progresso.length) return;
+			percentual = Math.max(0, Math.min(100, percentual));
+			$progresso.attr({ role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': percentual });
+			$progresso.toggleClass('c2f-progress-error', !!erro);
+			$progresso.find('.bar').first().css('width', percentual + '%');
+			$progresso.find('.progress').first().text(rotulo || (percentual + '%'));
+		}
 
 		$('#c2f-dest-path').text(upState.dir === '' ? '/' : '/' + upState.dir);
 
@@ -816,7 +819,7 @@ $(document).ready(function () {
 					{ name: 'ajaxOpcao', value: 'uploadFile' },
 					{ name: 'dir', value: upState.dir }
 				];
-				var categorias = $('#categories').length ? $('#categories').dropdown('get value') : '';
+				var categorias = $('#categories').length ? $('#categories').val() : '';
 				if (categorias && categorias.length > 0) data.push({ name: 'categorias', value: categorias });
 				return data;
 			},
@@ -828,8 +831,8 @@ $(document).ready(function () {
 
 				// Bloqueio client-side de extensões perigosas (a autoridade é o servidor).
 				if (adminArquivosExtensaoPerigosa(file.name)) {
-					if (typeof alerta === 'function') alerta({ msg: t('upload-error-extension') });
-					else console.log(t('upload-error-extension'));
+					if (window.c2fControles) window.c2fControles.aviso(t('upload-error-extension'), 'erro');
+					else console.error(t('upload-error-extension'));
 					upState.subTotal++;
 					return;
 				}
@@ -895,9 +898,9 @@ $(document).ready(function () {
 			progress: function (e, data) {
 				var progress = parseInt((data.loaded / data.total) * 100, 10);
 				if (progress >= 100) {
-					data.context.find('.fileProgress').find('.progress').progress({ percent: 100, text: { active: gestor.arquivosProcessando } });
+					atualizarProgresso(data.context.find('.fileProgress'), 100, gestor.arquivosProcessando, false);
 				} else {
-					data.context.find('.fileProgress').find('.progress').progress({ percent: progress });
+					atualizarProgresso(data.context.find('.fileProgress'), progress, '', false);
 				}
 				progressAll(data.loaded);
 			},
@@ -908,14 +911,18 @@ $(document).ready(function () {
 				if (result && result.error) {
 					data.context.find('.fileError').find('.fileErrorBody').html(result.error);
 					data.context.find('.fileError').removeClass('hidden');
-					data.context.find('.fileProgress').find('.progress').progress('set error', gestor.arquivosErro);
+					atualizarProgresso(data.context.find('.fileProgress'), 100, gestor.arquivosErro, true);
 				} else {
-					data.context.find('.fileProgress').find('.progress').progress({ percent: 100, text: { active: gestor.arquivosConcluido, success: gestor.arquivosConcluido } });
+					atualizarProgresso(data.context.find('.fileProgress'), 100, gestor.arquivosConcluido, false);
 					data.context.find('.fileDone').removeClass('hidden');
 
 					if (data.context.find('.fileDone').find('.fileCopyClipboard').length > 0) {
 						var urlFile = result.url;
-						data.context.find('.fileDone').find('.fileCopyClipboard').click(function () { navigator.clipboard.writeText(urlFile); });
+						data.context.find('.fileDone').find('.fileCopyClipboard').click(function () {
+							navigator.clipboard.writeText(urlFile).then(function () {
+								if (window.c2fControles) window.c2fControles.aviso(t('copied'), 'info');
+							}).catch(function (err) { console.error(err); });
+						});
 					}
 
 					if (data.context.find('.fileDone').find('.fileSelect').length > 0) {
@@ -953,12 +960,8 @@ $(document).ready(function () {
 			}
 			if (!done) loaded += fileLoaded;
 			var pct = total > 0 ? parseInt((loaded / total) * 100, 10) : 0;
-			if (pct >= 100) {
-				pct = 100;
-				$('.fileProgressAll').find('.progress').progress({ percent: pct, text: { active: gestor.arquivosConcluido, success: gestor.arquivosConcluido } });
-			} else {
-				$('.fileProgressAll').find('.progress').progress({ percent: pct });
-			}
+			if (pct >= 100) pct = 100;
+			atualizarProgresso($('.fileProgressAll'), pct, pct === 100 ? gestor.arquivosConcluido : '', false);
 		}
 
 		$('.fileSendAll').click(function () { $('.fileSend').trigger('click'); });
@@ -968,7 +971,6 @@ $(document).ready(function () {
 			$('.fileProgressAll').addClass('hidden');
 		});
 
-		$('.ui.dropdown').dropdown();
 	}
 
 });

@@ -1,22 +1,21 @@
 {
     "version": 1,
-    "system": "eba15a75da6b2246",
+    "system": "3f54837878b848c6",
     "owners": {
-        "configuracao": "370f17b5781c2f29",
-        "dashboard": "a98d24f7fc417edd",
-        "datatables": "113195fae8162254",
+        "configuracao": "6ba46451043f8faf",
+        "dashboard": "4c3b7b1f3afe70a0",
+        "datatables": "1f891b34018f0e5a",
         "favicon": "8587a3f200e38cbe",
-        "global": "a86479f1465f7ca3",
-        "images": "60d97a722a21ccf9",
-        "interface": "bdcb8a6aaa4654d4",
-        "interface-v2": "e37bf583264ff3c3",
-        "jQuery-File-Upload-10.32.0": "d742d36cb990aa65",
-        "jQuery-Mask-Plugin-v1.14.16": "9b9b32d7c5bbb7f2",
-        "modulos": "37129596d49b7552",
-        "paypal": "0238dd2dfce88bce",
-        "stripe": "88a205bb4e7609fd",
-        "tailwindcss": "bfe1850e93d41ced",
+        "global": "cb94cfd1939e7978",
+        "images": "24911cddaa3f5975",
+        "interface": "1208f079aa82879e",
+        "interface-v2": "a9a73a48a7084cab",
+        "jQuery-File-Upload-10.32.0": "b4d1102d60e5702c",
+        "jQuery-Mask-Plugin-v1.14.16": "7c1dba1bc4269bbe",
+        "paypal": "cbfd3a1b46258e21",
+        "stripe": "62ada1759544f5a7",
+        "tailwindcss": "eb74aaabfae0b547",
         "templates": "4dd6d231504de973",
-        "widgets": "dce9f96e7c9cd34e"
+        "widgets": "27bd1142f936916f"
     }
 }

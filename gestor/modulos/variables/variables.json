@@ -20,12 +20,51 @@
                 {
                     "name": "Variáveis",
                     "id": "variables",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "variables/",
                     "type": "system",
                     "option": "variables",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../variables.php",
+                        "../../../../variables.js"
+                    ],
+                    "tailwind_sources_reason": "The page controller and client render the module selector and interaction states.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-widget-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-campos-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "b556ad0972daea18da9c78243129dffc",
                         "css": "a67c7f7ada890bdeca6f064ce2ace341",
@@ -58,12 +97,51 @@
                 {
                     "name": "Variables",
                     "id": "variables",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "variables/",
                     "type": "system",
                     "option": "variables",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../variables.php",
+                        "../../../../variables.js"
+                    ],
+                    "tailwind_sources_reason": "The page controller and client render the module selector and interaction states.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-widget-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "configuracao-campos-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "fe08845f8d42c7581ffe727dda36f137",
                         "css": "a67c7f7ada890bdeca6f064ce2ace341",
@@ -91,5 +169,5 @@
             ]
         }
     },
-    "asset_version": "e98a11a4055a9445"
+    "asset_version": "82ea2bb979d7b757"
 }
