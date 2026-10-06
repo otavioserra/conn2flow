@@ -3169,8 +3169,9 @@ function dashboard_ajax_widget_render(){
 		$where .= " AND ".$coluna."='".banco_escape_field($widget_id)."'";
 	}
 	$camposRegistro = Array('id');
-	if(banco_campo_existe('fields_schema', $def['tabela'])) $camposRegistro[] = 'fields_schema';
-	if(banco_campo_existe('css_compiled', $def['tabela'])) $camposRegistro[] = 'css_compiled';
+	foreach(Array('fields_schema', 'css', 'css_compiled', 'css_precompiled', 'html_extra_head') as $campo){
+		if(banco_campo_existe($campo, $def['tabela'])) $camposRegistro[] = $campo;
+	}
 	$registro = banco_select(Array('unico' => true, 'tabela' => $def['tabela'], 'campos' => $camposRegistro, 'extra' => $where.' LIMIT 1'));
 	if(!$registro){
 		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error')));
@@ -3180,6 +3181,7 @@ function dashboard_ajax_widget_render(){
 	$metadata = gestor_modulos_dados($widget_id) ?: Array();
 	$signature = $widget_id.'->render('.json_encode(Array('grupo_slug' => $registro['id'], 'id' => $registro['id']), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES).')';
 	$jsAntes = count($_GESTOR['javascript-fim'] ?? Array());
+	$cssAntes = count($_GESTOR['css'] ?? Array());
 	$precompiledAntes = count($_GESTOR['css-precompiled'] ?? Array());
 	$compiledAntes = count($_GESTOR['css-compiled'] ?? Array());
 	$headAntes = count($_GESTOR['html-extra-head'] ?? Array());
@@ -3188,28 +3190,28 @@ function dashboard_ajax_widget_render(){
 	gestor_set('modulo-id#widget', $widget_id);
 	gestor_set('modulo#widget#'.$widget_id, $metadata);
 	try {
+		// O template é a base; a autoria do registro preserva a precedência da página pública.
+		$schema = json_decode($registro['fields_schema'] ?? '{}', true) ?: Array();
+		if(!empty($schema['template_id'])){
+			$template = banco_select(Array('unico' => true, 'tabela' => 'templates', 'campos' => Array('css', 'css_precompiled', 'html_extra_head'),
+				'extra' => "WHERE id='".banco_escape_field($schema['template_id'])."' AND target='".banco_escape_field($def['tabela'])."' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A' LIMIT 1"));
+			if($template) gestor_pagina_recursos_incluir($template);
+		}
 		$render = html_editor_widget_renderizar($signature);
 		$frameLayout = banco_select(Array('unico' => true, 'tabela' => 'layouts', 'campos' => Array('css_precompiled'),
 			'extra' => "WHERE id='layout-iframe-tailwindcss' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A' LIMIT 1"));
 		$frameCss = !empty($frameLayout['css_precompiled']) ? '<style data-tailwind-role="layout-precompiled">'.$frameLayout['css_precompiled'].'</style>' : '';
-		// Seeded widgets may use a native template without an editor compilation.
-		// Carry that template's SQL styles into the isolated document as well.
-		$schema = json_decode($registro['fields_schema'] ?? '{}', true) ?: Array();
-		$templateCss = '';
-		if(empty($registro['css_compiled']) && !empty($schema['template_id'])){
-			$template = banco_select(Array('unico' => true, 'tabela' => 'templates', 'campos' => Array('css_precompiled'),
-				'extra' => "WHERE id='".banco_escape_field($schema['template_id'])."' AND target='".banco_escape_field($def['tabela'])."' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A' LIMIT 1"));
-			if(!empty($template['css_precompiled'])) $templateCss = '<style data-tailwind-role="resource-precompiled">'.$template['css_precompiled'].'</style>';
-		}
+		gestor_pagina_recursos_incluir($registro);
 		$render['css'] = $frameCss.implode('', array_slice($_GESTOR['html-extra-head'] ?? Array(), $headAntes))
 			.implode('', array_slice($_GESTOR['css-precompiled'] ?? Array(), $precompiledAntes))
-			.$templateCss
-			.$render['css']
+			.implode('', array_slice($_GESTOR['css'] ?? Array(), $cssAntes))
 			.implode('', array_slice($_GESTOR['css-compiled'] ?? Array(), $compiledAntes));
 	} finally {
 		gestor_set('modulo-id#widget', $previousWidget);
 		gestor_set('modulo#widget#'.$widget_id, $previousMetadata);
 	}
+	gestor_incluir_biblioteca('assets-externos');
+	$assets = assets_externos_urls_js(Array('tailwindcss-browser', 'lucide'));
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
 		'data' => Array(
@@ -3217,6 +3219,9 @@ function dashboard_ajax_widget_render(){
 			'registro_id' => $registro['id'],
 			'html' => $render['html'],
 			'css' => $render['css'],
+			'tailwind_compiler_url' => $assets['tailwindcss-browser']['dist/index.global.js'],
+			'lucide_url' => $assets['lucide']['lucide.min.js'],
+			'theme_styles' => html_editor_tailwind_browser_contract(),
 			'scripts' => implode('', array_slice($_GESTOR['javascript-fim'] ?? Array(), $jsAntes))
 		)
 	);

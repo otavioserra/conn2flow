@@ -3,6 +3,19 @@
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-254 — REQ-245
+
+- [x] Decisão do ciclo, versões, vencimento por período, configuração e salvaguardas: 15 testes de unidade (`AtualizacaoAutomaticaReq245Test`).
+- [x] Opções proibidas não chegam ao atualizador, nem com o arquivo de configuração adulterado.
+- [x] Tarefa `admin-atualizacoes-automatica` declarada pelo módulo; aparece no `admin-cron` e acompanha o interruptor.
+- [x] Abas Manual e Automático; modo manual funcionando; textos nos dois idiomas; 390 px sem rolagem lateral.
+- [x] `resources:sync`, PHPUnit 1.670 e Vitest 569 sem falhas; pipeline do Lab com saída 0; navegador 19/19 e regressão da REQ-243 140/140.
+- [x] Rotina pela engine no Lab: desligada, fora da hora e na hora (consulta e decide "já atualizado").
+- [ ] Atualização real disparada pela rotina, com sucesso e com volta automática, no tenant isolado.
+- [ ] Revisão da chefia e homologação humana.
+
+Detalhes: [BATCH-254](../implementation/BATCH-254.md) e [resultado do navegador](req245/evidencias/resultado.json).
+
 ## BATCH-252 — REQ-243
 
 - [x] Select: `mousedown`, `mouseup` e `click` da opção não chegam ao elemento de trás; o controle acompanha `select.value` escrito por script e selects inseridos depois da carga.
@@ -18,6 +31,17 @@
 - [ ] Homologação humana.
 
 Detalhes: [BATCH-252](../implementation/BATCH-252.md) e [resultado do navegador](req243/evidencias/resultado.json).
+## BATCH-253 — REQ-244 / Site REQ-109
+
+- [x] Backend: colunas opcionais, template/autoria/head completos, tema e assets oficiais.
+- [x] Frontend: base → tema/compilador → folhas do widget, origem opaca e geometria sem padding/overflow.
+- [x] Apresentações: template e altura embedded; consentimento compatível com o sandbox.
+- [x] Compilação oficial: Core 511 / Site 1176 recursos; pipeline final e css:rebuild com saída 0.
+- [x] Vitest: Core 553 / Site 13; PHPUnit: Core 1629 / Site 31, sem falhas/erros (skips/deprecações registrados).
+- [x] Navegador 29/29: oito slides, desktop/mobile, setas/pontos/tela cheia, resize, catálogo e restauração das preferências.
+- [ ] Homologação humana / consolidação em main.
+
+Detalhes: [BATCH-253](../implementation/BATCH-253.md), [resultado](req244/evidencias/resultado.json) e [métricas/limites](req244/evidencias/checks.json).
 
 ## BATCH-251 — REQ-242
 

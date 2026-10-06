@@ -31,208 +31,297 @@
         </div>
     </section>
 
-    <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-        <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
-                class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">1</span>@[[updates-step-mode]]@</h2>
-        <div class="grid grid-cols-1 gap-3 md:grid-cols-3" id="atualizacoes-buttons">
-            <button type="button"
-                class="upd-mode-btn rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-2 data-[selected=true]:ring-sky-600/30"
-                data-modo="full" data-rotulo="@[[updates-mode-full]]@" aria-pressed="false">
-                <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="package-check"
-                        class="size-5 shrink-0 text-sky-700"></i>@[[updates-mode-full]]@</span>
-                <span class="mt-1 block text-sm text-slate-600">@[[updates-mode-full-help]]@</span>
-            </button>
-            <button type="button"
-                class="upd-mode-btn rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-2 data-[selected=true]:ring-sky-600/30"
-                data-modo="only-files" data-rotulo="@[[updates-mode-files]]@" aria-pressed="false">
-                <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="files"
-                        class="size-5 shrink-0 text-sky-700"></i>@[[updates-mode-files]]@</span>
-                <span class="mt-1 block text-sm text-slate-600">@[[updates-mode-files-help]]@</span>
-            </button>
-            <button type="button"
-                class="upd-mode-btn rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-2 data-[selected=true]:ring-sky-600/30"
-                data-modo="only-db" data-rotulo="@[[updates-mode-db]]@" aria-pressed="false">
-                <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="database"
-                        class="size-5 shrink-0 text-sky-700"></i>@[[updates-mode-db]]@</span>
-                <span class="mt-1 block text-sm text-slate-600">@[[updates-mode-db-help]]@</span>
-            </button>
+    <div class="space-y-6" data-c2f-abas id="atualizacoes-modos">
+        <div class="c2fc-abas-lista">
+            <button type="button" class="c2fc-aba" data-c2f-aba="manual" data-c2f-dica="@[[updates-tab-manual-tip]]@" data-c2f-dica-pos="bottom left"><i data-lucide="hand"
+                    class="size-4"></i>@[[updates-tab-manual]]@</button>
+            <button type="button" class="c2fc-aba" data-c2f-aba="automatico" data-c2f-dica="@[[updates-tab-auto-tip]]@" data-c2f-dica-pos="bottom left"><i data-lucide="refresh-cw"
+                    class="size-4"></i>@[[updates-tab-auto]]@</button>
         </div>
-        <p class="text-sm text-slate-600" aria-live="polite"><span id="atualizacoes-mode-label">@[[updates-mode-none]]@</span></p>
-    </section>
-
-    <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-        <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
-                class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">2</span>@[[updates-step-options]]@</h2>
-        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <fieldset class="min-w-0 space-y-3 rounded-lg border border-slate-200 p-4">
-                <legend class="flex items-center gap-2 px-1 text-sm font-semibold text-slate-900"><i
-                        data-lucide="shield-check" class="size-4 shrink-0 text-emerald-700"></i>@[[updates-group-safety]]@</legend>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="backup" id="flag-backup"><span
-                        class="min-w-0"><span class="font-medium text-slate-800">@[[updates-opt-backup]]@</span>
-                        <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--backup</code><span
-                            class="block text-slate-600">@[[updates-opt-backup-help]]@</span></span></label>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_health"
-                        id="flag-no-health"><span class="min-w-0"><span
-                            class="font-medium text-slate-800">@[[updates-opt-no-health]]@</span>
-                        <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-health</code><span
-                            class="block text-slate-600">@[[updates-opt-no-health-help]]@</span></span></label>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_rollback"
-                        id="flag-no-rollback"><span class="min-w-0"><span
-                            class="font-medium text-slate-800">@[[updates-opt-no-rollback]]@</span>
-                        <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-rollback</code><span
-                            class="block text-slate-600">@[[updates-opt-no-rollback-help]]@</span></span></label>
-                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <label class="block space-y-1 text-sm"><span
-                            class="font-medium text-slate-700">@[[updates-opt-health-url]]@</span><input type="url"
-                            id="upd-health-url" placeholder="https://" autocomplete="off"
-                            class="c2fc-campo-entrada"></label>
-                    <label class="block space-y-1 text-sm"><span
-                            class="font-medium text-slate-700">@[[updates-opt-health-ip]]@</span><input type="text"
-                            id="upd-health-ip" placeholder="127.0.0.1" autocomplete="off"
-                            class="c2fc-campo-entrada"></label>
+        <div data-c2f-painel="manual" class="space-y-6">
+            <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
+                        class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">1</span>@[[updates-step-mode]]@</h2>
+                <div class="grid grid-cols-1 gap-3 md:grid-cols-3" id="atualizacoes-buttons">
+                    <button type="button"
+                        class="upd-mode-btn rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-2 data-[selected=true]:ring-sky-600/30"
+                        data-modo="full" data-rotulo="@[[updates-mode-full]]@" aria-pressed="false">
+                        <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="package-check"
+                                class="size-5 shrink-0 text-sky-700"></i>@[[updates-mode-full]]@</span>
+                        <span class="mt-1 block text-sm text-slate-600">@[[updates-mode-full-help]]@</span>
+                    </button>
+                    <button type="button"
+                        class="upd-mode-btn rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-2 data-[selected=true]:ring-sky-600/30"
+                        data-modo="only-files" data-rotulo="@[[updates-mode-files]]@" aria-pressed="false">
+                        <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="files"
+                                class="size-5 shrink-0 text-sky-700"></i>@[[updates-mode-files]]@</span>
+                        <span class="mt-1 block text-sm text-slate-600">@[[updates-mode-files-help]]@</span>
+                    </button>
+                    <button type="button"
+                        class="upd-mode-btn rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-2 data-[selected=true]:ring-sky-600/30"
+                        data-modo="only-db" data-rotulo="@[[updates-mode-db]]@" aria-pressed="false">
+                        <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="database"
+                                class="size-5 shrink-0 text-sky-700"></i>@[[updates-mode-db]]@</span>
+                        <span class="mt-1 block text-sm text-slate-600">@[[updates-mode-db-help]]@</span>
+                    </button>
                 </div>
-                <p class="text-xs text-slate-500">@[[updates-opt-health-help]]@</p>
-            </fieldset>
+                <p class="text-sm text-slate-600" aria-live="polite"><span id="atualizacoes-mode-label">@[[updates-mode-none]]@</span></p>
+            </section>
 
-            <fieldset class="min-w-0 space-y-3 rounded-lg border border-slate-200 p-4">
-                <legend class="flex items-center gap-2 px-1 text-sm font-semibold text-slate-900"><i data-lucide="package"
-                        class="size-4 shrink-0 text-sky-700"></i>@[[updates-group-package]]@</legend>
-                <label class="block space-y-1 text-sm"><span
-                        class="font-medium text-slate-700">@[[updates-opt-tag]]@</span><input type="text" id="upd-tag"
-                        placeholder="@[[updates-tag-placeholder]]@" autocomplete="off" class="c2fc-campo-entrada"><span
-                        class="block text-xs text-slate-500">@[[updates-opt-tag-help]]@</span></label>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="local" id="flag-local"><span
-                        class="min-w-0"><span class="font-medium text-slate-800">@[[updates-opt-local]]@</span>
-                        <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--local-artifact</code><span
-                            class="block text-slate-600">@[[updates-opt-local-help]]@</span></span></label>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="skip_download"
-                        id="flag-skip-download"><span class="min-w-0"><span
-                            class="font-medium text-slate-800">@[[updates-opt-skip-download]]@</span>
-                        <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--skip-download</code><span
-                            class="block text-slate-600">@[[updates-opt-skip-download-help]]@</span></span></label>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="download_only"
-                        id="flag-download-only"><span class="min-w-0"><span
-                            class="font-medium text-slate-800">@[[updates-opt-download-only]]@</span>
-                        <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--download-only</code><span
-                            class="block text-slate-600">@[[updates-opt-download-only-help]]@</span></span></label>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_verify"
-                        id="flag-no-verify"><span class="min-w-0"><span
-                            class="font-medium text-slate-800">@[[updates-opt-no-verify]]@</span>
-                        <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-verify</code><span
-                            class="block text-slate-600">@[[updates-opt-no-verify-help]]@</span></span></label>
-            </fieldset>
-        </div>
+            <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
+                        class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">2</span>@[[updates-step-options]]@</h2>
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                    <fieldset class="min-w-0 space-y-3 rounded-lg border border-slate-200 p-4">
+                        <legend class="flex items-center gap-2 px-1 text-sm font-semibold text-slate-900"><i
+                                data-lucide="shield-check" class="size-4 shrink-0 text-emerald-700"></i>@[[updates-group-safety]]@</legend>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="backup" id="flag-backup"><span
+                                class="min-w-0"><span class="font-medium text-slate-800">@[[updates-opt-backup]]@</span>
+                                <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--backup</code><span
+                                    class="block text-slate-600">@[[updates-opt-backup-help]]@</span></span></label>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_health"
+                                id="flag-no-health"><span class="min-w-0"><span
+                                    class="font-medium text-slate-800">@[[updates-opt-no-health]]@</span>
+                                <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-health</code><span
+                                    class="block text-slate-600">@[[updates-opt-no-health-help]]@</span></span></label>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_rollback"
+                                id="flag-no-rollback"><span class="min-w-0"><span
+                                    class="font-medium text-slate-800">@[[updates-opt-no-rollback]]@</span>
+                                <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-rollback</code><span
+                                    class="block text-slate-600">@[[updates-opt-no-rollback-help]]@</span></span></label>
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <label class="block space-y-1 text-sm"><span
+                                    class="font-medium text-slate-700">@[[updates-opt-health-url]]@</span><input type="url"
+                                    id="upd-health-url" placeholder="https://" autocomplete="off"
+                                    class="c2fc-campo-entrada"></label>
+                            <label class="block space-y-1 text-sm"><span
+                                    class="font-medium text-slate-700">@[[updates-opt-health-ip]]@</span><input type="text"
+                                    id="upd-health-ip" placeholder="127.0.0.1" autocomplete="off"
+                                    class="c2fc-campo-entrada"></label>
+                        </div>
+                        <p class="text-xs text-slate-500">@[[updates-opt-health-help]]@</p>
+                    </fieldset>
 
-        <details class="rounded-lg border border-slate-200" data-atualizacoes-avancadas>
-            <summary
-                class="flex cursor-pointer items-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50"><i
-                    data-lucide="sliders-horizontal" class="size-4 shrink-0 text-slate-600"></i>@[[updates-advanced-options]]@</summary>
-            <div class="grid grid-cols-1 gap-4 border-t border-slate-200 p-4 lg:grid-cols-2">
-                <fieldset class="min-w-0 space-y-3">
-                    <legend class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="database"
-                            class="size-4 shrink-0 text-sky-700"></i>@[[updates-group-database]]@</legend>
-                    <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                            class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_db" id="flag-no-db"><span
-                            class="min-w-0"><span class="font-medium text-slate-800">@[[updates-opt-no-db]]@</span>
-                            <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-db</code><span
-                                class="block text-slate-600">@[[updates-opt-no-db-help]]@</span></span></label>
-                    <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                            class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="force_all"
-                            id="flag-force-all"><span class="min-w-0"><span
-                                class="font-medium text-slate-800">@[[updates-opt-force-all]]@</span>
-                            <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--force-all</code><span
-                                class="block text-slate-600">@[[updates-opt-force-all-help]]@</span></span></label>
-                    <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                            class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="log_diff"
-                            id="flag-log-diff"><span class="min-w-0"><span
-                                class="font-medium text-slate-800">@[[updates-opt-log-diff]]@</span>
-                            <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--log-diff</code><span
-                                class="block text-slate-600">@[[updates-opt-log-diff-help]]@</span></span></label>
-                    <label class="block space-y-1 text-sm"><span
-                            class="font-medium text-slate-700">@[[updates-opt-tables]]@</span><input type="text"
-                            id="upd-tables" placeholder="@[[updates-tables-placeholder]]@" autocomplete="off"
-                            class="c2fc-campo-entrada"><span
-                            class="block text-xs text-slate-500">@[[updates-opt-tables-help]]@</span></label>
-                </fieldset>
-                <fieldset class="min-w-0 space-y-3">
-                    <legend class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i
-                            data-lucide="stethoscope" class="size-4 shrink-0 text-sky-700"></i>@[[updates-group-diagnostics]]@</legend>
-                    <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                            class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="dry_run"
-                            id="flag-dry-run"><span class="min-w-0"><span
-                                class="font-medium text-slate-800">@[[updates-opt-dry-run]]@</span>
-                            <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--dry-run</code><span
-                                class="block text-slate-600">@[[updates-opt-dry-run-help]]@</span></span></label>
-                    <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                            class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="debug" id="flag-debug"
-                            checked><span class="min-w-0"><span
-                                class="font-medium text-slate-800">@[[updates-opt-debug]]@</span>
-                            <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--debug</code><span
-                                class="block text-slate-600">@[[updates-opt-debug-help]]@</span></span></label>
-                    <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                            class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="clean_temp"
-                            id="flag-clean-temp"><span class="min-w-0"><span
-                                class="font-medium text-slate-800">@[[updates-opt-clean-temp]]@</span>
-                            <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--clean-temp</code><span
-                                class="block text-slate-600">@[[updates-opt-clean-temp-help]]@</span></span></label>
-                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <fieldset class="min-w-0 space-y-3 rounded-lg border border-slate-200 p-4">
+                        <legend class="flex items-center gap-2 px-1 text-sm font-semibold text-slate-900"><i data-lucide="package"
+                                class="size-4 shrink-0 text-sky-700"></i>@[[updates-group-package]]@</legend>
                         <label class="block space-y-1 text-sm"><span
-                                class="font-medium text-slate-700">@[[updates-opt-logs-retention]]@</span><input
-                                type="number" id="upd-logs-retention-days" min="0"
-                                placeholder="@[[updates-logs-retention-placeholder]]@"
-                                class="c2fc-campo-entrada"></label>
-                        <label class="block space-y-1 text-sm"><span
-                                class="font-medium text-slate-700">@[[updates-domain-label]]@</span><input type="text"
-                                id="upd-domain" placeholder="@[[updates-domain-placeholder]]@" autocomplete="off"
-                                class="c2fc-campo-entrada"></label>
+                                class="font-medium text-slate-700">@[[updates-opt-tag]]@</span><input type="text" id="upd-tag"
+                                placeholder="@[[updates-tag-placeholder]]@" autocomplete="off" class="c2fc-campo-entrada"><span
+                                class="block text-xs text-slate-500">@[[updates-opt-tag-help]]@</span></label>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="local" id="flag-local"><span
+                                class="min-w-0"><span class="font-medium text-slate-800">@[[updates-opt-local]]@</span>
+                                <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--local-artifact</code><span
+                                    class="block text-slate-600">@[[updates-opt-local-help]]@</span></span></label>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="skip_download"
+                                id="flag-skip-download"><span class="min-w-0"><span
+                                    class="font-medium text-slate-800">@[[updates-opt-skip-download]]@</span>
+                                <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--skip-download</code><span
+                                    class="block text-slate-600">@[[updates-opt-skip-download-help]]@</span></span></label>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="download_only"
+                                id="flag-download-only"><span class="min-w-0"><span
+                                    class="font-medium text-slate-800">@[[updates-opt-download-only]]@</span>
+                                <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--download-only</code><span
+                                    class="block text-slate-600">@[[updates-opt-download-only-help]]@</span></span></label>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_verify"
+                                id="flag-no-verify"><span class="min-w-0"><span
+                                    class="font-medium text-slate-800">@[[updates-opt-no-verify]]@</span>
+                                <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-verify</code><span
+                                    class="block text-slate-600">@[[updates-opt-no-verify-help]]@</span></span></label>
+                    </fieldset>
+                </div>
+
+                <details class="rounded-lg border border-slate-200" data-atualizacoes-avancadas>
+                    <summary
+                        class="flex cursor-pointer items-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50"><i
+                            data-lucide="sliders-horizontal" class="size-4 shrink-0 text-slate-600"></i>@[[updates-advanced-options]]@</summary>
+                    <div class="grid grid-cols-1 gap-4 border-t border-slate-200 p-4 lg:grid-cols-2">
+                        <fieldset class="min-w-0 space-y-3">
+                            <legend class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="database"
+                                    class="size-4 shrink-0 text-sky-700"></i>@[[updates-group-database]]@</legend>
+                            <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                    class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="no_db" id="flag-no-db"><span
+                                    class="min-w-0"><span class="font-medium text-slate-800">@[[updates-opt-no-db]]@</span>
+                                    <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--no-db</code><span
+                                        class="block text-slate-600">@[[updates-opt-no-db-help]]@</span></span></label>
+                            <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                    class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="force_all"
+                                    id="flag-force-all"><span class="min-w-0"><span
+                                        class="font-medium text-slate-800">@[[updates-opt-force-all]]@</span>
+                                    <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--force-all</code><span
+                                        class="block text-slate-600">@[[updates-opt-force-all-help]]@</span></span></label>
+                            <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                    class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="log_diff"
+                                    id="flag-log-diff"><span class="min-w-0"><span
+                                        class="font-medium text-slate-800">@[[updates-opt-log-diff]]@</span>
+                                    <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--log-diff</code><span
+                                        class="block text-slate-600">@[[updates-opt-log-diff-help]]@</span></span></label>
+                            <label class="block space-y-1 text-sm"><span
+                                    class="font-medium text-slate-700">@[[updates-opt-tables]]@</span><input type="text"
+                                    id="upd-tables" placeholder="@[[updates-tables-placeholder]]@" autocomplete="off"
+                                    class="c2fc-campo-entrada"><span
+                                    class="block text-xs text-slate-500">@[[updates-opt-tables-help]]@</span></label>
+                        </fieldset>
+                        <fieldset class="min-w-0 space-y-3">
+                            <legend class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i
+                                    data-lucide="stethoscope" class="size-4 shrink-0 text-sky-700"></i>@[[updates-group-diagnostics]]@</legend>
+                            <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                    class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="dry_run"
+                                    id="flag-dry-run"><span class="min-w-0"><span
+                                        class="font-medium text-slate-800">@[[updates-opt-dry-run]]@</span>
+                                    <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--dry-run</code><span
+                                        class="block text-slate-600">@[[updates-opt-dry-run-help]]@</span></span></label>
+                            <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                    class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="debug" id="flag-debug"
+                                    checked><span class="min-w-0"><span
+                                        class="font-medium text-slate-800">@[[updates-opt-debug]]@</span>
+                                    <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--debug</code><span
+                                        class="block text-slate-600">@[[updates-opt-debug-help]]@</span></span></label>
+                            <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                    class="upd-flag mt-0.5 size-4 shrink-0 accent-sky-700" data-flag="clean_temp"
+                                    id="flag-clean-temp"><span class="min-w-0"><span
+                                        class="font-medium text-slate-800">@[[updates-opt-clean-temp]]@</span>
+                                    <code class="rounded bg-slate-100 px-1 text-xs text-slate-600">--clean-temp</code><span
+                                        class="block text-slate-600">@[[updates-opt-clean-temp-help]]@</span></span></label>
+                            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <label class="block space-y-1 text-sm"><span
+                                        class="font-medium text-slate-700">@[[updates-opt-logs-retention]]@</span><input
+                                        type="number" id="upd-logs-retention-days" min="0"
+                                        placeholder="@[[updates-logs-retention-placeholder]]@"
+                                        class="c2fc-campo-entrada"></label>
+                                <label class="block space-y-1 text-sm"><span
+                                        class="font-medium text-slate-700">@[[updates-domain-label]]@</span><input type="text"
+                                        id="upd-domain" placeholder="@[[updates-domain-placeholder]]@" autocomplete="off"
+                                        class="c2fc-campo-entrada"></label>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
-            </div>
-        </details>
+                </details>
 
-        <div class="c2fc-alerta c2fc-alerta-erro" data-atualizacoes-perigo>
-            <i data-lucide="triangle-alert" class="size-5 shrink-0"></i>
-            <div class="content">
-                <p class="header">@[[updates-group-danger]]@</p>
-                <label class="flex items-start gap-3 text-sm"><input type="checkbox"
-                        class="upd-flag mt-0.5 size-4 shrink-0 accent-red-700" data-flag="wipe" id="flag-wipe"><span
-                        class="min-w-0"><span class="font-medium">@[[updates-opt-wipe]]@</span>
-                        <code class="rounded bg-white/70 px-1 text-xs">--wipe</code><span
-                            class="block">@[[updates-opt-wipe-help]]@</span></span></label>
-            </div>
-        </div>
-    </section>
+                <div class="c2fc-alerta c2fc-alerta-erro" data-atualizacoes-perigo>
+                    <i data-lucide="triangle-alert" class="size-5 shrink-0"></i>
+                    <div class="content">
+                        <p class="header">@[[updates-group-danger]]@</p>
+                        <label class="flex items-start gap-3 text-sm"><input type="checkbox"
+                                class="upd-flag mt-0.5 size-4 shrink-0 accent-red-700" data-flag="wipe" id="flag-wipe"><span
+                                class="min-w-0"><span class="font-medium">@[[updates-opt-wipe]]@</span>
+                                <code class="rounded bg-white/70 px-1 text-xs">--wipe</code><span
+                                    class="block">@[[updates-opt-wipe-help]]@</span></span></label>
+                    </div>
+                </div>
+            </section>
 
-    <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-        <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
-                class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">3</span>@[[updates-step-run]]@</h2>
-        <div class="flex flex-wrap items-center gap-3">
-            <button type="button" class="c2fc-botao c2fc-botao-primario" id="atualizacoes-start-btn" disabled><i
-                    data-lucide="play" class="size-4"></i>@[[updates-run-button]]@</button>
-            <button type="button" class="c2fc-botao c2fc-botao-perigo hidden" id="atualizacoes-cancel-btn"
-                data-action="cancel"><i data-lucide="square" class="size-4"></i>@[[updates-cancel]]@</button>
-            <span id="atualizacoes-inline-loader"
-                class="hidden size-5 animate-spin rounded-full border-2 border-slate-300 border-t-sky-700"
-                aria-hidden="true"></span>
-            <span class="text-sm" id="atualizacoes-plano-link">#plano-link#</span>
+            <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
+                        class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">3</span>@[[updates-step-run]]@</h2>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" class="c2fc-botao c2fc-botao-primario" id="atualizacoes-start-btn" disabled><i
+                            data-lucide="play" class="size-4"></i>@[[updates-run-button]]@</button>
+                    <button type="button" class="c2fc-botao c2fc-botao-perigo hidden" id="atualizacoes-cancel-btn"
+                        data-action="cancel"><i data-lucide="square" class="size-4"></i>@[[updates-cancel]]@</button>
+                    <span id="atualizacoes-inline-loader"
+                        class="hidden size-5 animate-spin rounded-full border-2 border-slate-300 border-t-sky-700"
+                        aria-hidden="true"></span>
+                    <span class="text-sm" id="atualizacoes-plano-link">#plano-link#</span>
+                </div>
+                <div id="atualizacoes-progress-bar" class="hidden space-y-1" role="progressbar"
+                    aria-label="@[[updates-progress]]@" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="h-2 overflow-hidden rounded bg-slate-200">
+                        <div data-progress-fill class="h-full w-0 bg-emerald-600 transition-[width]" style="width:0%"></div>
+                    </div>
+                    <span class="text-xs text-slate-600">@[[updates-progress]]@</span>
+                </div>
+                <pre class="fallback-log hidden max-h-[40vh] overflow-auto rounded-lg border border-slate-200 bg-slate-950 p-3 font-mono text-xs whitespace-pre-wrap text-slate-100"
+                    aria-live="polite"></pre>
+            </section>
         </div>
-        <div id="atualizacoes-progress-bar" class="hidden space-y-1" role="progressbar"
-            aria-label="@[[updates-progress]]@" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div class="h-2 overflow-hidden rounded bg-slate-200">
-                <div data-progress-fill class="h-full w-0 bg-emerald-600 transition-[width]" style="width:0%"></div>
-            </div>
-            <span class="text-xs text-slate-600">@[[updates-progress]]@</span>
+        <div data-c2f-painel="automatico" class="space-y-6" id="atualizacoes-auto" data-msg-erro="@[[auto-error]]@">
+            <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
+                        class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">1</span>@[[auto-step-switch]]@</h2>
+                <div class="flex items-start gap-3 rounded-lg border border-slate-200 p-4">
+                    <label class="c2fc-chave mt-0.5 shrink-0" for="auto-ativo">
+                        <input type="checkbox" id="auto-ativo" #auto-ativo#>
+                        <span class="c2fc-chave-trilho" aria-hidden="true"></span>
+                    </label>
+                    <div class="min-w-0">
+                        <label class="cursor-pointer text-sm font-semibold text-slate-900" for="auto-ativo">@[[auto-switch-label]]@</label>
+                        <p class="text-sm text-slate-600">@[[auto-switch-help]]@</p>
+                    </div>
+                </div>
+                <p class="text-sm font-medium text-slate-700">@[[auto-period-title]]@</p>
+                <div class="grid grid-cols-1 gap-3 md:grid-cols-3" id="auto-periodos" role="radiogroup" aria-label="@[[auto-period-title]]@">
+                    <button type="button" role="radio"
+                        class="rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-1 data-[selected=true]:ring-sky-600"
+                        data-auto-periodo="diario" data-selected="#auto-sel-diario#" aria-checked="#auto-sel-diario#">
+                        <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="calendar-days"
+                                class="size-5 shrink-0 text-sky-700"></i>@[[auto-period-diario]]@</span>
+                        <span class="mt-1 block text-sm text-slate-600">@[[auto-period-diario-help]]@</span>
+                    </button>
+                    <button type="button" role="radio"
+                        class="rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-1 data-[selected=true]:ring-sky-600"
+                        data-auto-periodo="semanal" data-selected="#auto-sel-semanal#" aria-checked="#auto-sel-semanal#">
+                        <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="calendar-range"
+                                class="size-5 shrink-0 text-sky-700"></i>@[[auto-period-semanal]]@</span>
+                        <span class="mt-1 block text-sm text-slate-600">@[[auto-period-semanal-help]]@</span>
+                    </button>
+                    <button type="button" role="radio"
+                        class="rounded-lg border border-slate-300 bg-white p-4 text-left hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 data-[selected=true]:border-sky-600 data-[selected=true]:bg-sky-50 data-[selected=true]:ring-1 data-[selected=true]:ring-sky-600"
+                        data-auto-periodo="mensal" data-selected="#auto-sel-mensal#" aria-checked="#auto-sel-mensal#">
+                        <span class="flex items-center gap-2 text-sm font-semibold text-slate-900"><i data-lucide="calendar"
+                                class="size-5 shrink-0 text-sky-700"></i>@[[auto-period-mensal]]@</span>
+                        <span class="mt-1 block text-sm text-slate-600">@[[auto-period-mensal-help]]@</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
+                        class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">2</span>@[[auto-step-options]]@</h2>
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                    <div class="c2fc-campo min-w-0 rounded-lg border border-slate-200 p-4">
+                        <label class="c2fc-campo-rotulo" for="auto-hora">@[[auto-hour-label]]@</label>
+                        <select id="auto-hora" class="c2fc-campo-selecao" data-c2f-select="1">#auto-hora-opcoes#</select>
+                        <small class="c2fc-campo-ajuda">@[[auto-hour-help]]@</small>
+                    </div>
+                    <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 p-4 text-sm"><input type="checkbox"
+                            class="mt-0.5 size-4 shrink-0 cursor-pointer accent-sky-700" id="auto-backup" #auto-backup#><span
+                            class="min-w-0"><span class="font-medium text-slate-800">@[[auto-backup-label]]@</span><span
+                                class="block text-slate-600">@[[auto-backup-help]]@</span></span></label>
+                </div>
+                <div class="c2fc-rotulo label inline-flex items-center gap-2">
+                    <i data-lucide="shield-check" class="size-4 shrink-0"></i>
+                    <span>@[[auto-safety-note]]@</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 border-t border-slate-200 pt-4">
+                    <button type="button" class="c2fc-botao c2fc-botao-primario" id="auto-salvar" data-c2f-dica="@[[auto-save-tip]]@" data-c2f-dica-pos="top left"><i
+                            data-lucide="save" class="size-4"></i>@[[auto-save]]@</button>
+                    <span class="text-sm text-slate-600" id="auto-mensagem" role="status" aria-live="polite"></span>
+                </div>
+            </section>
+
+            <section class="space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <h2 class="flex items-center gap-3 text-base font-semibold text-slate-900"><span
+                            class="flex size-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-sm font-semibold text-white">3</span>@[[auto-step-state]]@</h2>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a class="c2fc-botao c2fc-botao-pequeno" href="@[[pagina#url-raiz]]@admin-cron/" data-c2f-dica="@[[auto-cron-link-tip]]@" data-c2f-dica-pos="top right"><i
+                                data-lucide="clock" class="size-4"></i>@[[auto-cron-link]]@</a>
+                        <button type="button" class="c2fc-botao c2fc-botao-pequeno" id="auto-verificar" data-c2f-dica="@[[auto-check-now-tip]]@" data-c2f-dica-pos="top right"><i
+                                data-lucide="search-check" class="size-4"></i>@[[auto-check-now]]@</button>
+                    </div>
+                </div>
+                <div class="space-y-3" id="auto-estado">#auto-estado#</div>
+            </section>
         </div>
-        <pre class="fallback-log hidden max-h-[40vh] overflow-auto rounded-lg border border-slate-200 bg-slate-950 p-3 font-mono text-xs whitespace-pre-wrap text-slate-100"
-            aria-live="polite"></pre>
-    </section>
+    </div>
 
     <section data-atualizacoes-registros>
         <div class="c2fc-abas" data-c2f-abas>

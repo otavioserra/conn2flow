@@ -529,6 +529,29 @@ function conferir(nome, ok, detalhe) {
       await foto(page, '27-variables-adicionar');
     }
 
+    conferir('admin-arquivos abre', await abrir(page, 'admin-arquivos/') === 200);
+    await page.waitForTimeout(800);
+    const imagem = '#c2f-files-list .c2f-file[data-tipoarq="image"] .c2f-name';
+    // Sem imagem na raiz, entra nas pastas (até três) à procura de uma.
+    for (let i = 0; i < 3 && !(await page.locator(imagem).count()) && await page.locator('#c2f-files-list .c2f-folder-open').count(); i++) { await page.locator('#c2f-files-list .c2f-folder-open').first().click(); await page.waitForTimeout(1200); }
+    const miniatura = page.locator(imagem).first();
+    if (await miniatura.count()) {
+      await miniatura.click(); await page.waitForTimeout(900);
+      const g = await page.evaluate(() => { const m = document.getElementById('c2f-gallery-modal'); if (!m || !m.open) return null; const r = m.getBoundingClientRect(); const cor = e => { const x = getComputedStyle(e); return {fundo: x.backgroundColor, texto: x.color, icone: !!e.querySelector('svg'), raio: x.borderTopLeftRadius}; }; return {esq: Math.round(r.left), dir: Math.round(innerWidth - r.right), topo: Math.round(r.top), base: Math.round(innerHeight - r.bottom), fechar: cor(m.querySelector('.c2f-gallery-close')), anterior: cor(m.querySelector('.c2f-gallery-prev')), proximo: cor(m.querySelector('.c2f-gallery-next')), acoes: [...m.querySelectorAll('.c2f-gallery-actions > *')].map(cor)}; });
+      const legivel = c => c.fundo !== c.texto && !(c.fundo === 'rgb(255, 255, 255)' && /rgb\(2(4|5)\d, 2(4|5)\d, 2(4|5)\d\)/.test(c.texto));
+      conferir('galeria da imagem abre centralizada na tela', g && Math.abs(g.esq - g.dir) <= 2 && Math.abs(g.topo - g.base) <= 2, g);
+      conferir('fechar e setas redondos, escuros e com ícone; ações com ícone e texto legível', g && g.fechar.raio !== '4px' && [g.anterior, g.proximo].every(c => c.icone && legivel(c) && c.fundo !== 'rgb(255, 255, 255)') && g.acoes.length >= 3 && g.acoes.every(c => c.icone && legivel(c)), g);
+      await foto(page, '27-admin-arquivos-galeria');
+      await page.keyboard.press('Escape');
+    } else conferir('pasta sem imagem para abrir a galeria', true);
+
+    // Página pública de documentação que tinha sido gravada com o conteúdo inflado: volta a acompanhar a vizinha.
+    const publica = async rota => { await abrir(page, rota); return page.evaluate(() => ({html: document.documentElement.outerHTML.length, titulo: (document.querySelector('h1') || {}).textContent, lateral: document.documentElement.scrollWidth <= innerWidth + 1, navs: document.querySelectorAll('nav').length, links: document.querySelectorAll('nav a').length, h1: document.querySelectorAll('h1').length})); };
+    const quebrada = await publica('docs/sdd/00-baseline-architecture/');
+    const vizinha = await publica('docs/sdd/01-project-synchronization/');
+    conferir('docs/sdd/00-baseline-architecture com a mesma estrutura da página vizinha', quebrada.lateral && quebrada.navs === vizinha.navs && Math.abs(quebrada.links - vizinha.links) <= 2 && quebrada.h1 === vizinha.h1 && quebrada.html < vizinha.html * 3, {quebrada, vizinha});
+    await abrir(page, 'docs/sdd/00-baseline-architecture/'); await foto(page, '27-docs-baseline');
+
     const titulos = [];
     for (const tela of ['', 'usuarios/', 'planos/', 'hestiacp/', 'logs/', 'updates/', 'distribuido/']) {
       await abrir(page, 'host-manager/' + tela);

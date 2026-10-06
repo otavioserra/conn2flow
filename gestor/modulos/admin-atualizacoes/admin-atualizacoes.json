@@ -4,6 +4,17 @@
         "interface",
         "html"
     ],
+    "cron": [
+        {
+            "id": "admin-atualizacoes-automatica",
+            "nome": "Atualização automática do sistema",
+            "descricao": "Confere a versão publicada no período escolhido em Atualizações e atualiza o sistema com verificação e volta automática.",
+            "frequencia": "horario",
+            "hora": "00:00",
+            "funcao": "admin_atualizacoes_cron_automatica",
+            "ativo": false
+        }
+    ],
     "tabela": {
         "nome": "atualizacoes_execucoes",
         "id": "id",
@@ -135,13 +146,13 @@
                 {
                     "name": "Atualizações - Lista Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.3",
+                    "version": "1.4",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "3c539c8fc30ed0c0f80400fab7053598",
+                        "html": "9162a38089f1689bb749f747210d3d87",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "3c539c8fc30ed0c0f80400fab7053598"
+                        "combined": "9162a38089f1689bb749f747210d3d87"
                     }
                 },
                 {
@@ -829,6 +840,291 @@
                     "type": "string"
                 },
                 {
+                    "id": "updates-tab-manual",
+                    "value": "Manual",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tab-manual-tip",
+                    "value": "Escolher o modo e as opções e atualizar agora",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tab-auto",
+                    "value": "Automático",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tab-auto-tip",
+                    "value": "O sistema confere se há versão nova e se atualiza sozinho",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-step-switch",
+                    "value": "Ativar e escolher o período",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-switch-label",
+                    "value": "Atualização automática",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-switch-help",
+                    "value": "Ligada, o sistema confere se há versão estável nova e se atualiza sozinho, sempre com verificação e volta automática.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-title",
+                    "value": "De quanto em quanto tempo conferir",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-diario",
+                    "value": "Diária",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-diario-help",
+                    "value": "Confere todos os dias. Recebe as correções mais cedo.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-semanal",
+                    "value": "Semanal",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-semanal-help",
+                    "value": "Confere uma vez por semana. Equilíbrio entre novidade e estabilidade.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-mensal",
+                    "value": "Mensal",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-mensal-help",
+                    "value": "Confere uma vez por mês. Para quem prefere mudar pouco.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-step-options",
+                    "value": "Opções",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-hour-label",
+                    "value": "Hora preferida",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-hour-help",
+                    "value": "A atualização só começa nesta hora do dia, no horário do servidor.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-backup-label",
+                    "value": "Backup completo antes de atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-backup-help",
+                    "value": "Além do ponto de volta de toda atualização, guarda uma cópia completa do sistema.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-safety-note",
+                    "value": "A automação sempre atualiza no modo completo, com verificação e volta automática. Ela nunca usa limpeza total e não atualiza enquanto houver choque à espera de decisão.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-save",
+                    "value": "Salvar",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-save-tip",
+                    "value": "Gravar a configuração da atualização automática",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-saved",
+                    "value": "Configuração salva.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-error",
+                    "value": "Não foi possível concluir. Tente de novo.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-step-state",
+                    "value": "Estado",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-switch",
+                    "value": "Automação",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-status-on",
+                    "value": "Ligada",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-status-off",
+                    "value": "Desligada",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-last-check",
+                    "value": "Última checagem",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-found",
+                    "value": "Versão publicada",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-next",
+                    "value": "Próxima checagem",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-last-attempt",
+                    "value": "Última tentativa",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-refused",
+                    "value": "Versões recusadas",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-never",
+                    "value": "Nunca conferido",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-none",
+                    "value": "Nenhuma",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-pending",
+                    "value": "Atualização em andamento",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-check-now",
+                    "value": "Verificar agora",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-check-now-tip",
+                    "value": "Só confere a versão publicada; não atualiza",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-checked",
+                    "value": "Versão publicada conferida.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-retry",
+                    "value": "Tentar de novo",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-retry-tip",
+                    "value": "Liberar esta versão para a automação tentar outra vez",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-released",
+                    "value": "Versão liberada para nova tentativa.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-link",
+                    "value": "Ver a rotina em Rotinas Automáticas",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-link-tip",
+                    "value": "A checagem roda como rotina deste módulo, de hora em hora",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-ja-atualizado",
+                    "value": "O sistema já está na versão publicada.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-versao-nova",
+                    "value": "Há versão nova; a atualização foi disparada.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-versao-recusada",
+                    "value": "A versão publicada foi recusada depois de uma tentativa que não deu certo.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-choque-pendente",
+                    "value": "Há choque à espera de decisão; a automação não atualiza.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-trava-ocupada",
+                    "value": "Havia outro deploy em andamento.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-sem-versao-publicada",
+                    "value": "Nenhuma versão estável publicada foi encontrada.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-consulta-falhou",
+                    "value": "Não foi possível consultar as versões publicadas.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-success",
+                    "value": "Atualizado",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-rolled_back",
+                    "value": "Desfeita pela volta automática",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-error",
+                    "value": "Falhou",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-locked",
+                    "value": "Não iniciada",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-name",
+                    "value": "Atualização automática do sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-description",
+                    "value": "Confere a versão publicada no período escolhido e atualiza o sistema com verificação e volta automática.",
+                    "type": "string"
+                },
+                {
                     "id": "updates-opt-wipe-help",
                     "value": "Remove tudo, exceto as pastas protegidas, antes de copiar a versão nova. Arquivos próprios fora do pacote são perdidos.",
                     "type": "string"
@@ -956,13 +1252,13 @@
                 {
                     "name": "Updates - List Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.3",
+                    "version": "1.4",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "3c539c8fc30ed0c0f80400fab7053598",
+                        "html": "9162a38089f1689bb749f747210d3d87",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "3c539c8fc30ed0c0f80400fab7053598"
+                        "combined": "9162a38089f1689bb749f747210d3d87"
                     }
                 },
                 {
@@ -1650,6 +1946,291 @@
                     "type": "string"
                 },
                 {
+                    "id": "updates-tab-manual",
+                    "value": "Manual",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tab-manual-tip",
+                    "value": "Choose the mode and options and update now",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tab-auto",
+                    "value": "Automatic",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-tab-auto-tip",
+                    "value": "The system checks for a new version and updates itself",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-step-switch",
+                    "value": "Turn on and choose the period",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-switch-label",
+                    "value": "Automatic update",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-switch-help",
+                    "value": "When on, the system checks for a new stable version and updates itself, always with verification and automatic rollback.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-title",
+                    "value": "How often to check",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-diario",
+                    "value": "Daily",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-diario-help",
+                    "value": "Checks every day. Gets fixes sooner.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-semanal",
+                    "value": "Weekly",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-semanal-help",
+                    "value": "Checks once a week. A balance between new and stable.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-mensal",
+                    "value": "Monthly",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-period-mensal-help",
+                    "value": "Checks once a month. For those who prefer few changes.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-step-options",
+                    "value": "Options",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-hour-label",
+                    "value": "Preferred hour",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-hour-help",
+                    "value": "The update only starts at this hour of the day, in server time.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-backup-label",
+                    "value": "Full backup before updating",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-backup-help",
+                    "value": "Besides the restore point every update takes, keeps a full copy of the system.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-safety-note",
+                    "value": "Automation always updates in full mode, with verification and automatic rollback. It never wipes the installation and does not update while a clash awaits a decision.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-save",
+                    "value": "Save",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-save-tip",
+                    "value": "Save the automatic update settings",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-saved",
+                    "value": "Settings saved.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-error",
+                    "value": "Could not complete. Try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-step-state",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-switch",
+                    "value": "Automation",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-status-on",
+                    "value": "On",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-status-off",
+                    "value": "Off",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-last-check",
+                    "value": "Last check",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-found",
+                    "value": "Published version",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-next",
+                    "value": "Next check",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-last-attempt",
+                    "value": "Last attempt",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-refused",
+                    "value": "Refused versions",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-never",
+                    "value": "Never checked",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-none",
+                    "value": "None",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-state-pending",
+                    "value": "Update in progress",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-check-now",
+                    "value": "Check now",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-check-now-tip",
+                    "value": "Only checks the published version; does not update",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-checked",
+                    "value": "Published version checked.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-retry",
+                    "value": "Try again",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-retry-tip",
+                    "value": "Allow automation to try this version again",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-released",
+                    "value": "Version released for another attempt.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-link",
+                    "value": "See the routine in Scheduled Routines",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-link-tip",
+                    "value": "The check runs as a routine of this module, every hour",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-ja-atualizado",
+                    "value": "The system is already on the published version.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-versao-nova",
+                    "value": "There is a new version; the update was started.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-versao-recusada",
+                    "value": "The published version was refused after a failed attempt.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-choque-pendente",
+                    "value": "There is a clash awaiting a decision; automation does not update.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-trava-ocupada",
+                    "value": "Another deploy was in progress.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-sem-versao-publicada",
+                    "value": "No published stable version was found.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-reason-consulta-falhou",
+                    "value": "Could not query the published versions.",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-success",
+                    "value": "Updated",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-rolled_back",
+                    "value": "Undone by automatic rollback",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-error",
+                    "value": "Failed",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-result-locked",
+                    "value": "Not started",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-name",
+                    "value": "Automatic system update",
+                    "type": "string"
+                },
+                {
+                    "id": "auto-cron-description",
+                    "value": "Checks the published version at the chosen period and updates the system with verification and automatic rollback.",
+                    "type": "string"
+                },
+                {
                     "id": "updates-opt-wipe-help",
                     "value": "Removes everything except the protected folders before copying the new version. Your own files outside the package are lost.",
                     "type": "string"
@@ -1657,5 +2238,5 @@
             ]
         }
     },
-    "asset_version": "0404e9a3626f9a5a"
+    "asset_version": "feb5f017fe56a27f"
 }

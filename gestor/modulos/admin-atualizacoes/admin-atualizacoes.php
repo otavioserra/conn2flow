@@ -137,6 +137,8 @@ function admin_atualizacoes_listar(): void {
     } else {
         $comp .= admin_atualizacoes_choques_html();
     }
+    // req-245: aba Automático (configuração e estado da atualização automática).
+    $comp = admin_atualizacoes_auto_preencher($comp);
     $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#dynamic-content#',$comp);
     // Incluir JS do módulo
     if(function_exists('gestor_pagina_javascript_incluir')) gestor_pagina_javascript_incluir();
@@ -412,6 +414,191 @@ function admin_atualizacoes_ajax_choque_resolver(){
 
 // ================= Interface Principal =================
 
+// ==== Atualização automática (req-245 / BATCH-254)
+
+/** Carrega as funções compartilhadas com a rotina agendada (o arquivo de cron não tem efeito ao ser incluído). */
+function admin_atualizacoes_auto_carregar(): void {
+    global $_GESTOR;
+    require_once $_GESTOR['modulos-path'] . 'admin-atualizacoes/admin-atualizacoes.cron.php';
+    admin_atualizacoes_auto_bibliotecas();
+}
+
+/** Texto de uma variável do módulo, escapado para HTML. */
+function admin_atualizacoes_auto_txt(string $id): string {
+    return htmlspecialchars((string)gestor_variaveis(['modulo' => 'admin-atualizacoes', 'id' => $id]), ENT_QUOTES, 'UTF-8');
+}
+
+/** Data e hora no formato da tela. */
+function admin_atualizacoes_auto_data(?int $quando): string {
+    return $quando ? date('d/m/Y H:i', $quando) : '';
+}
+
+/** Rótulo do resultado de uma tentativa: os códigos de erro do atualizador viram "Falhou". */
+function admin_atualizacoes_auto_resultado(string $status): array {
+    if ($status === 'success') return ['auto-result-success', 'green'];
+    if ($status === 'rolled_back') return ['auto-result-rolled_back', 'orange'];
+    if ($status === 'locked') return ['auto-result-locked', 'grey'];
+
+    return ['auto-result-error', 'red'];
+}
+
+/** Bloco de estado da aba Automático (também devolvido pelas ações AJAX, para a tela se atualizar). */
+function admin_atualizacoes_auto_estado_html(array $config): string {
+    $t = 'admin_atualizacoes_auto_txt';
+    $e = $config['estado'];
+    $linha = function (string $icone, string $rotulo, string $valor): string {
+        return '<div class="flex items-start gap-3 rounded-lg border border-slate-200 p-3">'
+            . '<i data-lucide="' . $icone . '" class="mt-0.5 size-4 shrink-0 text-slate-500"></i>'
+            . '<div class="min-w-0"><p class="text-xs font-semibold tracking-wide text-slate-500 uppercase">' . $rotulo . '</p>'
+            . '<p class="mt-0.5 text-sm font-medium break-words text-slate-900">' . $valor . '</p></div></div>';
+    };
+    $selo = '<span class="c2fc-rotulo c2fc-cor-' . ($config['ativo'] ? 'green' : 'grey') . '">' . $t($config['ativo'] ? 'auto-status-on' : 'auto-status-off') . '</span>';
+    $checagem = $e['ultima_checagem'] ? admin_atualizacoes_auto_data($e['ultima_checagem']) : $t('auto-state-never');
+    $encontrada = $e['versao_encontrada'] ? htmlspecialchars($e['versao_encontrada'], ENT_QUOTES, 'UTF-8') : $t('auto-state-none');
+    if ($e['motivo'] && $e['motivo'] !== 'desligada') {
+        $motivo = (string)gestor_variaveis(['modulo' => 'admin-atualizacoes', 'id' => 'auto-reason-' . $e['motivo']]);
+        if ($motivo !== '') $encontrada .= '<span class="mt-0.5 block text-xs font-normal text-slate-600">' . htmlspecialchars($motivo, ENT_QUOTES, 'UTF-8') . '</span>';
+    }
+    $proxima = atualizacao_automatica_proxima($config, time());
+    if ($e['pendente']) {
+        $tentativa = htmlspecialchars($e['pendente']['tag'], ENT_QUOTES, 'UTF-8') . ' <span class="c2fc-rotulo c2fc-cor-blue">' . $t('auto-state-pending') . '</span>';
+    } elseif ($e['ultima_tentativa']) {
+        [$rotulo, $cor] = admin_atualizacoes_auto_resultado((string)$e['ultima_tentativa']['resultado']);
+        $tentativa = htmlspecialchars((string)$e['ultima_tentativa']['tag'], ENT_QUOTES, 'UTF-8') . ' · ' . admin_atualizacoes_auto_data((int)$e['ultima_tentativa']['quando'])
+            . ' <span class="c2fc-rotulo c2fc-cor-' . $cor . '">' . $t($rotulo) . '</span>';
+    } else {
+        $tentativa = $t('auto-state-none');
+    }
+    $recusadas = '';
+    foreach ($e['recusadas'] as $tag => $info) {
+        [$rotulo, $cor] = admin_atualizacoes_auto_resultado((string)$info['motivo']);
+        $tagHtml = htmlspecialchars((string)$tag, ENT_QUOTES, 'UTF-8');
+        $recusadas .= '<li class="flex flex-wrap items-center justify-between gap-2 py-2">'
+            . '<span class="min-w-0 text-sm font-medium break-words text-slate-900">' . $tagHtml . ' · ' . admin_atualizacoes_auto_data((int)$info['quando'])
+            . ' <span class="c2fc-rotulo c2fc-cor-' . $cor . '">' . $t($rotulo) . '</span></span>'
+            . '<button type="button" class="c2fc-botao c2fc-botao-pequeno" data-auto-liberar="' . $tagHtml . '" data-c2f-dica="' . $t('auto-retry-tip') . '" data-c2f-dica-pos="top right">'
+            . '<i data-lucide="rotate-ccw" class="size-4"></i>' . $t('auto-retry') . '</button></li>';
+    }
+    $recusadas = $recusadas !== ''
+        ? '<ul class="divide-y divide-slate-100">' . $recusadas . '</ul>'
+        : '<p class="text-sm text-slate-600">' . $t('auto-state-none') . '</p>';
+
+    return '<div class="grid grid-cols-1 gap-3 md:grid-cols-2">'
+        . $linha('power', $t('auto-state-switch'), $selo)
+        . $linha('calendar-clock', $t('auto-state-next'), $proxima ? admin_atualizacoes_auto_data($proxima) : $t('auto-state-none'))
+        . $linha('search-check', $t('auto-state-last-check'), $checagem)
+        . $linha('package', $t('auto-state-found'), $encontrada)
+        . $linha('history', $t('auto-state-last-attempt'), $tentativa)
+        . '</div>'
+        . '<div class="rounded-lg border border-slate-200 p-3"><p class="mb-1 text-xs font-semibold tracking-wide text-slate-500 uppercase">' . $t('auto-state-refused') . '</p>' . $recusadas . '</div>';
+}
+
+/** Preenche a aba Automático do componente com a configuração e o estado da instalação. */
+function admin_atualizacoes_auto_preencher(string $comp): string {
+    if (strpos($comp, '#auto-estado#') === false) return $comp;
+    admin_atualizacoes_auto_carregar();
+    $config = admin_atualizacoes_auto_resolver_pendente(atualizacao_automatica_ler(admin_atualizacoes_auto_pasta()));
+    $horas = '';
+    for ($h = 0; $h < 24; $h++) {
+        $horas .= '<option value="' . $h . '"' . ($h === (int)$config['hora'] ? ' selected' : '') . '>' . sprintf('%02d:00', $h) . '</option>';
+    }
+    $comp = modelo_var_troca_tudo($comp, '#auto-ativo#', $config['ativo'] ? 'checked' : '');
+    $comp = modelo_var_troca_tudo($comp, '#auto-backup#', $config['backup'] ? 'checked' : '');
+    $comp = modelo_var_troca_tudo($comp, '#auto-hora-opcoes#', $horas);
+    foreach (array_keys(ATUALIZACAO_AUTOMATICA_PERIODOS) as $periodo) {
+        $comp = modelo_var_troca_tudo($comp, '#auto-sel-' . $periodo . '#', $config['periodo'] === $periodo ? 'true' : 'false');
+    }
+
+    return modelo_var_troca_tudo($comp, '#auto-estado#', admin_atualizacoes_auto_estado_html($config));
+}
+
+/** Liga ou desliga a rotina no `admin-cron`, criando a linha se a tarefa ainda não foi sincronizada. */
+function admin_atualizacoes_auto_sincronizar_tarefa(bool $ativo): void {
+    $id = 'admin-atualizacoes-automatica';
+    $existe = banco_select(Array('unico' => true, 'tabela' => 'cron_tarefas', 'campos' => Array('id'), 'extra' => "WHERE id='" . $id . "'"));
+    if ($existe) {
+        banco_update_campo('ativo', $ativo ? 1 : 0, true, false);
+        banco_update_campo('status', 'A');
+        // Marcado como ajustado no painel: a sincronização dos manifestos não devolve o valor do arquivo.
+        banco_update_campo('user_modified', 1, true, false);
+        banco_update_campo('data_modificacao', 'NOW()', true, false);
+        banco_update_executar('cron_tarefas', "WHERE id='" . $id . "'");
+
+        return;
+    }
+    $campos = null;
+    $campos[] = Array('id', $id, false);
+    $campos[] = Array('nome', banco_escape_field((string)gestor_variaveis(['modulo' => 'admin-atualizacoes', 'id' => 'auto-cron-name'])), false);
+    $campos[] = Array('descricao', banco_escape_field((string)gestor_variaveis(['modulo' => 'admin-atualizacoes', 'id' => 'auto-cron-description'])), false);
+    $campos[] = Array('modulo', 'admin-atualizacoes', false);
+    $campos[] = Array('frequencia', 'horario', false);
+    $campos[] = Array('expressao_cron', '0 * * * *', false);
+    $campos[] = Array('funcao_callback', 'admin_atualizacoes_cron_automatica', false);
+    $campos[] = Array('parametros', '', false);
+    $campos[] = Array('ativo', $ativo ? 1 : 0, true);
+    $campos[] = Array('origem', 'modulo', false);
+    $campos[] = Array('user_modified', 1, true);
+    $campos[] = Array('status', 'A', false);
+    $campos[] = Array('data_criacao', 'NOW()', true);
+    $campos[] = Array('data_modificacao', 'NOW()', true);
+    banco_insert_name($campos, 'cron_tarefas');
+}
+
+/** Ações da aba Automático: `salvar`, `verificar` (só confere a versão publicada) e `liberar` (versão recusada). */
+function admin_atualizacoes_ajax_auto(): void {
+    global $_GESTOR;
+    $params = $_POST['params'] ?? [];
+    if (!is_array($params)) $params = [];
+    $acao = (string)($params['acao'] ?? '');
+    try {
+        admin_atualizacoes_auto_carregar();
+        $pasta = admin_atualizacoes_auto_pasta();
+        $config = admin_atualizacoes_auto_resolver_pendente(atualizacao_automatica_ler($pasta));
+        $mensagem = '';
+        switch ($acao) {
+            case 'salvar':
+                // Só as quatro escolhas da tela entram; o estado é o que já estava gravado.
+                $config = atualizacao_automatica_normalizar([
+                    'ativo' => $params['ativo'] ?? false,
+                    'periodo' => $params['periodo'] ?? '',
+                    'hora' => $params['hora'] ?? null,
+                    'backup' => $params['backup'] ?? false,
+                    'estado' => $config['estado'],
+                ]);
+                if (!atualizacao_automatica_gravar($pasta, $config)) throw new RuntimeException('write');
+                admin_atualizacoes_auto_sincronizar_tarefa($config['ativo']);
+                $mensagem = 'auto-saved';
+                break;
+            case 'verificar':
+                $conferida = admin_atualizacoes_auto_conferir($config);
+                $config = $conferida['config'];
+                if ($conferida['consulta']['ok']) {
+                    $nova = $conferida['consulta']['tag'] !== null && atualizacao_automatica_mais_nova($conferida['consulta']['tag'], (string)($_GESTOR['versao'] ?? ''));
+                    $config['estado']['motivo'] = $conferida['consulta']['tag'] === null ? 'sem-versao-publicada' : ($nova ? null : 'ja-atualizado');
+                    atualizacao_automatica_gravar($pasta, $config);
+                }
+                $mensagem = $conferida['consulta']['ok'] ? 'auto-checked' : 'auto-reason-consulta-falhou';
+                break;
+            case 'liberar':
+                $tag = (string)($params['tag'] ?? '');
+                if (!atualizacao_automatica_tag_valida($tag)) throw new RuntimeException('tag');
+                $config = atualizacao_automatica_liberar($config, $tag);
+                if (!atualizacao_automatica_gravar($pasta, $config)) throw new RuntimeException('write');
+                $mensagem = 'auto-released';
+                break;
+            default:
+                throw new RuntimeException('acao');
+        }
+        $_GESTOR['ajax-json'] = ['status' => 'ok', 'data' => [
+            'mensagem' => (string)gestor_variaveis(['modulo' => 'admin-atualizacoes', 'id' => $mensagem]),
+            'ativo' => $config['ativo'],
+            'estado' => admin_atualizacoes_auto_estado_html($config),
+        ]];
+    } catch (Throwable $e) {
+        $_GESTOR['ajax-json'] = ['status' => 'erro', 'erro' => (string)gestor_variaveis(['modulo' => 'admin-atualizacoes', 'id' => 'auto-error'])];
+    }
+}
+
 function admin_atualizacoes_start(){
     global $_GESTOR;
 
@@ -423,6 +610,7 @@ function admin_atualizacoes_start(){
 		switch($_GESTOR['ajax-opcao']){
 			case 'update': admin_atualizacoes_ajax_update(); break;
 			case 'choque-resolver': admin_atualizacoes_ajax_choque_resolver(); break;
+			case 'auto': admin_atualizacoes_ajax_auto(); break;
 		}
 		
 		interface_ajax_finalizar();

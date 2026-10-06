@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.2",
+    "versao": "1.0.3",
     "bibliotecas": [
         "interface",
         "html",
@@ -16,7 +16,7 @@
         "data_criacao": "data_criacao",
         "data_modificacao": "data_modificacao"
     },
-    "asset_version": "15fd97dc0fd8d327",
+    "asset_version": "cc0717c4b7580e08",
     "resources": {
         "pt-br": {
             "widgets": [

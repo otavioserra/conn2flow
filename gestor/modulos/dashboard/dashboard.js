@@ -919,7 +919,7 @@ $(document).ready(function () {
 			if (empty) empty.classList.toggle('hidden', widgets.length > 0);
 			widgets.forEach(function (widget) {
 				var card = document.createElement('div');
-				card.className = 'dashboard-widget-card rounded-xl border border-slate-200 bg-white shadow-sm';
+				card.className = 'dashboard-widget-card flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm';
 				card.dataset.widgetInstance = widget.instance_id;
 				card.dataset.widgetId = widget.id;
 				geometry(card, widget);
@@ -928,7 +928,7 @@ $(document).ready(function () {
 					'<span class="dashboard-widget-title min-w-0 flex-1 truncate font-semibold">'+escape(widget.name || widget.id)+'</span>' +
 					'<button type="button" class="dashboard-widget-switch-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.switch)+'" data-c2f-dica="'+escape(labels.switch)+'" data-c2f-dica-pos="bottom right"><i data-lucide="settings-2" class="size-4"></i></button>' +
 					'<button type="button" class="dashboard-widget-remove-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.remove)+'" data-c2f-dica="'+escape(labels.remove)+'" data-c2f-dica-pos="bottom right"><i data-lucide="x" class="size-4"></i></button></div>' +
-					'<div class="dashboard-widget-card-body min-w-0 flex-1 overflow-auto p-4">'+escape(labels.loading)+'</div>';
+					'<div class="dashboard-widget-card-body flex-1 w-full min-w-0 min-h-0 overflow-hidden relative p-0">'+escape(labels.loading)+'</div>';
 				['se'].forEach(function (corner) {
 					var handle = document.createElement('button'); handle.type = 'button'; handle.className = 'dashboard-widget-resize-handle'; handle.dataset.corner = corner; handle.setAttribute('aria-label', labels.resize); handle.innerHTML = '<i data-lucide="move-diagonal-2" class="size-3.5"></i>'; card.appendChild(handle);
 				});
@@ -937,14 +937,32 @@ $(document).ready(function () {
 				request('widget-render', {widget_id:widget.id, registro_id:widget.registro_id, instance_id:widget.instance_id, params:widget.params}).then(function (data) {
 					if (!card.isConnected) return;
 					var frame = document.createElement('iframe');
-					frame.className = 'dashboard-widget-frame';
+					frame.className = 'dashboard-widget-frame w-full h-full border-0 block min-h-0';
 					frame.title = widget.name || widget.id;
 					frame.setAttribute('sandbox', 'allow-scripts');
 					// req-242: o documento isolado pode pedir tela cheia (apresentações); o resto do isolamento não muda.
 					frame.setAttribute('allow', 'fullscreen');
 					frame.setAttribute('allowfullscreen', '');
 					var jquery = document.querySelector('script[src*="jquery"]');
-					frame.srcdoc = '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(location.origin + ((typeof gestor !== 'undefined' && gestor.raiz) || '/'))+'">'+(data.css || '')+'<style>html,body{margin:0;max-width:100%;min-height:100%;overflow-x:hidden}html{height:100%}body{font-family:system-ui,sans-serif}</style>'+(jquery ? jquery.outerHTML : '')+'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+'</body></html>';
+					var rootUrl = new URL((typeof gestor !== 'undefined' && gestor.raiz) || '/', location.origin).href;
+					var theme = String(data.theme_styles || '').replace(/<\/style/gi, '<\\/style');
+					var compiler = data.tailwind_compiler_url ? '<script src="'+escape(new URL(data.tailwind_compiler_url, rootUrl).href)+'"><\/script>' : '';
+					var lucideScript = data.lucide_url ? '<script src="'+escape(new URL(data.lucide_url, rootUrl).href)+'"><\/script>' : '';
+					var styles = String(data.css || '');
+					var layoutStyles = styles.match(/^<style data-tailwind-role="layout-precompiled">[\s\S]*?<\/style>/);
+					var layoutCss = layoutStyles ? layoutStyles[0] : '';
+					if (layoutCss) styles = styles.slice(layoutCss.length);
+					// As folhas pré-compiladas do widget são parciais (template, registro): depois da folha completa,
+					// a utility simples delas (`grid-cols-1`) venceria a responsiva (`md:grid-cols-3`). O compilador
+					// entra por último: a folha que ele gera cobre o documento inteiro e fecha a camada de utilities.
+					// CSS de autoria não tem camada e continua vencendo, como na página pública.
+					// O iframe mantém origem opaca: inicialização acontece dentro do documento isolado.
+					var initScript = '<script>window.addEventListener("load",function(){if(window.lucide)window.lucide.createIcons();window.dispatchEvent(new Event("resize"));});<\/script>';
+					frame.srcdoc = '<!doctype html><html data-c2f-dashboard-widget><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(rootUrl)+'">'+
+						'<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden}body{font-family:var(--font-sans,system-ui,-apple-system,sans-serif)}</style>'+
+						layoutCss+(theme ? '<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">'+theme+'</style>' : '')+styles+compiler+
+						'<script>window.gestor='+JSON.stringify({raiz:rootUrl}).replace(/</g, '\\u003c')+';<\/script>'+(jquery ? jquery.outerHTML : '')+lucideScript+
+						'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+initScript+'</body></html>';
 					body.replaceChildren(frame);
 					icons();
 				}).catch(function () { if (card.isConnected) body.textContent = labels.error; });

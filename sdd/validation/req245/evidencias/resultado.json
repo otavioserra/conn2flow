@@ -1,0 +1,210 @@
+{
+ "base": "https://conn2flow.local",
+ "quando": "2026-10-06T19:42:46.719Z",
+ "total": 19,
+ "aprovadas": 19,
+ "falhas": [],
+ "resultados": [
+  {
+   "nome": "admin-atualizacoes abre (HTTP 200)",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "nome": "abre na aba Manual, com a Automático escondida",
+   "ok": true,
+   "detalhe": {
+    "manual": true,
+    "auto": false,
+    "aba": "manual"
+   }
+  },
+  {
+   "nome": "Manual guarda os três modos, as opções e o botão de executar; resumo e registros ficam fora das abas",
+   "ok": true,
+   "detalhe": {
+    "modos": 3,
+    "iniciar": true,
+    "opcoes": 14,
+    "resumo": true,
+    "registros": true
+   }
+  },
+  {
+   "nome": "o modo manual continua funcionando (escolher um modo libera o botão)",
+   "ok": true,
+   "detalhe": {
+    "sel": "true",
+    "botao": true
+   }
+  },
+  {
+   "nome": "a aba Automático troca o painel",
+   "ok": true,
+   "detalhe": {
+    "manual": false,
+    "auto": true,
+    "aba": "automatico"
+   }
+  },
+  {
+   "nome": "três blocos numerados, três períodos lado a lado e hora com o controle do painel",
+   "ok": true,
+   "detalhe": {
+    "blocos": 3,
+    "numeros": [
+     "1",
+     "2",
+     "3"
+    ],
+    "periodos": 3,
+    "mesmaLinha": true,
+    "horaControle": true,
+    "horas": 24,
+    "cru": [],
+    "dicas": [
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "nome": "nenhuma variável ou marcador cru na aba; botões com dica",
+   "ok": true,
+   "detalhe": {
+    "blocos": 3,
+    "numeros": [
+     "1",
+     "2",
+     "3"
+    ],
+    "periodos": 3,
+    "mesmaLinha": true,
+    "horaControle": true,
+    "horas": 24,
+    "cru": [],
+    "dicas": [
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "nome": "a automação nasce desligada nesta instalação (ou já foi ligada por alguém: registrado)",
+   "ok": true,
+   "detalhe": {
+    "ativo": false,
+    "periodo": "semanal",
+    "hora": "3",
+    "backup": true,
+    "selo": "Desligada",
+    "mensagem": "",
+    "estado": "AUTOMAÇÃO Desligada PRÓXIMA CHECAGEM Nenhuma ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+   }
+  },
+  {
+   "nome": "salvar grava e a tela responde (selo Ligada e mensagem)",
+   "ok": true,
+   "detalhe": {
+    "ativo": true,
+    "periodo": "mensal",
+    "hora": "22",
+    "backup": false,
+    "selo": "Ligada",
+    "mensagem": "Configuração salva.",
+    "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+   }
+  },
+  {
+   "nome": "depois de recarregar: aba Automático lembrada e configuração mantida",
+   "ok": true,
+   "detalhe": {
+    "abaLembrada": {
+     "manual": false,
+     "auto": true,
+     "aba": "automatico"
+    },
+    "relido": {
+     "ativo": true,
+     "periodo": "mensal",
+     "hora": "22",
+     "backup": false,
+     "selo": "Ligada",
+     "mensagem": "",
+     "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+    }
+   }
+  },
+  {
+   "nome": "próxima checagem aparece às 22:00",
+   "ok": true,
+   "detalhe": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+  },
+  {
+   "nome": "a rotina aparece no admin-cron como tarefa do módulo, de hora em hora, ativa",
+   "ok": true,
+   "detalhe": {
+    "texto": "Atualização automática do sistema admin-atualizacoes-automatica Declarada no módulo admin-atualizacoes De hora em hora 0 * * * * 2026-10-06 15:13:30 0 ms Sucesso Disparar agora Pausar Editar Ver logs",
+    "pausada": false,
+    "alternar": "Pausar"
+   }
+  },
+  {
+   "nome": "Verificar agora registra a checagem e mostra a versão publicada ou o motivo",
+   "ok": true,
+   "detalhe": {
+    "ativo": true,
+    "periodo": "mensal",
+    "hora": "22",
+    "backup": false,
+    "selo": "Ligada",
+    "mensagem": "Versão publicada conferida.",
+    "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 19:42 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+   }
+  },
+  {
+   "nome": "Verificar agora não dispara atualização",
+   "ok": true,
+   "detalhe": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 19:42 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+  },
+  {
+   "nome": "desligar volta ao padrão (selo Desligada, sem próxima checagem)",
+   "ok": true,
+   "detalhe": {
+    "ativo": false,
+    "periodo": "semanal",
+    "hora": "3",
+    "backup": true,
+    "selo": "Desligada",
+    "mensagem": "Configuração salva.",
+    "estado": "AUTOMAÇÃO Desligada PRÓXIMA CHECAGEM Nenhuma ÚLTIMA CHECAGEM 06/10/2026 19:42 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+   }
+  },
+  {
+   "nome": "a rotina fica pausada no admin-cron quando a automação é desligada",
+   "ok": true,
+   "detalhe": {
+    "texto": "Atualização automática do sistemaPausada admin-atualizacoes-automatica Declarada no módulo admin-atualizacoes De hora em hora 0 * * * * 2026-10-06 15:13:30 0 ms Sucesso Disparar agora Ativar Editar Ver logs",
+    "pausada": true,
+    "alternar": "Ativar"
+   }
+  },
+  {
+   "nome": "aba Automático sem rolagem lateral em 390 px",
+   "ok": true,
+   "detalhe": 390
+  },
+  {
+   "nome": "aba Manual sem rolagem lateral em 390 px",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "nome": "nenhum erro de script na tela",
+   "ok": true,
+   "detalhe": []
+  }
+ ]
+}

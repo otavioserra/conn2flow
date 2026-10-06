@@ -122,6 +122,24 @@ Lidos `feat/req-244` (`4bd4c57b`) e `feat/req-109` (`cb72f1ff`); suítes rodadas
   3. Cada widget do Dashboard carrega o compilador Tailwind do navegador dentro do próprio iframe. É decisão de desenho coerente com o editor; o custo cresce com o número de widgets na tela.
   4. `sdd/implementation/` passa a ter 12 relatórios na raiz com os dois lotes (limite 10): rodar `php cli/c2f.php ai:archive-sdd --keep=10 --repair-links` depois da integração.
 
+## Terceira passada: pente fino do Engenheiro Chefe (2026-10-06)
+
+Relato humano depois de percorrer os módulos do painel. Os acertos do core estão na `feat/req-245` (`f59f8a00`), que contém a `feat/req-243` inteira; os do site, na `feat/req-108` (`60835db6`).
+
+| Apontamento | Causa | Correção |
+|---|---|---|
+| `forms-submissions/view`: select de status nativo | faltava `data-c2f-select` | select montado pelo controle do painel |
+| `variables`: select do tipo não abre na caixa de adicionar | a caixa é clonada depois da carga; a cópia trazia a casca do controle sem os eventos | `observarSelects()` monta selects que chegam depois e refaz cópias (casca viva marcada por propriedade `c2fcViva`) |
+| `admin-arquivos`: galeria colada no canto e botões sem leitura | `<dialog>` sem centralização; botões sem estilo do painel | `position: fixed; inset: 0; margin: auto`, botões redondos escuros, ícones criados após abrir |
+| Máscaras de percentual e dinheiro fora de formulário padrão | `campo-moeda.js` só entrava com o formulário do `interface` | `controles_incluir()` inclui `campo-moeda.js`; máscara `data-c2f-mascara="percentual"` (0 a 100, duas casas, envia com ponto) |
+| `docs/sdd/00-baseline-architecture/` quebrada no Lab | registro gravado pelo editor quando ele ainda não escapava o HTML (415 KB, `user_modified=1`) | registro do Lab devolvido ao pipeline (`user_modified=0`, `versao=0`); o defeito de origem já estava corrigido na segunda passada |
+
+Roteiro `sdd/validation/req243/req243-browser.cjs`: grupo 27 novo, **158/158** conferências. PHPUnit 1.672 e Vitest 573 verdes (contagem já com a REQ-244 junta, ver abaixo).
+
+## Widget de apresentação no Dashboard: precedência entre folhas (2026-10-06)
+
+Pedido do Engenheiro Chefe: a apresentação funciona como página (`apresentacoes/conn2flow-widget/`) e quebra como widget do Dashboard a partir do segundo slide. Detalhe e evidências em `BATCH-253.md`, seção "Correção posterior". Entrega na branch `integ/widget-apresentacao`, que soma `feat/req-245` e `feat/req-244` com os conflitos já resolvidos.
+
 ## Arquivos fora do escopo que a compilação alterou
 
 Versão, checksum e CSS pré-compilado de módulos que este lote não editou (`forms`, `admin-templates`, `usuarios`, `perfil-usuario`, entre outros) e os `*Data.json`. São derivados: os bundles dessas páginas incluem os componentes compartilhados alterados aqui (formulários de edição e visualização, modelos do editor).
