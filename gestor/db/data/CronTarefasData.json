@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "id": "admin-atualizacoes-automatica",
+        "nome": "Atualização automática do sistema",
+        "descricao": "Confere a versão publicada no período escolhido em Atualizações e atualiza o sistema com verificação e volta automática.",
+        "modulo": "admin-atualizacoes",
+        "frequencia": "horario",
+        "expressao_cron": "0 * * * *",
+        "funcao_callback": "admin_atualizacoes_cron_automatica",
+        "parametros": null,
+        "ativo": 0,
+        "origem": "modulo",
+        "status": "A",
+        "user_modified": 0,
+        "versao": 1,
+        "checksum": "c791707bc095f6fb397480b5e70e1c11"
+    }
+]

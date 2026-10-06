@@ -172,3 +172,13 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Conteúdo que vai para dentro de `<textarea>` ou `value` vai escapado**: o `publisher-pages` entregava cru o HTML da publicação e os valores dos campos; um `</textarea>` no conteúdo fechava o campo e o resto do editor ia parar fora do componente (aba SEO sem painel, "cada hora aparece uma coisa"). Sintoma para reconhecer: painel de aba pendurado direto no `body`. Roteiro de tela com abas troca de aba e recarrega; conferir só a carga inicial não pega.
 - **Requisição resumida perde o sintoma**: "vazamento abaixo do editor" não levava a "depende da aba clicada e do F5". Sem reprodução, pedir o relato original antes de dar o item por feito.
 - Roteiro de navegador dos dois repositórios: `sdd/validation/req243/req243-browser.cjs` (140 conferências).
+
+### req-245 / BATCH-254 — atualização automática do sistema (2026-10-06)
+
+- **Rotina de módulo**: chave `cron` na raiz de `<modulo>.json` (`id`, `nome`, `descricao`, `frequencia`, `hora`, `funcao`, `ativo`) e callback em `<modulo>.cron.php`, que nunca inclui o controlador. O painel pode incluir o arquivo de cron para reaproveitar funções. Ligar e desligar pelo módulo: `cron_tarefas.ativo` com `user_modified = 1`, senão a sincronização dos manifestos devolve o valor do arquivo.
+- **Configuração por instalação fora do pacote**: `autenticacoes/<domínio>/` (`$_GESTOR['AUTH_PATH_SERVER']`), ao lado do `.env`.
+- **Atualizar em segundo plano fora da API**: `atualizacoes_execucao_argv` + `_novo_id` + `_php_cli` + `_disparar`, e `_estado` para ler o resultado (`success`, `rolled_back`, `locked`, `error-*`). Domínio na engine de rotinas: `$_CRON['SERVER_NAME']`.
+- **Checagem manual não pode valer como a do período**: marcas separadas (`ultima_checagem` informa, `ultima_automatica` vence). O defeito só apareceu disparando a rotina no Lab logo depois de usar a tela.
+- **Abas nativas**: `data-c2f-abas` com `data-c2f-aba` / `data-c2f-painel`; o controle esconde com o atributo `hidden` e emite `mudou`. Abas aninhadas no mesmo elemento se misturam: manter cada conjunto no próprio invólucro.
+- **`/tmp` do Git Bash não é o `/tmp` do Python do Windows**: arquivo de trabalho vai no scratchpad, com caminho `C:/…`.
+- Roteiro: `sdd/validation/req245/req245-browser.cjs` (19 conferências); a rotina pela engine se exercita pelo AJAX `disparar` do `admin-cron`.

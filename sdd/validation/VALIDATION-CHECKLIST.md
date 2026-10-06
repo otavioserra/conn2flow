@@ -3,6 +3,19 @@
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-254 — REQ-245
+
+- [x] Decisão do ciclo, versões, vencimento por período, configuração e salvaguardas: 15 testes de unidade (`AtualizacaoAutomaticaReq245Test`).
+- [x] Opções proibidas não chegam ao atualizador, nem com o arquivo de configuração adulterado.
+- [x] Tarefa `admin-atualizacoes-automatica` declarada pelo módulo; aparece no `admin-cron` e acompanha o interruptor.
+- [x] Abas Manual e Automático; modo manual funcionando; textos nos dois idiomas; 390 px sem rolagem lateral.
+- [x] `resources:sync`, PHPUnit 1.670 e Vitest 569 sem falhas; pipeline do Lab com saída 0; navegador 19/19 e regressão da REQ-243 140/140.
+- [x] Rotina pela engine no Lab: desligada, fora da hora e na hora (consulta e decide "já atualizado").
+- [ ] Atualização real disparada pela rotina, com sucesso e com volta automática, no tenant isolado.
+- [ ] Revisão da chefia e homologação humana.
+
+Detalhes: [BATCH-254](../implementation/BATCH-254.md) e [resultado do navegador](req245/evidencias/resultado.json).
+
 ## BATCH-252 — REQ-243
 
 - [x] Select: `mousedown`, `mouseup` e `click` da opção não chegam ao elemento de trás; o controle acompanha `select.value` escrito por script e selects inseridos depois da carga.

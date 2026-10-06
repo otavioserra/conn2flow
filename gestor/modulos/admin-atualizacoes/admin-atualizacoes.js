@@ -47,6 +47,72 @@ $(document).ready(function () {
         });
     })();
 
+    // req-245 / BATCH-254: aba Automático — interruptor, período, opções e estado da atualização automática.
+    (function atualizacaoAutomatica() {
+        const painel = document.getElementById('atualizacoes-auto');
+        const modos = document.getElementById('atualizacoes-modos');
+        if (!painel || !modos) return;
+        const url = gestor.raiz + String(gestor.moduloCaminho).replace(/\/+$/, '') + '/';
+        const mensagem = document.getElementById('auto-mensagem');
+        const estado = document.getElementById('auto-estado');
+        const chave = 'c2f-admin-atualizacoes-modo';
+
+        // A aba aberta é lembrada neste navegador.
+        const abas = window.c2fControles && (window.c2fControles.de(modos) || window.c2fControles.criar('abas', modos));
+        if (abas) {
+            try { if (localStorage.getItem(chave) === 'automatico') abas.definir('automatico', true); } catch (e) { /* armazenamento indisponível */ }
+            abas.on('mudou', function (nome) { try { localStorage.setItem(chave, nome); } catch (e) { /* idem */ } });
+        }
+
+        function avisar(texto, erro) {
+            mensagem.textContent = texto || '';
+            mensagem.classList.toggle('text-red-700', !!erro);
+            mensagem.classList.toggle('text-emerald-700', !erro);
+        }
+
+        function periodo() {
+            const marcado = painel.querySelector('[data-auto-periodo][data-selected="true"]');
+            return marcado ? marcado.getAttribute('data-auto-periodo') : 'semanal';
+        }
+
+        function chamar(params, botao) {
+            if (botao) botao.classList.add('loading');
+            return $.ajax({ type: 'POST', url: url, dataType: 'json', data: { opcao: gestor.moduloOpcao, ajax: 'sim', ajaxOpcao: 'auto', params: params } })
+                .done(function (r) {
+                    if (!r || r.status !== 'ok') { avisar((r && r.erro) || painel.dataset.msgErro, true); return; }
+                    estado.innerHTML = r.data.estado;
+                    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+                    avisar(r.data.mensagem, false);
+                })
+                .fail(function () { avisar(painel.dataset.msgErro, true); })
+                .always(function () { if (botao) botao.classList.remove('loading'); });
+        }
+
+        painel.addEventListener('click', function (ev) {
+            const cartao = ev.target.closest('[data-auto-periodo]');
+            if (cartao) {
+                painel.querySelectorAll('[data-auto-periodo]').forEach(function (b) {
+                    const sim = b === cartao;
+                    b.setAttribute('data-selected', sim ? 'true' : 'false');
+                    b.setAttribute('aria-checked', sim ? 'true' : 'false');
+                });
+                return;
+            }
+            const liberar = ev.target.closest('[data-auto-liberar]');
+            if (liberar) { chamar({ acao: 'liberar', tag: liberar.getAttribute('data-auto-liberar') }, liberar); return; }
+            if (ev.target.closest('#auto-verificar')) { chamar({ acao: 'verificar' }, document.getElementById('auto-verificar')); return; }
+            if (ev.target.closest('#auto-salvar')) {
+                chamar({
+                    acao: 'salvar',
+                    ativo: document.getElementById('auto-ativo').checked ? 1 : 0,
+                    periodo: periodo(),
+                    hora: document.getElementById('auto-hora').value,
+                    backup: document.getElementById('auto-backup').checked ? 1 : 0
+                }, document.getElementById('auto-salvar'));
+            }
+        });
+    })();
+
     function adminAtualizacoesMain() {
         const root = $('#admin-atualizacoes-root');
         if (!root.length) return;
