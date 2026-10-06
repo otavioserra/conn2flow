@@ -856,6 +856,14 @@ function dashboard_cards(){
 	}
 	$aba_ativa_salva = dashboard_preferencias_obter('dashboard_aba_ativa', 'dashboard-tab-modulos');
 	$widgets_salvos = dashboard_preferencias_obter('dashboard_widgets_layout', Array());
+
+	// ===== REQ-247: quem administra edita e escolhe a fonte; quem só visualiza recebe o layout do perfil.
+	$widgets_admin = dashboard_widgets_pode_administrar();
+	$widgets_ver = dashboard_widgets_pode_ver();
+	$widgets_perfil = $widgets_ver ? dashboard_widgets_layout_perfil(dashboard_widgets_perfil_atual()) : Array('layout' => Array(), 'origem' => null);
+	$widgets_nomeados = $widgets_admin ? dashboard_preferencias_obter('dashboard_widgets_salvos', Array()) : Array();
+	if(!$widgets_admin) $widgets_salvos = Array();
+	if(!$widgets_ver && $aba_ativa_salva === 'dashboard-tab-widgets') $aba_ativa_salva = 'dashboard-tab-modulos';
 	$ordem_salva = dashboard_preferencias_obter('dashboard_cards_order', null);
 
 	// ===== Gerar cards dos módulos
@@ -979,6 +987,14 @@ function dashboard_cards(){
 	
 	$componente = modelo_var_troca($componente, '<!-- cards-container -->', $container);
 	$componente = modelo_var_troca($componente, "#titulo#", $_GESTOR['pagina#titulo']);
+
+	// ===== REQ-247: sem a operação, o bloco nem chega ao navegador.
+	if(!$widgets_ver){
+		foreach(Array('widgets-aba', 'widgets-painel', 'widgets-menu-ver') as $bloco) $componente = modelo_tag_del($componente, '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->');
+	}
+	if(!$widgets_admin){
+		foreach(Array('widgets-menu-admin', 'widgets-aviso-admin', 'widgets-vazio-admin', 'widgets-modais-admin') as $bloco) $componente = modelo_tag_del($componente, '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->');
+	}
 	
 	// ===== Passar ordem e preferências persistidas para o JavaScript (req-226)
 	
@@ -987,6 +1003,13 @@ function dashboard_cards(){
 		'densidade' => $densidade_salva,
 		'aba_ativa' => $aba_ativa_salva,
 		'widgets_layout' => $widgets_salvos ?: Array(),
+		'widgets' => Array(
+			'pode_editar' => $widgets_admin,
+			'fonte' => dashboard_preferencias_obter('dashboard_widgets_fonte', 'proprio') === 'perfil' ? 'perfil' : 'proprio',
+			'layout_perfil' => $widgets_perfil['layout'],
+			'perfil_origem' => $widgets_perfil['origem'],
+			'salvos' => is_array($widgets_nomeados) ? array_values($widgets_nomeados) : Array(),
+		),
 		'cards_order' => $ordem_salva ?: $cards_order,
 	);
 	
@@ -3067,6 +3090,210 @@ function dashboard_ajax_site_toolbar_page_config_save(){
 	);
 }
 
+// ===== Área de widgets: permissões, layout por perfil e layouts salvos (REQ-247)
+
+/** Operação `widgets-administrar`: editar a área de widgets e definir o layout de cada perfil. */
+function dashboard_widgets_pode_administrar(){
+	static $cache = null;
+	if($cache === null) $cache = (bool)gestor_acesso('widgets-administrar', 'dashboard');
+	return $cache;
+}
+
+/** Operação `widgets-visualizar`: ver a área de widgets sem controles. Quem administra também vê. */
+function dashboard_widgets_pode_ver(){
+	static $cache = null;
+	if($cache === null) $cache = dashboard_widgets_pode_administrar() || (bool)gestor_acesso('widgets-visualizar', 'dashboard');
+	return $cache;
+}
+
+function dashboard_widgets_negar(){
+	gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-sem-permissao'))));
+}
+
+/** Identificador do perfil do usuário da sessão (`administradores`, `consumidores`…). */
+function dashboard_widgets_perfil_atual(){
+	$usuario = gestor_usuario();
+	if(empty($usuario['id_usuarios_perfis'])) return '';
+	$perfil = banco_select(Array(
+		'unico' => true, 'tabela' => 'usuarios_perfis', 'campos' => Array('id'),
+		'extra' => "WHERE id_usuarios_perfis='".banco_escape_field($usuario['id_usuarios_perfis'])."'"
+	));
+	return $perfil ? (string)$perfil['id'] : '';
+}
+
+/** Opções de aparência de um widget: só as chaves conhecidas, com valor dentro da lista. */
+function dashboard_widgets_opcoes_normalizar($opcoes){
+	if(!is_array($opcoes)) $opcoes = Array();
+	$fundo = strtolower((string)($opcoes['background'] ?? ''));
+	$recuo = (string)($opcoes['padding'] ?? 'none');
+	$atualizar = (int)($opcoes['refresh'] ?? 0);
+	return Array(
+		'header' => ($opcoes['header'] ?? true) !== false,
+		'frame' => ($opcoes['frame'] ?? true) !== false,
+		'title' => mb_substr(trim((string)($opcoes['title'] ?? '')), 0, 80),
+		'background' => preg_match('/^#[0-9a-f]{6}$/', $fundo) ? $fundo : '',
+		'padding' => in_array($recuo, Array('none', 'small', 'medium', 'large'), true) ? $recuo : 'none',
+		'refresh' => in_array($atualizar, Array(0, 60, 300, 900), true) ? $atualizar : 0,
+	);
+}
+
+/**
+ * Layout publicado para outros usuários: aceita a string JSON ou o array, descarta item sem widget
+ * válido e chave desconhecida, e prende largura (2 a 12 colunas) e altura (120 a 960 px) na faixa.
+ */
+function dashboard_widgets_layout_normalizar($layout){
+	if(is_string($layout)) $layout = json_decode($layout, true);
+	if(!is_array($layout)) return Array();
+	$saida = Array();
+	foreach($layout as $item){
+		if(!is_array($item) || count($saida) >= 40) continue;
+		$id = (string)($item['id'] ?? '');
+		if(!preg_match('/^[a-zA-Z0-9_-]{1,100}$/', $id)) continue;
+		$instancia = substr(preg_replace('/[^a-zA-Z0-9_.-]/', '', (string)($item['instance_id'] ?? '')), 0, 80);
+		$params = Array();
+		foreach((is_array($item['params'] ?? null) ? $item['params'] : Array()) as $chave => $valor){
+			if(is_scalar($valor) && count($params) < 10) $params[mb_substr((string)$chave, 0, 60)] = mb_substr((string)$valor, 0, 200);
+		}
+		$saida[] = Array(
+			'id' => $id,
+			'name' => mb_substr((string)($item['name'] ?? $id), 0, 200),
+			'registro_id' => mb_substr((string)($item['registro_id'] ?? ''), 0, 200),
+			'instance_id' => $instancia !== '' ? $instancia : 'perfil-'.count($saida),
+			'width' => max(2, min(12, (int)($item['width'] ?? 4))),
+			'height' => (int)($item['height'] ?? 1) === 2 ? 2 : 1,
+			'height_px' => max(120, min(960, (int)($item['height_px'] ?? 220))),
+			'params' => $params,
+			'options' => dashboard_widgets_opcoes_normalizar($item['options'] ?? null),
+		);
+	}
+	return $saida;
+}
+
+/** Layout que vale para o perfil: o dele ou, sem ele, o de todos os perfis (`*`). */
+function dashboard_widgets_layout_perfil($perfil){
+	try {
+		foreach(array_unique(Array((string)$perfil, '*')) as $alvo){
+			if($alvo === '') continue;
+			$linha = banco_select(Array(
+				'unico' => true, 'tabela' => 'dashboard_layouts', 'campos' => Array('layout'),
+				'extra' => "WHERE perfil='".banco_escape_field($alvo)."'"
+			));
+			if($linha) return Array('layout' => dashboard_widgets_layout_normalizar($linha['layout']), 'origem' => $alvo);
+		}
+	} catch (\Throwable $e) {
+		// Tabela ainda ausente: sem layout publicado.
+	}
+	return Array('layout' => Array(), 'origem' => null);
+}
+
+function dashboard_widgets_perfis(){
+	global $_GESTOR;
+	return banco_select(Array(
+		'tabela' => 'usuarios_perfis', 'campos' => Array('id', 'nome'),
+		'extra' => "WHERE status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' ORDER BY nome ASC"
+	)) ?: Array();
+}
+
+/** AJAX — perfis da instalação e quais têm layout publicado. */
+function dashboard_ajax_widgets_layouts(){
+	if(!dashboard_widgets_pode_administrar()){ dashboard_widgets_negar(); return; }
+	$publicados = Array();
+	try {
+		foreach(banco_select(Array('tabela' => 'dashboard_layouts', 'campos' => Array('perfil', 'layout'))) ?: Array() as $linha){
+			$publicados[$linha['perfil']] = count(dashboard_widgets_layout_normalizar($linha['layout']));
+		}
+	} catch (\Throwable $e) {
+		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error'))));
+		return;
+	}
+	$perfis = Array();
+	foreach(dashboard_widgets_perfis() as $perfil){
+		$perfis[] = Array('id' => $perfil['id'], 'nome' => $perfil['nome'], 'publicado' => isset($publicados[$perfil['id']]), 'total' => $publicados[$perfil['id']] ?? 0);
+	}
+	gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array(
+		'perfis' => $perfis,
+		'todos' => Array('publicado' => isset($publicados['*']), 'total' => $publicados['*'] ?? 0),
+		'perfil_atual' => dashboard_widgets_perfil_atual(),
+	)));
+}
+
+/** Perfis pedidos que existem de fato; `*` vale para todos os perfis. */
+function dashboard_widgets_perfis_pedidos($pedido){
+	if(is_string($pedido)) $pedido = json_decode($pedido, true);
+	if(!is_array($pedido)) return Array();
+	$existentes = array_column(dashboard_widgets_perfis(), 'id');
+	$validos = Array();
+	foreach($pedido as $perfil){
+		$perfil = (string)$perfil;
+		if($perfil === '*' || in_array($perfil, $existentes, true)) $validos[$perfil] = true;
+	}
+	return array_keys($validos);
+}
+
+/** AJAX — publica o layout enviado como padrão dos perfis escolhidos. */
+function dashboard_ajax_widgets_layout_publicar(){
+	global $_GESTOR;
+	if(!dashboard_widgets_pode_administrar()){ dashboard_widgets_negar(); return; }
+	$perfis = dashboard_widgets_perfis_pedidos($_REQUEST['perfis'] ?? null);
+	$layout = dashboard_widgets_layout_normalizar($_REQUEST['layout'] ?? null);
+	if(!$perfis){
+		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-layouts-sem-perfil'))));
+		return;
+	}
+	$json = json_encode($layout, JSON_UNESCAPED_UNICODE);
+	try {
+		foreach($perfis as $perfil){
+			$existe = banco_select(Array(
+				'unico' => true, 'tabela' => 'dashboard_layouts', 'campos' => Array('id_dashboard_layouts'),
+				'extra' => "WHERE perfil='".banco_escape_field($perfil)."'"
+			));
+			if($existe){
+				banco_update(
+					banco_campos_virgulas(Array("layout='".banco_escape_field($json)."'", "id_usuarios='".banco_escape_field($_GESTOR['usuario-id'])."'", "data_modificacao=NOW()")),
+					'dashboard_layouts',
+					"WHERE id_dashboard_layouts='".banco_escape_field($existe['id_dashboard_layouts'])."'"
+				);
+			} else {
+				banco_insert_name(Array(Array('perfil', $perfil), Array('layout', $json), Array('id_usuarios', $_GESTOR['usuario-id'], true)), 'dashboard_layouts');
+			}
+		}
+	} catch (\Throwable $e) {
+		error_log('dashboard_ajax_widgets_layout_publicar: '.$e->getMessage());
+		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error'))));
+		return;
+	}
+	gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('perfis' => $perfis, 'total' => count($layout))));
+}
+
+/** AJAX — retira o layout publicado de um perfil (ele volta ao de todos, se houver). */
+function dashboard_ajax_widgets_layout_remover(){
+	if(!dashboard_widgets_pode_administrar()){ dashboard_widgets_negar(); return; }
+	$perfis = dashboard_widgets_perfis_pedidos(Array($_REQUEST['perfil'] ?? ''));
+	if(!$perfis){
+		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-layouts-sem-perfil'))));
+		return;
+	}
+	try {
+		banco_delete('dashboard_layouts', "WHERE perfil='".banco_escape_field($perfis[0])."'");
+	} catch (\Throwable $e) {
+		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error'))));
+		return;
+	}
+	gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('perfil' => $perfis[0])));
+}
+
+/** Endereço da tela de edição do registro de um widget, quando o módulo tem essa tela e o usuário o acessa. */
+function dashboard_widgets_url_edicao($widget_id, $registro_id){
+	global $_GESTOR;
+	if(!dashboard_widgets_pode_administrar() || !gestor_acesso(false, $widget_id)) return '';
+	$pagina = banco_select(Array(
+		'unico' => true, 'tabela' => 'paginas', 'campos' => Array('caminho'),
+		'extra' => "WHERE modulo='".banco_escape_field($widget_id)."' AND opcao='editar' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' LIMIT 1"
+	));
+	if(!$pagina || trim((string)$pagina['caminho']) === '') return '';
+	return ($_GESTOR['url-raiz'] ?? '/').ltrim((string)$pagina['caminho'], '/').'?id='.rawurlencode((string)$registro_id);
+}
+
 /**
  * req-226 (CA-2, CA-4): Endpoint AJAX para salvar preferências de densidade, abas e widgets.
  */
@@ -3080,6 +3307,9 @@ function dashboard_ajax_preferencia_salvar(){
 		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Chave de preferência não informada.');
 		return;
 	}
+
+	// REQ-247: layout próprio, layouts salvos e fonte do layout só para quem administra os widgets.
+	if(strpos($chave, 'dashboard_widgets_') === 0 && !dashboard_widgets_pode_administrar()){ dashboard_widgets_negar(); return; }
 	
 	if(is_string($valor) && $valor !== ''){
 		$dec = json_decode($valor, true);
@@ -3101,6 +3331,8 @@ function dashboard_ajax_preferencia_salvar(){
  */
 function dashboard_ajax_widgets_catalogo(){
 	global $_GESTOR;
+
+	if(!dashboard_widgets_pode_administrar()){ dashboard_widgets_negar(); return; }
 	
 	$lang = $_GESTOR['linguagem-codigo'] ?? 'pt-br';
 	
@@ -3139,6 +3371,7 @@ function dashboard_widget_definicao($widget_id){
 }
 
 function dashboard_ajax_widgets_registros(){
+	if(!dashboard_widgets_pode_administrar()){ dashboard_widgets_negar(); return; }
 	$widget_id = trim((string)($_REQUEST['widget_id'] ?? ''));
 	if(!dashboard_widget_definicao($widget_id)){
 		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('items' => Array(), 'tem_mais' => false)));
@@ -3152,6 +3385,7 @@ function dashboard_ajax_widgets_registros(){
 
 function dashboard_ajax_widget_render(){
 	global $_GESTOR;
+	if(!dashboard_widgets_pode_ver()){ dashboard_widgets_negar(); return; }
 	$widget_id = isset($_REQUEST['widget_id']) ? trim((string)$_REQUEST['widget_id']) : '';
 	$registro_id = trim((string)($_REQUEST['registro_id'] ?? ''));
 	$def = dashboard_widget_definicao($widget_id);
@@ -3222,6 +3456,7 @@ function dashboard_ajax_widget_render(){
 			'tailwind_compiler_url' => $assets['tailwindcss-browser']['dist/index.global.js'],
 			'lucide_url' => $assets['lucide']['lucide.min.js'],
 			'theme_styles' => html_editor_tailwind_browser_contract(),
+			'edit_url' => dashboard_widgets_url_edicao($widget_id, $registro['id']),
 			'scripts' => implode('', array_slice($_GESTOR['javascript-fim'] ?? Array(), $jsAntes))
 		)
 	);
@@ -3246,6 +3481,9 @@ function dashboard_start(){
 			case 'widgets-catalogo': dashboard_ajax_widgets_catalogo(); break;
 			case 'widgets-registros': dashboard_ajax_widgets_registros(); break;
 			case 'widget-render': dashboard_ajax_widget_render(); break;
+			case 'widgets-layouts': dashboard_ajax_widgets_layouts(); break;
+			case 'widgets-layout-publicar': dashboard_ajax_widgets_layout_publicar(); break;
+			case 'widgets-layout-remover': dashboard_ajax_widgets_layout_remover(); break;
 			// Toolbar e legado
 			case 'site-toolbar-render': dashboard_ajax_site_toolbar_render(); break;
 			case 'site-toolbar-widget-types': dashboard_ajax_site_toolbar_widget_types(); break;

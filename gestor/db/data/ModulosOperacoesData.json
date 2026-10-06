@@ -22,6 +22,28 @@
         "user_modified": 0
     },
     {
+        "modulo_id": "dashboard",
+        "nome": "Manage Dashboard Widgets",
+        "id": "administrar-widgets-do-dashboard",
+        "operacao": "widgets-administrar",
+        "status": "A",
+        "language": "en",
+        "versao": 1,
+        "checksum": "468d9a1cd8d689d2a6e0c870288d5175",
+        "user_modified": 0
+    },
+    {
+        "modulo_id": "dashboard",
+        "nome": "View Dashboard Widgets",
+        "id": "visualizar-widgets-do-dashboard",
+        "operacao": "widgets-visualizar",
+        "status": "A",
+        "language": "en",
+        "versao": 1,
+        "checksum": "aa4865d0a09c80c2b0b845262cd58be4",
+        "user_modified": 0
+    },
+    {
         "modulo_id": "publisher-pages",
         "nome": "Modify Page Publisher Permission",
         "id": "modificar-permissao-do-publicador-da-pagina",
@@ -52,6 +74,28 @@
         "language": "pt-br",
         "versao": 2,
         "checksum": "803195df7b7ac58fd75f3b495b4df39f",
+        "user_modified": 0
+    },
+    {
+        "modulo_id": "dashboard",
+        "nome": "Administrar Widgets do Dashboard",
+        "id": "administrar-widgets-do-dashboard",
+        "operacao": "widgets-administrar",
+        "status": "A",
+        "language": "pt-br",
+        "versao": 1,
+        "checksum": "d16442ec88f069bef4325fc984928bba",
+        "user_modified": 0
+    },
+    {
+        "modulo_id": "dashboard",
+        "nome": "Visualizar Widgets do Dashboard",
+        "id": "visualizar-widgets-do-dashboard",
+        "operacao": "widgets-visualizar",
+        "status": "A",
+        "language": "pt-br",
+        "versao": 1,
+        "checksum": "c6d1d2c8c2300bf2fa2ac041a69e2acc",
         "user_modified": 0
     },
     {

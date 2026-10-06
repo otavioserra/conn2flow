@@ -194,3 +194,11 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Select do painel usa `c2fc-campo-selecao`**, não `c2fc-campo-entrada`: a guarda `IconesLucideReq240Test` reprova.
 - **Roteiro que mexe em preferência do usuário guarda e devolve o estado inicial**: o Engenheiro Chefe usa o mesmo usuário no Lab ao mesmo tempo. Alternar chave por clique sem ler o estado antes inverte o que ele deixou.
 - **Foto logo depois de clicar numa chave animada** pega a transição no meio: esperar 400 ms antes da evidência.
+
+### REQ-247 / BATCH-256 — permissões e layout por perfil na área de widgets (2026-10-06)
+- **Operação de módulo**: declarar em `gestor/resources/<idioma>/module_operations.json` e ligar ao perfil em `gestor/resources/user_profiles_modules_operations.json` pelo `id` da operação. `gestor_acesso('<operacao>', '<modulo>')` cai no acesso ao módulo quando a operação não está cadastrada: guarda nova só vale depois do `resources:sync`.
+- **Bloco por permissão sai no servidor**: marcador `<!-- nome < -->` no componente e `modelo_tag_del` no PHP. Esconder por JS deixaria o HTML dos controles no navegador.
+- **`Req203LanguageAgnosticResourcesTest` conta os vínculos globais**: vínculo novo em `user_profiles_modules_operations.json` pede ajuste da contagem.
+- **Função extraída por expressão regular em teste antigo** (`DashboardWidgetStylesReq238Test`): função nova chamada dentro dela precisa de simulação no teste.
+- **`auth:cookie --user=<id>`** gera sessão de outro usuário para roteiro com dois papéis; a sessão anterior do mesmo usuário cai.
+- **Janela estreitada depois da carga deixa o menu lateral aberto por cima**: no roteiro em 390 px, clicar com `dispatchEvent('click')` ou carregar já na largura.

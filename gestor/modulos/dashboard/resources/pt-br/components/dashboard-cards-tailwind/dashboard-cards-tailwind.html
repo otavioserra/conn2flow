@@ -25,9 +25,17 @@
         <details id="dashboard-options" class="relative">
             <summary class="c2fc-botao cursor-pointer"><i data-lucide="sliders-horizontal" class="size-4"></i> @[[dashboard-options-label]]@</summary>
             <div class="dashboard-options-menu absolute right-0 z-40 mt-2 w-64 max-w-full rounded-lg border border-slate-200 bg-white p-1 text-xs shadow-lg" role="menu">
+                <!-- widgets-menu-admin < -->
                 <button type="button" id="dashboard-edit-mode" class="dashboard-menu-item" role="switch" aria-checked="false" data-label-on="@[[dashboard-edit-mode-on]]@" data-label-off="@[[dashboard-edit-mode-off]]@"><i data-lucide="pencil-ruler" class="size-4 shrink-0"></i><span data-edit-label class="min-w-0 flex-1">@[[dashboard-edit-mode-off]]@</span><span class="dashboard-edit-track" aria-hidden="true"><span class="dashboard-edit-thumb"></span></span></button>
                 <button type="button" id="dashboard-btn-add-widget" class="dashboard-menu-item" role="menuitem"><i data-lucide="plus" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-add]]@</span></button>
                 <button type="button" id="dashboard-btn-reset-widgets" class="dashboard-menu-item" role="menuitem" title="@[[widgets-btn-reset-tooltip]]@"><i data-lucide="rotate-ccw" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-reset]]@</span></button>
+                <button type="button" id="dashboard-widgets-source" class="dashboard-menu-item" role="switch" aria-checked="false"><i data-lucide="users-round" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-source-profile]]@</span><span class="dashboard-edit-track" aria-hidden="true"><span class="dashboard-edit-thumb"></span></span></button>
+                <button type="button" id="dashboard-btn-toggle-headers" class="dashboard-menu-item" role="menuitem"><i data-lucide="panel-top" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-toggle-headers]]@</span></button>
+                <button type="button" id="dashboard-btn-layouts" class="dashboard-menu-item" role="menuitem"><i data-lucide="layout-template" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-layouts]]@</span></button>
+                <!-- widgets-menu-admin > -->
+                <!-- widgets-menu-ver < -->
+                <button type="button" id="dashboard-btn-widgets-fullscreen" class="dashboard-menu-item" role="menuitem"><i data-lucide="maximize" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-fullscreen]]@</span></button>
+                <!-- widgets-menu-ver > -->
                 <div class="my-1 h-px bg-slate-100" role="separator"></div>
                 <p class="px-2 pb-1 pt-1 font-semibold text-slate-500">@[[density-selector-label]]@</p>
                 <!-- density-selector < -->
@@ -54,10 +62,12 @@
                 <i data-lucide="layout-grid" class="size-4"></i>
                 <span>@[[dashboard-tab-modulos]]@</span>
             </button>
+            <!-- widgets-aba < -->
             <button type="button" id="dashboard-tab-btn-widgets" class="dashboard-tab-trigger flex items-center gap-2 px-1 py-3 text-sm" data-tab-target="dashboard-tab-widgets" role="tab" aria-selected="false">
                 <i data-lucide="puzzle" class="size-4"></i>
                 <span>@[[dashboard-tab-widgets]]@</span>
             </button>
+            <!-- widgets-aba > -->
         </nav>
     </div>
     <!-- dashboard-tabs > -->
@@ -130,11 +140,21 @@
     </div>
     <!-- tab-content-modulos > -->
 
+    <!-- widgets-painel < -->
     <!-- tab-content-widgets < -->
     <div id="dashboard-tab-widgets" class="dashboard-tab-panel space-y-6 hidden">
+        <!-- widgets-aviso-admin < -->
+        <div id="dashboard-widgets-source-notice" class="hidden flex flex-wrap items-center justify-between gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900">
+            <span class="flex min-w-0 items-center gap-2"><i data-lucide="users-round" class="size-4 shrink-0"></i> @[[widgets-source-notice]]@</span>
+            <button type="button" id="dashboard-btn-copy-profile" class="c2fc-botao"><i data-lucide="copy" class="size-4"></i> @[[widgets-source-copy]]@</button>
+        </div>
+        <!-- widgets-aviso-admin > -->
         <div id="dashboard-widgets-grid" class="dashboard-widgets-grid grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-12 gap-6"
             data-label-switch="@[[widgets-label-switch]]@"
             data-label-config="@[[widgets-label-config]]@"
+            data-label-duplicate="@[[widgets-label-duplicate]]@"
+            data-label-edit="@[[widgets-label-edit]]@"
+            data-label-empty-profile="@[[widgets-empty-profile]]@"
             data-label-active="@[[widgets-label-active]]@"
             data-label-available="@[[widgets-label-available]]@"
             data-label-add="@[[widgets-label-add]]@"
@@ -154,17 +174,61 @@
         <div id="dashboard-widgets-empty" class="hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 p-12 text-center">
             <i data-lucide="layout" class="mx-auto size-12 text-slate-400"></i>
             <h3 class="mt-3 text-base font-semibold text-slate-900">@[[widgets-empty-title]]@</h3>
-            <p class="mt-1 text-sm text-slate-500">@[[widgets-empty-desc]]@</p>
+            <p class="mt-1 text-sm text-slate-500" data-empty-text>@[[widgets-empty-desc]]@</p>
+            <!-- widgets-vazio-admin < -->
             <div class="mt-6">
                 <button type="button" class="c2fc-botao c2fc-botao-primario dashboard-btn-open-catalog">
                     <i data-lucide="plus" class="size-4"></i> @[[widgets-btn-add]]@
                 </button>
             </div>
+            <!-- widgets-vazio-admin > -->
         </div>
     </div>
     <!-- tab-content-widgets > -->
+    <!-- widgets-painel > -->
 
+    <!-- widgets-modais-admin < -->
     <!-- widgets-catalog-modal < -->
+    <div id="dashboard-widgets-layouts-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm hidden" role="dialog" aria-modal="true" aria-labelledby="dashboard-widgets-layouts-title"
+        data-label-apply="@[[widgets-layouts-apply]]@" data-label-delete="@[[widgets-layouts-delete]]@" data-label-remove="@[[widgets-layouts-remove]]@" data-label-all="@[[widgets-layouts-all]]@"
+        data-label-published="@[[widgets-layouts-published]]@" data-label-count="@[[widgets-layouts-count]]@" data-label-done="@[[widgets-layouts-done]]@" data-label-none="@[[widgets-layouts-none]]@"
+        data-label-name="@[[widgets-layouts-name-required]]@" data-label-pick="@[[widgets-layouts-sem-perfil]]@">
+        <div class="relative flex max-h-full w-full max-w-2xl flex-col rounded-2xl border border-slate-200 bg-white shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+                <div class="flex min-w-0 items-center gap-2">
+                    <i data-lucide="layout-template" class="size-5 shrink-0 text-sky-600"></i>
+                    <h3 id="dashboard-widgets-layouts-title" class="text-lg font-semibold text-slate-900">@[[widgets-layouts-title]]@</h3>
+                </div>
+                <button type="button" class="dashboard-widgets-layouts-close text-slate-400 hover:text-slate-700" aria-label="@[[widgets-btn-fechar]]@">
+                    <i data-lucide="x" class="size-5"></i>
+                </button>
+            </div>
+            <div class="min-h-0 space-y-6 overflow-y-auto px-6 py-4">
+                <section>
+                    <h4 class="text-sm font-semibold text-slate-900">@[[widgets-layouts-saved]]@</h4>
+                    <p class="mt-1 text-xs text-slate-500">@[[widgets-layouts-saved-help]]@</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <input type="text" id="dashboard-widgets-layout-name" class="c2fc-campo-entrada min-w-0 flex-1" maxlength="60" placeholder="@[[widgets-layouts-name]]@" aria-label="@[[widgets-layouts-name]]@">
+                        <button type="button" id="dashboard-widgets-layout-save" class="c2fc-botao c2fc-botao-primario"><i data-lucide="save" class="size-4"></i> @[[widgets-layouts-save]]@</button>
+                    </div>
+                    <div id="dashboard-widgets-saved-list" class="mt-3 space-y-2"></div>
+                </section>
+                <section class="border-t border-slate-200 pt-4">
+                    <h4 class="text-sm font-semibold text-slate-900">@[[widgets-layouts-profiles]]@</h4>
+                    <p class="mt-1 text-xs text-slate-500">@[[widgets-layouts-profiles-help]]@</p>
+                    <div id="dashboard-widgets-profile-list" class="mt-3 space-y-2"></div>
+                    <div class="mt-3">
+                        <button type="button" id="dashboard-widgets-layout-publish" class="c2fc-botao c2fc-botao-primario"><i data-lucide="send" class="size-4"></i> @[[widgets-layouts-publish]]@</button>
+                    </div>
+                </section>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-6 py-3">
+                <span id="dashboard-widgets-layouts-status" class="min-w-0 text-sm font-medium text-sky-700" role="status"></span>
+                <button type="button" class="dashboard-widgets-layouts-close c2fc-botao">@[[widgets-btn-fechar]]@</button>
+            </div>
+        </div>
+    </div>
+
     <div id="dashboard-widget-config-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm hidden" role="dialog" aria-modal="true" aria-labelledby="dashboard-widget-config-title">
         <div class="relative w-full max-w-lg rounded-2xl border border-slate-200 bg-white shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
@@ -253,6 +317,7 @@
         </div>
     </div>
     <!-- widgets-catalog-modal > -->
+    <!-- widgets-modais-admin > -->
 
     <!-- logout-section < -->
     <div class="dashboard-cards-divider flex items-center gap-3 text-sm text-slate-500">

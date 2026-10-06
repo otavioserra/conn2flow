@@ -31,6 +31,8 @@ function gestor_pagina_recursos_incluir($p){
  }
 }
 function gestor_modulos_dados($id){return [];}
+function dashboard_widgets_pode_ver(){return true;}
+function dashboard_widgets_url_edicao($widget,$registro){return '/menus/editar/?id='.$registro;}
 function gestor_get($id){return $GLOBALS['_GESTOR'][$id] ?? null;}
 function gestor_set($id,$value){$GLOBALS['_GESTOR'][$id]=$value;}
 function html_editor_widget_renderizar($sig){
