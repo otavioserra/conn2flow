@@ -204,7 +204,13 @@ function conferir(nome, ok, detalhe) {
     if (await imagem.count() === 0) { conferir('há imagem na pasta para marcar', true, 'pasta sem imagens: conclusão não exercitada'); await page.keyboard.press('Escape'); return; }
     // A galeria ignora imagem que já está nela: marca todas as da pasta para garantir ao menos uma nova.
     const total = await quadro.locator('.c2f-item:has(img) .c2f-sel').count();
-    await quadro.locator('body').evaluate(() => document.querySelectorAll('.c2f-item .c2f-sel').forEach(c => { if (c.closest('.c2f-item').querySelector('img') && !c.checked) c.click(); }));
+    const rodape = await page.evaluate(() => { const a = document.querySelector('.modal.iframePagina > .actions'); return a ? getComputedStyle(a).display : 'ausente'; });
+    conferir('um Cancelar só: o rodapé do modal sai de cena no seletor múltiplo', rodape === 'none' || rodape === 'ausente', rodape);
+    // Marca pelos botões Selecionar de cada arquivo, que é como o seletor é usado na galeria.
+    await quadro.locator('body').evaluate(() => document.querySelectorAll('.c2f-item').forEach(i => { const b = i.querySelector('.c2f-select'); if (i.querySelector('img') && b && !i.querySelector('.c2f-sel').checked) b.click(); }));
+    await page.waitForTimeout(300);
+    const aindaFechada = await page.evaluate(n => document.querySelectorAll('#gallery-items .gallery-item').length === n, itens.n);
+    conferir('o botão Selecionar marca o arquivo sem enviá-lo na hora', aindaFechada);
     await page.waitForTimeout(400);
     const marcada = await quadro.locator('body').evaluate(() => ({miniaturas: document.querySelectorAll('#c2f-pick-tray-thumbs .c2f-pick-thumb').length, ligado: !document.getElementById('c2f-pick-tray-confirm').disabled, remover: !!document.querySelector('.c2f-pick-thumb-remove')}));
     conferir('uma miniatura por arquivo marcado, com × e Concluir ligado', marcada.miniaturas >= 1 && marcada.miniaturas <= total && marcada.ligado && marcada.remover, {total, marcada});
@@ -257,11 +263,28 @@ function conferir(nome, ok, detalhe) {
     await page.check('input[name="tipo"][value="ambos"]').catch(() => {});
     await page.waitForLoadState('networkidle').catch(() => {});
     const rota = await page.evaluate(() => { const a = [...document.querySelectorAll('a[href]')].find(x => x.getAttribute('href').includes('publisher-pages/editar/')); return a ? new URL(a.href).pathname.slice(1) + new URL(a.href).search : null; }) || await primeiroLink(page, 'publisher-pages/', 'publisher-pages/editar/');
-    conferir('HTTP 200 na edição', await abrir(page, rota) === 200, rota);
+    // Página de documentação com exemplos de código: é o conteúdo que quebrava o editor quando ia sem escape.
+    const comCodigo = 'publisher-pages/editar/?id=docs-sdd-00-baseline-architecture';
+    const alvo = (await abrir(page, comCodigo) === 200 && await page.locator('.publisher-pages-form').count()) ? comCodigo : rota;
+    conferir('HTTP 200 na edição', await abrir(page, alvo) === 200, alvo);
     await page.waitForTimeout(1500);
     const e = await page.evaluate(() => { const sel = document.querySelector('.publisher-pages-form .c2fc-campo'); const botoes = document.querySelector('.publisher-pages-form a[href*="publisher/editar/"]'); const mover = document.querySelector('.mover-publicador-btn'); const rs = sel.getBoundingClientRect(), rb = botoes ? botoes.getBoundingClientRect() : null, rm = mover ? mover.getBoundingClientRect() : null; const cont = document.querySelector('.publisher-pages-form'); const fim = cont.getBoundingClientRect().bottom; const fora = [...document.querySelectorAll('#_gestor-interface-edit-dados iframe, #_gestor-interface-edit-dados pre, #_gestor-interface-edit-dados .CodeMirror')].filter(x => x.offsetParent !== null && x.getBoundingClientRect().top > fim + 2).map(x => x.tagName + '#' + x.id); const editor = document.querySelector('.publisher-pages-form .menuContainerPagina, .publisher-pages-form [data-tab]'); return {distancia: rb ? Math.round(rb.top - rs.bottom) : null, lado: rb && rm ? Math.round(rm.left - rb.right) : null, mesmaLinha: rb && rm ? Math.abs(rb.top - rm.top) < 2 : null, fora, editorDentro: !!editor, larguraPagina: document.documentElement.scrollWidth <= innerWidth + 1}; });
     if (e.distancia !== null) conferir('Editar publicador e Mover publicação com respiro do select e entre si', e.distancia >= 8 && (e.lado === null || (e.lado >= 6 && e.mesmaLinha)), e);
     conferir('nada do editor (iframe, código) aparece fora do formulário da página', e.fora.length === 0 && e.editorDentro && e.larguraPagina, e);
+    const estrutura = await page.evaluate(() => { const comp = document.querySelector('.publisher-pages-form .html-editor-component'); const seo = [...document.querySelectorAll('[data-tab="seo-compartilhamento"]')].find(x => x.tagName !== 'A'); const h = [...document.querySelectorAll('.publisher-pages-form h4.publisher-fields-header')].map(x => { const s = x.querySelector('svg').getBoundingClientRect(); return Math.round(x.getBoundingClientRect().height) <= 36 && s.width > 0; }); const etiquetas = [...document.querySelectorAll('.publisher-pages-form .field-variable > span')].filter(x => x.offsetParent !== null).map(x => Math.round(x.getBoundingClientRect().height)); return {seoDentro: !!seo && !!comp && comp.contains(seo), modalDentro: !!comp && !!comp.querySelector('.html-editor-container'), titulos: h, etiquetas}; });
+    conferir('o editor chega inteiro: painel de SEO e contêiner dentro do componente', estrutura.seoDentro && estrutura.modalDentro, estrutura);
+    conferir('títulos e etiquetas de variável com ícone e texto na mesma linha', estrutura.titulos.length === 2 && estrutura.titulos.every(Boolean) && estrutura.etiquetas.length > 0 && estrutura.etiquetas.every(a => a <= 24), estrutura);
+    const visiveis = () => page.evaluate(() => { const comp = document.querySelector('.publisher-pages-form .html-editor-component'); const ativa = comp.querySelector('.menuContainerPagina a.active'); return {ativa: ativa && ativa.getAttribute('data-tab'), paineis: [...comp.querySelectorAll(':scope > [data-tab]')].filter(x => x.offsetParent !== null).map(x => x.getAttribute('data-tab'))}; });
+    const trocas = [];
+    for (const aba of ['modelos', 'assistente-ia', 'visualizacao-codigo', 'seo-compartilhamento', 'visualizacao-pagina', 'seo-compartilhamento']) {
+      await page.click('.publisher-pages-form .menuContainerPagina a[data-tab="' + aba + '"]'); await page.waitForTimeout(500);
+      const v = await visiveis();
+      if (v.ativa !== aba || v.paineis.length !== 1 || v.paineis[0] !== aba) trocas.push({aba, v});
+    }
+    conferir('cada aba do editor mostra só o próprio painel (inclusive SEO)', trocas.length === 0, trocas);
+    await page.reload({waitUntil: 'networkidle'}); await page.waitForTimeout(1500);
+    const recarga = await visiveis();
+    conferir('depois de recarregar, a aba marcada e o painel visível são os mesmos', recarga.paineis.length === 1 && recarga.paineis[0] === recarga.ativa, recarga);
     const caixas = await caixasEmLinha(page);
     conferir('mensagens informativas em linha', caixas.every(c => c.ok), caixas.filter(c => !c.ok));
     conferir('nenhuma tag de variável crua na tela', (await textoCru(page)).length === 0, await textoCru(page));

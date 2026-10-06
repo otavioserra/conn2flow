@@ -239,6 +239,39 @@ final class RefinamentosReq243Test extends TestCase
         }
     }
 
+    public function testPublisherPagesEscapaOQueVaiParaCamposDoFormulario(): void
+    {
+        $php = $this->ler('modulos/publisher-pages/publisher-pages.php');
+        // HTML da publicação dentro do <textarea> do editor: escapado na inclusão, na edição e na clonagem.
+        $this->assertSame(2, substr_count($php, "\$html = (isset(\$html_template) ? htmlentities(\$html_template) : '');"));
+        $this->assertStringNotContainsString("\$html = (isset(\$html_template) ? \$html_template : '');", $php);
+        $this->assertStringContainsString("htmlentities(\$template['html'])", $php);
+        // Valores dos campos do publicador: escapados em <textarea> e em value="…"; o tipo html segue como marcação.
+        $this->assertSame(2, substr_count($php, "'[[field-value]]', htmlspecialchars((string)\$value_field, ENT_QUOTES, 'UTF-8'));"));
+        $this->assertSame(2, substr_count($php, "\$field['type'] === 'html' ? \$value_field : htmlspecialchars((string)\$value_field, ENT_QUOTES, 'UTF-8')"));
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('idiomas')]
+    public function testPublisherPagesTitulosEEtiquetasComIconeNaMesmaLinha(string $idioma): void
+    {
+        foreach (['adicionar', 'editar', 'clonar'] as $tela) {
+            $html = $this->ler("modulos/publisher-pages/resources/$idioma/pages/publisher-pages-$tela/publisher-pages-$tela.html");
+            $this->assertSame(2, substr_count($html, '<h4 class="mt-6 mb-3 flex items-center gap-2 border-b border-slate-200 pb-2 font-semibold publisher-fields-header">'), $tela);
+        }
+        $campos = $this->ler("modulos/publisher-pages/resources/$idioma/components/publisher-fields-tailwind/publisher-fields-tailwind.html");
+        $this->assertSame(4, substr_count($campos, '<span class="inline-flex items-center gap-1.5" data-c2f-dica="'));
+        $this->assertSame(2, substr_count($campos, '<span>[[field-description]]</span>'));
+        // A variante guarda os marcadores e os ganchos do componente original.
+        $original = $this->ler("modulos/publisher-pages/resources/$idioma/components/publisher-fields/publisher-fields.html");
+        preg_match_all('/<!-- publisher-[a-z-]+ (?:<|>) -->|\[\[field-[a-z-]+\]\]/', $original, $marcadores);
+        foreach (array_unique($marcadores[0]) as $marcador) {
+            $this->assertStringContainsString($marcador, $campos, $marcador);
+        }
+        foreach (['copy-to-clipboard', 'field-variable', 'pfc-field', 'quill-editor'] as $gancho) {
+            $this->assertStringContainsString($gancho, $campos, $gancho);
+        }
+    }
+
     public function testBotaoSemDicaUsaORotuloEHistoricoNaoApagaVariaveisDaPagina(): void
     {
         $interface = $this->ler('bibliotecas/interface.php');

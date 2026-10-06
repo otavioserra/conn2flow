@@ -145,9 +145,9 @@
         "minificado": 1020
     },
     "gestor/modulos/admin-arquivos/admin-arquivos.js": {
-        "sha1": "8b7dbe85a530509e765350adbcbc7ade45672a6d",
-        "origem": 50039,
-        "minificado": 29881
+        "sha1": "0607c74f18c0c89b996196264eebbc6cb5005613",
+        "origem": 50945,
+        "minificado": 30222
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
         "sha1": "c24ffad327e3d467a5baaf532b46f26f03f4b3dc",
@@ -260,9 +260,9 @@
         "minificado": 1451
     },
     "gestor/modulos/galleries/galleries.js": {
-        "sha1": "ed2f09418b50267528a7a8982c8c332790b03a42",
-        "origem": 59386,
-        "minificado": 30535
+        "sha1": "0027303331568182f5745c545edd5f4daf22ddb3",
+        "origem": 60321,
+        "minificado": 30901
     },
     "gestor/modulos/galleries/galleries.widget.js": {
         "sha1": "ccd82ea2c77c636501c056cd87fb9692853e3df1",

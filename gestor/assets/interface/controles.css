@@ -235,6 +235,8 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 svg.icon.outline, svg.lucide.outline, i.icon.outline { outline: 0 !important; }
 /* REQ-243: item de navegação que aponta para a tela atual (barra de módulo, como a do Host Manager). */
 .c2fc-botao[aria-current="page"]:not(.c2fc-botao-primario) { border-color: #0284c7; background: #f0f9ff; color: #075985; }
+/* REQ-243: seletor de várias imagens — cancelar e concluir ficam na bandeja do gerenciador, na base do modal. */
+.c2fc-ponte-modal.c2f-seletor-multiplo > .actions { display: none; }
 /* REQ-243: dica vazia não desenha balão. */
 [data-c2f-dica=""]::after, [data-c2f-dica=""]::before, .c2fc-sem-fomantic [data-tooltip=""]::after, .c2fc-sem-fomantic [data-tooltip=""]::before { display: none !important; content: none !important; }
 /* posições: alinhamento horizontal */

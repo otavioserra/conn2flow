@@ -70,8 +70,8 @@
 
 ## Guardas de teste
 
-- `tests/Unit/PHP/RefinamentosReq243Test.php` (23 testes, 838 asserções): contratos de marcação nos dois idiomas e as três mudanças do `interface.php`.
-- `tests/Unit/JS/req243-refinamentos.test.js` (17 testes): clique e `mouseup` que não vazam, select que acompanha script, formatador (inclusive tentativa de script e de atributo), bandeja e aviso do seletor, regras de folha.
+- `tests/Unit/PHP/RefinamentosReq243Test.php` (26 testes, 914 asserções): contratos de marcação nos dois idiomas e as três mudanças do `interface.php`.
+- `tests/Unit/JS/req243-refinamentos.test.js` (18 testes): clique e `mouseup` que não vazam, select que acompanha script, formatador (inclusive tentativa de script e de atributo), bandeja e aviso do seletor, regras de folha.
 - Ajustados por mudança de contrato pedida na requisição: `req242-refinamentos.test.js` (regra do iframe) e `InterfaceBotoesTailwindTest` (botão sem dica deixa de sair com dica vazia).
 
 ## Evidências
@@ -79,15 +79,27 @@
 | Verificação | Resultado |
 | --- | --- |
 | `php cli/c2f.php resources:sync` | 511 recursos Tailwind, "Nenhum problema detectado". O aviso de `dist/` sem `PUBLIC_PATH` é o conhecido. |
-| Vitest do core | 48 arquivos, 568 testes, sem falhas |
-| PHPUnit do core (ordem padrão) | 1.652 testes, 17.049 asserções, sem falhas (5 pulados, 4 depreciações do PHP e 3 do PHPUnit) |
-| Pipeline `project:update-all conn2flow-site-local` | 5 rodadas, todas com saída 0 nas 8 etapas; a última com 0 arquivos diferentes na conferência por hash |
-| Roteiro `sdd/validation/req243/req243-browser.cjs` | 134 de 134 conferências (27 grupos, core e site), em 1366 px e 390 px |
+| Vitest do core | 48 arquivos, 569 testes, sem falhas |
+| PHPUnit do core (ordem padrão) | 1.655 testes, sem falhas (5 pulados, 4 depreciações do PHP e 3 do PHPUnit) |
+| Pipeline `project:update-all conn2flow-site-local` | 6 rodadas, todas com saída 0 nas 8 etapas; a última com 0 arquivos diferentes na conferência por hash |
+| Roteiro `sdd/validation/req243/req243-browser.cjs` | 140 de 140 conferências (27 grupos, core e site), em 1366 px e 390 px |
 | `git diff --check` | limpo |
 
 Resultado e capturas: `sdd/validation/req243/evidencias/` (`resultado.json` e 43 imagens).
 
 O roteiro achou três defeitos que os testes de unidade não pegavam, corrigidos antes da rodada final: o `mouseup` do gesto do select ainda chegava ao elemento de trás; os botões de visualização do `admin-arquivos` ficavam 4 px mais baixos que os de ação; e o título da listagem do Stripe continuava à vista (site).
+
+## Segunda passada, com o relato original do Engenheiro Chefe
+
+Depois da primeira entrega o Engenheiro Chefe enviou as três mensagens originais da auditoria. Comparadas com a requisição, duas descrições tinham chegado resumidas a ponto de esconder o defeito:
+
+| O que o relato original dizia | O que a requisição trouxe | O que foi feito agora |
+| --- | --- | --- |
+| `publisher-pages/editar`: "tem o escapamento", abaixo do editor "está aparecendo código, um iframe, cada hora aparece uma coisa dependendo do que eu clico, se eu der um F5…" | "Correção de vazamento de código/iframe e tags desformatadas abaixo do editor HTML" | Reproduzido no Lab: a aba SEO & Compartilhamento ficava marcada sem trocar o painel, porque o painel dela estava fora do editor. **Causa**: o módulo entregava o HTML da publicação cru ao `<textarea>` do editor (o `admin-paginas` usa `htmlentities`), e os valores dos campos do publicador iam crus para `<textarea>` e `value="…"`. Conteúdo com `</textarea>` ou entidades fechava o campo antes da hora e o resto do componente vazava. Escape aplicado na edição e na clonagem; o tipo `html` dos campos segue como marcação. |
+| `publisher-pages/editar`: "Campos da página com o ícone em uma linha e o escrito na outra", "Campos do publicador está com problema também" | "mensagens inline" | Títulos das seções com `flex items-center gap-2`; etiqueta de variável de cada campo (`[[publisher#…]]`) e caixas de descrição com ícone e texto na mesma linha (`publisher-fields-tailwind`). |
+| `galleries`: "conforme eu fosse clicando nos **botões selecionar**, aparecesse quais foram selecionados **na barra do cancelar**" | "bandeja com as miniaturas das imagens marcadas" | No seletor de várias imagens o botão Selecionar de cada arquivo (e o da visualização ampliada) marca o arquivo em vez de enviá-lo na hora; a escolha vai para a galeria em "Concluir seleção". O rodapé do modal, com um segundo Cancelar, sai de cena enquanto o seletor múltiplo está aberto. |
+
+A primeira passada tinha reorganizado a tela do `publisher-pages` sem achar a causa: o roteiro conferia que nada do editor aparecia fora do formulário, mas não trocava de aba. Agora ele abre uma página de documentação com exemplos de código, percorre as cinco abas, recarrega e confere que a aba marcada e o painel visível são os mesmos.
 
 ## Concorrência no Lab
 
@@ -116,7 +128,8 @@ Versão, checksum e CSS pré-compilado de módulos que este lote não editou (`f
 
 ## Limites e observações
 
-- **Item 15, "vazamento de código/iframe abaixo do editor"**: a causa provável era o editor dentro de um campo flexível em coluna, sem invólucro com espaçamento; a tela foi reorganizada sobre o padrão do `admin-paginas` e o roteiro confere que nada do editor aparece fora do formulário. A auditoria não trouxe captura do defeito: se ele persistir em alguma página específica, a captura dela resolve.
+- **Publicações já salvas com o editor quebrado**: enquanto o HTML ia sem escape, salvar uma publicação com entidades (`&lt;div&gt;`) podia gravá-las como marcação. Não conferi se alguma página do Lab foi afetada; vale abrir uma das páginas de documentação editadas pelo painel e comparar com a fonte.
+- **`html_extra_head` e `css`** continuam indo sem escape para os campos do editor, igual ao `admin-paginas`. Um `</textarea>` dentro deles teria o mesmo efeito; não foi alterado para não divergir do módulo de referência.
 - **Filtro "todos" de `sales-reports`**: no select nativo o filtro já funcionava; o defeito vinha do select dentro do `<label>`. Marcação refeita e fluxo conferido no navegador.
 - **`admin-categorias.js` não minifica** no passo 1 do pipeline (falha já presente na `main`; `node --check` passa). O arquivo é servido na versão de autoria. Não é deste lote.
 - **Paridade entre idiomas já existente**: o filtro da listagem do `publisher-pages` em inglês não tem os selects de módulo e publicador (nem no componente original); `admin-environment` em inglês tem cinco selects, contra sete em português. Mantido como estava.

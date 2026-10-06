@@ -10,9 +10,10 @@
 - [x] Histórico sem rolagem horizontal; `admin-arquivos` com dicas e botões na mesma altura; `adicionar-filho` com classes oficiais.
 - [x] `cookie-consent` e `menus` com mensagens em linha e rádios na horizontal; seletor de arquivos com bandeja e "Concluir seleção"; alça da galeria sólida.
 - [x] Família publisher: mapeamento em 3 colunas com cabeçalho, copiar compacto, selects do painel; `publisher-pages` no padrão do `admin-paginas`.
+- [x] `publisher-pages/editar`: HTML e valores de campo escapados; as cinco abas do editor (inclusive SEO) mostram só o próprio painel, também depois de recarregar.
 - [x] `variables` sem tag crua e sem contorno nos ícones; `admin-cron` e `admin-environment` com selects, botões e dicas.
-- [x] `resources:sync` (511 recursos), Vitest 568 e PHPUnit 1.652 sem falhas; `RefinamentosReq243Test` e `req243-refinamentos.test.js` novos.
-- [x] Pipeline do Lab com saída 0 (5 rodadas), conferência por hash sem diferenças e navegador 134/134 em 1366 e 390 px.
+- [x] `resources:sync` (511 recursos), Vitest 569 e PHPUnit 1.655 sem falhas; `RefinamentosReq243Test` e `req243-refinamentos.test.js` novos.
+- [x] Pipeline do Lab com saída 0 (6 rodadas), conferência por hash sem diferenças e navegador 140/140 em 1366 e 390 px.
 - [x] Revisão da REQ-244 / REQ-109 sem achado bloqueante; mesclagem simulada com um conflito, em arquivo derivado.
 - [ ] Homologação humana.
 

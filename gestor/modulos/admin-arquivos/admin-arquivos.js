@@ -530,6 +530,8 @@ $(document).ready(function () {
 
 			$m.on('click', '.c2f-gal-select', function () {
 				var it = galeriaItemAtual(); if (!it) return;
+				// REQ-243: no seletor de várias imagens a visualização ampliada também só marca o arquivo.
+				if (cfg.paginaIframe && cfg.selecaoMultipla && marcarPeloCaminho(it.caminho)) { $m[0].close(); return; }
 				var dados = { id: it.caminho, caminho: it.caminho, imgSrc: it.thumb, nome: it.nome, data: it.data, tipo: it.mime };
 				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), '*');
 				$m[0].close();
@@ -640,9 +642,20 @@ $(document).ready(function () {
 			}).catch(function (err) { console.error(err); });
 		});
 
+		// REQ-243: no seletor de várias imagens, o botão Selecionar de cada arquivo marca (ou desmarca) o
+		// arquivo, que aparece na bandeja ao lado de Cancelar; a escolha só vai para a galeria em "Concluir
+		// seleção". Fora desse modo o botão continua enviando o arquivo na hora.
+		function marcarPeloCaminho(caminho) {
+			var $caixa = $lista.find('.c2f-item').filter(function () { return this.getAttribute('data-caminho') === caminho; }).find('.c2f-sel');
+			if (!$caixa.length) return false;
+			$caixa.prop('checked', !$caixa.prop('checked')).trigger('change');
+			return true;
+		}
+
 		$lista.on('click', '.c2f-select', function (e) {
 			e.stopPropagation();
 			var $item = $(this).closest('.c2f-item');
+			if (cfg.paginaIframe && cfg.selecaoMultipla && marcarPeloCaminho($item.attr('data-caminho'))) return;
 			var dados = {
 				id: $item.attr('data-caminho'),
 				caminho: $item.attr('data-caminho'),

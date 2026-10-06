@@ -155,6 +155,14 @@ describe('seletor de arquivos: bandeja e conclusão (req-243)', () => {
     expect(fonte).toMatch(/acao === 'concluir' \|\| data\.acao === 'cancelar'\) \$\('\.modal\.iframePagina'\)\.modal\('hide'\)/);
   });
 
+  it('no seletor múltiplo o botão Selecionar do arquivo marca em vez de enviar na hora', () => {
+    const fonte = ler('gestor/modulos/admin-arquivos/admin-arquivos.js');
+    expect(fonte).toContain("if (cfg.paginaIframe && cfg.selecaoMultipla && marcarPeloCaminho($item.attr('data-caminho'))) return;");
+    expect(fonte).toContain("if (cfg.paginaIframe && cfg.selecaoMultipla && marcarPeloCaminho(it.caminho)) { $m[0].close(); return; }");
+    // O envio imediato continua existindo para o seletor de um arquivo só.
+    expect(fonte.indexOf('marcarPeloCaminho($item.attr')).toBeLessThan(fonte.indexOf("var messageParent = { moduloId: gestor.moduloId"));
+  });
+
   it('a alça de arrasto da galeria é sólida', () => {
     const fonte = ler('gestor/modulos/galleries/galleries.js');
     expect(fonte).toContain(".gallery-item-handle{cursor:grab;opacity:1;}");

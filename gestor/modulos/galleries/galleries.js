@@ -390,8 +390,20 @@ $(document).ready(function () {
         $modal.find('iframe').attr('src', imagepick.url);
         $modal.find('iframe').on('load', function () { $modal.dimmer('hide'); });
 
+        // REQ-243: neste seletor quem cancela e conclui é a bandeja do gerenciador, presa à base do modal;
+        // o rodapé do próprio modal (um segundo Cancelar) sai de cena enquanto ele estiver aberto assim.
         $modal.dimmer('show');
         $modal.modal('show');
+        // A marca entra com o modal já aberto e sai quando ele fecha, por qualquer caminho (o modal é fixo:
+        // a visibilidade se lê pelo estilo calculado, não por `offsetParent`).
+        $modal.addClass('c2f-seletor-multiplo');
+        if (window.MutationObserver && !$modal.data('c2fSeletorObservado')) {
+            $modal.data('c2fSeletorObservado', true);
+            new MutationObserver(function () {
+                var no = $modal.get(0);
+                if (no.classList.contains('hidden') || window.getComputedStyle(no).display === 'none') no.classList.remove('c2f-seletor-multiplo');
+            }).observe($modal.get(0), { attributes: true, attributeFilter: ['class', 'style'] });
+        }
     });
 
     // Recepção das imagens selecionadas no iframe do gerenciador (seleção em LOTE: não fecha o modal).

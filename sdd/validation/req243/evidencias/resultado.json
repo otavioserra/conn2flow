@@ -1,8 +1,8 @@
 {
  "base": "https://conn2flow.local",
- "quando": "2026-10-06T16:26:36.334Z",
- "total": 134,
- "aprovadas": 134,
+ "quando": "2026-10-06T17:09:12.667Z",
+ "total": 140,
+ "aprovadas": 140,
  "falhas": [],
  "resultados": [
   {
@@ -359,6 +359,18 @@
     "orientacao": true,
     "cancelar": true
    }
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "um Cancelar só: o rodapé do modal sai de cena no seletor múltiplo",
+   "ok": true,
+   "detalhe": "none"
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "o botão Selecionar marca o arquivo sem enviá-lo na hora",
+   "ok": true,
+   "detalhe": ""
   },
   {
    "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
@@ -855,6 +867,69 @@
     "fora": [],
     "editorDentro": true,
     "larguraPagina": true
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "o editor chega inteiro: painel de SEO e contêiner dentro do componente",
+   "ok": true,
+   "detalhe": {
+    "seoDentro": true,
+    "modalDentro": true,
+    "titulos": [
+     true,
+     true
+    ],
+    "etiquetas": [
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16
+    ]
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "títulos e etiquetas de variável com ícone e texto na mesma linha",
+   "ok": true,
+   "detalhe": {
+    "seoDentro": true,
+    "modalDentro": true,
+    "titulos": [
+     true,
+     true
+    ],
+    "etiquetas": [
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16
+    ]
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "cada aba do editor mostra só o próprio painel (inclusive SEO)",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "depois de recarregar, a aba marcada e o painel visível são os mesmos",
+   "ok": true,
+   "detalhe": {
+    "ativa": "seo-compartilhamento",
+    "paineis": [
+     "seo-compartilhamento"
+    ]
    }
   },
   {
