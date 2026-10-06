@@ -1,7 +1,7 @@
 # BL-019 — O deploy não atualiza o `sitemap.xml`
 
 - **Tipo**: Bug / SEO
-- **Status**: IN-DISCUSSION
+- **Status**: PROMOTED (2026-10-06) — [req-188](../human-requests/archive/req-188.md) (BATCH-192 / req-191)
 - **Severidade sugerida**: MÉDIA
 - **Origem**: homologação da documentação online no Lab (req-184 / req-186), 2026-09-26
 - **Componentes**: `gestor/bibliotecas/sitemap.php`, `gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php`, `gestor/controladores/arquivo-estatico/`

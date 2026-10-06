@@ -1,8 +1,8 @@
 # BL-028 — Atualização segura: core canibalizável, choques, exclusão de dados, backup e rollback
 
 - **Tipo**: Epic / Architecture
-- **Status**: PROMOTED (2026-09-30) — [req-197](../human-requests/archive/req-197.md) (fase 1), [req-198](../human-requests/archive/req-198.md) (A, B.1, D) e [req-199](../human-requests/archive/req-199.md) (C, G)
-- **Severidade sugerida**: ALTA (hoje uma atualização pode desfazer a customização de um projeto em silêncio, e não há volta)
+- **Status**: PROMOTED (2026-10-06) — [req-197](../human-requests/archive/req-197.md), [req-198](../human-requests/archive/req-198.md), [req-199](../human-requests/archive/req-199.md), [req-200](../human-requests/archive/req-200.md), [req-201](../human-requests/archive/req-201.md) e [req-245](../human-requests/req-245.md) (BATCH-254)
+- **Severidade sugerida**: ALTA
 - **Origem**: Humano, 2026-09-29, junto com o hotfix [req-194](../human-requests/archive/req-194.md) (migrações obsoletas)
 - **Componentes**: `controladores/atualizacoes/atualizacoes-sistema.php`, `atualizacoes-banco-de-dados.php`, `atualizacoes-migracoes.php`, `controladores/api/api.php` (`api_project_update`), `ai-workspace/en/scripts/projects/{deploy-project-v2,synchronize-project,sync-core-to-project}.sh`, `cli/src/Commands/ProjectUpdateAllCommand.php`
 

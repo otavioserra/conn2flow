@@ -20,7 +20,7 @@
 | [BL-016](BL-016-paginas-301-status-e-query-string.md) | Bug/SEO | PROMOTED | Redirecionamento de `paginas_301` descarta a query string | Promovido para [req-173.md](../human-requests/archive/req-173.md) (BATCH-178) | 2026-09-22 |
 | [BL-017](BL-017-forms-widget-vaza-blocos-fragmento.md) | Bug/UI | PROMOTED | Widget de formulários vaza os blocos-fragmento do template no HTML renderizado | Promovido para [req-173.md](../human-requests/archive/req-173.md) (BATCH-178) | 2026-09-22 |
 | [BL-018](BL-018-seguranca-achados-reescrita-docs.md) | Security | IN-DISCUSSION | Segurança: achados da reescrita das docs (req-181 A1–A11 e complementos: JWT, OAuth2, SQL em módulos, CDN) | A1 e A2 promovidos e corrigidos ([req-189](../human-requests/archive/req-189.md), BATCH-193); demais itens com o Humano | 2026-09-26 |
-| [BL-019](BL-019-sitemap-nao-atualizado-no-deploy.md) | Bug/SEO | IN-DISCUSSION | O deploy não atualiza o `sitemap.xml` | Parcial: deploy pela API regenera ([req-188.md](../human-requests/archive/req-188.md), BATCH-192); falta a sincronização por SSH | 2026-09-28 |
+| [BL-019](BL-019-sitemap-nao-atualizado-no-deploy.md) | Bug/SEO | PROMOTED | O deploy não atualiza o `sitemap.xml` | Promovido e corrigido na [req-188.md](../human-requests/archive/req-188.md) (BATCH-192 / req-191) | 2026-10-06 |
 | [BL-020](BL-020-email-so-smtps-465.md) | Bug | IN-DISCUSSION | E-mail: só SMTPS/465 funciona; `EMAIL_SECURE` ignorado | Aguardando priorização | 2026-09-26 |
 | [BL-021](BL-021-cron-ignora-expressao-e-sobreposicao.md) | Bug/Feature | IN-DISCUSSION | Cron: `expressao_cron`/`hora` ignorados e sem trava de sobreposição | Aguardando priorização | 2026-09-26 |
 | [BL-022](BL-022-configuracao-apaga-variaveis-post-truncado.md) | Bug/Data loss | IN-DISCUSSION | `configuracao`: POST truncado por `max_input_vars` apaga variáveis | Aguardando priorização (severidade alta) | 2026-09-26 |
@@ -29,7 +29,7 @@
 | [BL-025](BL-025-docs-removidas-seguem-publicadas.md) | Bug/Docs | IN-DISCUSSION | Página de docs removida continua publicada no banco (órfã ignorada pelo pipeline) | Parcial: 17 órfãs excluídas pela lista `deletar` do site (req-188); rotina automática de exclusão fica com o Humano | 2026-09-28 |
 | [BL-026](BL-026-listagem-interface-tailwind.md) | Feature/Interface | PROMOTED | Listagem do `interface` (DataTables) em Tailwind; formulários e botões já têm variante (req-190) | Promovido para [req-219.md](../human-requests/archive/req-219.md) (fatia 5) | 2026-10-03 |
 | [BL-027](BL-027-sincronizacao-banco-memoria.md) | Bug/Performance | IN-DISCUSSION | Sincronização de banco lê tabelas inteiras (`fetchAll`); deploy por API estourou 128 MB | Contornado na req-191 (memory_limit 1024M no endpoint) | 2026-09-28 |
-| [BL-028](BL-028-atualizacao-segura-choques-backup-rollback.md) | Epic/Architecture | IN-DISCUSSION | Atualização segura: core canibalizável com choques registrados, exclusão de dados no ambiente, backup, rollback e trava de deploy | Nasceu com o hotfix req-194 (migrações obsoletas) | 2026-09-29 |
+| [BL-028](BL-028-atualizacao-segura-choques-backup-rollback.md) | Epic/Architecture | PROMOTED | Atualização segura: core canibalizável com choques registrados, exclusão de dados no ambiente, backup, rollback e trava de deploy | Promovido para req-197 a req-201 e req-245 (fases de infraestrutura avançada para Linha 3.1) | 2026-10-06 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 
