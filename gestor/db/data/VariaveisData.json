@@ -16049,6 +16049,33 @@
     {
         "language": "pt-br",
         "modulo": "dashboard",
+        "id": "widgets-btn-window",
+        "valor": "Janela cheia dos widgets",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-mode-board",
+        "valor": "Modo lousa (posição livre)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-per-row",
+        "valor": "Widgets por linha (grade)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
         "id": "widgets-layouts-title",
         "valor": "Layouts da área de widgets",
         "tipo": "string",
@@ -17095,6 +17122,33 @@
         "modulo": "dashboard",
         "id": "widgets-btn-fullscreen",
         "valor": "Widgets full screen",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-btn-window",
+        "valor": "Widgets full window",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-mode-board",
+        "valor": "Board mode (free position)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-per-row",
+        "valor": "Widgets per row (grid)",
         "tipo": "string",
         "grupo": null,
         "descricao": null

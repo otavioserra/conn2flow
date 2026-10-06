@@ -29,12 +29,14 @@
                 <button type="button" id="dashboard-edit-mode" class="dashboard-menu-item" role="switch" aria-checked="false" data-label-on="@[[dashboard-edit-mode-on]]@" data-label-off="@[[dashboard-edit-mode-off]]@"><i data-lucide="pencil-ruler" class="size-4 shrink-0"></i><span data-edit-label class="min-w-0 flex-1">@[[dashboard-edit-mode-off]]@</span><span class="dashboard-edit-track" aria-hidden="true"><span class="dashboard-edit-thumb"></span></span></button>
                 <button type="button" id="dashboard-btn-add-widget" class="dashboard-menu-item" role="menuitem"><i data-lucide="plus" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-add]]@</span></button>
                 <button type="button" id="dashboard-btn-reset-widgets" class="dashboard-menu-item" role="menuitem" title="@[[widgets-btn-reset-tooltip]]@"><i data-lucide="rotate-ccw" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-reset]]@</span></button>
+                <button type="button" id="dashboard-widgets-mode" class="dashboard-menu-item" role="switch" aria-checked="false"><i data-lucide="layout-dashboard" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-mode-board]]@</span><span class="dashboard-edit-track" aria-hidden="true"><span class="dashboard-edit-thumb"></span></span></button>
+                <div id="dashboard-widgets-per-row" class="dashboard-per-row" role="group" aria-label="@[[widgets-per-row]]@"><span class="dashboard-per-row-label">@[[widgets-per-row]]@</span><button type="button" data-widgets-per-row="1">1</button><button type="button" data-widgets-per-row="2">2</button><button type="button" data-widgets-per-row="3">3</button><button type="button" data-widgets-per-row="4">4</button><button type="button" data-widgets-per-row="6">6</button></div>
                 <button type="button" id="dashboard-widgets-source" class="dashboard-menu-item" role="switch" aria-checked="false"><i data-lucide="users-round" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-source-profile]]@</span><span class="dashboard-edit-track" aria-hidden="true"><span class="dashboard-edit-thumb"></span></span></button>
                 <button type="button" id="dashboard-btn-toggle-headers" class="dashboard-menu-item" role="menuitem"><i data-lucide="panel-top" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-toggle-headers]]@</span></button>
                 <button type="button" id="dashboard-btn-layouts" class="dashboard-menu-item" role="menuitem"><i data-lucide="layout-template" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-layouts]]@</span></button>
                 <!-- widgets-menu-admin > -->
                 <!-- widgets-menu-ver < -->
-                <button type="button" id="dashboard-btn-widgets-fullscreen" class="dashboard-menu-item" role="menuitem"><i data-lucide="maximize" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-fullscreen]]@</span></button>
+                <button type="button" id="dashboard-btn-widgets-window" class="dashboard-menu-item" role="switch" aria-checked="false"><i data-lucide="maximize" class="size-4 shrink-0"></i><span class="min-w-0 flex-1">@[[widgets-btn-window]]@</span><span class="dashboard-edit-track" aria-hidden="true"><span class="dashboard-edit-thumb"></span></span></button>
                 <!-- widgets-menu-ver > -->
                 <div class="my-1 h-px bg-slate-100" role="separator"></div>
                 <p class="px-2 pb-1 pt-1 font-semibold text-slate-500">@[[density-selector-label]]@</p>
@@ -149,7 +151,7 @@
             <button type="button" id="dashboard-btn-copy-profile" class="c2fc-botao"><i data-lucide="copy" class="size-4"></i> @[[widgets-source-copy]]@</button>
         </div>
         <!-- widgets-aviso-admin > -->
-        <div id="dashboard-widgets-grid" class="dashboard-widgets-grid grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-12 gap-6"
+        <div id="dashboard-widgets-grid" class="dashboard-widgets-grid"
             data-label-switch="@[[widgets-label-switch]]@"
             data-label-config="@[[widgets-label-config]]@"
             data-label-duplicate="@[[widgets-label-duplicate]]@"

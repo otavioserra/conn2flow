@@ -38,7 +38,8 @@ describe('Dashboard widgets area (req-247)',()=>{
  it('accepts every width from 2 to 12 columns and keeps the old textual sizes',async()=>{
   boot([w({width:2}),w({instance_id:'b',width:7}),w({instance_id:'c',width:'col-span-8'}),w({instance_id:'d',width:1}),w({instance_id:'e',width:30})]);await settle();
   expect(cards().map(c=>c.getAttribute('data-widget-cols'))).toEqual(['2','7','8','4','4']);
-  expect(init).toContain('resize.cols=Math.max(MIN_COLS,Math.min(MAX_COLS,Math.round(fraction)));');
+  // Na grade a largura não passa de 12 colunas (a lousa da req-248 vai a 24).
+  expect(init).toContain('Math.max(MIN_COLS,Math.min(GRID_COLS,Math.round(((resize.width+dx)/resize.gridWidth)*GRID_COLS)))');
  });
 
  it('duplicates a widget right after the original with its size and options',async()=>{
@@ -123,12 +124,10 @@ describe('Dashboard widgets area (req-247)',()=>{
   expect(cards().map(c=>c.classList.contains('is-headerless'))).toEqual([false,false]);
  });
 
- it('asks the widgets panel for full screen',async()=>{
-  boot([w()]);await settle();
-  const panelEl=document.getElementById('dashboard-tab-widgets');
-  panelEl.requestFullscreen=vi.fn(async()=>{});
-  document.getElementById('dashboard-btn-widgets-fullscreen').click();
-  expect(panelEl.requestFullscreen).toHaveBeenCalledTimes(1);
+ it('offers the full window to every user who can see the widgets (req-248)',async()=>{
+  boot([],{pode_editar:false,layout_perfil:[w({instance_id:'p1'})],salvos:[]});await settle();
+  document.getElementById('dashboard-btn-widgets-window').click();
+  expect(document.getElementById('dashboard-tab-widgets').classList.contains('is-window')).toBe(true);
  });
 
  it('saves, applies and deletes named layouts',async()=>{

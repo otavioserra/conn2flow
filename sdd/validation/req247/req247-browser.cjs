@@ -87,10 +87,11 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
     await foto('admin-3-sem-cabecalhos');
     await item('dashboard-btn-toggle-headers');
     conferir('mostrar todos de novo', (await cards()).every(c => c.cabecalho !== 'none'));
-    await menu(true); await page.click('#dashboard-btn-widgets-fullscreen'); await page.waitForTimeout(700);
-    const cheia = await page.evaluate(() => document.fullscreenElement ? document.fullscreenElement.id : null);
-    conferir('tela cheia da área de widgets', cheia === 'dashboard-tab-widgets', cheia);
-    await page.evaluate(() => document.fullscreenElement && document.exitFullscreen()); await page.waitForTimeout(400); await menu(false);
+    // REQ-248: a tela cheia virou janela cheia (a área cobre o navegador).
+    await menu(true); await page.click('#dashboard-btn-widgets-window'); await page.waitForTimeout(700);
+    const cheia = await page.evaluate(() => { const r = document.getElementById('dashboard-tab-widgets').getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top), Math.round(r.width) === innerWidth]; });
+    conferir('janela cheia da área de widgets', cheia[0] === 0 && cheia[1] === 0 && cheia[2], cheia);
+    await page.click('#dashboard-btn-widgets-window'); await page.waitForTimeout(400); await menu(false);
 
     // ----- Layouts salvos
     await item('dashboard-btn-layouts'); await page.waitForTimeout(900);
@@ -130,7 +131,7 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
 
   if (fase === 'sem' || fase === 'ver') {
     const acesso = await page.evaluate(() => gestor.dashboard_user_prefs.widgets);
-    const tela = await page.evaluate(() => { const tem = id => !!document.getElementById(id); return {aba: tem('dashboard-tab-btn-widgets'), grade: tem('dashboard-widgets-grid'), editar: tem('dashboard-edit-mode'), adicionar: tem('dashboard-btn-add-widget'), layouts: tem('dashboard-btn-layouts'), fonte: tem('dashboard-widgets-source'), catalogo: tem('dashboard-widgets-modal'), config: tem('dashboard-widget-config-modal'), popLayouts: tem('dashboard-widgets-layouts-modal'), cheia: tem('dashboard-btn-widgets-fullscreen'), modulos: tem('dashboard-tab-btn-modulos')}; });
+    const tela = await page.evaluate(() => { const tem = id => !!document.getElementById(id); return {aba: tem('dashboard-tab-btn-widgets'), grade: tem('dashboard-widgets-grid'), editar: tem('dashboard-edit-mode'), adicionar: tem('dashboard-btn-add-widget'), layouts: tem('dashboard-btn-layouts'), fonte: tem('dashboard-widgets-source'), catalogo: tem('dashboard-widgets-modal'), config: tem('dashboard-widget-config-modal'), popLayouts: tem('dashboard-widgets-layouts-modal'), cheia: tem('dashboard-btn-widgets-window'), modulos: tem('dashboard-tab-btn-modulos')}; });
     const semControles = !tela.editar && !tela.adicionar && !tela.layouts && !tela.fonte && !tela.catalogo && !tela.config && !tela.popLayouts;
     conferir('nenhum controle de edição chega ao navegador', acesso.pode_editar === false && semControles && tela.modulos, tela);
     const layout = JSON.stringify([{id: 'menus', registro_id: 'docs-sidebar', instance_id: 'invasor', width: 4, height: 1}]);
@@ -143,7 +144,7 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
       conferir('sem as operações o servidor não renderiza widget', recusado(render), render);
       await foto('sem-operacao');
     } else {
-      conferir('quem só visualiza tem a aba de widgets e a tela cheia', tela.aba && tela.grade && tela.cheia, tela);
+      conferir('quem só visualiza tem a aba de widgets e a janela cheia', tela.aba && tela.grade && tela.cheia, tela);
       conferir('o servidor renderiza o widget, sem atalho de edição', render.status === 'Ok' && render.data.edit_url === '', {status: render.status, edit: render.data && render.data.edit_url});
       await aba();
       const visto = await cards();

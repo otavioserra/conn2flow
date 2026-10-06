@@ -99,8 +99,9 @@ PHP;
         $r = $this->rodar('$saida=dashboard_widgets_layout_normalizar($_REQUEST["layout"]);', [], [], ['layout' => json_encode($layout)])['saida'];
         self::assertCount(2, $r);
         self::assertSame(['id' => 'menus', 'name' => 'Menus', 'registro_id' => 'principal', 'instance_id' => 'ab', 'width' => 2, 'height' => 1, 'height_px' => 960, 'params' => ['grupo_slug' => 'principal'],
-            'options' => ['header' => false, 'frame' => true, 'title' => str_repeat('T', 80), 'background' => '', 'padding' => 'none', 'refresh' => 300]], $r[0]);
-        self::assertSame(12, $r[1]['width']);
+            'options' => ['header' => false, 'frame' => true, 'title' => str_repeat('T', 80), 'background' => '', 'padding' => 'none', 'refresh' => 300], 'x' => null, 'y' => null], $r[0]);
+        // REQ-248: na lousa a largura vai a 24 células.
+        self::assertSame(20, $r[1]['width']);
         self::assertSame('perfil-1', $r[1]['instance_id']);
     }
 
@@ -113,7 +114,7 @@ PHP;
         self::assertSame(['consumidores', 'menus'], [$proprio['origem'], $proprio['layout'][0]['id']]);
         $geral = $this->rodar($codigo, [], ['administradores' => $menus, '*' => $todos])['saida'];
         self::assertSame(['*', 'galleries'], [$geral['origem'], $geral['layout'][0]['id']]);
-        self::assertSame(['layout' => [], 'origem' => null], $this->rodar($codigo, [], [])['saida']);
+        self::assertSame(['layout' => [], 'origem' => null, 'modo' => 'grade'], $this->rodar($codigo, [], [])['saida']);
     }
 
     public function testPublicarExigeAdministrarEAceitaSoPerfilQueExiste(): void
@@ -128,8 +129,9 @@ PHP;
         self::assertSame('Ok', $ok['json']['status']);
         self::assertSame(['consumidores', '*'], $ok['json']['data']['perfis']);
         self::assertSame(['*', 'consumidores'], array_keys($ok['layouts']));
-        self::assertSame(3, json_decode($ok['layouts']['consumidores'], true)[0]['width']);
-        self::assertSame(3, json_decode($ok['layouts']['*'], true)[0]['width']);
+        // REQ-248: o registro guarda o modo da área junto com os widgets.
+        self::assertSame(['grade', 3], [json_decode($ok['layouts']['consumidores'], true)['modo'], json_decode($ok['layouts']['consumidores'], true)['widgets'][0]['width']]);
+        self::assertSame(3, json_decode($ok['layouts']['*'], true)['widgets'][0]['width']);
 
         $vazio = $this->rodar('dashboard_ajax_widgets_layout_publicar();', ['widgets-administrar'], [], ['perfis' => '["inventado"]', 'layout' => '[]']);
         self::assertSame('msg:widgets-layouts-sem-perfil', $vazio['json']['message']);
@@ -190,15 +192,32 @@ PHP;
             }
             // Tudo que edita fica dentro de um bloco de quem administra.
             $semAdmin = preg_replace('/<!-- (widgets-(?:menu|aviso|vazio|modais)-admin) < -->[\s\S]*?<!-- \1 > -->/', '', $html);
-            foreach (['dashboard-edit-mode', 'dashboard-btn-add-widget', 'dashboard-btn-reset-widgets', 'dashboard-widgets-source', 'dashboard-btn-layouts', 'dashboard-btn-toggle-headers',
+            foreach (['dashboard-edit-mode', 'dashboard-btn-add-widget', 'dashboard-btn-reset-widgets', 'dashboard-widgets-source', 'dashboard-widgets-mode', 'dashboard-widgets-per-row', 'dashboard-btn-layouts', 'dashboard-btn-toggle-headers',
                 'dashboard-btn-open-catalog', 'dashboard-widgets-modal', 'dashboard-widget-config-modal', 'dashboard-widgets-layouts-modal', 'dashboard-btn-copy-profile'] as $controle) {
                 self::assertStringNotContainsString($controle, $semAdmin, "$lang $controle");
             }
-            self::assertStringContainsString('id="dashboard-btn-widgets-fullscreen"', $semAdmin, $lang);
+            self::assertStringContainsString('id="dashboard-btn-widgets-window"', $semAdmin, $lang);
             self::assertStringContainsString('id="dashboard-widgets-grid"', $semAdmin, $lang);
             $css = (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . "/modulos/dashboard/resources/$lang/components/dashboard-cards-tailwind/dashboard-cards-tailwind.css");
             for ($n = 2; $n <= 12; $n++) self::assertSame(3, substr_count($css, '.dashboard-widget-card[data-widget-cols="' . $n . '"] {'), "$lang colunas $n");
         }
+    }
+
+    public function testLousaGuardaModoEPosicaoNoLayoutPublicado(): void
+    {
+        $widgets = [['id' => 'menus', 'registro_id' => 'a', 'width' => 20, 'x' => 7, 'y' => 12], ['id' => 'menus', 'registro_id' => 'b', 'x' => -1, 'y' => 99999], ['id' => 'menus', 'registro_id' => 'c', 'x' => '3', 'y' => 2.5]];
+        $pedido = ['perfis' => '["consumidores"]', 'layout' => json_encode($widgets), 'modo' => 'lousa'];
+        $ok = $this->rodar('dashboard_ajax_widgets_layout_publicar(); $saida=dashboard_widgets_layout_perfil("consumidores");', ['widgets-administrar'], [], $pedido);
+        self::assertSame('lousa', $ok['json']['data']['modo']);
+        self::assertSame('lousa', $ok['saida']['modo']);
+        self::assertSame([[20, 7, 12], [4, null, null], [4, 3, null]], array_map(static fn ($w) => [$w['width'], $w['x'], $w['y']], $ok['saida']['layout']));
+        // Modo desconhecido vale como grade; registro antigo (só a lista) também.
+        $outro = $this->rodar('dashboard_ajax_widgets_layout_publicar(); $saida=dashboard_widgets_layout_perfil("consumidores");', ['widgets-administrar'], [], ['modo' => 'qualquer'] + $pedido);
+        self::assertSame('grade', $outro['saida']['modo']);
+        $antigo = $this->rodar('$saida=dashboard_widgets_layout_perfil("consumidores");', [], ['consumidores' => json_encode([['id' => 'menus', 'registro_id' => 'a']])]);
+        self::assertSame(['grade', 1], [$antigo['saida']['modo'], count($antigo['saida']['layout'])]);
+        $lista = $this->rodar('dashboard_ajax_widgets_layouts();', ['widgets-administrar'], ['consumidores' => json_encode(['modo' => 'lousa', 'widgets' => $widgets])])['json']['data'];
+        self::assertSame(3, $lista['perfis'][1]['total']);
     }
 
     public function testMigracaoCriaATabelaComPerfilUnico(): void

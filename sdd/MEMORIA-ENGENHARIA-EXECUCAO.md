@@ -208,3 +208,11 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Versão do Tailwind muda centenas de gerados**: conferir `node_modules/tailwindcss/package.json` contra o `package-lock.json` antes de `resources:sync`. A worktree `conn2flow-req243` usava 4.3.3 emprestado; a árvore principal usa 4.3.0.
 - **`.md` em CRLF altera dados de IA** (`ModosIaData.json`, `PromptsIaData.json`) no `resources:sync`: descartar essas duas alterações ou normalizar também `.md`.
 - **Pipeline do projeto com o acervo de docs** passa de 10 minutos: rodar em segundo plano.
+
+### REQ-248 / BATCH-257 — grade e lousa na área de widgets (2026-10-06)
+- **Pedido de "trocar por algo novo" pode ser "acrescentar"**: a lousa foi escrita substituindo a grade e o Engenheiro Chefe pediu os dois modos. Quando o que existe está aprovado, propor modo novo ao lado antes de substituir.
+- **Lousa**: `arrange(lista, colunas, primeiro)` é a função pura do posicionamento; `layout()` só aplica nos cards (não recarrega iframe); `commit()` grava as posições e só é chamado em edição do usuário, nunca por mudança de largura.
+- **Ouvintes em `document` acumulam entre testes** do Vitest que reiniciam o módulo: o ouvinte antigo roda antes e mexe em elemento que não é mais o da tela. Ler o elemento na hora (`getElementById`) em vez de guardar a referência.
+- **Guarda antiga que proíbe uma propriedade na folha inteira** (`grid-auto-rows` na REQ-233): restringir a guarda ao modo que ela protege, não contornar pondo a propriedade no JS.
+- **Tailwind oficial é 4.3.3** (`package.json` e `package-lock.json`). `npm install --package-lock-only` atualiza o lock sem tocar em `node_modules`.
+- **Heredoc do Bash com Python que tem aspas triplas ou barra invertida falha**: script em arquivo, pela ferramenta de escrita.

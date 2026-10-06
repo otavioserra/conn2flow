@@ -860,7 +860,7 @@ function dashboard_cards(){
 	// ===== REQ-247: quem administra edita e escolhe a fonte; quem só visualiza recebe o layout do perfil.
 	$widgets_admin = dashboard_widgets_pode_administrar();
 	$widgets_ver = dashboard_widgets_pode_ver();
-	$widgets_perfil = $widgets_ver ? dashboard_widgets_layout_perfil(dashboard_widgets_perfil_atual()) : Array('layout' => Array(), 'origem' => null);
+	$widgets_perfil = $widgets_ver ? dashboard_widgets_layout_perfil(dashboard_widgets_perfil_atual()) : Array('layout' => Array(), 'origem' => null, 'modo' => 'grade');
 	$widgets_nomeados = $widgets_admin ? dashboard_preferencias_obter('dashboard_widgets_salvos', Array()) : Array();
 	if(!$widgets_admin) $widgets_salvos = Array();
 	if(!$widgets_ver && $aba_ativa_salva === 'dashboard-tab-widgets') $aba_ativa_salva = 'dashboard-tab-modulos';
@@ -1008,6 +1008,8 @@ function dashboard_cards(){
 			'fonte' => dashboard_preferencias_obter('dashboard_widgets_fonte', 'proprio') === 'perfil' ? 'perfil' : 'proprio',
 			'layout_perfil' => $widgets_perfil['layout'],
 			'perfil_origem' => $widgets_perfil['origem'],
+			'modo' => $widgets_admin && dashboard_preferencias_obter('dashboard_widgets_modo', 'grade') === 'lousa' ? 'lousa' : 'grade',
+			'modo_perfil' => $widgets_perfil['modo'],
 			'salvos' => is_array($widgets_nomeados) ? array_values($widgets_nomeados) : Array(),
 		),
 		'cards_order' => $ordem_salva ?: $cards_order,
@@ -3137,9 +3139,17 @@ function dashboard_widgets_opcoes_normalizar($opcoes){
 	);
 }
 
+/** Coluna ou linha da lousa: inteiro de 0 ao limite, ou nulo quando o widget ainda não tem posição. */
+function dashboard_widgets_celula($valor, $limite){
+	if($valor === null || $valor === '' || !is_numeric($valor) || (int)$valor != $valor) return null;
+	$valor = (int)$valor;
+	return ($valor >= 0 && $valor <= $limite) ? $valor : null;
+}
+
 /**
  * Layout publicado para outros usuários: aceita a string JSON ou o array, descarta item sem widget
- * válido e chave desconhecida, e prende largura (2 a 12 colunas) e altura (120 a 960 px) na faixa.
+ * válido e chave desconhecida, e prende largura (2 a 24 células), altura (120 a 960 px) e a posição
+ * na lousa (`x` coluna, `y` linha de 20 px; sem posição, o cliente distribui) na faixa.
  */
 function dashboard_widgets_layout_normalizar($layout){
 	if(is_string($layout)) $layout = json_decode($layout, true);
@@ -3159,14 +3169,30 @@ function dashboard_widgets_layout_normalizar($layout){
 			'name' => mb_substr((string)($item['name'] ?? $id), 0, 200),
 			'registro_id' => mb_substr((string)($item['registro_id'] ?? ''), 0, 200),
 			'instance_id' => $instancia !== '' ? $instancia : 'perfil-'.count($saida),
-			'width' => max(2, min(12, (int)($item['width'] ?? 4))),
+			'width' => max(2, min(24, (int)($item['width'] ?? 4))),
 			'height' => (int)($item['height'] ?? 1) === 2 ? 2 : 1,
 			'height_px' => max(120, min(960, (int)($item['height_px'] ?? 220))),
 			'params' => $params,
 			'options' => dashboard_widgets_opcoes_normalizar($item['options'] ?? null),
+			'x' => dashboard_widgets_celula($item['x'] ?? null, 23),
+			'y' => dashboard_widgets_celula($item['y'] ?? null, 4000),
 		);
 	}
 	return $saida;
+}
+
+/**
+ * Lê o que está gravado em `dashboard_layouts.layout`: o modo da área (`grade` ou `lousa`, REQ-248) e os
+ * widgets. Registro anterior à REQ-248 é só a lista de widgets e vale como grade.
+ */
+function dashboard_widgets_layout_ler($json){
+	$dados = is_string($json) ? json_decode($json, true) : $json;
+	if(!is_array($dados)) $dados = Array();
+	$embrulhado = array_key_exists('widgets', $dados);
+	return Array(
+		'modo' => ($embrulhado && ($dados['modo'] ?? '') === 'lousa') ? 'lousa' : 'grade',
+		'widgets' => dashboard_widgets_layout_normalizar($embrulhado ? $dados['widgets'] : $dados),
+	);
 }
 
 /** Layout que vale para o perfil: o dele ou, sem ele, o de todos os perfis (`*`). */
@@ -3178,12 +3204,15 @@ function dashboard_widgets_layout_perfil($perfil){
 				'unico' => true, 'tabela' => 'dashboard_layouts', 'campos' => Array('layout'),
 				'extra' => "WHERE perfil='".banco_escape_field($alvo)."'"
 			));
-			if($linha) return Array('layout' => dashboard_widgets_layout_normalizar($linha['layout']), 'origem' => $alvo);
+			if($linha){
+				$lido = dashboard_widgets_layout_ler($linha['layout']);
+				return Array('layout' => $lido['widgets'], 'origem' => $alvo, 'modo' => $lido['modo']);
+			}
 		}
 	} catch (\Throwable $e) {
 		// Tabela ainda ausente: sem layout publicado.
 	}
-	return Array('layout' => Array(), 'origem' => null);
+	return Array('layout' => Array(), 'origem' => null, 'modo' => 'grade');
 }
 
 function dashboard_widgets_perfis(){
@@ -3200,7 +3229,7 @@ function dashboard_ajax_widgets_layouts(){
 	$publicados = Array();
 	try {
 		foreach(banco_select(Array('tabela' => 'dashboard_layouts', 'campos' => Array('perfil', 'layout'))) ?: Array() as $linha){
-			$publicados[$linha['perfil']] = count(dashboard_widgets_layout_normalizar($linha['layout']));
+			$publicados[$linha['perfil']] = count(dashboard_widgets_layout_ler($linha['layout'])['widgets']);
 		}
 	} catch (\Throwable $e) {
 		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error'))));
@@ -3240,7 +3269,8 @@ function dashboard_ajax_widgets_layout_publicar(){
 		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-layouts-sem-perfil'))));
 		return;
 	}
-	$json = json_encode($layout, JSON_UNESCAPED_UNICODE);
+	$modo = ($_REQUEST['modo'] ?? '') === 'lousa' ? 'lousa' : 'grade';
+	$json = json_encode(Array('modo' => $modo, 'widgets' => $layout), JSON_UNESCAPED_UNICODE);
 	try {
 		foreach($perfis as $perfil){
 			$existe = banco_select(Array(
@@ -3262,7 +3292,7 @@ function dashboard_ajax_widgets_layout_publicar(){
 		gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error'))));
 		return;
 	}
-	gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('perfis' => $perfis, 'total' => count($layout))));
+	gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('perfis' => $perfis, 'total' => count($layout), 'modo' => $modo)));
 }
 
 /** AJAX — retira o layout publicado de um perfil (ele volta ao de todos, se houver). */

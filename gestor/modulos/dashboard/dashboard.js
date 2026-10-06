@@ -895,13 +895,16 @@ $(document).ready(function () {
 		var stored = typeof gestor !== 'undefined' && gestor.dashboard_user_prefs ? gestor.dashboard_user_prefs.widgets_layout : null;
 		var widgets = Array.isArray(stored) ? stored : (getLocalStorage('dashboard_widgets_layout') || []);
 		if (!Array.isArray(widgets)) widgets = [];
-		// REQ-247: largura de 2 a 12 colunas da malha, uma a uma. Valor antigo em texto cai nos degraus de antes.
-		var MIN_COLS = 2, MAX_COLS = 12;
+		// REQ-248: dois modos. Grade: malha de 12 colunas, widgets em ordem, arrasto reordena. Lousa: células
+		// que acompanham a largura, largura do widget em células (2 a 24) e posição livre (`x` = coluna,
+		// `y` = linha de 20 px). Valor antigo de largura em texto cai nos degraus de antes.
+		var MIN_COLS = 2, MAX_COLS = 24, GRID_COLS = 12, CELL = 90, GAP = 20, ROW = 20, MAX_ROW = 4000;
+		function cell(value, max) { var n = Number(value); return value !== null && value !== '' && Number.isInteger(n) && n >= 0 && n <= max ? n : null; }
 		function normalizeWidget(w, index) {
 			var width = Math.round(Number(w.width));
 			if (!(width >= MIN_COLS && width <= MAX_COLS)) width = /full|12/.test(w.width) ? 12 : (/8/.test(w.width) ? 8 : (/2|6/.test(w.width) ? 6 : 4));
 			var pixels = Number(w.height_px) || (Number(w.height) === 2 ? 460 : 220);
-			return Object.assign({}, w, {width: width, height_px: Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}, options: normalizeOptions(w.options)});
+			return Object.assign({}, w, {width: width, height_px: Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}, options: normalizeOptions(w.options), x: cell(w.x, MAX_COLS - 1), y: cell(w.y, MAX_ROW)});
 		}
 		function instanceId() { return 'widget-' + Date.now() + '-' + Math.random().toString(36).slice(2); }
 		function copyLayout(list) { return JSON.parse(JSON.stringify(list || [])); }
@@ -914,6 +917,9 @@ $(document).ready(function () {
 		var source = canEdit && access.fonte !== 'perfil' ? 'own' : 'profile';
 		widgets = source === 'own' ? ownWidgets : profileWidgets;
 		function editable() { return canEdit && source === 'own'; }
+		// O modo acompanha o layout: o do usuário no próprio layout, o publicado no padrão do perfil.
+		var ownMode = access.modo === 'lousa' ? 'board' : 'grid', profileMode = access.modo_perfil === 'lousa' ? 'board' : 'grid';
+		function board() { return (source === 'own' ? ownMode : profileMode) === 'board'; }
 		var editing = false;
 		try { editing = sessionStorage.getItem('dashboard_widgets_editing') === 'true'; } catch (_) {}
 		var target = null, selectedType = null, generation = 0, resize = null, returnFocus = null, pickerReset = false;
@@ -936,10 +942,68 @@ $(document).ready(function () {
 		}
 		function save() { if (!editable()) return; ownWidgets = widgets; setLocalStorage('dashboard_widgets_layout', widgets, 43200); dashboardSalvarPreferenciaBackend('dashboard_widgets_layout', widgets); }
 		function geometry(card, widget) {
-			card.setAttribute('data-widget-cols', widget.width);
+			card.setAttribute('data-widget-cols', board() ? widget.width : Math.min(GRID_COLS, widget.width));
 			card.setAttribute('data-widget-height', widget.height);
 			card.style.height = (widget.height_px || (widget.height === 2 ? 460 : 220)) + 'px';
 			card.style.minHeight = MIN_HEIGHT + 'px';
+		}
+		// ----- Lousa (REQ-248)
+		// Colunas que cabem na largura disponível; abaixo de 640 px, uma só. Sem medida (teste), 12.
+		function boardCols() {
+			var width = grid.clientWidth;
+			if (!width) return 12;
+			if (width < 640) return 1;
+			return Math.max(MIN_COLS, Math.min(MAX_COLS, Math.floor((width + GAP) / (CELL + GAP))));
+		}
+		// Linhas ocupadas: a altura do card mais uma linha, que é a distância para o de baixo.
+		function boardRows(widget) { return Math.round((widget.height_px || 220) / ROW) + 1; }
+		// Onde cada widget fica numa lousa de `cols` colunas. Quem tem posição guardada tenta ficar nela
+		// (encosta na borda se não couber e desce se o lugar estiver ocupado); quem não tem vai para o
+		// primeiro vão livre. `first` é o widget que o usuário acabou de soltar: ele escolhe o lugar antes.
+		function arrange(list, cols, first) {
+			var taken = {}, places = {};
+			function free(x, y, w, h) { for (var i = x; i < x + w; i++) for (var j = y; j < y + h; j++) if (taken[i + ':' + j]) return false; return true; }
+			list.map(function (widget, index) { return {widget: widget, index: index, placed: widget.x !== null && widget.y !== null && widget.x !== undefined && widget.y !== undefined}; }).sort(function (a, b) {
+				if (first && (a.widget === first) !== (b.widget === first)) return a.widget === first ? -1 : 1;
+				if (a.placed !== b.placed) return a.placed ? -1 : 1;
+				if (!a.placed) return a.index - b.index;
+				return (a.widget.y - b.widget.y) || (a.widget.x - b.widget.x) || (a.index - b.index);
+			}).forEach(function (entry) {
+				var widget = entry.widget, w = Math.max(1, Math.min(widget.width, cols)), h = boardRows(widget), x = 0, y = 0;
+				if (entry.placed) { x = Math.max(0, Math.min(widget.x, cols - w)); y = widget.y; while (!free(x, y, w, h)) y++; }
+				else { search: for (y = 0; ; y++) for (x = 0; x + w <= cols; x++) if (free(x, y, w, h)) break search; }
+				for (var i = x; i < x + w; i++) for (var j = y; j < y + h; j++) taken[i + ':' + j] = true;
+				places[widget.instance_id] = {x: x, y: y, w: w, h: h};
+			});
+			// Vão entre widgets fica; faixa vazia acima de todos não: o conjunto sobe até a primeira linha.
+			var top = Object.keys(places).reduce(function (min, id) { return Math.min(min, places[id].y); }, Infinity);
+			if (top > 0 && top !== Infinity) Object.keys(places).forEach(function (id) { places[id].y -= top; });
+			return places;
+		}
+		// Aplica o arranjo nos cards que já estão na tela: nenhum iframe recarrega.
+		function layout(first) {
+			grid.classList.toggle('is-board', board());
+			if (!board()) {
+				// Grade: quem posiciona é a folha de estilo, pela largura em colunas e pela ordem.
+				grid.style.removeProperty('--board-cols'); grid.removeAttribute('data-board-cols');
+				Array.from(grid.children).forEach(function (card) { card.style.gridColumn = ''; card.style.gridRow = ''; card.removeAttribute('data-board-x'); card.removeAttribute('data-board-y'); });
+				return {};
+			}
+			var cols = boardCols(), places = arrange(widgets, cols, first || null);
+			grid.style.setProperty('--board-cols', cols); grid.setAttribute('data-board-cols', cols);
+			Array.from(grid.children).forEach(function (card) {
+				var place = places[card.dataset.widgetInstance]; if (!place) return;
+				card.style.gridColumn = (place.x + 1) + ' / span ' + place.w; card.style.gridRow = (place.y + 1) + ' / span ' + place.h;
+				card.setAttribute('data-board-x', place.x); card.setAttribute('data-board-y', place.y);
+			});
+			return places;
+		}
+		// Depois de uma edição: o arranjo que está na tela vira a posição guardada de cada widget.
+		function commit(first) {
+			if (!board()) { save(); return; }
+			var places = layout(first);
+			widgets.forEach(function (widget) { var place = places[widget.instance_id]; if (place) { widget.x = place.x; widget.y = place.y; } });
+			save();
 		}
 		function setEditing(value) {
 			if (!value && resize) {
@@ -999,7 +1063,9 @@ $(document).ready(function () {
 					var frame = document.createElement('iframe');
 					frame.className = 'dashboard-widget-frame w-full h-full border-0 block min-h-0';
 					frame.title = (widget.options && widget.options.title) || widget.name || widget.id;
-					frame.setAttribute('sandbox', 'allow-scripts');
+					// REQ-248: link ou formulário de dentro do widget abre na página de fora, e só por clique do usuário.
+					// O documento continua de origem opaca: não lê cookie nem a página do painel.
+					frame.setAttribute('sandbox', 'allow-scripts allow-top-navigation-by-user-activation');
 					// req-242: o documento isolado pode pedir tela cheia (apresentações); o resto do isolamento não muda.
 					frame.setAttribute('allow', 'fullscreen');
 					frame.setAttribute('allowfullscreen', '');
@@ -1017,8 +1083,10 @@ $(document).ready(function () {
 					// entra por último: a folha que ele gera cobre o documento inteiro e fecha a camada de utilities.
 					// CSS de autoria não tem camada e continua vencendo, como na página pública.
 					// O iframe mantém origem opaca: inicialização acontece dentro do documento isolado.
-					var initScript = '<script>window.addEventListener("load",function(){if(window.lucide)window.lucide.createIcons();window.dispatchEvent(new Event("resize"));});<\/script>';
-					frame.srcdoc = '<!doctype html><html data-c2f-dashboard-widget><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(rootUrl)+'">'+
+					var initScript = '<script>window.addEventListener("load",function(){if(window.lucide)window.lucide.createIcons();window.dispatchEvent(new Event("resize"));});' +
+						// Âncora interna (`#secao`) fica dentro do widget: com o `base` apontando para fora, ela levaria a página inteira.
+						'document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");if(h.charAt(0)!=="#")return;e.preventDefault();var t=h.length>1&&document.getElementById(h.slice(1));if(t)t.scrollIntoView();});<\/script>';
+					frame.srcdoc = '<!doctype html><html data-c2f-dashboard-widget><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(rootUrl)+'" target="_top">'+
 						'<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden}body{font-family:var(--font-sans,system-ui,-apple-system,sans-serif)}</style>'+
 						layoutCss+(theme ? '<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">'+theme+'</style>' : '')+styles+compiler+
 						'<script>window.gestor='+JSON.stringify({raiz:rootUrl}).replace(/</g, '\\u003c')+';<\/script>'+(jquery ? jquery.outerHTML : '')+lucideScript+
@@ -1029,7 +1097,8 @@ $(document).ready(function () {
 				applyOptions(card, widget);
 				card._load();
 			});
-			if (typeof Sortable !== 'undefined') grid._dashboardSortable = new Sortable(grid, {animation:200, disabled:!editing, handle:'.dashboard-widget-drag-handle', onStart:function () { grid.classList.add('is-interacting'); }, onEnd:function () {
+			layout();
+			if (!board() && typeof Sortable !== 'undefined') grid._dashboardSortable = new Sortable(grid, {animation:200, disabled:!editing, handle:'.dashboard-widget-drag-handle', onStart:function () { grid.classList.add('is-interacting'); }, onEnd:function () {
 				grid.classList.remove('is-interacting');
 				widgets = Array.from(grid.children).map(function (card) { return widgets.find(function (w) { return w.instance_id === card.dataset.widgetInstance; }); }); save();
 			}});
@@ -1055,7 +1124,7 @@ $(document).ready(function () {
 						var config = {id:type.id, name:(type.name || type.id) + ' / ' + (record.nome || record.id), registro_id:record.id, params:{grupo_slug:record.id}};
 						var old = widgets.find(function (w) { return w.instance_id === target; });
 						if (old) { Object.assign(old, config); if (old.options) old.options.title = ''; } else widgets.push(normalizeWidget(Object.assign(config,{instance_id:instanceId(),width:4,height:1}), widgets.length));
-						save(); render(); close();
+						render(); commit(); close();
 					}); list.appendChild(button);
 				});
 				if (!(data.items || []).length && !append) { var p=document.createElement('p');p.textContent=labels.empty;list.appendChild(p); }
@@ -1081,20 +1150,19 @@ $(document).ready(function () {
 		document.querySelectorAll('.dashboard-widgets-modal-close').forEach(function(b){b.addEventListener('click',close);});
 		if (modal) modal.addEventListener('click',function(e){if(e.target===modal)close();});
 		document.addEventListener('keydown',function(e){
-			if(e.key==='Escape'){close();closeConfig();closeLayouts();var options=document.getElementById('dashboard-options');if(options)options.open=false;}
+			if(e.key==='Escape'){var popup=[modal,configModal,layoutsModal].some(function(m){return m && !m.classList.contains('hidden');});close();closeConfig();closeLayouts();if(!popup && inWindow())setWindow(false);}
 			if(e.key==='Tab' && modal && !modal.classList.contains('hidden')){
 				var buttons=Array.from(modal.querySelectorAll('button:not([disabled]), input:not([disabled])')).filter(function(b){return !b.hidden;});var first=buttons[0],last=buttons[buttons.length-1];
 				if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
 			}
 		});
-		document.addEventListener('click',function(e){var options=document.getElementById('dashboard-options');if(options && !options.contains(e.target))options.open=false;});
 		grid.addEventListener('click',function(e){
 			if(!editing)return;var card=e.target.closest('.dashboard-widget-card');if(!card)return;
 			if(e.target.closest('.dashboard-widget-switch-btn'))open(card.dataset.widgetInstance);
 			if(e.target.closest('.dashboard-widget-config-btn'))openConfig(card.dataset.widgetInstance);
 			if(e.target.closest('.dashboard-widget-duplicate-btn')){
 				var position=widgets.findIndex(function(w){return w.instance_id===card.dataset.widgetInstance;});
-				if(position!==-1){var copy=copyLayout([widgets[position]])[0];copy.instance_id=instanceId();widgets.splice(position+1,0,copy);save();render();}
+				if(position!==-1){var copy=copyLayout([widgets[position]])[0];copy.instance_id=instanceId();copy.x=copy.y=null;widgets.splice(position+1,0,copy);render();commit();}
 			}
 			if(e.target.closest('.dashboard-widget-remove-btn')){widgets=widgets.filter(function(w){return w.instance_id!==card.dataset.widgetInstance;});save();render();}
 		});
@@ -1141,7 +1209,33 @@ $(document).ready(function () {
 		// ----- REQ-247: fonte do layout (próprio ou padrão do perfil), menu e layouts salvos/publicados
 		var sourceButton = document.getElementById('dashboard-widgets-source'), sourceNotice = document.getElementById('dashboard-widgets-source-notice');
 		function prefer(key, value) { if (canEdit) dashboardSalvarPreferenciaBackend(key, value); }
+		var modeButton = document.getElementById('dashboard-widgets-mode');
+		function setMode(next) {
+			if (!editable() || board() === (next === 'board')) return;
+			// Da lousa para a grade, a ordem passa a ser a de leitura do que está na tela.
+			if (board()) { var places = arrange(widgets, boardCols(), null); widgets.sort(function (a, b) { var pa = places[a.instance_id], pb = places[b.instance_id]; return (pa.y - pb.y) || (pa.x - pb.x); }); }
+			// A largura muda de unidade (12 avos na grade, células na lousa): cada widget mantém a proporção que tinha.
+			// Para a lousa arredonda para baixo (quem cabia lado a lado continua cabendo); de volta, para cima.
+			var cells = boardCols(), from = board() ? cells : GRID_COLS, to = board() ? GRID_COLS : cells;
+			widgets.forEach(function (w) { w.width = Math.max(Math.min(MIN_COLS, to), Math.min(to, board() ? Math.ceil(w.width * to / from) : Math.floor(w.width * to / from))); });
+			ownMode = next === 'board' ? 'board' : 'grid';
+			prefer('dashboard_widgets_modo', ownMode === 'board' ? 'lousa' : 'grade');
+			render(); commit(); syncSource();
+		}
+		if (modeButton) modeButton.addEventListener('click', function () { setMode(board() ? 'grid' : 'board'); });
+		// Grade: atalho que põe N widgets por linha, dando a todos a mesma largura. Cada um ainda pode ser redimensionado.
+		var perRow = document.getElementById('dashboard-widgets-per-row');
+		if (perRow) perRow.addEventListener('click', function (e) {
+			var button = e.target.closest('[data-widgets-per-row]'); if (!button || !editable() || board()) return;
+			var width = Math.round(GRID_COLS / Number(button.getAttribute('data-widgets-per-row')));
+			if (!(width >= MIN_COLS && width <= GRID_COLS)) return;
+			widgets.forEach(function (w) { w.width = width; });
+			Array.from(grid.children).forEach(function (card) { var w = widgets.find(function (x) { return x.instance_id === card.dataset.widgetInstance; }); if (w) geometry(card, w); });
+			save();
+		});
 		function syncSource() {
+			if (modeButton) { modeButton.setAttribute('aria-checked', String(board())); modeButton.disabled = !editable(); }
+			if (perRow) perRow.querySelectorAll('button').forEach(function (b) { b.disabled = !editable() || board(); });
 			if (sourceButton) sourceButton.setAttribute('aria-checked', String(source === 'profile'));
 			if (sourceNotice) sourceNotice.classList.toggle('hidden', !(canEdit && source === 'profile'));
 			document.querySelectorAll('#dashboard-btn-add-widget, #dashboard-btn-reset-widgets, #dashboard-btn-toggle-headers').forEach(function (b) { b.disabled = !editable(); });
@@ -1155,16 +1249,17 @@ $(document).ready(function () {
 			render(); syncSource();
 		}
 		// Passa um layout para o próprio do usuário, com instâncias novas, e volta a editar o próprio.
-		function adopt(list) {
+		function adopt(list, mode) {
 			if (!canEdit) return;
+			if (mode) { ownMode = mode === 'board' ? 'board' : 'grid'; prefer('dashboard_widgets_modo', ownMode === 'board' ? 'lousa' : 'grade'); }
 			ownWidgets = copyLayout(list).map(function (w, index) { w.instance_id = instanceId() + '-' + index; return normalizeWidget(w, index); });
 			source = 'own'; widgets = ownWidgets;
 			prefer('dashboard_widgets_fonte', 'proprio');
-			save(); render(); syncSource();
+			render(); commit(); syncSource();
 		}
 		if (sourceButton) sourceButton.addEventListener('click', function () { setSource(source === 'own' ? 'profile' : 'own'); });
 		var copyProfile = document.getElementById('dashboard-btn-copy-profile');
-		if (copyProfile) copyProfile.addEventListener('click', function () { adopt(profileWidgets); });
+		if (copyProfile) copyProfile.addEventListener('click', function () { adopt(profileWidgets, profileMode); });
 		var headersButton = document.getElementById('dashboard-btn-toggle-headers');
 		if (headersButton) headersButton.addEventListener('click', function () {
 			if (!editable() || !widgets.length) return;
@@ -1174,14 +1269,19 @@ $(document).ready(function () {
 			Array.from(grid.children).forEach(function (card) { var w = widgets.find(function (x) { return x.instance_id === card.dataset.widgetInstance; }); if (w) applyOptions(card, w); });
 			save();
 		});
-		var fullscreenButton = document.getElementById('dashboard-btn-widgets-fullscreen');
-		if (fullscreenButton) fullscreenButton.addEventListener('click', function () {
+		// REQ-248: janela cheia. A lousa cobre toda a área do navegador, por cima do menu lateral e do topo.
+		var windowButton = document.getElementById('dashboard-btn-widgets-window');
+		function setWindow(on) {
 			var panel = document.getElementById('dashboard-tab-widgets'), tab = document.getElementById('dashboard-tab-btn-widgets');
 			if (!panel) return;
-			if (document.fullscreenElement) { document.exitFullscreen(); return; }
-			if (tab && panel.classList.contains('hidden')) tab.click();
-			if (panel.requestFullscreen) panel.requestFullscreen().catch(function () {});
-		});
+			if (on && tab && panel.classList.contains('hidden')) tab.click();
+			panel.classList.toggle('is-window', on);
+			document.documentElement.classList.toggle('dashboard-window-open', on);
+			var toggle = document.getElementById('dashboard-btn-widgets-window'); if (toggle) toggle.setAttribute('aria-checked', String(on));
+			layout();
+		}
+		function inWindow() { var panel = document.getElementById('dashboard-tab-widgets'); return !!panel && panel.classList.contains('is-window'); }
+		if (windowButton) windowButton.addEventListener('click', function () { setWindow(!inWindow()); });
 		var layoutsModal = document.getElementById('dashboard-widgets-layouts-modal'), profilesData = null;
 		function layoutLabel(key) { return layoutsModal.getAttribute('data-label-' + key) || ''; }
 		function layoutStatus(text) { var box = document.getElementById('dashboard-widgets-layouts-status'); if (box) box.textContent = text || ''; }
@@ -1217,10 +1317,10 @@ $(document).ready(function () {
 		}
 		function loadProfiles() { return request('widgets-layouts').then(drawProfiles).catch(function () { layoutStatus(labels.error); }); }
 		// O padrão que vale para mim mudou: o do meu perfil ou, sem ele, o de todos.
-		function refreshProfileLayout(published, layout) {
+		function refreshProfileLayout(published, layout, mode) {
 			if (!profilesData) return;
 			var mine = profilesData.perfil_atual, own = (profilesData.perfis || []).some(function (p) { return p.id === mine && p.publicado; });
-			if (published.indexOf(mine) !== -1 || (published.indexOf('*') !== -1 && !own)) { profileWidgets = copyLayout(layout).map(normalizeWidget); if (source === 'profile') { widgets = profileWidgets; render(); } }
+			if (published.indexOf(mine) !== -1 || (published.indexOf('*') !== -1 && !own)) { profileWidgets = copyLayout(layout).map(normalizeWidget); profileMode = mode; if (source === 'profile') { widgets = profileWidgets; render(); } }
 		}
 		function openLayouts() { if (!layoutsModal || !canEdit) return; returnFocus = document.activeElement; layoutStatus(''); drawSaved(); layoutsModal.classList.remove('hidden'); loadProfiles(); var name = document.getElementById('dashboard-widgets-layout-name'); if (name) name.focus(); }
 		function closeLayouts() { if (!layoutsModal || layoutsModal.classList.contains('hidden')) return; layoutsModal.classList.add('hidden'); if (returnFocus && returnFocus.isConnected) returnFocus.focus(); }
@@ -1234,13 +1334,13 @@ $(document).ready(function () {
 				if (!name) { layoutStatus(layoutLabel('name')); input.focus(); return; }
 				// Mesmo nome substitui; no máximo 20 layouts guardados.
 				savedLayouts = savedLayouts.filter(function (l) { return l.name !== name; });
-				savedLayouts.unshift({id: 'layout-' + Date.now(), name: name, widgets: copyLayout(widgets)});
+				savedLayouts.unshift({id: 'layout-' + Date.now(), name: name, mode: board() ? 'board' : 'grid', widgets: copyLayout(widgets)});
 				savedLayouts = savedLayouts.slice(0, 20);
 				prefer('dashboard_widgets_salvos', savedLayouts); input.value = ''; drawSaved(); layoutStatus(layoutLabel('done')); return;
 			}
 			if ((button = hit('[data-layout-apply]'))) {
 				var chosen = savedLayouts.find(function (l) { return l.id === button.getAttribute('data-layout-apply'); });
-				if (chosen) { adopt(chosen.widgets); layoutStatus(layoutLabel('done')); }
+				if (chosen) { adopt(chosen.widgets, chosen.mode === 'board' ? 'board' : 'grid'); layoutStatus(layoutLabel('done')); }
 				return;
 			}
 			if ((button = hit('[data-layout-delete]'))) {
@@ -1250,8 +1350,8 @@ $(document).ready(function () {
 			if (hit('#dashboard-widgets-layout-publish')) {
 				var chosenProfiles = Array.from(layoutsModal.querySelectorAll('.dashboard-layout-check:checked')).map(function (c) { return c.value; });
 				if (!chosenProfiles.length) { layoutStatus(layoutLabel('pick')); return; }
-				var layout = copyLayout(widgets);
-				request('widgets-layout-publicar', {perfis: chosenProfiles, layout: layout}).then(function () { refreshProfileLayout(chosenProfiles, layout); layoutStatus(layoutLabel('done')); return loadProfiles(); }).catch(function () { layoutStatus(labels.error); });
+				var layout = copyLayout(widgets), publishedMode = board() ? 'board' : 'grid';
+				request('widgets-layout-publicar', {perfis: chosenProfiles, layout: layout, modo: publishedMode === 'board' ? 'lousa' : 'grade'}).then(function () { refreshProfileLayout(chosenProfiles, layout, publishedMode); layoutStatus(layoutLabel('done')); return loadProfiles(); }).catch(function () { layoutStatus(labels.error); });
 				return;
 			}
 			if ((button = hit('[data-layout-unpublish]'))) {
@@ -1271,13 +1371,49 @@ $(document).ready(function () {
 		grid.addEventListener('pointermove',function(e){
 			if(!resize || resize.pointer!==e.pointerId)return;
 			var dx=e.clientX-resize.x,dy=e.clientY-resize.y;
-			var fraction=((resize.width+dx)/resize.gridWidth)*12;
-			resize.cols=Math.max(MIN_COLS,Math.min(MAX_COLS,Math.round(fraction)));resize.rows=Math.max(MIN_HEIGHT,Math.min(MAX_HEIGHT,Math.round((resize.height+dy)/STEP_HEIGHT)*STEP_HEIGHT));
+			var cols=boardCols(),step=(resize.gridWidth+GAP)/cols;
+			resize.cols=board()?Math.max(Math.min(MIN_COLS,cols),Math.min(cols,Math.round((resize.width+dx+GAP)/step))):Math.max(MIN_COLS,Math.min(GRID_COLS,Math.round(((resize.width+dx)/resize.gridWidth)*GRID_COLS)));resize.rows=Math.max(MIN_HEIGHT,Math.min(MAX_HEIGHT,Math.round((resize.height+dy)/STEP_HEIGHT)*STEP_HEIGHT));
 			geometry(resize.card,{width:resize.cols,height_px:resize.rows});
+			if(board()){resize.card.style.gridColumnEnd='span '+resize.cols;resize.card.style.gridRowEnd='span '+boardRows({height_px:resize.rows});}
 			resize.card.setAttribute('data-resize-size', resize.cols + ' × ' + resize.rows + ' px');
 		});
-		function finish(e){if(!resize || resize.pointer!==e.pointerId)return;resize.card.classList.remove('is-resizing');resize.card.removeAttribute('data-resize-size');grid.classList.remove('is-interacting');if(resize.handle.hasPointerCapture(e.pointerId))resize.handle.releasePointerCapture(e.pointerId);if(e.type==='pointercancel'){geometry(resize.card,resize.widget);}else if(resize.cols){resize.widget.width=resize.cols;resize.widget.height_px=resize.rows;save();}resize=null;}
+		function finish(e){if(!resize || resize.pointer!==e.pointerId)return;resize.card.classList.remove('is-resizing');resize.card.removeAttribute('data-resize-size');grid.classList.remove('is-interacting');if(resize.handle.hasPointerCapture(e.pointerId))resize.handle.releasePointerCapture(e.pointerId);var done=resize;resize=null;if(e.type==='pointercancel'||!done.cols){geometry(done.card,done.widget);layout();}else{done.widget.width=done.cols;done.widget.height_px=done.rows;commit(done.widget);}}
 		grid.addEventListener('pointerup',finish);grid.addEventListener('pointercancel',finish);
+		// REQ-248: arrastar pela alça solta o widget em qualquer célula; a sombra tracejada mostra onde ele cai.
+		var drag = null;
+		grid.addEventListener('pointerdown', function (e) {
+			var handle = e.target.closest('.dashboard-widget-drag-handle'); if (!editing || !board() || !handle || drag) return;
+			var card = handle.closest('.dashboard-widget-card'), widget = widgets.find(function (w) { return w.instance_id === card.dataset.widgetInstance; });
+			if (!widget) return;
+			var rect = card.getBoundingClientRect(), ghost = document.createElement('div');
+			ghost.className = 'dashboard-board-ghost'; ghost.style.gridColumn = card.style.gridColumn; ghost.style.gridRow = card.style.gridRow; grid.appendChild(ghost);
+			drag = {card: card, widget: widget, handle: handle, pointer: e.pointerId, ghost: ghost, startX: e.clientX, startY: e.clientY, offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top, x: Number(card.getAttribute('data-board-x')) || 0, y: Number(card.getAttribute('data-board-y')) || 0, moved: false};
+			card.classList.add('is-dragging'); grid.classList.add('is-interacting');
+			if (handle.setPointerCapture) handle.setPointerCapture(e.pointerId);
+			e.preventDefault();
+		});
+		grid.addEventListener('pointermove', function (e) {
+			if (!drag || drag.pointer !== e.pointerId) return;
+			var box = grid.getBoundingClientRect(), cols = boardCols(), span = Math.max(1, Math.min(drag.widget.width, cols)), step = ((box.width || 1) + GAP) / cols;
+			drag.moved = true;
+			drag.card.style.transform = 'translate(' + (e.clientX - drag.startX) + 'px,' + (e.clientY - drag.startY) + 'px)';
+			drag.x = Math.max(0, Math.min(cols - span, Math.round((e.clientX - drag.offsetX - box.left) / step)));
+			drag.y = Math.max(0, Math.min(MAX_ROW, Math.round((e.clientY - drag.offsetY - box.top) / ROW)));
+			drag.ghost.style.gridColumn = (drag.x + 1) + ' / span ' + span; drag.ghost.style.gridRow = (drag.y + 1) + ' / span ' + boardRows(drag.widget);
+		});
+		function drop(e) {
+			if (!drag || drag.pointer !== e.pointerId) return;
+			var done = drag; drag = null;
+			done.ghost.remove(); done.card.style.transform = ''; done.card.classList.remove('is-dragging'); grid.classList.remove('is-interacting');
+			if (done.handle.hasPointerCapture && done.handle.hasPointerCapture(e.pointerId)) done.handle.releasePointerCapture(e.pointerId);
+			if (e.type === 'pointercancel' || !done.moved) { layout(); return; }
+			done.widget.x = done.x; done.widget.y = done.y;
+			commit(done.widget);
+		}
+		grid.addEventListener('pointerup', drop); grid.addEventListener('pointercancel', drop);
+		// A lousa acompanha a largura: recolher o menu lateral ou estreitar a janela refaz o arranjo, sem gravar.
+		if (typeof ResizeObserver !== 'undefined') new ResizeObserver(function () { if (!drag && !resize) layout(); }).observe(grid);
+		else if (typeof window !== 'undefined') window.addEventListener('resize', function () { if (!drag && !resize) layout(); });
 		render();
 	}
 

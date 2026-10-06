@@ -28,9 +28,12 @@ final class DashboardWidgetsReq233Test extends TestCase
             $css = (string)file_get_contents($resources . '/dashboard-cards-tailwind.css');
             $html = (string)file_get_contents($resources . '/dashboard-cards-tailwind.html');
 
-            // Proibição de malha de 24 colunas ou grid-auto-rows de 8px / 0.5rem
-            self::assertStringNotContainsString('repeat(24', $css, "Malha de 24 colunas proibida na req-233 ({$language}).");
-            self::assertStringNotContainsString('grid-auto-rows', $css, "grid-auto-rows proibido na req-233 ({$language}).");
+            // Proibição de malha de 24 colunas ou grid-auto-rows de 8px / 0.5rem na grade.
+            // REQ-248: a lousa é um segundo modo, só na regra `.is-board`; a grade continua como a req-233 fixou.
+            $grade = preg_replace('/#dashboard-widgets-grid\.is-board \{[^}]*\}/', '', $css);
+            self::assertNotSame($css, $grade, $language);
+            self::assertStringNotContainsString('repeat(24', $grade, "Malha de 24 colunas proibida na req-233 ({$language}).");
+            self::assertStringNotContainsString('grid-auto-rows', $grade, "grid-auto-rows proibido na req-233 ({$language}).");
 
             // Exigências da req-233: 12 colunas, min-h-[220px], snap em 4, 6, 8, 12 e 1x/2x
             self::assertStringContainsString('grid-template-columns: repeat(12, minmax(0, 1fr))', $css, $language);

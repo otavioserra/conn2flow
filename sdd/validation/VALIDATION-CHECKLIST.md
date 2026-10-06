@@ -17,6 +17,18 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-257 — REQ-248
+
+- [x] Grade preservada como padrão; widgets por linha (1, 2, 3, 4, 6).
+- [x] Lousa: colunas pela largura, posição livre com vão, colisão empurra para baixo, 20 px entre vizinhos.
+- [x] Troca de modo mantém a proporção; modo e posições persistem e acompanham layout salvo e publicado.
+- [x] Janela cheia cobre o navegador e sai com `Esc`; opções em botão flutuante com menu que fica aberto.
+- [x] Lousa estreita e 390 px sem sobreposição nem rolagem lateral.
+- [x] Tailwind 4.3.3 fixado; PHPUnit 1.684 e Vitest 606 sem falhas; pipeline do Lab com saída 0; navegador 23/23.
+- [ ] `npm ci` na árvore principal e homologação humana.
+
+Detalhes: [BATCH-257](../implementation/BATCH-257.md).
+
 ## BATCH-256 — REQ-247
 
 - [x] Operações `widgets-administrar` e `widgets-visualizar` declaradas nos dois idiomas; `administradores` recebe a de administrar.
@@ -144,7 +156,7 @@ Evidências, comandos e limites: [BATCH-243](../implementation/archive/BATCH-243
 
 ## BATCH-245 / REQ-236 — integração homologada no Lab
 
-- [x] Integrações Core REQ-222/223/224 sequenciais e preservação do stash/checkouts anteriores.
+- [x] Integrações Core REQ-223/233/224 sequenciais e preservação do stash/checkouts anteriores.
 - [x] Dashboard V3.1: título/abas/Opções, tooltip, capa única M/G, edição, resize e seleção tipo/registro persistida.
 - [x] Core Vitest 529/529; PHPUnit 1.594 testes / 15.795 assertions sem falhas/erros, quatro skipped e deprecações registradas.
 - [x] Site Vitest 9/9; PHPUnit cinco testes / 462 assertions.

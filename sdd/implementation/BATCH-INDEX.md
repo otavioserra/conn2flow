@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-257 | implemented-pending-homologation | Área de widgets com dois modos (grade e lousa de posição livre), widgets por linha, janela cheia, opções flutuantes e Tailwind 4.3.3 (REQ-248) | [BATCH-257.md](BATCH-257.md) | PHPUnit 1.684, Vitest 606, navegador 23/23. A grade continua padrão; a lousa é opcional. |
 | BATCH-255 | complete | Fase B: consolidação Core/Site, documentação bilíngue e higiene SDD (REQ-246 / Site REQ-110) | [BATCH-255.md](BATCH-255.md) | Recorte humano até 84deb54a; configurações 515c764c separadas para REQ-247. PHPUnit 1.672 e Vitest 573 sem falhas. Pipeline publicado; navegador 158/19/24 e documentação 36/36; 742 links HTTP sem falha. |
 | BATCH-256 | implemented-pending-homologation | Área de widgets do Dashboard: operações `widgets-administrar` e `widgets-visualizar`, layout por perfil, layouts salvos, duplicar, atalho de edição, larguras de 2 a 12 e menu (REQ-247) | [BATCH-256.md](BATCH-256.md) | Branch `feat/req-247` sobre a `integ/widget-apresentacao`; PHPUnit 1.683, Vitest 588, navegador 43/43 em quatro fases. Integrado na `main` em 2026-10-06 depois de reaplicar a mesclagem que a Fase B tinha revertido; navegador repetido sobre a integração (43, 16, 24, 158 e 19). |
 | BATCH-254 | implemented-pending-review | Atualização automática do sistema, com abas Manual e Automático no `admin-atualizacoes` (REQ-245, absorve a REQ-241) | [BATCH-254.md](BATCH-254.md) | Rotina declarada pelo módulo no `admin-cron`, três períodos, hora preferida, uma tentativa por versão, sempre com verificação e volta automática. PHPUnit 1.670, navegador 19/19; disparo real pela rotina ainda não exercitado. Branch `feat/req-245` sobre `feat/req-243`. |
@@ -80,7 +81,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-231 | in-progress | Menus, galerias, formulários e consentimento de cookies em Tailwind (req-222) | [req-222.md](../human-requests/archive/req-222.md) | Agente paralelo, worktree `conn2flow-req222`; variante de visualização entregue pela req-219 (`aff98f83`). |
 | BATCH-232 | in-progress | Módulos de administração em Tailwind (req-223) | [BATCH-232.md](archive/BATCH-232.md) | Worktree `conn2flow-req223`, branch `feat/req-223`; inclui `configuracao_administracao`, `variables` e `modulos-variaveis`. |
 | BATCH-233 | in-review | Usuários, perfis, módulos, operações e painel inicial em Tailwind (req-224) | [BATCH-233.md](archive/BATCH-233.md) | Agente da req-219; navegador 40/40 no roteiro da req-219. |
-| BATCH-234 | in-progress | Conferência final da UI Tailwind (req-225), preparação | [BATCH-234.md](archive/BATCH-234.md) | Inventário preliminar 236 páginas/idiomas; teste de deriva vermelho (2 auditorias). Ajustes finais aguardam req-222/223 e REQ-100/101 do site. Sem pipeline. |
+| BATCH-234 | in-progress | Conferência final da UI Tailwind (req-225), preparação | [BATCH-234.md](archive/BATCH-234.md) | Inventário preliminar 236 páginas/idiomas; teste de deriva vermelho (2 auditorias). Ajustes finais aguardam req-223/233 e REQ-100/101 do site. Sem pipeline. |
 | BATCH-235 | complete | Dashboard V3.0 — Grid Interativo P/M/G e Widgets (req-226) | [BATCH-235.md](archive/BATCH-235.md) | Seletor P/M/G, abas, widgets flexíveis, links canônicos de docs e persistência no banco. Integrado em `main`. |
 | BATCH-236 | complete | Capas de módulos em WebP 1024x1024 isométrica 3D (req-227) | [BATCH-236.md](archive/BATCH-236.md) | 37 WebP 1024x1024 (< 98 KB); catálogo com miniaturas, renderer 2D/3D e rota canônica. Integrado em `main`. |
 | BATCH-237 | complete | Topbar administrativa: perfil, idioma e favoritos por usuário (req-228) | [BATCH-237.md](archive/BATCH-237.md) | Menu de perfil, idioma e favoritos persistentes no SQL. Integrado em `main`. |
@@ -95,7 +96,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 REQ-238: [BATCH-247](BATCH-247.md), implemented-pending-homologation — TopBar/Sidebar, Dashboard V3.3 e conformidade dos 22 módulos Core/Site; 261 checks de navegador e pipeline Lab aprovados.
 
-REQ-236: [BATCH-245](BATCH-245.md), in-review — integração sequencial REQ-222/223/224, Dashboard V3.1 e homologação conjunta com o Site REQ-101.
+REQ-236: [BATCH-245](BATCH-245.md), in-review — integração sequencial REQ-223/233/224, Dashboard V3.1 e homologação conjunta com o Site REQ-101.
 
 Não abra um novo batch funcional sem atualizar este índice. Se o escopo mudar de forma normativa, registre primeiro a mudança em `sdd/change-requests/`.
 

@@ -140,6 +140,16 @@
     }
 }
 
+/* Lousa (REQ-248): colunas que acompanham a largura (`--board-cols`, calculado no JS), linhas de 20 px e
+   a mesma distância de 20 px entre os cards. Cada card recebe coluna e linha no próprio estilo. */
+#dashboard-widgets-grid.is-board {
+    grid-template-columns: repeat(var(--board-cols, 12), minmax(0, 1fr));
+    grid-auto-rows: 20px;
+    gap: 0 20px;
+    align-items: start;
+    min-height: 240px;
+}
+
 .dashboard-widget-card {
     position: relative;
     min-height: 220px;
@@ -148,7 +158,8 @@
     transition: box-shadow 0.2s ease, outline 0.15s ease;
 }
 
-/* Modificadores de coluna (Desktop 12 cols, Tablet 6 cols, Mobile 1 col). REQ-247: de 2 a 12, uma a uma. */
+/* Modificadores de coluna da grade (Desktop 12 cols, Tablet 6 cols, Mobile 1 col). REQ-247: de 2 a 12, uma a uma.
+   Na lousa a coluna e a extensão vão no estilo do próprio card e prevalecem. */
 .dashboard-widget-card[data-widget-cols="2"] {
     grid-column: span 1 / span 1;
 }
@@ -464,10 +475,30 @@
 #dashboard-widgets-source[aria-checked="true"] .dashboard-edit-thumb { transform: translateX(.875rem); }
 .dashboard-menu-item:disabled { opacity: .45; cursor: not-allowed; }
 .dashboard-menu-item:disabled:hover { background: transparent; color: #334155; }
-#dashboard-tab-widgets:fullscreen { overflow: auto; background: #f1f5f9; padding: 24px; }
 .dashboard-layout-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; }
 .dashboard-layout-name { min-width: 0; flex: 1 1 8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .875rem; font-weight: 600; color: #0f172a; }
 .dashboard-layout-detail { font-size: .75rem; color: #64748b; }
 .dashboard-layout-row .c2fc-botao { padding: 4px 10px; font-size: .75rem; }
 .dashboard-layout-check { width: 16px; height: 16px; flex: none; accent-color: #0284c7; }
 .dashboard-layout-empty { font-size: .8125rem; color: #64748b; }
+
+/* REQ-248: arrasto livre na lousa, janela cheia e opções flutuantes. */
+#dashboard-widgets-grid.is-board .dashboard-widget-card { align-self: start; }
+.dashboard-widget-card.is-dragging { z-index: 30; opacity: .92; box-shadow: 0 18px 40px rgb(15 23 42 / 0.28); cursor: grabbing; transition: none; }
+.dashboard-widget-card.is-dragging iframe { pointer-events: none; }
+#dashboard-widgets-grid.is-interacting iframe { pointer-events: none; }
+.dashboard-board-ghost { align-self: stretch; margin-bottom: 20px; border: 2px dashed #0ea5e9; border-radius: 12px; background: rgb(14 165 233 / 0.10); pointer-events: none; }
+#dashboard-tab-widgets.is-window { position: fixed; inset: 0; z-index: 45; margin: 0; overflow: auto; background: #f1f5f9; padding: 16px 16px 88px; }
+html.dashboard-window-open { overflow: hidden; }
+#dashboard-btn-widgets-window[aria-checked="true"] .dashboard-edit-track, #dashboard-widgets-mode[aria-checked="true"] .dashboard-edit-track { background: #0284c7; }
+#dashboard-btn-widgets-window[aria-checked="true"] .dashboard-edit-thumb, #dashboard-widgets-mode[aria-checked="true"] .dashboard-edit-thumb { transform: translateX(.875rem); }
+#dashboard-options { position: fixed; right: 16px; bottom: 16px; z-index: 46; }
+#dashboard-options > summary { border-radius: 999px; padding: 10px 16px; box-shadow: 0 10px 25px rgb(15 23 42 / 0.22); list-style: none; }
+#dashboard-options > summary::-webkit-details-marker { display: none; }
+#dashboard-options[open] > summary { border-color: #0284c7; color: #0369a1; }
+#dashboard-options .dashboard-options-menu { top: auto; right: 0; bottom: calc(100% + 8px); margin: 0; max-height: calc(100vh - 96px); overflow-y: auto; box-shadow: 0 18px 40px rgb(15 23 42 / 0.22); }
+.dashboard-per-row { display: flex; align-items: center; gap: 4px; padding: .375rem .5rem; color: #334155; font-size: .75rem; font-weight: 500; }
+.dashboard-per-row-label { min-width: 0; flex: 1; }
+.dashboard-per-row button { width: 1.625rem; height: 1.625rem; border: 1px solid #cbd5e1; border-radius: .375rem; background: #fff; font-weight: 600; color: #334155; cursor: pointer; }
+.dashboard-per-row button:hover:not(:disabled) { border-color: #0284c7; color: #0369a1; }
+.dashboard-per-row button:disabled { opacity: .4; cursor: not-allowed; }

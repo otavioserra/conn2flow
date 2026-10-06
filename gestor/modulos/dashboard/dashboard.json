@@ -262,12 +262,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.24",
+                    "version": "1.25",
                     "checksum": {
-                        "html": "3fa6d73c850e784ed549c4f1924a4e18",
-                        "css": "9ed12e0d2a1a084c97a5fe30a92ac998",
+                        "html": "c9c20d4ff2d6480e4854ebc7eedef018",
+                        "css": "c64e4359c9e49dc1f44c7274aa2bbe68",
                         "css_precompiled": "",
-                        "combined": "da06e0d98fe45e676b9159a72128ad60"
+                        "combined": "e8cf9d2d9de0d65a7e93b58d7abfb7ed"
                     }
                 }
             ],
@@ -655,6 +655,21 @@
                 {
                     "id": "widgets-btn-fullscreen",
                     "value": "Tela cheia dos widgets",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-window",
+                    "value": "Janela cheia dos widgets",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-mode-board",
+                    "value": "Modo lousa (posição livre)",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-per-row",
+                    "value": "Widgets por linha (grade)",
                     "type": "string"
                 },
                 {
@@ -1070,12 +1085,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.24",
+                    "version": "1.25",
                     "checksum": {
-                        "html": "3fa6d73c850e784ed549c4f1924a4e18",
-                        "css": "9ed12e0d2a1a084c97a5fe30a92ac998",
+                        "html": "c9c20d4ff2d6480e4854ebc7eedef018",
+                        "css": "c64e4359c9e49dc1f44c7274aa2bbe68",
                         "css_precompiled": "",
-                        "combined": "da06e0d98fe45e676b9159a72128ad60"
+                        "combined": "e8cf9d2d9de0d65a7e93b58d7abfb7ed"
                     }
                 }
             ],
@@ -1466,6 +1481,21 @@
                     "type": "string"
                 },
                 {
+                    "id": "widgets-btn-window",
+                    "value": "Widgets full window",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-mode-board",
+                    "value": "Board mode (free position)",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-per-row",
+                    "value": "Widgets per row (grid)",
+                    "type": "string"
+                },
+                {
                     "id": "widgets-layouts-title",
                     "value": "Widgets area layouts",
                     "type": "string"
@@ -1668,5 +1698,5 @@
             ]
         }
     },
-    "asset_version": "e1ad9458845559a3"
+    "asset_version": "232d260a9f6a607d"
 }
