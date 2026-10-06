@@ -202,3 +202,9 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Função extraída por expressão regular em teste antigo** (`DashboardWidgetStylesReq238Test`): função nova chamada dentro dela precisa de simulação no teste.
 - **`auth:cookie --user=<id>`** gera sessão de outro usuário para roteiro com dois papéis; a sessão anterior do mesmo usuário cai.
 - **Janela estreitada depois da carga deixa o menu lateral aberto por cima**: no roteiro em 390 px, clicar com `dispatchEvent('click')` ou carregar já na largura.
+
+### Integração da REQ-247 depois da Fase B (2026-10-06)
+- **Reverter uma mesclagem não a desfaz para o Git**: os commits continuam ancestrais e a próxima mesclagem da mesma linha não traz o conteúdo de volta. Para tirar algo que entrou por engano e voltar depois: antes de mesclar de novo, reverter o revert. Medido: 36 conflitos sem isso, 9 (só gerados) com isso.
+- **Versão do Tailwind muda centenas de gerados**: conferir `node_modules/tailwindcss/package.json` contra o `package-lock.json` antes de `resources:sync`. A worktree `conn2flow-req243` usava 4.3.3 emprestado; a árvore principal usa 4.3.0.
+- **`.md` em CRLF altera dados de IA** (`ModosIaData.json`, `PromptsIaData.json`) no `resources:sync`: descartar essas duas alterações ou normalizar também `.md`.
+- **Pipeline do projeto com o acervo de docs** passa de 10 minutos: rodar em segundo plano.

@@ -25,7 +25,9 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 - [x] Administrador: publicar por perfil e para todos, alternar próprio e padrão, copiar o padrão, layouts salvos.
 - [x] Duplicar, atalho de edição, larguras de 2 a 12, todos os cabeçalhos, tela cheia.
 - [x] `resources:sync`, PHPUnit 1.683 e Vitest 588 sem falhas; pipeline do Lab com saída 0; navegador 43/43; 390 px sem rolagem lateral.
+- [x] Integrado na `main` com a mesclagem revertida pela Fase B reaplicada; suítes e cinco roteiros de navegador repetidos sobre a integração.
 - [ ] Concessão da operação pela tela de perfis, por um humano.
+- [ ] Decidir a versão oficial do Tailwind (4.3.0 do `package-lock` ou 4.3.3) e atualizar a documentação do Dashboard.
 - [ ] Revisão da chefia e homologação humana.
 
 Detalhes: [BATCH-256](../implementation/BATCH-256.md).
