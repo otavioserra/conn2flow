@@ -371,3 +371,22 @@
 .dashboard-widget-card-header { flex-shrink: 0; }
 .dashboard-widget-card-body { flex: 1; width: 100%; min-height: 0; padding: 0; overflow: hidden; position: relative; }
 .dashboard-widget-frame { display: block; width: 100%; height: 100%; border: 0; min-height: 0; }
+
+/* Configurações por widget: cabeçalho, moldura, cor de fundo e margem interna. */
+#dashboard-widgets-grid:not(.is-editing) .dashboard-widget-config-btn { display: none !important; }
+#dashboard-widgets-grid:not(.is-editing) .dashboard-widget-card.is-headerless .dashboard-widget-card-header { display: none; }
+#dashboard-widgets-grid.is-editing .dashboard-widget-card.is-headerless .dashboard-widget-card-header { border-bottom-style: dashed; border-bottom-color: #94a3b8; }
+.dashboard-widget-card.is-frameless { border-color: transparent; box-shadow: none; }
+#dashboard-widgets-grid.is-editing .dashboard-widget-card.is-frameless { border-color: #94a3b8; border-style: dashed; }
+.dashboard-widget-card .dashboard-widget-card-body[data-widget-padding="small"] { padding: 8px; }
+.dashboard-widget-card .dashboard-widget-card-body[data-widget-padding="medium"] { padding: 16px; }
+.dashboard-widget-card .dashboard-widget-card-body[data-widget-padding="large"] { padding: 24px; }
+.dashboard-widget-card[data-widget-tone="dark"] .dashboard-widget-card-header { border-bottom-color: rgb(255 255 255 / 0.18); color: #f8fafc; }
+.dashboard-widget-card[data-widget-tone="dark"] .dashboard-widget-card-header .c2fc-botao-fantasma { color: #e2e8f0; }
+.dashboard-widget-card[data-widget-tone="dark"] .dashboard-widget-card-header .c2fc-botao-fantasma:hover { background: rgb(255 255 255 / 0.12); }
+.dashboard-widget-config-color { width: 44px; height: 32px; padding: 2px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; cursor: pointer; }
+.dashboard-widget-config-color:disabled { opacity: 0.4; cursor: not-allowed; }
+.dashboard-widget-config-switch { border: 1px solid #e2e8f0; font-size: .875rem; line-height: 1.25rem; }
+.dashboard-widget-config-switch input:checked + .dashboard-edit-track { background: #0284c7; }
+.dashboard-widget-config-switch input:checked + .dashboard-edit-track .dashboard-edit-thumb { transform: translateX(.875rem); }
+.dashboard-widget-config-switch:has(input:focus-visible) { outline: 2px solid #0284c7; outline-offset: -2px; }

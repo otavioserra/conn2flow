@@ -855,9 +855,43 @@ $(document).ready(function () {
 		// req-242: altura em passos de 20 px (a malha do redimensionamento), de 120 a 960 px.
 		var MIN_HEIGHT = 120, MAX_HEIGHT = 960, STEP_HEIGHT = 20;
 		var labels = {};
-		['type', 'record', 'loading', 'error', 'empty', 'remove', 'drag', 'more', 'resize', 'switch', 'select'].forEach(function (key) {
+		['type', 'record', 'loading', 'error', 'empty', 'remove', 'drag', 'more', 'resize', 'switch', 'select', 'config'].forEach(function (key) {
 			labels[key] = grid.getAttribute('data-label-' + key) || '';
 		});
+		// Configurações por widget: gravadas com o layout, em `options`. Valor fora da lista volta ao padrão.
+		var PADDINGS = ['none', 'small', 'medium', 'large'], REFRESH = [0, 60, 300, 900];
+		function normalizeOptions(o) {
+			o = o && typeof o === 'object' ? o : {};
+			return {
+				header: o.header !== false,
+				frame: o.frame !== false,
+				title: String(o.title == null ? '' : o.title).trim().slice(0, 80),
+				background: /^#[0-9a-f]{6}$/i.test(o.background || '') ? String(o.background).toLowerCase() : '',
+				padding: PADDINGS.indexOf(o.padding) !== -1 ? o.padding : 'none',
+				refresh: REFRESH.indexOf(Number(o.refresh)) !== -1 ? Number(o.refresh) : 0
+			};
+		}
+		function applyOptions(card, widget) {
+			var o = widget.options = normalizeOptions(widget.options);
+			var name = o.title || widget.name || widget.id;
+			// Sem cabeçalho ele some só fora do modo de edição (regra na folha do componente).
+			card.classList.toggle('is-headerless', !o.header);
+			card.classList.toggle('is-frameless', !o.frame);
+			card.style.backgroundColor = o.background;
+			var dark = false;
+			if (o.background) { var rgb = parseInt(o.background.slice(1), 16); dark = (0.299 * (rgb >> 16) + 0.587 * ((rgb >> 8) & 255) + 0.114 * (rgb & 255)) < 140; }
+			card.setAttribute('data-widget-tone', dark ? 'dark' : 'light');
+			var body = card.querySelector('.dashboard-widget-card-body'), title = card.querySelector('.dashboard-widget-title'), frame = card.querySelector('iframe');
+			if (body) body.setAttribute('data-widget-padding', o.padding);
+			if (title) title.textContent = name;
+			if (frame) frame.title = name;
+			clearInterval(card._refreshTimer); card._refreshTimer = null;
+			// Recarrega sozinho só com a aba visível e fora do modo de edição.
+			if (o.refresh) card._refreshTimer = setInterval(function () {
+				if (!card.isConnected) { clearInterval(card._refreshTimer); return; }
+				if (!document.hidden && !editing && card._load) card._load();
+			}, o.refresh * 1000);
+		}
 		var stored = typeof gestor !== 'undefined' && gestor.dashboard_user_prefs ? gestor.dashboard_user_prefs.widgets_layout : null;
 		var widgets = Array.isArray(stored) ? stored : (getLocalStorage('dashboard_widgets_layout') || []);
 		if (!Array.isArray(widgets)) widgets = [];
@@ -865,7 +899,7 @@ $(document).ready(function () {
 			var width = Number(w.width);
 			if (![4, 6, 8, 12].includes(width)) width = /full|12/.test(w.width) ? 12 : (/8/.test(w.width) ? 8 : (/2|6/.test(w.width) ? 6 : 4));
 			var pixels = Number(w.height_px) || (Number(w.height) === 2 ? 460 : 220);
-			return Object.assign({}, w, {width: width, height_px: Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}});
+			return Object.assign({}, w, {width: width, height_px: Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}, options: normalizeOptions(w.options)});
 		});
 		var editing = false;
 		try { editing = sessionStorage.getItem('dashboard_widgets_editing') === 'true'; } catch (_) {}
@@ -915,6 +949,7 @@ $(document).ready(function () {
 		if (editButton) editButton.addEventListener('click', function () { setEditing(!editing); });
 		function render() {
 			if (grid._dashboardSortable) { grid._dashboardSortable.destroy(); grid._dashboardSortable = null; }
+			Array.from(grid.children).forEach(function (old) { clearInterval(old._refreshTimer); });
 			grid.innerHTML = '';
 			if (empty) empty.classList.toggle('hidden', widgets.length > 0);
 			widgets.forEach(function (widget) {
@@ -926,7 +961,8 @@ $(document).ready(function () {
 				card.innerHTML = '<div class="dashboard-widget-card-header flex min-w-0 items-center gap-2 border-b border-slate-100 px-4 py-3">' +
 					'<button type="button" class="dashboard-widget-drag-handle c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.drag)+'" data-c2f-dica="'+escape(labels.drag)+'" data-c2f-dica-pos="bottom left"><i data-lucide="grip-vertical" class="size-4"></i></button>' +
 					'<span class="dashboard-widget-title min-w-0 flex-1 truncate font-semibold">'+escape(widget.name || widget.id)+'</span>' +
-					'<button type="button" class="dashboard-widget-switch-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.switch)+'" data-c2f-dica="'+escape(labels.switch)+'" data-c2f-dica-pos="bottom right"><i data-lucide="settings-2" class="size-4"></i></button>' +
+					'<button type="button" class="dashboard-widget-switch-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.switch)+'" data-c2f-dica="'+escape(labels.switch)+'" data-c2f-dica-pos="bottom right"><i data-lucide="arrow-left-right" class="size-4"></i></button>' +
+					'<button type="button" class="dashboard-widget-config-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.config)+'" data-c2f-dica="'+escape(labels.config)+'" data-c2f-dica-pos="bottom right"><i data-lucide="settings-2" class="size-4"></i></button>' +
 					'<button type="button" class="dashboard-widget-remove-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.remove)+'" data-c2f-dica="'+escape(labels.remove)+'" data-c2f-dica-pos="bottom right"><i data-lucide="x" class="size-4"></i></button></div>' +
 					'<div class="dashboard-widget-card-body flex-1 w-full min-w-0 min-h-0 overflow-hidden relative p-0">'+escape(labels.loading)+'</div>';
 				['se'].forEach(function (corner) {
@@ -934,11 +970,11 @@ $(document).ready(function () {
 				});
 				grid.appendChild(card);
 				var body = card.querySelector('.dashboard-widget-card-body');
-				request('widget-render', {widget_id:widget.id, registro_id:widget.registro_id, instance_id:widget.instance_id, params:widget.params}).then(function (data) {
+				card._load = function () { request('widget-render', {widget_id:widget.id, registro_id:widget.registro_id, instance_id:widget.instance_id, params:widget.params}).then(function (data) {
 					if (!card.isConnected) return;
 					var frame = document.createElement('iframe');
 					frame.className = 'dashboard-widget-frame w-full h-full border-0 block min-h-0';
-					frame.title = widget.name || widget.id;
+					frame.title = (widget.options && widget.options.title) || widget.name || widget.id;
 					frame.setAttribute('sandbox', 'allow-scripts');
 					// req-242: o documento isolado pode pedir tela cheia (apresentações); o resto do isolamento não muda.
 					frame.setAttribute('allow', 'fullscreen');
@@ -965,7 +1001,9 @@ $(document).ready(function () {
 						'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+initScript+'</body></html>';
 					body.replaceChildren(frame);
 					icons();
-				}).catch(function () { if (card.isConnected) body.textContent = labels.error; });
+				}).catch(function () { if (card.isConnected) body.textContent = labels.error; }); };
+				applyOptions(card, widget);
+				card._load();
 			});
 			if (typeof Sortable !== 'undefined') grid._dashboardSortable = new Sortable(grid, {animation:200, disabled:!editing, handle:'.dashboard-widget-drag-handle', onStart:function () { grid.classList.add('is-interacting'); }, onEnd:function () {
 				grid.classList.remove('is-interacting');
@@ -992,7 +1030,7 @@ $(document).ready(function () {
 					button.addEventListener('click', function () {
 						var config = {id:type.id, name:(type.name || type.id) + ' / ' + (record.nome || record.id), registro_id:record.id, params:{grupo_slug:record.id}};
 						var old = widgets.find(function (w) { return w.instance_id === target; });
-						if (old) Object.assign(old, config); else widgets.push(Object.assign(config,{instance_id:'widget-'+Date.now()+'-'+Math.random().toString(36).slice(2),width:4,height:1}));
+						if (old) { Object.assign(old, config); if (old.options) old.options.title = ''; } else widgets.push(Object.assign(config,{instance_id:'widget-'+Date.now()+'-'+Math.random().toString(36).slice(2),width:4,height:1}));
 						save(); render(); close();
 					}); list.appendChild(button);
 				});
@@ -1019,7 +1057,7 @@ $(document).ready(function () {
 		document.querySelectorAll('.dashboard-widgets-modal-close').forEach(function(b){b.addEventListener('click',close);});
 		if (modal) modal.addEventListener('click',function(e){if(e.target===modal)close();});
 		document.addEventListener('keydown',function(e){
-			if(e.key==='Escape'){close();var options=document.getElementById('dashboard-options');if(options)options.open=false;}
+			if(e.key==='Escape'){close();closeConfig();var options=document.getElementById('dashboard-options');if(options)options.open=false;}
 			if(e.key==='Tab' && modal && !modal.classList.contains('hidden')){
 				var buttons=Array.from(modal.querySelectorAll('button:not([disabled]), input:not([disabled])')).filter(function(b){return !b.hidden;});var first=buttons[0],last=buttons[buttons.length-1];
 				if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
@@ -1029,8 +1067,49 @@ $(document).ready(function () {
 		grid.addEventListener('click',function(e){
 			if(!editing)return;var card=e.target.closest('.dashboard-widget-card');if(!card)return;
 			if(e.target.closest('.dashboard-widget-switch-btn'))open(card.dataset.widgetInstance);
+			if(e.target.closest('.dashboard-widget-config-btn'))openConfig(card.dataset.widgetInstance);
 			if(e.target.closest('.dashboard-widget-remove-btn')){widgets=widgets.filter(function(w){return w.instance_id!==card.dataset.widgetInstance;});save();render();}
 		});
+		// ----- Pop-up de configurações do widget
+		var configModal = document.getElementById('dashboard-widget-config-modal'), configTarget = null;
+		function option(name) { return configModal.querySelector('[data-widget-option="' + name + '"]'); }
+		function fillConfig(o) {
+			option('header').checked = o.header; option('frame').checked = o.frame; option('title').value = o.title;
+			option('background-custom').checked = !!o.background; option('background').value = o.background || '#ffffff'; option('background').disabled = !o.background;
+			option('padding').value = o.padding; option('refresh').value = String(o.refresh);
+		}
+		function openConfig(instance) {
+			var widget = widgets.find(function (w) { return w.instance_id === instance; });
+			if (!configModal || !widget) return;
+			returnFocus = document.activeElement; configTarget = instance;
+			configModal.querySelector('[data-widget-config-name]').textContent = widget.name || widget.id;
+			option('title').placeholder = widget.name || widget.id;
+			fillConfig(normalizeOptions(widget.options));
+			configModal.classList.remove('hidden'); option('header').focus();
+		}
+		function closeConfig() {
+			if (!configModal || configModal.classList.contains('hidden')) return;
+			configModal.classList.add('hidden'); configTarget = null;
+			if (returnFocus && returnFocus.isConnected) returnFocus.focus();
+		}
+		if (configModal) {
+			option('background-custom').addEventListener('change', function () { option('background').disabled = !this.checked; });
+			configModal.addEventListener('click', function (e) {
+				if (e.target === configModal || e.target.closest('.dashboard-widget-config-close')) { closeConfig(); return; }
+				if (e.target.closest('.dashboard-widget-config-reset')) { fillConfig(normalizeOptions(null)); return; }
+				if (!e.target.closest('.dashboard-widget-config-save')) return;
+				var instance = configTarget, widget = widgets.find(function (w) { return w.instance_id === instance; });
+				if (widget) {
+					widget.options = normalizeOptions({header: option('header').checked, frame: option('frame').checked, title: option('title').value,
+						background: option('background-custom').checked ? option('background').value : '', padding: option('padding').value, refresh: option('refresh').value});
+					// Aplica no card que já está na tela: o iframe não recarrega.
+					var card = Array.from(grid.children).find(function (c) { return c.dataset.widgetInstance === instance; });
+					if (card) applyOptions(card, widget);
+					save();
+				}
+				closeConfig();
+			});
+		}
 		var resetButton=document.getElementById('dashboard-btn-reset-widgets');
 		if(resetButton)resetButton.addEventListener('click',function(){widgets=[];save();render();});
 		grid.addEventListener('pointerdown',function(e){
