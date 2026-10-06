@@ -114,7 +114,7 @@ PHP;
         self::assertSame(['consumidores', 'menus'], [$proprio['origem'], $proprio['layout'][0]['id']]);
         $geral = $this->rodar($codigo, [], ['administradores' => $menus, '*' => $todos])['saida'];
         self::assertSame(['*', 'galleries'], [$geral['origem'], $geral['layout'][0]['id']]);
-        self::assertSame(['layout' => [], 'origem' => null, 'modo' => 'grade'], $this->rodar($codigo, [], [])['saida']);
+        self::assertSame(['layout' => [], 'origem' => null, 'modo' => 'grade', 'primeiro' => false], $this->rodar($codigo, [], [])['saida']);
     }
 
     public function testPublicarExigeAdministrarEAceitaSoPerfilQueExiste(): void
@@ -218,6 +218,32 @@ PHP;
         self::assertSame(['grade', 1], [$antigo['saida']['modo'], count($antigo['saida']['layout'])]);
         $lista = $this->rodar('dashboard_ajax_widgets_layouts();', ['widgets-administrar'], ['consumidores' => json_encode(['modo' => 'lousa', 'widgets' => $widgets])])['json']['data'];
         self::assertSame(3, $lista['perfis'][1]['total']);
+    }
+
+    public function testLayoutPublicadoGuardaAAbaDeWidgetsEmPrimeiro(): void
+    {
+        // REQ-249: a ordem das abas acompanha o layout publicado.
+        $pedido = ['perfis' => '["consumidores"]', 'layout' => json_encode([['id' => 'menus', 'registro_id' => 'a']])];
+        $codigo = 'dashboard_ajax_widgets_layout_publicar(); $saida=dashboard_widgets_layout_perfil("consumidores");';
+        $sim = $this->rodar($codigo, ['widgets-administrar'], [], ['primeiro' => '1'] + $pedido);
+        self::assertTrue($sim['saida']['primeiro']);
+        self::assertTrue(json_decode($sim['layouts']['consumidores'], true)['primeiro']);
+        self::assertFalse($this->rodar($codigo, ['widgets-administrar'], [], ['primeiro' => 'sim'] + $pedido)['saida']['primeiro']);
+        self::assertFalse($this->rodar($codigo, ['widgets-administrar'], [], $pedido)['saida']['primeiro']);
+        $antigo = $this->rodar('$saida=dashboard_widgets_layout_perfil("consumidores");', [], ['consumidores' => json_encode([['id' => 'menus', 'registro_id' => 'a']])]);
+        self::assertFalse($antigo['saida']['primeiro']);
+
+        $fonte = (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/dashboard/dashboard.php');
+        // Quem ainda não escolheu aba abre na que está em primeiro; a preferência só grava para quem administra.
+        self::assertStringContainsString("if(\$widgets_na_frente && dashboard_preferencias_obter('dashboard_aba_ativa', null) === null) \$aba_ativa_salva = 'dashboard-tab-widgets';", $fonte);
+        $negado = $this->rodar('dashboard_ajax_preferencia_salvar();', ['widgets-visualizar'], [], ['chave' => 'dashboard_widgets_primeiro', 'valor' => '1']);
+        self::assertSame('msg:widgets-sem-permissao', $negado['json']['message']);
+        foreach (['pt-br', 'en'] as $lang) {
+            $html = (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . "/modulos/dashboard/resources/$lang/components/dashboard-cards-tailwind/dashboard-cards-tailwind.html");
+            $semAdmin = preg_replace('/<!-- (widgets-menu-admin) < -->[\s\S]*?<!-- \1 > -->/', '', $html);
+            self::assertStringContainsString('id="dashboard-widgets-first"', $html, $lang);
+            self::assertStringNotContainsString('dashboard-widgets-first', $semAdmin, $lang);
+        }
     }
 
     public function testMigracaoCriaATabelaComPerfilUnico(): void

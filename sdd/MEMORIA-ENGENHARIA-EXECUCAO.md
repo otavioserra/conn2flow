@@ -216,3 +216,11 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Guarda antiga que proíbe uma propriedade na folha inteira** (`grid-auto-rows` na REQ-233): restringir a guarda ao modo que ela protege, não contornar pondo a propriedade no JS.
 - **Tailwind oficial é 4.3.3** (`package.json` e `package-lock.json`). `npm install --package-lock-only` atualiza o lock sem tocar em `node_modules`.
 - **Heredoc do Bash com Python que tem aspas triplas ou barra invertida falha**: script em arquivo, pela ferramenta de escrita.
+
+### REQ-249 / BATCH-258 — navegação dos widgets para fora do quadro (2026-10-06)
+- **`base target="_top"` não vence `target` escrito no link**: widget com `target="_self"` (menus) continua navegando dentro. O destino é forçado no clique, em captura, dentro do documento isolado.
+- **Isolamento sem `allow-forms` barra todo envio de formulário**, sem erro no console.
+- **Botão que chama a API com a sessão não funciona em documento isolado** (origem opaca, sem cookie): o módulo detecta `gestor.dashboardWidget` e leva a página de fora ao lugar onde a ação funciona.
+- **Relato de "ainda não funciona" depois de uma correção**: sondar o HTML real do caso (atributos do link, tipo do elemento, script que trata o clique) antes de mexer; aqui eram três causas diferentes.
+- **Roteiro que supõe um modo ou preferência do usuário do Lab** fixa o estado no começo e devolve no fim: o humano muda o próprio Dashboard entre uma execução e outra.
+- **Teste que compara arquivo-fonte com `\n`** falha em cópia de trabalho CRLF: normalizar a worktree inteira antes de culpar a mudança.

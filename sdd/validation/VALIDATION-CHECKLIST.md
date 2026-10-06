@@ -17,6 +17,16 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-258 — REQ-249
+
+- [x] Link com `target` próprio, formulário e botão de carrinho da loja levam a página de fora; âncora interna fica dentro.
+- [x] Isolamento do widget sem `allow-same-origin`.
+- [x] Aba de widgets em primeiro: menu, persistência, layout salvo e layout por perfil.
+- [x] PHPUnit 1.685 e Vitest 614 sem falhas; site 56 e 13; pipeline do Lab com saída 0; navegador 11/11.
+- [ ] Homologação humana; decisão sobre a ordem do plano da lousa.
+
+Detalhes: [BATCH-258](../implementation/BATCH-258.md).
+
 ## BATCH-257 — REQ-248
 
 - [x] Grade preservada como padrão; widgets por linha (1, 2, 3, 4, 6).

@@ -860,9 +860,15 @@ function dashboard_cards(){
 	// ===== REQ-247: quem administra edita e escolhe a fonte; quem só visualiza recebe o layout do perfil.
 	$widgets_admin = dashboard_widgets_pode_administrar();
 	$widgets_ver = dashboard_widgets_pode_ver();
-	$widgets_perfil = $widgets_ver ? dashboard_widgets_layout_perfil(dashboard_widgets_perfil_atual()) : Array('layout' => Array(), 'origem' => null, 'modo' => 'grade');
+	$widgets_perfil = $widgets_ver ? dashboard_widgets_layout_perfil(dashboard_widgets_perfil_atual()) : Array('layout' => Array(), 'origem' => null, 'modo' => 'grade', 'primeiro' => false);
 	$widgets_nomeados = $widgets_admin ? dashboard_preferencias_obter('dashboard_widgets_salvos', Array()) : Array();
 	if(!$widgets_admin) $widgets_salvos = Array();
+	// REQ-249: a aba de widgets pode vir primeiro. Vale a escolha do usuário no próprio layout e a do layout
+	// publicado para quem vê o padrão do perfil; quem ainda não escolheu aba abre na primeira.
+	$widgets_fonte = ($widgets_admin && dashboard_preferencias_obter('dashboard_widgets_fonte', 'proprio') !== 'perfil') ? 'proprio' : 'perfil';
+	$widgets_primeiro = $widgets_admin && (string)dashboard_preferencias_obter('dashboard_widgets_primeiro', '0') === '1';
+	$widgets_na_frente = $widgets_ver && ($widgets_fonte === 'proprio' ? $widgets_primeiro : !empty($widgets_perfil['primeiro']));
+	if($widgets_na_frente && dashboard_preferencias_obter('dashboard_aba_ativa', null) === null) $aba_ativa_salva = 'dashboard-tab-widgets';
 	if(!$widgets_ver && $aba_ativa_salva === 'dashboard-tab-widgets') $aba_ativa_salva = 'dashboard-tab-modulos';
 	$ordem_salva = dashboard_preferencias_obter('dashboard_cards_order', null);
 
@@ -1010,6 +1016,8 @@ function dashboard_cards(){
 			'perfil_origem' => $widgets_perfil['origem'],
 			'modo' => $widgets_admin && dashboard_preferencias_obter('dashboard_widgets_modo', 'grade') === 'lousa' ? 'lousa' : 'grade',
 			'modo_perfil' => $widgets_perfil['modo'],
+			'primeiro' => $widgets_primeiro,
+			'primeiro_perfil' => !empty($widgets_perfil['primeiro']),
 			'salvos' => is_array($widgets_nomeados) ? array_values($widgets_nomeados) : Array(),
 		),
 		'cards_order' => $ordem_salva ?: $cards_order,
@@ -3191,6 +3199,8 @@ function dashboard_widgets_layout_ler($json){
 	$embrulhado = array_key_exists('widgets', $dados);
 	return Array(
 		'modo' => ($embrulhado && ($dados['modo'] ?? '') === 'lousa') ? 'lousa' : 'grade',
+		// REQ-249: a aba de widgets vem antes da de módulos.
+		'primeiro' => $embrulhado && !empty($dados['primeiro']),
 		'widgets' => dashboard_widgets_layout_normalizar($embrulhado ? $dados['widgets'] : $dados),
 	);
 }
@@ -3206,13 +3216,13 @@ function dashboard_widgets_layout_perfil($perfil){
 			));
 			if($linha){
 				$lido = dashboard_widgets_layout_ler($linha['layout']);
-				return Array('layout' => $lido['widgets'], 'origem' => $alvo, 'modo' => $lido['modo']);
+				return Array('layout' => $lido['widgets'], 'origem' => $alvo, 'modo' => $lido['modo'], 'primeiro' => $lido['primeiro']);
 			}
 		}
 	} catch (\Throwable $e) {
 		// Tabela ainda ausente: sem layout publicado.
 	}
-	return Array('layout' => Array(), 'origem' => null, 'modo' => 'grade');
+	return Array('layout' => Array(), 'origem' => null, 'modo' => 'grade', 'primeiro' => false);
 }
 
 function dashboard_widgets_perfis(){
@@ -3270,7 +3280,8 @@ function dashboard_ajax_widgets_layout_publicar(){
 		return;
 	}
 	$modo = ($_REQUEST['modo'] ?? '') === 'lousa' ? 'lousa' : 'grade';
-	$json = json_encode(Array('modo' => $modo, 'widgets' => $layout), JSON_UNESCAPED_UNICODE);
+	$primeiro = ($_REQUEST['primeiro'] ?? '') === '1';
+	$json = json_encode(Array('modo' => $modo, 'primeiro' => $primeiro, 'widgets' => $layout), JSON_UNESCAPED_UNICODE);
 	try {
 		foreach($perfis as $perfil){
 			$existe = banco_select(Array(

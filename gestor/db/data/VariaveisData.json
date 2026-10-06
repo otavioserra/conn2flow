@@ -16067,6 +16067,15 @@
     {
         "language": "pt-br",
         "modulo": "dashboard",
+        "id": "widgets-first",
+        "valor": "Widgets antes dos módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
         "id": "widgets-per-row",
         "valor": "Widgets por linha (grade)",
         "tipo": "string",
@@ -17140,6 +17149,15 @@
         "modulo": "dashboard",
         "id": "widgets-mode-board",
         "valor": "Board mode (free position)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-first",
+        "valor": "Widgets before modules",
         "tipo": "string",
         "grupo": null,
         "descricao": null

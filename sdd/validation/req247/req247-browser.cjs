@@ -39,8 +39,10 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
   conferir('dashboard abre', await abrir() === 200);
 
   if (fase === 'admin') {
-    const inicial = await page.evaluate(() => ({layout: gestor.dashboard_user_prefs.widgets_layout, fonte: gestor.dashboard_user_prefs.widgets.fonte, salvos: gestor.dashboard_user_prefs.widgets.salvos, pode: gestor.dashboard_user_prefs.widgets.pode_editar}));
+    const inicial = await page.evaluate(() => ({layout: gestor.dashboard_user_prefs.widgets_layout, fonte: gestor.dashboard_user_prefs.widgets.fonte, salvos: gestor.dashboard_user_prefs.widgets.salvos, pode: gestor.dashboard_user_prefs.widgets.pode_editar, modo: gestor.dashboard_user_prefs.widgets.modo}));
     if (!fs.existsSync(guarda)) fs.writeFileSync(guarda, JSON.stringify(inicial));
+    // Este roteiro exercita a grade (larguras em 12 avos); com a lousa ligada, passa para a grade e o `limpar` devolve.
+    if (inicial.modo === 'lousa') { await ajax('salvar-preferencias', {chave: 'dashboard_widgets_modo', valor: 'grade'}); await ajax('salvar-preferencias', {chave: 'dashboard_widgets_layout', valor: JSON.stringify(inicial.layout.map(w => Object.assign({}, w, {width: Math.max(2, Math.min(12, Math.round(w.width / 2) * 2 > 12 ? 12 : w.width))})))}); await abrir(); }
     conferir('administrador recebe a permissão de edição', inicial.pode === true);
     await aba();
     if (inicial.fonte === 'perfil') await item('dashboard-widgets-source');
@@ -162,6 +164,7 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
     await ajax('salvar-preferencias', {chave: 'dashboard_widgets_layout', valor: JSON.stringify(inicial.layout)});
     await ajax('salvar-preferencias', {chave: 'dashboard_widgets_fonte', valor: inicial.fonte || 'proprio'});
     await ajax('salvar-preferencias', {chave: 'dashboard_widgets_salvos', valor: JSON.stringify(inicial.salvos || [])});
+    await ajax('salvar-preferencias', {chave: 'dashboard_widgets_modo', valor: inicial.modo || 'grade'});
     await abrir();
     const fim = await page.evaluate(() => ({layout: gestor.dashboard_user_prefs.widgets_layout, fonte: gestor.dashboard_user_prefs.widgets.fonte, salvos: gestor.dashboard_user_prefs.widgets.salvos.length, perfil: gestor.dashboard_user_prefs.widgets.layout_perfil.length}));
     conferir('preferências do administrador de volta ao que eram', JSON.stringify(fim.layout) === JSON.stringify(inicial.layout) && fim.fonte === (inicial.fonte || 'proprio') && fim.salvos === (inicial.salvos || []).length, {fim: fim.layout.length, inicial: inicial.layout.length});

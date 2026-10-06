@@ -94,9 +94,10 @@ describe('Dashboard widget instances (req-236)',()=>{
   const cards=document.querySelectorAll('.dashboard-widget-card');expect(cards[0].style.height).toBe('600px');expect(cards[1].style.height).toBe('960px');
   expect(document.querySelectorAll('.dashboard-widget-resize-handle')).toHaveLength(2);
   // REQ-248: o widget pode levar a página de fora a um link, só por clique; segue sem `allow-same-origin`.
-  expect(document.querySelectorAll('iframe')[0].getAttribute('sandbox')).toBe('allow-scripts allow-top-navigation-by-user-activation');
+  expect(document.querySelectorAll('iframe')[0].getAttribute('sandbox')).toBe('allow-scripts allow-forms allow-top-navigation-by-user-activation');
   expect(document.querySelectorAll('iframe')[0].srcdoc).toMatch(/<base href="[^"]+" target="_top">/);
-  expect(document.querySelectorAll('iframe')[0].srcdoc).toContain('if(h.charAt(0)!=="#")return;e.preventDefault();');
+  // REQ-249: o destino é forçado no clique, porque um link pode trazer `target` próprio.
+  expect(document.querySelectorAll('iframe')[0].srcdoc).toContain('a.target="_top"');
   // req-242: o isolamento continua igual; só a tela cheia passa a ser permitida, e o mínimo desce a 120 px.
   expect(document.querySelectorAll('iframe')[0].getAttribute('allow')).toBe('fullscreen');
   expect(document.querySelectorAll('iframe')[0].hasAttribute('allowfullscreen')).toBe(true);

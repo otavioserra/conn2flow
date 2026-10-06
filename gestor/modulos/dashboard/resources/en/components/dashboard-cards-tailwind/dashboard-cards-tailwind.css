@@ -490,8 +490,8 @@
 .dashboard-board-ghost { align-self: stretch; margin-bottom: 20px; border: 2px dashed #0ea5e9; border-radius: 12px; background: rgb(14 165 233 / 0.10); pointer-events: none; }
 #dashboard-tab-widgets.is-window { position: fixed; inset: 0; z-index: 45; margin: 0; overflow: auto; background: #f1f5f9; padding: 16px 16px 88px; }
 html.dashboard-window-open { overflow: hidden; }
-#dashboard-btn-widgets-window[aria-checked="true"] .dashboard-edit-track, #dashboard-widgets-mode[aria-checked="true"] .dashboard-edit-track { background: #0284c7; }
-#dashboard-btn-widgets-window[aria-checked="true"] .dashboard-edit-thumb, #dashboard-widgets-mode[aria-checked="true"] .dashboard-edit-thumb { transform: translateX(.875rem); }
+#dashboard-btn-widgets-window[aria-checked="true"] .dashboard-edit-track, #dashboard-widgets-mode[aria-checked="true"] .dashboard-edit-track, #dashboard-widgets-first[aria-checked="true"] .dashboard-edit-track { background: #0284c7; }
+#dashboard-btn-widgets-window[aria-checked="true"] .dashboard-edit-thumb, #dashboard-widgets-mode[aria-checked="true"] .dashboard-edit-thumb, #dashboard-widgets-first[aria-checked="true"] .dashboard-edit-thumb { transform: translateX(.875rem); }
 #dashboard-options { position: fixed; right: 16px; bottom: 16px; z-index: 46; }
 #dashboard-options > summary { border-radius: 999px; padding: 10px 16px; box-shadow: 0 10px 25px rgb(15 23 42 / 0.22); list-style: none; }
 #dashboard-options > summary::-webkit-details-marker { display: none; }

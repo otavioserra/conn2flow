@@ -920,6 +920,9 @@ $(document).ready(function () {
 		// O modo acompanha o layout: o do usuário no próprio layout, o publicado no padrão do perfil.
 		var ownMode = access.modo === 'lousa' ? 'board' : 'grid', profileMode = access.modo_perfil === 'lousa' ? 'board' : 'grid';
 		function board() { return (source === 'own' ? ownMode : profileMode) === 'board'; }
+		// REQ-249: a aba de widgets pode vir antes da de módulos; a escolha acompanha o layout, como o modo.
+		var ownFirst = access.primeiro === true, profileFirst = access.primeiro_perfil === true;
+		function widgetsFirst() { return source === 'own' ? ownFirst : profileFirst; }
 		var editing = false;
 		try { editing = sessionStorage.getItem('dashboard_widgets_editing') === 'true'; } catch (_) {}
 		var target = null, selectedType = null, generation = 0, resize = null, returnFocus = null, pickerReset = false;
@@ -1065,7 +1068,9 @@ $(document).ready(function () {
 					frame.title = (widget.options && widget.options.title) || widget.name || widget.id;
 					// REQ-248: link ou formulário de dentro do widget abre na página de fora, e só por clique do usuário.
 					// O documento continua de origem opaca: não lê cookie nem a página do painel.
-					frame.setAttribute('sandbox', 'allow-scripts allow-top-navigation-by-user-activation');
+					// REQ-249: `allow-forms` porque sem ele o navegador barra todo envio de formulário (a busca não funcionava);
+					// o envio também sai para a página de fora.
+					frame.setAttribute('sandbox', 'allow-scripts allow-forms allow-top-navigation-by-user-activation');
 					// req-242: o documento isolado pode pedir tela cheia (apresentações); o resto do isolamento não muda.
 					frame.setAttribute('allow', 'fullscreen');
 					frame.setAttribute('allowfullscreen', '');
@@ -1084,12 +1089,20 @@ $(document).ready(function () {
 					// CSS de autoria não tem camada e continua vencendo, como na página pública.
 					// O iframe mantém origem opaca: inicialização acontece dentro do documento isolado.
 					var initScript = '<script>window.addEventListener("load",function(){if(window.lucide)window.lucide.createIcons();window.dispatchEvent(new Event("resize"));});' +
-						// Âncora interna (`#secao`) fica dentro do widget: com o `base` apontando para fora, ela levaria a página inteira.
-						'document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");if(h.charAt(0)!=="#")return;e.preventDefault();var t=h.length>1&&document.getElementById(h.slice(1));if(t)t.scrollIntoView();});<\/script>';
+						// Âncora interna (`#secao`) fica dentro do widget. Todo outro link e todo formulário saem para a página
+						// de fora, mesmo com `target` próprio (`_self`, `_blank`): REQ-249.
+						'function c2fFora(u){try{window.top.location.href=u;}catch(e){}}' +
+						'document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");' +
+						'if(h.charAt(0)==="#"){e.preventDefault();var t=h.length>1&&document.getElementById(h.slice(1));if(t)t.scrollIntoView();return;}' +
+						'if(!/^javascript:/i.test(h))a.target="_top";},true);' +
+						'document.addEventListener("submit",function(e){if(e.target&&e.target.tagName==="FORM")e.target.target="_top";},true);' +
+						// Navegação feita por script (`location.href = …`) também vai para fora, onde o navegador deixa interceptar.
+						'if(window.navigation&&navigation.addEventListener)navigation.addEventListener("navigate",function(e){if(!e.cancelable||e.hashChange||e.downloadRequest||e.navigationType==="reload")return;' +
+						'var u=e.destination&&e.destination.url;if(!u||/^about:/i.test(u))return;e.preventDefault();c2fFora(u);});<\/script>';
 					frame.srcdoc = '<!doctype html><html data-c2f-dashboard-widget><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(rootUrl)+'" target="_top">'+
 						'<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden}body{font-family:var(--font-sans,system-ui,-apple-system,sans-serif)}</style>'+
 						layoutCss+(theme ? '<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">'+theme+'</style>' : '')+styles+compiler+
-						'<script>window.gestor='+JSON.stringify({raiz:rootUrl}).replace(/</g, '\\u003c')+';<\/script>'+(jquery ? jquery.outerHTML : '')+lucideScript+
+						'<script>window.gestor='+JSON.stringify({raiz:rootUrl,dashboardWidget:true}).replace(/</g, '\\u003c')+';<\/script>'+(jquery ? jquery.outerHTML : '')+lucideScript+
 						'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+initScript+'</body></html>';
 					body.replaceChildren(frame);
 					icons();
@@ -1233,7 +1246,24 @@ $(document).ready(function () {
 			Array.from(grid.children).forEach(function (card) { var w = widgets.find(function (x) { return x.instance_id === card.dataset.widgetInstance; }); if (w) geometry(card, w); });
 			save();
 		});
+		var firstButton = document.getElementById('dashboard-widgets-first');
+		function syncTabs() {
+			var widgetsTab = document.getElementById('dashboard-tab-btn-widgets'), modulesTab = document.getElementById('dashboard-tab-btn-modulos');
+			if (widgetsTab && modulesTab && widgetsTab.parentNode === modulesTab.parentNode) {
+				if (widgetsFirst()) widgetsTab.parentNode.insertBefore(widgetsTab, modulesTab); else widgetsTab.parentNode.insertBefore(modulesTab, widgetsTab);
+			}
+			if (firstButton) { firstButton.setAttribute('aria-checked', String(widgetsFirst())); firstButton.disabled = !editable(); }
+		}
+		if (firstButton) firstButton.addEventListener('click', function () {
+			if (!editable()) return;
+			ownFirst = !ownFirst;
+			prefer('dashboard_widgets_primeiro', ownFirst ? '1' : '0');
+			syncTabs();
+			// A aba que passou para a frente é a que se abre.
+			var tab = document.getElementById(ownFirst ? 'dashboard-tab-btn-widgets' : 'dashboard-tab-btn-modulos'); if (tab) tab.click();
+		});
 		function syncSource() {
+			syncTabs();
 			if (modeButton) { modeButton.setAttribute('aria-checked', String(board())); modeButton.disabled = !editable(); }
 			if (perRow) perRow.querySelectorAll('button').forEach(function (b) { b.disabled = !editable() || board(); });
 			if (sourceButton) sourceButton.setAttribute('aria-checked', String(source === 'profile'));
@@ -1249,8 +1279,9 @@ $(document).ready(function () {
 			render(); syncSource();
 		}
 		// Passa um layout para o próprio do usuário, com instâncias novas, e volta a editar o próprio.
-		function adopt(list, mode) {
+		function adopt(list, mode, first) {
 			if (!canEdit) return;
+			if (typeof first === 'boolean') { ownFirst = first; prefer('dashboard_widgets_primeiro', ownFirst ? '1' : '0'); }
 			if (mode) { ownMode = mode === 'board' ? 'board' : 'grid'; prefer('dashboard_widgets_modo', ownMode === 'board' ? 'lousa' : 'grade'); }
 			ownWidgets = copyLayout(list).map(function (w, index) { w.instance_id = instanceId() + '-' + index; return normalizeWidget(w, index); });
 			source = 'own'; widgets = ownWidgets;
@@ -1259,7 +1290,7 @@ $(document).ready(function () {
 		}
 		if (sourceButton) sourceButton.addEventListener('click', function () { setSource(source === 'own' ? 'profile' : 'own'); });
 		var copyProfile = document.getElementById('dashboard-btn-copy-profile');
-		if (copyProfile) copyProfile.addEventListener('click', function () { adopt(profileWidgets, profileMode); });
+		if (copyProfile) copyProfile.addEventListener('click', function () { adopt(profileWidgets, profileMode, profileFirst); });
 		var headersButton = document.getElementById('dashboard-btn-toggle-headers');
 		if (headersButton) headersButton.addEventListener('click', function () {
 			if (!editable() || !widgets.length) return;
@@ -1317,10 +1348,10 @@ $(document).ready(function () {
 		}
 		function loadProfiles() { return request('widgets-layouts').then(drawProfiles).catch(function () { layoutStatus(labels.error); }); }
 		// O padrão que vale para mim mudou: o do meu perfil ou, sem ele, o de todos.
-		function refreshProfileLayout(published, layout, mode) {
+		function refreshProfileLayout(published, layout, mode, first) {
 			if (!profilesData) return;
 			var mine = profilesData.perfil_atual, own = (profilesData.perfis || []).some(function (p) { return p.id === mine && p.publicado; });
-			if (published.indexOf(mine) !== -1 || (published.indexOf('*') !== -1 && !own)) { profileWidgets = copyLayout(layout).map(normalizeWidget); profileMode = mode; if (source === 'profile') { widgets = profileWidgets; render(); } }
+			if (published.indexOf(mine) !== -1 || (published.indexOf('*') !== -1 && !own)) { profileWidgets = copyLayout(layout).map(normalizeWidget); profileMode = mode; profileFirst = first; if (source === 'profile') { widgets = profileWidgets; render(); syncTabs(); } }
 		}
 		function openLayouts() { if (!layoutsModal || !canEdit) return; returnFocus = document.activeElement; layoutStatus(''); drawSaved(); layoutsModal.classList.remove('hidden'); loadProfiles(); var name = document.getElementById('dashboard-widgets-layout-name'); if (name) name.focus(); }
 		function closeLayouts() { if (!layoutsModal || layoutsModal.classList.contains('hidden')) return; layoutsModal.classList.add('hidden'); if (returnFocus && returnFocus.isConnected) returnFocus.focus(); }
@@ -1334,13 +1365,13 @@ $(document).ready(function () {
 				if (!name) { layoutStatus(layoutLabel('name')); input.focus(); return; }
 				// Mesmo nome substitui; no máximo 20 layouts guardados.
 				savedLayouts = savedLayouts.filter(function (l) { return l.name !== name; });
-				savedLayouts.unshift({id: 'layout-' + Date.now(), name: name, mode: board() ? 'board' : 'grid', widgets: copyLayout(widgets)});
+				savedLayouts.unshift({id: 'layout-' + Date.now(), name: name, mode: board() ? 'board' : 'grid', first: widgetsFirst(), widgets: copyLayout(widgets)});
 				savedLayouts = savedLayouts.slice(0, 20);
 				prefer('dashboard_widgets_salvos', savedLayouts); input.value = ''; drawSaved(); layoutStatus(layoutLabel('done')); return;
 			}
 			if ((button = hit('[data-layout-apply]'))) {
 				var chosen = savedLayouts.find(function (l) { return l.id === button.getAttribute('data-layout-apply'); });
-				if (chosen) { adopt(chosen.widgets, chosen.mode === 'board' ? 'board' : 'grid'); layoutStatus(layoutLabel('done')); }
+				if (chosen) { adopt(chosen.widgets, chosen.mode === 'board' ? 'board' : 'grid', chosen.first === true); layoutStatus(layoutLabel('done')); }
 				return;
 			}
 			if ((button = hit('[data-layout-delete]'))) {
@@ -1350,8 +1381,8 @@ $(document).ready(function () {
 			if (hit('#dashboard-widgets-layout-publish')) {
 				var chosenProfiles = Array.from(layoutsModal.querySelectorAll('.dashboard-layout-check:checked')).map(function (c) { return c.value; });
 				if (!chosenProfiles.length) { layoutStatus(layoutLabel('pick')); return; }
-				var layout = copyLayout(widgets), publishedMode = board() ? 'board' : 'grid';
-				request('widgets-layout-publicar', {perfis: chosenProfiles, layout: layout, modo: publishedMode === 'board' ? 'lousa' : 'grade'}).then(function () { refreshProfileLayout(chosenProfiles, layout, publishedMode); layoutStatus(layoutLabel('done')); return loadProfiles(); }).catch(function () { layoutStatus(labels.error); });
+				var layout = copyLayout(widgets), publishedMode = board() ? 'board' : 'grid', publishedFirst = widgetsFirst();
+				request('widgets-layout-publicar', {perfis: chosenProfiles, layout: layout, modo: publishedMode === 'board' ? 'lousa' : 'grade', primeiro: publishedFirst ? '1' : '0'}).then(function () { refreshProfileLayout(chosenProfiles, layout, publishedMode, publishedFirst); layoutStatus(layoutLabel('done')); return loadProfiles(); }).catch(function () { layoutStatus(labels.error); });
 				return;
 			}
 			if ((button = hit('[data-layout-unpublish]'))) {
