@@ -114,10 +114,15 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 [data-c2f-historico] .list > .item:last-child { border-bottom: 0; }
 [data-c2f-historico] .list > .item > i.icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #e0f2fe; color: #0284c7; font: 700 11px/1 system-ui, sans-serif !important; font-style: normal; transform: translateY(2px); }
 [data-c2f-historico] .list > .item > i.icon::before { content: "i" !important; font-family: system-ui, sans-serif !important; }
-[data-c2f-historico] .list > .item > .content { display: flex; flex-flow: row nowrap; align-items: center; gap: 12px; min-width: 0; }
-[data-c2f-historico] .list > .item > .content > .header { display: inline; font-weight: 600; color: #0f172a; }
+[data-c2f-historico] .list > .item > .content { display: flex; flex-flow: row nowrap; align-items: baseline; gap: 12px; min-width: 0; }
+[data-c2f-historico] .list > .item > .content > .header { flex: none; display: inline; font-weight: 600; color: #0f172a; }
 [data-c2f-historico] .list > .item > .content > .header::after { content: " — "; font-weight: 400; color: #94a3b8; }
-[data-c2f-historico] .list > .item > .content > .description { display: inline; color: #475569; }
+[data-c2f-historico] .list > .item > .content > .description { display: inline; min-width: 0; color: #475569; }
+/* REQ-243: texto longo do histórico muda de linha na largura disponível, sem rolagem horizontal. */
+[data-c2f-historico] table { table-layout: fixed; width: 100%; min-width: 0; }
+[data-c2f-historico] td, [data-c2f-historico] .list > .item > .content > .description { white-space: normal; overflow-wrap: anywhere; word-break: break-word; }
+[data-c2f-historico] .list > .item { align-items: flex-start; }
+@media (max-width: 640px) { [data-c2f-historico] .list > .item > .content { flex-wrap: wrap; gap: 2px 12px; } }
 [data-c2f-historico] .first-letter-uppercase::first-letter { text-transform: uppercase; }
 [data-c2f-historico] #_gestor-interface-edit-historico-mais { display: inline-flex; margin: 8px auto 0; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #334155; padding: 6px 14px; font: 500 13px/1.2 inherit; cursor: pointer; }
 [data-c2f-historico] #_gestor-interface-edit-historico-mais:hover { background: #f1f5f9; }
@@ -225,6 +230,15 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
     box-shadow: 0 4px 6px -1px rgba(0,0,0,.2); text-transform: none; letter-spacing: normal;
 }
 .c2fc-sem-fomantic [data-tooltip]:hover::after, .c2fc-sem-fomantic [data-tooltip]:focus-visible::after { content: attr(data-tooltip); }
+/* REQ-243: `outline` é classe-gancho de ícone do Fomantic (`clock outline icon`) e também utility do Tailwind:
+   o ícone ganhava um contorno em volta. Ícone nunca tem contorno próprio. */
+svg.icon.outline, svg.lucide.outline, i.icon.outline { outline: 0 !important; }
+/* REQ-243: item de navegação que aponta para a tela atual (barra de módulo, como a do Host Manager). */
+.c2fc-botao[aria-current="page"]:not(.c2fc-botao-primario) { border-color: #0284c7; background: #f0f9ff; color: #075985; }
+/* REQ-243: seletor de várias imagens — cancelar e concluir ficam na bandeja do gerenciador, na base do modal. */
+.c2fc-ponte-modal.c2f-seletor-multiplo > .actions { display: none; }
+/* REQ-243: dica vazia não desenha balão. */
+[data-c2f-dica=""]::after, [data-c2f-dica=""]::before, .c2fc-sem-fomantic [data-tooltip=""]::after, .c2fc-sem-fomantic [data-tooltip=""]::before { display: none !important; content: none !important; }
 /* posições: alinhamento horizontal */
 [data-c2f-dica-pos~="left"]:hover::after, .c2fc-sem-fomantic [data-tooltip][data-position~="left"]:not([data-position^="left"]):hover::after { left: 0; transform: none; }
 [data-c2f-dica-pos~="right"]:hover::after, .c2fc-sem-fomantic [data-tooltip][data-position~="right"]:not([data-position^="right"]):hover::after { left: auto; right: 0; transform: none; }
@@ -310,7 +324,35 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 .template-fields-list #linked-fields-list > *, .template-link-publisher-fields .field-row { min-width: 0; }
 .field-row .fields { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
 .field-row .fields > .field { flex: 1 1 140px; margin-bottom: 0; }
-.field-row .fields > .two.wide { flex: 0 0 auto; display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.field-row .fields > .two.wide { flex: 0 0 auto; display: flex; flex-direction: row; align-items: center; gap: 6px; margin-left: auto; }
+/* REQ-243: ações do campo personalizado lado a lado (excluir, subir, descer), "Sim" alinhado à caixa e a
+   busca do campo do modelo com os ícones dentro do campo. */
+.field-row .remove-field-btn { order: 1; }
+.field-row .move-up-btn { order: 2; }
+.field-row .move-down-btn { order: 3; }
+.field-row .checkbox { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; }
+.field-row .checkbox > label { margin: 0; cursor: pointer; }
+.field-row .search > .input { position: relative; display: block; }
+.field-row .search > .input > input { padding-right: 60px; }
+.field-row .search > .input > svg { position: absolute; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: #94a3b8; }
+.field-row .search > .input > svg.search { right: 36px; pointer-events: none; }
+.field-row .search > .input > svg.remove { right: 12px; cursor: pointer; }
+.field-row .search > .input > svg.remove:hover { color: #dc2626; }
+.field-row .search > .results { display: flex; flex-direction: column; gap: 2px; max-height: 240px; overflow-y: auto; padding: 4px; color: #64748b; font-size: 13px; }
+.field-row .search > .results[hidden], .field-row .search > .results:empty { display: none; }
+.field-row .search > .results > .c2fc-botao { justify-content: flex-start; width: 100%; border-color: transparent; box-shadow: none; }
+.field-row .search > .results > .c2fc-botao:hover, .field-row .search > .results > .c2fc-botao:focus-visible { background: #f0f9ff; }
+/* REQ-243: mapeamento de variáveis da família publisher — três colunas iguais, cada uma com cabeçalho em
+   destaque e respiro até os botões. As colunas vêm daqui, não só das utilities, para não depender da ordem
+   das folhas da página. */
+.c2fc-mapa { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (min-width: 768px) { .c2fc-mapa { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.c2fc-mapa > div { min-width: 0; overflow: hidden; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; }
+.c2fc-mapa-titulo { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 8px 12px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #334155; font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.c2fc-mapa-titulo kbd { text-transform: none; }
+.c2fc-mapa-titulo + div { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px; min-height: 48px; padding: 12px; }
+.c2fc-mapa-titulo + div > * { margin: 0 !important; }
+.c2fc-mapa-titulo + div > h6 { flex: 0 0 100%; }
 .field-row .remove-field-btn, .field-row .move-up-btn, .field-row .move-down-btn { width: 28px; height: 28px; padding: 4px; }
 .template-fields-list .label, .template-link-publisher-fields .label { display: inline-flex; align-items: center; gap: 6px; }
 .field-row .icon:not(.button), .c2fc-campo-rotulo .icon { border: 0; }
@@ -344,6 +386,12 @@ input[type="checkbox"]:not(:disabled) + label, input[type="radio"]:not(:disabled
 .c2fc-botao { white-space: nowrap; }
 .c2fc-botao-compacto { flex: none; padding: 6px 12px; font-size: 12px; gap: 6px; }
 .c2fc-botao-compacto svg { width: 14px; height: 14px; }
+/* REQ-243: grade de modelos do editor (aba Modelos). Colunas pela largura do cartão, não pelo breakpoint:
+   a grade fica igual em qualquer página, qualquer que seja a ordem das folhas, e o cartão não passa de 240 px. */
+.c2fc-modelos-grade { grid-template-columns: repeat(auto-fill, minmax(180px, 240px)); gap: 12px; align-items: start; }
+.c2fc-modelos-grade:not([style*="display: none"]) { display: grid !important; }
+.c2fc-modelo-cartao { min-width: 0; }
+.c2fc-modelo-capa > img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* REQ-242: destaque do item que é o padrão ativo (estrela cheia). */
 .c2fc-botao-destaque { border-color: #f59e0b; background: #f59e0b; color: #fff; }
 .c2fc-botao-destaque:hover { border-color: #d97706; background: #d97706; }
@@ -351,9 +399,11 @@ input[type="checkbox"]:not(:disabled) + label, input[type="radio"]:not(:disabled
 /* REQ-242: modal de tela cheia com iframe (seletor de arquivos e de modelos): o iframe ocupa o espaço que
    sobra entre o título e as ações; quem rola é o conteúdo do iframe, nunca o modal. */
 .c2fc-ponte-modal.fullscreen { overflow: hidden; }
-.c2fc-ponte-modal.fullscreen > .content:has(iframe) { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.c2fc-ponte-modal.fullscreen > .content:has(.iframe-container) { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
 .c2fc-ponte-modal.fullscreen > .content .iframe-container { display: flex; flex: 1; min-height: 0; }
-.c2fc-ponte-modal.fullscreen > .content iframe { flex: 1; width: 100%; height: auto !important; min-height: 0; }
+/* REQ-243: só o iframe dentro de `.iframe-container` perde a altura própria. O palco do editor visual
+   (`#iframe-preview`) mora no mesmo modal e guarda a sua, calculada pela tela. */
+.c2fc-ponte-modal.fullscreen > .content .iframe-container iframe { flex: 1; width: 100%; height: auto !important; min-height: 0; }
 /* REQ-242: listagem sem palavra partida no meio — cabeçalho numa linha e rótulos (cor, slug, tipo) quebrando só
    em espaço; o rótulo-link de caminho continua podendo quebrar. */
 #_gestor-interface-listar thead th, #_gestor-interface-listar thead th > button { white-space: nowrap; }

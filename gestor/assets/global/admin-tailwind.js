@@ -82,6 +82,9 @@
                 }).join(' ');
                 if (!LUCIDE_NOME.test(nome)) nome = 'circle';
                 icone.setAttribute('data-lucide', nome);
+                // REQ-243: `outline` é variante de ícone no Fomantic e utility de contorno no Tailwind; o SVG
+                // herdaria a classe e ganharia uma borda em volta.
+                icone.classList.remove('outline');
                 icone.setAttribute('width', '16');
                 icone.setAttribute('height', '16');
             });

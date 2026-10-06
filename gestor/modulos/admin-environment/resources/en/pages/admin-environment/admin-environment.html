@@ -304,15 +304,15 @@
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="inline-flex items-center gap-2 rounded bg-amber-700 px-3 py-2 text-sm font-semibold text-white hover:bg-amber-800 disabled:opacity-50"
-                            id="btn-rotacionar-jwt">
+                            class="c2fc-botao c2fc-botao-perigo-suave"
+                            id="btn-rotacionar-jwt" data-c2f-dica="@[[tip-rotate-jwt]]@" data-c2f-dica-pos="top left">
                             <i data-lucide="refresh-cw" class="size-4 shrink-0"></i> Rotate JWT Keys
                         </button>
                     </div>
 
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">@[[captcha-provider-label]]@</label>
-                        <select id="captcha_provider" name="captcha_provider"
+                        <select data-c2f-select="1" id="captcha_provider" name="captcha_provider"
                             class="c2fc-campo-selecao"
                             data-current="#captcha-provider#">
                             <option value="none">@[[captcha-provider-none]]@</option>
@@ -332,7 +332,7 @@
                                 class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                         <div class="space-y-1.5"><label
-                                class="text-sm font-medium text-slate-700">@[[turnstile-mode-label]]@</label><select
+                                class="text-sm font-medium text-slate-700">@[[turnstile-mode-label]]@</label><select data-c2f-select="1"
                                 id="turnstile_mode"
                                 class="c2fc-campo-selecao"
                                 data-current="#turnstile-mode#">
@@ -341,8 +341,8 @@
                                 <option value="invisible">@[[turnstile-mode-invisible]]@</option>
                             </select></div>
                         <button type="button"
-                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
-                            id="btn-testar-turnstile">@[[turnstile-test-label]]@</button>
+                            class="c2fc-botao"
+                            id="btn-testar-turnstile" data-c2f-dica="@[[tip-test-turnstile]]@" data-c2f-dica-pos="top left">@[[turnstile-test-label]]@</button>
                         <div id="turnstile-test-widget"></div>
                     </div>
                     <div id="google-recaptcha-section" class="hidden">
@@ -378,8 +378,8 @@
 
                         <div class="space-y-1.5">
                             <button type="button"
-                                class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
-                                id="btn-testar-recaptcha">
+                                class="c2fc-botao"
+                                id="btn-testar-recaptcha" data-c2f-dica="@[[tip-test-recaptcha-v3]]@" data-c2f-dica-pos="top left">
                                 <i data-lucide="shield" class="size-4 shrink-0"></i> Test reCAPTCHA V3
                             </button>
                         </div>
@@ -417,8 +417,8 @@
 
                             <div class="space-y-1.5">
                                 <button type="button"
-                                    class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
-                                    id="btn-testar-recaptcha-v2">
+                                    class="c2fc-botao"
+                                    id="btn-testar-recaptcha-v2" data-c2f-dica="@[[tip-test-recaptcha-v2]]@" data-c2f-dica-pos="top left">
                                     <i data-lucide="shield-check" class="size-4 shrink-0"></i> Test reCAPTCHA V2
                                 </button>
                             </div>
@@ -519,8 +519,8 @@
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
-                            id="btn-testar-email">
+                            class="c2fc-botao"
+                            id="btn-testar-email" data-c2f-dica="@[[tip-test-email]]@" data-c2f-dica-pos="top left">
                             <i data-lucide="send" class="size-4 shrink-0"></i> Send Test Email
                         </button>
 
@@ -568,7 +568,7 @@
 
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">System Default Language</label>
-                        <select
+                        <select data-c2f-select="1"
                             class="c2fc-campo-selecao"
                             id="language_default" name="language_default">
                             #language-options#
@@ -588,7 +588,7 @@
                 <form class="space-y-4" id="form-paypal" autocomplete="off">
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">Integration Mode</label>
-                        <select
+                        <select data-c2f-select="1"
                             class="c2fc-campo-selecao"
                             id="paypal_default" name="paypal_default">
                             <option value="padrao" #paypal-default-padrao-selected#>Standard (credentials from .env)
@@ -608,7 +608,7 @@
 
                         <div class="space-y-1.5">
                             <label class="text-sm font-medium text-slate-700">Environment</label>
-                            <select
+                            <select data-c2f-select="1"
                                 class="c2fc-campo-selecao"
                                 id="paypal_mode" name="paypal_mode">
                                 <option value="sandbox" #paypal-mode-sandbox-selected#>Sandbox (Testing)</option>
@@ -642,8 +642,8 @@
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
-                            id="btn-testar-paypal">
+                            class="c2fc-botao"
+                            id="btn-testar-paypal" data-c2f-dica="@[[tip-test-paypal]]@" data-c2f-dica-pos="top left">
                             <i data-lucide="credit-card" class="size-4 shrink-0"></i> Test Connection
                         </button>
                     </div>
@@ -724,13 +724,13 @@
 
             <div class="space-y-1.5">
                 <button type="button"
-                    class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
-                    id="btn-salvar">
+                    class="c2fc-botao c2fc-botao-primario"
+                    id="btn-salvar" data-c2f-dica="@[[tip-save]]@" data-c2f-dica-pos="top left">
                     <i data-lucide="save" class="size-4 shrink-0"></i> Save Settings
                 </button>
                 <button type="button"
-                    class="inline-flex items-center gap-2 rounded border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                    onclick="location.reload()">
+                    class="c2fc-botao"
+                    onclick="location.reload()" data-c2f-dica="@[[tip-reload]]@" data-c2f-dica-pos="top left">
                     <i data-lucide="rotate-cw" class="size-4 shrink-0"></i> Reload
                 </button>
             </div>

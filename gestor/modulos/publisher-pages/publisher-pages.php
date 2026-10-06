@@ -1398,11 +1398,15 @@ function publisher_pages_editar(){
 									$value_field = preg_replace('/\n{2,}/', "\n\n", $value_field);
 
 									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
-									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $value_field);
+									// REQ-243: valor dentro de <textarea> vai escapado (Markdown com `</textarea>` ou HTML
+									// quebrava a tela a partir deste campo).
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', htmlspecialchars((string)$value_field, ENT_QUOTES, 'UTF-8'));
 									break;
 								default:
 									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
-									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $value_field);
+									// REQ-243: valor dentro de `value="…"` vai escapado (aspas cortavam o texto). O tipo `html`
+									// é conteúdo do editor de texto rico e segue como marcação.
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $field['type'] === 'html' ? $value_field : htmlspecialchars((string)$value_field, ENT_QUOTES, 'UTF-8'));
 							}
 
 							$cel_field = modelo_var_troca($cel_field, '[[field-type-controller]]', $cel_field_type);
@@ -1424,7 +1428,10 @@ function publisher_pages_editar(){
 		}
 
 		// Html do template
-		$html = (isset($html_template) ? $html_template : '');
+		// REQ-243: o HTML vai para dentro do <textarea> do editor e precisa ir escapado, como no admin-paginas
+		// e na inclusão. Cru, um `</textarea>` ou uma entidade (`&lt;div&gt;` de exemplo de código) fechava o
+		// campo antes da hora: o resto do editor vazava para fora e a aba de SEO ficava sem painel.
+		$html = (isset($html_template) ? htmlentities($html_template) : '');
 		
 		$html = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html);
 		$css = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css);
@@ -2111,11 +2118,15 @@ function publisher_pages_clonar(){
 									$value_field = preg_replace('/\n{2,}/', "\n\n", $value_field);
 
 									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
-									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $value_field);
+									// REQ-243: valor dentro de <textarea> vai escapado (Markdown com `</textarea>` ou HTML
+									// quebrava a tela a partir deste campo).
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', htmlspecialchars((string)$value_field, ENT_QUOTES, 'UTF-8'));
 									break;
 								default:
 									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
-									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $value_field);
+									// REQ-243: valor dentro de `value="…"` vai escapado (aspas cortavam o texto). O tipo `html`
+									// é conteúdo do editor de texto rico e segue como marcação.
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $field['type'] === 'html' ? $value_field : htmlspecialchars((string)$value_field, ENT_QUOTES, 'UTF-8'));
 							}
 
 							$cel_field = modelo_var_troca($cel_field, '[[field-type-controller]]', $cel_field_type);
@@ -2136,7 +2147,10 @@ function publisher_pages_clonar(){
 		}
 
 		// Html do template
-		$html = (isset($html_template) ? $html_template : '');
+		// REQ-243: o HTML vai para dentro do <textarea> do editor e precisa ir escapado, como no admin-paginas
+		// e na inclusão. Cru, um `</textarea>` ou uma entidade (`&lt;div&gt;` de exemplo de código) fechava o
+		// campo antes da hora: o resto do editor vazava para fora e a aba de SEO ficava sem painel.
+		$html = (isset($html_template) ? htmlentities($html_template) : '');
 		
 		$html = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html);
 		$css = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css);

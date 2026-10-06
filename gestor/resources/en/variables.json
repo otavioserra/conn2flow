@@ -126,6 +126,48 @@
         "modulo": "configuracao"
     },
     {
+        "id": "variavel-edit-btn",
+        "value": "Edit variable",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-delete-btn",
+        "value": "Delete variable",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-cancel-btn",
+        "value": "Cancel",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-edit-title",
+        "value": "Edit Variable",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-add-instructions",
+        "value": "Fill in the identifier, group, description, type and value. The variable is created when the form is saved.",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-edit-instructions",
+        "value": "Change the fields below. The changes take effect when the form is saved.",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "form-value-placeholder",
+        "value": "Value",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
         "id": "variavel-description-label",
         "value": "Description",
         "type": "string",

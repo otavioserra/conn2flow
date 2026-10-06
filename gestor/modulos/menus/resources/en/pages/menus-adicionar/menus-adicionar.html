@@ -23,10 +23,10 @@
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
-    <div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
-        <i data-lucide="repeat" class="size-4 shrink-0 icon "></i>
-        Selecting a template loads its HTML and CSS into the editor below. You can edit freely from
-        there — what counts for rendering is always the editor content (saved to the database).
+    <div class="c2fc-rotulo label inline-flex items-center gap-2" style="margin: 8px 0;">
+        <i data-lucide="repeat" class="size-4 shrink-0"></i>
+        <span>Selecting a template loads its HTML and CSS into the editor below. You can edit freely from
+        there — what counts for rendering is always the editor content (saved to the database).</span>
     </div>
 </div>
 
@@ -55,12 +55,12 @@
 
 <div id="menu-item-builder-wrapper">
 
-<div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
-    <i data-lucide="network" class="size-4 shrink-0 icon "></i>
-    Build the menu structure by adding items of different types. Drag by the
-    <i data-lucide="grip-vertical" class="size-4 shrink-0 icon "></i> handle to reorder; drag right/left to nest as a child or move back
+<div class="c2fc-rotulo label inline-flex items-center gap-2" style="margin: 8px 0;">
+    <i data-lucide="network" class="size-4 shrink-0"></i>
+    <span>Build the menu structure by adding items of different types. Drag by the
+    <i data-lucide="grip-vertical" class="inline size-3.5 align-text-bottom"></i> handle to reorder; drag right/left to nest as a child or move back
     to the previous level (WordPress style). Click an item to select it: the next item is
-    inserted right below it.
+    inserted right below it.</span>
 </div>
 
 <!-- Menu item builder -->
@@ -79,25 +79,19 @@
 
     <!-- Page type filter (only for the Page type) -->
     <div class="c2fc-campo min-w-0 mb-4 field" id="page-type-filter-wrapper" style="display:none; margin-bottom: 12px;">
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4">
-            <label class="c2fc-campo-rotulo">Page type</label>
-            <div class="c2fc-campo min-w-0 mb-4 field">
-                <div class="flex items-center gap-2 radio checkbox" data-c2f-dica="Click to show Page type" data-position="top left" data-inverted="">
-                    <input type="radio" name="page_search_type" value="pagina" checked="checked">
-                    <label class="c2fc-campo-rotulo">Page</label>
-                </div>
+        <label class="c2fc-campo-rotulo">Page type</label>
+        <div class="flex flex-wrap items-center gap-4" role="radiogroup" aria-label="Page type">
+            <div class="inline-flex cursor-pointer items-center gap-2 radio checkbox" data-c2f-dica="Click to show Page type" data-c2f-dica-pos="top left">
+                <input type="radio" name="page_search_type" value="pagina" checked="checked">
+                <label class="cursor-pointer text-sm font-medium text-slate-700">Page</label>
             </div>
-            <div class="c2fc-campo min-w-0 mb-4 field">
-                <div class="flex items-center gap-2 radio checkbox" data-c2f-dica="Click to show System type" data-position="top left" data-inverted="">
-                    <input type="radio" name="page_search_type" value="sistema">
-                    <label class="c2fc-campo-rotulo">System</label>
-                </div>
+            <div class="inline-flex cursor-pointer items-center gap-2 radio checkbox" data-c2f-dica="Click to show System type" data-c2f-dica-pos="top left">
+                <input type="radio" name="page_search_type" value="sistema">
+                <label class="cursor-pointer text-sm font-medium text-slate-700">System</label>
             </div>
-            <div class="c2fc-campo min-w-0 mb-4 field">
-                <div class="flex items-center gap-2 radio checkbox" data-c2f-dica="Click to show both" data-position="top left" data-inverted="">
-                    <input type="radio" name="page_search_type" value="ambos">
-                    <label class="c2fc-campo-rotulo">Both</label>
-                </div>
+            <div class="inline-flex cursor-pointer items-center gap-2 radio checkbox" data-c2f-dica="Click to show both" data-c2f-dica-pos="top left">
+                <input type="radio" name="page_search_type" value="ambos">
+                <label class="cursor-pointer text-sm font-medium text-slate-700">Both</label>
             </div>
         </div>
     </div>

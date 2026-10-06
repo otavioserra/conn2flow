@@ -1,0 +1,1677 @@
+{
+ "base": "https://conn2flow.local",
+ "quando": "2026-10-06T17:09:12.667Z",
+ "total": 140,
+ "aprovadas": 140,
+ "falhas": [],
+ "resultados": [
+  {
+   "grupo": "01. select: clique na opção não aciona o que está atrás",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "subscriptions-plans/editar/?id=acceleration"
+  },
+  {
+   "grupo": "01. select: clique na opção não aciona o que está atrás",
+   "nome": "há select com opções na tela",
+   "ok": true,
+   "detalhe": "subscriptions-plans/editar/?id=acceleration"
+  },
+  {
+   "grupo": "01. select: clique na opção não aciona o que está atrás",
+   "nome": "a opção foi escolhida e o painel fechou",
+   "ok": true,
+   "detalhe": {
+    "antes": "vertical",
+    "depois": {
+     "valor": "horizontal",
+     "vazou": [],
+     "fechado": true
+    }
+   }
+  },
+  {
+   "grupo": "01. select: clique na opção não aciona o que está atrás",
+   "nome": "nenhum mouseup ou click chegou a elemento fora do select",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "01. select: clique na opção não aciona o que está atrás",
+   "nome": "a página não navegou",
+   "ok": true,
+   "detalhe": "https://conn2flow.local/subscriptions-plans/editar/?id=acceleration"
+  },
+  {
+   "grupo": "02. histórico de alterações quebra linha",
+   "nome": "admin-paginas/editar/: histórico sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "sw": 1072,
+    "cw": 1072,
+    "layout": "fixed",
+    "itens": 3
+   }
+  },
+  {
+   "grupo": "02. histórico de alterações quebra linha",
+   "nome": "products/edit/: histórico sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "sw": 1072,
+    "cw": 1072,
+    "layout": "fixed",
+    "itens": 3
+   }
+  },
+  {
+   "grupo": "03. editor HTML: cartões de modelos compactos",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "03. editor HTML: cartões de modelos compactos",
+   "nome": "grade de modelos com cartões de até 240 px",
+   "ok": true,
+   "detalhe": {
+    "display": "grid",
+    "n": 20,
+    "maior": 240,
+    "maiorAltura": 282,
+    "porLinha": 3,
+    "largura": 990
+   }
+  },
+  {
+   "grupo": "03. editor HTML: cartões de modelos compactos",
+   "nome": "vários cartões por linha",
+   "ok": true,
+   "detalhe": {
+    "display": "grid",
+    "n": 20,
+    "maior": 240,
+    "maiorAltura": 282,
+    "porLinha": 3,
+    "largura": 990
+   }
+  },
+  {
+   "grupo": "04. editor visual: palco com a altura útil",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "admin-paginas/editar/?id=docs-sdd-00-baseline-architecture"
+  },
+  {
+   "grupo": "04. editor visual: palco com a altura útil",
+   "nome": "botão do editor visual na tela",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "04. editor visual: palco com a altura útil",
+   "nome": "#iframe-preview com a altura de calc(100vh - 220px)",
+   "ok": true,
+   "detalhe": {
+    "altura": 680,
+    "esperado": 680,
+    "visivel": true,
+    "modal": "ui modal overlay fullscreen previsualizar hidden c2fc-ponte-modal",
+    "regra": "680px"
+   }
+  },
+  {
+   "grupo": "05. alerta com ênfase interpretada",
+   "nome": "<b> vira negrito e nenhuma tag aparece como texto",
+   "ok": true,
+   "detalhe": {
+    "msg": "O arquivo selecionado <b>NÃO</b> é uma imagem. ",
+    "negrito": "NÃO",
+    "texto": "O arquivo selecionado NÃO é uma imagem. ",
+    "cru": false,
+    "img": false
+   }
+  },
+  {
+   "grupo": "05. alerta com ênfase interpretada",
+   "nome": "marcação fora da lista não vira elemento nem executa",
+   "ok": true,
+   "detalhe": {
+    "msg": "O arquivo selecionado <b>NÃO</b> é uma imagem. ",
+    "negrito": "NÃO",
+    "texto": "O arquivo selecionado NÃO é uma imagem. ",
+    "cru": false,
+    "img": false
+   }
+  },
+  {
+   "grupo": "06. admin-arquivos: dicas e proporção dos botões",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "06. admin-arquivos: dicas e proporção dos botões",
+   "nome": "dica em Adicionar arquivos, Nova pasta e Selecionar todos",
+   "ok": true,
+   "detalhe": {
+    "adicionar": {
+     "a": 34,
+     "dica": "Enviar novos arquivos para a pasta atual"
+    },
+    "pasta": {
+     "a": 34,
+     "dica": "Criar uma pasta dentro da pasta atual"
+    },
+    "todos": {
+     "a": 34,
+     "dica": "Marcar ou desmarcar todos os arquivos da lista"
+    },
+    "visao": {
+     "a": 34,
+     "dica": "Grande com detalhes"
+    }
+   }
+  },
+  {
+   "grupo": "06. admin-arquivos: dicas e proporção dos botões",
+   "nome": "botões de ação e de visualização na mesma altura",
+   "ok": true,
+   "detalhe": {
+    "adicionar": {
+     "a": 34,
+     "dica": "Enviar novos arquivos para a pasta atual"
+    },
+    "pasta": {
+     "a": 34,
+     "dica": "Criar uma pasta dentro da pasta atual"
+    },
+    "todos": {
+     "a": 34,
+     "dica": "Marcar ou desmarcar todos os arquivos da lista"
+    },
+    "visao": {
+     "a": 34,
+     "dica": "Grande com detalhes"
+    }
+   }
+  },
+  {
+   "grupo": "06. admin-arquivos: dicas e proporção dos botões",
+   "nome": "fora do seletor a bandeja não aparece",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "07. admin-categorias: adicionar filho",
+   "nome": "link de adicionar filho",
+   "ok": true,
+   "detalhe": "admin-categorias/editar/?id=site"
+  },
+  {
+   "grupo": "07. admin-categorias: adicionar filho",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "admin-categorias/adicionar-filho/?id=site"
+  },
+  {
+   "grupo": "07. admin-categorias: adicionar filho",
+   "nome": "campo Nome com c2fc-campo-entrada",
+   "ok": true,
+   "detalhe": {
+    "entrada": "c2fc-campo-entrada",
+    "borda": "8px",
+    "botao": "c2fc-botao c2fc-botao-primario inline-flex items-center gap-",
+    "fundo": "rgb(2, 132, 199)",
+    "tipo": "submit",
+    "fomantic": false,
+    "pai": true
+   }
+  },
+  {
+   "grupo": "07. admin-categorias: adicionar filho",
+   "nome": "botão de envio estilizado (c2fc-botao c2fc-botao-primario)",
+   "ok": true,
+   "detalhe": {
+    "entrada": "c2fc-campo-entrada",
+    "borda": "8px",
+    "botao": "c2fc-botao c2fc-botao-primario inline-flex items-center gap-",
+    "fundo": "rgb(2, 132, 199)",
+    "tipo": "submit",
+    "fomantic": false,
+    "pai": true
+   }
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "cookie-consent: HTTP 200",
+   "ok": true,
+   "detalhe": "cookie-consent/editar/?id=site"
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "cookie-consent: caixas informativas com ícone e texto na mesma linha",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "cookie-consent: nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "menus: HTTP 200",
+   "ok": true,
+   "detalhe": "menus/editar/?id=docs-sidebar"
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "menus: caixas informativas com ícone e texto na mesma linha",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "menus: nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "menus: três opções de tipo na mesma linha",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "mesmaLinha": true,
+    "larguras": [
+     64,
+     70,
+     66
+    ],
+    "pos": "top left",
+    "container": 990
+   }
+  },
+  {
+   "grupo": "08. cookie-consent e menus: mensagens em linha e rádios na horizontal",
+   "nome": "menus: dica ancorada na própria opção (largura do item, à esquerda)",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "mesmaLinha": true,
+    "larguras": [
+     64,
+     70,
+     66
+    ],
+    "pos": "top left",
+    "container": 990
+   }
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "galleries/editar/?id=e2e-req222-galleries"
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "folha da galeria com a alça em opacidade 1",
+   "ok": true,
+   "detalhe": {
+    "n": 1,
+    "alcas": [
+     {
+      "opacidade": "1",
+      "altura": 34,
+      "outra": 34,
+      "topo": 906,
+      "topoOutra": 906
+     }
+    ],
+    "regra": true
+   }
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "alça sólida e alinhada aos demais botões",
+   "ok": true,
+   "detalhe": [
+    {
+     "opacidade": "1",
+     "altura": 34,
+     "outra": 34,
+     "topo": 906,
+     "topoOutra": 906
+    }
+   ]
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "bandeja à vista sem seleção, com orientação e Concluir desligado",
+   "ok": true,
+   "detalhe": {
+    "visivel": true,
+    "desligado": true,
+    "texto": "Concluir seleção",
+    "orientacao": true,
+    "cancelar": true
+   }
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "um Cancelar só: o rodapé do modal sai de cena no seletor múltiplo",
+   "ok": true,
+   "detalhe": "none"
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "o botão Selecionar marca o arquivo sem enviá-lo na hora",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "uma miniatura por arquivo marcado, com × e Concluir ligado",
+   "ok": true,
+   "detalhe": {
+    "total": 8,
+    "marcada": {
+     "miniaturas": 8,
+     "ligado": true,
+     "remover": true
+    }
+   }
+  },
+  {
+   "grupo": "09. galleries: alça sólida e seletor com bandeja e conclusão",
+   "nome": "Concluir aplica a seleção na galeria e fecha o modal",
+   "ok": true,
+   "detalhe": {
+    "antes": 1,
+    "total": 8,
+    "depois": {
+     "aberto": false,
+     "n": 7
+    }
+   }
+  },
+  {
+   "grupo": "10. pages-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "pages-index/editar/?id=padrao"
+  },
+  {
+   "grupo": "10. pages-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "três colunas iguais, lado a lado, na largura do container",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "larguras": [
+     319,
+     319,
+     319
+    ],
+    "mesmaLinha": true,
+    "largura": 990,
+    "pai": 990,
+    "titulos": [
+     {
+      "texto": "Variáveis do Modelo [[item#...]]",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Campos do Publicador",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Vinculados: Variável  Campo",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     }
+    ]
+   }
+  },
+  {
+   "grupo": "10. pages-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "cabeçalhos em destaque",
+   "ok": true,
+   "detalhe": [
+    {
+     "texto": "Variáveis do Modelo [[item#...]]",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Campos do Publicador",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Vinculados: Variável  Campo",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    }
+   ]
+  },
+  {
+   "grupo": "10. pages-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "selects de modelo e de regra com o controle do painel",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "10. pages-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "caixas informativas em linha",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "10. pages-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "Copiar compacto ao lado do campo, na aba do widget",
+   "ok": true,
+   "detalhe": {
+    "compacto": true,
+    "mesmaLinha": true,
+    "altura": 32,
+    "visivel": true
+   }
+  },
+  {
+   "grupo": "10. pages-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "publisher/editar/?id=docs-guides"
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "três colunas iguais, lado a lado, na largura do container",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "larguras": [
+     308,
+     308,
+     308
+    ],
+    "mesmaLinha": true,
+    "largura": 956,
+    "pai": 956,
+    "titulos": [
+     {
+      "texto": "Variáveis do Modelo",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Campos do Publicador",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Vinculados (Variável/Campo)",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     }
+    ]
+   }
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "cabeçalhos em destaque",
+   "ok": true,
+   "detalhe": [
+    {
+     "texto": "Variáveis do Modelo",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Campos do Publicador",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Vinculados (Variável/Campo)",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    }
+   ]
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "títulos pedidos",
+   "ok": true,
+   "detalhe": [
+    {
+     "texto": "Variáveis do Modelo",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Campos do Publicador",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Vinculados (Variável/Campo)",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    }
+   ]
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "selects de modelo e de regra com o controle do painel",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "ações do campo personalizado lado a lado",
+   "ok": true,
+   "detalhe": {
+    "direcao": "row",
+    "mesmaLinha": true,
+    "n": 2,
+    "simAlinhado": true
+   }
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "caixa e \"Sim\" alinhados",
+   "ok": true,
+   "detalhe": {
+    "direcao": "row",
+    "mesmaLinha": true,
+    "n": 2,
+    "simAlinhado": true
+   }
+  },
+  {
+   "grupo": "11. publisher: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "12. publisher-highlights: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "publisher-highlights/adicionar/"
+  },
+  {
+   "grupo": "12. publisher-highlights: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "três colunas iguais, lado a lado, na largura do container",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "larguras": [
+     319,
+     319,
+     319
+    ],
+    "mesmaLinha": true,
+    "largura": 990,
+    "pai": 990,
+    "titulos": [
+     {
+      "texto": "Variáveis do Modelo [[item#...]]",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Campos do Publicador",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Vinculados: Variável  Campo",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     }
+    ]
+   }
+  },
+  {
+   "grupo": "12. publisher-highlights: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "cabeçalhos em destaque",
+   "ok": true,
+   "detalhe": [
+    {
+     "texto": "Variáveis do Modelo [[item#...]]",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Campos do Publicador",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Vinculados: Variável  Campo",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    }
+   ]
+  },
+  {
+   "grupo": "12. publisher-highlights: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "selects de modelo e de regra com o controle do painel",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "12. publisher-highlights: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "caixas informativas em linha",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "12. publisher-highlights: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "Copiar compacto ao lado do campo, na aba do widget",
+   "ok": true,
+   "detalhe": {
+    "compacto": true,
+    "mesmaLinha": true,
+    "altura": 32,
+    "visivel": true
+   }
+  },
+  {
+   "grupo": "12. publisher-highlights: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "13. publisher-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "publisher-index/editar/?id=docs-guides-index"
+  },
+  {
+   "grupo": "13. publisher-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "três colunas iguais, lado a lado, na largura do container",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "larguras": [
+     319,
+     319,
+     319
+    ],
+    "mesmaLinha": true,
+    "largura": 990,
+    "pai": 990,
+    "titulos": [
+     {
+      "texto": "Variáveis do Modelo [[item#...]]",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Campos do Publicador",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Vinculados: Variável  Campo",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     }
+    ]
+   }
+  },
+  {
+   "grupo": "13. publisher-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "cabeçalhos em destaque",
+   "ok": true,
+   "detalhe": [
+    {
+     "texto": "Variáveis do Modelo [[item#...]]",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Campos do Publicador",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    },
+    {
+     "texto": "Vinculados: Variável  Campo",
+     "fundo": "rgb(248, 250, 252)",
+     "peso": "700"
+    }
+   ]
+  },
+  {
+   "grupo": "13. publisher-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "selects de modelo e de regra com o controle do painel",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "13. publisher-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "caixas informativas em linha",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "13. publisher-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "Copiar compacto ao lado do campo, na aba do widget",
+   "ok": true,
+   "detalhe": {
+    "compacto": true,
+    "mesmaLinha": true,
+    "altura": 32,
+    "visivel": true
+   }
+  },
+  {
+   "grupo": "13. publisher-index: mapeamento em 3 colunas, selects e mensagens",
+   "nome": "nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "12b. publisher-highlights/adicionar: selects do painel",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "12b. publisher-highlights/adicionar: selects do painel",
+   "nome": "Publicador Origem e Modelo com c2fc-campo-selecao e controle montado",
+   "ok": true,
+   "detalhe": [
+    {
+     "id": "publisher_id",
+     "controle": true,
+     "classe": true,
+     "nativoVisivel": false
+    },
+    {
+     "id": "template_id",
+     "controle": true,
+     "classe": true,
+     "nativoVisivel": false
+    }
+   ]
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "filtro de tipo com três opções numa linha, no padrão do admin-paginas",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "mesmaLinha": true,
+    "fieldset": true,
+    "larguras": [
+     62,
+     69,
+     64
+    ]
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "selects do filtro com o controle do painel",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "HTTP 200 na edição",
+   "ok": true,
+   "detalhe": "publisher-pages/editar/?id=docs-sdd-00-baseline-architecture"
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "Editar publicador e Mover publicação com respiro do select e entre si",
+   "ok": true,
+   "detalhe": {
+    "distancia": 16,
+    "lado": 8,
+    "mesmaLinha": true,
+    "fora": [],
+    "editorDentro": true,
+    "larguraPagina": true
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "nada do editor (iframe, código) aparece fora do formulário da página",
+   "ok": true,
+   "detalhe": {
+    "distancia": 16,
+    "lado": 8,
+    "mesmaLinha": true,
+    "fora": [],
+    "editorDentro": true,
+    "larguraPagina": true
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "o editor chega inteiro: painel de SEO e contêiner dentro do componente",
+   "ok": true,
+   "detalhe": {
+    "seoDentro": true,
+    "modalDentro": true,
+    "titulos": [
+     true,
+     true
+    ],
+    "etiquetas": [
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16
+    ]
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "títulos e etiquetas de variável com ícone e texto na mesma linha",
+   "ok": true,
+   "detalhe": {
+    "seoDentro": true,
+    "modalDentro": true,
+    "titulos": [
+     true,
+     true
+    ],
+    "etiquetas": [
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16,
+     16
+    ]
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "cada aba do editor mostra só o próprio painel (inclusive SEO)",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "depois de recarregar, a aba marcada e o painel visível são os mesmos",
+   "ok": true,
+   "detalhe": {
+    "ativa": "seo-compartilhamento",
+    "paineis": [
+     "seo-compartilhamento"
+    ]
+   }
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "mensagens informativas em linha",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "nenhuma tag de variável crua na tela",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "14. publisher-pages: listagem e edição",
+   "nome": "nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "15. variables: sem tag crua e ícones sem contorno",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "15. variables: sem tag crua e ícones sem contorno",
+   "nome": "nenhuma variável de sistema crua na tela",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "15. variables: sem tag crua e ícones sem contorno",
+   "nome": "editar e excluir com dica resolvida",
+   "ok": true,
+   "detalhe": [
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    }
+   ]
+  },
+  {
+   "grupo": "15. variables: sem tag crua e ícones sem contorno",
+   "nome": "ícones de editar e excluir sem contorno",
+   "ok": true,
+   "detalhe": [
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    }
+   ]
+  },
+  {
+   "grupo": "15. variables: sem tag crua e ícones sem contorno",
+   "nome": "botões no padrão c2fc-botao",
+   "ok": true,
+   "detalhe": [
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Editar variável",
+     "rotulo": "Editar variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    },
+    {
+     "dica": "Excluir variável",
+     "rotulo": "Excluir variável",
+     "contorno": "none 3px",
+     "classe": "variavelBtnExcluir c2fc-botao c2fc-botao-icone c2f"
+    }
+   ]
+  },
+  {
+   "grupo": "15. variables: sem tag crua e ícones sem contorno",
+   "nome": "botão Adicionar com texto resolvido",
+   "ok": true,
+   "detalhe": "\n\nAdicionar Variável\n"
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-cron: HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-cron: todos os selects com o controle do painel",
+   "ok": true,
+   "detalhe": {
+    "total": 3,
+    "montados": 3,
+    "fora": []
+   }
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-cron: botões de ação com classe oficial e dica preenchida",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-cron: nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-environment: HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-environment: todos os selects com o controle do painel",
+   "ok": true,
+   "detalhe": {
+    "total": 7,
+    "montados": 7,
+    "fora": []
+   }
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-environment: botões de ação com classe oficial e dica preenchida",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-environment: nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-cron: o controle acompanha select.value escrito por script",
+   "ok": true,
+   "detalhe": {
+    "rotulo": "Personalizada",
+    "esperado": "Personalizada"
+   }
+  },
+  {
+   "grupo": "16. admin-cron e admin-environment: selects, botões e dicas",
+   "nome": "admin-cron: lista do select abre por cima do modal",
+   "ok": true,
+   "detalhe": {
+    "visivel": true,
+    "naFrente": true
+   }
+  },
+  {
+   "grupo": "17. coupons: máscara monetária",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "coupons/edit/?id=aff97147"
+  },
+  {
+   "grupo": "17. coupons: máscara monetária",
+   "nome": "Valor Mínimo da Compra aceita só número e formata como moeda",
+   "ok": true,
+   "detalhe": "R$ 12,34"
+  },
+  {
+   "grupo": "17. coupons: máscara monetária",
+   "nome": "Valor (desconto fixo) com máscara monetária, e só ele é enviado",
+   "ok": true,
+   "detalhe": {
+    "tipo": "fixed",
+    "percentual": {
+     "visivel": false,
+     "nome": "",
+     "desligado": true,
+     "valor": "5.00"
+    },
+    "dinheiro": {
+     "visivel": true,
+     "nome": "discount_value",
+     "desligado": false,
+     "valor": "R$ 50,00"
+    }
+   }
+  },
+  {
+   "grupo": "17. coupons: máscara monetária",
+   "nome": "o formulário transporta decimais sem símbolo",
+   "ok": true,
+   "detalhe": {
+    "desconto": [
+     "50.00"
+    ],
+    "minimo": "12.34"
+   }
+  },
+  {
+   "grupo": "17. coupons: máscara monetária",
+   "nome": "Valor (percentual) aceita só número com até duas casas",
+   "ok": true,
+   "detalhe": {
+    "tipo": "percent",
+    "percentual": {
+     "visivel": true,
+     "nome": "discount_value",
+     "desligado": false,
+     "valor": "15,75"
+    },
+    "dinheiro": {
+     "visivel": false,
+     "nome": "",
+     "desligado": true,
+     "valor": "R$ 50,00"
+    }
+   }
+  },
+  {
+   "grupo": "18. analytics-manager e orders/buyer-form: selects do painel",
+   "nome": "analytics-manager/: selects visíveis com o controle do painel",
+   "ok": true,
+   "detalhe": {
+    "sem": [],
+    "montados": 3
+   }
+  },
+  {
+   "grupo": "18. analytics-manager e orders/buyer-form: selects do painel",
+   "nome": "analytics-manager/: nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "18. analytics-manager e orders/buyer-form: selects do painel",
+   "nome": "analytics-manager/pipeline/: selects visíveis com o controle do painel",
+   "ok": true,
+   "detalhe": {
+    "sem": [],
+    "montados": 3
+   }
+  },
+  {
+   "grupo": "18. analytics-manager e orders/buyer-form: selects do painel",
+   "nome": "analytics-manager/pipeline/: nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "18. analytics-manager e orders/buyer-form: selects do painel",
+   "nome": "orders/buyer-form/: selects visíveis com o controle do painel",
+   "ok": true,
+   "detalhe": {
+    "sem": [],
+    "montados": 2
+   }
+  },
+  {
+   "grupo": "18. analytics-manager e orders/buyer-form: selects do painel",
+   "nome": "orders/buyer-form/: nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "19. products-index: modelos compactos e copiar em linha",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "products-index/editar/?id=cursos-e2e-indice"
+  },
+  {
+   "grupo": "19. products-index: modelos compactos e copiar em linha",
+   "nome": "cartões de modelos compactos (até 240 px)",
+   "ok": true,
+   "detalhe": {
+    "n": 6,
+    "maior": 240
+   }
+  },
+  {
+   "grupo": "19. products-index: modelos compactos e copiar em linha",
+   "nome": "Copiar compacto ao lado do campo",
+   "ok": true,
+   "detalhe": {
+    "compacto": true,
+    "mesmaLinha": true,
+    "altura": 32,
+    "visivel": true
+   }
+  },
+  {
+   "grupo": "19. products-index: modelos compactos e copiar em linha",
+   "nome": "mapeamento em três colunas iguais",
+   "ok": true,
+   "detalhe": {
+    "n": 3,
+    "larguras": [
+     319,
+     319,
+     319
+    ],
+    "mesmaLinha": true,
+    "largura": 990,
+    "pai": 1024,
+    "titulos": [
+     {
+      "texto": "Variáveis do modelo [[item#...]]",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Campos do produto",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     },
+     {
+      "texto": "Vinculados: variável ↔ campo",
+      "fundo": "rgb(248, 250, 252)",
+      "peso": "700"
+     }
+    ]
+   }
+  },
+  {
+   "grupo": "20. shipping-methods: conformidade",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "20. shipping-methods: conformidade",
+   "nome": "seções em cartões brancos arredondados",
+   "ok": true,
+   "detalhe": [
+    "12px|rgb(255, 255, 255)",
+    "12px|rgb(255, 255, 255)",
+    "12px|rgb(255, 255, 255)"
+   ]
+  },
+  {
+   "grupo": "20. shipping-methods: conformidade",
+   "nome": "entradas com c2fc-campo-entrada e select com o controle",
+   "ok": true,
+   "detalhe": {
+    "cartoes": [
+     "12px|rgb(255, 255, 255)",
+     "12px|rgb(255, 255, 255)",
+     "12px|rgb(255, 255, 255)"
+    ],
+    "entradas": [
+     true,
+     true,
+     true
+    ],
+    "botoes": [
+     {
+      "c": true,
+      "d": "Gravar o CEP de onde os pedidos saem"
+     },
+     {
+      "c": true,
+      "d": "Abrir este método no formulário abaixo"
+     },
+     {
+      "c": true,
+      "d": "Excluir este método de frete"
+     },
+     {
+      "c": true,
+      "d": "Gravar o método de frete"
+     }
+    ],
+    "selects": [
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "grupo": "20. shipping-methods: conformidade",
+   "nome": "botões com classe oficial e dica resolvida",
+   "ok": true,
+   "detalhe": [
+    {
+     "c": true,
+     "d": "Gravar o CEP de onde os pedidos saem"
+    },
+    {
+     "c": true,
+     "d": "Abrir este método no formulário abaixo"
+    },
+    {
+     "c": true,
+     "d": "Excluir este método de frete"
+    },
+    {
+     "c": true,
+     "d": "Gravar o método de frete"
+    }
+   ]
+  },
+  {
+   "grupo": "21. products/edit: dicas, botão de imagem e histórico",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "products/edit/?id=e-book-de-teste-douro"
+  },
+  {
+   "grupo": "21. products/edit: dicas, botão de imagem e histórico",
+   "nome": "Desativar/Ativar e Excluir com dica explicativa",
+   "ok": true,
+   "detalhe": [
+    {
+     "id": "status",
+     "dica": "Clique para Desativar",
+     "rotulo": "Desativar"
+    },
+    {
+     "id": "excluir",
+     "dica": "Clique para Excluir",
+     "rotulo": "Excluir"
+    }
+   ]
+  },
+  {
+   "grupo": "21. products/edit: dicas, botão de imagem e histórico",
+   "nome": "configuração do seletor de imagem presente na página",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "21. products/edit: dicas, botão de imagem e histórico",
+   "nome": "o botão Adicionar de Imagem (URL) abre o gerenciador de arquivos no modal",
+   "ok": true,
+   "detalhe": {
+    "visivel": true,
+    "src": "//conn2flow.local/admin-arquivos/?paginaIframe=sim"
+   }
+  },
+  {
+   "grupo": "22. stripe-products: título antes da sincronização",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "22. stripe-products: título antes da sincronização",
+   "nome": "um título só, acima da caixa de sincronização, com a listagem depois",
+   "ok": true,
+   "detalhe": {
+    "titulos": [
+     "Produtos Stripe"
+    ],
+    "y": 88,
+    "painel": 140,
+    "lista": 555
+   }
+  },
+  {
+   "grupo": "23. sales-reports: filtro de tipo e campos",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "23. sales-reports: filtro de tipo e campos",
+   "nome": "tipo filtrado aparece no controle, que não fica dentro do rótulo",
+   "ok": true,
+   "detalhe": {
+    "valor": "digital",
+    "rotulo": "Digital",
+    "noRotulo": false,
+    "entradas": true,
+    "botao": "c2fc-botao c2fc-botao-primario"
+   }
+  },
+  {
+   "grupo": "23. sales-reports: filtro de tipo e campos",
+   "nome": "entradas e botão no padrão do painel",
+   "ok": true,
+   "detalhe": {
+    "valor": "digital",
+    "rotulo": "Digital",
+    "noRotulo": false,
+    "entradas": true,
+    "botao": "c2fc-botao c2fc-botao-primario"
+   }
+  },
+  {
+   "grupo": "23. sales-reports: filtro de tipo e campos",
+   "nome": "escolher \"Todos\" limpa o filtro no controle",
+   "ok": true,
+   "detalhe": {
+    "valor": "",
+    "rotulo": "Todos",
+    "aberto": false
+   }
+  },
+  {
+   "grupo": "23. sales-reports: filtro de tipo e campos",
+   "nome": "o relatório é refeito sem o filtro de tipo",
+   "ok": true,
+   "detalhe": {
+    "url": "?start=2026-10-01&end=2026-10-06&currency=BRL&origin=&gateway=&coupon=&affiliate=&type=",
+    "valor": ""
+   }
+  },
+  {
+   "grupo": "24. product-types/edit: selects, campos e dicas",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "product-types/edit/?id=cursos-e2e-42146"
+  },
+  {
+   "grupo": "24. product-types/edit: selects, campos e dicas",
+   "nome": "select do modelo e select de tipo da linha com o controle do painel",
+   "ok": true,
+   "detalhe": {
+    "modelo": true,
+    "linha": true,
+    "entradas": true,
+    "cursor": "pointer/pointer",
+    "acoes": [
+     {
+      "c": true,
+      "d": "Subir"
+     },
+     {
+      "c": true,
+      "d": "Descer"
+     },
+     {
+      "c": true,
+      "d": "Remover"
+     }
+    ],
+    "topo": [
+     "Acrescentar um campo extra a este tipo",
+     "Trazer os campos declarados no modelo escolhido"
+    ]
+   }
+  },
+  {
+   "grupo": "24. product-types/edit: selects, campos e dicas",
+   "nome": "entradas da linha com c2fc-campo-entrada e checkbox com cursor de clique",
+   "ok": true,
+   "detalhe": {
+    "modelo": true,
+    "linha": true,
+    "entradas": true,
+    "cursor": "pointer/pointer",
+    "acoes": [
+     {
+      "c": true,
+      "d": "Subir"
+     },
+     {
+      "c": true,
+      "d": "Descer"
+     },
+     {
+      "c": true,
+      "d": "Remover"
+     }
+    ],
+    "topo": [
+     "Acrescentar um campo extra a este tipo",
+     "Trazer os campos declarados no modelo escolhido"
+    ]
+   }
+  },
+  {
+   "grupo": "24. product-types/edit: selects, campos e dicas",
+   "nome": "ações da linha e botões da seção com dica resolvida",
+   "ok": true,
+   "detalhe": {
+    "modelo": true,
+    "linha": true,
+    "entradas": true,
+    "cursor": "pointer/pointer",
+    "acoes": [
+     {
+      "c": true,
+      "d": "Subir"
+     },
+     {
+      "c": true,
+      "d": "Descer"
+     },
+     {
+      "c": true,
+      "d": "Remover"
+     }
+    ],
+    "topo": [
+     "Acrescentar um campo extra a este tipo",
+     "Trazer os campos declarados no modelo escolhido"
+    ]
+   }
+  },
+  {
+   "grupo": "25. host-manager: barra em todas as telas, menu e ícone",
+   "nome": "as sete telas abrem com a barra do módulo no topo",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "25. host-manager: barra em todas as telas, menu e ícone",
+   "nome": "mesmos itens em todas as telas e um item marcado como atual",
+   "ok": true,
+   "detalhe": [
+    "Painel",
+    "Contas",
+    "Planos",
+    "HestiaCP",
+    "Ver Logs",
+    "Atualizações de Tenants",
+    "Instalações distribuídas"
+   ]
+  },
+  {
+   "grupo": "25. host-manager: barra em todas as telas, menu e ícone",
+   "nome": "\"Mais ações\" abre e fecha ao clicar fora",
+   "ok": true,
+   "detalhe": {
+    "aberto": true,
+    "fechouFora": true
+   }
+  },
+  {
+   "grupo": "25. host-manager: barra em todas as telas, menu e ícone",
+   "nome": "\"Mais ações\" fecha com Esc",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "25. host-manager: barra em todas as telas, menu e ícone",
+   "nome": "ícone de \"atualização por consulta\" sem borda nem contorno",
+   "ok": true,
+   "detalhe": {
+    "contorno": "none",
+    "largura": "3px",
+    "borda": "0px",
+    "classe": "lucide lucide-clock clock icon"
+   }
+  },
+  {
+   "grupo": "25. host-manager: barra em todas as telas, menu e ícone",
+   "nome": "nenhum erro de script",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "26. telas alteradas em 390 px sem rolagem lateral",
+   "nome": "14 telas sem rolagem horizontal em 390 px",
+   "ok": true,
+   "detalhe": []
+  }
+ ]
+}

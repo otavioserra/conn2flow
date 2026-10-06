@@ -126,6 +126,48 @@
         "modulo": "configuracao"
     },
     {
+        "id": "variavel-edit-btn",
+        "value": "Editar variável",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-delete-btn",
+        "value": "Excluir variável",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-cancel-btn",
+        "value": "Cancelar",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-edit-title",
+        "value": "Editar Variável",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-add-instructions",
+        "value": "Preencha o identificador, o grupo, a descrição, o tipo e o valor. A variável é criada quando o formulário for salvo.",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variavel-edit-instructions",
+        "value": "Altere os campos abaixo. As mudanças valem quando o formulário for salvo.",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "form-value-placeholder",
+        "value": "Valor",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
         "id": "variavel-description-label",
         "value": "Descrição",
         "type": "string",

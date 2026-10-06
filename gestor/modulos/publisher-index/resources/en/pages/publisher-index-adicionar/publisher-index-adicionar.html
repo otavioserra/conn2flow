@@ -39,10 +39,10 @@
 
 <div class="c2fc-campo" id="manual-items-wrapper" style="display:none;">
     <label class="c2fc-campo-rotulo">Selected items (order)</label>
-    <div class="c2fc-selo bg-sky-50 text-sky-800" style="margin: 8px 0; display: block;">
+    <div class="c2fc-rotulo label inline-flex items-center gap-2" style="margin: 8px 0;">
         <i data-lucide="mouse-pointer" class="size-4 shrink-0"></i>
-        Search and select the active publications of the chosen publisher below. The insertion order is
-        preserved on render — drag the tags to reorder. To remove an item, click the &laquo;x&raquo; next to it.
+        <span>Search and select the active publications of the chosen publisher below. The insertion order is
+        preserved on render — drag the tags to reorder. To remove an item, click the &laquo;x&raquo; next to it.</span>
     </div>
     <!-- req-014: Ajax search autocomplete + reorderable tags (replaces the multiple dropdown) -->
     <div class="flex flex-wrap gap-2 search-autocomplete-wrapper" style="position: relative;">
@@ -100,11 +100,11 @@
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
-    <div class="c2fc-selo bg-sky-50 text-sky-800" style="margin: 8px 0; display: block;">
+    <div class="c2fc-rotulo label inline-flex items-center gap-2" style="margin: 8px 0;">
         <i data-lucide="arrow-left-right" class="size-4 shrink-0"></i>
-        When you select a template, its HTML and CSS will be loaded into the editor below. You can
+        <span>When you select a template, its HTML and CSS will be loaded into the editor below. You can
         edit them freely from there — the editor content (saved in the database) is always used for
-        rendering.
+        rendering.</span>
     </div>
 </div>
 
@@ -125,25 +125,24 @@
     </div>
 
     <div class="c2fc-alerta c2fc-alerta-erro message negative hidden" id="error-message">
-        <div class="header c2fc-dialogo-titulo">Error!</div>
+        <div class="header">Error!</div>
         <p id="error-message-content"></p>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div class="min-w-0">
         <div class="row">
             <div class="min-w-0">
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-3 template-fields-list">
+                <div class="template-fields-list c2fc-mapa grid grid-cols-1 gap-4 md:grid-cols-3">
                     <div class="min-w-0">
-                        <h5>Template Variables <kbd class="c2fc-selo bg-sky-50 text-sky-800">[[item#...]]</kbd></h5>
+                        <h5 class="c2fc-mapa-titulo">Template Variables <kbd class="c2fc-selo bg-sky-50 text-sky-800">[[item#...]]</kbd></h5>
                         <div id="available-fields-list"></div>
                     </div>
                     <div class="min-w-0">
-                        <h5>Publisher Fields</h5>
+                        <h5 class="c2fc-mapa-titulo">Publisher Fields</h5>
                         <div id="missing-fields-list"></div>
                     </div>
                     <div class="min-w-0">
-                        <h5>Linked: Variable <kbd class="c2fc-selo bg-sky-50 text-sky-800"><i
-                                    class="exchange alternate icon"></i></kbd> Field</h5>
+                        <h5 class="c2fc-mapa-titulo">Linked: Variable <kbd class="c2fc-selo bg-sky-50 text-sky-800"><i data-lucide="arrow-left-right" class="inline size-3.5"></i></kbd> Field</h5>
                         <div id="linked-fields-list"></div>
                     </div>
                 </div>
@@ -156,9 +155,9 @@
 
 <h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Highlight Content</h4>
 
-<div class="c2fc-alerta c2fc-alerta-info message">
+<div class="c2fc-alerta c2fc-alerta-info message my-4">
     <i data-lucide="info" class="size-4 shrink-0"></i>
-    <div class="content c2fc-dialogo-corpo">
+    <div class="content">
         <p>The HTML below is the template rendered on the site. Use the
             <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> block around the section that will be repeated
             for each publication. Within it, use the <code>[[item#variable_name]]</code> placeholders
@@ -172,33 +171,33 @@
     <a class="c2fc-aba item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0"></i> Editor HTML</a>
     <a class="c2fc-aba item" data-tab="hep-widget"><i data-lucide="boxes" class="size-4 shrink-0"></i> Widget Code</a>
 </div>
-<div class="c2fc-painel-aba tab active" data-tab="hep-preview">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 tab active" data-tab="hep-preview">
     <div style="position: relative;">
-        <iframe id="iframe-publisher-index-preview" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
+        <iframe id="iframe-publisher-index-preview" class="block w-full rounded-lg border border-slate-300 bg-white" style="height:900px;"></iframe>
         <div class="c2fc-cobertura ui dimmer hep-preview-dimmer">
             <div class="c2fc-giro"></div>
         </div>
     </div>
 </div>
-<div class="c2fc-painel-aba tab hidden" data-tab="hep-editor">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 tab hidden" data-tab="hep-editor">
     #html-editor#
 </div>
-<div class="c2fc-painel-aba tab hidden" data-tab="hep-widget">
-    <div class="c2fc-alerta c2fc-alerta-info message">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 tab hidden" data-tab="hep-widget">
+    <div class="c2fc-alerta c2fc-alerta-info message my-4">
         <i data-lucide="boxes" class="size-4 shrink-0"></i>
-        <div class="content c2fc-dialogo-corpo">
-            <div class="header c2fc-dialogo-titulo">Wrapped widget block</div>
+        <div class="content">
+            <div class="header">Wrapped widget block</div>
             <p>Copy the snippet below and paste it into any physical site page to inject this
                 highlights block. The <code>&lt;!-- widgets#publisher-index-&gt;render(...) --&gt;</code>
                 comment acts as the wrapper: the gestor engine recognizes it and replaces it
                 with the HTML rendered using the real publications at request time.</p>
         </div>
     </div>
-    <div class="c2fc-campo" style="margin-top:1rem;">
+    <div class="c2fc-campo min-w-0 mb-4" style="margin-top:1rem;">
         <label class="c2fc-campo-rotulo">Widget Variable</label>
-        <div class="flex flex-wrap gap-2 action">
-            <input type="text" id="hep-widget-val" readonly class="c2fc-campo-entrada">
-            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario">
+        <div class="flex items-center gap-2 min-w-0 action input">
+            <input type="text" id="hep-widget-val" readonly class="c2fc-campo-entrada min-w-0 flex-1">
+            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario c2fc-botao-compacto">
                 <i data-lucide="copy" class="size-4 shrink-0"></i> Copy
             </button>
         </div>

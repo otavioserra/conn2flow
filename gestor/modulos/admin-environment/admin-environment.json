@@ -17,7 +17,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.35",
+                    "version": "1.36",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -43,10 +43,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "0fb12275a29d7380f1c725719cee89fd",
+                        "html": "7d6a395d1bf13c04a08a3149c30130b9",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "006a34b9932c3037d3a00209e3a842fe"
+                        "combined": "2156c0f896b37ea78366e1c8a187c578"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -156,6 +156,46 @@
                 {
                     "id": "turnstile-test-label",
                     "value": "Test Turnstile",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-rotate-jwt",
+                    "value": "Gerar novas chaves JWT; quem está conectado precisa entrar de novo",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-turnstile",
+                    "value": "Conferir as chaves do Turnstile com o serviço",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-recaptcha-v3",
+                    "value": "Conferir as chaves do reCAPTCHA V3 com o serviço",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-recaptcha-v2",
+                    "value": "Conferir as chaves do reCAPTCHA V2 com o serviço",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-email",
+                    "value": "Enviar um e-mail de teste com as configurações informadas",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-paypal",
+                    "value": "Testar a conexão com o PayPal usando as credenciais informadas",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-save",
+                    "value": "Gravar as configurações desta tela",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-reload",
+                    "value": "Descartar o que não foi salvo e recarregar a tela",
                     "type": "string"
                 },
                 {
@@ -271,7 +311,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.37",
+                    "version": "1.38",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -297,10 +337,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "21ed900dfc436a50547e88ba06801575",
+                        "html": "93c333f3a0062315b5a1da686d65ffca",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "10fc75ba6c5358c5bfec6c4c2206558d"
+                        "combined": "cc6c5b5bd8ffc3adc68440fb53036a78"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -410,6 +450,46 @@
                 {
                     "id": "turnstile-test-label",
                     "value": "Testar Turnstile",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-rotate-jwt",
+                    "value": "Generate new JWT keys; signed-in users must sign in again",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-turnstile",
+                    "value": "Check the Turnstile keys against the service",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-recaptcha-v3",
+                    "value": "Check the reCAPTCHA V3 keys against the service",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-recaptcha-v2",
+                    "value": "Check the reCAPTCHA V2 keys against the service",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-email",
+                    "value": "Send a test email with the settings entered",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-test-paypal",
+                    "value": "Test the PayPal connection with the credentials entered",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-save",
+                    "value": "Save the settings on this screen",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-reload",
+                    "value": "Discard unsaved changes and reload the screen",
                     "type": "string"
                 },
                 {

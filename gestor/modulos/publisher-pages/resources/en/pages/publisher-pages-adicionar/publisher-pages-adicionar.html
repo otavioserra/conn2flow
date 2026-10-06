@@ -1,27 +1,32 @@
+<div class="space-y-4 min-w-0 publisher-pages-form">
 <div class="c2fc-campo">
     <label class="c2fc-campo-rotulo">#form-publisher-label#</label>
     <span>#select-publisher#</span>
 </div>
 
 <!-- publisher-options < -->
+<div class="mt-3 mb-2 flex flex-wrap items-center gap-2">
 <a class="c2fc-botao c2fc-botao-primario" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
-    data-c2f-dica="Click to edit publisher" data-position="top left" data-inverted="">
+    data-c2f-dica="Click to edit publisher" data-c2f-dica-pos="top left">
     <i data-lucide="pencil" class="size-4 shrink-0"></i>
     Edit Publisher
-</a><!-- publisher-options > -->
+</a>
+</div><!-- publisher-options > -->
 
-<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold publisher-fields-header">
+<h4 class="mt-6 mb-3 flex items-center gap-2 border-b border-slate-200 pb-2 font-semibold publisher-fields-header">
     <i data-lucide="image" class="size-4 shrink-0"></i>
     Page Fields
 </h4>
 
-<div class="c2fc-campo">
-    <label class="c2fc-campo-rotulo">#form-name-label#</label>
-    <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#" class="c2fc-campo-entrada">
-</div>
-<div class="c2fc-campo">
-    <label class="c2fc-campo-rotulo">#form-path-label#</label>
-    <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#" class="c2fc-campo-entrada">
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-name-label#</label>
+        <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#" class="c2fc-campo-entrada">
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-path-label#</label>
+        <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#" class="c2fc-campo-entrada">
+    </div>
 </div>
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <div class="c2fc-campo">
@@ -33,7 +38,7 @@
         <span>#select-framework-css#</span>
     </div>
 </div>
-#layout-profile-mapping#
+<div class="my-4 space-y-3">#layout-profile-mapping#</div>
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <div class="c2fc-campo">
         <label class="c2fc-campo-rotulo">#form-type-label#</label>
@@ -92,7 +97,7 @@
 <!-- publisher-fields-container < -->
 <div class="publisher-fields-container">
 
-    <h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold publisher-fields-header">
+    <h4 class="mt-6 mb-3 flex items-center gap-2 border-b border-slate-200 pb-2 font-semibold publisher-fields-header">
         <i data-lucide="file-text" class="size-4 shrink-0"></i>
         Publisher Fields
     </h4>
@@ -104,7 +109,8 @@
     <div class="my-4 border-t border-slate-200"></div>
 </div><!-- publisher-fields-container > -->
 
-<div class="c2fc-campo">
-    <label class="c2fc-campo-rotulo">#form-page-content-label#</label>
+<div class="mt-6 min-w-0">
+    <span class="c2fc-campo-rotulo mb-2 block">#form-page-content-label#</span>
     #html-editor#
+</div>
 </div>

@@ -98,12 +98,12 @@
                     "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "106f5f7b88df8eba81dde444b0d4dfda",
+                        "html": "ac4cd06abbcee628835f401e85f58418",
                         "css": "da175501bf976837f91141c83ce82011",
                         "css_precompiled": "",
-                        "combined": "97c3dcc4a192ebb1598f208bbdf12202"
+                        "combined": "1f80224368ff8148a0aacc901eb60e58"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -427,12 +427,12 @@
                     "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "2728b5880c83b16429470f11fdb2345c",
+                        "html": "1fa7eb0a63e2f510733b3d125e010438",
                         "css": "da175501bf976837f91141c83ce82011",
                         "css_precompiled": "",
-                        "combined": "5313e2ee9dd32caab97de32864a69f76"
+                        "combined": "04514c18e2d2269c6cb474b5f071d274"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,

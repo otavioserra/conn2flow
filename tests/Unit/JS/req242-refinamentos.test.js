@@ -112,7 +112,9 @@ describe('folhas e marcação (req-242)', () => {
 
   it('modal de tela cheia com iframe não rola por fora', () => {
     expect(folha).toContain('.c2fc-ponte-modal.fullscreen { overflow: hidden; }');
-    expect(folha).toContain('.c2fc-ponte-modal.fullscreen > .content iframe { flex: 1;');
+    // REQ-243: a regra vale só para o iframe dentro de `.iframe-container` (o palco do editor visual fica fora).
+    expect(folha).toContain('.c2fc-ponte-modal.fullscreen > .content .iframe-container iframe { flex: 1;');
+    expect(folha).not.toContain('.c2fc-ponte-modal.fullscreen > .content iframe {');
   });
 
   it('nenhuma página pinta de azul a aba ativa', () => {

@@ -9,8 +9,8 @@
         class="pfc-field pfc-field-text">
         <div class="rounded-lg border border-slate-200 p-4 min-w-0">
             <input type="text" name="[[field-name]]" placeholder="[[field-description]]" value="[[field-value]]" class="c2fc-campo-entrada">
-            <a class="c2fc-selo label-margin-top-10 copy-to-clipboard field-variable">
-                <span data-c2f-dica="Click to copy this variable" data-position="top left" data-inverted="">
+            <a class="c2fc-selo mt-2 cursor-pointer copy-to-clipboard field-variable">
+                <span class="inline-flex items-center gap-1.5" data-c2f-dica="Click to copy this variable" data-c2f-dica-pos="top left">
                     <i data-lucide="code" class="size-4 shrink-0"></i>[[field-variable]]
                 </span>
             </a>
@@ -22,8 +22,8 @@
         class="pfc-field pfc-field-textarea">
         <div class="rounded-lg border border-slate-200 p-4 min-w-0">
             <textarea name="[[field-name]]" placeholder="[[field-description]]" rows="4" class="c2fc-campo-entrada">[[field-value]]</textarea>
-            <a class="c2fc-selo label-margin-top-10 copy-to-clipboard field-variable">
-                <span data-c2f-dica="Click to copy this variable" data-position="top left" data-inverted="">
+            <a class="c2fc-selo mt-2 cursor-pointer copy-to-clipboard field-variable">
+                <span class="inline-flex items-center gap-1.5" data-c2f-dica="Click to copy this variable" data-c2f-dica-pos="top left">
                     <i data-lucide="code" class="size-4 shrink-0"></i>[[field-variable]]
                 </span>
             </a>
@@ -33,15 +33,15 @@
     <!-- publisher-field-controller-html < --><span data-id="[[field-id]]" data-type="html"
         class="pfc-field pfc-field-html">
         <div class="rounded-lg border border-slate-200 p-4 min-w-0 quill-editor-container">
-            <div class="c2fc-selo" style="margin-bottom: 10px;">
+            <div class="c2fc-rotulo label mb-2 inline-flex items-center gap-2">
                 <i data-lucide="info" class="size-4 shrink-0"></i>
-                [[field-description]]
+                <span>[[field-description]]</span>
             </div>
             <div class="quill-editor">
                 [[field-value]]
             </div>
-            <a class="c2fc-selo label-margin-top-10 copy-to-clipboard field-variable">
-                <span data-c2f-dica="Click to copy this variable" data-position="top left" data-inverted="">
+            <a class="c2fc-selo mt-2 cursor-pointer copy-to-clipboard field-variable">
+                <span class="inline-flex items-center gap-1.5" data-c2f-dica="Click to copy this variable" data-c2f-dica-pos="top left">
                     <i data-lucide="code" class="size-4 shrink-0"></i>[[field-variable]]
                 </span>
             </a>
@@ -52,13 +52,13 @@
     <!-- publisher-field-controller-image < --><span data-id="[[field-id]]" data-type="image"
         class="pfc-field pfc-field-image">
         <div class="rounded-lg border border-slate-200 p-4 min-w-0">
-            <div class="c2fc-selo">
+            <div class="c2fc-rotulo label mb-2 inline-flex items-center gap-2">
                 <i data-lucide="info" class="size-4 shrink-0"></i>
-                [[field-description]]
+                <span>[[field-description]]</span>
             </div>
             <span>[[field-name]]</span>
-            <a class="c2fc-selo copy-to-clipboard field-variable">
-                <span data-c2f-dica="Click to copy this variable" data-position="top left" data-inverted="">
+            <a class="c2fc-selo mt-2 cursor-pointer copy-to-clipboard field-variable">
+                <span class="inline-flex items-center gap-1.5" data-c2f-dica="Click to copy this variable" data-c2f-dica-pos="top left">
                     <i data-lucide="code" class="size-4 shrink-0"></i>[[field-variable]]
                 </span>
             </a>

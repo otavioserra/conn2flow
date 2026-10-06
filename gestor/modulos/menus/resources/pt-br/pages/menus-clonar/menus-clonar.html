@@ -53,12 +53,12 @@
 
 <div id="menu-item-builder-wrapper">
 
-<div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
-    <i data-lucide="network" class="size-4 shrink-0 icon "></i>
-    Monte a estrutura do menu adicionando itens de diferentes tipos. Arraste pelo
-    <i data-lucide="grip-vertical" class="size-4 shrink-0 icon "></i> para reordenar; arraste para a direita/esquerda para aninhar como
+<div class="c2fc-rotulo label inline-flex items-center gap-2" style="margin: 8px 0;">
+    <i data-lucide="network" class="size-4 shrink-0"></i>
+    <span>Monte a estrutura do menu adicionando itens de diferentes tipos. Arraste pelo
+    <i data-lucide="grip-vertical" class="inline size-3.5 align-text-bottom"></i> para reordenar; arraste para a direita/esquerda para aninhar como
     filho ou voltar ao nível anterior (estilo WordPress). Clique em um item para selecioná-lo:
-    o próximo item será inserido logo abaixo dele.
+    o próximo item será inserido logo abaixo dele.</span>
 </div>
 
 <!-- Construtor de itens do menu -->
@@ -77,25 +77,19 @@
 
     <!-- Filtro de tipo de página (somente para o tipo Página) -->
     <div class="c2fc-campo min-w-0 mb-4 field" id="page-type-filter-wrapper" style="display:none; margin-bottom: 12px;">
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4">
-            <label class="c2fc-campo-rotulo">Tipo de Página</label>
-            <div class="c2fc-campo min-w-0 mb-4 field">
-                <div class="flex items-center gap-2 radio checkbox" data-c2f-dica="Clique para mostrar tipo Página" data-position="top left" data-inverted="">
-                    <input type="radio" name="page_search_type" value="pagina" checked="checked">
-                    <label class="c2fc-campo-rotulo">Página</label>
-                </div>
+        <label class="c2fc-campo-rotulo">Tipo de Página</label>
+        <div class="flex flex-wrap items-center gap-4" role="radiogroup" aria-label="Tipo de Página">
+            <div class="inline-flex cursor-pointer items-center gap-2 radio checkbox" data-c2f-dica="Clique para mostrar tipo Página" data-c2f-dica-pos="top left">
+                <input type="radio" name="page_search_type" value="pagina" checked="checked">
+                <label class="cursor-pointer text-sm font-medium text-slate-700">Página</label>
             </div>
-            <div class="c2fc-campo min-w-0 mb-4 field">
-                <div class="flex items-center gap-2 radio checkbox" data-c2f-dica="Clique para mostrar tipo Sistema" data-position="top left" data-inverted="">
-                    <input type="radio" name="page_search_type" value="sistema">
-                    <label class="c2fc-campo-rotulo">Sistema</label>
-                </div>
+            <div class="inline-flex cursor-pointer items-center gap-2 radio checkbox" data-c2f-dica="Clique para mostrar tipo Sistema" data-c2f-dica-pos="top left">
+                <input type="radio" name="page_search_type" value="sistema">
+                <label class="cursor-pointer text-sm font-medium text-slate-700">Sistema</label>
             </div>
-            <div class="c2fc-campo min-w-0 mb-4 field">
-                <div class="flex items-center gap-2 radio checkbox" data-c2f-dica="Clique para mostrar ambos" data-position="top left" data-inverted="">
-                    <input type="radio" name="page_search_type" value="ambos">
-                    <label class="c2fc-campo-rotulo">Ambos</label>
-                </div>
+            <div class="inline-flex cursor-pointer items-center gap-2 radio checkbox" data-c2f-dica="Clique para mostrar ambos" data-c2f-dica-pos="top left">
+                <input type="radio" name="page_search_type" value="ambos">
+                <label class="cursor-pointer text-sm font-medium text-slate-700">Ambos</label>
             </div>
         </div>
     </div>

@@ -3,6 +3,22 @@
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-252 — REQ-243
+
+- [x] Select: `mousedown`, `mouseup` e `click` da opção não chegam ao elemento de trás; o controle acompanha `select.value` escrito por script e selects inseridos depois da carga.
+- [x] Editor: palco do editor visual com `calc(100vh - 220px)`, cartões de modelos de até 240 px, alerta com `<b>` interpretado e marcação fora da lista como texto.
+- [x] Histórico sem rolagem horizontal; `admin-arquivos` com dicas e botões na mesma altura; `adicionar-filho` com classes oficiais.
+- [x] `cookie-consent` e `menus` com mensagens em linha e rádios na horizontal; seletor de arquivos com bandeja e "Concluir seleção"; alça da galeria sólida.
+- [x] Família publisher: mapeamento em 3 colunas com cabeçalho, copiar compacto, selects do painel; `publisher-pages` no padrão do `admin-paginas`.
+- [x] `publisher-pages/editar`: HTML e valores de campo escapados; as cinco abas do editor (inclusive SEO) mostram só o próprio painel, também depois de recarregar.
+- [x] `variables` sem tag crua e sem contorno nos ícones; `admin-cron` e `admin-environment` com selects, botões e dicas.
+- [x] `resources:sync` (511 recursos), Vitest 569 e PHPUnit 1.655 sem falhas; `RefinamentosReq243Test` e `req243-refinamentos.test.js` novos.
+- [x] Pipeline do Lab com saída 0 (6 rodadas), conferência por hash sem diferenças e navegador 140/140 em 1366 e 390 px.
+- [x] Revisão da REQ-244 / REQ-109 sem achado bloqueante; mesclagem simulada com um conflito, em arquivo derivado.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-252](../implementation/BATCH-252.md) e [resultado do navegador](req243/evidencias/resultado.json).
+
 ## BATCH-251 — REQ-242
 
 - [x] `forms-search` e `forms`: abas sem fundo, copiar numa linha, select de tipo flutuante sem rolagem no container, dicas.

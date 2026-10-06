@@ -1,7 +1,7 @@
 <div class="flex flex-wrap gap-3">
     <div class="w-full">
-        <button type="button" class="variavelBtnAdicionar inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800">
-            <i class="add icon"></i>
+        <button type="button" class="variavelBtnAdicionar c2fc-botao c2fc-botao-primario">
+            <i data-lucide="plus" class="size-4"></i>
             @[[variavel-add-btn]]@
         </button>
     </div>
@@ -9,20 +9,22 @@
 <div class="border-t border-slate-200"></div>
 <div class="configuracao-widget-tailwind variaveisCont grid grid-cols-1 gap-4 lg:grid-cols-2" id="_gestor-configuracao-administracao" data-confirm-delete="#configuracao-delete-message#">
     <!-- item < -->
-    <div class="card variavelCont space-y-4 rounded border border-slate-200 bg-white p-4 shadow-sm" data-id="#variavelID#" data-num="#variavelNum#" data-tipo="#variavelTipo#">
+    <div class="card variavelCont space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm" data-id="#variavelID#" data-num="#variavelNum#" data-tipo="#variavelTipo#">
         <div class="space-y-4">
-            <button type="button" class="variavelBtnExcluir inline-flex h-8 w-8 items-center justify-center rounded bg-rose-700 text-white hover:bg-rose-800" aria-label="@[[variavel-delete-btn]]@" title="@[[variavel-delete-btn]]@">
-                <i class="icon trash alternate outline"></i>
+            <div class="float-right ml-2 flex items-center gap-1.5">
+            <button type="button" class="variavelBtnExcluir c2fc-botao c2fc-botao-icone c2fc-botao-perigo c2fc-botao-pequeno" aria-label="@[[variavel-delete-btn]]@" data-c2f-dica="@[[variavel-delete-btn]]@" data-c2f-dica-pos="top right">
+                <i data-lucide="trash-2" class="size-4"></i>
             </button>
-            <button type="button" class="variavelBtnEditar inline-flex h-8 w-8 items-center justify-center rounded bg-sky-700 text-white hover:bg-sky-800" aria-label="@[[variavel-edit-btn]]@" title="@[[variavel-edit-btn]]@">
-                <i class="icon edit outline"></i>
+            <button type="button" class="variavelBtnEditar c2fc-botao c2fc-botao-icone c2fc-botao-primario c2fc-botao-pequeno" aria-label="@[[variavel-edit-btn]]@" data-c2f-dica="@[[variavel-edit-btn]]@" data-c2f-dica-pos="top right">
+                <i data-lucide="pencil" class="size-4"></i>
             </button>
-            <div class="text-lg font-semibold text-slate-900">
+            </div>
+            <div class="mt-0! text-lg font-semibold text-slate-900">
                 <span class="variavelNome font-semibold text-teal-800">#variavelNome#</span>
             </div>
             <div class="space-y-4">
                 <p class="variavelDescricaoCont">
-                    <i class="icon blue info circle"></i>
+                    <i data-lucide="info" class="inline size-4 align-text-bottom text-sky-600"></i>
                     <span class="variavelDescricao">#variavelDescricao#</span>
                 </p>
                 <span class="variavelGrupoCont">
@@ -40,8 +42,8 @@
     <div class="border-t border-slate-200"></div>
     <div class="flex flex-wrap gap-3">
         <div class="w-full">
-            <button type="button" class="variavelBtnAdicionarAbaixo inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800">
-                <i class="add icon"></i>
+            <button type="button" class="variavelBtnAdicionarAbaixo c2fc-botao c2fc-botao-primario">
+                <i data-lucide="plus" class="size-4"></i>
                 @[[variavel-add-btn]]@
             </button>
         </div>
@@ -52,40 +54,40 @@
 <div class="modeloItens hidden grid grid-cols-1 gap-4 lg:grid-cols-2">
     <div class="card adicionar space-y-4 rounded border border-sky-200 bg-sky-50 p-4">
         <div class="space-y-4">
-            <button type="button" class="adicionarBtnCancelar inline-flex h-8 w-8 items-center justify-center rounded border border-slate-300 text-slate-700 hover:bg-slate-100" aria-label="@[[variavel-cancel-btn]]@" title="@[[variavel-cancel-btn]]@">
-                <i class="icon times"></i>
+            <button type="button" class="adicionarBtnCancelar c2fc-botao c2fc-botao-icone c2fc-botao-pequeno" aria-label="@[[variavel-cancel-btn]]@" data-c2f-dica="@[[variavel-cancel-btn]]@" data-c2f-dica-pos="top left">
+                <i data-lucide="x" class="size-4"></i>
             </button>
             <div class="text-lg font-semibold text-slate-900">
                 <span class="font-semibold text-sky-900">@[[variavel-add-btn]]@</span>
             </div>
             <div class="space-y-4">
                 <p>
-                    <i class="icon blue info circle"></i>
+                    <i data-lucide="info" class="inline size-4 align-text-bottom text-sky-600"></i>
                     @[[variavel-add-instructions]]@
                 </p>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">@[[variavel-id-label]]@</label>
+                    <div class="c2fc-campo min-w-0">
+                        <label class="c2fc-campo-rotulo">@[[variavel-id-label]]@</label>
                         <input type="text" name="id-#id-num#" placeholder="@[[variavel-id-placeholder]]@"
-                            class="identificador w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" data-validate="ids-obrigatorios" maxlength="255" />
+                            class="identificador c2fc-campo-entrada" data-validate="ids-obrigatorios" maxlength="255" />
                     </div>
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">@[[variavel-group-label]]@</label>
+                    <div class="c2fc-campo min-w-0">
+                        <label class="c2fc-campo-rotulo">@[[variavel-group-label]]@</label>
                         <input type="text" name="grupo-#grupo-num#" placeholder="@[[variavel-group-placeholder]]@"
-                            class="grupo w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" maxlength="255" />
+                            class="grupo c2fc-campo-entrada" maxlength="255" />
                     </div>
                 </div>
-                <div class="space-y-1.5">
-                    <label class="text-sm font-medium text-slate-700">@[[variavel-description-label]]@</label>
+                <div class="c2fc-campo min-w-0">
+                    <label class="c2fc-campo-rotulo">@[[variavel-description-label]]@</label>
                     <input type="text" name="descricao-#descricao-num#"
-                        placeholder="@[[variavel-description-placeholder]]@" class="descricao w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" maxlength="255" />
+                        placeholder="@[[variavel-description-placeholder]]@" class="descricao c2fc-campo-entrada" maxlength="255" />
                 </div>
-                <div class="space-y-1.5">
-                    <label class="text-sm font-medium text-slate-700">@[[variavel-tipo-label]]@</label>
+                <div class="c2fc-campo min-w-0">
+                    <label class="c2fc-campo-rotulo">@[[variavel-tipo-label]]@</label>
                     <span>#select-tipo#</span>
                 </div>
-                <div class="space-y-1.5">
-                    <label class="text-sm font-medium text-slate-700">@[[variavel-valor-label]]@</label>
+                <div class="c2fc-campo min-w-0">
+                    <label class="c2fc-campo-rotulo">@[[variavel-valor-label]]@</label>
                     <span class="variavelValor">#variavelValor#</span>
                 </div>
             </div>
@@ -93,41 +95,41 @@
     </div>
     <div class="card editar space-y-4 rounded border border-amber-200 bg-amber-50 p-4">
         <div class="space-y-4">
-            <button type="button" class="editarBtnCancelar inline-flex h-8 w-8 items-center justify-center rounded border border-slate-300 text-slate-700 hover:bg-slate-100" aria-label="@[[variavel-cancel-btn]]@" title="@[[variavel-cancel-btn]]@">
-                <i class="icon times"></i>
+            <button type="button" class="editarBtnCancelar c2fc-botao c2fc-botao-icone c2fc-botao-pequeno" aria-label="@[[variavel-cancel-btn]]@" data-c2f-dica="@[[variavel-cancel-btn]]@" data-c2f-dica-pos="top left">
+                <i data-lucide="x" class="size-4"></i>
             </button>
             <div class="text-lg font-semibold text-slate-900">
                 <span class="font-semibold text-amber-900">@[[variavel-edit-title]]@</span>
             </div>
             <div class="space-y-4">
                 <p>
-                    <i class="icon yellow info circle"></i>
+                    <i data-lucide="info" class="inline size-4 align-text-bottom text-amber-600"></i>
                     @[[variavel-edit-instructions]]@
                 </p>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">@[[variavel-id-label]]@</label>
+                    <div class="c2fc-campo min-w-0">
+                        <label class="c2fc-campo-rotulo">@[[variavel-id-label]]@</label>
                         <input type="text" name="id-#id-num#" placeholder="@[[variavel-id-placeholder]]@"
-                            value="#id-valor#" class="identificador w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" data-validate="ids-obrigatorios" maxlength="255" />
+                            value="#id-valor#" class="identificador c2fc-campo-entrada" data-validate="ids-obrigatorios" maxlength="255" />
                     </div>
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">@[[variavel-group-label]]@</label>
+                    <div class="c2fc-campo min-w-0">
+                        <label class="c2fc-campo-rotulo">@[[variavel-group-label]]@</label>
                         <input type="text" name="grupo-#grupo-num#" placeholder="@[[variavel-group-placeholder]]@"
-                            value="#grupo-valor#" class="grupo w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" maxlength="255" />
+                            value="#grupo-valor#" class="grupo c2fc-campo-entrada" maxlength="255" />
                     </div>
                 </div>
-                <div class="space-y-1.5">
-                    <label class="text-sm font-medium text-slate-700">@[[variavel-description-label]]@</label>
+                <div class="c2fc-campo min-w-0">
+                    <label class="c2fc-campo-rotulo">@[[variavel-description-label]]@</label>
                     <input type="text" name="descricao-#descricao-num#"
-                        placeholder="@[[variavel-description-placeholder]]@" value="#descricao-valor#" class="descricao w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                        placeholder="@[[variavel-description-placeholder]]@" value="#descricao-valor#" class="descricao c2fc-campo-entrada"
                         maxlength="255" />
                 </div>
-                <div class="space-y-1.5">
-                    <label class="text-sm font-medium text-slate-700">@[[variavel-tipo-label]]@</label>
+                <div class="c2fc-campo min-w-0">
+                    <label class="c2fc-campo-rotulo">@[[variavel-tipo-label]]@</label>
                     <span>#select-tipo#</span>
                 </div>
-                <div class="space-y-1.5">
-                    <label class="text-sm font-medium text-slate-700">@[[variavel-valor-label]]@</label>
+                <div class="c2fc-campo min-w-0">
+                    <label class="c2fc-campo-rotulo">@[[variavel-valor-label]]@</label>
                     <span class="variavelValor">#variavelValor#</span>
                 </div>
             </div>

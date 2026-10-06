@@ -825,10 +825,16 @@ function interface_historico($params = false){
 	} else {
 		$totalPaginas = ($total % $max_dados_por_pagina > 0 ? 1 : 0) + floor($total / $max_dados_por_pagina);
 		
-		$_GESTOR['javascript-vars']['interface'] = Array(
-			'id' => $id,
-			'total' => $total,
-			'totalPaginas' => $totalPaginas,
+		// REQ-243: mescla em vez de substituir. O módulo que monta um campo antes do histórico (seletor de
+		// imagem, por exemplo) já registrou a configuração dele aqui; trocar o bloco inteiro a apagava e o
+		// botão do campo ficava sem ação em todo registro que tivesse histórico.
+		$_GESTOR['javascript-vars']['interface'] = array_merge(
+			(isset($_GESTOR['javascript-vars']['interface']) && is_array($_GESTOR['javascript-vars']['interface'])) ? $_GESTOR['javascript-vars']['interface'] : Array(),
+			Array(
+				'id' => $id,
+				'total' => $total,
+				'totalPaginas' => $totalPaginas,
+			)
 		);
 	}
 	
@@ -3283,6 +3289,8 @@ function interface_botoes_html($botoes){
 		$tooltip = htmlspecialchars((string)($botao['tooltip'] ?? ''), ENT_QUOTES, 'UTF-8');
 		$cor = (string)($botao['cor'] ?? '');
 		$rotulo = (string)($botao['rotulo'] ?? '');
+		// REQ-243: botão declarado sem dica mostrava um balão vazio; o rótulo serve de dica.
+		if($tooltip === '') $tooltip = htmlspecialchars(trim(strip_tags($rotulo)), ENT_QUOTES, 'UTF-8');
 		$url = interface_url_csrf($botao['url'] ?? '');
 		$target = isset($botao['target']) ? ' target="'.$botao['target'].'"' : '';
 
@@ -4136,10 +4144,18 @@ function interface_adicionar_incomum_finalizar($params = false){
 		// icon - String - Obrigatório - Ícone do botão.
 		// cor - String - Obrigatório - Cor do botão.
 	
+	// REQ-243: em página Tailwind o formulário incomum usa a variante Tailwind do formulário de inclusão
+	// (mesmos ids e campos ocultos); a marcação Fomantic deixava o botão de envio sem estilo.
+	$tailwind = function_exists('gestor_framework_css_atual') && gestor_framework_css_atual()['modo'] === 'tailwindcss';
+
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-inclusao-incomum',
+		'id' => $tailwind ? 'interface-formulario-inclusao-tailwind' : 'interface-formulario-inclusao-incomum',
 	));
-	
+
+	if($tailwind){
+		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_del($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+	}
+
 	$pagina = modelo_var_troca($pagina,"#titulo#",$_GESTOR['pagina#titulo']);
 	
 	$pagina = modelo_var_troca($pagina,"#form-id#",$_GESTOR['modulo']);

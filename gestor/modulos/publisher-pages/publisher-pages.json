@@ -85,24 +85,24 @@
                 {
                     "name": "Publicador Campos",
                     "id": "publisher-fields-tailwind",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "189f891ea3989abda33991e6c85fe1c3",
+                        "html": "dce3aaf12a5d8cbe3173e95de45dc4f5",
                         "css": "bc59b0a7e98bc23783eb0357f2337d8b",
                         "css_precompiled": "",
-                        "combined": "c763f62c0267fa0421c33ac16dc1da14"
+                        "combined": "35cdfef8b6d973d9fa57ba81b3aa9a5a"
                     },
                     "framework_css": "tailwindcss"
                 },
                 {
                     "name": "Lista Página ou Sistema ou Publisher",
                     "id": "lista-pagina-ou-sistema-ou-publisher-tailwind",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "6d967d3284a184c0e9f86c4417d32c38",
+                        "html": "0dc13a259b5ca84dc3359dd6e7b76dac",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6d967d3284a184c0e9f86c4417d32c38"
+                        "combined": "0dc13a259b5ca84dc3359dd6e7b76dac"
                     },
                     "framework_css": "tailwindcss"
                 },
@@ -207,12 +207,12 @@
                 {
                     "name": "Publicador Páginas - Editar",
                     "id": "publisher-pages-editar",
-                    "version": "1.17",
+                    "version": "1.19",
                     "checksum": {
-                        "html": "ad0a25964b76a1d16a6ddd2c85c649e0",
+                        "html": "fe80633e7f5b03e955d74eb879e1e622",
                         "css": "211c64094ede26b96e3030e476299e1b",
                         "css_precompiled": "",
-                        "combined": "d7925ab643df97a0ad537504257c2f74"
+                        "combined": "3ed7958fb927e82d9e7b75600837ff27"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages/editar/",
@@ -337,12 +337,12 @@
                 {
                     "name": "Publicador Páginas - Adicionar",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.16",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "d2d2558d1e31c097b8bb3cd33bebccec",
+                        "html": "95a4f928fabdb34999eb6fa29f4eadc8",
                         "css": "211c64094ede26b96e3030e476299e1b",
                         "css_precompiled": "",
-                        "combined": "d4df6feaa5384f79c30511f630657fda"
+                        "combined": "dccff9d5dcc7123c27ffa4cf5311df48"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages/adicionar/",
@@ -467,12 +467,12 @@
                 {
                     "name": "Publisher Pages - Clone",
                     "id": "publisher-pages-clonar",
-                    "version": "1.15",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "740c1243e5a882403fafe04c01b857bc",
+                        "html": "ae6583d80fa2d6e8e558e6252a82dc61",
                         "css": "211c64094ede26b96e3030e476299e1b",
                         "css_precompiled": "",
-                        "combined": "0283a12223af2bca35e3874f590f5c53"
+                        "combined": "3d5dd45b4c9e6d46a916b4f04e4b42e8"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages/clonar/",
@@ -936,12 +936,12 @@
                 {
                     "name": "Publisher Fields",
                     "id": "publisher-fields-tailwind",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "fc282756b16ed66f6ab3af95b54e579d",
+                        "html": "83376a500b670e02460bf61efc1d53e0",
                         "css": "bc59b0a7e98bc23783eb0357f2337d8b",
                         "css_precompiled": "",
-                        "combined": "d2646c01d5ee0f0e952dfb8fbfa18d68"
+                        "combined": "cff60d45b274d674f58def5ffecef606"
                     },
                     "framework_css": "tailwindcss"
                 },
@@ -972,13 +972,13 @@
                 {
                     "name": "Page, System or Publisher List Tailwind",
                     "id": "lista-pagina-ou-sistema-ou-publisher-tailwind",
-                    "version": "1.4",
+                    "version": "1.5",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "53334284570fa0efcc8b02226e1e392d",
+                        "html": "5a00a6b68da2aec513a03df776e335d1",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "53334284570fa0efcc8b02226e1e392d"
+                        "combined": "5a00a6b68da2aec513a03df776e335d1"
                     }
                 }
             ],
@@ -1058,12 +1058,12 @@
                 {
                     "name": "Publisher Pages - Edit",
                     "id": "publisher-pages-editar",
-                    "version": "1.17",
+                    "version": "1.19",
                     "checksum": {
-                        "html": "73246c70324ca7c4577698ef62350fc7",
+                        "html": "bee07a529ed8701d04908183b684c8d2",
                         "css": "211c64094ede26b96e3030e476299e1b",
                         "css_precompiled": "",
-                        "combined": "83c58cbc932fda8c0e446947262ab91a"
+                        "combined": "518903912bcab0deae7e69b4eb1d6c23"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages/editar/",
@@ -1188,12 +1188,12 @@
                 {
                     "name": "Publisher Pages - Add",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.14",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "a28db15ded5d86bb8f2c7ed92494afe8",
+                        "html": "fca94feb29acdb4f0303646602f3bf63",
                         "css": "211c64094ede26b96e3030e476299e1b",
                         "css_precompiled": "",
-                        "combined": "2360db21a4e5f5c7c06a586165066ed7"
+                        "combined": "99af584dfd3d10157f7d3e39d22de911"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages/adicionar/",
@@ -1318,12 +1318,12 @@
                 {
                     "name": "Publisher Pages - Clone",
                     "id": "publisher-pages-clonar",
-                    "version": "1.15",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "4ae4ff584d83f9942d3d40bc69340646",
+                        "html": "1a60a56f327b2ff90d59ace53440d4d3",
                         "css": "211c64094ede26b96e3030e476299e1b",
                         "css_precompiled": "",
-                        "combined": "8e304c1d86fed6010c6296f39d17acc6"
+                        "combined": "a50840a42f83c872cbd6f521bb927ab0"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages/clonar/",

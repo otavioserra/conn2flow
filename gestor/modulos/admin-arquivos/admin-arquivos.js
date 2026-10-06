@@ -71,6 +71,18 @@ function adminArquivosPickVisivel(paginaIframe, arquivos) {
 	return !!paginaIframe && (arquivos || []).length > 0;
 }
 
+// REQ-243: no seletor de várias imagens a bandeja fica sempre à vista (com o botão de concluir); no seletor
+// de um arquivo só, ela aparece quando há algo marcado.
+function adminArquivosBandejaVisivel(paginaIframe, selecaoMultipla, arquivos) {
+	return !!paginaIframe && (!!selecaoMultipla || (arquivos || []).length > 0);
+}
+
+// REQ-243: aviso ao documento que abriu o seletor. O identificador é outro para os consumidores do canal de
+// arquivos (que leem `data` como um arquivo) ignorarem a mensagem.
+function adminArquivosMensagemSeletor(acao) {
+	return JSON.stringify({ moduloId: 'admin-arquivos-seletor', acao: acao });
+}
+
 // Mesmo contrato do envio individual (`.c2f-select`): o consumidor não distingue origem.
 // `tipo` carrega o MIME (é o que os consumidores testam com /image\//), não 'arquivo'/'pasta'.
 function adminArquivosPayloadPicker(item) {
@@ -110,6 +122,8 @@ if (typeof module !== 'undefined' && module.exports) {
 		adminArquivosTipoPorNome: adminArquivosTipoPorNome,
 		adminArquivosArquivosSelecionados: adminArquivosArquivosSelecionados,
 		adminArquivosPickVisivel: adminArquivosPickVisivel,
+		adminArquivosBandejaVisivel: adminArquivosBandejaVisivel,
+		adminArquivosMensagemSeletor: adminArquivosMensagemSeletor,
 		adminArquivosPayloadPicker: adminArquivosPayloadPicker,
 		adminArquivosBandejaHtml: adminArquivosBandejaHtml
 	};
@@ -516,6 +530,8 @@ $(document).ready(function () {
 
 			$m.on('click', '.c2f-gal-select', function () {
 				var it = galeriaItemAtual(); if (!it) return;
+				// REQ-243: no seletor de várias imagens a visualização ampliada também só marca o arquivo.
+				if (cfg.paginaIframe && cfg.selecaoMultipla && marcarPeloCaminho(it.caminho)) { $m[0].close(); return; }
 				var dados = { id: it.caminho, caminho: it.caminho, imgSrc: it.thumb, nome: it.nome, data: it.data, tipo: it.mime };
 				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), '*');
 				$m[0].close();
@@ -626,9 +642,20 @@ $(document).ready(function () {
 			}).catch(function (err) { console.error(err); });
 		});
 
+		// REQ-243: no seletor de várias imagens, o botão Selecionar de cada arquivo marca (ou desmarca) o
+		// arquivo, que aparece na bandeja ao lado de Cancelar; a escolha só vai para a galeria em "Concluir
+		// seleção". Fora desse modo o botão continua enviando o arquivo na hora.
+		function marcarPeloCaminho(caminho) {
+			var $caixa = $lista.find('.c2f-item').filter(function () { return this.getAttribute('data-caminho') === caminho; }).find('.c2f-sel');
+			if (!$caixa.length) return false;
+			$caixa.prop('checked', !$caixa.prop('checked')).trigger('change');
+			return true;
+		}
+
 		$lista.on('click', '.c2f-select', function (e) {
 			e.stopPropagation();
 			var $item = $(this).closest('.c2f-item');
+			if (cfg.paginaIframe && cfg.selecaoMultipla && marcarPeloCaminho($item.attr('data-caminho'))) return;
 			var dados = {
 				id: $item.attr('data-caminho'),
 				caminho: $item.attr('data-caminho'),
@@ -718,11 +745,19 @@ $(document).ready(function () {
 			var bandeja = document.getElementById('c2f-pick-tray');
 			if (!bandeja) return;
 			var arquivos = arquivosSelecionados();
-			var visivel = adminArquivosPickVisivel(cfg.paginaIframe, arquivos);
+			var visivel = adminArquivosBandejaVisivel(cfg.paginaIframe, cfg.selecaoMultipla, arquivos);
 			bandeja.classList.toggle('hidden', !visivel);
 			document.getElementById('c2f-pick-tray-count').textContent = arquivos.length;
 			document.getElementById('c2f-pick-tray-thumbs').innerHTML = visivel ? adminArquivosBandejaHtml(arquivos, bandeja.getAttribute('data-remove-label') || t('picker-tray-remove')) : '';
+			// REQ-243: sem nada marcado a bandeja mostra a orientação e o botão de concluir fica desligado.
+			var vazio = document.getElementById('c2f-pick-tray-empty');
+			if (vazio) vazio.classList.toggle('hidden', arquivos.length > 0);
+			document.getElementById('c2f-pick-tray-thumbs').classList.toggle('hidden', arquivos.length === 0);
+			var confirmar = document.getElementById('c2f-pick-tray-confirm');
+			if (confirmar) confirmar.disabled = arquivos.length === 0;
 		}
+
+		atualizarBandeja();
 
 		$('#c2f-pick-tray').on('click', '.c2f-pick-thumb-remove', function () {
 			var cam = this.getAttribute('data-caminho');
@@ -732,8 +767,17 @@ $(document).ready(function () {
 			delete estado.selecionados[cam];
 			atualizarBarraSelecao();
 		});
-		$('#c2f-pick-tray-confirm').on('click', function () { $('#c2f-pick-selected').trigger('click'); });
-		$('#c2f-pick-tray-cancel').on('click', function () { limparSelecao(); });
+		// REQ-243: concluir aplica o que está marcado e pede ao documento de fora que feche o modal; cancelar
+		// fecha sem aplicar.
+		$('#c2f-pick-tray-confirm').on('click', function () {
+			if (arquivosSelecionados().length === 0) return;
+			$('#c2f-pick-selected').trigger('click');
+			window.parent.postMessage(adminArquivosMensagemSeletor('concluir'), '*');
+		});
+		$('#c2f-pick-tray-cancel').on('click', function () {
+			limparSelecao();
+			window.parent.postMessage(adminArquivosMensagemSeletor('cancelar'), '*');
+		});
 
 		// Zera a seleção no estado E no DOM (itens e "selecionar todos"), para que o próximo lote comece limpo.
 		function limparSelecao() {

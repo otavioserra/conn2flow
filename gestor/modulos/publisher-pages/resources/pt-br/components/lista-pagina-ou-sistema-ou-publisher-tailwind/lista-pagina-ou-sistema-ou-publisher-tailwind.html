@@ -1,47 +1,33 @@
-<div class="c2fc-pagina">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <label class="c2fc-campo-rotulo">#tipo#</label>
-        <div class="c2fc-campo">
-            <label class="radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Clique para mostrar tipo Página" data-position="top left"
-                data-inverted="">
-                <input type="radio" name="tipo" tabindex="1" value="pagina" #checked_pagina#>
-                <span>#pagina#</span>
-            </label>
-        </div>
-        <div class="c2fc-campo">
-            <label class="radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Clique para mostrar tipo Sistema" data-position="top left"
-                data-inverted="">
-                <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#
-                    data-c2f-dica="Clique para mostrar os sistemas" data-position="top left" data-inverted="">
-                <span>#sistema#</span>
-            </label>
-        </div>
-        <div class="c2fc-campo">
-            <label class="radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Clique para mostrar ambos" data-position="top left"
-                data-inverted="">
-                <input type="radio" name="tipo" value="ambos" tabindex="0" #checked_ambos#
-                    data-c2f-dica="Clique para mostrar ambos" data-position="top left" data-inverted="">
-                <span>#ambos#</span>
-            </label>
-        </div>
-        <!-- modulos-cel < -->
-        <label class="c2fc-campo-rotulo">Módulo</label>
-        <div class="c2fc-campo" data-c2f-dica="Clique para filtrar o módulo e mostrar apenas páginas do módulo selecionado"
-            data-position="top left" data-inverted="">
-            <select id="module" class="c2fc-campo-selecao dropdown gestorModule" name="module">
-                <option value="">Selecione um módulo</option>
-                <!-- modulos-opcoes -->
-            </select>
-        </div><!-- modulos-cel > -->
-        <!-- publisher-cel < -->
-        <label class="c2fc-campo-rotulo">Publicador</label>
-        <div class="c2fc-campo"
-            data-c2f-dica="Clique para filtrar publicador e mostrar apenas páginas do publicador selecionado"
-            data-position="top left" data-inverted="">
-            <select id="publisher" class="c2fc-campo-selecao dropdown publisherDropdown" name="publisher">
-                <option value="">Selecione um publicador</option>
-                <!-- publisher-opcoes -->
-            </select>
-        </div><!-- publisher-cel > -->
-    </div>
+<div class="mb-4 flex flex-wrap items-end gap-x-6 gap-y-3">
+    <fieldset class="flex flex-wrap items-center gap-4">
+        <legend class="c2fc-campo-rotulo mb-1">#tipo#</legend>
+        <label class="radio checkbox inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Clique para mostrar tipo Página">
+            <input type="radio" name="tipo" tabindex="1" value="pagina" #checked_pagina#>
+            <span>#pagina#</span>
+        </label>
+        <label class="radio checkbox inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Clique para mostrar tipo Sistema">
+            <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#>
+            <span>#sistema#</span>
+        </label>
+        <label class="radio checkbox inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Clique para mostrar ambos">
+            <input type="radio" name="tipo" tabindex="0" value="ambos" #checked_ambos#>
+            <span>#ambos#</span>
+        </label>
+    </fieldset>
+    <!-- modulos-cel < -->
+    <div class="c2fc-campo w-full sm:w-72" data-c2f-dica-pos="top left" data-c2f-dica="Clique para filtrar o módulo e mostrar apenas páginas do módulo selecionado">
+        <label class="c2fc-campo-rotulo" for="module">Módulo</label>
+        <select id="module" class="c2fc-campo-selecao search clearable dropdown gestorModule" name="module" data-c2f-select="1" data-c2f-busca="1">
+            <option value="">Selecione um módulo</option>
+            <!-- modulos-opcoes -->
+        </select>
+    </div><!-- modulos-cel > -->
+    <!-- publisher-cel < -->
+    <div class="c2fc-campo w-full sm:w-72" data-c2f-dica-pos="top left" data-c2f-dica="Clique para filtrar publicador e mostrar apenas páginas do publicador selecionado">
+        <label class="c2fc-campo-rotulo" for="publisher">Publicador</label>
+        <select id="publisher" class="c2fc-campo-selecao search clearable dropdown publisherDropdown" name="publisher" data-c2f-select="1" data-c2f-busca="1">
+            <option value="">Selecione um publicador</option>
+            <!-- publisher-opcoes -->
+        </select>
+    </div><!-- publisher-cel > -->
 </div>
