@@ -585,3 +585,51 @@ body.c2f-arquivos-iframe {
 @media (max-width: 520px) {
     .c2f-pick-tray:not(.hidden) { flex-direction: column; align-items: stretch; }
 }
+
+/* REQ-243 (pente fino): galeria da imagem. A caixa é um <dialog> modal: com `position: relative` ela perdia a
+   centralização do navegador e ficava no canto. O texto claro da caixa escura vazava para os botões brancos
+   (texto e ícone invisíveis); cada botão passa a ter cor própria. */
+.c2f-gallery-modal {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    height: fit-content;
+    border-radius: 12px;
+    overflow: auto;
+}
+.c2f-gallery-close,
+.c2f-gallery-prev,
+.c2f-gallery-next {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid #475569;
+    border-radius: 999px;
+    background: #1e293b;
+    color: #f8fafc;
+    cursor: pointer;
+}
+.c2f-gallery-close { font-size: 22px; line-height: 1; }
+.c2f-gallery-close:hover,
+.c2f-gallery-prev:hover,
+.c2f-gallery-next:hover { border-color: #94a3b8; background: #334155; }
+.c2f-gallery-prev svg,
+.c2f-gallery-next svg { width: 20px; height: 20px; }
+.c2f-gallery-actions > button,
+.c2f-gallery-actions > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #0f172a;
+    text-decoration: none;
+    cursor: pointer;
+}
+.c2f-gallery-actions > .c2f-gal-select,
+.c2f-gallery-actions > .c2f-gal-del { color: #fff; }
+.c2f-gallery-actions svg { width: 16px; height: 16px; flex: none; }
+/* A imagem fica no meio do palco e cede altura para o título, as miniaturas e as ações caberem na caixa. */
+.c2f-gallery-stage { display: flex; align-items: center; justify-content: center; }
+.c2f-gallery-img { display: block; margin: 0 auto; max-height: calc(90vh - 270px); }

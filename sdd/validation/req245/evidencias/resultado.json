@@ -1,6 +1,6 @@
 {
  "base": "https://conn2flow.local",
- "quando": "2026-10-06T18:13:27.268Z",
+ "quando": "2026-10-06T19:42:46.719Z",
  "total": 19,
  "aprovadas": 19,
  "falhas": [],
@@ -101,7 +101,7 @@
     "backup": true,
     "selo": "Desligada",
     "mensagem": "",
-    "estado": "AUTOMAÇÃO Desligada PRÓXIMA CHECAGEM Nenhuma ÚLTIMA CHECAGEM 06/10/2026 18:11 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+    "estado": "AUTOMAÇÃO Desligada PRÓXIMA CHECAGEM Nenhuma ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
    }
   },
   {
@@ -114,7 +114,7 @@
     "backup": false,
     "selo": "Ligada",
     "mensagem": "Configuração salva.",
-    "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 06/10/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:11 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+    "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
    }
   },
   {
@@ -133,20 +133,20 @@
      "backup": false,
      "selo": "Ligada",
      "mensagem": "",
-     "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 06/10/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:11 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+     "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
     }
    }
   },
   {
    "nome": "próxima checagem aparece às 22:00",
    "ok": true,
-   "detalhe": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 06/10/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:11 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+   "detalhe": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:50 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
   },
   {
    "nome": "a rotina aparece no admin-cron como tarefa do módulo, de hora em hora, ativa",
    "ok": true,
    "detalhe": {
-    "texto": "Atualização automática do sistema admin-atualizacoes-automatica Declarada no módulo admin-atualizacoes De hora em hora 0 * * * * 2026-10-06 15:11:39 0 ms Sucesso Disparar agora Pausar Editar Ver logs",
+    "texto": "Atualização automática do sistema admin-atualizacoes-automatica Declarada no módulo admin-atualizacoes De hora em hora 0 * * * * 2026-10-06 15:13:30 0 ms Sucesso Disparar agora Pausar Editar Ver logs",
     "pausada": false,
     "alternar": "Pausar"
    }
@@ -161,13 +161,13 @@
     "backup": false,
     "selo": "Ligada",
     "mensagem": "Versão publicada conferida.",
-    "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 06/10/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:13 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+    "estado": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 19:42 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
    }
   },
   {
    "nome": "Verificar agora não dispara atualização",
    "ok": true,
-   "detalhe": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 06/10/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 18:13 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+   "detalhe": "AUTOMAÇÃO Ligada PRÓXIMA CHECAGEM 05/11/2026 22:00 ÚLTIMA CHECAGEM 06/10/2026 19:42 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
   },
   {
    "nome": "desligar volta ao padrão (selo Desligada, sem próxima checagem)",
@@ -179,14 +179,14 @@
     "backup": true,
     "selo": "Desligada",
     "mensagem": "Configuração salva.",
-    "estado": "AUTOMAÇÃO Desligada PRÓXIMA CHECAGEM Nenhuma ÚLTIMA CHECAGEM 06/10/2026 18:13 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
+    "estado": "AUTOMAÇÃO Desligada PRÓXIMA CHECAGEM Nenhuma ÚLTIMA CHECAGEM 06/10/2026 19:42 VERSÃO PUBLICADA gestor-v2.10.13 O sistema já está na versão publicada. ÚLTIMA TENTATIVA Nenhuma VERSÕES RECUSADAS Nenhuma"
    }
   },
   {
    "nome": "a rotina fica pausada no admin-cron quando a automação é desligada",
    "ok": true,
    "detalhe": {
-    "texto": "Atualização automática do sistemaPausada admin-atualizacoes-automatica Declarada no módulo admin-atualizacoes De hora em hora 0 * * * * 2026-10-06 15:11:39 0 ms Sucesso Disparar agora Ativar Editar Ver logs",
+    "texto": "Atualização automática do sistemaPausada admin-atualizacoes-automatica Declarada no módulo admin-atualizacoes De hora em hora 0 * * * * 2026-10-06 15:13:30 0 ms Sucesso Disparar agora Ativar Editar Ver logs",
     "pausada": true,
     "alternar": "Ativar"
    }

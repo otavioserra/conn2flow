@@ -31,6 +31,10 @@ function controles_incluir(){
 	// Antes do runtime da interface: quem chama `$.fn.dropdown` no `ready` já encontra a ponte.
 	if(!isset($_GESTOR['javascript']) || !is_array($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
 	array_unshift($_GESTOR['javascript'], recursos_tag_js('interface/controles.js', $versao));
+	// REQ-243: as máscaras de campo (dinheiro, percentual) acompanham os controles em toda página do painel,
+	// inclusive nas telas que o módulo desenha sem o formulário do interface.
+	$mascaras = recursos_tag_js('interface/campo-moeda.js', $versao);
+	if(!in_array($mascaras, $_GESTOR['javascript'], true)) $_GESTOR['javascript'][] = $mascaras;
 	gestor_js_variavel_incluir('controlesTextos', controles_textos());
 }
 

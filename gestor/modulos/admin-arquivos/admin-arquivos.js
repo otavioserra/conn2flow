@@ -515,6 +515,8 @@ $(document).ready(function () {
 				'  <div class="c2f-gallery-actions">' + acoes + '</div>' +
 				'</dialog>';
 			$(html).appendTo('body');
+			// REQ-243: a caixa nasce depois da carga da página; os ícones dela são desenhados aqui.
+			if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 
 			var $m = $('#c2f-gallery-modal');
 			$m.on('click', '.c2f-gallery-prev', function (e) { e.stopPropagation(); passoGaleria(-1); });

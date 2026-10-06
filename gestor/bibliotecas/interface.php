@@ -1197,7 +1197,8 @@ function interface_assets_incluir(){
 	// Fomantic quando ele não está na página.
 	gestor_incluir_biblioteca('controles');
 	if(function_exists('controles_incluir')) controles_incluir();
-	$_GESTOR['javascript'][] = recursos_tag_js('interface/campo-moeda.js', $versao);
+	$mascaras = recursos_tag_js('interface/campo-moeda.js', $versao);
+	if(!in_array($mascaras, $_GESTOR['javascript'] ?? Array(), true)) $_GESTOR['javascript'][] = $mascaras;
 
 	if(gestor_framework_css_atual()['modo'] === 'tailwindcss'){
 		$asset = recursos_tag_js('interface/interface-tailwind.js', $versao);

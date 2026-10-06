@@ -1585,7 +1585,7 @@
             "built_at": "2026-10-06T15:03:59+00:00"
         },
         "module|admin-arquivos|en|pages|admin-arquivos": {
-            "fingerprint": "1d54de5766f08f1a9b4e5b555a8b763eb7961272c8171ec53fda6734597078ae",
+            "fingerprint": "156091304ad60525fd32eb19a5108e101e9b1de11e4e11971bcf5d59f7763e5d",
             "output_hash": "a41765831ece6811b9ff2f1988484468cab2f8b5cae90702a40edc9db7cf7af8",
             "output": "modulos/admin-arquivos/resources/en/pages/admin-arquivos/admin-arquivos.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1601,10 +1601,10 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T17:05:59+00:00"
+            "built_at": "2026-10-06T19:32:18+00:00"
         },
         "module|admin-arquivos|en|pages|admin-arquivos-adicionar": {
-            "fingerprint": "70c14dc74e3cac79d7cd9bcbc8512760ee37a966ba9926e0ef4f0fe6caa77bed",
+            "fingerprint": "5980bb6f52059dbbb48b8f85561fda696cd25295d62827dd65bd8ab86c8b4fed",
             "output_hash": "519ffda651153878fab67d05bfdae993bc99b041d652f2d046034f8234bea4fa",
             "output": "modulos/admin-arquivos/resources/en/pages/admin-arquivos-adicionar/admin-arquivos-adicionar.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1619,10 +1619,10 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T17:05:59+00:00"
+            "built_at": "2026-10-06T19:32:18+00:00"
         },
         "module|admin-arquivos|pt-br|pages|admin-arquivos": {
-            "fingerprint": "099b1291b72760ca71f410eace0f32ecc08542e7fd76d4760ed47a5785fc4131",
+            "fingerprint": "a7265cfb3a055421cf2b7915e3f65c45ec0384996c6be05f77996be5c8eed8d1",
             "output_hash": "2d65583cac2d64c639337e36303dc08569ebfbf156cd591aa4206568fcf9e862",
             "output": "modulos/admin-arquivos/resources/pt-br/pages/admin-arquivos/admin-arquivos.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1638,10 +1638,10 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T17:06:00+00:00"
+            "built_at": "2026-10-06T19:32:18+00:00"
         },
         "module|admin-arquivos|pt-br|pages|admin-arquivos-adicionar": {
-            "fingerprint": "83ae3351b1e837496c4e8d5b82f7fe11f8cdb995b9d3022971672c429247abc1",
+            "fingerprint": "36efbca396a471ffd635e7f0bd70c68fff727995469e25135a0ec39fe30bb992",
             "output_hash": "39daac71fb06740dbb2ce7827f1d76ed55ade0e1d9563288bbbea1b785f9e13b",
             "output": "modulos/admin-arquivos/resources/pt-br/pages/admin-arquivos-adicionar/admin-arquivos-adicionar.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1656,7 +1656,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T17:06:00+00:00"
+            "built_at": "2026-10-06T19:32:18+00:00"
         },
         "module|admin-atualizacoes|en|components|atualizacoes-detalhe-comp-tailwind": {
             "fingerprint": "b1fb150d667f9fec2ad6ce0fa8c5faf9bf0ccfe7ad49fbd774e21bd2ad8c440a",

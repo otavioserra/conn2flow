@@ -1,8 +1,8 @@
 {
  "base": "https://conn2flow.local",
- "quando": "2026-10-06T18:16:05.139Z",
- "total": 140,
- "aprovadas": 140,
+ "quando": "2026-10-06T19:42:34.380Z",
+ "total": 158,
+ "aprovadas": 158,
  "falhas": [],
  "resultados": [
   {
@@ -1666,6 +1666,316 @@
    "nome": "nenhum erro de script",
    "ok": true,
    "detalhe": []
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "forms-submissions/view: select de status com o controle do painel",
+   "ok": true,
+   "detalhe": "forms-submissions/view/?id=cupom-assinatura-2"
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "subscriptions-plans/editar abre",
+   "ok": true,
+   "detalhe": "subscriptions-plans/editar/?id=acceleration"
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "trocar o modelo grava o HTML novo no editor e redesenha a visualização dele",
+   "ok": true,
+   "detalhe": {
+    "mudou": true,
+    "redesenhos": 1,
+    "tamanho": 1866
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "affiliates/edit abre",
+   "ok": true,
+   "detalhe": "affiliates/edit/?id=E2EAFF3654"
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "comissão aceita só percentual (12,75) e o formulário leva 12.75",
+   "ok": true,
+   "detalhe": {
+    "valor": "12,75",
+    "selects": 3,
+    "nativos": 0,
+    "entradas": true,
+    "enviado": "12.75"
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "selects com o controle e campos de texto no padrão",
+   "ok": true,
+   "detalhe": {
+    "valor": "12,75",
+    "selects": 3,
+    "nativos": 0,
+    "entradas": true,
+    "enviado": "12.75"
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "percentual não passa de 100",
+   "ok": true,
+   "detalhe": "100"
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "affiliates/details abre",
+   "ok": true,
+   "detalhe": "affiliates/details/?id=E2EAFF3654"
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "valor do ajuste aceita só dinheiro (R$ 15,00)",
+   "ok": true,
+   "detalhe": {
+    "valor": "R$ 15,00",
+    "tipo": true,
+    "noRotulo": false,
+    "botoes": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "select do tipo com o controle, fora do rótulo, e botões no padrão",
+   "ok": true,
+   "detalhe": {
+    "valor": "R$ 15,00",
+    "tipo": true,
+    "noRotulo": false,
+    "botoes": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "variables abre",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "a caixa de adicionar variável aparece com o select do tipo montado",
+   "ok": true,
+   "detalhe": {
+    "select": true,
+    "casca": true,
+    "viva": true,
+    "opcoes": 14,
+    "antes": "string"
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "o select do tipo abre, escolhe e mostra a opção escolhida",
+   "ok": true,
+   "detalhe": {
+    "aberto": 14,
+    "caixa": {
+     "select": true,
+     "casca": true,
+     "viva": true,
+     "opcoes": 14,
+     "antes": "string"
+    },
+    "depois": {
+     "valor": "bool",
+     "rotulo": "Booleano"
+    }
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "admin-arquivos abre",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "galeria da imagem abre centralizada na tela",
+   "ok": true,
+   "detalhe": {
+    "esq": 83,
+    "dir": 83,
+    "topo": 75,
+    "base": 75,
+    "fechar": {
+     "fundo": "rgb(30, 41, 59)",
+     "texto": "rgb(248, 250, 252)",
+     "icone": false,
+     "raio": "999px"
+    },
+    "anterior": {
+     "fundo": "rgb(30, 41, 59)",
+     "texto": "rgb(248, 250, 252)",
+     "icone": true,
+     "raio": "999px"
+    },
+    "proximo": {
+     "fundo": "rgb(30, 41, 59)",
+     "texto": "rgb(248, 250, 252)",
+     "icone": true,
+     "raio": "999px"
+    },
+    "acoes": [
+     {
+      "fundo": "rgb(255, 255, 255)",
+      "texto": "rgb(15, 23, 42)",
+      "icone": true,
+      "raio": "8px"
+     },
+     {
+      "fundo": "rgb(255, 255, 255)",
+      "texto": "rgb(15, 23, 42)",
+      "icone": true,
+      "raio": "8px"
+     },
+     {
+      "fundo": "rgb(255, 255, 255)",
+      "texto": "rgb(15, 23, 42)",
+      "icone": true,
+      "raio": "8px"
+     },
+     {
+      "fundo": "oklch(0.514 0.222 16.935)",
+      "texto": "rgb(255, 255, 255)",
+      "icone": true,
+      "raio": "8px"
+     }
+    ]
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "fechar e setas redondos, escuros e com ícone; ações com ícone e texto legível",
+   "ok": true,
+   "detalhe": {
+    "esq": 83,
+    "dir": 83,
+    "topo": 75,
+    "base": 75,
+    "fechar": {
+     "fundo": "rgb(30, 41, 59)",
+     "texto": "rgb(248, 250, 252)",
+     "icone": false,
+     "raio": "999px"
+    },
+    "anterior": {
+     "fundo": "rgb(30, 41, 59)",
+     "texto": "rgb(248, 250, 252)",
+     "icone": true,
+     "raio": "999px"
+    },
+    "proximo": {
+     "fundo": "rgb(30, 41, 59)",
+     "texto": "rgb(248, 250, 252)",
+     "icone": true,
+     "raio": "999px"
+    },
+    "acoes": [
+     {
+      "fundo": "rgb(255, 255, 255)",
+      "texto": "rgb(15, 23, 42)",
+      "icone": true,
+      "raio": "8px"
+     },
+     {
+      "fundo": "rgb(255, 255, 255)",
+      "texto": "rgb(15, 23, 42)",
+      "icone": true,
+      "raio": "8px"
+     },
+     {
+      "fundo": "rgb(255, 255, 255)",
+      "texto": "rgb(15, 23, 42)",
+      "icone": true,
+      "raio": "8px"
+     },
+     {
+      "fundo": "oklch(0.514 0.222 16.935)",
+      "texto": "rgb(255, 255, 255)",
+      "icone": true,
+      "raio": "8px"
+     }
+    ]
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "docs/sdd/00-baseline-architecture com a mesma estrutura da página vizinha",
+   "ok": true,
+   "detalhe": {
+    "quebrada": {
+     "html": 650980,
+     "titulo": "00-baseline-architecture",
+     "lateral": true,
+     "navs": 6,
+     "links": 1106,
+     "h1": 1
+    },
+    "vizinha": {
+     "html": 650639,
+     "titulo": "01 Especificação Normativa: Sincronização de Projetos Específicos",
+     "lateral": true,
+     "navs": 6,
+     "links": 1106,
+     "h1": 1
+    }
+   }
+  },
+  {
+   "grupo": "27. pente fino: envios, planos, associados, variáveis e títulos",
+   "nome": "host-manager: no máximo um ícone no título em cada uma das sete telas",
+   "ok": true,
+   "detalhe": [
+    {
+     "tela": "",
+     "titulo": "Host Manager",
+     "icones": 1
+    },
+    {
+     "tela": "usuarios/",
+     "titulo": "Contas de Hospedagem",
+     "icones": 1
+    },
+    {
+     "tela": "planos/",
+     "titulo": "Planos de Hospedagem",
+     "icones": 1
+    },
+    {
+     "tela": "hestiacp/",
+     "titulo": "Servidor",
+     "icones": 1
+    },
+    {
+     "tela": "logs/",
+     "titulo": "Logs e Tickets de Suporte",
+     "icones": 1
+    },
+    {
+     "tela": "updates/",
+     "titulo": "Host Manager Updates",
+     "icones": 1
+    },
+    {
+     "tela": "distribuido/",
+     "titulo": "Instalações distribuídas",
+     "icones": 1
+    }
+   ]
   },
   {
    "grupo": "26. telas alteradas em 390 px sem rolagem lateral",

@@ -36,7 +36,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.26",
+                    "version": "1.28",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -61,9 +61,9 @@
                     ],
                     "checksum": {
                         "html": "bea0fc26ee91b0660b630e4f27f7fba5",
-                        "css": "f70fed44ff3532df414b72f3a737ffc8",
+                        "css": "e71417e1d3135ae48f9475e73bb24e21",
                         "css_precompiled": "",
-                        "combined": "6d6d078202810d538ed22c5087ad82de"
+                        "combined": "e688e809df1be8ebce7dbbaa917e732f"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -659,7 +659,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.26",
+                    "version": "1.28",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -684,9 +684,9 @@
                     ],
                     "checksum": {
                         "html": "bea0fc26ee91b0660b630e4f27f7fba5",
-                        "css": "f70fed44ff3532df414b72f3a737ffc8",
+                        "css": "e71417e1d3135ae48f9475e73bb24e21",
                         "css_precompiled": "",
-                        "combined": "6d6d078202810d538ed22c5087ad82de"
+                        "combined": "e688e809df1be8ebce7dbbaa917e732f"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -1272,5 +1272,5 @@
             ]
         }
     },
-    "asset_version": "7360aa5e2cb8c819"
+    "asset_version": "2c64d975c6b88b80"
 }
