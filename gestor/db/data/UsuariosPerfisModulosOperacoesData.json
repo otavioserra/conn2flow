@@ -9,6 +9,14 @@
     },
     {
         "perfil": "administradores",
+        "operacao": "administrar-widgets-do-dashboard",
+        "status": "A",
+        "versao": 1,
+        "checksum": "6d2bd1842b1f66eed77316f9f44b2b50",
+        "user_modified": 0
+    },
+    {
+        "perfil": "administradores",
         "operacao": "modificar-permissao-da-pagina",
         "status": "A",
         "versao": 3,

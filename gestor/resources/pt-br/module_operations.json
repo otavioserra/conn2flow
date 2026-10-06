@@ -19,5 +19,19 @@
         "id": "modificar-permissao-do-publicador-da-pagina",
         "operacao": "permissao-pagina",
         "status": "A"
+    },
+    {
+        "modulo_id": "dashboard",
+        "nome": "Administrar Widgets do Dashboard",
+        "id": "administrar-widgets-do-dashboard",
+        "operacao": "widgets-administrar",
+        "status": "A"
+    },
+    {
+        "modulo_id": "dashboard",
+        "nome": "Visualizar Widgets do Dashboard",
+        "id": "visualizar-widgets-do-dashboard",
+        "operacao": "widgets-visualizar",
+        "status": "A"
     }
 ]

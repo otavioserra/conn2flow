@@ -262,12 +262,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.23",
+                    "version": "1.24",
                     "checksum": {
-                        "html": "3b38dae6c343b73c5a31c145090dfe79",
-                        "css": "d5f05e471069821de41711d0df252734",
+                        "html": "3fa6d73c850e784ed549c4f1924a4e18",
+                        "css": "9ed12e0d2a1a084c97a5fe30a92ac998",
                         "css_precompiled": "",
-                        "combined": "ca8d2c3cf0352b96d6440186a39aee51"
+                        "combined": "da06e0d98fe45e676b9159a72128ad60"
                     }
                 }
             ],
@@ -608,6 +608,146 @@
                     "type": "string"
                 },
                 {
+                    "id": "widgets-sem-permissao",
+                    "value": "Você não tem permissão para esta ação na área de widgets.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-duplicate",
+                    "value": "Duplicar widget",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-edit",
+                    "value": "Abrir o registro para editar",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-empty-profile",
+                    "value": "Nenhum widget foi definido para o seu perfil.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-source-profile",
+                    "value": "Usar o padrão do perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-source-notice",
+                    "value": "Você está vendo o layout padrão do seu perfil. Para editar, volte ao seu layout ou copie este.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-source-copy",
+                    "value": "Copiar para o meu layout",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-toggle-headers",
+                    "value": "Mostrar ou esconder todos os cabeçalhos",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-layouts",
+                    "value": "Layouts salvos e por perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-fullscreen",
+                    "value": "Tela cheia dos widgets",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-title",
+                    "value": "Layouts da área de widgets",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-saved",
+                    "value": "Meus layouts salvos",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-saved-help",
+                    "value": "Guarde o arranjo que está na tela com um nome e aplique de volta quando quiser.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-name",
+                    "value": "Nome do layout",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-name-required",
+                    "value": "Dê um nome ao layout.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-save",
+                    "value": "Salvar o layout atual",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-apply",
+                    "value": "Aplicar",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-delete",
+                    "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-none",
+                    "value": "Nenhum layout salvo ainda.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-profiles",
+                    "value": "Layout padrão por perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-profiles-help",
+                    "value": "Marque os perfis que devem receber o arranjo que está na tela. Quem só visualiza vê esse layout; um perfil sem layout próprio usa o de todos os perfis.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-all",
+                    "value": "Todos os perfis",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-published",
+                    "value": "Publicado",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-count",
+                    "value": "widgets",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-publish",
+                    "value": "Publicar o layout atual nos perfis marcados",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-remove",
+                    "value": "Remover",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-sem-perfil",
+                    "value": "Marque ao menos um perfil.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-done",
+                    "value": "Pronto.",
+                    "type": "string"
+                },
+                {
                     "id": "widgets-label-config",
                     "value": "Configurações do widget",
                     "type": "string"
@@ -930,12 +1070,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.23",
+                    "version": "1.24",
                     "checksum": {
-                        "html": "3b38dae6c343b73c5a31c145090dfe79",
-                        "css": "d5f05e471069821de41711d0df252734",
+                        "html": "3fa6d73c850e784ed549c4f1924a4e18",
+                        "css": "9ed12e0d2a1a084c97a5fe30a92ac998",
                         "css_precompiled": "",
-                        "combined": "ca8d2c3cf0352b96d6440186a39aee51"
+                        "combined": "da06e0d98fe45e676b9159a72128ad60"
                     }
                 }
             ],
@@ -1276,6 +1416,146 @@
                     "type": "string"
                 },
                 {
+                    "id": "widgets-sem-permissao",
+                    "value": "You are not allowed to do this in the widgets area.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-duplicate",
+                    "value": "Duplicate widget",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-edit",
+                    "value": "Open the record to edit",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-empty-profile",
+                    "value": "No widget has been set for your profile.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-source-profile",
+                    "value": "Use the profile default",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-source-notice",
+                    "value": "You are viewing the default layout of your profile. To edit, go back to your layout or copy this one.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-source-copy",
+                    "value": "Copy to my layout",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-toggle-headers",
+                    "value": "Show or hide all headers",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-layouts",
+                    "value": "Saved and profile layouts",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-fullscreen",
+                    "value": "Widgets full screen",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-title",
+                    "value": "Widgets area layouts",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-saved",
+                    "value": "My saved layouts",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-saved-help",
+                    "value": "Keep the arrangement on screen under a name and apply it back whenever you want.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-name",
+                    "value": "Layout name",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-name-required",
+                    "value": "Give the layout a name.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-save",
+                    "value": "Save current layout",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-apply",
+                    "value": "Apply",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-delete",
+                    "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-none",
+                    "value": "No saved layout yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-profiles",
+                    "value": "Default layout per profile",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-profiles-help",
+                    "value": "Check the profiles that should receive the arrangement on screen. View-only users see this layout; a profile without its own layout uses the one for all profiles.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-all",
+                    "value": "All profiles",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-published",
+                    "value": "Published",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-count",
+                    "value": "widgets",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-publish",
+                    "value": "Publish current layout to checked profiles",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-remove",
+                    "value": "Remove",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-sem-perfil",
+                    "value": "Check at least one profile.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-layouts-done",
+                    "value": "Done.",
+                    "type": "string"
+                },
+                {
                     "id": "widgets-label-config",
                     "value": "Widget settings",
                     "type": "string"
@@ -1388,5 +1668,5 @@
             ]
         }
     },
-    "asset_version": "de5d20ae20dddc1d"
+    "asset_version": "e1ad9458845559a3"
 }

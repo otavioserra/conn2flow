@@ -3,6 +3,19 @@
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-256 — REQ-247
+
+- [x] Operações `widgets-administrar` e `widgets-visualizar` declaradas nos dois idiomas; `administradores` recebe a de administrar.
+- [x] Servidor recusa gravar, publicar, listar perfis, abrir catálogo e renderizar conforme a operação (11 testes PHP).
+- [x] Usuário sem operação: aba ausente. Usuário só com visualizar: layout do perfil, sem controles (navegador, fases `sem` e `ver`).
+- [x] Administrador: publicar por perfil e para todos, alternar próprio e padrão, copiar o padrão, layouts salvos.
+- [x] Duplicar, atalho de edição, larguras de 2 a 12, todos os cabeçalhos, tela cheia.
+- [x] `resources:sync`, PHPUnit 1.683 e Vitest 588 sem falhas; pipeline do Lab com saída 0; navegador 43/43; 390 px sem rolagem lateral.
+- [ ] Concessão da operação pela tela de perfis, por um humano.
+- [ ] Revisão da chefia e homologação humana.
+
+Detalhes: [BATCH-256](../implementation/BATCH-256.md).
+
 ## BATCH-254 — REQ-245
 
 - [x] Decisão do ciclo, versões, vencimento por período, configuração e salvaguardas: 15 testes de unidade (`AtualizacaoAutomaticaReq245Test`).

@@ -30,7 +30,7 @@ final class Req203LanguageAgnosticResourcesTest extends TestCase
         $tables = [
             'usuarios' => ['file' => 'users.json', 'map_key' => 'users', 'keys' => ['id'], 'count' => 1],
             'usuarios_perfis_modulos' => ['file' => 'user_profiles_modules.json', 'map_key' => 'user_profiles_modules', 'keys' => ['perfil', 'modulo'], 'count' => 38],
-            'usuarios_perfis_modulos_operacoes' => ['file' => 'user_profiles_modules_operations.json', 'map_key' => 'user_profiles_modules_operations', 'keys' => ['perfil', 'operacao'], 'count' => 3],
+            'usuarios_perfis_modulos_operacoes' => ['file' => 'user_profiles_modules_operations.json', 'map_key' => 'user_profiles_modules_operations', 'keys' => ['perfil', 'operacao'], 'count' => 4],
             'categorias' => ['file' => 'categories.json', 'map_key' => 'categories', 'keys' => ['id'], 'count' => 1],
         ];
 

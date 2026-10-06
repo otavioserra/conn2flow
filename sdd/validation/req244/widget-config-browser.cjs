@@ -60,13 +60,16 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
   const marcar = () => page.evaluate(i => { const c = [...document.querySelectorAll('.dashboard-widget-card')].find(x => x.dataset.widgetInstance === i); c.setAttribute('data-roteiro-config', '1'); }, alvo);
   const original = Object.assign({}, PADRAO, await page.evaluate(i => (gestor.dashboard_user_prefs.widgets_layout.find(w => w.instance_id === i) || {}).options || {}, alvo));
   if (JSON.stringify(original) !== JSON.stringify(PADRAO)) { await definir(PADRAO); await page.evaluate(sel => { document.querySelector(sel + ' iframe').roteiroMarca = true; }, CARD); }
+  // Se o roteiro parar no meio, o layout inteiro do usuário volta ao que era na carga.
+  const layoutInicial = await page.evaluate(() => JSON.stringify(gestor.dashboard_user_prefs.widgets_layout));
+  try {
   await page.locator(CARD).scrollIntoViewIfNeeded();
   const antes = await estado();
   conferir('fora do modo de edição o botão de configurações não aparece', antes.botao === 'none' && antes.cabecalho !== 'none', antes);
 
   await edicao(true);
   const botoes = await page.evaluate(sel => [...document.querySelectorAll(sel + ' .dashboard-widget-card-header button')].filter(b => getComputedStyle(b).display !== 'none').map(b => b.className.match(/dashboard-widget-[a-z]+-(btn|handle)/)[0]), CARD);
-  conferir('no modo de edição o botão fica ao lado do de trocar', botoes.join() === 'dashboard-widget-drag-handle,dashboard-widget-switch-btn,dashboard-widget-config-btn,dashboard-widget-remove-btn', botoes);
+  conferir('no modo de edição o botão fica ao lado do de trocar', botoes.join().indexOf('dashboard-widget-drag-handle,dashboard-widget-switch-btn,dashboard-widget-config-btn,') === 0 && botoes[botoes.length - 1] === 'dashboard-widget-remove-btn', botoes);
   await page.click(CARD + ' .dashboard-widget-config-btn'); await page.waitForTimeout(400);
   const pop = await page.evaluate(() => { const m = document.getElementById('dashboard-widget-config-modal'), caixa = m.firstElementChild.getBoundingClientRect(); const o = n => m.querySelector('[data-widget-option="' + n + '"]');
     return {visivel: !m.classList.contains('hidden'), esq: Math.round(caixa.left), dir: Math.round(innerWidth - caixa.right), nome: m.querySelector('[data-widget-config-name]').textContent, cabecalho: o('header').checked, moldura: o('frame').checked, corTravada: o('background').disabled,
@@ -113,8 +116,8 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
   // 390 px: o pop-up cabe na tela.
   await page.setViewportSize({width: 390, height: 800}); await page.waitForTimeout(400);
   await edicao(true);
-  await page.locator(CARD + ' .dashboard-widget-config-btn').scrollIntoViewIfNeeded();
-  await page.click(CARD + ' .dashboard-widget-config-btn'); await page.waitForTimeout(400);
+  // A janela foi estreitada depois da carga e o menu lateral ficou aberto por cima: o clique vai direto no botão.
+  await page.locator(CARD + ' .dashboard-widget-config-btn').dispatchEvent('click'); await page.waitForTimeout(400);
   const estreito = await page.evaluate(() => { const r = document.getElementById('dashboard-widget-config-modal').firstElementChild.getBoundingClientRect(); return {esq: Math.round(r.left), dir: Math.round(r.right), janela: innerWidth, lateral: document.documentElement.scrollWidth <= innerWidth + 1}; });
   conferir('em 390 px o pop-up cabe sem rolagem lateral', estreito.esq >= 0 && estreito.dir <= estreito.janela && estreito.lateral, estreito);
   await foto('6-popup-390');
@@ -134,6 +137,12 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
     conferir('opções que o widget tinha antes do roteiro devolvidas', JSON.stringify(devolvido) === JSON.stringify(original), {devolvido, original});
   }
   conferir('nenhum erro de script na página', erros.length === 0, erros);
+  } catch (e) {
+    await page.goto(base + '/dashboard/', {waitUntil: 'networkidle'});
+    await page.evaluate(async valor => { const p = new URLSearchParams({opcao: 'inicio', ajax: 'sim', ajaxOpcao: 'salvar-preferencias', chave: 'dashboard_widgets_layout', valor}); await fetch(gestor.raiz + 'dashboard/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: p}); }, layoutInicial);
+    console.log('  roteiro interrompido: layout do usuário devolvido ao estado da carga');
+    throw e;
+  }
   await browser.close();
   console.log('\n' + (total - falhas) + '/' + total + ' conferências');
   process.exit(falhas ? 1 : 0);
