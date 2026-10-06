@@ -1,6 +1,6 @@
 # BATCH-249 — REQ-240: harmonização global do Design System Tailwind (Core)
 
-- Status: implemented-pending-homologation. Pilares 1 a 6 e os dois adendos (`admin-atualizacoes` e unificação dos arquivos no `admin-arquivos`) implementados, publicados no Lab e validados em 2026-10-05.
+- Status: implemented-pending-homologation. Pilares 1 a 6, os dois adendos (`admin-atualizacoes` e unificação dos arquivos no `admin-arquivos`) e a terceira rodada de ajustes implementados, publicados no Lab e validados em 2026-10-05 e 06.
 - Projeto: conn2flow
 - Raiz: `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`
 - Requisição: [REQ-240](../human-requests/req-240.md), com dois adendos do Engenheiro Chefe (seções 6 e 7). Coordenação: conn2flow-site, REQ-106 / [BATCH-100](../../../conn2flow-site/sdd/implementation/BATCH-100.md).
@@ -24,7 +24,8 @@ A REQ-239 rodou em paralelo e terminou sem commit. Com autorização do Engenhei
 - [x] Pipeline oficial do Lab (oito rodadas ao longo do lote, saída 0) e varredura de navegador em 257 telas.
 - [x] Adendo 2: `admin-arquivos` como único módulo de arquivos; `arquivos` do site aposentado.
 - [x] Adendo 2: modo iframe (seletor) do `admin-arquivos` e ícones corrigidos.
-- [ ] API de arquivos no `admin-arquivos` (a do módulo antigo saiu com ele; ver limites).
+- [x] API de arquivos: ficou no site, como módulo-biblioteca `arquivos-api` (BATCH-100), por decisão do Engenheiro Chefe.
+- [x] Terceira rodada: filtro de ordenação do `admin-arquivos`, barra de edição do site, REQ-241 redigida.
 - [ ] Homologação humana.
 
 ## O que a auditoria mostrou
@@ -125,16 +126,28 @@ O roteiro `req240-arquivos-eval.js` tinha sondagens de "ação fora do escopo" q
 
 ## Limites e achados fora do escopo
 
-- **API de arquivos.** O módulo antigo expunha `/_api/arquivos/*` (envio, listagem, pastas). Ela saiu com o módulo e não foi portada: grava arquivos por token e não havia como exercitá-la no Lab nesta sessão. O único consumidor encontrado é o roteiro `ai-workspace/pt-br/scripts/3d-catalog/3d-catalog-test-ptbr.sh` do site, que deixa de funcionar na etapa de envio.
+- **API de arquivos.** Não entrou no core: ficou no site como módulo-biblioteca `arquivos-api` (BATCH-100), validada no Lab com token de administrador.
 - **Nome de pasta de usuário.** O escopo é `<id do usuário>/` na raiz dos conteúdos, como o módulo antigo já fazia. Um usuário cujo id coincida com uma pasta do sistema (`mini`, `plugins`, `favicon`…) veria essa pasta. O comportamento é herdado; não foi criada regra nova.
 - O seletor do catálogo 3D foi trocado no PHP dos três módulos, mas a abertura do seletor a partir de uma tela do catálogo não foi exercitada no navegador.
 - O `admin-arquivos` foi conferido em pt-br; o inglês recebeu as mesmas mudanças por arquivo.
 
 - O resumo da varredura ainda lista "P3 bloco principal sem cartão branco" em 50 telas de listagem: é falso-positivo do medidor (ele parte de um elemento fora do cartão). As listagens foram conferidas por captura e são cartões brancos. O medidor foi ajustado depois da segunda rodada e não foi reexecutado.
 - "Marcador cru no texto" em 19 telas: 17 são editores de modelo mostrando os próprios placeholders, de propósito. Os dois reais eram do `gateways-pagamentos` (corrigido no BATCH-100).
-- `modulos-grupos-distribuido/` (site): a listagem dispara um POST que termina em erro 500 desde 2026-10-04 (15 ocorrências no log do Lab). O módulo é um piloto que usa a listagem genérica sem declarar a configuração dela. Não corrigido: completar o piloto é funcionalidade.
+- `modulos-grupos-distribuido` (site): era só um esqueleto e foi removido na terceira rodada, por decisão do Engenheiro Chefe (BATCH-100).
 - `galleries/editar` e `admin-templates/editar`: um 404 de imagem em registros de teste, dado e não código.
 - `dashboard/`: erro de leitura de cookie dentro do iframe isolado de widget apareceu uma vez em três execuções; não reproduzido.
 - A cada pipeline o core registra `paginas +2`: dois registros são reinseridos em toda rodada. Não investigado.
 - Navegador em pt-br; o inglês está coberto pelos contratos e pela compilação. O comportamento novo do `admin-atualizacoes.js` foi validado no navegador e não ganhou teste Vitest.
 - Nenhuma atualização do sistema foi executada pela tela nova: só seleção de modo, abas e leitura.
+
+## Terceira rodada (2026-10-06)
+
+Pedidos do Engenheiro Chefe depois do segundo marco.
+
+- **Filtro "Filtrar Lista" do `admin-arquivos`.** A ordenação era montada na variante `menu` do Fomantic (uma `<div>` com itens e ícones), que no painel Tailwind saía como lista sempre aberta; e o JS lia `.val()` dessa `<div>`, que devolve vazio, de modo que a ordem escolhida nunca chegava ao servidor. Passou a ser um select comum. Conferido no navegador: controle com 38 px e a listagem muda ao escolher descendente.
+- **Barra de edição do site deslocada** (regressão deste lote). Para dar margem ao seletor de arquivos eu tinha posto `padding` e os scripts do Lucide no `layout-iframe-tailwindcss`, que também é o layout da página `dashboard-site-toolbar`. O layout voltou ao original; a margem passou para o CSS do `admin-arquivos` (classe no `body` aplicada pelo JS em iframe) e os scripts entram pelo roteador só para página do painel aberta em iframe. Medido: a raiz da barra voltou a 0,0, largura total e 30 px; o seletor manteve os ícones.
+- **REQ-241** redigida e registrada no apontador: atualização automatizada do sistema, ativável pelo painel. Não implementada. O rollback manual pela tela ficou fora, por decisão do Engenheiro Chefe.
+
+Verificação da rodada: PHPUnit 1.613 testes e Vitest 541, sem falhas; pipeline oficial com saída 0.
+
+O que não foi exercitado nesta rodada: a varredura completa das 257 telas (a última é a do primeiro marco) e a barra de edição dentro de uma página pública (a sessão gerada para o agente não exibe a barra; foi medida a página dela diretamente).

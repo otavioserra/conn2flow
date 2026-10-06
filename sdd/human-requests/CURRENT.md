@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-241.md](req-241.md) (BATCH-250 `ready-for-intake`, 2026-10-06, Core): Atualização automatizada do sistema, ativável pelo painel — checagem agendada, janela de horário, uma tentativa por versão, sempre com verificação e volta automática; redigida a pedido do Engenheiro Chefe durante a REQ-240, não implementada.
   - [req-240.md](req-240.md) (BATCH-249 `implemented-pending-homologation`, 2026-10-05, multi-repo — Opus 5.5 Flagship; pilares e os dois adendos em `main`): Grande Varredura, Auditoria Profunda e Harmonização Global do Design System Tailwind em Todos os Módulos (Core & Site) — ícones Lucide, abas c2fc-abas, cards brancos, selects, tabelas limpas e responsividade 390px em todos os 51 módulos.
   - [req-239.md](req-239.md) (BATCH-248 `in-review`, 2026-10-05, multi-repo): Refinamentos e Correções do Painel Tailwind e E-commerce decorrentes da Auditoria Humana das Fases 1 e 2 — Core (Dashboard P/G, admin-paginas, publisher, variáveis, admin-ia, admin-arquivos, cookie-consent, máscara monetária) e Site (products, stripe-products, catálogo Stripe, fretes, editor de página do produto e variações).
   - [req-238.md](req-238.md) (BATCH-247 `complete`, 2026-10-05, integrado em `main` `13085415` Core e `6fa8a6c4` Site): Master Operacional — Harmonização do Design System, TopBar/Sidebar, Dashboard V3.3 e Conformidade Visual dos Módulos (validada e integrada com sucesso).

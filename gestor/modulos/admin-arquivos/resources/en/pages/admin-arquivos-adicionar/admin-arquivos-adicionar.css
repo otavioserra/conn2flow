@@ -191,3 +191,10 @@ input[type="file"] {
     #files-cont.preview-m .c2f-upload-cel,
     #files-cont.preview-s .c2f-upload-cel { width: calc(50% - 12px); }
 }
+
+/* req-240: margem do gerenciador quando aberto em iframe (seletor). */
+body.c2f-arquivos-iframe {
+    margin: 0;
+    padding: 16px;
+    background: #f8fafc;
+}

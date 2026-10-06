@@ -547,3 +547,11 @@
     padding-bottom: 5px;
     background: linear-gradient(to top, rgba(15, 23, 42, .62), rgba(15, 23, 42, 0) 46%);
 }
+
+/* req-240: margem do gerenciador quando aberto em iframe (seletor). Fica aqui, e não no layout de iframe,
+   porque outras telas usam o mesmo layout (a barra de edição do site, por exemplo) e não podem ser empurradas. */
+body.c2f-arquivos-iframe {
+    margin: 0;
+    padding: 16px;
+    background: #f8fafc;
+}

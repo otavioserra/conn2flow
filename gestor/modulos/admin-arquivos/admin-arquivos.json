@@ -36,7 +36,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.22",
+                    "version": "1.23",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -61,9 +61,9 @@
                     ],
                     "checksum": {
                         "html": "6ce3226175d624c6f1448c194736db2f",
-                        "css": "caf808cffce16bf71876da27e1fb33a0",
+                        "css": "4fd3799ac92ac11f0b33bc6124350a48",
                         "css_precompiled": "",
-                        "combined": "4726e41ee78de071341d0be5024a4ef0"
+                        "combined": "1d551343b207d253dc6be6e586578f36"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -75,7 +75,7 @@
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.11",
+                    "version": "1.12",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -95,9 +95,9 @@
                     ],
                     "checksum": {
                         "html": "8cb09dbd9d5dba4840137853587325cb",
-                        "css": "fa8df32a8182cda760ee37825aa92933",
+                        "css": "ef7dc6f3cbec34e0dee47a80185e9877",
                         "css_precompiled": "",
-                        "combined": "42bba88b7c17f28745e322462851aaa4"
+                        "combined": "d30b7bc97a455f768054c2eed36aa970"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -614,7 +614,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.22",
+                    "version": "1.23",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -639,9 +639,9 @@
                     ],
                     "checksum": {
                         "html": "6ce3226175d624c6f1448c194736db2f",
-                        "css": "caf808cffce16bf71876da27e1fb33a0",
+                        "css": "4fd3799ac92ac11f0b33bc6124350a48",
                         "css_precompiled": "",
-                        "combined": "4726e41ee78de071341d0be5024a4ef0"
+                        "combined": "1d551343b207d253dc6be6e586578f36"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -653,7 +653,7 @@
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.11",
+                    "version": "1.12",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -673,9 +673,9 @@
                     ],
                     "checksum": {
                         "html": "8cb09dbd9d5dba4840137853587325cb",
-                        "css": "fa8df32a8182cda760ee37825aa92933",
+                        "css": "ef7dc6f3cbec34e0dee47a80185e9877",
                         "css_precompiled": "",
-                        "combined": "42bba88b7c17f28745e322462851aaa4"
+                        "combined": "d30b7bc97a455f768054c2eed36aa970"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -1182,5 +1182,5 @@
             ]
         }
     },
-    "asset_version": "5b87bd73c2b8e806"
+    "asset_version": "5bd2359f2118eff6"
 }

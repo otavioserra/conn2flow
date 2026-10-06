@@ -104,6 +104,8 @@ $(document).ready(function () {
 	if (typeof gestor === 'undefined' || !gestor.adminArquivos) return;
 
 	var cfg = gestor.adminArquivos;
+	// req-240: no seletor (iframe) o corpo ganha a margem do gerenciador; o layout de iframe não a traz.
+	if (cfg.paginaIframe && document.body) document.body.classList.add('c2f-arquivos-iframe');
 	var i18n = cfg.i18n || {};
 	var t = function (id) { return typeof i18n[id] !== 'undefined' ? i18n[id] : id; };
 	var iconePadrao = {

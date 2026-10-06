@@ -599,18 +599,17 @@ function admin_arquivos_listar_arquivos(){
 				'tipo' => 'select',
 				'id' => 'order',
 				'nome' => 'ordenar',
-				'menu' => true,
-				'procurar' => true,
+				// req-240: select comum. A variante `menu` do Fomantic (uma <div> com itens e ícones) não tem
+				// estilo no painel Tailwind: saía como lista sempre aberta, e o JS lia `.val()` de uma <div>
+				// (vazio), de modo que a ordenação escolhida nunca chegava ao servidor.
 				'fluid' => true,
 				'valor_selecionado' => 'alphabetical-asc',
-				'valor_selecionado_texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-alphabetical-asc')),
-				'valor_selecionado_icone' => 'sort alphabet down',
 				'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-placeholder')),
 				'dados' => Array(
-					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-alphabetical-asc')), 'valor' => 'alphabetical-asc', 'icone' => 'sort alphabet down'),
-					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-alphabetical-desc')), 'valor' => 'alphabetical-desc', 'icone' => 'sort alphabet up alternate'),
-					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-date-asc')), 'valor' => 'order-date-asc', 'icone' => 'sort amount down alternate'),
-					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-date-desc')), 'valor' => 'order-date-desc', 'icone' => 'sort amount up'),
+					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-alphabetical-asc')), 'valor' => 'alphabetical-asc'),
+					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-alphabetical-desc')), 'valor' => 'alphabetical-desc'),
+					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-date-asc')), 'valor' => 'order-date-asc'),
+					Array('texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'order-date-desc')), 'valor' => 'order-date-desc'),
 				),
 			),
 		)

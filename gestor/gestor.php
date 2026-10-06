@@ -3176,6 +3176,16 @@ function gestor_roteador(){
 			if(strpos((string)($paginas[0]['layout_id'] ?? ''), 'layout-administrativo-tailwind') === 0){
 				gestor_incluir_biblioteca('controles');
 				if(function_exists('controles_incluir')) controles_incluir();
+
+				// Em iframe a casca do painel não existe, e é ela que carrega o Lucide e o script que desenha
+				// os ícones. Entram aqui, só para página do painel: o layout mínimo de iframe é usado também
+				// pela barra de edição do site, que não pode receber scripts nem margens do painel.
+				if(!empty($_GESTOR['paginaIframe'])){
+					gestor_incluir_biblioteca('assets-externos');
+					if(function_exists('assets_externos_incluir')) assets_externos_incluir('lucide');
+					if(!isset($_GESTOR['javascript']) || !is_array($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
+					$_GESTOR['javascript'][] = recursos_tag_js('global/admin-tailwind.js', gestor_asset_version('global'));
+				}
 			}
 
 			// ===== Incluir componentes na página.

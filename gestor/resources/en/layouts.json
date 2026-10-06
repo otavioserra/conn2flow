@@ -80,12 +80,12 @@
         "name": "Minimal Tailwind Iframe Layout",
         "id": "layout-iframe-tailwindcss",
         "framework_css": "tailwindcss",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "bccb167d9d7542da8d7f72064c86e6d2",
+            "html": "cd3afc06550032cb5c1cf367a8820552",
             "css": "",
             "css_precompiled": "",
-            "combined": "bccb167d9d7542da8d7f72064c86e6d2"
+            "combined": "cd3afc06550032cb5c1cf367a8820552"
         }
     },
     {
