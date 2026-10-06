@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-242.md](req-242.md) (BATCH-251 `ready-for-intake`, 2026-10-06, multi-repo — Opus 5.5 Flagship): Refinamentos Visuais, Usabilidade e Harmonização de Controles do Painel Tailwind (Core) — forms-search/forms (abas limpas, selects flutuantes sem corte, botão copiar), forms-submissions (CodeMirror no JSON, select novo), Dashboard V3.4 (hover abas, cover vs ícone SVG exclusivos, menu widgets, blueprint mesh resize), TopBar favoritos fixo à direita, cursor pointer global em checkboxes/rádios, galleries e seletor admin-arquivos com miniaturas selecionadas.
   - [req-241.md](req-241.md) (BATCH-250 `ready-for-intake`, 2026-10-06, Core): Atualização automatizada do sistema, ativável pelo painel — checagem agendada, janela de horário, uma tentativa por versão, sempre com verificação e volta automática; redigida a pedido do Engenheiro Chefe durante a REQ-240, não implementada.
   - [req-240.md](req-240.md) (BATCH-249 `implemented-pending-homologation`, 2026-10-05, multi-repo — Opus 5.5 Flagship; pilares e os dois adendos em `main`): Grande Varredura, Auditoria Profunda e Harmonização Global do Design System Tailwind em Todos os Módulos (Core & Site) — ícones Lucide, abas c2fc-abas, cards brancos, selects, tabelas limpas e responsividade 390px em todos os 51 módulos.
   - [req-239.md](req-239.md) (BATCH-248 `complete`, 2026-10-05, integrado em `main` `db9ca87b` + `ee5cb51a` Core e `025353e1` + `956831ca` Site): Refinamentos e Correções do Painel Tailwind e E-commerce decorrentes da Auditoria Humana das Fases 1 e 2 — Core (Dashboard P/G, admin-paginas, publisher, variáveis, admin-ia, admin-arquivos, cookie-consent, máscara monetária) e Site (products, stripe-products, catálogo Stripe, fretes, editor de página do produto e variações).
@@ -67,4 +68,4 @@
 - **Intakes Históricos Arquivados**:
   - Requisições anteriores (req-001 a req-178) arquivadas em [archive/](archive/).
 
-- **Status**: BATCH-222/REQ-214 implementado e validado no Lab.
+- **Status**: BATCH-251/REQ-242 pronto para intake (Flagship Opus 5.5).
