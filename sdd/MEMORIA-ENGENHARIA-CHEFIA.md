@@ -49,6 +49,11 @@
   - Uma vez que uma especificação de requisição (`req-XXX.md`) foi liberada para desenvolvimento e o batch correspondente está em andamento (`in-progress`), o Engenheiro Chefe **não** deve modificar este arquivo de especificação ativo.
   - Isso evita conflitos de versão e de lógica de trabalho durante o ciclo do executor. Novas demandas ou correções surgidas no meio do processo devem ser enfileiradas para o próximo lote (ex: `req-YYY.md`) ou tratadas de forma isolada após o fechamento do lote corrente.
 
+- **Três Mandamentos de Fidelidade na Redação de Requisições Humanas (2026-10-06)**:
+  - **1. Citação Literal Obrigatória**: Em toda especificação (`req-XXX.md`), colar o relato integral e exato do Engenheiro Chefe Humano entre aspas antes de qualquer interpretação ou resumo. Qualquer síntese analítica do Arquiteto deve vir estritamente após a citação e explicitamente identificada como "Interpretação do Arquiteto".
+  - **2. Preservação da URL Completa com Parâmetros**: Nunca truncar ou omitir query strings ou parâmetros de registro (ex: registrar sempre `publisher-pages/editar/?id=docs-sdd-00-baseline-architecture` em vez de apenas `publisher-pages/editar/`). O comportamento anômalo geralmente depende do tipo ou volume de dados contido naquele registro específico (ex: código em páginas de documentação).
+  - **3. Foco em Sintoma e Reprodução (Proibição de Soluções Prescritivas Precipitadas)**: Descrever estritamente "Sintoma + Onde + Como reproduzir", abstendo-se de prescrever classes CSS, propriedades específicas ou chamadas JS (como `stopPropagation`) antes de uma auditoria empírica no código pelo executor. Prescrições precipitadas induzem o executor ao erro e mascaram a causa raiz real.
+
 - **Arquivamento Histórico do SDD (Otimização de Contexto)**:
   - Para evitar o crescimento descontrolado dos arquivos do SDD (que resulta em alto consumo de tokens e perda de eficiência no contexto de processamento de IA), adota-se a limpeza periódica.
   - Devem ser mantidos apenas os últimos 10 itens correntes em cada arquivo. Os itens mais antigos serão movidos para subpastas `/archive/` dentro de cada conceito (ex: `sdd/decisions/archive/decisions-001-030.md`).
