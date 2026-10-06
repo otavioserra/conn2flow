@@ -27,7 +27,7 @@ sources:
   - gestor/db/migrations/20250723165531_create_paginas_301_table.php
   - gestor/db/migrations/20260127162100_create_publisher_pages_table.php
   - gestor/db/migrations/20260713130000_expand_publisher_pages_identifiers.php
-verified_at: ad58064f
+verified_at: 914c7b10
 ---
 
 # `publisher-pages` module
@@ -124,3 +124,7 @@ Old Portuguese documentation used nonexistent names such as `publicador_paginas`
 - [Page administration](admin-paginas.md)
 - [Publication index](publisher-index.md)
 - [Highlights](publisher-highlights.md)
+
+## Tailwind editor and escaped content
+
+The content editor escapes HTML before placing it in textarea. Examples containing entities or a closing textarea stay editable text. Plain structured fields are escaped; HTML fields preserve their authored content. Existing documents saved before this correction need comparison with their original source: escaping on display does not recover damaged content. Template cards and copy buttons use the shared panel controls.

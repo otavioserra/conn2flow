@@ -94,3 +94,9 @@ The old Portuguese documentation invented `publicador_tipos`/`publicador_taxonom
 - [Menus](menus.md)
 - [Database library](../libraries/banco.md)
 - [Documentation contract](../../guides/documentation.md)
+
+## Tailwind panel controls
+
+Template selection uses compact cards and previews; controls and copy actions follow the shared standard.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

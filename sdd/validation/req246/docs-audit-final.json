@@ -1,0 +1,2593 @@
+{
+    "items": [
+        {
+            "item": "en:concepts/ai-security.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 22 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/architecture.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 18 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/global-variables.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/hooks.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 31 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/multilingual.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 18 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/plugins.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/projects.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/request-lifecycle.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/resources.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/system-updates.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 5 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/vision.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/widgets.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:guides/create-a-module.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:guides/deploy-a-project.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:guides/dev-tools-vscode.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:guides/development-environment.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:guides/documentation.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:guides/installation.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/auth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/distributed.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/gateways.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/modules.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/oauth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/project.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/api/system.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/ai.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/assets.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/auth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/css.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/db.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/docker.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/docs.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/env.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/help.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/installer.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/manager.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/module.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/motion.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/page.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/plugin.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/project.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 5 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/resources.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/cli/tailwind.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/2fa.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/autenticacao.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/banco.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/comunicacao.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/configuracao.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/cron.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/editor-texto.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/formato.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/formulario.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/hooks.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/host.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/html.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 19 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 26 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/jwt.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/lang.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/modulo-distribuido.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/oauth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/oauth2.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/pagina.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/paypal.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/plugins-installer.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/recursos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/seguranca.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/sitemap.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/usuario.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/variaveis.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/libraries/widgets.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-arquivos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-categorias.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-componentes.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-environment.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-layouts.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 25 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-modos-ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-paginas.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 31 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-plugins.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-prompts-ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-templates.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/contatos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/cookie-consent.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/forms-search.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/forms-submissions.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/forms.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/galleries.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/interface.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/menus.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/modulos-grupos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/modulos-operacoes.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/modulos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/pages-index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/perfil-usuario.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/publisher-highlights.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/publisher-index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/publisher.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/usuarios-perfis.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/usuarios.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/variables.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:whats-new/2.10.0.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:whats-new/2.10.11.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:whats-new/2.10.12.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:whats-new/2.10.13.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:whats-new/2.9.39.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "missing:reference/libraries/cookie-consent.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Documentação inexistente (pt-br e en)."
+                }
+            ]
+        },
+        {
+            "item": "missing:reference/libraries/manutencao.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Documentação inexistente (pt-br e en)."
+                }
+            ]
+        },
+        {
+            "item": "missing:reference/libraries/modulo-distribuido-protocolo.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Documentação inexistente (pt-br e en)."
+                }
+            ]
+        },
+        {
+            "item": "missing:reference/libraries/paginas-layouts-perfis.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Documentação inexistente (pt-br e en)."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/ai-security.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 22 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/architecture.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 18 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/global-variables.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/hooks.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 31 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/multilingual.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 18 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/plugins.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/projects.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/request-lifecycle.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/resources.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/system-updates.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 5 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/vision.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/widgets.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:guides/create-a-module.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:guides/deploy-a-project.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:guides/dev-tools-vscode.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:guides/development-environment.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:guides/documentation.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:guides/installation.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/auth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/distributed.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/gateways.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/modules.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/oauth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/project.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/api/system.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/ai.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/assets.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/auth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/css.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/db.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/docker.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/docs.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/env.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/help.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/installer.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/manager.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/module.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/motion.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/page.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/plugin.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/project.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 5 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/resources.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/cli/tailwind.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/2fa.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/autenticacao.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/banco.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/comunicacao.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/configuracao.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/cron.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/editor-texto.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/formato.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/formulario.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/hooks.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/host.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/html.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 19 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 26 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/jwt.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/lang.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/modulo-distribuido.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/oauth.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/oauth2.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/pagina.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/paypal.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/plugins-installer.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/recursos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/seguranca.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/sitemap.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/usuario.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/variaveis.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/libraries/widgets.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-arquivos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-categorias.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-componentes.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-environment.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-layouts.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 25 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-modos-ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-paginas.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 31 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-plugins.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-prompts-ia.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-templates.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/contatos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/cookie-consent.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/forms-search.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/forms-submissions.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/forms.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/galleries.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/interface.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 17 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/menus.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/modulos-grupos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/modulos-operacoes.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/modulos.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/pages-index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/perfil-usuario.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/publisher-highlights.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/publisher-index.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/publisher.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/usuarios-perfis.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/usuarios.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/variables.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:whats-new/2.10.0.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:whats-new/2.10.11.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:whats-new/2.10.12.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 6 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:whats-new/2.10.13.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:whats-new/2.9.39.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:concepts/admin-interface.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:concepts/css-and-tailwind.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:guides/ci-cd.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:guides/create-a-plugin.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:guides/site-administration.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:index.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/cli/update.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/admin-topbar.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/arquivo.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/assets-externos.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/atualizacoes-automatica.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/atualizacoes-choques.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/atualizacoes-execucao.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/controles.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/db-data.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/deploy-lock.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/ftp.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/geral.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/gestor.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/html-editor.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/instalacao-manifesto.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/interface-listar-tailwind.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/interface.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/ip.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/log.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/modelo.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/pdf.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/plugins-consts.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/plugins.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/libraries/stripe.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/modules/admin-atualizacoes.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/modules/admin-cron.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/modules/dashboard.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:reference/modules/publisher-pages.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:whats-new/2.10.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:whats-new/2.9.51.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:whats-new/2.9.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "en:whats-new/index.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:concepts/admin-interface.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:concepts/css-and-tailwind.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:guides/ci-cd.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:guides/create-a-plugin.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:guides/site-administration.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:index.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/cli/update.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/admin-topbar.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/arquivo.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/assets-externos.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/atualizacoes-automatica.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/atualizacoes-choques.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/atualizacoes-execucao.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/controles.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/db-data.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/deploy-lock.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/ftp.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/geral.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/gestor.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/html-editor.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/instalacao-manifesto.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/interface-listar-tailwind.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/interface.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/ip.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/log.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/modelo.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/pdf.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/plugins-consts.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/plugins.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/libraries/stripe.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/modules/admin-atualizacoes.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/modules/admin-cron.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/modules/dashboard.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:reference/modules/publisher-pages.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:whats-new/2.10.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:whats-new/2.9.51.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:whats-new/2.9.md",
+            "score": 0,
+            "issues": []
+        },
+        {
+            "item": "pt-br:whats-new/index.md",
+            "score": 0,
+            "issues": []
+        }
+    ],
+    "legacy": {
+        "pt-br": 0,
+        "en": 0
+    },
+    "totals": {
+        "error": 0,
+        "warning": 220,
+        "info": 0
+    }
+}

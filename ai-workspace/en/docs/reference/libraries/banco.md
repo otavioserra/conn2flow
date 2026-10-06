@@ -204,57 +204,57 @@ Reference generated from `gestor/bibliotecas/banco.php` by `c2f docs:extract` �
   Parameters:
   - `$query`: A query SQL a ser executada.
   Returns: O resultado da query ou false em caso de erro.
-- `banco_linhas_afetadas(): int|null` — [line 206](../../../../../gestor/bibliotecas/banco.php#L206)
+- `banco_linhas_afetadas(): int|null` — [line 219](../../../../../gestor/bibliotecas/banco.php#L219)
   Retorna quantas linhas a última escrita (INSERT/UPDATE/DELETE) alterou.
   Returns: Linhas afetadas, ou null quando indisponível (ex.: modo distribuído).
-- `banco_num_rows(mixed $result): int` — [line 228](../../../../../gestor/bibliotecas/banco.php#L228)
+- `banco_num_rows(mixed $result): int` — [line 241](../../../../../gestor/bibliotecas/banco.php#L241)
   Retorna o número de linhas de um resultado de query.
   Parameters:
   - `$result`: Resultado mysqli, remoto ou valor inválido retornado pela query.
   Returns: O número de linhas no resultado.
-- `banco_num_fields(mysqli_result $result): int` — [line 255](../../../../../gestor/bibliotecas/banco.php#L255)
+- `banco_num_fields(mysqli_result $result): int` — [line 268](../../../../../gestor/bibliotecas/banco.php#L268)
   Retorna o número de campos/colunas em um resultado de query.
   Parameters:
   - `$result`: O resultado da query.
   Returns: O número de campos no resultado.
-- `banco_field_name(mysqli_result $result, int $num_field): string` — [line 276](../../../../../gestor/bibliotecas/banco.php#L276)
+- `banco_field_name(mysqli_result $result, int $num_field): string` — [line 289](../../../../../gestor/bibliotecas/banco.php#L289)
   Retorna o nome de um campo específico do resultado.
   Parameters:
   - `$result`: O resultado da query.
   - `$num_field`: O índice do campo (começando em 0).
   Returns: O nome do campo.
-- `banco_fields_names(string $table): array|null` — [line 299](../../../../../gestor/bibliotecas/banco.php#L299)
+- `banco_fields_names(string $table): array|null` — [line 312](../../../../../gestor/bibliotecas/banco.php#L312)
   Retorna um array com os nomes de todos os campos de uma tabela.
   Parameters:
   - `$table`: Nome da tabela.
   Returns: Array com os nomes dos campos ou NULL se a tabela estiver vazia.
-- `banco_row(mysqli_result $result): array|null` — [line 330](../../../../../gestor/bibliotecas/banco.php#L330)
+- `banco_row(mysqli_result $result): array|null` — [line 343](../../../../../gestor/bibliotecas/banco.php#L343)
   Retorna uma linha do resultado como array indexado.
   Parameters:
   - `$result`: O resultado da query.
   Returns: Array com os valores da linha ou NULL se não houver mais linhas.
-- `banco_row_array(mysqli_result $result): array|null` — [line 350](../../../../../gestor/bibliotecas/banco.php#L350)
+- `banco_row_array(mysqli_result $result): array|null` — [line 363](../../../../../gestor/bibliotecas/banco.php#L363)
   Retorna uma linha do resultado como array associativo e indexado.
   Parameters:
   - `$result`: O resultado da query.
   Returns: Array com os valores da linha ou NULL se não houver mais linhas.
-- `banco_fetch_assoc(mysqli_result $result): array|null` — [line 370](../../../../../gestor/bibliotecas/banco.php#L370)
+- `banco_fetch_assoc(mysqli_result $result): array|null` — [line 383](../../../../../gestor/bibliotecas/banco.php#L383)
   Retorna a próxima linha como array associativo.
   Parameters:
   - `$result`: O resultado da query.
   Returns: Array associativo com os valores da linha ou NULL.
-- `banco_sql(string $sql): array|null` — [line 391](../../../../../gestor/bibliotecas/banco.php#L391)
+- `banco_sql(string $sql): array|null` — [line 404](../../../../../gestor/bibliotecas/banco.php#L404)
   Executa uma query SQL e retorna todos os resultados.
   Parameters:
   - `$sql`: A query SQL a ser executada.
   Returns: Array com todas as linhas do resultado ou NULL se não houver resultados.
-- `banco_sql_names(string $sql, string $campos): array|null` — [line 419](../../../../../gestor/bibliotecas/banco.php#L419)
+- `banco_sql_names(string $sql, string $campos): array|null` — [line 432](../../../../../gestor/bibliotecas/banco.php#L432)
   Executa uma query SQL e retorna resultados com nomes de campos.
   Parameters:
   - `$sql`: A query SQL a ser executada.
   - `$campos`: Lista de campos separados por vírgula ou '*' para todos.
   Returns: Array de arrays associativos ou NULL se não houver resultados.
-- `banco_select(array|false $params = false): array|null` — [line 471](../../../../../gestor/bibliotecas/banco.php#L471)
+- `banco_select(array|false $params = false): array|null` — [line 484](../../../../../gestor/bibliotecas/banco.php#L484)
   Seleciona dados do banco de dados de forma estruturada.
   Parameters:
   - `$params`: Parâmetros da função.
@@ -263,146 +263,146 @@ Reference generated from `gestor/bibliotecas/banco.php` by `c2f docs:extract` �
   - `$params['extra']`: Valores extras (WHERE, ORDER BY, LIMIT, etc.) (opcional).
   - `$params['unico']`: Se true, retorna array unidimensional ao invés de bidimensional (opcional).
   Returns: Array com os resultados ou NULL se não houver dados.
-- `banco_select_name(string $campos, string $tabela, string $extra): array|null` — [line 542](../../../../../gestor/bibliotecas/banco.php#L542)
+- `banco_select_name(string $campos, string $tabela, string $extra): array|null` — [line 555](../../../../../gestor/bibliotecas/banco.php#L555)
   Seleciona dados do banco retornando arrays associativos.
   Parameters:
   - `$campos`: Lista de campos separados por vírgula ou '*'.
   - `$tabela`: Nome da tabela.
   - `$extra`: Condições extras da query (WHERE, ORDER BY, etc.).
   Returns: Array com os resultados ou NULL se não houver dados.
-- `banco_select_editar(string $campos, string $tabela, string $extra): array|null` — [line 599](../../../../../gestor/bibliotecas/banco.php#L599)
+- `banco_select_editar(string $campos, string $tabela, string $extra): array|null` — [line 612](../../../../../gestor/bibliotecas/banco.php#L612)
   Seleciona um único registro para edição.
   Parameters:
   - `$campos`: Lista de campos separados por vírgula ou '*'.
   - `$tabela`: Nome da tabela.
   - `$extra`: Condições extras da query (WHERE, ORDER BY, etc.).
   Returns: Array associativo com o registro ou NULL se não houver dados.
-- `banco_select_campos_antes_iniciar(string $campos, string $tabela, string $extra): bool` — [line 664](../../../../../gestor/bibliotecas/banco.php#L664)
+- `banco_select_campos_antes_iniciar(string $campos, string $tabela, string $extra): bool` — [line 677](../../../../../gestor/bibliotecas/banco.php#L677)
   Seleciona e armazena campos anteriores para comparação.
   Parameters:
   - `$campos`: Lista de campos separados por vírgula ou '*'.
   - `$tabela`: Nome da tabela.
   - `$extra`: Condições extras da query (WHERE, etc.).
   Returns: True se encontrou e armazenou dados, false caso contrário.
-- `banco_select_campos_antes(string $campo): mixed|null` — [line 724](../../../../../gestor/bibliotecas/banco.php#L724)
+- `banco_select_campos_antes(string $campo): mixed|null` — [line 737](../../../../../gestor/bibliotecas/banco.php#L737)
   Retorna valor anterior de um campo específico.
   Parameters:
   - `$campo`: Nome do campo a recuperar.
   Returns: Valor do campo ou NULL se não encontrado.
-- `banco_update(string $campos, string $tabela, string $extra): void` — [line 750](../../../../../gestor/bibliotecas/banco.php#L750)
+- `banco_update(string $campos, string $tabela, string $extra): void` — [line 763](../../../../../gestor/bibliotecas/banco.php#L763)
   Executa query UPDATE no banco de dados.
   Parameters:
   - `$campos`: Lista de campos e valores no formato "campo='valor'".
   - `$tabela`: Nome da tabela.
   - `$extra`: Condições extras (WHERE, etc.).
-- `banco_update_campo(string $nome, string $valor, bool $sem_aspas_simples = false, bool $escape_field = true): void` — [line 776](../../../../../gestor/bibliotecas/banco.php#L776)
+- `banco_update_campo(string $nome, string $valor, bool $sem_aspas_simples = false, bool $escape_field = true): void` — [line 789](../../../../../gestor/bibliotecas/banco.php#L789)
   Adiciona campo para atualização em lote.
   Parameters:
   - `$nome`: Nome do campo.
   - `$valor`: Valor a ser atribuído.
   - `$sem_aspas_simples`: Se true, não envolve valor em aspas (padrão: false).
   - `$escape_field`: Se true, escapa o valor (padrão: true).
-- `banco_update_executar(string $tabela, string $extra = ''): void` — [line 806](../../../../../gestor/bibliotecas/banco.php#L806)
+- `banco_update_executar(string $tabela, string $extra = ''): void` — [line 819](../../../../../gestor/bibliotecas/banco.php#L819)
   Executa update em lote com campos acumulados.
   Parameters:
   - `$tabela`: Nome da tabela.
   - `$extra`: Condições extras como WHERE (padrão: '').
-- `banco_update_varios(array $campos, string $tabela, string $campo_nome, string $id_nome): void` — [line 845](../../../../../gestor/bibliotecas/banco.php#L845)
+- `banco_update_varios(array $campos, string $tabela, string $campo_nome, string $id_nome): void` — [line 858](../../../../../gestor/bibliotecas/banco.php#L858)
   Atualiza múltiplos registros em massa usando CASE.
   Parameters:
   - `$campos`: Array de arrays [id, valor] para atualizar.
   - `$tabela`: Nome da tabela.
   - `$campo_nome`: Nome do campo a ser atualizado.
   - `$id_nome`: Nome do campo ID usado na cláusula CASE.
-- `banco_insert(string $campos, string $tabela): void` — [line 882](../../../../../gestor/bibliotecas/banco.php#L882)
+- `banco_insert(string $campos, string $tabela): void` — [line 895](../../../../../gestor/bibliotecas/banco.php#L895)
   Insere registro com ID auto-incrementado.
   Parameters:
   - `$campos`: Valores separados por vírgula.
   - `$tabela`: Nome da tabela.
-- `banco_insert_name(array $dados, string $tabela): void` — [line 898](../../../../../gestor/bibliotecas/banco.php#L898)
+- `banco_insert_name(array $dados, string $tabela): void` — [line 911](../../../../../gestor/bibliotecas/banco.php#L911)
   Insere registro com nomes de campos especificados.
   Parameters:
   - `$dados`: Array de arrays [nome, valor, sem_aspas_simples].
   - `$tabela`: Nome da tabela.
-- `banco_insert_name_campo(string $nome, string $valor, bool $sem_aspas_simples = false, bool $escape_field = true): void` — [line 940](../../../../../gestor/bibliotecas/banco.php#L940)
+- `banco_insert_name_campo(string $nome, string $valor, bool $sem_aspas_simples = false, bool $escape_field = true): void` — [line 953](../../../../../gestor/bibliotecas/banco.php#L953)
   Adiciona campo para inserção em lote.
   Parameters:
   - `$nome`: Nome do campo.
   - `$valor`: Valor do campo.
   - `$sem_aspas_simples`: Se true, não envolve em aspas (padrão: false).
   - `$escape_field`: Se true, escapa o valor (padrão: true).
-- `banco_insert_name_campos(): array` — [line 967](../../../../../gestor/bibliotecas/banco.php#L967)
+- `banco_insert_name_campos(): array` — [line 980](../../../../../gestor/bibliotecas/banco.php#L980)
   Retorna e limpa campos acumulados para inserção.
   Returns: Array de campos ou array vazio.
-- `banco_insert_name_varios(array|false $params = false): void` — [line 994](../../../../../gestor/bibliotecas/banco.php#L994)
+- `banco_insert_name_varios(array|false $params = false): void` — [line 1007](../../../../../gestor/bibliotecas/banco.php#L1007)
   Insere múltiplos registros de uma única vez.
   Parameters:
   - `$params`: Parâmetros da função.
   - `$params['tabela']`: Nome da tabela (obrigatório).
   - `$params['campos']`: []['sem_aspas_simples'] Se true, não usa aspas (opcional).
-- `banco_insert_varios(array $campos, string $tabela): void` — [line 1064](../../../../../gestor/bibliotecas/banco.php#L1064)
+- `banco_insert_varios(array $campos, string $tabela): void` — [line 1077](../../../../../gestor/bibliotecas/banco.php#L1077)
   Insere vários registros com ID auto-increment.
   Parameters:
   - `$campos`: Array de strings com valores para cada registro.
   - `$tabela`: Nome da tabela.
-- `banco_insert_varios_tudo(array $campos, string $tabela): void` — [line 1091](../../../../../gestor/bibliotecas/banco.php#L1091)
+- `banco_insert_varios_tudo(array $campos, string $tabela): void` — [line 1104](../../../../../gestor/bibliotecas/banco.php#L1104)
   Insere vários registros com todos os valores especificados.
   Parameters:
   - `$campos`: Array de strings com valores para cada registro.
   - `$tabela`: Nome da tabela.
-- `banco_insert_id(string $campos, string $tabela): void` — [line 1118](../../../../../gestor/bibliotecas/banco.php#L1118)
+- `banco_insert_id(string $campos, string $tabela): void` — [line 1131](../../../../../gestor/bibliotecas/banco.php#L1131)
   Insere registro com ID especificado.
   Parameters:
   - `$campos`: Valores separados por vírgula.
   - `$tabela`: Nome da tabela.
-- `banco_insert_tudo(string $campos, string $tabela): void` — [line 1133](../../../../../gestor/bibliotecas/banco.php#L1133)
+- `banco_insert_tudo(string $campos, string $tabela): void` — [line 1146](../../../../../gestor/bibliotecas/banco.php#L1146)
   Insere registro com todos os valores especificados.
   Parameters:
   - `$campos`: Valores separados por vírgula.
   - `$tabela`: Nome da tabela.
-- `banco_last_id(): int|null` — [line 1147](../../../../../gestor/bibliotecas/banco.php#L1147)
+- `banco_last_id(): int|null` — [line 1160](../../../../../gestor/bibliotecas/banco.php#L1160)
   Retorna o último ID inserido.
   Returns: O último ID inserido ou NULL.
-- `banco_delete(string $tabela, string $extra): void` — [line 1166](../../../../../gestor/bibliotecas/banco.php#L1166)
+- `banco_delete(string $tabela, string $extra): void` — [line 1179](../../../../../gestor/bibliotecas/banco.php#L1179)
   Executa DELETE no banco de dados.
   Parameters:
   - `$tabela`: Nome da tabela.
   - `$extra`: Condições WHERE e outras cláusulas.
-- `banco_delete_varios(string $tabela, array|string $campo_ids, array $array_ids): void` — [line 1183](../../../../../gestor/bibliotecas/banco.php#L1183)
+- `banco_delete_varios(string $tabela, array|string $campo_ids, array $array_ids): void` — [line 1196](../../../../../gestor/bibliotecas/banco.php#L1196)
   Deleta múltiplos registros usando IN.
   Parameters:
   - `$tabela`: Nome da tabela.
   - `$campo_ids`: Nome(s) do(s) campo(s) ID.
   - `$array_ids`: Array de IDs para deletar.
-- `banco_campos_virgulas(array $campos): string` — [line 1222](../../../../../gestor/bibliotecas/banco.php#L1222)
+- `banco_campos_virgulas(array $campos): string` — [line 1235](../../../../../gestor/bibliotecas/banco.php#L1235)
   Converte array de campos em string separada por vírgulas.
   Parameters:
   - `$campos`: Array de nomes de campos.
   Returns: Campos separados por vírgulas.
-- `banco_total_rows(string $tabela, string|null $extra = null): int` — [line 1250](../../../../../gestor/bibliotecas/banco.php#L1250)
+- `banco_total_rows(string $tabela, string|null $extra = null): int` — [line 1263](../../../../../gestor/bibliotecas/banco.php#L1263)
   Retorna total de linhas em uma tabela.
   Parameters:
   - `$tabela`: Nome da tabela.
   - `$extra`: Condições WHERE opcionais (padrão: null).
   Returns: Número total de registros.
-- `banco_campos_nomes(string $tabela): array` — [line 1272](../../../../../gestor/bibliotecas/banco.php#L1272)
+- `banco_campos_nomes(string $tabela): array` — [line 1285](../../../../../gestor/bibliotecas/banco.php#L1285)
   Retorna informações sobre colunas de uma tabela.
   Parameters:
   - `$tabela`: Nome da tabela.
   Returns: Array com informações de cada coluna.
-- `banco_campo_existe(string $campo, string $tabela): bool` — [line 1304](../../../../../gestor/bibliotecas/banco.php#L1304)
+- `banco_campo_existe(string $campo, string $tabela): bool` — [line 1318](../../../../../gestor/bibliotecas/banco.php#L1318)
   Verifica se um campo específico existe em uma tabela.
   Parameters:
   - `$campo`: Nome do campo a ser verificado.
   - `$tabela`: Nome da tabela onde verificar o campo.
   Returns: True se o campo existir na tabela, false caso contrário.
-- `banco_retirar_acentos(string $var, bool $retirar_espaco = true): string` — [line 1332](../../../../../gestor/bibliotecas/banco.php#L1332)
+- `banco_retirar_acentos(string $var, bool $retirar_espaco = true): string` — [line 1346](../../../../../gestor/bibliotecas/banco.php#L1346)
   Remove acentos e caracteres especiais de uma string.
   Parameters:
   - `$var`: String a ser processada.
   - `$retirar_espaco`: Se true, substitui espaços por hífens (padrão: true).
   Returns: String normalizada.
-- `banco_identificador_unico(array|false $params = false): string` — [line 1376](../../../../../gestor/bibliotecas/banco.php#L1376)
+- `banco_identificador_unico(array|false $params = false): string` — [line 1390](../../../../../gestor/bibliotecas/banco.php#L1390)
   Gera identificador único recursivamente.
   Parameters:
   - `$params`: Parâmetros da função.
@@ -411,7 +411,7 @@ Reference generated from `gestor/bibliotecas/banco.php` by `c2f docs:extract` �
   - `$params['tabela']`: Configuração da tabela.
   - `$params['sem_traco']`: Se true, remove hífens do resultado.
   Returns: ID único gerado.
-- `banco_identificador(array|false $params = false): string` — [line 1448](../../../../../gestor/bibliotecas/banco.php#L1448)
+- `banco_identificador(array|false $params = false): string` — [line 1462](../../../../../gestor/bibliotecas/banco.php#L1462)
   Gera identificador único a partir de string.
   Parameters:
   - `$params`: Parâmetros da função.
@@ -419,14 +419,14 @@ Reference generated from `gestor/bibliotecas/banco.php` by `c2f docs:extract` �
   - `$params['tabela']`: Configuração da tabela.
   - `$params['sem_traco']`: Se true, remove hífens do resultado.
   Returns: ID único gerado e validado.
-- `banco_insert_update(array|false $params = false): void` — [line 1527](../../../../../gestor/bibliotecas/banco.php#L1527)
+- `banco_insert_update(array|false $params = false): void` — [line 1541](../../../../../gestor/bibliotecas/banco.php#L1541)
   Insere ou atualiza registro baseado em existência.
   Parameters:
   - `$params`: Parâmetros da função.
   - `$params['tabela']`: ['extra'] Condições extras para UPDATE (opcional).
   - `$params['dados']`: Dados a inserir/atualizar (obrigatório).
   - `$params['dadosTipo']`: Tipos dos campos (opcional).
-- `banco_tabelas_lista(): array` — [line 1628](../../../../../gestor/bibliotecas/banco.php#L1628)
+- `banco_tabelas_lista(): array` — [line 1642](../../../../../gestor/bibliotecas/banco.php#L1642)
   Retorna lista de todas as tabelas do banco de dados.
   Returns: Array com nomes das tabelas.
 

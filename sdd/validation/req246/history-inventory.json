@@ -1,0 +1,614 @@
+[
+    {
+        "file":  "sdd/human-requests/req-245.md",
+        "title":  "# REQ-245 — Atualização automática do sistema, com abas Manual e Automático no `admin-atualizacoes`",
+        "sha256":  "41C5A3DF973332227351054D14A0D95E1CC87A0B586083893F4C1ABBDAD58B15",
+        "scope":  [
+                      "- **Status:** `in-progress`\r",
+                      "- **Lote Alvo Core:** `BATCH-254` (`conn2flow`)\r",
+                      "## 1. Pedido, nas palavras do Engenheiro Chefe\r",
+                      "## 2. O que já existe e é reaproveitado\r",
+                      "## 3. Decisões desta requisição (fecham a seção 6 da REQ-241)\r",
+                      "## 4. Comportamento\r",
+                      "### 4.1 Tela\r",
+                      "### 4.2 Ciclo (tarefa agendada)\r",
+                      "### 4.3 Salvaguardas\r",
+                      "## 5. Fora de escopo\r",
+                      "## 6. Critérios de aceite\r",
+                      "## 7. Sugestões do executor para depois (não implementadas aqui)\r",
+                      "## 8. Live Todo List\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-244.md",
+        "title":  "# REQ-244 — Paridade de Renderização, Injeção de Estilos Tailwind e Hidratação de Widgets no Dashboard",
+        "sha256":  "8F418FEE37183B95C16407151C22689B5C3EC2721976E98C0236EEDC5E065C2D",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Core:** `BATCH-253` (`conn2flow`)",
+                      "- **Lote Alvo Site Coordenado:** `BATCH-103` / `REQ-109` (`conn2flow-site`)",
+                      "## 1. Visão Geral \u0026 Diagnóstico Técnico",
+                      "### 1.1 O Problema",
+                      "### 1.2 Causas Raízes Identificadas",
+                      "## 2. Requisitos Normativos de Implementação",
+                      "### Bloco 1: Backend Core — Injeção Completa de Estilos em `dashboard.php`",
+                      "### Bloco 2: Frontend Core — Hidratação do Iframe e Geometria em `dashboard.js` e CSS",
+                      "### Bloco 3: Paridade e Compatibilidade de Módulos (Core \u0026 Site)",
+                      "## 3. Critérios de Aceite \u0026 Validação"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-243.md",
+        "title":  "# REQ-243 — Refinamentos Visuais, Usabilidade e Controles do Painel Tailwind (Rodada 2 — Core)",
+        "sha256":  "2C929AD3CF225D2F697CCC58FAA960BB58D5039605CB5315E931BEEA7E66A3D9",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Core:** `BATCH-252` (`conn2flow`)",
+                      "- **Lote Alvo Site Coordenado:** `BATCH-102` / `REQ-108` (`conn2flow-site`)",
+                      "## 1. Visão Geral \u0026 Contexto",
+                      "## 2. Requisitos Normativos Core por Bloco",
+                      "### Bloco 1: Biblioteca de Controles \u0026 Comportamento Global (`controles.js`, `controles.css`, Interface)",
+                      "#### 1.1 Isolamento de Cliques no Select Flutuante (Stop Propagation)",
+                      "#### 1.2 Quebra de Linha Automática nas Tabelas de Histórico de Alterações",
+                      "### Bloco 2: Componentes Core \u0026 Editores",
+                      "#### 2.1 Editor HTML (`html-editor` — Aba Modelos)",
+                      "#### 2.2 Diálogo de Alerta em Seleção de Arquivos Não Permitidos",
+                      "#### 2.3 Altura Útil do Palco do Editor Visual (`html-editor-preview-stage` / `#iframe-preview`)",
+                      "### Bloco 3: Módulos Administrativos Core (Fase A)",
+                      "#### 3.1 `admin-arquivos` (Tooltips e Padronização de Botões)",
+                      "#### 3.2 `admin-categorias/adicionar-filho/`"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-242.md",
+        "title":  "# REQ-242 — Refinamentos Visuais, Usabilidade e Harmonização de Controles do Painel Tailwind (Core)",
+        "sha256":  "EFD968252052EF61270833B9424FABECA50D033D35C3F1F6071C0591AACF673A",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Core:** `BATCH-251` (`conn2flow`)",
+                      "- **Lote Alvo Site Coordenado:** `BATCH-101` / `REQ-107` (`conn2flow-site`)",
+                      "## 1. Visão Geral \u0026 Contexto",
+                      "## 2. Requisitos Normativos Core por Bloco",
+                      "### Bloco 1: Formulários Core \u0026 Abas (`forms-search`, `forms`, `forms-submissions`)",
+                      "#### 1.1 `forms-search/adicionar/`",
+                      "#### 1.2 `forms/adicionar/`",
+                      "#### 1.3 `forms-submissions/view/`",
+                      "### Bloco 2: Dashboard V3.4 (Módulos, Widgets \u0026 Mesh Blueprint)",
+                      "#### 2.1 Padronização de Estados e Hover das Abas",
+                      "#### 2.2 Exclusividade Estrita: Cover vs Ícone SVG nos Cards de Módulos",
+                      "#### 2.3 Menu de Opções dos Widgets \u0026 Integridade de Estilos/Eventos",
+                      "#### 2.4 Malha Blueprint Mesh e Redimensionamento Vertical",
+                      "### Bloco 3: TopBar, Sidebar e Padrões Globais da UI"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-241.md",
+        "title":  "# REQ-241 — Atualização automatizada do sistema, ativável pelo painel",
+        "sha256":  "02B7323DE2300275ECDA720183002DC2642DE7EA60808AF110838F0B4C25336D",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo Core:** `BATCH-250` (`conn2flow`)\r",
+                      "## 1. Pedido\r",
+                      "## 2. O que já existe e deve ser reaproveitado\r",
+                      "## 3. Comportamento esperado\r",
+                      "### 3.1 Configuração (tela `admin-atualizacoes`)\r",
+                      "### 3.2 Ciclo\r",
+                      "### 3.3 Salvaguardas\r",
+                      "## 4. Fora de escopo\r",
+                      "## 5. Critérios de aceite\r",
+                      "## 6. Pontos para decidir na promoção\r",
+                      "## 7. Live Todo List\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-240.md",
+        "title":  "# REQ-240 — Grande Varredura, Auditoria Profunda e Harmonização Global do Design System Tailwind em Todos os Módulos (Core \u0026 Site)",
+        "sha256":  "13AF133868AEE779FF1F8B05AA7B65DDA521AE5AD7E401552CD969B373A20CB9",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Core:** `BATCH-249` (`conn2flow`)",
+                      "- **Lote Alvo Site:** `BATCH-100` (`conn2flow-site`)",
+                      "## 1. Visão Geral \u0026 Justificativa Estratégica",
+                      "### 🎯 Objetivo Primário Desta Missão:",
+                      "## 2. Pilares de Conformidade a Auditar e Padronizar",
+                      "### Pilar 1: Ícones Lucide \u0026 Tooltips Semânticos",
+                      "### Pilar 2: Navegação por Abas Canônicas (`c2fc-abas`)",
+                      "### Pilar 3: Estrutura em Cards Brancos Sólidos",
+                      "### Pilar 4: Controles de Formulário e Mensagens de Validação",
+                      "### Pilar 5: Tabelas de Listagem e Ações em Linha",
+                      "### Pilar 6: Responsividade \u0026 Proteção Mobile (390px)",
+                      "## 3. Inventário Sistemático de Módulos para Varredura",
+                      "### A. Módulos Core (`c:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\gestor\\modulos\\`):",
+                      "### B. Módulos Site (`c:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow-site\\gestor\\modulos\\`):"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-239.md",
+        "title":  "# req-239 — Refinamentos e Correções do Painel Tailwind e E-commerce decorrentes da Auditoria Humana (Fases 1 e 2)",
+        "sha256":  "BFAB6F5B11A099FE6A973F13D981343120D6713C8913ACE2750084F1BF516620",
+        "scope":  [
+                      "- **Status:** `in-review`",
+                      "- **Lote Alvo Core:** `BATCH-248` (`conn2flow`)",
+                      "- **Lote Alvo Site:** `BATCH-099` (`conn2flow-site`)",
+                      "## 1. Visão Geral \u0026 Diagnóstico da Auditoria",
+                      "## 2. Especificação Técnica \u0026 Critérios de Aceite",
+                      "### PARTE I: REFINAMENTOS DO CORE (FASE 1)",
+                      "#### BLOCO 1: Refinamentos do Dashboard (Densidades P e G)",
+                      "#### BLOCO 2: `admin-paginas` (Editor HTML, Controles de Sessão, Z-Index \u0026 Arquivos)",
+                      "#### BLOCO 3: Família Publisher (`publisher`, `publisher-highlights`, `publisher-index`, `publisher-pages`)",
+                      "#### BLOCO 4: Módulos Administrativos (`variables`, `admin-ia`, `admin-prompts-ia`, `admin-arquivos`, `cookie-consent`)",
+                      "### PARTE II: COMPONENTES CORE REUTILIZÁVEIS (`interface`)",
+                      "#### BLOCO 5: Controles de Formulário e Mídia da Biblioteca `interface`",
+                      "### PARTE III: E-COMMERCE \u0026 PRODUTOS NO SITE (FASE 2)",
+                      "#### BLOCO 6: Módulo `products` (Cadastro \u0026 Edição)",
+                      "#### BLOCO 7: Módulo `stripe-products` (Produtos Stripe)"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-238.md",
+        "title":  "# req-238 — Harmonização do Design System, TopBar/Sidebar, Dashboard V3.3 e Conformidade Visual dos Módulos",
+        "sha256":  "83FA3F4E75C069E57E67BE881C962E6B45ED47AB336A8B48FEB98C03FE993633",
+        "scope":  [
+                      "- **Status:** `implemented-pending-homologation`\r",
+                      "- **Lote Alvo Core:** `BATCH-247` (`conn2flow`)\r",
+                      "- **Lote Alvo Site:** `BATCH-098` (`conn2flow-site`)\r",
+                      "## 1. Visão Geral \u0026 Diagnóstico da Auditoria Humana\r",
+                      "## 2. Especificação Técnica \u0026 Critérios de Aceite\r",
+                      "### BLOCO A: TopBar, Atalhos e Menu de Usuário (Core: `admin-topbar`)\r",
+                      "#### CA-A1: Menu de Usuário — Largura, Estrutura e Exibição de Nome\r",
+                      "#### CA-A2: Meus Atalhos — Renderização Somente-Ícone com Tooltip\r",
+                      "### BLOCO B: Sidebar — Padronização de Tipografia e Peso de Fonte\r",
+                      "#### CA-B1: Unificação de Estilos dos Menus Laterais (`layout-administrativo-tailwind`)\r",
+                      "### BLOCO C: Dashboard V3.3 — UX/UI de Módulos e Widgets\r",
+                      "#### CA-C1: Cards de Módulos — Badge Estilizado para o Grupo\r",
+                      "#### CA-C2: Widgets — Alça de Redimensionamento Exclusiva no Canto Inferior Direito\r",
+                      "#### CA-C3: Widgets — Altura Fluida com Passos Menores e Grid Blueprint Overlay\r",
+                      "#### CA-C4: Trocar Widget — Busca em Tempo Real e Pré-Seleção do Estado Atual\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/req-237.md",
+        "title":  "# req-237 — Master Operacional Multi-Repositório: Higiene de Merge, Assets Isométricos Faltantes, Refinamentos Finos do Dashboard V3.2 e Conclusão da REQ-100",
+        "sha256":  "3DED26A5A86BD4356657973D2A23243C714B7A93286E5F80E50033AB73328BCF",
+        "scope":  [
+                      "- **Status:** `ready-for-implementation`\r",
+                      "- **Lote Alvo Core:** `BATCH-246` (`conn2flow`)\r",
+                      "- **Lote Alvo Site:** `BATCH-094` / `BATCH-097` (`conn2flow-site`)\r",
+                      "## 1. Visão Geral \u0026 Objetivos da Missão\r",
+                      "## 2. Especificação Técnica \u0026 Critérios de Aceite\r",
+                      "### BLOCO 1: Higiene de Merge \u0026 Consolidação da Base (`conn2flow-site`)\r",
+                      "### BLOCO 2: Assets Visuais Faltantes \u0026 Refinamentos UX/UI do Dashboard V3.2\r",
+                      "#### CA-2.1: Criação dos Assets Isométricos Faltantes (WebP 1024×1024)\r",
+                      "#### CA-2.2: Refinamento da Altura das Capas (+20% Adicional)\r",
+                      "#### CA-2.3: Capa e Ícone Clicáveis como Alias do Botão Acessar\r",
+                      "### BLOCO 3: Conclusão da REQ-100 (E-commerce e Assinaturas no Painel em Tailwind)\r",
+                      "## 3. Live Todo List da Missão\r",
+                      "### Etapa 1 — Higiene de Merge no Site (`conn2flow-site`) [CONCLUÍDO]:\r",
+                      "### Etapa 2 — Assets Faltantes \u0026 UX/UI do Dashboard (Core \u0026 Site):\r",
+                      "### Etapa 3 — Conclusão da REQ-100 no Site (`conn2flow-site`):\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-236.md",
+        "title":  "# req-236 — Master Integrador Multi-Repositório: Unificação Tailwind (Core \u0026 Site), Refinamento do Dashboard V3.1 e Homologação Final",
+        "sha256":  "2C33D5AB5A51F81CC27682403DA3B240E94DDE468E6E68A99BC8BF9EB6841742",
+        "scope":  [
+                      "- **Status:** `ready-for-implementation`",
+                      "- **Lote Alvo Core:** `BATCH-245` (`conn2flow`)",
+                      "- **Lote Alvo Site:** `BATCH-095` (`conn2flow-site`)",
+                      "## 1. Visão Geral \u0026 Diagnóstico da Missão",
+                      "## 2. Especificação Técnica \u0026 Critérios de Aceite",
+                      "### BLOCO A: Integração das Branches Pendentes do Core (`conn2flow`)",
+                      "### BLOCO B: Refinamentos de UX/UI do Dashboard V3.1 (Core)",
+                      "#### CA-B1: Hierarquia do Cabeçalho e Menu Dropdown \"Opções\"",
+                      "#### CA-B2: Tooltip da Alça de Arrasto dos Cards (Sem Cortes)",
+                      "#### CA-B3: Capa Única dos Módulos (Sem Duplicata) e Altura +20% Maior",
+                      "#### CA-B4: Aba Widgets — Modo de Edição e Seleção de Registro Alvo",
+                      "### BLOCO C: Migração dos Módulos Privados do Site (`conn2flow-site`)",
+                      "### BLOCO D: Auditoria Visual Geral \u0026 Sincronização no Lab",
+                      "## 3. Live Todo List do Master Integrador",
+                      "### No Core (`conn2flow`):"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-235.md",
+        "title":  "# req-235 — Estabilização Visual e Operacional do Dashboard V3.0 (Logomarca, Geometria dos Cards de Módulos, Malha e Seleção de Widgets, e Topbar Lateralizada)",
+        "sha256":  "8183817774E3DEC10CB0B9F87481E03F6CF44DC3741D3B2FE7D44EC5FD107BEC",
+        "scope":  [
+                      "- **Status:** `ready-for-implementation`",
+                      "- **Lote Alvo:** `BATCH-244`",
+                      "## 1. Contexto \u0026 Diagnóstico dos Defeitos",
+                      "## 2. Critérios de Aceite (Critérios Normativos)",
+                      "### CA-1: Blindagem Estrita e Imutável da Logomarca na Topbar",
+                      "### CA-2: Arquitetura Desacoplada em Camadas Absolutas nos Cards de Módulos",
+                      "### CA-3: Altura Proporcional das Capas dos Módulos",
+                      "### CA-4: Grade Canônica de 12 Colunas e Redimensionamento com Mouse na Aba Widgets",
+                      "### CA-5: Topbar Administrativa com Lateralidade e Acessibilidade",
+                      "## 3. Arquivos Envolvidos e Responsabilidades",
+                      "## 4. Live Todo List para Agentes Executores"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-234.md",
+        "title":  "# req-234 — Fracionamento Determinístico de Arquivos de Dados Grandes (*Data.json) e Leitor Unificado de Tabelas Particionadas",
+        "sha256":  "64EA04AE887E9F3E0F1591B402E0F7DAEFFE4478DF5B22922B33FFF854386FA4",
+        "scope":  [
+                      "- **Status:** `complete`",
+                      "- **Lote Alvo:** `BATCH-243`",
+                      "## 1. Contexto \u0026 Diagnóstico",
+                      "## 2. Princípios e Desenho Arquitetural da Solução",
+                      "### 2.1. Convenção de Particionamento e Nomenclatura",
+                      "### 2.2. Publicação Atômica e Segura (Atomic Write Pipeline)",
+                      "### 2.3. Leitor Unificado e Compartilhado (`gestor/bibliotecas/db-data.php`)",
+                      "## 3. Escopo de Integração nos Subsistemas do Core",
+                      "### 3.1. Gerador e Compilador de Recursos (`atualizacao-dados-recursos.php`)",
+                      "### 3.2. Sincronizador de Banco de Dados (`atualizacoes-banco-de-dados.php`)",
+                      "### 3.3. Recuperação de Recursos (`recuperacao-dados-recursos.php`)",
+                      "### 3.4. API de Recuperação / Pacote ZIP (`gestor/controladores/api/api.php`)",
+                      "## 4. Critérios de Aceite \u0026 Checklist de Validação"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-233.md",
+        "title":  "# req-233 — Correção Estrutural da UI V3.0: Geometria Real de Widgets (Drag \u0026 Resize), Seletor Direto no Card, Proporções de Capas e Topbar",
+        "sha256":  "05C8611E34978152B0E56EB7CA033C2A778D272FF91665A491D79D1EE04FC309",
+        "scope":  [
+                      "- **Status:** `in-progress`\r",
+                      "- **Lote Alvo:** `BATCH-242`\r",
+                      "## 1. Diagnóstico dos Defeitos Identificados no BATCH-241\r",
+                      "## 2. Escopo Detalhado da Correção\r",
+                      "### 2.1. Geometria Profissional da Grade de Widgets (Aba Widgets)\r",
+                      "### 2.2. Seletor Direto e Evidente de Widgets no Card\r",
+                      "### 2.3. Capas dos Cards de Módulos (Dashboard - Aba Módulos)\r",
+                      "### 2.4. Topbar, Dropdowns, Dicas e Reordenação\r",
+                      "### 2.5. Largura Dinâmica do Painel Administrativo\r",
+                      "## 3. Critérios de Aceite (Definition of Done)\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-232.md",
+        "title":  "# req-232 — Refinamento de UI V3.0: Grade Livre de Widgets (Drag \u0026 Resize), Proporções dos Cards/Capas, Topbar e Largura Dinâmica do Painel",
+        "sha256":  "C5A267F195405E975F9F6C941690F294BD79454D1470046A87F9F04188162BF4",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo:** `BATCH-241`\r",
+                      "## 1. Contexto e Apontamentos do Humano\r",
+                      "## 2. Escopo Detalhado\r",
+                      "### 2.1. Ajuste Visual dos Cards de Módulos (Dashboard)\r",
+                      "### 2.2. Grade Livre, Catálogo e Seleção Ativa de Widgets (Aba Widgets)\r",
+                      "### 2.3. Topbar, Dropdowns, Dicas e Reordenação de Atalhos\r",
+                      "### 2.4. Seletor de Largura da Interface do Painel\r",
+                      "## 3. Critérios de Aceite (Definition of Done)\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-231.md",
+        "title":  "# req-231 — Fechamento da Versão 3.0: Release Notes, Bumps de Versão e Congelamento Oficial do Ecossistema",
+        "sha256":  "EA2ED4EDDB63A90F729118D0B27419649B7B919EB9E4282E62C6DF0F42A0608E",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo:** `BATCH-240`",
+                      "## 1. Contexto e Objetivos",
+                      "### Esta requisição executa:",
+                      "## 2. Escopo Detalhado",
+                      "### 2.1. Bump Oficial de Versão do Core e do Gestor",
+                      "### 2.2. Geração do `CHANGELOG.md` Oficial da V3.0",
+                      "### 2.3. Pipeline Final de Validação",
+                      "## 3. Critérios de Aceite (Definition of Done)"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-230.md",
+        "title":  "# req-230 — Integração Oficial da V3.0: Consolidação das Branches (req-226 a req-229), Ajuste Canônico de Rota das Capas e Homologação E2E",
+        "sha256":  "C552BBBF4551FFC8577DC69FCD505A8E6C8FF6A7A0BFC54E9A1B029A508F1855",
+        "scope":  [
+                      "- **Status:** `in-review`",
+                      "- **Lote Alvo:** `BATCH-239`",
+                      "## 1. Contexto e Objetivos",
+                      "## 2. Escopo Detalhado da Integração",
+                      "### 2.1. Correção Canônica da Rota das Capas dos Módulos",
+                      "### 2.2. Integração e Harmonização dos Componentes do Dashboard",
+                      "### 2.3. Mesclagem Git das Branches das Frentes",
+                      "### 2.4. Validação e Execução de Testes",
+                      "## 3. Critérios de Aceite (Definition of Done)"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-229.md",
+        "title":  "# req-229 — Biblioteca de Estado e Acesso Controlado a Variáveis Globais (Ponte para Refatoração OOP)",
+        "sha256":  "6D10B9FF001247F06B7B6FFB03BE5AFCB68E8AC7D79915EF504D61468FA4BB49",
+        "scope":  [
+                      "- **Status:** `in-review`\r",
+                      "- **Lote Alvo:** `BATCH-238`\r",
+                      "## 1. Contexto e Objetivos\r",
+                      "### A Solução Estratégica: O Meio-Termo Controlado\r",
+                      "## 2. Escopo Detalhado\r",
+                      "### 2.1. Funções Core da Biblioteca de Variáveis\r",
+                      "### 2.2. Proteção de Chaves Críticas\r",
+                      "### 2.3. Preparação Arquitetural para a Versão 3.1\r",
+                      "## 3. Critérios de Aceite (Definition of Done)\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-228.md",
+        "title":  "# req-228 — Topbar Administrativa: Menu de Perfil do Usuário, Favoritos/Atalhos Customizados e Padronização Visual com a Editbar",
+        "sha256":  "CD0145EEB7D9FDBAE46DFAE257D6BAD81B6210D40A8B2BB2B2717CB91738BF47",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo:** `BATCH-237`\r",
+                      "## 1. Contexto e Objetivos\r",
+                      "## 2. Escopo Detalhado\r",
+                      "### 2.1. Menu Dropdown de Usuário (Top-Right)\r",
+                      "### 2.2. Barra de Favoritos do Usuário (Top-Center / Top-Left)\r",
+                      "### 2.3. Padronização Visual e Transição com a Editbar\r",
+                      "## 3. Critérios de Aceite (Definition of Done)\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-227.md",
+        "title":  "# req-227 — Assets Visuais e Imagens Referenciais de Impacto para os Módulos do Sistema",
+        "sha256":  "65D05242CF678B12ADC02FE277E27E2F149E179BC4F88A88438F8222754C682B",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo:** `BATCH-236`\r",
+                      "## 1. Objetivo e Diretrizes Criativas\r",
+                      "### 🎨 Diretrizes de Estilo e Liberdade Criativa:\r",
+                      "## 2. Inventário de Módulos para Criação Visual\r",
+                      "### Grupo 1: Módulos Core do Conn2Flow\r",
+                      "### Grupo 2: Módulos de E-commerce e Expansão (`conn2flow-site`)\r",
+                      "## 3. Entregáveis e Critérios de Aceite\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-226.md",
+        "title":  "# req-226 — Dashboard V3.0: Grid Interativo de Módulos (P/M/G), Grid Flexível de Widgets e Links Canônicos de Documentação",
+        "sha256":  "FF537358F5DC3211B801D668421AF6470913B57C90A6C3D8DCE5FE7D16E8BA9A",
+        "scope":  [
+                      "- **Status:** `in-review`\r",
+                      "- **Lote Alvo:** `BATCH-235`\r",
+                      "## 1. Contexto e Objetivos\r",
+                      "### Principais Dores Resolvidas:\r",
+                      "## 2. Escopo Detalhado da Implementação\r",
+                      "### 2.1. Resolução Canônica de Links de Documentação e Manuais\r",
+                      "### 2.2. Sistema de Abas no Dashboard\r",
+                      "### 2.3. Seletor de Densidade de Módulos (P / M / G)\r",
+                      "### 2.4. Suporte a Imagens Referenciais de Módulos (Thumbnails)\r",
+                      "### 2.5. Grid Flexível de Widgets (Aba 2)\r",
+                      "## 3. Critérios de Aceite (Definition of Done)\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-225.md",
+        "title":  "# req-225 — Conferência final: todo módulo Tailwind com os recursos da UI nova (fecho da req-219)",
+        "sha256":  "516C82371E9D8D983EB7807D8E42EE68FD0BBE7670FC3FBCED37863CA6CBD6C9",
+        "scope":  [
+                      "- **Status:** `ready-for-intake` (roda depois das req-221 a req-224 e das REQ-100/101 do conn2flow-site)\r",
+                      "- **Lote Alvo:** `BATCH-234`\r",
+                      "## Contexto\r",
+                      "## Escopo\r",
+                      "## Critérios de aceite\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-224.md",
+        "title":  "# req-224 — Usuários, perfis, módulos e painel inicial em Tailwind (fatia 6 da req-219)",
+        "sha256":  "CBF6C0BD8483AA4F9A9EE7E941F80AEEA6A076A4A2C4609DE5B4A4C4CA11DF19",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo:** `BATCH-233`\r",
+                      "## Contexto\r",
+                      "## Escopo\r",
+                      "## Fora do escopo (pedir no relatório ao dono da req-219)\r",
+                      "## Critérios de aceite\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-223.md",
+        "title":  "# req-223 — Módulos de administração em Tailwind (fatia 6 da req-219)",
+        "sha256":  "32A69AE863D59922466DEC2729F9DFA794453A60EE6D55C186CA7C2DD3D8D58B",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo:** `BATCH-232`\r",
+                      "## Contexto\r",
+                      "## Escopo\r",
+                      "## Fora do escopo (pedir no relatório ao dono da req-219)\r",
+                      "## Critérios de aceite\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-222.md",
+        "title":  "# req-222 — Menus, galerias, formulários e consentimento de cookies em Tailwind (fatia 6 da req-219)",
+        "sha256":  "47215525D32220BE1E6C4F15451DA45277BD653FB83672E453AE30CBE5B57259",
+        "scope":  [
+                      "- **Status:** `in-review`\r",
+                      "- **Lote Alvo:** `BATCH-231`\r",
+                      "## Contexto\r",
+                      "## Escopo\r",
+                      "## Fora do escopo (pedir no relatório ao dono da req-219)\r",
+                      "## Critérios de aceite\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-221.md",
+        "title":  "# req-221 — Família publisher em Tailwind (fatia 6 da req-219)",
+        "sha256":  "5764D31CF799A7F2D4FE7110C5DCDADA4712E3D7358CEE2B0A2C5F7ABAFC8A49",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo:** `BATCH-230`\r",
+                      "## Contexto\r",
+                      "## Escopo\r",
+                      "## Fora do escopo (pedir no relatório ao dono da req-219)\r",
+                      "## Critérios de aceite\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-220.md",
+        "title":  "# req-220 — Listagem do `interface` em Tailwind (fatia 5 da req-219, BL-026)",
+        "sha256":  "B0419ACC10438719CAEDD3368BAC68B579784E9B669C11622A3D533B569B7917",
+        "scope":  [
+                      "- **Status:** `in-progress`\r",
+                      "- **Lote Alvo:** `BATCH-228`\r",
+                      "## Contexto\r",
+                      "## Escopo\r",
+                      "## Fora do escopo\r",
+                      "## Critérios de aceite\r"
+                  ]
+    },
+    {
+        "file":  "sdd/human-requests/archive/req-219.md",
+        "title":  "# req-219 — Painel em Tailwind: biblioteca de controles e migração do `admin-paginas`",
+        "sha256":  "92C4745907413DD2E49E41D3ADBC92470429CFF74E4AE71AFE9965138968ACF0",
+        "scope":  [
+                      "- **Status:** `in-review` (fatias 1 a 4 no BATCH-227; fatia 5 na req-220; fatia 6 a abrir)\r",
+                      "- **Lote Alvo:** `BATCH-227` (primeira fatia do programa)\r",
+                      "## Diagnóstico (2026-10-03)\r",
+                      "## Programa (fatias)\r",
+                      "## Critérios de aceite da primeira fatia\r",
+                      "## Andamento (2026-10-04)\r",
+                      "### Coordenação req-222 — validação no Lab (2026-10-04)\r",
+                      "### Entrega req-222 / BATCH-231 — 2026-10-04\r"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/website/req-102-assets-visuais-e-imagens-referenciais-modulos-site.md",
+        "title":  "# REQ-102 — Assets Visuais e Imagens Referenciais de Impacto para os Módulos do Conn2Flow Site",
+        "sha256":  "FD5FEA1A9727F100914395371BE6FD9516FDF34C296ABDBE83EEBF28607103F3",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo:** `BATCH-096`",
+                      "## 1. Contexto e Diretrizes Criativas",
+                      "### 🎨 Diretrizes de Estilo e Liberdade Artística:",
+                      "## 2. Inventário de Módulos do `conn2flow-site` para Criação Visual",
+                      "### E-commerce, Assinaturas e Vendas",
+                      "### Catálogo Interativo e Mídia 3D",
+                      "### Distribuição e Redes Sociais",
+                      "### Infraestrutura, Multi-Tenant e Marketplace",
+                      "## 3. Entregáveis e Critérios de Aceite"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-109-widgets-dashboard-paridade-estilos.md",
+        "title":  "# REQ-109 — Paridade Visual e Entrega de Estilos de Widgets no Dashboard (Site Coordenado)",
+        "sha256":  "CA6E39FBF4C36C2806A6BCCB6626EAF4E2A4C09243E7021D3D9DFD5A56E65C29",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Site:** `BATCH-103` (`conn2flow-site`)",
+                      "## 1. Visão Geral",
+                      "## 2. Requisitos de Paridade no Módulo `presentations`",
+                      "### 2.1 Emissão de Estilos e Recursos em `presentations.widget.php`",
+                      "### 2.2 Verificação de Paridade entre Página e Dashboard",
+                      "## 3. Critérios de Validação"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-108-refinamentos-visuais-e-controles-rodada-2.md",
+        "title":  "# REQ-108 — Refinamentos Visuais, Usabilidade e Controles nos Módulos do Site (Rodada 2)",
+        "sha256":  "9EF319549CE888A6E490BCD2CB9144E103E06A0893FEB347A4148B7CFDAB85C7",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Site:** `BATCH-102` (`conn2flow-site`)",
+                      "## 1. Visão Geral",
+                      "## 2. Requisitos por Módulo do Site",
+                      "### 2.1 `coupons/edit/` (Cupons de Desconto)",
+                      "### 2.2 `analytics-manager/` (Gerenciador de Analytics)",
+                      "### 2.3 `products-index/editar/` (Índice de Produtos)",
+                      "### 2.4 `shipping-methods/` (Métodos de Envio)",
+                      "### 2.5 `orders/buyer-form/` (Formulário do Comprador em Pedidos)",
+                      "### 2.6 `products/edit/` (Edição de Produtos)",
+                      "### 2.7 `stripe-products/` (Produtos Stripe)",
+                      "### 2.8 `sales-reports/` (Relatórios de Vendas)",
+                      "### 2.9 `product-types/edit/` (Tipos de Produtos)",
+                      "### 2.10 `host-manager/` (Gerenciador de Hosts e Instalações)",
+                      "## 3. Critérios de Aceite \u0026 Validação"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-107-refinamentos-visuais-e-controles.md",
+        "title":  "# REQ-107 — Refinamentos Visuais, Usabilidade e Harmonização de Controles nos Módulos do Site",
+        "sha256":  "775FAE5A2B08AE6144BCDA5AD2AD885012FA4134C417EAB434F76777984A7E6C",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Site:** `BATCH-101` (`conn2flow-site`)",
+                      "## 1. Visão Geral",
+                      "## 2. Requisitos por Módulo do Site",
+                      "### 2.1 `presentations/editar/` (Módulo Apresentações)",
+                      "### 2.2 `subscriptions/view/` (Detalhes da Assinatura)",
+                      "### 2.3 `subscriptions-config/` (Configurações de Assinatura)",
+                      "### 2.4 `subscriptions-service-stages/` (Estágios de Serviço)",
+                      "### 2.5 `product-reviews/` (Avaliações de Produtos)",
+                      "### 2.6 `coupons/edit/` (Cupons de Desconto)",
+                      "### 2.7 `gateways-pagamentos/editar/` (Gateways de Pagamento)",
+                      "### 2.8 `analytics-manager/` (Gerenciador de Analytics)",
+                      "### 2.9 Visibilidade no Menu da Sidebar (`nao_menu_principal`)",
+                      "### 2.10 Tipografia da Sidebar nas Telas Privadas do Site",
+                      "## 3. Critérios de Aceite \u0026 Validação"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-106-harmonizacao-global-modulos-tailwind.md",
+        "title":  "# REQ-106 — Harmonização Global do Design System Tailwind nos Módulos do Site",
+        "sha256":  "75C608554F181FA2A3BC4CF48BBD206868C40E0A0DDD99C9CD06E2CE9BD35414",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo Site:** `BATCH-100` (`conn2flow-site`)",
+                      "## 1. Visão Geral",
+                      "## 2. Escopo de Módulos a Auditar e Harmonizar",
+                      "## 3. Critérios de Conformidade por Módulo",
+                      "## 4. Live Todo List"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-105-ecommerce-fase2-refinamentos.md",
+        "title":  "# REQ-105 — E-commerce \u0026 Produtos: Refinamentos e Correções decorrentes da Auditoria Humana (Fase 2)",
+        "sha256":  "5E006EC2113E0C9E7108D3CCA27EC0CA7D7E444F6E944910B99EFF525838F47A",
+        "scope":  [
+                      "- **Status:** `in-review`",
+                      "- **Lote Alvo Site:** `BATCH-099` (`conn2flow-site`)",
+                      "## 1. Visão Geral",
+                      "## 2. Escopo \u0026 Critérios de Aceite",
+                      "### Módulo `products` (Cadastro \u0026 Edição)",
+                      "### Módulo `stripe-products` (Produtos Stripe)",
+                      "### Vínculo Catálogo Stripe vs Produto Local (`products`)",
+                      "### Edição de Página do Produto (`products-page`) \u0026 Variações",
+                      "## 3. Live Todo List"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-103-arquivos-tailwind.md",
+        "title":  "# REQ-103 — Módulo `arquivos` do site no painel em Tailwind",
+        "sha256":  "72FD5875E2C6C48F77A62C3513210E16D2653BC71D5A5B4AF0915A60D0A9E35A",
+        "scope":  [
+                      "- **Status:** `ready-for-intake` (passar depois que a req-223 do core estiver commitada e integrada em `main`)",
+                      "- **Lote Alvo:** `BATCH-096` (`conn2flow-site`)",
+                      "## Contexto",
+                      "## Pontos de atenção",
+                      "## Escopo",
+                      "## Critérios de aceite"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-101-operacao-social-3d-tailwind.md",
+        "title":  "# REQ-101 — Operação, social e catálogo 3D no painel em Tailwind",
+        "sha256":  "8CAD1C0A3DD78663C33E313E07E5FE64358B68035F5536482E40ACB0418B0B21",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`\r",
+                      "- **Lote Alvo:** `BATCH-095` (`conn2flow-site`)\r",
+                      "## Contexto\r",
+                      "## Critérios de aceite\r",
+                      "### Coordenação — core REQ-221 / BATCH-230 (2026-10-04)\r",
+                      "## Escopo\r"
+                  ]
+    },
+    {
+        "file":  "../conn2flow-site/sdd/human-requests/painel-tailwind/req-100-ecommerce-assinaturas-tailwind.md",
+        "title":  "# REQ-100 — E-commerce e assinaturas no painel em Tailwind",
+        "sha256":  "C9F9B8E4924210071EC620B47EC6EAB41FAACB2B562848268D3085DEF9FDA1A7",
+        "scope":  [
+                      "- **Status:** `ready-for-intake`",
+                      "- **Lote Alvo:** `BATCH-094` (`conn2flow-site`)",
+                      "## Contexto",
+                      "## Critérios de aceite",
+                      "## Escopo"
+                  ]
+    }
+]

@@ -87,3 +87,9 @@ Sem decisão, só `necessary` é permitido. `cookie_consent_estado()` devolve `d
 
 - [Menus](menus.md)
 - [Modelos](admin-templates.md)
+
+## Controles do painel Tailwind
+
+O editor usa os controles do painel e mensagens inline. O widget do Dashboard permanece isolado; preferências públicas e consentimento dependem do registro escolhido.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

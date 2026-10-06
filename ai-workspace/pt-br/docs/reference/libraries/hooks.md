@@ -39,13 +39,13 @@ Não chame essas funções numa requisição comum: elas reescrevem a tabela. Qu
 
 Referência gerada a partir de `gestor/bibliotecas/hooks.php` por `c2f docs:extract` — 7 funções. Não edite dentro deste bloco.
 
-- `hook_do_action(string $namespace, string $evento, mixed ...$args): void` — [linha 357](../../../../../gestor/bibliotecas/hooks.php#L357)
+- `hook_do_action(string $namespace, string $evento, mixed ...$args): void` — [linha 363](../../../../../gestor/bibliotecas/hooks.php#L363)
   Executa todos os callbacks de action para um namespace+evento.
   Parâmetros:
   - `$namespace`: Namespace alvo (ex: 'paginas', 'global')
   - `$evento`: Evento específico (ex: 'editar', 'adicionar')
   - `$args`: Argumentos passados para os callbacks
-- `hook_apply_filters(string $namespace, string $evento, mixed $value, mixed ...$args): mixed` — [linha 370](../../../../../gestor/bibliotecas/hooks.php#L370)
+- `hook_apply_filters(string $namespace, string $evento, mixed $value, mixed ...$args): mixed` — [linha 376](../../../../../gestor/bibliotecas/hooks.php#L376)
   Aplica todos os filters para um namespace+evento, retornando o valor transformado.
   Parâmetros:
   - `$namespace`: Namespace alvo
@@ -53,19 +53,19 @@ Referência gerada a partir de `gestor/bibliotecas/hooks.php` por `c2f docs:extr
   - `$value`: Valor a ser filtrado
   - `$args`: Argumentos adicionais
   Retorno: Valor após aplicação de todos os filters
-- `hook_has_actions(string $namespace, string $evento): bool` — [linha 377](../../../../../gestor/bibliotecas/hooks.php#L377)
+- `hook_has_actions(string $namespace, string $evento): bool` — [linha 383](../../../../../gestor/bibliotecas/hooks.php#L383)
   Verifica se existem actions registradas para um namespace+evento.
-- `hook_has_filters(string $namespace, string $evento): bool` — [linha 384](../../../../../gestor/bibliotecas/hooks.php#L384)
+- `hook_has_filters(string $namespace, string $evento): bool` — [linha 390](../../../../../gestor/bibliotecas/hooks.php#L390)
   Verifica se existem filters registrados para um namespace+evento.
-- `hooks_registrar_modulo(string $modulo, ?string $plugin, array $hooks_config): int` — [linha 401](../../../../../gestor/bibliotecas/hooks.php#L401)
+- `hooks_registrar_modulo(string $modulo, ?string $plugin, array $hooks_config): int` — [linha 407](../../../../../gestor/bibliotecas/hooks.php#L407)
   Registra/atualiza os hooks de um módulo na tabela hooks. Remove hooks antigos do módulo que não estão mais no JSON. Fonte de verdade: arquivo JSON do módulo.
   Parâmetros:
   - `$modulo`: ID do módulo
   - `$plugin`: ID do plugin (null se não for de plugin)
   - `$hooks_config`: Seção "hooks" do JSON do módulo
-- `hooks_registrar_projeto(): int` — [linha 434](../../../../../gestor/bibliotecas/hooks.php#L434)
+- `hooks_registrar_projeto(): int` — [linha 440](../../../../../gestor/bibliotecas/hooks.php#L440)
   Registra/atualiza os hooks do projeto (project/hooks/hooks.json). Remove hooks de projeto antigos e re-insere os do JSON atual.
-- `hooks_inserir_callbacks(?string $modulo, ?string $plugin, string $namespace, string $evento, mixed $callbackDef, string $tipo, ?int $projeto): int` — [linha 487](../../../../../gestor/bibliotecas/hooks.php#L487)
+- `hooks_inserir_callbacks(?string $modulo, ?string $plugin, string $namespace, string $evento, mixed $callbackDef, string $tipo, ?int $projeto): int` — [linha 493](../../../../../gestor/bibliotecas/hooks.php#L493)
   Insere callback(s) na tabela hooks. Suporta: string simples, array de strings, ou objeto {callback, prioridade, habilitado}.
   Parâmetros:
   - `$callbackDef`: Definição do callback (string, array, ou assoc array)

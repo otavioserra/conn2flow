@@ -113,3 +113,9 @@ Por ser configuração do site, um menu pode ser versionado como **recurso** de 
 
 - [Biblioteca modelo.php](../libraries/modelo.md): as funções de string sobre as quais os templates do Gestor são montados.
 - [Como escrever documentação](../../guides/documentation.md)
+
+## Controles do painel Tailwind
+
+Checkboxes e rádios têm rótulos clicáveis; validações do editor mostram mensagens inline. O widget público continua seguindo seu template e parâmetros.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

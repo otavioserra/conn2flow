@@ -44,3 +44,9 @@ A tabela `forms_submissions` contém `id_forms_submissions` numérico, `form_id`
 
 - [Formulários](forms.md)
 - [Formulários de busca](forms-search.md)
+
+## Controles do painel Tailwind
+
+A visualização mostra os dados JSON em CodeMirror. O seletor de status usa o controle compartilhado, incluindo telas de visualização.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

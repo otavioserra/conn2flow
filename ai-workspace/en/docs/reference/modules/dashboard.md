@@ -12,7 +12,8 @@ sources:
   - gestor/modulos/dashboard/resources
   - gestor/db/migrations/20250723165526_create_layouts_table.php
   - gestor/db/migrations/20250723165530_create_paginas_table.php
-verified_at: 98ac881d
+  - gestor/bibliotecas/html-editor.php
+verified_at: 914c7b10
 ---
 
 # dashboard module
@@ -42,3 +43,17 @@ The dashboard has no own table. Cards query modules/permissions; the toolbar rea
 - [Pages](admin-paginas.md)
 - [Layouts](admin-layouts.md)
 - [Published pages](publisher-pages.md)
+
+## Dashboard V3.4: modules and widgets
+
+The **Modules** tab lists authorized cards. P, M and G change density: P favors compact icons; M and G use the cover when available, falling back to an icon. Order and density are persisted per user. Cards open the module and expose editing/documentation when available.
+
+In **Widgets and Metrics**, use Options to edit the grid: select a type and record, drag the handle, replace content or remove the instance. The grid has 12 columns; width follows columns and height ranges from 120 to 960 px in 20 px steps. Resize using the bottom-right corner. Content fills the remaining height below the header; each instance retains its parameters and selected record.
+
+### Isolated document and CSS precedence
+
+dashboard_ajax_widget_render validates the active record and language, selects only existing columns and resolves the template by target. It returns HTML, head, CSS, scripts, theme contract and tailwindcss-browser/Lucide asset URLs. JavaScript creates a srcdoc iframe with sandbox="allow-scripts", an opaque origin and fullscreen permission.
+
+Head order is: layout precompiled CSS, theme contract, partial/template/record sheets and authored CSS, then the browser Tailwind compiler. The compiler's complete stylesheet closes the utilities layer. Loading a partial sheet afterward would let grid-cols-1 override responsive slide rules. Unlayered authored CSS keeps its precedence. Scripts and icons initialize within the isolated document; temporary server widget state is restored in finally.
+
+Each iframe loads its own compiler, so cost grows with widget count. Fullscreen permission preserves isolation. See [CSS and Tailwind](../../concepts/css-and-tailwind.md).

@@ -9,7 +9,8 @@ sources:
   - gestor/modulos/admin-cron/admin-cron.json
   - gestor/modulos/admin-cron/includes/admin-cron-dispatch.php
   - gestor/db/migrations/20260901120000_create_cron_tarefas_table.php
-verified_at: c4e05805
+  - gestor/modulos/admin-atualizacoes/admin-atualizacoes.cron.php
+verified_at: 914c7b10
 ---
 
 # Módulo admin-cron
@@ -34,3 +35,7 @@ cron_tarefas tem id_cron_tarefas, id lógico único, nome, descricao, modulo, fr
 ## Veja também
 
 - [Módulos](modulos.md)
+
+## Atualização automática do sistema
+
+O manifesto de admin-atualizacoes declara admin-atualizacoes-automatica, frequência horária e padrão desligado. O painel de Atualizações ativa ou pausa a tarefa e define período e hora do servidor. Disparar agora chama a mesma rotina; desligada, fora da hora e versão em dia são resultados normais. O agendamento depende do host chamando gestor/cron.php. Veja [Atualizações](admin-atualizacoes.md).

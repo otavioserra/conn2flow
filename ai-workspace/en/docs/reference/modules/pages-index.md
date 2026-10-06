@@ -95,3 +95,9 @@ Nonempty searches are forwarded to `forms_search_registrar_busca`, when availabl
 - [Publication index](publisher-index.md)
 - [Menus](menus.md)
 - [Documentation contract](../../guides/documentation.md)
+
+## Tailwind panel controls
+
+Templates and previews use compact cards and inline widget-code copying.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

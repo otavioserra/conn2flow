@@ -5,7 +5,7 @@ const fs = require('node:fs'), path = require('node:path');
 const {chromium} = require(process.env.C2F_PLAYWRIGHT || 'playwright');
 const base = process.env.C2F_BASE || 'https://conn2flow.local';
 const rota = process.env.C2F_APRESENTACAO || 'apresentacoes/conn2flow-widget/';
-const saida = path.join(__dirname, 'evidencias-precedencia');
+const saida = process.env.C2F_OUTPUT ? path.resolve(process.env.C2F_OUTPUT) : path.join(__dirname, 'evidencias-precedencia');
 fs.mkdirSync(saida, {recursive: true});
 const jar = fs.readFileSync(process.env.C2F_COOKIES, 'utf8').split(/\r?\n/).filter(l => l.startsWith('#HttpOnly_') || (l && !l.startsWith('#'))).map(l => {
   const p = l.replace(/^#HttpOnly_/, '').split('\t');

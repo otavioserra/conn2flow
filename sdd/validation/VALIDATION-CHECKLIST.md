@@ -1,5 +1,19 @@
 # Validation Checklist
 
+## BATCH-255 — REQ-246 / Site REQ-110
+
+- [x] Main atualizada e branches integradas, incluindo a correção posterior da apresentação (84deb54a).
+- [x] PHPUnit completo: 1.672 testes, 17.527 asserções, zero falhas/erros; quatro skips e deprecações registrados.
+- [x] Vitest completo: 49 arquivos, 573 testes aprovados.
+- [x] Histórico de 36 requisições levantado; extração das bibliotecas e documentação bilíngue atualizadas a partir do código.
+- [ ] Auditoria final, build idempotente e links HTTP da documentação.
+- [ ] Pipeline completo do Lab e comparação SQL antes/depois.
+- [ ] Navegador: regressão REQ-243 (158), REQ-245 (19), apresentação (24) e documentação desktop/mobile.
+- [x] Arquivamento mantém dez lotes ativos na raiz; links órfãos reparados nos dois repositórios.
+- [ ] Revisão final e push das duas main.
+
+Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-summary.json) e [inventário](req246/history-inventory.json).
+
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
@@ -110,7 +124,7 @@ Detalhes: [BATCH-246](../implementation/BATCH-246.md) e [inventário](req237-val
 - [x] PHPUnit focado aprovado; `php -l` e `git diff --check` limpos.
 - [x] Suíte geral comparada com checkout limpo de `3e2ad2e9`: mesmos 3 erros de Stripe e 2 falhas de CRLF.
 
-Evidências, comandos e limites: [BATCH-243](../implementation/BATCH-243.md). Banco principal e arquivos de outros lotes preservados; validação com fixtures temporárias, sem deploy de instalação.
+Evidências, comandos e limites: [BATCH-243](../implementation/archive/BATCH-243.md). Banco principal e arquivos de outros lotes preservados; validação com fixtures temporárias, sem deploy de instalação.
 
 ## BATCH-245 / REQ-236 — integração homologada no Lab
 

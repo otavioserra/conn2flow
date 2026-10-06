@@ -52,3 +52,9 @@ O AJAX público `forms-search-autocomplete` é despachado por `ajaxWidgets` para
 
 - [Índice de páginas](pages-index.md)
 - [Formulários](forms.md)
+
+## Controles do painel Tailwind
+
+O editor separa configuração e prévias em abas; seletores flutuantes evitam corte na caixa. O código do widget pode ser copiado no próprio painel.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

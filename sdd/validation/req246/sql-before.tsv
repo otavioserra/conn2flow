@@ -1,0 +1,10 @@
+language	active_docs
+en	172
+pt-br	546
+language	id	status	user_modified	versao	body_sha256
+en	docs-concepts-admin-interface	A	0	22	c7109fc074f287a2ddaff52bb12436674ef8daf879c0404ebeda6c8bc05c9099
+en	docs-reference-modules-admin-atualizacoes	A	0	22	49489b127729d74c3809177ad85ecbcfbe702e531363ac886e11a89f9a0b8181
+en	docs-reference-modules-dashboard	A	0	22	786e376375b5b95e3222c14c24b4c87c6a88d6ab1cd3ce393fb6b0238c6a3a87
+pt-br	docs-concepts-admin-interface	A	0	24	61a53a0a5c968567b4a93be9a4c2d34ff4b74de120d133b53c763f5214e0be7e
+pt-br	docs-reference-modules-admin-atualizacoes	A	0	22	dbdb7dba8bb16eb462f0f65a6113fc1196f0be3ea1c17bd86e5a356fa8c892d7
+pt-br	docs-reference-modules-dashboard	A	0	21	56ad877e93ae5daca54006cf0f0629d51490cefaa15888ee42213d1acc5d5442

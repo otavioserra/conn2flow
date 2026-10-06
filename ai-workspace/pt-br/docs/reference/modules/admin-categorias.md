@@ -39,3 +39,9 @@ O controlador trata `listar`, `adicionar`, `adicionar-filho` e `editar`; status 
 
 - [Arquivos](admin-arquivos.md)
 - [Módulos](modulos.md)
+
+## Controles do painel Tailwind
+
+Adicionar filho conserva a categoria pai; campos e seletores seguem o painel Tailwind.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

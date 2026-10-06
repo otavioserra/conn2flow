@@ -1,0 +1,54 @@
+{
+  "head": "93fd51d1",
+  "checks": [
+    {
+      "route": "reference/libraries/atualizacoes-automatica",
+      "needle": "ultima_automatica",
+      "oldExists": false,
+      "oldContains": false,
+      "detectsOldContent": true
+    },
+    {
+      "route": "reference/libraries/controles",
+      "needle": "observarSelects",
+      "oldExists": false,
+      "oldContains": false,
+      "detectsOldContent": true
+    },
+    {
+      "route": "reference/libraries/admin-topbar",
+      "needle": "admin_topbar",
+      "oldExists": false,
+      "oldContains": false,
+      "detectsOldContent": true
+    },
+    {
+      "route": "reference/libraries/interface-listar-tailwind",
+      "needle": "interface_listar",
+      "oldExists": false,
+      "oldContains": false,
+      "detectsOldContent": true
+    },
+    {
+      "route": "guides/site-administration",
+      "needle": "discount_value",
+      "oldExists": false,
+      "oldContains": false,
+      "detectsOldContent": true
+    },
+    {
+      "route": "reference/modules/dashboard",
+      "needle": "complete stylesheet closes",
+      "oldExists": true,
+      "oldContains": false,
+      "detectsOldContent": true
+    },
+    {
+      "route": "reference/modules/admin-atualizacoes",
+      "needle": "atualizacao-automatica.json",
+      "oldExists": true,
+      "oldContains": false,
+      "detectsOldContent": true
+    }
+  ]
+}

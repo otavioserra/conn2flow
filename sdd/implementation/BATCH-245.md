@@ -1,6 +1,6 @@
 # BATCH-245 — Integração Tailwind e Dashboard V3.1
 
-- Requisição: [req-236](../human-requests/req-236.md).
+- Requisição: [req-236](../human-requests/archive/req-236.md).
 - Status: in-review.
 - Repositório: `conn2flow`, `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`.
 - Branch de implementação: `feat/req-236`; integrações sequenciais realizadas em `main`.

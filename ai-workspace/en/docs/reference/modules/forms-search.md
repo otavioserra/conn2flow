@@ -52,3 +52,9 @@ Public AJAX `forms-search-autocomplete` reaches `forms_search_render_ajax()` thr
 
 - [Pages index](pages-index.md)
 - [Forms](forms.md)
+
+## Tailwind panel controls
+
+The editor separates configuration and preview tabs; floating selects avoid container clipping. Widget code can be copied in the panel.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

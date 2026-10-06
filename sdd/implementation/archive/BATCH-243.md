@@ -1,6 +1,6 @@
 # BATCH-243 — Tabelas JSON particionadas
 
-- Requisição: [req-234](../human-requests/req-234.md)
+- Requisição: [req-234](../../human-requests/archive/req-234.md)
 - Projeto: `conn2flow`
 - Raiz de implementação: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req234`
 - Branch: `feat/req-234`, derivada de `main` (`3e2ad2e9`)

@@ -138,9 +138,9 @@ Reference generated from `gestor/bibliotecas/cron.php` by `c2f docs:extract` —
   Executa uma tarefa e devolve o resultado normalizado.
   Parameters:
   - `$tarefa`: Linha de cron_tarefas.
-- `cron_tarefa_registrar(string $id, string $status, int $duracaoMs, string $log): void` — [line 222](../../../../../gestor/bibliotecas/cron.php#L222)
+- `cron_tarefa_registrar(string $id, string $status, int $duracaoMs, string $log): void` — [line 232](../../../../../gestor/bibliotecas/cron.php#L232)
   Persiste o resultado da execução na própria linha da tarefa.
-- `cron_tarefas_carregar(string|null $frequencia = null, string|null $tarefaId = null, bool $todas = false, array $campos = null): array` — [line 245](../../../../../gestor/bibliotecas/cron.php#L245)
+- `cron_tarefas_carregar(string|null $frequencia = null, string|null $tarefaId = null, bool $todas = false, array $campos = null): array` — [line 255](../../../../../gestor/bibliotecas/cron.php#L255)
   Carrega as tarefas elegíveis do banco.
   Parameters:
   - `$frequencia`: Janela do tick; null quando o alvo é uma tarefa específica.

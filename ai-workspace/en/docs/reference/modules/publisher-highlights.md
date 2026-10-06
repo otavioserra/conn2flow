@@ -95,3 +95,9 @@ Bundled templates: `publisher-highlights-noticias-lista-simples`, `publisher-hig
 - [Publication definitions](publisher.md)
 - [Paginated index](publisher-index.md)
 - [Menus](menus.md)
+
+## Tailwind panel controls
+
+Templates and previews use compact cards and a widget-code copy control.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

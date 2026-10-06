@@ -39,3 +39,9 @@ The controller handles `listar`, `adicionar`, `adicionar-filho`, and `editar`; s
 
 - [Files](admin-arquivos.md)
 - [Modules](modulos.md)
+
+## Tailwind panel controls
+
+Adding a child retains the parent category; fields and selectors follow the Tailwind panel.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

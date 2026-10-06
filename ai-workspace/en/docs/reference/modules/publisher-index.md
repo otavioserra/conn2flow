@@ -105,3 +105,9 @@ Bundled templates: `publisher-index-lista`, `publisher-index-grid`, `publisher-i
 - [Publication definitions](publisher.md)
 - [Menus](menus.md)
 - [Database library](../libraries/banco.md)
+
+## Tailwind panel controls
+
+Configuration and templates use compact cards; the widget-code tab provides copying.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

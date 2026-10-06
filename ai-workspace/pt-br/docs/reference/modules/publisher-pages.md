@@ -27,7 +27,7 @@ sources:
   - gestor/db/migrations/20250723165531_create_paginas_301_table.php
   - gestor/db/migrations/20260127162100_create_publisher_pages_table.php
   - gestor/db/migrations/20260713130000_expand_publisher_pages_identifiers.php
-verified_at: ad58064f
+verified_at: 914c7b10
 ---
 
 # Módulo `publisher-pages`
@@ -124,3 +124,7 @@ O legado em português usava nomes inexistentes como `publicador_paginas` e uma 
 - [Administração de páginas](admin-paginas.md)
 - [Índice de publicações](publisher-index.md)
 - [Destaques](publisher-highlights.md)
+
+## Editor Tailwind e conteúdo escapado
+
+O editor escapa o HTML antes de colocá-lo no textarea. Exemplos com entidades ou fechamento de textarea permanecem texto editável. Campos estruturados comuns são escapados; campos HTML preservam autoria. Documentos salvos antes da correção precisam ser comparados com a fonte original: escapar na exibição não recupera conteúdo corrompido. Cartões de modelos e botões de copiar usam os controles compartilhados.

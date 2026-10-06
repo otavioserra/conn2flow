@@ -38,3 +38,9 @@ O JSON do módulo aponta sua tabela principal para modulos, porque a tela també
 ## Veja também
 
 - [Módulos](modulos.md)
+
+## Controles do painel Tailwind
+
+O seletor de tipo também funciona nas caixas de entrada clonadas após a carga. A clonagem requer reconstrução da instância do controle; valores e chaves continuam sendo os do recurso.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

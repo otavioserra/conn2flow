@@ -57,3 +57,9 @@ O envio usa `forms-submissions-process/` por padrão. O widget chama `formulario
 
 - [Envios de formulários](forms-submissions.md)
 - [Formulários de busca](forms-search.md)
+
+## Controles do painel Tailwind
+
+As telas usam campos, abas e selects compartilhados em Tailwind. A aba de código do widget oferece botão de copiar.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

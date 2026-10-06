@@ -1,0 +1,730 @@
+{
+  "checks": [
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 1280,
+      "status": 503,
+      "needle": "ultima_automatica",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/controles/",
+      "width": 1280,
+      "status": 503,
+      "needle": "observarSelects",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/admin-topbar/",
+      "width": 1280,
+      "status": 503,
+      "needle": "admin_topbar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 1280,
+      "status": 503,
+      "needle": "interface_listar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/dashboard/",
+      "width": 1280,
+      "status": 503,
+      "needle": "960",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-atualizacoes/",
+      "width": 1280,
+      "status": 503,
+      "needle": "atualizacao-automatica.json",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-pages/",
+      "width": 1280,
+      "status": 503,
+      "needle": "textarea",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/site-administration/",
+      "width": 1280,
+      "status": 503,
+      "needle": "discount_value",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/admin-interface/",
+      "width": 1280,
+      "status": 503,
+      "needle": "c2fc-campo",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 390,
+      "status": 503,
+      "needle": "ultima_automatica",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/controles/",
+      "width": 390,
+      "status": 503,
+      "needle": "observarSelects",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/admin-topbar/",
+      "width": 390,
+      "status": 503,
+      "needle": "admin_topbar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 390,
+      "status": 503,
+      "needle": "interface_listar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/dashboard/",
+      "width": 390,
+      "status": 503,
+      "needle": "960",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-atualizacoes/",
+      "width": 390,
+      "status": 503,
+      "needle": "atualizacao-automatica.json",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-pages/",
+      "width": 390,
+      "status": 503,
+      "needle": "textarea",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/site-administration/",
+      "width": 390,
+      "status": 503,
+      "needle": "discount_value",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/admin-interface/",
+      "width": 390,
+      "status": 503,
+      "needle": "c2fc-campo",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "Estamos atualizando o sistema"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 1280,
+      "status": 503,
+      "needle": "ultima_automatica",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/controles/",
+      "width": 1280,
+      "status": 503,
+      "needle": "observarSelects",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/admin-topbar/",
+      "width": 1280,
+      "status": 503,
+      "needle": "admin_topbar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 1280,
+      "status": 503,
+      "needle": "interface_listar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/dashboard/",
+      "width": 1280,
+      "status": 503,
+      "needle": "960",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-atualizacoes/",
+      "width": 1280,
+      "status": 503,
+      "needle": "atualizacao-automatica.json",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-pages/",
+      "width": 1280,
+      "status": 503,
+      "needle": "textarea",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/site-administration/",
+      "width": 1280,
+      "status": 503,
+      "needle": "discount_value",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/admin-interface/",
+      "width": 1280,
+      "status": 503,
+      "needle": "c2fc-campo",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 390,
+      "status": 503,
+      "needle": "ultima_automatica",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/controles/",
+      "width": 390,
+      "status": 503,
+      "needle": "observarSelects",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/admin-topbar/",
+      "width": 390,
+      "status": 503,
+      "needle": "admin_topbar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 390,
+      "status": 503,
+      "needle": "interface_listar",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/dashboard/",
+      "width": 390,
+      "status": 503,
+      "needle": "960",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-atualizacoes/",
+      "width": 390,
+      "status": 503,
+      "needle": "atualizacao-automatica.json",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-pages/",
+      "width": 390,
+      "status": 503,
+      "needle": "textarea",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/site-administration/",
+      "width": 390,
+      "status": 503,
+      "needle": "discount_value",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/admin-interface/",
+      "width": 390,
+      "status": 503,
+      "needle": "c2fc-campo",
+      "contains": false,
+      "overflow": 0,
+      "headings": [
+        "We are updating the system"
+      ],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 503 ()"
+      ],
+      "ok": false
+    }
+  ],
+  "linkChecks": [
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-automatica/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/controles/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/admin-topbar/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface-listar-tailwind/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/dashboard/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-atualizacoes/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-pages/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/site-administration/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/admin-interface/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-automatica/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/controles/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/admin-topbar/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface-listar-tailwind/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/dashboard/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-atualizacoes/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-pages/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/site-administration/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/admin-interface/",
+      "status": 503,
+      "ok": false
+    }
+  ],
+  "passed": 0,
+  "total": 36,
+  "brokenLinks": [
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-automatica/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/controles/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/admin-topbar/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface-listar-tailwind/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/dashboard/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-atualizacoes/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-pages/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/site-administration/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/admin-interface/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-automatica/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/controles/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/admin-topbar/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface-listar-tailwind/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/dashboard/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-atualizacoes/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-pages/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/site-administration/",
+      "status": 503,
+      "ok": false
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/admin-interface/",
+      "status": 503,
+      "ok": false
+    }
+  ]
+}

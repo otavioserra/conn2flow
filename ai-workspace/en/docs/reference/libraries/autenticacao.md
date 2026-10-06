@@ -69,7 +69,7 @@ Channel credential validation does not go through the attempt control.
 
 <!-- c2f:extract:start -->
 
-Reference generated from `gestor/bibliotecas/autenticacao.php` by `c2f docs:extract` — 22 functions. Do not edit inside this block.
+Reference generated from `gestor/bibliotecas/autenticacao.php` by `c2f docs:extract` — 21 functions. Do not edit inside this block.
 
 - `autenticacao_crypto_rand_secure(int $min, int $max): int` — [line 33](../../../../../gestor/bibliotecas/autenticacao.php#L33)
   Gera um número aleatório criptograficamente seguro.
@@ -165,23 +165,18 @@ Reference generated from `gestor/bibliotecas/autenticacao.php` by `c2f docs:extr
   Parameters:
   - `$params`: Parâmetros (criptografia, chavePrivada, chavePrivadaSenha obrigatórios).
   Returns: Valor decriptado ou false em erro.
-  Valida as credenciais de um usuário para ativação/login do canal distribuído.
-  Parameters:
-  - `$usuario`: Login do usuário.
-  - `$senha`: Senha em texto plano.
-  Returns: ['valido' => bool, 'id_usuarios' => int|null, 'mensagem' => string|null]
-- `autenticacao_distribuido_gerar_tokens(int $id_usuarios): array|false` — [line 1367](../../../../../gestor/bibliotecas/autenticacao.php#L1367)
+- `autenticacao_distribuido_gerar_tokens(int $id_usuarios): array|false` — [line 1326](../../../../../gestor/bibliotecas/autenticacao.php#L1326)
   Gera os tokens de acesso e renovação (OAuth2) para o canal distribuído.
   Parameters:
   - `$id_usuarios`: ID do usuário já validado.
   Returns: Tokens (access_token, refresh_token, expires_in, ...) ou false.
-- `autenticacao_distribuido_verificar_permissao_modulo(int $id_usuarios, string $modulo): bool` — [line 1397](../../../../../gestor/bibliotecas/autenticacao.php#L1397)
+- `autenticacao_distribuido_verificar_permissao_modulo(int $id_usuarios, string $modulo): bool` — [line 1356](../../../../../gestor/bibliotecas/autenticacao.php#L1356)
   Verifica se o usuário tem permissão de acesso ao módulo alvo (controle por perfil).
   Parameters:
   - `$id_usuarios`: ID do usuário já autenticado.
   - `$modulo`: Slug do módulo alvo (ex.: 'modulos-grupos-distribuido').
   Returns: true se o usuário pode acessar o módulo.
-- `autenticacao_distribuido_token_ativo(string $token): bool` — [line 1505](../../../../../gestor/bibliotecas/autenticacao.php#L1505)
+- `autenticacao_distribuido_token_ativo(string $token): bool` — [line 1464](../../../../../gestor/bibliotecas/autenticacao.php#L1464)
   Verifica se um access token do canal distribuído está ativo e íntegro.
   Parameters:
   - `$token`: Access token a validar.

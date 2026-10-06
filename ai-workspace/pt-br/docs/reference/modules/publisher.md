@@ -94,3 +94,9 @@ A documentação antiga em português inventava tabelas `publicador_tipos`/`publ
 - [Menus](menus.md)
 - [Biblioteca banco](../libraries/banco.md)
 - [Contrato de documentação](../../guides/documentation.md)
+
+## Controles do painel Tailwind
+
+A escolha de modelos usa cartões compactos e prévias; controles e ações de copiar seguem o padrão compartilhado.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

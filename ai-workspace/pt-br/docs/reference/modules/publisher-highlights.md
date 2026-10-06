@@ -95,3 +95,9 @@ Templates fornecidos: `publisher-highlights-noticias-lista-simples`, `publisher-
 - [Definições de publicação](publisher.md)
 - [Índice paginado](publisher-index.md)
 - [Menus](menus.md)
+
+## Controles do painel Tailwind
+
+Modelos e prévias usam cartões compactos e o controle de cópia do código do widget.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

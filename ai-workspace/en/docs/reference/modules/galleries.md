@@ -52,3 +52,9 @@ The widget requires an active record and nonempty HTML in the database. It repea
 
 - [Admin pages](admin-paginas.md)
 - [Publications](publisher-pages.md)
+
+## Tailwind panel controls
+
+The file picker keeps a tray until Confirm; selecting several images retains the selection. The editor provides compact templates and a viewport-sized visual preview.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

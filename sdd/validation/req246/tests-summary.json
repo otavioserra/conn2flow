@@ -1,0 +1,48 @@
+{
+    "date":  "2026-10-06",
+    "core":  {
+                 "head":  "914c7b10",
+                 "phpunit":  {
+                                 "command":  "ssh otavio@lab.conn2flow.local: php /mnt/c/ProgramData/ComposerSetup/bin/composer.phar test",
+                                 "tests":  1672,
+                                 "assertions":  17527,
+                                 "failures":  0,
+                                 "errors":  0,
+                                 "skipped":  4,
+                                 "deprecations":  4,
+                                 "phpunitDeprecations":  3,
+                                 "exitCode":  0
+                             },
+                 "vitest":  {
+                                "command":  "npm.cmd run test",
+                                "files":  49,
+                                "tests":  573,
+                                "failed":  0,
+                                "exitCode":  0
+                            }
+             },
+    "site":  {
+                 "head":  "93fd51d1",
+                 "phpunit":  {
+                                 "command":  "ssh otavio@lab.conn2flow.local: php ../conn2flow/vendor/bin/phpunit -c sdd/validation/req238-phpunit.xml",
+                                 "tests":  53,
+                                 "assertions":  2403,
+                                 "failures":  0,
+                                 "errors":  0,
+                                 "exitCode":  0
+                             },
+                 "vitest":  {
+                                "command":  "npm.cmd run test",
+                                "files":  2,
+                                "tests":  13,
+                                "failed":  0,
+                                "exitCode":  0
+                            }
+             },
+    "notes":  [
+                  "Core PHPUnit command is the script defined as composer test; execution under Linux avoids host PHP/OpenSSL incompatibility.",
+                  "Site has no composer.json and uses the complete shared PHPUnit runner.",
+                  "Core Vitest emitted happy-dom ECONNREFUSED messages from mocked iframe URLs; no tests failed.",
+                  "Core skipped tests and deprecations are retained as suite limitations, not counted as executed passes."
+              ]
+}

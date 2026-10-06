@@ -52,3 +52,9 @@ O widget exige registro ativo e HTML não vazio no banco. Repete `<!-- item < --
 
 - [Páginas administrativas](admin-paginas.md)
 - [Publicações](publisher-pages.md)
+
+## Controles do painel Tailwind
+
+O seletor de arquivos mantém uma bandeja até Confirmar; escolher várias imagens conserva a seleção. O editor oferece modelos compactos e a prévia visual dimensionada pelo viewport.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

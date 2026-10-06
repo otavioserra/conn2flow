@@ -87,3 +87,9 @@ With no decision, only `necessary` is allowed. `cookie_consent_estado()` returns
 
 - [Menus](menus.md)
 - [Models](admin-templates.md)
+
+## Tailwind panel controls
+
+The editor uses panel controls and inline messages. The Dashboard widget stays isolated; public preferences and consent depend on the chosen record.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

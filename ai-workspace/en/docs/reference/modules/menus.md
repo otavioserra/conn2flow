@@ -113,3 +113,9 @@ Because it is website configuration, a menu can be versioned as a project **reso
 
 - [modelo.php library](../libraries/modelo.md): the string functions the Gestor's templates are built on.
 - [How to write documentation](../../guides/documentation.md)
+
+## Tailwind panel controls
+
+Checkboxes and radio buttons have clickable labels; editor validation shows inline messages. The public widget still follows its template and parameters.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

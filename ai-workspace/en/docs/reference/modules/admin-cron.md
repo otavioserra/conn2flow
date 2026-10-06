@@ -9,7 +9,8 @@ sources:
   - gestor/modulos/admin-cron/admin-cron.json
   - gestor/modulos/admin-cron/includes/admin-cron-dispatch.php
   - gestor/db/migrations/20260901120000_create_cron_tarefas_table.php
-verified_at: c4e05805
+  - gestor/modulos/admin-atualizacoes/admin-atualizacoes.cron.php
+verified_at: 914c7b10
 ---
 
 # admin-cron module
@@ -34,3 +35,7 @@ cron_tarefas has id_cron_tarefas, a unique logical id, nome, descricao, modulo, 
 ## See also
 
 - [Modules](modulos.md)
+
+## Automatic system updates
+
+The admin-atualizacoes manifest declares admin-atualizacoes-automatica with hourly frequency and disabled default. The Updates panel enables or pauses it and selects the check period and server hour. Run now invokes the same routine; disabled, outside-hour and already-current results are normal outcomes. Scheduling depends on the host invoking gestor/cron.php. See [Updates](admin-atualizacoes.md).

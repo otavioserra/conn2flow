@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/html-editor.php
   - gestor/assets/interface/html-editor-interface.js
   - gestor/modulos/admin-paginas/admin-paginas.php
-verified_at: c665e2e5
+verified_at: 914c7b10
 ---
 
 # Biblioteca `html-editor.php`
@@ -66,80 +66,80 @@ Para a IA usar as cores e fontes do site em vez de inventar, o editor resume o c
 
 <!-- c2f:extract:start -->
 
-Referência gerada a partir de `gestor/bibliotecas/html-editor.php` por `c2f docs:extract` — 35 funções. Não edite dentro deste bloco.
+Referência gerada a partir de `gestor/bibliotecas/html-editor.php` por `c2f docs:extract` — 37 funções. Não edite dentro deste bloco.
 
 - `html_editor_publisher_controls(array $params = false)` — [linha 26](../../../../../gestor/bibliotecas/html-editor.php#L26)
   Publisher controles.
   Parâmetros:
   - `$params`: Parâmetros da função.
   - `$params['publisher']`: variáveis do publisher.
-- `html_editor_tailwind_browser_version(): string` — [linha 119](../../../../../gestor/bibliotecas/html-editor.php#L119)
+- `html_editor_tailwind_browser_version(): string` — [linha 121](../../../../../gestor/bibliotecas/html-editor.php#L121)
   Versão do `@tailwindcss/browser` usada pelos editores (req-117).
-- `html_editor_assets_registro(): array` — [linha 134](../../../../../gestor/bibliotecas/html-editor.php#L134)
+- `html_editor_assets_registro(): array` — [linha 136](../../../../../gestor/bibliotecas/html-editor.php#L136)
   Registro de assets externos, carregado sob demanda (req-156).
-- `html_editor_tailwind_browser_contract(): string` — [linha 154](../../../../../gestor/bibliotecas/html-editor.php#L154)
+- `html_editor_tailwind_browser_contract(): string` — [linha 156](../../../../../gestor/bibliotecas/html-editor.php#L156)
   Contrato de tema entregue ao Tailwind Browser (req-114, extraído em req-117).
   Retorno: CSS do contrato, ou string vazia quando não houver arquivo.
-- `html_editor_ia_tokens_tema_limite(): int` — [linha 179](../../../../../gestor/bibliotecas/html-editor.php#L179)
+- `html_editor_ia_tokens_tema_limite(): int` — [linha 181](../../../../../gestor/bibliotecas/html-editor.php#L181)
   Orçamento de bytes do bloco `{{theme_tokens}}` (req-127).
-- `html_editor_ia_tokens_tema_namespaces(): array` — [linha 202](../../../../../gestor/bibliotecas/html-editor.php#L202)
+- `html_editor_ia_tokens_tema_namespaces(): array` — [linha 204](../../../../../gestor/bibliotecas/html-editor.php#L204)
   Namespaces de tema do Tailwind v4 aceitos no bloco `{{theme_tokens}}` (req-127).
-- `html_editor_ia_tokens_tema_valor_util(string $valor): bool` — [linha 231](../../../../../gestor/bibliotecas/html-editor.php#L231)
+- `html_editor_ia_tokens_tema_valor_util(string $valor): bool` — [linha 233](../../../../../gestor/bibliotecas/html-editor.php#L233)
   Decide se o VALOR de uma declaração de tema cabe no prompt (req-127).
   Parâmetros:
   - `$valor`: valor da declaração, já sem o `;`.
-- `html_editor_ia_tokens_tema_bloco(string $css): string` — [linha 258](../../../../../gestor/bibliotecas/html-editor.php#L258)
+- `html_editor_ia_tokens_tema_bloco(string $css): string` — [linha 260](../../../../../gestor/bibliotecas/html-editor.php#L260)
   Recorta o conteúdo do primeiro bloco `@theme` / `@theme static` do contrato (req-127).
   Parâmetros:
   - `$css`: CSS do contrato, já sem comentários.
   Retorno: conteúdo interno do bloco, ou string vazia quando não houver `@theme`.
-- `html_editor_ia_tokens_tema_componentes(string $css): array` — [linha 292](../../../../../gestor/bibliotecas/html-editor.php#L292)
+- `html_editor_ia_tokens_tema_componentes(string $css): array` — [linha 294](../../../../../gestor/bibliotecas/html-editor.php#L294)
   Lista os nomes de classe declarados nos blocos `@layer components` do contrato (req-127).
   Parâmetros:
   - `$css`: CSS do contrato, já sem comentários.
   Retorno: lista de classes com o ponto, na ordem de aparição.
-- `html_editor_ia_css_classes_resumir(string $css, int|null $limiteBytes = null): string` — [linha 343](../../../../../gestor/bibliotecas/html-editor.php#L343)
+- `html_editor_ia_css_classes_resumir(string $css, int|null $limiteBytes = null): string` — [linha 345](../../../../../gestor/bibliotecas/html-editor.php#L345)
   Resume um CSS qualquer na lista de nomes de classe que ele define (req-127).
   Parâmetros:
   - `$css`: CSS a resumir.
   - `$limiteBytes`: orçamento total; `null` usa `html_editor_ia_tokens_tema_limite()`.
   Retorno: lista de classes separadas por espaço, ou string vazia.
-- `html_editor_ia_tokens_tema_compilar(string $css, int|null $limiteBytes = null): string` — [linha 385](../../../../../gestor/bibliotecas/html-editor.php#L385)
+- `html_editor_ia_tokens_tema_compilar(string $css, int|null $limiteBytes = null): string` — [linha 387](../../../../../gestor/bibliotecas/html-editor.php#L387)
   Monta o bloco `{{theme_tokens}}` a partir do CSS do contrato (req-127).
   Parâmetros:
   - `$css`: conteúdo do `browser-contract.css`.
   - `$limiteBytes`: orçamento total; `null` usa `html_editor_ia_tokens_tema_limite()`.
   Retorno: bloco CSS compacto, ou string vazia quando não houver nada aproveitável.
-- `html_editor_ia_theme_tokens_marcador(): string` — [linha 521](../../../../../gestor/bibliotecas/html-editor.php#L521)
+- `html_editor_ia_theme_tokens_marcador(): string` — [linha 523](../../../../../gestor/bibliotecas/html-editor.php#L523)
   Marcador do bloco condicional de tokens de tema nos `.md` dos modos de IA (req-127).
-- `html_editor_ia_modo_theme_tokens_aplicar(string $modo, string $theme_tokens): string` — [linha 541](../../../../../gestor/bibliotecas/html-editor.php#L541)
+- `html_editor_ia_modo_theme_tokens_aplicar(string $modo, string $theme_tokens): string` — [linha 543](../../../../../gestor/bibliotecas/html-editor.php#L543)
   Aplica (ou remove) a seção de tokens de tema no texto do modo de IA (req-127).
   Parâmetros:
   - `$modo`: texto do modo de IA.
   - `$theme_tokens`: saída de `html_editor_ia_extrair_tokens_tema()`.
-- `html_editor_ia_extrair_tokens_tema(string|null $caminhoContrato = null, int|null $limiteBytes = null): string` — [linha 593](../../../../../gestor/bibliotecas/html-editor.php#L593)
+- `html_editor_ia_extrair_tokens_tema(string|null $caminhoContrato = null, int|null $limiteBytes = null): string` — [linha 595](../../../../../gestor/bibliotecas/html-editor.php#L595)
   Extrator semântico leve de tokens de tema para o Assistente de IA (req-127).
   Parâmetros:
   - `$caminhoContrato`: caminho explícito do contrato; `null` resolve pelo projeto ativo.
   - `$limiteBytes`: orçamento total; `null` usa `html_editor_ia_tokens_tema_limite()`.
   Retorno: bloco CSS compacto, ou string vazia quando não houver contrato aproveitável.
-- `html_editor_css_precompiled_baseline(array $params = false): string` — [linha 630](../../../../../gestor/bibliotecas/html-editor.php#L630)
+- `html_editor_css_precompiled_baseline(array $params = false): string` — [linha 632](../../../../../gestor/bibliotecas/html-editor.php#L632)
   Baseline de CSS pré-compilado do editor (req-117).
   Parâmetros:
   - `$params['css_precompiled']`: pré-compilado do próprio recurso.
   - `$params['layout_id']`: layout da página, quando houver.
   - `$params['alvo']`: alvo do editor (`paginas`, `layouts`, `componentes`…).
   Retorno: CSS concatenado na ordem da cascata.
-- `html_editor_layout_css_autoral(string $layout_id): string` — [linha 679](../../../../../gestor/bibliotecas/html-editor.php#L679)
+- `html_editor_layout_css_autoral(string $layout_id): string` — [linha 681](../../../../../gestor/bibliotecas/html-editor.php#L681)
   CSS AUTORAL do layout — a folha que o runtime serve e o editor não recebia (req-160).
   Parâmetros:
   - `$layout_id`: Layout da página.
-- `html_editor_css_precompiled_concatenar(string $layout, string $recurso): string` — [linha 712](../../../../../gestor/bibliotecas/html-editor.php#L712)
+- `html_editor_css_precompiled_concatenar(string $layout, string $recurso): string` — [linha 714](../../../../../gestor/bibliotecas/html-editor.php#L714)
   Concatena as camadas do baseline na ordem da cascata do runtime (req-117).
   Parâmetros:
   - `$layout`: CSS pré-compilado do layout.
   - `$recurso`: CSS pré-compilado do próprio recurso.
-- `html_editor_componente($params = false)` — [linha 742](../../../../../gestor/bibliotecas/html-editor.php#L742)
+- `html_editor_componente($params = false)` — [linha 744](../../../../../gestor/bibliotecas/html-editor.php#L744)
   Componente Editor HTML.
   Parâmetros:
   - `$params['editar']`: caso seja edição.
@@ -151,40 +151,50 @@ Referência gerada a partir de `gestor/bibliotecas/html-editor.php` por `c2f doc
   - `$params['publisherPage']`: controles específicos do publisher page.
   - `$params['css_precompiled']`: CSS Tailwind offline do PRÓPRIO recurso.
   - `$params['layout_id']`: layout da página, quando houver (req-117). Serve para montar o
-- `html_editor_include($params = false)` — [linha 1113](../../../../../gestor/bibliotecas/html-editor.php#L1113)
+- `html_editor_include($params = false)` — [linha 1120](../../../../../gestor/bibliotecas/html-editor.php#L1120)
   Incluir o editor HTML visual.
   Parâmetros:
   - `$params['js_vars']`: variáveis JS a serem incluídas.
-- `html_editor_ajax_interface(array $params = false)` — [linha 1202](../../../../../gestor/bibliotecas/html-editor.php#L1202)
+- `html_editor_ajax_interface(array $params = false)` — [linha 1209](../../../../../gestor/bibliotecas/html-editor.php#L1209)
   AJAX Interface.
   Parâmetros:
   - `$params`: Parâmetros da função.
-- `html_editor_ajax_layout_css()` — [linha 1233](../../../../../gestor/bibliotecas/html-editor.php#L1233)
+- `html_editor_ajax_layout_css()` — [linha 1240](../../../../../gestor/bibliotecas/html-editor.php#L1240)
   CSS do layout escolhido no formulário (req-160).
-- `html_editor_var_pattern()` — [linha 1286](../../../../../gestor/bibliotecas/html-editor.php#L1286)
+- `html_editor_var_pattern()` — [linha 1293](../../../../../gestor/bibliotecas/html-editor.php#L1293)
   ============================================================================ req-093 (BATCH-093) — Renderização de variáveis/widgets como caixas no Editor HTML Visual CLÁSSICO e no preview, espelhando a Editbar (Dashboard Site Toolbar).
-- `html_editor_var_box($marker, $rendered, $tipo)` — [linha 1292](../../../../../gestor/bibliotecas/html-editor.php#L1292)
-- `html_editor_render_widget_signature($signature)` — [linha 1299](../../../../../gestor/bibliotecas/html-editor.php#L1299)
-- `html_editor_resolver_var($id)` — [linha 1317](../../../../../gestor/bibliotecas/html-editor.php#L1317)
-- `html_editor_boxes_widgets($html)` — [linha 1343](../../../../../gestor/bibliotecas/html-editor.php#L1343)
-- `html_editor_resolver_variaveis($html)` — [linha 1359](../../../../../gestor/bibliotecas/html-editor.php#L1359)
-- `html_editor_boxes_variaveis($html)` — [linha 1370](../../../../../gestor/bibliotecas/html-editor.php#L1370)
-- `html_editor_ajax_render_vars()` — [linha 1415](../../../../../gestor/bibliotecas/html-editor.php#L1415)
+- `html_editor_var_box($marker, $rendered, $tipo)` — [linha 1299](../../../../../gestor/bibliotecas/html-editor.php#L1299)
+- `html_editor_render_widget_signature($signature)` — [linha 1306](../../../../../gestor/bibliotecas/html-editor.php#L1306)
+- `html_editor_widget_renderizar($sig): array` — [linha 1329](../../../../../gestor/bibliotecas/html-editor.php#L1329)
+  Renderiza um widget como a página publicada o entrega, para as prévias do editor.
+  Retorno: ['html' => string, 'css' => string] `css` são as tags <style> registradas na renderização.
+- `html_editor_widget_js_modulos(): array` — [linha 1350](../../../../../gestor/bibliotecas/html-editor.php#L1350)
+  Módulos que têm controlador público de widget (`<modulo>.widget.js`), pelo cadastro de widgets. A prévia do editor carrega o controlador dos widgets presentes na página; com uma lista fixa no JavaScript, widget de projeto ou de plugin ficava sem comportamento na prévia.
+  Retorno: [modulo => true]
+- `html_editor_resolver_var($id)` — [linha 1371](../../../../../gestor/bibliotecas/html-editor.php#L1371)
+- `html_editor_boxes_widgets($html)` — [linha 1397](../../../../../gestor/bibliotecas/html-editor.php#L1397)
+- `html_editor_resolver_variaveis($html)` — [linha 1413](../../../../../gestor/bibliotecas/html-editor.php#L1413)
+- `html_editor_boxes_variaveis($html)` — [linha 1424](../../../../../gestor/bibliotecas/html-editor.php#L1424)
+- `html_editor_ajax_render_vars()` — [linha 1469](../../../../../gestor/bibliotecas/html-editor.php#L1469)
   AJAX — Recebe o HTML do editor (CodeMirror) e devolve duas versões renderizadas (req-093): - `boxes`:  variáveis globais em caixas (`.c2f-var-box` + `data-c2f-marker`) + widgets renderizados entre comentários — para carregar no EDITOR VISUAL (átomos reversíveis no save). - `values`: variáveis globais resolvidas para valor puro (sem caixas) — para o PREVIEW iframe. As variáveis LOCAIS/de simulação (desconhecidas do backend) são preservadas para o frontend resolver.
-- `html_editor_ajax_widget_render()` — [linha 1439](../../../../../gestor/bibliotecas/html-editor.php#L1439)
+- `html_editor_ajax_widget_render()` — [linha 1493](../../../../../gestor/bibliotecas/html-editor.php#L1493)
   AJAX Widget Render.
-- `html_editor_ajax_widget_types()` — [linha 1479](../../../../../gestor/bibliotecas/html-editor.php#L1479)
+- `html_editor_ajax_widget_types()` — [linha 1534](../../../../../gestor/bibliotecas/html-editor.php#L1534)
   AJAX Widget Types.
-- `html_editor_ajax_widgets_list()` — [linha 1515](../../../../../gestor/bibliotecas/html-editor.php#L1515)
+- `html_editor_ajax_widgets_list()` — [linha 1570](../../../../../gestor/bibliotecas/html-editor.php#L1570)
   AJAX Widgets List.
-- `html_editor_widgets_buscar(array $params = array()): array` — [linha 1597](../../../../../gestor/bibliotecas/html-editor.php#L1597)
+- `html_editor_widgets_buscar(array $params = array()): array` — [linha 1652](../../../../../gestor/bibliotecas/html-editor.php#L1652)
   Busca paginada de itens de widget para o painel "+" do Live Editor (BATCH-081 §6).
   Parâmetros:
   - `$params`: { module?:string, busca?:string, pagina?:int, limite?:int }
   Retorno: Estrutura de resposta pronta para `$_GESTOR['ajax-json']`.
-- `html_editor_ajax_templates_load()` — [linha 1670](../../../../../gestor/bibliotecas/html-editor.php#L1670)
+- `html_editor_ajax_templates_load()` — [linha 1725](../../../../../gestor/bibliotecas/html-editor.php#L1725)
   AJAX Templates.
-- `html_editor_ajax_ia_requests()` — [linha 1789](../../../../../gestor/bibliotecas/html-editor.php#L1789)
+- `html_editor_ajax_ia_requests()` — [linha 1844](../../../../../gestor/bibliotecas/html-editor.php#L1844)
   AJAX IA Requests.
 
 <!-- c2f:extract:end -->
+
+## Widgets e prévias responsivas
+
+html_editor_widget_renderizar renderiza um widget declarado e retorna um array com html e css; html_editor_widget_js_modulos devolve um mapa módulo => true para widgets ativos com arquivo .widget.js. O Dashboard coleta CSS, head e scripts registrados durante a renderização e restaura o contexto temporário. O editor visual usa altura baseada no viewport, calc(100vh - 220px), nos modais Tailwind de edição/visualização. Widgets precisam dos estilos de template, registro e tema na prévia isolada. Veja [Dashboard](../modules/dashboard.md) para a ordem das folhas.

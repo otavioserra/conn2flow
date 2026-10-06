@@ -43,3 +43,9 @@ A relação corrente é `arquivos_disco_categorias`: `id_arquivos_disco_categori
 
 - [Categorias](admin-categorias.md)
 - [Galerias](galleries.md)
+
+## Controles do painel Tailwind
+
+O seletor tem bandeja das miniaturas escolhidas e botão Confirmar; selecione antes de confirmar. A galeria abre centralizada. Upload, pasta e listagem são o fluxo comum; escopo e cota podem ser restringidos por filtros do projeto.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

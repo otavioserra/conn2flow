@@ -54,22 +54,22 @@ Referência gerada a partir de `gestor/bibliotecas/oauth2.php` por `c2f docs:ext
   - `$params['scope']`: Escopo opcional (padrão: 'read')
   - `$params['url_redirect']`: URL para redirecionamento após autenticação (opcional)
   Retorno: Array com tokens ou false em erro
-- `oauth2_validar_token(array $params = false): array|false` — [linha 244](../../../../../gestor/bibliotecas/oauth2.php#L244)
+- `oauth2_validar_token(array $params = false): array|false` — [linha 245](../../../../../gestor/bibliotecas/oauth2.php#L245)
   Valida token OAuth 2.0.
   Parâmetros:
   - `$params`: Parâmetros da função
   - `$params['token']`: Access token a ser validado (obrigatório)
   Retorno: Dados do usuário se válido, false caso contrário
-- `oauth2_autorizar_requisicao(array $params = false): array|false` — [linha 366](../../../../../gestor/bibliotecas/oauth2.php#L366)
+- `oauth2_autorizar_requisicao(array $params = false): array|false` — [linha 367](../../../../../gestor/bibliotecas/oauth2.php#L367)
   Autoriza requisição usando token OAuth 2.0.
   Parâmetros:
   - `$params`: Parâmetros da função
   - `$params['header_authorization']`: Valor do header Authorization (opcional, pega automaticamente)
   Retorno: Dados do usuário autorizado ou false
-- `oauth2_limpar_tokens_expirados(): bool` — [linha 400](../../../../../gestor/bibliotecas/oauth2.php#L400)
+- `oauth2_limpar_tokens_expirados(): bool` — [linha 401](../../../../../gestor/bibliotecas/oauth2.php#L401)
   Limpa tokens OAuth 2.0 expirados da tabela oauth2_tokens.
   Retorno: True se limpeza executada com sucesso
-- `oauth2_renovar_token(array $params = false): array|false` — [linha 426](../../../../../gestor/bibliotecas/oauth2.php#L426)
+- `oauth2_renovar_token(array $params = false): array|false` — [linha 427](../../../../../gestor/bibliotecas/oauth2.php#L427)
   Renova access token usando refresh token.
   Parâmetros:
   - `$params`: Parâmetros da função

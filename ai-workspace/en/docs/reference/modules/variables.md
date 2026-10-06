@@ -38,3 +38,9 @@ The module JSON points its main table to modulos because the screen also display
 ## See also
 
 - [Modules](modulos.md)
+
+## Tailwind panel controls
+
+The type selector also works in entry boxes cloned after loading. Cloning requires rebuilding the control instance; values and keys remain resource data.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

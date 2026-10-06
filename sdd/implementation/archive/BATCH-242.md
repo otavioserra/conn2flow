@@ -4,7 +4,7 @@
 - **Data:** 2026-10-04
 - **Repositório:** `conn2flow` (Core) em `c:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req233`
 - **Branch:** `feat/req-233`
-- **Requisição:** [req-233](../human-requests/req-233.md)
+- **Requisição:** [req-233](../../human-requests/archive/req-233.md)
 - **Origem:** Correção estrutural das regressões e pendências do BATCH-241 (req-232).
 
 ---

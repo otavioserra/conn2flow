@@ -7,7 +7,9 @@ sources:
   - gestor/bibliotecas/gestor.php
   - gestor/gestor.php
   - gestor/controladores/agents/arquitetura/tailwind-recursos.php
-verified_at: eb96c5c7
+  - gestor/modulos/dashboard/dashboard.js
+  - gestor/modulos/dashboard/dashboard.php
+verified_at: 914c7b10
 ---
 
 # CSS and Tailwind
@@ -20,3 +22,7 @@ Layouts, pages, components, and templates have authored CSS (`css`) and two deri
 > A page can look correct in the editor but lose classes when published if a dynamic dependency is absent from compilation. Inspect the final HTML and run `css:audit` when results differ.
 
 Tailwind resources have per-resource precompiled CSS; an isolated global stylesheet does not replace the page CSS. The editor must accumulate the baseline for inserted sections so its delta retains the rules visitors see.
+
+## Dashboard widget compilation
+
+In a widget iframe, partial precompiled sheets must precede the browser compiler. Its complete sheet comes last within utilities; otherwise an unresponsive utility in a later partial sheet can override a responsive one. The theme contract supplies tokens to the isolated document. Authored unlayered CSS keeps precedence. Public presentations omit the template partial sheet after the page sheet; they retain authored template CSS and extra head. This prevents responsive slides from becoming a single column. See [Dashboard](../reference/modules/dashboard.md).

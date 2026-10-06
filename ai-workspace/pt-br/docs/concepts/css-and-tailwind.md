@@ -7,7 +7,9 @@ sources:
   - gestor/bibliotecas/gestor.php
   - gestor/gestor.php
   - gestor/controladores/agents/arquitetura/tailwind-recursos.php
-verified_at: eb96c5c7
+  - gestor/modulos/dashboard/dashboard.js
+  - gestor/modulos/dashboard/dashboard.php
+verified_at: 914c7b10
 ---
 
 # CSS e Tailwind
@@ -20,3 +22,7 @@ Layouts, páginas, componentes e templates têm CSS de autoria (`css`) e dois de
 > Uma página pode parecer certa no editor e perder classes na publicação se sua dependência dinâmica não entrar na compilação. Inspecione o HTML final e execute `css:audit` quando houver divergência.
 
 Os recursos Tailwind têm CSS pré-compilado por recurso; a folha global isolada não substitui o CSS da página. O editor precisa acumular o baseline das seções inseridas para que o delta conserve as mesmas regras vistas pelo público.
+
+## Compilação dos widgets do Dashboard
+
+No iframe do widget, folhas parciais pré-compiladas precedem o compilador do navegador. A folha completa dele é a última em utilities; caso contrário, uma utility simples numa folha parcial posterior pode vencer a responsiva. O contrato de tema fornece tokens ao documento isolado. CSS autoral sem camada mantém precedência. Apresentações públicas não incluem a folha parcial do template depois da página; conservam autoria e head do template. Isso evita slides responsivos em uma coluna. Veja [Dashboard](../reference/modules/dashboard.md).

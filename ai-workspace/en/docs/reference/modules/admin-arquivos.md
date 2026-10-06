@@ -43,3 +43,9 @@ The current association is `arquivos_disco_categorias`: `id_arquivos_disco_categ
 
 - [Categories](admin-categorias.md)
 - [Galleries](galleries.md)
+
+## Tailwind panel controls
+
+The picker has a selected-thumbnail tray and Confirm button; select before confirming. The gallery opens centered. Upload, folders and listing share the common flow; project filters can restrict scope and quota.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

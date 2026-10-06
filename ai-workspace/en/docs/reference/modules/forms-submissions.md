@@ -44,3 +44,9 @@ The public endpoint uses `ajaxOpcao=forms-process`; `forms_submissions_ajax_form
 
 - [Forms](forms.md)
 - [Search forms](forms-search.md)
+
+## Tailwind panel controls
+
+The view displays JSON data in CodeMirror. Status uses the shared selector, including view screens.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

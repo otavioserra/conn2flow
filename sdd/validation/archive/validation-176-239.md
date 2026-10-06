@@ -10,7 +10,7 @@ Lotes arquivados do VALIDATION-CHECKLIST.
 - [x] CA-4 (Suíte de Testes Aprovada): `GestorStateTest` (28/28), `LayoutAdministrativoTailwindTest` (15/15), `PainelTailwindReq224Test` (2/2), `TailwindRecursosTest` (21/21), `req228-topbar-test.php` (28/28) e `req227-cards-test.cjs` (6/6) com 100% de sucesso.
 - [x] CA-5 (Limpeza de Worktrees): Worktrees prontas para desalocação segura após confirmação da mesclagem.
 
-Evidências: [BATCH-239](../../implementation/BATCH-239.md).
+Evidências: [BATCH-239](../../implementation/archive/BATCH-239.md).
 
 ## BATCH-234 — Conferência final da UI Tailwind (req-225)
 

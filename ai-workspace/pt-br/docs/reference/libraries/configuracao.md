@@ -80,7 +80,7 @@ Referência gerada a partir de `gestor/bibliotecas/configuracao.php` por `c2f do
   - `$params['marcador']`: Marcador textual onde será incluído o widget (obrigatório).
   - `$params['modulo']`: Módulo alvo para filtrar as variáveis (obrigatório).
   - `$params['linguagemCodigo']`: Linguagem das variáveis (obrigatório).
-- `configuracao_hosts_salvar(array|false $params = false): array` — [linha 542](../../../../../gestor/bibliotecas/configuracao.php#L542)
+- `configuracao_hosts_salvar(array|false $params = false): array` — [linha 549](../../../../../gestor/bibliotecas/configuracao.php#L549)
   Salva as configurações de hosts para variáveis de um módulo.
   Parâmetros:
   - `$params`: Parâmetros da função.
@@ -90,7 +90,7 @@ Referência gerada a partir de `gestor/bibliotecas/configuracao.php` por `c2f do
   - `$params['grupos']`: Grupos alvos para filtrar as variáveis (opcional).
   - `$params['plugin']`: Identificador do plugin relacionado (opcional).
   Retorno: Array de retorno com informações do processamento.
-- `configuracao_hosts_variaveis(array|false $params = false): array` — [linha 822](../../../../../gestor/bibliotecas/configuracao.php#L822)
+- `configuracao_hosts_variaveis(array|false $params = false): array` — [linha 829](../../../../../gestor/bibliotecas/configuracao.php#L829)
   Retorna as variáveis de configuração de um módulo para um host específico.
   Parâmetros:
   - `$params`: Parâmetros da função.

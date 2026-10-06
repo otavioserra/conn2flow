@@ -105,3 +105,9 @@ Templates embarcados: `publisher-index-lista`, `publisher-index-grid`, `publishe
 - [Definições de publicação](publisher.md)
 - [Menus](menus.md)
 - [Biblioteca banco](../libraries/banco.md)
+
+## Controles do painel Tailwind
+
+Configuração e modelos usam cartões compactos; a aba de código do widget oferece cópia.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

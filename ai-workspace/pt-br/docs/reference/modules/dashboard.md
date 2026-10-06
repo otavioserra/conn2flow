@@ -12,7 +12,8 @@ sources:
   - gestor/modulos/dashboard/resources
   - gestor/db/migrations/20250723165526_create_layouts_table.php
   - gestor/db/migrations/20250723165530_create_paginas_table.php
-verified_at: 98ac881d
+  - gestor/bibliotecas/html-editor.php
+verified_at: 914c7b10
 ---
 
 # Módulo dashboard
@@ -42,3 +43,17 @@ Não há tabela própria do dashboard. Cartões consultam módulos/permissões; 
 - [Páginas](admin-paginas.md)
 - [Layouts](admin-layouts.md)
 - [Publicações](publisher-pages.md)
+
+## Dashboard V3.4: módulos e widgets
+
+A aba **Módulos** reúne os cartões autorizados. P, M e G alteram a densidade: P favorece ícones compactos; M e G usam a capa quando disponível, com ícone como alternativa. A ordem e a densidade são persistidas por usuário. Os cartões permitem abrir o módulo e acessar edição/documentação conforme as ações disponíveis.
+
+Na aba **Widgets e Métricas**, use Opções para editar a grade: escolha o tipo e o registro, arraste pela alça, troque o conteúdo ou remova a instância. A malha tem 12 colunas; largura usa colunas e altura varia de 120 a 960 px em passos de 20 px. O canto inferior direito redimensiona o cartão. O conteúdo ocupa a altura restante depois do cabeçalho; cada instância conserva seus parâmetros e registro.
+
+### Documento isolado e precedência CSS
+
+dashboard_ajax_widget_render valida registro ativo e idioma, lê somente colunas existentes e resolve o template pelo target. Ele entrega HTML, head, CSS, scripts, contrato de tema e URLs dos assets tailwindcss-browser e Lucide. O JS cria iframe srcdoc com sandbox="allow-scripts", origem opaca e permissão de tela cheia.
+
+A ordem no head é: CSS pré-compilado do layout, contrato de tema, folhas parciais/template/registro e CSS de autoria, depois o compilador Tailwind do navegador. A folha completa gerada pelo compilador fecha a camada utilities. Colocar a folha parcial depois faria grid-cols-1 vencer regras responsivas do slide. CSS de autoria sem camada mantém sua precedência. Scripts e ícones inicializam dentro do documento isolado; o estado temporário do widget no servidor é restaurado em finally.
+
+Cada iframe carrega seu próprio compilador: o custo aumenta com a quantidade de widgets. O iframe continua isolado mesmo com tela cheia habilitada. Veja [CSS e Tailwind](../../concepts/css-and-tailwind.md).

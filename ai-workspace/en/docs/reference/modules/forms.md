@@ -57,3 +57,9 @@ Submissions use `forms-submissions-process/` by default. The widget invokes `for
 
 - [Form submissions](forms-submissions.md)
 - [Search forms](forms-search.md)
+
+## Tailwind panel controls
+
+Screens use shared Tailwind fields, tabs and selects. The widget-code tab provides a copy button.
+
+Shared conventions: [Administrative interface](../../concepts/admin-interface.md).

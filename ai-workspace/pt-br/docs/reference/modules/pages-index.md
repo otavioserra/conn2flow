@@ -95,3 +95,9 @@ Buscas não vazias são encaminhadas ao helper `forms_search_registrar_busca`, q
 - [Índice de publicações](publisher-index.md)
 - [Menus](menus.md)
 - [Contrato de documentação](../../guides/documentation.md)
+
+## Controles do painel Tailwind
+
+Modelos e prévias usam cartões compactos e código do widget com cópia inline.
+
+Convenções compartilhadas: [Interface administrativa](../../concepts/admin-interface.md).

@@ -7,7 +7,7 @@ order: 190
 sources:
   - gestor/bibliotecas/arquivo.php
   - gestor/modulos/admin-arquivos/admin-arquivos.php
-verified_at: 4c6d01f0
+verified_at: 914c7b10
 ---
 
 # Biblioteca `arquivo.php`
@@ -40,7 +40,7 @@ Funções **puras** (sem banco nem `$_GESTOR`) para quem recebe ou serve arquivo
 
 <!-- c2f:extract:start -->
 
-Referência gerada a partir de `gestor/bibliotecas/arquivo.php` por `c2f docs:extract` — 8 funções. Não edite dentro deste bloco.
+Referência gerada a partir de `gestor/bibliotecas/arquivo.php` por `c2f docs:extract` — 12 funções. Não edite dentro deste bloco.
 
 - `arquivo_nome_sanitizar(string $nome): string` — [linha 39](../../../../../gestor/bibliotecas/arquivo.php#L39)
   Higieniza um nome de arquivo ou pasta para uso seguro em sistemas de arquivos heterogêneos (Windows/Linux/rede).
@@ -85,5 +85,31 @@ Referência gerada a partir de `gestor/bibliotecas/arquivo.php` por `c2f docs:ex
   Parâmetros:
   - `$nome`: Nome do arquivo (com ou sem caminho).
   Retorno: MIME type; `application/octet-stream` para extensão desconhecida.
+- `arquivo_assinatura_confere(string $caminho, string $nome): bool` — [linha 334](../../../../../gestor/bibliotecas/arquivo.php#L334)
+  Confere se o conteúdo de um arquivo bate com a extensão que ele declara (bytes mágicos).
+  Parâmetros:
+  - `$caminho`: Caminho absoluto do arquivo já gravado (ou temporário).
+  - `$nome`: Nome do arquivo, de onde sai a extensão declarada.
+  Retorno: False quando o conteúdo contradiz a extensão.
+- `arquivo_svg_sanitizar(string $conteudo): string` — [linha 394](../../../../../gestor/bibliotecas/arquivo.php#L394)
+  Remove de um SVG o que executa código quando o arquivo é aberto no navegador.
+  Parâmetros:
+  - `$conteudo`: Conteúdo do SVG.
+  Retorno: Conteúdo sem os vetores conhecidos.
+- `arquivo_caminho_confinar(string $rel, string $escopo): string` — [linha 427](../../../../../gestor/bibliotecas/arquivo.php#L427)
+  Mantém um caminho relativo dentro de uma pasta de escopo.
+  Parâmetros:
+  - `$rel`: Caminho relativo pedido.
+  - `$escopo`: Pasta de escopo, relativa aos conteúdos ('' = sem restrição).
+  Retorno: Caminho relativo seguro, dentro do escopo.
+- `arquivo_dir_tamanho(string $abs): int` — [linha 446](../../../../../gestor/bibliotecas/arquivo.php#L446)
+  Soma o tamanho dos arquivos de uma pasta, recursivamente, sem as miniaturas (`mini/`).
+  Parâmetros:
+  - `$abs`: Caminho absoluto da pasta.
+  Retorno: Total em bytes (0 se a pasta não existe).
 
 <!-- c2f:extract:end -->
+
+## Upload e escopo do navegador de arquivos
+
+arquivo_assinatura_confere compara extensão e assinatura do arquivo; SVG procura a tag svg e glTF exige JSON com asset, portanto não são validações completas desses formatos. arquivo_svg_sanitizar remove script, foreignObject, objetos/iframes, eventos on* e referências executáveis por expressões regulares; não equivale a um parser XML ou sanitizador geral. arquivo_caminho_confinar mantém caminho relativo na subárvore e volta à raiz do escopo quando inválido ou fora dela. arquivo_dir_tamanho soma recursivamente bytes, ignorando links simbólicos e miniaturas mini/.
