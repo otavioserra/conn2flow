@@ -206,11 +206,11 @@ function jsonRead(string $path): ?array {
 /**
  * Escreve JSON formatado.
  */
-function jsonWrite(string $path, array $data): bool {
+function jsonWrite(string $path, array $data, int $flagsExtras = 0): bool {
     global $LOG_FILE;
     $dir = dirname($path);
     ensureDir($dir, $LOG_FILE);
-    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | $flagsExtras);
     if ($json === false) {
         throw new RuntimeException('jsonWrite: ' . json_last_error_msg() . ' em ' . $path);
     }
@@ -361,7 +361,10 @@ function atualizarArquivosOrigem(array $map): void {
                 }
             }
             if ($changedModule) {
-                jsonWrite($jsonFile,$data);
+                // req-242: o manifesto do módulo também é FONTE do Tailwind (`tailwind_sources` aponta para ele
+                // quando as utilities vivem nas variáveis). Com a barra escapada, `ring-sky-600/20` vira
+                // `ring-sky-600\/20` no arquivo e a classe some do CSS compilado logo em seguida.
+                jsonWrite($jsonFile,$data, JSON_UNESCAPED_SLASHES);
                 log_disco_local("ORIGIN_FILE_SAVED_MODULE $jsonFile", $LOG_FILE);
             }
         }

@@ -12,8 +12,8 @@
     },
     "apis": {
         "gemini": {
-            "urlGenerateContent": "https:\/\/generativelanguage.googleapis.com\/v1beta\/{MODEL}:generateContent?key={API_KEY}",
-            "defaultModel": "models\/gemini-3-flash-preview"
+            "urlGenerateContent": "https://generativelanguage.googleapis.com/v1beta/{MODEL}:generateContent?key={API_KEY}",
+            "defaultModel": "models/gemini-3-flash-preview"
         }
     },
     "resources": {
@@ -24,11 +24,11 @@
                     "name": "Admin IA - Listar",
                     "id": "admin-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia\/listar\/",
+                    "path": "admin-ia/listar/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.16",
+                    "version": "1.17",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -64,10 +64,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "298cd0730eb7f77bce6eca06099e9f11",
+                        "html": "1afa7ff56be1bc253e0e0af9f7fed251",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "298cd0730eb7f77bce6eca06099e9f11"
+                        "combined": "1afa7ff56be1bc253e0e0af9f7fed251"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -75,11 +75,11 @@
                     "name": "Admin IA - Adicionar",
                     "id": "admin-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia\/adicionar\/",
+                    "path": "admin-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.17",
+                    "version": "1.18",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -105,10 +105,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "daa554d4720b3b754209d5d1ccfa9020",
+                        "html": "7590a99906ce63f3f3679a36086c0722",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "daa554d4720b3b754209d5d1ccfa9020"
+                        "combined": "7590a99906ce63f3f3679a36086c0722"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -116,11 +116,11 @@
                     "name": "Admin IA - Editar",
                     "id": "admin-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia\/editar\/",
+                    "path": "admin-ia/editar/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.22",
+                    "version": "1.23",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -146,10 +146,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "b14822a170bbea8a5b5269b2e1179948",
+                        "html": "fd58c8e29ad6807f2fbc0b0f8dc0c129",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b14822a170bbea8a5b5269b2e1179948"
+                        "combined": "fd58c8e29ad6807f2fbc0b0f8dc0c129"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -441,11 +441,11 @@
                     "name": "Admin AI - List",
                     "id": "admin-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia\/listar\/",
+                    "path": "admin-ia/listar/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.17",
+                    "version": "1.18",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -481,10 +481,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "298cd0730eb7f77bce6eca06099e9f11",
+                        "html": "1afa7ff56be1bc253e0e0af9f7fed251",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "298cd0730eb7f77bce6eca06099e9f11"
+                        "combined": "1afa7ff56be1bc253e0e0af9f7fed251"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -492,11 +492,11 @@
                     "name": "Admin AI - Add",
                     "id": "admin-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia\/adicionar\/",
+                    "path": "admin-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.18",
+                    "version": "1.19",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -522,10 +522,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "daa554d4720b3b754209d5d1ccfa9020",
+                        "html": "7590a99906ce63f3f3679a36086c0722",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "daa554d4720b3b754209d5d1ccfa9020"
+                        "combined": "7590a99906ce63f3f3679a36086c0722"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -533,11 +533,11 @@
                     "name": "Admin AI - Edit",
                     "id": "admin-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia\/editar\/",
+                    "path": "admin-ia/editar/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.21",
+                    "version": "1.22",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -563,10 +563,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "b14822a170bbea8a5b5269b2e1179948",
+                        "html": "fd58c8e29ad6807f2fbc0b0f8dc0c129",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b14822a170bbea8a5b5269b2e1179948"
+                        "combined": "fd58c8e29ad6807f2fbc0b0f8dc0c129"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -852,5 +852,5 @@
             ]
         }
     },
-    "asset_version": "40257f122039180c"
+    "asset_version": "07e3f0f1c98a633e"
 }

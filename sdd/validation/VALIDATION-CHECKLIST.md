@@ -3,6 +3,21 @@
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-251 — REQ-242
+
+- [x] `forms-search` e `forms`: abas sem fundo, copiar numa linha, select de tipo flutuante sem rolagem no container, dicas.
+- [x] `forms-submissions`: dicas nas abas, JSON em CodeMirror somente leitura e select de status padronizado.
+- [x] Dashboard: abas simétricas, capa ou ícone em 66 cards, menu de opções, tela cheia do widget, malha de 20 px, altura de 120 a 960 px.
+- [x] TopBar e sidebar: favoritos à direita e tipografia igual em 18 módulos medidos.
+- [x] `cursor: pointer` em rótulos de checkbox e rádio.
+- [x] `galleries` e seletor: ajuda em linha, grade de controles, título de seleção múltipla e bandeja de miniaturas com remoção.
+- [x] `resources:sync` (511 recursos), Vitest 551 e PHPUnit 1.629 sem falhas; `RefinamentosReq242Test` e `req242-refinamentos.test.js` novos.
+- [x] Pipeline do Lab com saída 0 (três rodadas depois de uma com código 23, causa registrada) e navegador 112/112 em 1366 e 390 px.
+- [x] Memória de execução podada: 296 linhas / 37 KB para 157 linhas / 22 KB, seções antigas em `archive/`.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-251](../implementation/BATCH-251.md) e [resultado do navegador](req242/evidencias/resultado.json).
+
 ## BATCH-249 — REQ-240
 
 - [x] Pilares 1 a 6: ícones, abas, cartões, selects e alertas, tabelas e 390 px.
@@ -14,7 +29,7 @@
 - [ ] API de arquivos no `admin-arquivos`.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-249](../implementation/BATCH-249.md) e [resultado da varredura](req240-browser-results.json).
+Detalhes: [BATCH-249](../implementation/BATCH-249.md) e [resultado da varredura](archive/req240-browser-results.json).
 
 ## BATCH-247 — REQ-238
 

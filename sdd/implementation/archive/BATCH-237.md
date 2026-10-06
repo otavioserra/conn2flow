@@ -5,7 +5,7 @@
 - Raiz de autoria: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow`
 - Worktree: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req228`
 - Branch: `feat/req-228`
-- Intake: [req-228](../human-requests/archive/req-228.md)
+- Intake: [req-228](../../human-requests/archive/req-228.md)
 - Autonomia: `autonomo_monitorado`
 
 ## Escopo e tarefas
@@ -32,9 +32,9 @@ O cabeçalho mostra seis ícones a partir de 1280 px, quatro de 768 a 1279 px e 
 - `php sdd/validation/req228-topbar-test.php`: **28/28**, com doubles do runtime/banco; acesso negado, isolamento entre contas, idempotência, rejeição de GET/arrays/anônimo, falha SQL, identidade escapada e estado JSON seguro.
 - PHPUnit focado: **112 testes / 530 assertions**, sem falhas; o runner informa três depreciações. Inclui layout, personalização de menu, CSRF, recursos e erros terminais do roteador. Os testes de marcação do layout foram adaptados para compor o novo recurso, preservando as assertions de Lucide e `lg:hidden`.
 - Vitest: **83/83** (`admin-tailwind`, `global-csrf`, `interface-tailwind`).
-- [Roteiro de navegador](../validation/req228-browser.cjs), [resultado JSON](../validation/req228-evidence/results.json): **60/60** verificações; desktop/mobile, teclado, clique fora, falha 503 simulada, persistência após reload e em segundo contexto, clique no favorito, PT-BR/EN, segurança, logout, CSRF recusado sem token e editbar real. Sem erros inesperados de página/console; os erros HTTP 403/503 provocados pelo roteiro são registrados separadamente.
+- [Roteiro de navegador](../../validation/req228-browser.cjs), [resultado JSON](../../validation/req228-evidence/results.json): **60/60** verificações; desktop/mobile, teclado, clique fora, falha 503 simulada, persistência após reload e em segundo contexto, clique no favorito, PT-BR/EN, segurança, logout, CSRF recusado sem token e editbar real. Sem erros inesperados de página/console; os erros HTTP 403/503 provocados pelo roteiro são registrados separadamente.
 - Viewports: 1366, 1024, 768, 390 e 320 px; sem overflow horizontal, dropdowns contidos na tela. Editbar exercitada em 1366/390 px com cookie de perfil no mesmo contexto autenticado, sem injeção transitória de DOM.
-- Capturas versionadas: [desktop com favoritos](../validation/req228-evidence/favorites-1366.png), [perfil mobile](../validation/req228-evidence/profile-390.png), [editbar desktop](../validation/req228-evidence/editbar-1366.png), [editbar mobile](../validation/req228-evidence/editbar-390.png).
+- Capturas versionadas: [desktop com favoritos](../../validation/req228-evidence/favorites-1366.png), [perfil mobile](../../validation/req228-evidence/profile-390.png), [editbar desktop](../../validation/req228-evidence/editbar-1366.png), [editbar mobile](../../validation/req228-evidence/editbar-390.png).
 - PHP lint e `node --check`: aprovados; `git diff --check`: aprovado.
 
 ## Pipeline e limites

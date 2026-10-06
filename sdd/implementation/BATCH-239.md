@@ -1,6 +1,6 @@
 # BATCH-239: Integração Oficial da V3.0 — Consolidação das Branches (req-226 a req-229), Rota Canônica das Capas e Homologação E2E (req-230)
 
-Integração oficial, harmonização e consolidação das quatro frentes paralelas entregues (`req-226`, `req-227`, `req-228`, `req-229`) na branch `main` do core, conforme especificado na [req-230](../human-requests/req-230.md).
+Integração oficial, harmonização e consolidação das quatro frentes paralelas entregues (`req-226`, `req-227`, `req-228`, `req-229`) na branch `main` do core, conforme especificado na [req-230](../human-requests/archive/req-230.md).
 
 - **Status:** `complete`
 - **Data:** 2026-10-04

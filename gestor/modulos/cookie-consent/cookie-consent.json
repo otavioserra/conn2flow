@@ -16,7 +16,7 @@
         "data_criacao": "data_criacao",
         "data_modificacao": "data_modificacao"
     },
-    "asset_version": "06795bef8adbd98c",
+    "asset_version": "15fd97dc0fd8d327",
     "resources": {
         "pt-br": {
             "widgets": [
@@ -78,16 +78,16 @@
                     "name": "Consentimento de Cookies - Listar",
                     "id": "cookie-consent",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/",
+                    "path": "cookie-consent/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "5c6fd571fee9ca954555ee13fd12857f",
-                        "css": "39c704e4c0804714fca60ff0a898f19d",
+                        "html": "28dd33f59eb19b25d754db7f18888c2d",
+                        "css": "e6c2586da202eae176585ed2c79cd6ca",
                         "css_precompiled": "",
-                        "combined": "7fd985ab2f946d5f5ffa5e97b9047fe2"
+                        "combined": "afd07bf6e4d805084e65c6397bed2d82"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -129,15 +129,15 @@
                     "name": "Consentimento de Cookies - Adicionar",
                     "id": "cookie-consent-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/adicionar\/",
+                    "path": "cookie-consent/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "37057143ffc9f60009b6463225252812",
-                        "css": "31cfa2fe779b65f70b94983c75f97110",
+                        "html": "a36197f688de39691025e60f66f2c784",
+                        "css": "7eefce9e5b22045afcf0043357b11f42",
                         "css_precompiled": "",
-                        "combined": "c82bcf801fc1258c28c335d5f315ce4b"
+                        "combined": "8c9d26962172c23d7e0d6f2b981499d6"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -239,15 +239,15 @@
                     "name": "Consentimento de Cookies - Editar",
                     "id": "cookie-consent-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/editar\/",
+                    "path": "cookie-consent/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "f5fe6bfb885944e2f6471fd2b6b6f883",
-                        "css": "31cfa2fe779b65f70b94983c75f97110",
+                        "html": "f7eb1920a0600d5b6312b388e45f8623",
+                        "css": "7eefce9e5b22045afcf0043357b11f42",
                         "css_precompiled": "",
-                        "combined": "782289e150ed8ee0431ef9bab60c9886"
+                        "combined": "20ed23cd571f40c42a1a3f14c47aa222"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -349,15 +349,15 @@
                     "name": "Consentimento de Cookies - Clonar",
                     "id": "cookie-consent-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/clonar\/",
+                    "path": "cookie-consent/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "48a7672415112e7deef0769391df00ba",
-                        "css": "31cfa2fe779b65f70b94983c75f97110",
+                        "html": "88efbe46eb5478f5a12401241a1b3b6c",
+                        "css": "7eefce9e5b22045afcf0043357b11f42",
                         "css_precompiled": "",
-                        "combined": "0fd99e3679efc85a8856cc8690a77834"
+                        "combined": "185e1a0e57ccf2b15a41a9adb6fe740f"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -689,16 +689,16 @@
                     "name": "Cookie Consent - List",
                     "id": "cookie-consent",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/",
+                    "path": "cookie-consent/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "38afffcc32af885e15e1783261dc39a7",
-                        "css": "39c704e4c0804714fca60ff0a898f19d",
+                        "html": "0f53e19cf16eb3824104238dd102f43c",
+                        "css": "e6c2586da202eae176585ed2c79cd6ca",
                         "css_precompiled": "",
-                        "combined": "2017b368291f4e5e6066d56db11b7a2a"
+                        "combined": "5093a752e867ba7388715225831b0c48"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -740,15 +740,15 @@
                     "name": "Cookie Consent - Add",
                     "id": "cookie-consent-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/adicionar\/",
+                    "path": "cookie-consent/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "004f373b80c23bd3f08a3cbfb4986ddd",
-                        "css": "31cfa2fe779b65f70b94983c75f97110",
+                        "html": "56c875d71e2ee558e1a1d68a2dae7e16",
+                        "css": "7eefce9e5b22045afcf0043357b11f42",
                         "css_precompiled": "",
-                        "combined": "a76c9f3210086c4247f20bcadf3ca9fe"
+                        "combined": "6669bb3d308bbbd9053a0e2c4c95eeed"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -850,15 +850,15 @@
                     "name": "Cookie Consent - Edit",
                     "id": "cookie-consent-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/editar\/",
+                    "path": "cookie-consent/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "6b778748eb353b86131df396d4365d64",
-                        "css": "31cfa2fe779b65f70b94983c75f97110",
+                        "html": "cd92e717b2b8922c1e12682e1f440b5d",
+                        "css": "7eefce9e5b22045afcf0043357b11f42",
                         "css_precompiled": "",
-                        "combined": "fbdc6722153d131da15d49310fdbabdd"
+                        "combined": "578a175bc5ceb7e4bdfde2b2a7e39c76"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -960,15 +960,15 @@
                     "name": "Cookie Consent - Clone",
                     "id": "cookie-consent-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "cookie-consent\/clonar\/",
+                    "path": "cookie-consent/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "8e5b23ea3e32ae77126e5ba88e261140",
-                        "css": "31cfa2fe779b65f70b94983c75f97110",
+                        "html": "9f357410dd4715349f497a87b81f699e",
+                        "css": "7eefce9e5b22045afcf0043357b11f42",
                         "css_precompiled": "",
-                        "combined": "d9103fc67c9a46effd6aca39a4e472a7"
+                        "combined": "1eb44abcafcc26fefda4f9a0279ee708"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,

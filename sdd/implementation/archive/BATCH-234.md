@@ -25,7 +25,7 @@ Nenhum arquivo de produto, recurso ou banco foi alterado nesta etapa. Nenhum pip
 
 ## Evidências da preparação
 
-- [Gerador](../../validation/req225-inventory.php), [inventário legível](../../validation/req225-inventory.md) e [detalhes JSON](../../validation/req225-inventory.json).
+- [Gerador](../../validation/req225-inventory.php), [inventário legível](../../validation/req225-inventory.md) e [detalhes JSON](../../validation/archive/req225-inventory.json).
 - `php sdd/validation/req225-inventory.php`: 236 linhas página/idioma, core 108 e site 128; 132 linhas com apontamentos estáticos (core 4, site 128). São dados das árvores locais, incluindo trabalho sem commit, não do SQL publicado.
 - O levantamento cobre metadados de módulos. Os `gestor/resources/{pt-br,en}/pages.json` dos dois repositórios foram conferidos e não contêm páginas nesse layout neste snapshot.
 - Core: 2 linhas com `title` em botão (`perfil-usuario/Area-restrita`, en/pt-br); os outros apontamentos são bundle ausente. Site: 22 linhas com marcação proibida; 493 ocorrências. Contagem inclui os dois idiomas, não significa 493 telas distintas.

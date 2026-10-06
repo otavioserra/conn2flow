@@ -10,11 +10,11 @@ Lotes arquivados do VALIDATION-CHECKLIST.
 - [x] CA-4 (Suíte de Testes Aprovada): `GestorStateTest` (28/28), `LayoutAdministrativoTailwindTest` (15/15), `PainelTailwindReq224Test` (2/2), `TailwindRecursosTest` (21/21), `req228-topbar-test.php` (28/28) e `req227-cards-test.cjs` (6/6) com 100% de sucesso.
 - [x] CA-5 (Limpeza de Worktrees): Worktrees prontas para desalocação segura após confirmação da mesclagem.
 
-Evidências: [BATCH-239](../implementation/BATCH-239.md).
+Evidências: [BATCH-239](../../implementation/BATCH-239.md).
 
 ## BATCH-234 — Conferência final da UI Tailwind (req-225)
 
-- [x] Preparação: dependências conferidas, [inventário preliminar](req225-inventory.md) com 236 páginas/idiomas e [detalhes das divergências](req225-inventory.json).
+- [x] Preparação: dependências conferidas, [inventário preliminar](../req225-inventory.md) com 236 páginas/idiomas e [detalhes das divergências](req225-inventory.json).
 - [x] Detector contra deriva provado com fixtures: 1 teste/8 asserções; sintaxe PHP aprovada. Auditoria completa focada: 3 testes/12 asserções, 2 falhas e 3 depreciações PHPUnit.
 - [ ] CA-1: inventário final de todas as páginas sem pendências, incluindo controles/componentes gerados.
 - [ ] CA-2: todas as telas no navegador do Lab, sem Fomantic, overflow a 390 px ou erro de script.
@@ -22,7 +22,7 @@ Evidências: [BATCH-239](../implementation/BATCH-239.md).
 - [ ] CA-4: roteiro humano final no arquivão do site, com todas as telas.
 - [ ] Integração das frentes dependentes, correções em branch isolada, pipeline e revisão final.
 
-Evidências e limites: [BATCH-234](../implementation/archive/BATCH-234.md). Preparação em 2026-10-04; fontes das árvores locais, sem validação SQL/browser ou alteração do produto. A ordem da req-225 exige conclusão das frentes anteriores antes da conferência final.
+Evidências e limites: [BATCH-234](../../implementation/archive/BATCH-234.md). Preparação em 2026-10-04; fontes das árvores locais, sem validação SQL/browser ou alteração do produto. A ordem da req-225 exige conclusão das frentes anteriores antes da conferência final.
 
 ## BATCH-238 — Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229)
 
@@ -33,7 +33,7 @@ Evidências e limites: [BATCH-234](../implementation/archive/BATCH-234.md). Prep
 - [x] CA-5 (Documentação Técnica): Guia em `ai-workspace/` (pt-br e en) e atualização da skill `c2f-global-variables` orientando novos desenvolvimentos a utilizarem a nova API.
 - [ ] Revisão humana / homologação do Arquiteto.
 
-Detalhes: [BATCH-238](../implementation/BATCH-238.md).
+Detalhes: [BATCH-238](../../implementation/archive/BATCH-238.md).
 
 ## BATCH-237 — Topbar administrativa (req-228)
 
@@ -47,7 +47,7 @@ Detalhes: [BATCH-238](../implementation/BATCH-238.md).
 - [x] Preferências de teste restauradas; sessão encerrada pelo roteiro; nenhum modo de ambiente alterado.
 - [ ] Revisão técnica/humana e integração da branch `feat/req-228`.
 
-Evidências: [BATCH-237](../implementation/BATCH-237.md), [roteiro](req228-browser.cjs), [resultado](req228-evidence/results.json), [perfil mobile](req228-evidence/profile-390.png), [editbar desktop](req228-evidence/editbar-1366.png).
+Evidências: [BATCH-237](../../implementation/archive/BATCH-237.md), [roteiro](../req228-browser.cjs), [resultado](../req228-evidence/results.json), [perfil mobile](../req228-evidence/profile-390.png), [editbar desktop](../req228-evidence/editbar-1366.png).
 
 ## BATCH-231 — Menus, galerias, formulários e cookies (req-222)
 
@@ -57,7 +57,7 @@ Evidências: [BATCH-237](../implementation/BATCH-237.md), [roteiro](req228-brows
 - [x] CA-4 (testes): contrato 4/565, Vitest 509/509 e PHPUnit completo 1526 sem falhas/erros; contrato falsificado no manifesto anterior.
 - [x] CA-4 (navegador executado): 369/372 verificações, 30 navegações e capturas desktop/mobile; controle Fomantic preservado.
 - [ ] Prévia de Variáveis do editor compartilhado: três verificações de console falham por imagem com placeholder cru/404; pedido registrado na req-219. Não declarar rodada integralmente verde.
-- [x] CA-5: [BATCH-231](../implementation/archive/BATCH-231.md), [métricas](evidence-req222.json), roteiro/capturas em `conn2flow-site/sdd/validation/core/evidence-req222/` e item humano no site.
+- [x] CA-5: [BATCH-231](../../implementation/archive/BATCH-231.md), [métricas](../evidence-req222.json), roteiro/capturas em `conn2flow-site/sdd/validation/core/evidence-req222/` e item humano no site.
 - [ ] Revisão humana conjunta; nenhum deploy de produção.
 
 
@@ -69,9 +69,9 @@ Evidências: [BATCH-237](../implementation/BATCH-237.md), [roteiro](req228-brows
 - [x] Vitest completo 507/507; transformação Node validou templates, manifests, tokens e minificados.
 - [ ] CSS sync/build, inspeção no Lab e viewport de 390 px: não executados por restrição explícita.
 - [ ] Suíte PHPUnit completa limpa: 1.523 testes, 4 erros ambientais (OpenSSL/Stripe) e 1 falha LF/CRLF em `CssRegeneracaoTest`.
-- [x] Roteiro humano adicionado ao [PENDENCIAS-HUMANAS.md do site](../../../conn2flow-site/sdd/PENDENCIAS-HUMANAS.md).
+- [x] Roteiro humano adicionado ao [PENDENCIAS-HUMANAS.md do site](../../../../conn2flow-site/sdd/PENDENCIAS-HUMANAS.md).
 
-Detalhes: [BATCH-232](../implementation/archive/BATCH-232.md).
+Detalhes: [BATCH-232](../../implementation/archive/BATCH-232.md).
 
 ## BATCH-229 — Módulos do editor, listagens e correções da revisão (req-219)
 
@@ -81,7 +81,7 @@ Detalhes: [BATCH-232](../implementation/archive/BATCH-232.md).
 - [x] PHPUnit 1.505 (1 falha anterior), Vitest 484/484, navegador 31/31.
 - [ ] Revisão humana (no fim do programa).
 
-Detalhes: [BATCH-229](../implementation/archive/BATCH-229.md).
+Detalhes: [BATCH-229](../../implementation/archive/BATCH-229.md).
 
 ## BATCH-227 — Painel em Tailwind: controles, diálogos, editor HTML e `admin-paginas` (req-219)
 
@@ -92,7 +92,7 @@ Detalhes: [BATCH-229](../implementation/archive/BATCH-229.md).
 - [x] CA-5: PHPUnit 1.498 (1 falha anterior, CRLF), Vitest 474/474, navegador 18/18 (`conn2flow-site/sdd/validation/core/req219-controles-e2e.cjs`).
 - [ ] Revisão humana (abrir uma página no Lab, editar no visual e salvar).
 
-Detalhes: [BATCH-227](../implementation/archive/BATCH-227.md).
+Detalhes: [BATCH-227](../../implementation/archive/BATCH-227.md).
 
 ## BATCH-226 — Módulos distribuídos: imagens do layout dentro do painel (req-218)
 
@@ -100,7 +100,7 @@ Detalhes: [BATCH-227](../implementation/archive/BATCH-227.md).
 - [x] CA-2: rota de módulo dentro do prefixo mantém o prefixo; destino sempre do mesmo host; 3 testes.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-226](../implementation/archive/BATCH-226.md).
+Detalhes: [BATCH-226](../../implementation/archive/BATCH-226.md).
 
 ## BATCH-225 — Módulos distribuídos: confirmação de origem e chave de sessão (req-217)
 
@@ -110,7 +110,7 @@ Detalhes: [BATCH-226](../implementation/archive/BATCH-226.md).
 - [x] CA-4: `confirmacao-origem` desligada volta ao canal anterior.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-225](../implementation/archive/BATCH-225.md).
+Detalhes: [BATCH-225](../../implementation/archive/BATCH-225.md).
 
 ## BATCH-224 — Módulos distribuídos: catálogo local e estado da conta (req-216)
 
@@ -121,7 +121,7 @@ Detalhes: [BATCH-225](../implementation/archive/BATCH-225.md).
 - [x] CA-5: testes de unidade; suíte sem regressão; E2E do site 18/18.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-224](../implementation/archive/BATCH-224.md).
+Detalhes: [BATCH-224](../../implementation/archive/BATCH-224.md).
 
 ## BATCH-223 — Módulos distribuídos: rotina local pedida pelo Central (req-215)
 
@@ -133,7 +133,7 @@ Detalhes: [BATCH-224](../implementation/archive/BATCH-224.md).
 - [ ] Retorno de autorização de terceiros com aplicativo real.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-223](../implementation/archive/BATCH-223.md).
+Detalhes: [BATCH-223](../../implementation/archive/BATCH-223.md).
 
 ## BATCH-222 — Menus do painel e apoio à execução no cliente (req-214)
 
@@ -144,7 +144,7 @@ Detalhes: [BATCH-223](../implementation/archive/BATCH-223.md).
 - [ ] Menu de celular do layout Fomantic.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-222](../implementation/archive/BATCH-222.md).
+Detalhes: [BATCH-222](../../implementation/archive/BATCH-222.md).
 
 ## BATCH-221 — Módulos distribuídos: melhorias da revisão (req-213)
 
@@ -157,7 +157,7 @@ Detalhes: [BATCH-222](../implementation/archive/BATCH-222.md).
 - [x] Memória de execução podada (obrigatória em 300 linhas): 296 linhas / 32 KB para 231 linhas, cinco lotes de setembro movidos para o histórico.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-221](../implementation/archive/BATCH-221.md).
+Detalhes: [BATCH-221](../../implementation/archive/BATCH-221.md).
 
 ## BATCH-220 — Modal de edição do editor visual no documento Tailwind (req-212)
 
@@ -168,13 +168,13 @@ Detalhes: [BATCH-221](../implementation/archive/BATCH-221.md).
 - [ ] Editor visual de layout aberto no navegador.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-220](../implementation/archive/BATCH-220.md).
+Detalhes: [BATCH-220](../../implementation/archive/BATCH-220.md).
 
 ## Validações arquivadas
 
 | Batch | Resumo | Evidências |
 | --- | --- | --- |
-| BATCH-219 | Infraestrutura comum para módulos distribuídos (req-211) | [Arquivo](../implementation/archive/BATCH-219.md) |
+| BATCH-219 | Infraestrutura comum para módulos distribuídos (req-211) | [Arquivo](../../implementation/archive/BATCH-219.md) |
 
 ## BATCH-218 — Tela de atualização no deploy e prévia de widgets completa (req-210)
 
@@ -187,7 +187,7 @@ Detalhes: [BATCH-220](../implementation/archive/BATCH-220.md).
 - [ ] Manutenção no deploy por API exercitada num ambiente.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-218](../implementation/archive/BATCH-218.md).
+Detalhes: [BATCH-218](../../implementation/archive/BATCH-218.md).
 
 ## BATCH-217 — Prévia de widgets no editor, toque na galeria (req-209)
 
@@ -197,7 +197,7 @@ Detalhes: [BATCH-218](../implementation/archive/BATCH-218.md).
 - [ ] Toque em aparelho real.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-217](../implementation/archive/BATCH-217.md).
+Detalhes: [BATCH-217](../../implementation/archive/BATCH-217.md).
 
 ## BATCH-216 — Módulo `cookie-consent` (req-208)
 
@@ -207,7 +207,7 @@ Detalhes: [BATCH-217](../implementation/archive/BATCH-217.md).
 - [ ] Gravação pelo formulário do painel exercitada no navegador.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-216](../implementation/archive/BATCH-216.md).
+Detalhes: [BATCH-216](../../implementation/archive/BATCH-216.md).
 
 ## BATCH-215 — Docs: referência de funções em cartões (req-207)
 
@@ -217,7 +217,7 @@ Detalhes: [BATCH-216](../implementation/archive/BATCH-216.md).
 - [x] Lab: biblioteca `banco` nos dois idiomas, a 1280 e 390 px (14/14).
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-215](../implementation/archive/BATCH-215.md).
+Detalhes: [BATCH-215](../../implementation/archive/BATCH-215.md).
 
 ## BATCH-214 — Deploy de projeto depois da req-202/203 (req-206)
 
@@ -228,7 +228,7 @@ Detalhes: [BATCH-215](../implementation/archive/BATCH-215.md).
 - [x] Lab: `project:update-all` sem alteração em módulos, permissões e usuários; `--tables usuarios --force-all` registra `SKIP_UPDATE_INSERT_ONLY`.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-214](../implementation/archive/BATCH-214.md).
+Detalhes: [BATCH-214](../../implementation/archive/BATCH-214.md).
 
 ## BATCH-211 — Segregação de recursos globais vs multilíngues (req-203)
 
@@ -261,7 +261,7 @@ Detalhes: [BATCH-214](../implementation/archive/BATCH-214.md).
 - [x] Lab: `/perfil-usuario/` sob os dois layouts a 1280 e 390 px sem classe sem regra.
 - [ ] Revisão humana e mesclagem.
 
-Detalhes: [BATCH-212](../implementation/archive/BATCH-212.md).
+Detalhes: [BATCH-212](../../implementation/archive/BATCH-212.md).
 
 ## BATCH-213 — README e descrição do GitHub (req-205)
 
@@ -270,7 +270,7 @@ Detalhes: [BATCH-212](../implementation/archive/BATCH-212.md).
 - [x] Descrição, site e tópicos do repositório atualizados no GitHub.
 - [ ] Revisão humana do texto e mesclagem.
 
-Detalhes: [BATCH-213](../implementation/archive/BATCH-213.md).
+Detalhes: [BATCH-213](../../implementation/archive/BATCH-213.md).
 
 ## BATCH-208 — Recuperação de arquivos do servidor (req-200)
 
@@ -428,8 +428,8 @@ Para manter o checklist de validaÃ§Ãµes leve e eficiente (teto de 25 blocos 
 - **[validation-018-053.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/archive/validation-018-053.md)** (BATCH-018 a BATCH-053)
 - **[validation-054-093.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/archive/validation-054-093.md)** (BATCH-054 a BATCH-093)
 - **[validation-094-110.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/archive/validation-094-110.md)** (BATCH-094 a BATCH-110)
-- **[validation-111-134.md](archive/validation-111-134.md)** (17 blocos históricos entre BATCH-111 e BATCH-134; ordem documental preservada)
-- **[validation-136-173.md](archive/validation-136-173.md)** (BATCH-136 a BATCH-173)
+- **[validation-111-134.md](validation-111-134.md)** (17 blocos históricos entre BATCH-111 e BATCH-134; ordem documental preservada)
+- **[validation-136-173.md](validation-136-173.md)** (BATCH-136 a BATCH-173)
 
 ## BATCH-228 — Listagem Tailwind (req-220)
 
@@ -442,7 +442,7 @@ Para manter o checklist de validaÃ§Ãµes leve e eficiente (teto de 25 blocos 
 - [x] Review técnico do slice sem finding bloqueante; mudanças alheias mantidas fora do diff.
 - [ ] Revisão independente e consolidação pela req-219/humano.
 
-Evidências: [BATCH-228](../implementation/archive/BATCH-228.md), [roteiro](req220-browser.cjs), [resultados](req220-browser-results.json). Runtime inspecionado em pt-br; en compilado e verificado por unidade. Depreciações/pulados e problemas iniciais de CRLF registrados no lote.
+Evidências: [BATCH-228](../../implementation/archive/BATCH-228.md), [roteiro](../req220-browser.cjs), [resultados](../req220-browser-results.json). Runtime inspecionado em pt-br; en compilado e verificado por unidade. Depreciações/pulados e problemas iniciais de CRLF registrados no lote.
 
 ## BATCH-230 — Família Publisher em Tailwind (req-221)
 
@@ -455,5 +455,5 @@ Evidências: [BATCH-228](../implementation/archive/BATCH-228.md), [roteiro](req2
 - [x] Review de contratos/dependências/CSRF e git diff --check; artefatos fora do escopo invertidos antes dos commits.
 - [ ] Revisão independente, teste humano e consolidação pela req-219.
 
-Evidências e limitações: [BATCH-230](../implementation/archive/BATCH-230.md). Roteiro/resultados no site em `sdd/validation/core/req221-publisher-e2e.cjs` e `evidence-req221/`. Runtime pt-br; en compilado e verificado por contratos. JS compartilhados mais recentes da req-219 preservados; controle legado admin-templates e cadastro ausente de sua simulação original descritos no lote.
+Evidências e limitações: [BATCH-230](../../implementation/archive/BATCH-230.md). Roteiro/resultados no site em `sdd/validation/core/req221-publisher-e2e.cjs` e `evidence-req221/`. Runtime pt-br; en compilado e verificado por contratos. JS compartilhados mais recentes da req-219 preservados; controle legado admin-templates e cadastro ausente de sua simulação original descritos no lote.
 

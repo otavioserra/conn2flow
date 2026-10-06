@@ -21,16 +21,16 @@
                     "name": "Variáveis",
                     "id": "variables",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "variables\/",
+                    "path": "variables/",
                     "type": "system",
                     "option": "variables",
                     "root": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/variables.php",
-                        "..\/..\/..\/..\/variables.js"
+                        "../../../../variables.php",
+                        "../../../../variables.js"
                     ],
                     "tailwind_sources_reason": "The page controller and client render the module selector and interaction states.",
                     "tailwind_dependencies": [
@@ -66,10 +66,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "7cb8d9c1f8d14e4bd2756835cfcec61a",
+                        "html": "970e4c8cc919bfb21def9e28011c4a2a",
                         "css": "a67c7f7ada890bdeca6f064ce2ace341",
                         "css_precompiled": "",
-                        "combined": "3250ae06fdfa13871f8aee2b790a8f8f"
+                        "combined": "e16148fe4b66a4cdb0a20a1c582358d7"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -100,16 +100,16 @@
                     "name": "Variables",
                     "id": "variables",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "variables\/",
+                    "path": "variables/",
                     "type": "system",
                     "option": "variables",
                     "root": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/variables.php",
-                        "..\/..\/..\/..\/variables.js"
+                        "../../../../variables.php",
+                        "../../../../variables.js"
                     ],
                     "tailwind_sources_reason": "The page controller and client render the module selector and interaction states.",
                     "tailwind_dependencies": [
@@ -145,10 +145,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "2fdb2d2958c72a6355a6ae319cb244f8",
+                        "html": "efdd225f1dd8e6db6df28e8f8d23fd92",
                         "css": "a67c7f7ada890bdeca6f064ce2ace341",
                         "css_precompiled": "",
-                        "combined": "ab0d0ad3a00d2b8f1bcc9c49c6ae2f09"
+                        "combined": "f64d141aed64242dcda6b30fe57daed0"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -173,5 +173,5 @@
             ]
         }
     },
-    "asset_version": "82ea2bb979d7b757"
+    "asset_version": "95caa58abd19e002"
 }

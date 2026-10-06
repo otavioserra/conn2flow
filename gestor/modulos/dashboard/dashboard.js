@@ -783,15 +783,9 @@ $(document).ready(function () {
 
 			tabButtons.forEach(function (btn) {
 				var target = btn.getAttribute('data-tab-target');
-				if (target === targetId) {
-					btn.classList.add('active', 'border-sky-600', 'text-sky-600');
-					btn.classList.remove('border-transparent', 'text-slate-500');
-					btn.setAttribute('aria-selected', 'true');
-				} else {
-					btn.classList.remove('active', 'border-sky-600', 'text-sky-600');
-					btn.classList.add('border-transparent', 'text-slate-500');
-					btn.setAttribute('aria-selected', 'false');
-				}
+				// req-242: o estado visual vem só de `.active` (folha do componente), igual nas duas abas.
+				btn.classList.toggle('active', target === targetId);
+				btn.setAttribute('aria-selected', String(target === targetId));
 			});
 
 			tabPanels.forEach(function (panel) {
@@ -827,6 +821,26 @@ $(document).ready(function () {
 
 	initDashboardTabs();
 
+	// req-242: capa OU ícone. Imagem de capa que não carrega devolve o card ao ícone, sem sobrepor os dois.
+	function initDashboardCoverFallback() {
+		var cards = document.getElementById('dashboard-sortable-cards');
+		if (!cards) return;
+		function semCapa(img) {
+			var card = img.closest('.dashboard-module-card');
+			if (!card) return;
+			card.classList.remove('has-cover');
+			card.classList.add('no-cover');
+		}
+		cards.addEventListener('error', function (e) {
+			if (e.target && e.target.classList && e.target.classList.contains('dashboard-module-cover')) semCapa(e.target);
+		}, true);
+		Array.prototype.forEach.call(cards.querySelectorAll('img.dashboard-module-cover'), function (img) {
+			if (img.complete && img.naturalWidth === 0 && img.getAttribute('loading') !== 'lazy') semCapa(img);
+		});
+	}
+
+	initDashboardCoverFallback();
+
 	// ===== Sistema de Abas do Dashboard > =====
 
 	// ===== Grid Flexível de Widgets (req-226 / req-233) < =====
@@ -838,6 +852,8 @@ $(document).ready(function () {
 		var list = document.getElementById('dashboard-widgets-modal-list');
 		var empty = document.getElementById('dashboard-widgets-empty');
 		var editButton = document.getElementById('dashboard-edit-mode');
+		// req-242: altura em passos de 20 px (a malha do redimensionamento), de 120 a 960 px.
+		var MIN_HEIGHT = 120, MAX_HEIGHT = 960, STEP_HEIGHT = 20;
 		var labels = {};
 		['type', 'record', 'loading', 'error', 'empty', 'remove', 'drag', 'more', 'resize', 'switch', 'select'].forEach(function (key) {
 			labels[key] = grid.getAttribute('data-label-' + key) || '';
@@ -849,7 +865,7 @@ $(document).ready(function () {
 			var width = Number(w.width);
 			if (![4, 6, 8, 12].includes(width)) width = /full|12/.test(w.width) ? 12 : (/8/.test(w.width) ? 8 : (/2|6/.test(w.width) ? 6 : 4));
 			var pixels = Number(w.height_px) || (Number(w.height) === 2 ? 460 : 220);
-			return Object.assign({}, w, {width: width, height_px: Math.max(180, Math.min(780, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}});
+			return Object.assign({}, w, {width: width, height_px: Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}});
 		});
 		var editing = false;
 		try { editing = sessionStorage.getItem('dashboard_widgets_editing') === 'true'; } catch (_) {}
@@ -876,7 +892,7 @@ $(document).ready(function () {
 			card.setAttribute('data-widget-cols', widget.width);
 			card.setAttribute('data-widget-height', widget.height);
 			card.style.height = (widget.height_px || (widget.height === 2 ? 460 : 220)) + 'px';
-			card.style.minHeight = '180px';
+			card.style.minHeight = MIN_HEIGHT + 'px';
 		}
 		function setEditing(value) {
 			if (!value && resize) {
@@ -908,10 +924,10 @@ $(document).ready(function () {
 				card.dataset.widgetId = widget.id;
 				geometry(card, widget);
 				card.innerHTML = '<div class="dashboard-widget-card-header flex min-w-0 items-center gap-2 border-b border-slate-100 px-4 py-3">' +
-					'<button type="button" class="dashboard-widget-drag-handle c2fc-botao c2fc-botao-icone" aria-label="'+escape(labels.drag)+'"><i data-lucide="grip-vertical" class="size-4"></i></button>' +
+					'<button type="button" class="dashboard-widget-drag-handle c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.drag)+'" data-c2f-dica="'+escape(labels.drag)+'" data-c2f-dica-pos="bottom left"><i data-lucide="grip-vertical" class="size-4"></i></button>' +
 					'<span class="dashboard-widget-title min-w-0 flex-1 truncate font-semibold">'+escape(widget.name || widget.id)+'</span>' +
-					'<button type="button" class="dashboard-widget-switch-btn c2fc-botao c2fc-botao-icone" aria-label="'+escape(labels.switch)+'"><i data-lucide="settings-2" class="size-4"></i></button>' +
-					'<button type="button" class="dashboard-widget-remove-btn c2fc-botao c2fc-botao-icone" aria-label="'+escape(labels.remove)+'"><i data-lucide="x" class="size-4"></i></button></div>' +
+					'<button type="button" class="dashboard-widget-switch-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.switch)+'" data-c2f-dica="'+escape(labels.switch)+'" data-c2f-dica-pos="bottom right"><i data-lucide="settings-2" class="size-4"></i></button>' +
+					'<button type="button" class="dashboard-widget-remove-btn c2fc-botao c2fc-botao-icone c2fc-botao-fantasma" aria-label="'+escape(labels.remove)+'" data-c2f-dica="'+escape(labels.remove)+'" data-c2f-dica-pos="bottom right"><i data-lucide="x" class="size-4"></i></button></div>' +
 					'<div class="dashboard-widget-card-body min-w-0 flex-1 overflow-auto p-4">'+escape(labels.loading)+'</div>';
 				['se'].forEach(function (corner) {
 					var handle = document.createElement('button'); handle.type = 'button'; handle.className = 'dashboard-widget-resize-handle'; handle.dataset.corner = corner; handle.setAttribute('aria-label', labels.resize); handle.innerHTML = '<i data-lucide="move-diagonal-2" class="size-3.5"></i>'; card.appendChild(handle);
@@ -924,8 +940,11 @@ $(document).ready(function () {
 					frame.className = 'dashboard-widget-frame';
 					frame.title = widget.name || widget.id;
 					frame.setAttribute('sandbox', 'allow-scripts');
+					// req-242: o documento isolado pode pedir tela cheia (apresentações); o resto do isolamento não muda.
+					frame.setAttribute('allow', 'fullscreen');
+					frame.setAttribute('allowfullscreen', '');
 					var jquery = document.querySelector('script[src*="jquery"]');
-					frame.srcdoc = '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(location.origin + ((typeof gestor !== 'undefined' && gestor.raiz) || '/'))+'">'+(data.css || '')+'<style>html,body{margin:0;max-width:100%;overflow-x:hidden}body{font-family:system-ui,sans-serif}</style>'+(jquery ? jquery.outerHTML : '')+'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+'</body></html>';
+					frame.srcdoc = '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(location.origin + ((typeof gestor !== 'undefined' && gestor.raiz) || '/'))+'">'+(data.css || '')+'<style>html,body{margin:0;max-width:100%;min-height:100%;overflow-x:hidden}html{height:100%}body{font-family:system-ui,sans-serif}</style>'+(jquery ? jquery.outerHTML : '')+'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+'</body></html>';
 					body.replaceChildren(frame);
 					icons();
 				}).catch(function () { if (card.isConnected) body.textContent = labels.error; });
@@ -1007,10 +1026,11 @@ $(document).ready(function () {
 			if(!resize || resize.pointer!==e.pointerId)return;
 			var dx=e.clientX-resize.x,dy=e.clientY-resize.y;
 			var fraction=((resize.width+dx)/resize.gridWidth)*12;
-			resize.cols=[4,6,8,12].reduce(function(a,b){return Math.abs(b-fraction)<Math.abs(a-fraction)?b:a;});resize.rows=Math.max(180,Math.min(780,180+Math.round((resize.height+dy-180)/60)*60));
+			resize.cols=[4,6,8,12].reduce(function(a,b){return Math.abs(b-fraction)<Math.abs(a-fraction)?b:a;});resize.rows=Math.max(MIN_HEIGHT,Math.min(MAX_HEIGHT,Math.round((resize.height+dy)/STEP_HEIGHT)*STEP_HEIGHT));
 			geometry(resize.card,{width:resize.cols,height_px:resize.rows});
+			resize.card.setAttribute('data-resize-size', resize.cols + ' × ' + resize.rows + ' px');
 		});
-		function finish(e){if(!resize || resize.pointer!==e.pointerId)return;resize.card.classList.remove('is-resizing');grid.classList.remove('is-interacting');if(resize.handle.hasPointerCapture(e.pointerId))resize.handle.releasePointerCapture(e.pointerId);if(e.type==='pointercancel'){geometry(resize.card,resize.widget);}else if(resize.cols){resize.widget.width=resize.cols;resize.widget.height_px=resize.rows;save();}resize=null;}
+		function finish(e){if(!resize || resize.pointer!==e.pointerId)return;resize.card.classList.remove('is-resizing');resize.card.removeAttribute('data-resize-size');grid.classList.remove('is-interacting');if(resize.handle.hasPointerCapture(e.pointerId))resize.handle.releasePointerCapture(e.pointerId);if(e.type==='pointercancel'){geometry(resize.card,resize.widget);}else if(resize.cols){resize.widget.width=resize.cols;resize.widget.height_px=resize.rows;save();}resize=null;}
 		grid.addEventListener('pointerup',finish);grid.addEventListener('pointercancel',finish);
 		render();
 	}

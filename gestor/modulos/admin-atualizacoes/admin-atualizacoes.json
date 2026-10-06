@@ -25,7 +25,7 @@
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
-                    "version": "1.4",
+                    "version": "1.5",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -56,10 +56,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "fcb57be32d9118beab92bacb09f95677",
+                        "html": "9b845f8a9c71a3c40e2622e345d5ea0f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fcb57be32d9118beab92bacb09f95677"
+                        "combined": "9b845f8a9c71a3c40e2622e345d5ea0f"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -70,7 +70,7 @@
                     "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
-                    "version": "1.4",
+                    "version": "1.5",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -101,10 +101,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "2084cd9d857c45c2f9a17e451e69ebc9",
+                        "html": "1f9a9b1b130cd56422f25910415fa78c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "2084cd9d857c45c2f9a17e451e69ebc9"
+                        "combined": "1f9a9b1b130cd56422f25910415fa78c"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -135,25 +135,25 @@
                 {
                     "name": "Atualizações - Lista Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "648e102c26e7bc32c49f1bcc45daf0a1",
+                        "html": "3c539c8fc30ed0c0f80400fab7053598",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "648e102c26e7bc32c49f1bcc45daf0a1"
+                        "combined": "3c539c8fc30ed0c0f80400fab7053598"
                     }
                 },
                 {
                     "name": "Atualizações - Detalhe Tailwind",
                     "id": "atualizacoes-detalhe-comp-tailwind",
-                    "version": "1.1",
+                    "version": "1.2",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "db259dfa0175c136fbddbb81f6cd8b97",
+                        "html": "9c81d4bb6cb2df14b64f46084c9ade35",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "db259dfa0175c136fbddbb81f6cd8b97"
+                        "combined": "9c81d4bb6cb2df14b64f46084c9ade35"
                     }
                 }
             ],
@@ -846,7 +846,7 @@
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
-                    "version": "1.4",
+                    "version": "1.5",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -877,10 +877,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "fcb57be32d9118beab92bacb09f95677",
+                        "html": "9b845f8a9c71a3c40e2622e345d5ea0f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fcb57be32d9118beab92bacb09f95677"
+                        "combined": "9b845f8a9c71a3c40e2622e345d5ea0f"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -891,7 +891,7 @@
                     "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
-                    "version": "1.4",
+                    "version": "1.5",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -922,10 +922,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "2084cd9d857c45c2f9a17e451e69ebc9",
+                        "html": "1f9a9b1b130cd56422f25910415fa78c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "2084cd9d857c45c2f9a17e451e69ebc9"
+                        "combined": "1f9a9b1b130cd56422f25910415fa78c"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -956,25 +956,25 @@
                 {
                     "name": "Updates - List Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "648e102c26e7bc32c49f1bcc45daf0a1",
+                        "html": "3c539c8fc30ed0c0f80400fab7053598",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "648e102c26e7bc32c49f1bcc45daf0a1"
+                        "combined": "3c539c8fc30ed0c0f80400fab7053598"
                     }
                 },
                 {
                     "name": "Updates - Detail Tailwind",
                     "id": "atualizacoes-detalhe-comp-tailwind",
-                    "version": "1.1",
+                    "version": "1.2",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "db259dfa0175c136fbddbb81f6cd8b97",
+                        "html": "9c81d4bb6cb2df14b64f46084c9ade35",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "db259dfa0175c136fbddbb81f6cd8b97"
+                        "combined": "9c81d4bb6cb2df14b64f46084c9ade35"
                     }
                 }
             ],
@@ -1657,5 +1657,5 @@
             ]
         }
     },
-    "asset_version": "508390df9cc0945f"
+    "asset_version": "0404e9a3626f9a5a"
 }

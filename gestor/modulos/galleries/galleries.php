@@ -90,8 +90,9 @@ function galleries_imagepick_setup(){
 	));
 
 	$imagepick = Array(
-		'url'    => $_GESTOR['url-full'] . 'admin-arquivos/?paginaIframe=sim',
-		'head'   => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-head')),
+		'url'    => $_GESTOR['url-full'] . 'admin-arquivos/?paginaIframe=sim&multiplo=sim',
+		// req-242: a galeria abre o seletor para várias imagens; o título do modal diz isso.
+		'head'   => gestor_variaveis(Array('modulo' => 'admin-arquivos','id' => 'picker-title-multiple')),
 		'cancel' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-cancel')),
 	);
 

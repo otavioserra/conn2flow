@@ -48,6 +48,38 @@ document.addEventListener('DOMContentLoaded', function () {
         window.c2fControles.aviso(result.message, 'sucesso');
     });
 
+    // Aba "Dados JSON": CodeMirror somente leitura, montado quando a aba aparece (painel oculto não tem medida).
+    var jsonArea = root.querySelector('textarea.codemirror-json');
+    var jsonEditor = null;
+    var jsonText = function () { return jsonEditor ? jsonEditor.getValue() : (jsonArea ? jsonArea.value : ''); };
+    function mountJson() {
+        if (!jsonArea) return;
+        if (jsonEditor) { jsonEditor.refresh(); return; }
+        if (typeof window.CodeMirror === 'undefined') return;
+        var value = jsonArea.value;
+        try { value = JSON.stringify(JSON.parse(value), null, 4); } catch (e) { /* mantém o texto como veio */ }
+        jsonArea.value = value;
+        jsonEditor = window.CodeMirror.fromTextArea(jsonArea, {
+            mode: 'application/json', theme: 'default', readOnly: true, lineNumbers: true, lineWrapping: true,
+            indentUnit: 4, tabSize: 4, viewportMargin: Infinity, matchBrackets: true
+        });
+    }
+    var jsonTab = root.querySelector('[data-c2f-aba="submission-json"]');
+    if (jsonTab) jsonTab.addEventListener('click', function () { setTimeout(mountJson, 0); });
+    var jsonPanel = root.querySelector('[data-c2f-painel="submission-json"]');
+    if (jsonPanel && !jsonPanel.hidden) mountJson();
+
+    var copyJson = root.querySelector('#btn-copy-submission-json');
+    if (copyJson) copyJson.addEventListener('click', function () {
+        var done = function () { window.c2fControles.aviso(copyJson.getAttribute('data-copied') || '', 'sucesso'); };
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(jsonText()).then(done, function () {}); return; }
+        var helper = document.createElement('textarea');
+        helper.value = jsonText();
+        document.body.appendChild(helper);
+        helper.select();
+        try { if (document.execCommand('copy')) done(); } finally { document.body.removeChild(helper); }
+    });
+
     var reply = root.querySelector('#btn-send-reply');
     if (reply) reply.addEventListener('click', async function (event) {
         event.preventDefault();

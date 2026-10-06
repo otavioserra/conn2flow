@@ -1,6 +1,7 @@
 /* req-224 / req-226 / req-233: Estados e controle de densidade do Dashboard V3.0 (busca, SortableJS, P/M/G, capas 9rem/12rem, abas e widgets 12 cols min-h-220px). */
 .dashboard-module-card.search-hidden { display: none !important; }
 .dashboard-no-results { grid-column: 1 / -1; padding: 3em 1em; text-align: center; color: #64748b; }
+.dashboard-card-svg { display: flex; }
 .dashboard-card-svg svg { width: 100%; height: 100%; }
 .sortable-ghost { opacity: .7; background: #f0f9ff !important; border: 2px dashed #0284c7 !important; }
 .sortable-chosen { box-shadow: 0 12px 35px rgba(0,0,0,.18) !important; }
@@ -322,3 +323,46 @@
 #dashboard-sortable-cards.density-p .dashboard-card-svg svg { width: 1.5rem; height: 1.5rem; }
 #dashboard-sortable-cards.density-p .dashboard-card-title { font-size: .75rem; font-weight: 600; color: #1e293b; }
 #dashboard-sortable-cards.density-g .dashboard-module-cover { height: 100% !important; object-position: center 15% !important; }
+
+/* REQ-242: abas com os mesmos estados de repouso, hover, foco e ativa (a marcação das duas é igual). */
+.dashboard-tab-trigger { border-bottom: 2px solid transparent; color: #64748b; font-weight: 600; transition: color .15s ease, border-color .15s ease; }
+.dashboard-tab-trigger:hover:not(.active) { border-bottom-color: #cbd5e1; color: #334155; }
+.dashboard-tab-trigger:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; border-radius: 4px 4px 0 0; }
+.dashboard-tab-trigger.active { border-bottom-color: #0284c7 !important; color: #0284c7 !important; }
+
+/* REQ-242: capa OU ícone, nunca os dois. Sem capa (ou com a imagem falhando) fica só o ícone centralizado. */
+.dashboard-module-card.has-cover .dashboard-card-svg { display: none !important; }
+.dashboard-module-card.no-cover .dashboard-card-cover-wrapper { display: none !important; }
+.dashboard-module-card.no-cover .dashboard-card-svg { display: flex !important; }
+.dashboard-module-card.no-cover .dashboard-card-svg svg { width: 4rem; height: 4rem; }
+#dashboard-sortable-cards.density-g .dashboard-module-card.no-cover .dashboard-card-svg svg { width: 5.5rem; height: 5.5rem; }
+#dashboard-sortable-cards.density-p .dashboard-module-card .dashboard-card-svg { display: flex !important; }
+#dashboard-sortable-cards.density-p .dashboard-module-card .dashboard-card-svg svg { width: 1.5rem; height: 1.5rem; }
+
+/* REQ-242: menu de opções em linhas, no padrão dos menus do painel. */
+.dashboard-menu-item { display: flex; width: 100%; align-items: center; gap: .5rem; border-radius: .375rem; padding: .5rem; color: #334155; font-size: .75rem; font-weight: 500; line-height: 1rem; text-align: left; cursor: pointer; transition: background-color .15s ease, color .15s ease; }
+.dashboard-menu-item:hover { background: #f1f5f9; color: #0f172a; }
+.dashboard-menu-item:focus-visible { outline: 2px solid #0284c7; outline-offset: -2px; }
+.dashboard-menu-item svg { width: 1rem; height: 1rem; flex-shrink: 0; color: #64748b; }
+#dashboard-edit-mode { justify-content: flex-start; gap: .5rem; }
+#dashboard-edit-mode[aria-checked="true"] { color: #0369a1; }
+.dashboard-edit-track { width: 2rem; height: 1.125rem; padding: 2px; }
+.dashboard-edit-thumb { width: .875rem; height: .875rem; }
+#dashboard-edit-mode[aria-checked="true"] .dashboard-edit-thumb { transform: translateX(.875rem); }
+.dashboard-widget-card-header .c2fc-botao-icone { padding: 5px; box-shadow: none; }
+
+/* REQ-242: malha técnica pontilhada (20 px, o passo vertical do redimensionamento) no lugar das linhas de coluna;
+   widgets compactos descem até 120 px. */
+#dashboard-widgets-grid::before {
+    inset: -8px -8px -140px -8px;
+    background-color: rgba(240, 249, 255, .55);
+    background-image: radial-gradient(circle at 1px 1px, rgba(14, 165, 233, .5) 1px, transparent 1.5px), linear-gradient(rgba(14, 165, 233, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 165, 233, .07) 1px, transparent 1px);
+    background-size: 20px 20px, 20px 20px, 20px 20px;
+    background-position: 8px 8px;
+}
+#dashboard-widgets-grid.is-interacting::before { opacity: 1; }
+.dashboard-widget-card, .dashboard-widget-card.h-1x, .dashboard-widget-card[data-widget-height="1"] { min-height: 120px; }
+.dashboard-widget-card.is-resizing { box-shadow: 0 10px 25px -8px rgba(2, 132, 199, .45); }
+.dashboard-widget-card.is-resizing::after { content: attr(data-resize-size); position: absolute; right: 30px; bottom: 6px; z-index: 11; border-radius: 6px; background: #0f172a; padding: 2px 6px; color: #f8fafc; font: 600 11px/1.3 system-ui, sans-serif; pointer-events: none; }
+.dashboard-widget-card-body { padding: 0; }
+.dashboard-widget-card-body:not(:has(> iframe)) { padding: 1rem; }

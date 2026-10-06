@@ -14,4 +14,7 @@
 .req222-page #forms-fields-table, .req222-page #forms-search-fields-table { min-width: 850px; }
 .req222-page .tab:not(.active) { display: none; }
 .req222-page .tab.active { display: block; }
-.req222-page .c2fc-aba.active { color: #0369a1; background: #e0f2fe; }
+/* REQ-242: respiro entre os controles de cada linha de campo e largura mínima do seletor de tipo. */
+.req222-page #forms-fields-table td, .req222-page #forms-search-fields-table td { padding: 6px 8px; vertical-align: middle; }
+.req222-page #forms-fields-table td .c2fc-select, .req222-page #forms-search-fields-table td .c2fc-select { min-width: 150px; }
+.req222-page #forms-fields-table textarea, .req222-page #forms-search-fields-table textarea { min-height: 38px; resize: vertical; }

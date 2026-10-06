@@ -4,9 +4,9 @@
   <img class="gallery-item-thumb">
   <div class="gallery-item-body"><div class="gallery-item-name"></div><input type="text" class="c2fc-campo-entrada gallery-item-caption" placeholder="@[[item-caption-placeholder]]@"></div>
   <div class="gallery-item-actions">
-   <button type="button" class="c2fc-botao c2fc-botao-icone gallery-item-handle" aria-label="@[[js-row-drag]]@"><i data-lucide="grip-vertical" class="c2fc-icone"></i></button>
-   <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-primario gallery-item-settings" aria-label="@[[item-settings-tooltip]]@"><i data-lucide="settings" class="c2fc-icone"></i></button>
-   <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-perigo gallery-item-remove" aria-label="@[[js-row-remove]]@"><i data-lucide="trash-2" class="c2fc-icone"></i></button>
+   <button type="button" class="c2fc-botao c2fc-botao-icone gallery-item-handle" aria-label="@[[js-row-drag]]@" data-c2f-dica="@[[js-row-drag]]@" data-c2f-dica-pos="left center"><i data-lucide="grip-vertical" class="c2fc-icone"></i></button>
+   <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-primario gallery-item-settings" aria-label="@[[item-settings-tooltip]]@" data-c2f-dica="@[[item-settings-tooltip]]@" data-c2f-dica-pos="left center"><i data-lucide="settings" class="c2fc-icone"></i></button>
+   <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-perigo gallery-item-remove" aria-label="@[[js-row-remove]]@" data-c2f-dica="@[[js-row-remove]]@" data-c2f-dica-pos="left center"><i data-lucide="trash-2" class="c2fc-icone"></i></button>
   </div>
  </div>
 </template>
@@ -42,15 +42,13 @@
 
 <h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Gallery images</h4>
 
-<div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
-    <i data-lucide="images" class="size-4 shrink-0 icon "></i>
-    Click "Select Images from Server" to open the file manager. Pick several images in sequence —
-    the manager stays open. Each image appears below with an editable caption; drag by the
-    <i data-lucide="grip-vertical" class="size-4 shrink-0 icon "></i> to reorder.
+<div class="my-2 inline-flex items-center gap-2 text-xs text-slate-500">
+    <i data-lucide="images" class="size-4 shrink-0"></i>
+    <span>Click "Select Images from Server" to open the file manager. Pick several images in sequence — the manager stays open. Each image appears below with an editable caption; drag by the <i data-lucide="grip-vertical" class="inline size-3.5 align-text-bottom"></i> to reorder.</span>
 </div>
 
 <div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment gallery-toolbar">
-    <button type="button" class="c2fc-botao c2fc-botao-primario blue button" id="btn-select-images">
+    <button type="button" class="c2fc-botao c2fc-botao-primario blue button" id="btn-select-images" data-c2f-dica="Open the file manager and pick images" data-c2f-dica-pos="top left">
         <i data-lucide="folder-open" class="size-4 shrink-0 icon "></i> Select Images from Server
     </button>
     <div class="c2fc-grupo mini icon buttons c2f-gallery-views" id="c2f-gallery-views">
@@ -71,47 +69,46 @@
 <h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Display Controls</h4>
 
 <div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 inline fields">
-        <div class="c2fc-campo min-w-0 mb-4 field">
+    <div class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="c2fc-campo min-w-0 field">
             <div class="c2fc-chave checkbox">
                 <input type="checkbox" id="gallery-show-arrows" checked><span class="c2fc-chave-trilho" aria-hidden="true"></span>
                 <label class="c2fc-campo-rotulo">Show arrows</label>
             </div>
         </div>
-        <div class="c2fc-campo min-w-0 mb-4 field">
+        <div class="c2fc-campo min-w-0 field">
             <div class="c2fc-chave checkbox">
                 <input type="checkbox" id="gallery-show-dots" checked><span class="c2fc-chave-trilho" aria-hidden="true"></span>
                 <label class="c2fc-campo-rotulo">Show dots</label>
             </div>
         </div>
-        <div class="c2fc-campo min-w-0 mb-4 field">
+        <div class="c2fc-campo min-w-0 field">
             <div class="c2fc-chave checkbox">
                 <input type="checkbox" id="gallery-loop" checked><span class="c2fc-chave-trilho" aria-hidden="true"></span>
                 <label class="c2fc-campo-rotulo">Infinite loop</label>
             </div>
         </div>
-        <div class="c2fc-campo min-w-0 mb-4 field">
+        <div class="c2fc-campo min-w-0 field">
             <div class="c2fc-chave checkbox">
                 <input type="checkbox" id="gallery-autoplay"><span class="c2fc-chave-trilho" aria-hidden="true"></span>
                 <label class="c2fc-campo-rotulo">Autoplay</label>
             </div>
         </div>
     </div>
-    <div class="c2fc-campo min-w-0 mb-4 field" style="max-width: 260px; margin-top: 10px;">
+    <div class="mt-5 grid grid-cols-1 gap-4 border-t border-slate-100 pt-5 sm:grid-cols-2 lg:grid-cols-4 gallery-display-fields">
+    <div class="c2fc-campo min-w-0 field">
         <label class="c2fc-campo-rotulo">Transition time (ms)</label>
         <input class="c2fc-campo-entrada" type="number" id="gallery-autoplay-speed" min="500" step="100" value="3000">
     </div>
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields" style="margin-top: 10px; max-width: 540px;">
-        <div class="c2fc-campo min-w-0 mb-4 field">
+        <div class="c2fc-campo min-w-0 field">
             <label class="c2fc-campo-rotulo">Container height (px)</label>
             <input class="c2fc-campo-entrada" type="number" id="gallery-height" min="0" step="10" value="300">
         </div>
-        <div class="c2fc-campo min-w-0 mb-4 field">
+        <div class="c2fc-campo min-w-0 field">
             <label class="c2fc-campo-rotulo">Side margin (px)</label>
             <input class="c2fc-campo-entrada" type="number" id="gallery-margin-lateral" min="0" step="1" value="0">
         </div>
-    </div>
-    <div class="c2fc-campo min-w-0 mb-4 field" style="max-width: 260px; margin-top: 10px;">
+    <div class="c2fc-campo min-w-0 field">
         <label class="c2fc-campo-rotulo">@[[image-position-label]]@</label>
         <select data-c2f-select id="gallery-image-position" class="c2fc-campo-selecao dropdown">
             <option value="center">@[[image-position-center]]@</option>
@@ -119,6 +116,7 @@
             <option value="bottom">@[[image-position-bottom]]@</option>
         </select>
     </div>
+</div>
 </div>
 
 <input type="hidden" name="fields_schema">
@@ -138,9 +136,9 @@
 </div>
 
 <div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuConteudoGaleria">
-    <a class="c2fc-aba active item" data-tab="hep-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a>
-    <a class="c2fc-aba item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML Editor</a>
-    <a class="c2fc-aba item" data-tab="hep-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget Code</a>
+    <a class="c2fc-aba active item" data-tab="hep-preview" data-c2f-dica="See the gallery as visitors will" data-c2f-dica-pos="top left"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a>
+    <a class="c2fc-aba item" data-tab="hep-editor" data-c2f-dica="Edit the gallery HTML and CSS" data-c2f-dica-pos="top left"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML Editor</a>
+    <a class="c2fc-aba item" data-tab="hep-widget" data-c2f-dica="Code to place the gallery on a page" data-c2f-dica-pos="top left"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget Code</a>
 </div>
 <div class="c2fc-painel-aba min-w-0 bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
@@ -168,8 +166,8 @@
     <div class="c2fc-campo min-w-0 mb-4 field" style="margin-top:1rem;">
         <label class="c2fc-campo-rotulo">Widget Variable</label>
         <div class="flex items-center gap-2 min-w-0 action input">
-            <input class="c2fc-campo-entrada" type="text" id="hep-widget-val" readonly>
-            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario teal button">
+            <input class="c2fc-campo-entrada min-w-0 flex-1" type="text" id="hep-widget-val" readonly>
+            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario teal button c2fc-botao-compacto" data-c2f-dica="Copy the widget variable" data-c2f-dica-pos="top right">
                 <i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copy
             </button>
         </div>

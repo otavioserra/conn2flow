@@ -14,7 +14,7 @@
 
 <!-- publisher-has-link < -->
 
-<div class="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-900 hep-all-found-msg hep-initially-hidden">
+<div class="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-900 mb-3 hep-all-found-msg hep-initially-hidden">
     <i data-lucide="circle-check" class="size-5 shrink-0"></i>
     <div class="content min-w-0 flex-1">
         <div class="header font-semibold">All Variables Detected</div>
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900 hep-some-missing-msg hep-initially-hidden">
+<div class="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900 mb-3 hep-some-missing-msg hep-initially-hidden">
     <i data-lucide="triangle-alert" class="size-5 shrink-0"></i>
     <div class="content min-w-0 flex-1">
         <div class="header font-semibold">Variables Not Found</div>
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<div class="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-900 hep-all-missing-msg hep-initially-hidden">
+<div class="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-900 mb-3 hep-all-missing-msg hep-initially-hidden">
     <i data-lucide="triangle-alert" class="size-5 shrink-0"></i>
     <div class="content min-w-0 flex-1">
         <div class="header font-semibold">No Variables Found</div>
@@ -49,12 +49,13 @@
     </div>
 </div>
 
+<div class="mb-3 flex flex-wrap items-center gap-2 hep-variables-toolbar">
 <div class="inline-flex items-center justify-center rounded-md bg-red-600 p-2 text-white hover:bg-red-700 cursor-pointer remove-all-variables hep-initially-hidden"
     data-c2f-dica="Remove All Variables from Template" data-position="top left" data-inverted="">
     <i data-lucide="trash-2" class="size-5 shrink-0"></i>
 </div>
 
-<div class="dropdown button c2fc-campo-entrada publisher-style-control publisher-design-mode-variables"
+<div class="dropdown button c2fc-campo-entrada min-w-0 flex-1 publisher-style-control publisher-design-mode-variables"
     data-c2f-dica="Change Skeleton Insertion Style" data-position="top left" data-inverted="">
     <i data-lucide="paintbrush" class="size-5 shrink-0"></i>
     <div class="text" style="display: none;">Sophisticated</div>
@@ -63,6 +64,8 @@
         <div class="item active selected" data-value="sophisticated">Sophisticated</div>
         <div class="item" data-value="simple">Simple</div>
     </div>
+</div>
+
 </div>
 
 <div class="w-full min-w-0 overflow-x-auto rounded-lg border border-slate-200"><table class="w-full text-left text-sm hep-variables-table hep-initially-hidden">
@@ -90,16 +93,16 @@
                 <div class="inline-flex rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600">#val-type#</div>
             </td>
             <td class="border-b border-slate-100 p-3 text-center">
-                <i data-lucide="circle-check" class="size-5 text-emerald-600 hep-val-found-check hep-initially-hidden"></i>
-                <i data-lucide="circle-x" class="size-5 text-red-600 hep-val-found-times hep-initially-hidden"></i>
+                <i data-lucide="circle-check" class="mx-auto size-5 text-emerald-600 hep-val-found-check hep-initially-hidden"></i>
+                <i data-lucide="circle-x" class="mx-auto size-5 text-red-600 hep-val-found-times hep-initially-hidden"></i>
             </td>
             <td class="border-b border-slate-100 p-3 text-center">
-                <div class="inline-flex flex-wrap gap-1 hep-val-options-buttons hep-initially-hidden">
-                    <div class="inline-flex items-center justify-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700 cursor-pointer add-variable-skeleton" data-type="#val-type#" data-id="#val-id#"
+                <div class="inline-flex flex-wrap items-center justify-center gap-2 hep-val-options-buttons hep-initially-hidden">
+                    <div class="inline-flex items-center justify-center gap-2 rounded-md bg-emerald-600 p-2 text-sm font-medium text-white hover:bg-emerald-700 cursor-pointer add-variable-skeleton" data-type="#val-type#" data-id="#val-id#"
                         data-c2f-dica="Add variable using Skeleton" data-position="top right" data-inverted="">
                         <i data-lucide="plus" class="size-5 shrink-0"></i>
                     </div>
-                    <div class="inline-flex items-center justify-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700 cursor-pointer add-variable-ai" data-type="#val-type#" data-id="#val-id#"
+                    <div class="inline-flex items-center justify-center gap-2 rounded-md bg-sky-600 p-2 text-sm font-medium text-white hover:bg-sky-700 cursor-pointer add-variable-ai" data-type="#val-type#" data-id="#val-id#"
                         data-c2f-dica="Add variable using AI" data-position="top right" data-inverted="">
                         <i data-lucide="wand-sparkles" class="size-5 shrink-0"></i>
                     </div>

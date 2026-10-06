@@ -41,7 +41,7 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/noticias-simples.webp",
+                    "thumbnail": "templates/images/pt-br/noticias-simples.webp",
                     "version": "1.8",
                     "checksum": {
                         "html": "36bba1fb09a6219ef6ea4de55021bf87",
@@ -55,7 +55,7 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/noticias-imagem-destaque.webp",
+                    "thumbnail": "templates/images/pt-br/noticias-imagem-destaque.webp",
                     "version": "1.9",
                     "checksum": {
                         "html": "2a811d1b95e7aeb7385d22e2320a17af",
@@ -70,7 +70,7 @@
                     "name": "Publicador Definições - Listar",
                     "id": "publisher",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/",
+                    "path": "publisher/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -116,7 +116,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -124,15 +124,15 @@
                     "name": "Publicador Definições - Adicionar",
                     "id": "publisher-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/adicionar\/",
+                    "path": "publisher/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.34",
+                    "version": "1.35",
                     "checksum": {
-                        "html": "5a2feaf82e522f00c5af6f696052071d",
-                        "css": "e27a01bf2d174276d86c94c782f319e3",
+                        "html": "30cf078a8b5eb1e8a0b1b20ce792a32c",
+                        "css": "18ba12fba5342ece99fd5c6f0389858f",
                         "css_precompiled": "",
-                        "combined": "26f97485db590590d3d0467009d1236f"
+                        "combined": "3158d21a5feb0fd8c2a08a8e7f1d160d"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -170,7 +170,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -178,15 +178,15 @@
                     "name": "Publicador Definições - Editar",
                     "id": "publisher-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/editar\/",
+                    "path": "publisher/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.20",
+                    "version": "1.21",
                     "checksum": {
-                        "html": "7ff76c42a7c2cb599f25e34eb983f158",
-                        "css": "e27a01bf2d174276d86c94c782f319e3",
+                        "html": "aa7cbc8fa5d9291367e57781194eead8",
+                        "css": "18ba12fba5342ece99fd5c6f0389858f",
                         "css_precompiled": "",
-                        "combined": "ce2af25752ff2cb014971b72a5d5d5a9"
+                        "combined": "aec16834cbe537eb055cad6739fb3c40"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -224,7 +224,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -232,15 +232,15 @@
                     "name": "Publicador Definições - Clonar",
                     "id": "publisher-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/clonar\/",
+                    "path": "publisher/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "8ad3c9deaa4b69a2eca9d4f415a151db",
-                        "css": "e27a01bf2d174276d86c94c782f319e3",
+                        "html": "77f5050e8b43b72c3f13051cff0a7653",
+                        "css": "18ba12fba5342ece99fd5c6f0389858f",
                         "css_precompiled": "",
-                        "combined": "401f400b6e9a0216548806a6f22b4a70"
+                        "combined": "8c5adea854a71b984e58a52520ad865b"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -278,7 +278,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 }
@@ -336,12 +336,13 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/noticias-simples.webp",
-                    "version": "1.8",
+                    "thumbnail": "templates/images/en/noticias-simples.webp",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "8c301d2279cfed152757a09ccce6d276",
+                        "html": "3c91731e5c8884c45bf974258a8bd615",
                         "css": "",
-                        "combined": "8c301d2279cfed152757a09ccce6d276"
+                        "css_precompiled": "",
+                        "combined": "3c91731e5c8884c45bf974258a8bd615"
                     }
                 },
                 {
@@ -349,7 +350,7 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/noticias-imagem-destaque.webp",
+                    "thumbnail": "templates/images/en/noticias-imagem-destaque.webp",
                     "version": "1.12",
                     "checksum": {
                         "html": "43c95946acd29e9a7b4f061dde19816e",
@@ -364,7 +365,7 @@
                     "name": "Publisher Definitions - List",
                     "id": "publisher",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/",
+                    "path": "publisher/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -410,7 +411,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -418,15 +419,15 @@
                     "name": "Publisher Definitions - Add",
                     "id": "publisher-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/adicionar\/",
+                    "path": "publisher/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.34",
+                    "version": "1.35",
                     "checksum": {
-                        "html": "4d8778ab69355fa8163d6745e24065cc",
-                        "css": "e27a01bf2d174276d86c94c782f319e3",
+                        "html": "3b65fa2b03a18e137ad6b158382f3939",
+                        "css": "18ba12fba5342ece99fd5c6f0389858f",
                         "css_precompiled": "",
-                        "combined": "dcf9c42ed9fc69f26638a57425ceacf2"
+                        "combined": "bc03ce732d0fe7f0a5b7809b4f0e6d7d"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -464,7 +465,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -472,15 +473,15 @@
                     "name": "Publisher Definitions - Edit",
                     "id": "publisher-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/editar\/",
+                    "path": "publisher/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.19",
+                    "version": "1.20",
                     "checksum": {
-                        "html": "03e480a78ed59dc6b6c11275f53adb29",
-                        "css": "e27a01bf2d174276d86c94c782f319e3",
+                        "html": "24ed8448a9038263583ce7d77b0e201d",
+                        "css": "18ba12fba5342ece99fd5c6f0389858f",
                         "css_precompiled": "",
-                        "combined": "c418f2ffa22434b574c6781e31392834"
+                        "combined": "bc3f87e4eb58c1bf7417472e43c9cb8e"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -518,7 +519,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -526,15 +527,15 @@
                     "name": "Publisher Definitions - Clone",
                     "id": "publisher-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher\/clonar\/",
+                    "path": "publisher/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "7c968442746abf72d1a7f795d57f063b",
-                        "css": "e27a01bf2d174276d86c94c782f319e3",
+                        "html": "9fc47c31f040e10ff605a8180085ed05",
+                        "css": "18ba12fba5342ece99fd5c6f0389858f",
                         "css_precompiled": "",
-                        "combined": "4934cfae39b0db01f42943b7f54ed150"
+                        "combined": "d384942d7ab7326413115aa244ebe484"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -572,7 +573,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/publisher.php"
+                        "../../../../publisher.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 }
@@ -606,5 +607,5 @@
             ]
         }
     },
-    "asset_version": "591b67b8a918c995"
+    "asset_version": "c5c53ab3fb4736c2"
 }

@@ -297,12 +297,12 @@
                 {
                     "name": "Área Restrita",
                     "id": "Area-restrita",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "5be5088e82d0ed6a61910a3ce3633267",
+                        "html": "9a6d9cb3647df030992fc5e4dc5239a4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5be5088e82d0ed6a61910a3ce3633267"
+                        "combined": "9a6d9cb3647df030992fc5e4dc5239a4"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "restrict-area/",
@@ -1827,12 +1827,12 @@
                 {
                     "name": "Distributed Login Context",
                     "id": "perfil-usuario-distribuido-contexto",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "42187ef01d0ea2b8e51482c7ad1ffcd9",
+                        "html": "0336b5df220e110d897957621f3716c2",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "42187ef01d0ea2b8e51482c7ad1ffcd9"
+                        "combined": "0336b5df220e110d897957621f3716c2"
                     }
                 }
             ]
@@ -2116,12 +2116,12 @@
                 {
                     "name": "Restricted Area",
                     "id": "Area-restrita",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "5be5088e82d0ed6a61910a3ce3633267",
+                        "html": "9a6d9cb3647df030992fc5e4dc5239a4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5be5088e82d0ed6a61910a3ce3633267"
+                        "combined": "9a6d9cb3647df030992fc5e4dc5239a4"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "restrict-area/",
@@ -2414,12 +2414,12 @@
                 {
                     "name": "Distributed Login Context",
                     "id": "perfil-usuario-distribuido-contexto",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "42187ef01d0ea2b8e51482c7ad1ffcd9",
+                        "html": "0336b5df220e110d897957621f3716c2",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "42187ef01d0ea2b8e51482c7ad1ffcd9"
+                        "combined": "0336b5df220e110d897957621f3716c2"
                     }
                 }
             ],

@@ -389,11 +389,42 @@
             this.painel.classList.remove('c2fc-oculto');
             this.raiz.classList.add('c2fc-select-aberto');
             this.gatilho.setAttribute('aria-expanded', 'true');
-            var caixa = this.raiz.getBoundingClientRect();
-            this.painel.classList.toggle('c2fc-acima', caixa.bottom + 300 > global.innerHeight && caixa.top > 300);
-            if (this.busca) { this.busca.value = ''; this.busca.focus(); }
+            this._posicionar();
+            if (this._recortado()) {
+                var self = this;
+                this._reposicionar = function (ev) { if (!ev || !ev.target || !self.painel.contains(ev.target)) self._posicionar(); };
+                global.addEventListener('scroll', this._reposicionar, true);
+                global.addEventListener('resize', this._reposicionar);
+            }
+            if (this.busca) { this.busca.value = ''; this.busca.focus({ preventScroll: true }); }
             this._desenharLista('');
             return this;
+        },
+
+        // Algum ancestral recorta o que sai dele (tabela com rolagem, cartão com overflow)? Aí o painel
+        // absoluto seria cortado e o container ganharia barra de rolagem.
+        _recortado: function () {
+            for (var no = this.raiz.parentElement; no && no !== document.body && no !== document.documentElement; no = no.parentElement) {
+                var estilo = global.getComputedStyle(no);
+                if (/(auto|scroll|hidden|clip)/.test(estilo.overflow + ' ' + estilo.overflowX + ' ' + estilo.overflowY)) return true;
+            }
+            return false;
+        },
+
+        // Abre para cima quando falta espaço embaixo. Dentro de ancestral que recorta, o painel passa a
+        // `position: fixed` na medida do gatilho e acompanha a rolagem enquanto estiver aberto.
+        _posicionar: function () {
+            var caixa = this.raiz.getBoundingClientRect();
+            var acima = caixa.bottom + 300 > global.innerHeight && caixa.top > 300;
+            var flutua = this._recortado();
+            var estilo = this.painel.style;
+            this.painel.classList.toggle('c2fc-acima', acima);
+            this.painel.classList.toggle('c2fc-flutuante', flutua);
+            if (!flutua) { estilo.left = estilo.top = estilo.bottom = estilo.width = ''; return; }
+            estilo.left = Math.round(caixa.left) + 'px';
+            estilo.width = Math.round(caixa.width) + 'px';
+            estilo.top = acima ? 'auto' : Math.round(caixa.bottom + 4) + 'px';
+            estilo.bottom = acima ? Math.round(global.innerHeight - caixa.top + 4) + 'px' : 'auto';
         },
 
         fechar: function (focar) {
@@ -401,6 +432,11 @@
             this.painel.classList.add('c2fc-oculto');
             this.raiz.classList.remove('c2fc-select-aberto');
             this.gatilho.setAttribute('aria-expanded', 'false');
+            if (this._reposicionar) {
+                global.removeEventListener('scroll', this._reposicionar, true);
+                global.removeEventListener('resize', this._reposicionar);
+                this._reposicionar = null;
+            }
             if (focar === true) this.gatilho.focus();
             return this;
         },
@@ -438,6 +474,7 @@
         },
         aoMudar: function (fn) { return this.on('mudou', fn); },
         destruir: function () {
+            this.fechar(false);
             document.removeEventListener('mousedown', this._foraDeFoco);
             this.raiz.parentNode.insertBefore(this.nativo, this.raiz);
             this.raiz.parentNode.removeChild(this.raiz);

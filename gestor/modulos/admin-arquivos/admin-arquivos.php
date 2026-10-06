@@ -494,6 +494,23 @@ function admin_arquivos_ler_pasta($dirRel, $paginaAtual, $filtros){
 /**
  * Mapa de textos i18n do módulo entregue ao frontend.
  */
+/**
+ * req-242: parâmetros que mantêm o gerenciador no modo seletor (iframe) entre a listagem e o envio.
+ * `multiplo=sim` vem de quem abre o seletor para escolher várias imagens (galerias) e troca o título.
+ *
+ * @param string $prefixo '?' para iniciar a query, '&' para continuar uma existente.
+ */
+function admin_arquivos_query_seletor($prefixo = '?'){
+	global $_GESTOR;
+	if (empty($_GESTOR['paginaIframe'])) return '';
+	return $prefixo . 'paginaIframe=sim' . (admin_arquivos_selecao_multipla() ? '&multiplo=sim' : '');
+}
+
+function admin_arquivos_selecao_multipla(){
+	global $_GESTOR;
+	return !empty($_GESTOR['paginaIframe']) && isset($_REQUEST['multiplo']) && $_REQUEST['multiplo'] === 'sim';
+}
+
 function admin_arquivos_i18n(){
 	global $_GESTOR;
 	$ids = Array(
@@ -508,6 +525,8 @@ function admin_arquivos_i18n(){
 		// req-240
 		'move-cut','move-paste','move-cancel','move-pending','move-done','move-exists','move-error',
 		'usage-label','usage-of','upload-error-content','upload-error-quota',
+		// req-242
+		'picker-tray-remove',
 	);
 	$map = Array();
 	foreach ($ids as $id) {
@@ -559,6 +578,7 @@ function admin_arquivos_listar_arquivos(){
 		'maxPorPagina' => $maxPorPagina,
 		'loteMiniaturas' => isset($modulo['lista']['lote_miniaturas']) ? (int)$modulo['lista']['lote_miniaturas'] : 5,
 		'paginaIframe' => $_GESTOR['paginaIframe'] ? true : false,
+		'selecaoMultipla' => admin_arquivos_selecao_multipla(),
 		'i18n' => admin_arquivos_i18n(),
 	);
 
@@ -567,7 +587,7 @@ function admin_arquivos_listar_arquivos(){
 		'id' => 'interface-listar-arquivos-sem-registros',
 	)));
 
-	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#paginaIframe#",($_GESTOR['paginaIframe'] ? '?paginaIframe=sim' : ''));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#paginaIframe#",admin_arquivos_query_seletor());
 
 	// BATCH-099: as ferramentas de gestão (Adicionar / Nova pasta / Selecionar todos) também ficam
 	// disponíveis no modo picker (iframe). O gerenciador é o MESMO em todos os pontos de seleção de
@@ -647,12 +667,8 @@ function admin_arquivos_upload(){
 	// BATCH-099: o botão voltar é MANTIDO no picker — com o upload liberado dentro do iframe, ele é o
 	// caminho de retorno à listagem (sem ele o usuário ficava preso na tela de envio). O destino já
 	// preserva o modo picker (`?paginaIframe=sim`).
-	if ($_GESTOR['paginaIframe']) {
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#url#",$_GESTOR['url-full'] . 'admin-arquivos/?paginaIframe=sim');
-	} else {
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#url#",$_GESTOR['url-full'] . 'admin-arquivos/');
-	}
-	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#paginaIframe#",($_GESTOR['paginaIframe'] ? '?paginaIframe=sim' : ''));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#url#",$_GESTOR['url-full'] . 'admin-arquivos/' . admin_arquivos_query_seletor());
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#paginaIframe#",admin_arquivos_query_seletor());
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -683,6 +699,7 @@ function admin_arquivos_upload(){
 		'escopo' => admin_arquivos_escopo(),
 		'maxUploadBytes' => isset($modulo['upload']['max_bytes']) ? (int)$modulo['upload']['max_bytes'] : 10000000,
 		'paginaIframe' => $_GESTOR['paginaIframe'] ? true : false,
+		'selecaoMultipla' => admin_arquivos_selecao_multipla(),
 		'i18n' => admin_arquivos_i18n(),
 	);
 

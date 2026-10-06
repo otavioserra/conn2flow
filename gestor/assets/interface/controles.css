@@ -331,3 +331,33 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 .c2fc-alerta:not(:has(> .content)) { display: block; }
 .c2fc-alerta:not(:has(> .content)) > svg { display: inline-block; vertical-align: -3px; margin-right: 6px; }
 .c2fc-alerta.hidden { display: none; }
+/* REQ-242: rótulo de checkbox e rádio é clicável, então mostra o cursor de clique (rótulo que envolve o
+   campo, rótulo logo depois dele e a marcação `.checkbox` que os módulos migrados mantêm). */
+label:has(input[type="checkbox"]:not(:disabled)), label:has(input[type="radio"]:not(:disabled)),
+input[type="checkbox"]:not(:disabled) + label, input[type="radio"]:not(:disabled) + label,
+.checkbox:not(.disabled) > label, .c2fc-chave-rotulo { cursor: pointer; }
+/* REQ-242: painel do select dentro de container que recorta (tabela com rolagem, cartão): fixo na tela,
+   posicionado pelo controles.js, sem criar barra de rolagem no container. */
+.c2fc-select-painel.c2fc-flutuante { position: fixed; right: auto; }
+.c2fc-select-painel.c2fc-flutuante.c2fc-acima { top: auto; }
+/* REQ-242: botão de ação compacto que nunca quebra o rótulo (copiar ao lado de um campo). */
+.c2fc-botao { white-space: nowrap; }
+.c2fc-botao-compacto { flex: none; padding: 6px 12px; font-size: 12px; gap: 6px; }
+.c2fc-botao-compacto svg { width: 14px; height: 14px; }
+/* REQ-242: destaque do item que é o padrão ativo (estrela cheia). */
+.c2fc-botao-destaque { border-color: #f59e0b; background: #f59e0b; color: #fff; }
+.c2fc-botao-destaque:hover { border-color: #d97706; background: #d97706; }
+.c2fc-botao-destaque svg { fill: currentColor; }
+/* REQ-242: modal de tela cheia com iframe (seletor de arquivos e de modelos): o iframe ocupa o espaço que
+   sobra entre o título e as ações; quem rola é o conteúdo do iframe, nunca o modal. */
+.c2fc-ponte-modal.fullscreen { overflow: hidden; }
+.c2fc-ponte-modal.fullscreen > .content:has(iframe) { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.c2fc-ponte-modal.fullscreen > .content .iframe-container { display: flex; flex: 1; min-height: 0; }
+.c2fc-ponte-modal.fullscreen > .content iframe { flex: 1; width: 100%; height: auto !important; min-height: 0; }
+/* REQ-242: listagem sem palavra partida no meio — cabeçalho numa linha e rótulos (cor, slug, tipo) quebrando só
+   em espaço; o rótulo-link de caminho continua podendo quebrar. */
+#_gestor-interface-listar thead th, #_gestor-interface-listar thead th > button { white-space: nowrap; }
+#_gestor-interface-listar tbody td .c2fc-rotulo:not(a) { overflow-wrap: normal; word-break: keep-all; white-space: nowrap; }
+.c2fc-selo-recusado { background: #fef2f2; color: #b91c1c; }
+.c2fc-botao-perigo-suave { border-color: #fca5a5; color: #b91c1c; }
+.c2fc-botao-perigo-suave:hover { border-color: #f87171; background: #fef2f2; }

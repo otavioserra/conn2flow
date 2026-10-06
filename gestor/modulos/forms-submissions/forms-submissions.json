@@ -31,11 +31,12 @@
                 {
                     "name": "E-mail Preparado de Resposta",
                     "id": "prepared-response-email",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "1ff6880f4d762ad9c6af5944579a1f94",
+                        "html": "0b4237495cb03538c9a9c4b4fb50ac29",
                         "css": "",
-                        "combined": "1ff6880f4d762ad9c6af5944579a1f94"
+                        "css_precompiled": "",
+                        "combined": "0b4237495cb03538c9a9c4b4fb50ac29"
                     }
                 }
             ],
@@ -44,7 +45,7 @@
                     "name": "Formulários Envios - Listar",
                     "id": "forms-submissions-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/",
+                    "path": "forms-submissions/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -94,15 +95,15 @@
                     "name": "Formulários Envios - Visualizar",
                     "id": "forms-submissions-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/view\/",
+                    "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "91d679bd5f012b63b1fbcb00a334c52e",
-                        "css": "c3797221205fafd1b7b1bd464732293f",
+                        "html": "106f5f7b88df8eba81dde444b0d4dfda",
+                        "css": "da175501bf976837f91141c83ce82011",
                         "css_precompiled": "",
-                        "combined": "845677a1c573ac9766e156fdd53b8924"
+                        "combined": "97c3dcc4a192ebb1598f208bbdf12202"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -159,7 +160,7 @@
                     "name": "Formulários Envios - Processar",
                     "id": "forms-submissions-process",
                     "layout": "layout-pagina-simples",
-                    "path": "forms-submissions-process\/",
+                    "path": "forms-submissions-process/",
                     "type": "system",
                     "option": "forms-process",
                     "without_permission": true,
@@ -289,7 +290,57 @@
                 },
                 {
                     "id": "not-applicable-label",
-                    "value": "NÃ£o se aplica",
+                    "value": "Não se aplica",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-tab-data-tip",
+                    "value": "Informações do envio e campos preenchidos",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-tab-replies-tip",
+                    "value": "Histórico e envio de respostas ao contato",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-tab-json-tip",
+                    "value": "Dados do envio em JSON formatado",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-label",
+                    "value": "Status do contato",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-save-tip",
+                    "value": "Gravar o status escolhido",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-reply-send-tip",
+                    "value": "Enviar a resposta por e-mail ao contato",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-title",
+                    "value": "Dados do envio em JSON",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-copy",
+                    "value": "Copiar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-copy-tip",
+                    "value": "Copiar o JSON completo",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-copied",
+                    "value": "JSON copiado.",
                     "type": "string"
                 }
             ]
@@ -309,11 +360,12 @@
                 {
                     "name": "Prepared Response E-mail",
                     "id": "prepared-response-email",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "b10cb8281c10eafe0e8199d3246e11b1",
+                        "html": "1168ab8d6a2ebb01307b2b8ab3e384b2",
                         "css": "",
-                        "combined": "b10cb8281c10eafe0e8199d3246e11b1"
+                        "css_precompiled": "",
+                        "combined": "1168ab8d6a2ebb01307b2b8ab3e384b2"
                     }
                 }
             ],
@@ -322,7 +374,7 @@
                     "name": "Forms Submissions - List",
                     "id": "forms-submissions-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/",
+                    "path": "forms-submissions/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -372,15 +424,15 @@
                     "name": "Forms Submissions - View",
                     "id": "forms-submissions-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/view\/",
+                    "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "b8fad8df3856512b5f2ef02b665649be",
-                        "css": "c3797221205fafd1b7b1bd464732293f",
+                        "html": "2728b5880c83b16429470f11fdb2345c",
+                        "css": "da175501bf976837f91141c83ce82011",
                         "css_precompiled": "",
-                        "combined": "a274e7d7fb6b83e449406d0a26a07f68"
+                        "combined": "5313e2ee9dd32caab97de32864a69f76"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -437,7 +489,7 @@
                     "name": "Forms Submissions - Process",
                     "id": "forms-submissions-process",
                     "layout": "layout-pagina-simples",
-                    "path": "forms-submissions-process\/",
+                    "path": "forms-submissions-process/",
                     "type": "system",
                     "option": "forms-process",
                     "without_permission": true,
@@ -569,9 +621,59 @@
                     "id": "not-applicable-label",
                     "value": "Not applicable",
                     "type": "string"
+                },
+                {
+                    "id": "ui-tab-data-tip",
+                    "value": "Submission details and filled fields",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-tab-replies-tip",
+                    "value": "History and replies to the contact",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-tab-json-tip",
+                    "value": "Submission data as formatted JSON",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-label",
+                    "value": "Contact status",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-save-tip",
+                    "value": "Save the selected status",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-reply-send-tip",
+                    "value": "E-mail the reply to the contact",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-title",
+                    "value": "Submission data as JSON",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-copy",
+                    "value": "Copy",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-copy-tip",
+                    "value": "Copy the full JSON",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-json-copied",
+                    "value": "JSON copied.",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "5cd1e1b820be662f"
+    "asset_version": "5312fc24fb81e391"
 }

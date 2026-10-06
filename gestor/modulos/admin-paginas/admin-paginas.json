@@ -156,23 +156,23 @@
                 {
                     "name": "Mapeamento de Layout por Perfil",
                     "id": "layout-profile-mapping",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "cf89db77e7edf56efd09ee7d04690050",
+                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "cf89db77e7edf56efd09ee7d04690050"
+                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
                     }
                 },
                 {
                     "name": "Linha de Layout por Perfil",
                     "id": "layout-profile-row",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "b8531e8e33763abd8826abf93ea5320f",
+                        "html": "846642cefd8a44d86588e9eb438cf997",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b8531e8e33763abd8826abf93ea5320f"
+                        "combined": "846642cefd8a44d86588e9eb438cf997"
                     }
                 },
                 {
@@ -203,12 +203,12 @@
                     "name": "Lista Página ou Sistema Tailwind",
                     "id": "lista-pagina-ou-sistema-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "144d75bcd33bb88254ebc318d102ae8e",
+                        "html": "70ba85d3a06eadd4c58d9f024872994b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "144d75bcd33bb88254ebc318d102ae8e"
+                        "combined": "70ba85d3a06eadd4c58d9f024872994b"
                     }
                 }
             ],
@@ -224,7 +224,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/",
+                    "path": "admin-paginas/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -271,7 +271,7 @@
                             "id": "lista-pagina-ou-sistema-tailwind"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-219: listagem Tailwind (req-220) e filtro de tipo\/módulo montados em runtime."
+                    "tailwind_dependencies_reason": "req-219: listagem Tailwind (req-220) e filtro de tipo/módulo montados em runtime."
                 },
                 {
                     "name": "Admin Páginas - Editar",
@@ -284,13 +284,13 @@
                         "combined": "d555c009253c789c46f11e3ddcb61b6d"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/editar\/",
+                    "path": "admin-paginas/editar/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-paginas.php"
+                        "../../../../admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -406,13 +406,13 @@
                         "combined": "a4dd81d40cd8497adc52a6153d6426f6"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/adicionar\/",
+                    "path": "admin-paginas/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-paginas.php"
+                        "../../../../admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -528,13 +528,13 @@
                         "combined": "5a8fb043f83e43759a7ba28e1a9a6bfc"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/clonar\/",
+                    "path": "admin-paginas/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-paginas.php"
+                        "../../../../admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -748,7 +748,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão \/ Acesso Público",
+                    "value": "Sem Permissão / Acesso Público",
                     "type": "string"
                 },
                 {
@@ -763,7 +763,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '\/' no final",
+                    "value": "pelo menos uma '/' no final",
                     "type": "string"
                 },
                 {
@@ -916,7 +916,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/",
+                    "path": "admin-paginas/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -963,7 +963,7 @@
                             "id": "lista-pagina-ou-sistema-tailwind"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-219: listagem Tailwind (req-220) e filtro de tipo\/módulo montados em runtime."
+                    "tailwind_dependencies_reason": "req-219: listagem Tailwind (req-220) e filtro de tipo/módulo montados em runtime."
                 },
                 {
                     "name": "Admin Pages - Edit",
@@ -976,13 +976,13 @@
                         "combined": "9f6510e9dbfdb17d32545a5bc7b4b21b"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/editar\/",
+                    "path": "admin-paginas/editar/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-paginas.php"
+                        "../../../../admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -1098,13 +1098,13 @@
                         "combined": "b3e46fc8b7c7974af0a58b6fa3bbed42"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/adicionar\/",
+                    "path": "admin-paginas/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-paginas.php"
+                        "../../../../admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -1220,13 +1220,13 @@
                         "combined": "ce2f47e485a5993ff586cd04502a2f27"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas\/clonar\/",
+                    "path": "admin-paginas/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-paginas.php"
+                        "../../../../admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -1347,23 +1347,23 @@
                 {
                     "name": "Profile Layout Mapping",
                     "id": "layout-profile-mapping",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "cf89db77e7edf56efd09ee7d04690050",
+                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "cf89db77e7edf56efd09ee7d04690050"
+                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
                     }
                 },
                 {
                     "name": "Profile Layout Row",
                     "id": "layout-profile-row",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "b8531e8e33763abd8826abf93ea5320f",
+                        "html": "846642cefd8a44d86588e9eb438cf997",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b8531e8e33763abd8826abf93ea5320f"
+                        "combined": "846642cefd8a44d86588e9eb438cf997"
                     }
                 },
                 {
@@ -1394,12 +1394,12 @@
                     "name": "Page or System List Tailwind",
                     "id": "lista-pagina-ou-sistema-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "dc44bd9da09d2f153b8d99948f2d6157",
+                        "html": "75e7c97d98702f0e92594d5295d62a12",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dc44bd9da09d2f153b8d99948f2d6157"
+                        "combined": "75e7c97d98702f0e92594d5295d62a12"
                     }
                 }
             ],
@@ -1511,7 +1511,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission \/ Public Access",
+                    "value": "No Permission / Public Access",
                     "type": "string"
                 },
                 {
@@ -1526,7 +1526,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '\/' at the end",
+                    "value": "at least one '/' at the end",
                     "type": "string"
                 },
                 {
@@ -1572,5 +1572,5 @@
             ]
         }
     },
-    "asset_version": "53772fe56d16f97c"
+    "asset_version": "65a460b67d240fc0"
 }

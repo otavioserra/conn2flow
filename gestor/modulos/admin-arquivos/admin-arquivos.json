@@ -36,7 +36,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.23",
+                    "version": "1.24",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -60,10 +60,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "6ce3226175d624c6f1448c194736db2f",
-                        "css": "4fd3799ac92ac11f0b33bc6124350a48",
+                        "html": "f76acbd013511d33cb8d30062d94a2af",
+                        "css": "063b4057599d341d5c484d623a264259",
                         "css_precompiled": "",
-                        "combined": "1d551343b207d253dc6be6e586578f36"
+                        "combined": "e0aef3100444cb389f2c7a5e0c14b09b"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -75,7 +75,7 @@
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.12",
+                    "version": "1.13",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -94,10 +94,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "8cb09dbd9d5dba4840137853587325cb",
-                        "css": "ef7dc6f3cbec34e0dee47a80185e9877",
+                        "html": "944494ff5d4e18e6e9339be93a722c59",
+                        "css": "e7c89fac557c06dfdbaadfb037f105a5",
                         "css_precompiled": "",
-                        "combined": "d30b7bc97a455f768054c2eed36aa970"
+                        "combined": "24d65336082f4a4d6477ee08cae0d4ad"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -462,6 +462,26 @@
                     "type": "string"
                 },
                 {
+                    "id": "picker-title-multiple",
+                    "value": "Selecione uma ou mais imagens abaixo...",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-label",
+                    "value": "Arquivos selecionados",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-remove",
+                    "value": "Remover da seleção",
+                    "type": "string"
+                },
+                {
                     "id": "select-all",
                     "value": "Selecionar Todos",
                     "type": "string"
@@ -614,7 +634,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.23",
+                    "version": "1.24",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -638,10 +658,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "6ce3226175d624c6f1448c194736db2f",
-                        "css": "4fd3799ac92ac11f0b33bc6124350a48",
+                        "html": "f76acbd013511d33cb8d30062d94a2af",
+                        "css": "063b4057599d341d5c484d623a264259",
                         "css_precompiled": "",
-                        "combined": "1d551343b207d253dc6be6e586578f36"
+                        "combined": "e0aef3100444cb389f2c7a5e0c14b09b"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -653,7 +673,7 @@
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.12",
+                    "version": "1.13",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -672,10 +692,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "8cb09dbd9d5dba4840137853587325cb",
-                        "css": "ef7dc6f3cbec34e0dee47a80185e9877",
+                        "html": "944494ff5d4e18e6e9339be93a722c59",
+                        "css": "e7c89fac557c06dfdbaadfb037f105a5",
                         "css_precompiled": "",
-                        "combined": "d30b7bc97a455f768054c2eed36aa970"
+                        "combined": "24d65336082f4a4d6477ee08cae0d4ad"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -1040,6 +1060,26 @@
                     "type": "string"
                 },
                 {
+                    "id": "picker-title-multiple",
+                    "value": "Select one or more images below...",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-label",
+                    "value": "Selected files",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-remove",
+                    "value": "Remove from selection",
+                    "type": "string"
+                },
+                {
                     "id": "select-all",
                     "value": "Select All",
                     "type": "string"
@@ -1182,5 +1222,5 @@
             ]
         }
     },
-    "asset_version": "5bd2359f2118eff6"
+    "asset_version": "4e9914360b781fd8"
 }

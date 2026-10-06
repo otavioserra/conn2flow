@@ -115,7 +115,7 @@ O `arquivos` do site guardava registros em banco, isolava cada usuário numa pas
 | Varredura de navegador, 2ª rodada | círculos 0, ícones não desenhados 0, selects 0, cabeçalhos 0, overflow 0 |
 | `admin-atualizacoes` com interação | botão desabilitado até escolher o modo, rótulo traduzido, abas alternando, nenhum marcador cru, 17 ícones desenhados, sem overflow a 390 px |
 
-Roteiros: [varredura](../validation/req240-browser.cjs), [resumo](../validation/req240-browser-summary.cjs), [sonda](../validation/req240-probe.cjs). Dados: [resultado](../validation/req240-browser-results.json) e [capturas](../validation/evidence-req240/resumo-segunda-varredura.txt). A varredura descobre as rotas nos manifestos; 72 das 257 redirecionam por precisar de um registro (telas de edição sem `id`), e nas listagens o roteiro segue o primeiro link de edição.
+Roteiros: [varredura](../validation/req240-browser.cjs), [resumo](../validation/req240-browser-summary.cjs), [sonda](../validation/req240-probe.cjs). Dados: [resultado](../validation/archive/req240-browser-results.json) e [capturas](../validation/evidence-req240/resumo-segunda-varredura.txt). A varredura descobre as rotas nos manifestos; 72 das 257 redirecionam por precisar de um registro (telas de edição sem `id`), e nas listagens o roteiro segue o primeiro link de edição.
 
 ## Incidente no Lab durante a validação (2026-10-05)
 

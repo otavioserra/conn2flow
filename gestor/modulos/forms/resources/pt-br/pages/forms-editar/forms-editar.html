@@ -27,10 +27,10 @@
 
 <div class="forms-main-tabs">
 <div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuForms">
-    <a class="c2fc-aba active item" data-tab="forms-general"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> Geral</a>
-    <a class="c2fc-aba item" data-tab="forms-email"><i data-lucide="mail" class="size-4 shrink-0 icon "></i> E-mail</a>
-    <a class="c2fc-aba item" data-tab="forms-redirects"><i data-lucide="share-2" class="size-4 shrink-0 icon "></i> Redirects</a>
-    <a class="c2fc-aba item" data-tab="forms-fields"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Campos</a>
+    <a class="c2fc-aba active item" data-tab="forms-general" data-c2f-dica="Dados principais do formulário" data-c2f-dica-pos="top left"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> Geral</a>
+    <a class="c2fc-aba item" data-tab="forms-email" data-c2f-dica="Destinatários, assunto e mensagem do e-mail" data-c2f-dica-pos="top left"><i data-lucide="mail" class="size-4 shrink-0 icon "></i> E-mail</a>
+    <a class="c2fc-aba item" data-tab="forms-redirects" data-c2f-dica="Para onde o visitante vai depois do envio" data-c2f-dica-pos="top left"><i data-lucide="share-2" class="size-4 shrink-0 icon "></i> Redirects</a>
+    <a class="c2fc-aba item" data-tab="forms-fields" data-c2f-dica="Campos do formulário" data-c2f-dica-pos="top left"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Campos</a>
 </div>
 
 <div class="c2fc-painel-aba min-w-0 bottom attached active tab segment" data-tab="forms-general">
@@ -77,7 +77,7 @@
 </div>
 
 <div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-fields">
-    <button type="button" class="c2fc-botao c2fc-botao-primario primary button" id="btn-add-form-field"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Campo</button>
+    <button type="button" class="c2fc-botao c2fc-botao-primario primary button" id="btn-add-form-field" data-c2f-dica="Adicionar um campo" data-c2f-dica-pos="top left"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Campo</button>
     <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" id="forms-fields-table">
         <thead>
             <tr>
@@ -101,9 +101,9 @@
 
 <div class="forms-content-tabs">
 <div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuConteudoForm">
-    <a class="c2fc-aba active item" data-tab="forms-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Pré-Visualização</a>
-    <a class="c2fc-aba item" data-tab="forms-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> Editor HTML</a>
-    <a class="c2fc-aba item" data-tab="forms-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Código do Widget</a>
+    <a class="c2fc-aba active item" data-tab="forms-preview" data-c2f-dica="Veja o formulário como o visitante verá" data-c2f-dica-pos="top left"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Pré-Visualização</a>
+    <a class="c2fc-aba item" data-tab="forms-editor" data-c2f-dica="Edite o HTML e o CSS do formulário" data-c2f-dica-pos="top left"><i data-lucide="code" class="size-4 shrink-0 icon "></i> Editor HTML</a>
+    <a class="c2fc-aba item" data-tab="forms-widget" data-c2f-dica="Código para inserir o formulário numa página" data-c2f-dica-pos="top left"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Código do Widget</a>
 </div>
 <div class="c2fc-painel-aba min-w-0 bottom attached active tab segment" data-tab="forms-preview">
     <div style="position:relative;">
@@ -118,8 +118,8 @@
     <div class="c2fc-campo min-w-0 mb-4 field">
         <label class="c2fc-campo-rotulo">Variável do Widget</label>
         <div class="flex items-center gap-2 min-w-0 action input">
-            <input class="c2fc-campo-entrada" type="text" id="forms-widget-val" readonly>
-            <button type="button" id="btn-copy-forms-widget-val" class="c2fc-botao c2fc-botao-primario teal button"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copiar</button>
+            <input class="c2fc-campo-entrada min-w-0 flex-1" type="text" id="forms-widget-val" readonly>
+            <button type="button" id="btn-copy-forms-widget-val" class="c2fc-botao c2fc-botao-primario teal button c2fc-botao-compacto" data-c2f-dica="Copiar a variável do widget" data-c2f-dica-pos="top right"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copiar</button>
         </div>
     </div>
     <h4 class="text-lg font-semibold text-slate-800 my-4 header">Código HTML</h4>

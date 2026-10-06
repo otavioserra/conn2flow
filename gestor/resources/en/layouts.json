@@ -80,12 +80,12 @@
         "name": "Minimal Tailwind Iframe Layout",
         "id": "layout-iframe-tailwindcss",
         "framework_css": "tailwindcss",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "cd3afc06550032cb5c1cf367a8820552",
+            "html": "2ed0fc6c4f008669f44eb2d2a97b3828",
             "css": "",
             "css_precompiled": "",
-            "combined": "cd3afc06550032cb5c1cf367a8820552"
+            "combined": "2ed0fc6c4f008669f44eb2d2a97b3828"
         }
     },
     {
@@ -135,12 +135,12 @@
             }
         ],
         "tailwind_dependencies_reason": "REQ-118: o menu e os componentes da interface administrativa sao montados em runtime pelo PHP e nao possuem sidecar proprio na cascata; sem declara-los, o layout compila sem as utilities deles.",
-        "version": "1.21",
+        "version": "1.23",
         "checksum": {
-            "html": "e268b343b2ec467367d00de75ed2ed90",
-            "css": "29864b65d156f045346ffe2110bfd673",
+            "html": "2acd91ff2e3e6f5ea02992039accfd9e",
+            "css": "9f27eea2e7045bef245f284254d1f594",
             "css_precompiled": "",
-            "combined": "9bc10b34d2d134c6d73cfcd4691e2b6c"
+            "combined": "a68039eec79d55acce6d0b2d5a093d6f"
         }
     },
     {

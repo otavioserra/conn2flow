@@ -70,7 +70,7 @@
                     "name": "Dashboard 3D",
                     "id": "dashboard-3d",
                     "layout": "layout-administrativo-do-gestor-3d",
-                    "path": "dashboard-3d\/",
+                    "path": "dashboard-3d/",
                     "type": "system",
                     "option": "dashboard-3d",
                     "version": "1.7",
@@ -85,7 +85,7 @@
                     "name": "Dashboard",
                     "id": "dashboard",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "dashboard\/",
+                    "path": "dashboard/",
                     "type": "system",
                     "option": "inicio",
                     "root": true,
@@ -99,7 +99,7 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/dashboard.php"
+                        "../../../../dashboard.php"
                     ],
                     "tailwind_sources_reason": "req-224: inclui no scan do bundle os cartões gerados pelo renderer PHP do dashboard.",
                     "tailwind_dependencies": [
@@ -139,7 +139,7 @@
                     "name": "Dashboard Testes",
                     "id": "dashboard-testes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "dashboard-testes\/",
+                    "path": "dashboard-testes/",
                     "type": "system",
                     "option": "listar",
                     "version": "1.5",
@@ -154,7 +154,7 @@
                     "name": "Dashboard Site Toolbar",
                     "id": "dashboard-site-toolbar",
                     "layout": "layout-iframe-tailwindcss",
-                    "path": "dashboard-site-toolbar\/",
+                    "path": "dashboard-site-toolbar/",
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
@@ -191,21 +191,23 @@
                 {
                     "name": "Dashboard Cards",
                     "id": "dashboard-cards",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "68d94327ac11ce506ffb1000dd2e89ca",
-                        "css": "f67885170fa8bb1237f10c21161578cc",
-                        "combined": "d497e4e2d8507a9fee75a22ef026846e"
+                        "html": "e8ea2b6c9ec0b89217cceb41c779e92d",
+                        "css": "03f65aee9bb7339bd33dad51c196c59a",
+                        "css_precompiled": "",
+                        "combined": "4ac165023648ad4dd258507da25817d9"
                     }
                 },
                 {
                     "name": "Dashboard 3D",
                     "id": "dashboard-3d",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "68e22d989cf3d38ac3823f3dc78cd89a",
-                        "css": "7384ffd304eb09e0b5e9dff4cea68208",
-                        "combined": "47d7c7e9cbf9e37adc90e2fc044026f9"
+                        "html": "926c10c82f781db1ad01382185cfd24a",
+                        "css": "8f23deaaf1180f70656d8f0b04f67148",
+                        "css_precompiled": "",
+                        "combined": "69854e320b4644af755e7fb27d358575"
                     }
                 },
                 {
@@ -260,12 +262,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "20fb287b3af5fd4e79dd87fa9a096b34",
-                        "css": "9a0d024d56c96315600d691f518389fd",
+                        "html": "cd6e922577e6e7d87fc3bea05954e4c7",
+                        "css": "13f506785d82085a77e509971058b677",
                         "css_precompiled": "",
-                        "combined": "973e5c765ff558a29a155820e70bf343"
+                        "combined": "d645ca096f449bdd61e142360bcf5a34"
                     }
                 }
             ],
@@ -287,7 +289,7 @@
                 },
                 {
                     "id": "widgets-reset-selection",
-                    "value": "Trocar \/ Resetar",
+                    "value": "Trocar / Resetar",
                     "type": "string"
                 },
                 {
@@ -347,7 +349,7 @@
                 },
                 {
                     "id": "toast-update-button-negative-message",
-                    "value": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
+                    "value": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -582,7 +584,7 @@
                 },
                 {
                     "id": "widgets-label-record",
-                    "value": "2. Registro \/ Instância Alvo",
+                    "value": "2. Registro / Instância Alvo",
                     "type": "string"
                 },
                 {
@@ -617,12 +619,12 @@
                 {
                     "name": "Layout Administrativo do Gestor 3D",
                     "id": "layout-administrativo-do-gestor-3d",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
                         "html": "7819d72480d2ffb568171f018c819f7b",
-                        "css": "7fce855351b881a5599c9f59c7e75b92",
+                        "css": "0dfc4de68dbab3be4fd7f0d2d8d0e592",
                         "css_precompiled": "",
-                        "combined": "acbbbae9dbcec10f9badac8b023b5a77"
+                        "combined": "23fc03b92ebf94356a5071de9066f45f"
                     }
                 }
             ],
@@ -631,21 +633,22 @@
                     "name": "Dashboard 3D",
                     "id": "dashboard-3d",
                     "layout": "layout-administrativo-do-gestor-3d",
-                    "path": "dashboard-3d\/",
+                    "path": "dashboard-3d/",
                     "type": "system",
                     "option": "dashboard-3d",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "ddeaf1e853e67db15a3ac6b54bcf4f77",
+                        "html": "4b9007d100e66b5313a6279e63cd0770",
                         "css": "",
-                        "combined": "ddeaf1e853e67db15a3ac6b54bcf4f77"
+                        "css_precompiled": "",
+                        "combined": "4b9007d100e66b5313a6279e63cd0770"
                     }
                 },
                 {
                     "name": "Dashboard",
                     "id": "dashboard",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "dashboard\/",
+                    "path": "dashboard/",
                     "type": "system",
                     "root": true,
                     "option": "inicio",
@@ -659,7 +662,7 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/dashboard.php"
+                        "../../../../dashboard.php"
                     ],
                     "tailwind_sources_reason": "req-224: inclui no scan do bundle os cartões gerados pelo renderer PHP do dashboard.",
                     "tailwind_dependencies": [
@@ -699,7 +702,7 @@
                     "name": "Dashboard Tests",
                     "id": "dashboard-testes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "dashboard-testes\/",
+                    "path": "dashboard-testes/",
                     "type": "system",
                     "option": "listar",
                     "version": "1.6",
@@ -714,7 +717,7 @@
                     "name": "Dashboard Site Toolbar",
                     "id": "dashboard-site-toolbar",
                     "layout": "layout-iframe-tailwindcss",
-                    "path": "dashboard-site-toolbar\/",
+                    "path": "dashboard-site-toolbar/",
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
@@ -751,21 +754,23 @@
                 {
                     "name": "Dashboard Cards",
                     "id": "dashboard-cards",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "68d94327ac11ce506ffb1000dd2e89ca",
-                        "css": "f67885170fa8bb1237f10c21161578cc",
-                        "combined": "d497e4e2d8507a9fee75a22ef026846e"
+                        "html": "e8ea2b6c9ec0b89217cceb41c779e92d",
+                        "css": "03f65aee9bb7339bd33dad51c196c59a",
+                        "css_precompiled": "",
+                        "combined": "4ac165023648ad4dd258507da25817d9"
                     }
                 },
                 {
                     "name": "Dashboard 3D",
                     "id": "dashboard-3d",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "8c0ce3fba4bef6e567280b9964e56a6d",
-                        "css": "3ca472f60624409d709aa480fb339761",
-                        "combined": "1d28cf88c0125dfb801dad5fb36390c3"
+                        "html": "fe0864a3c3d6627015a2f8892664a0be",
+                        "css": "90a695c1f293c342df904efc8f63289c",
+                        "css_precompiled": "",
+                        "combined": "c110a5f9a93b04d83be0e2f39e0088fb"
                     }
                 },
                 {
@@ -820,12 +825,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "20fb287b3af5fd4e79dd87fa9a096b34",
-                        "css": "9a0d024d56c96315600d691f518389fd",
+                        "html": "cd6e922577e6e7d87fc3bea05954e4c7",
+                        "css": "13f506785d82085a77e509971058b677",
                         "css_precompiled": "",
-                        "combined": "973e5c765ff558a29a155820e70bf343"
+                        "combined": "d645ca096f449bdd61e142360bcf5a34"
                     }
                 }
             ],
@@ -847,7 +852,7 @@
                 },
                 {
                     "id": "widgets-reset-selection",
-                    "value": "Change \/ Reset",
+                    "value": "Change / Reset",
                     "type": "string"
                 },
                 {
@@ -907,7 +912,7 @@
                 },
                 {
                     "id": "toast-update-button-negative-message",
-                    "value": "The system will store your choice. If you change your mind, access: <b>#url#<\/b>.",
+                    "value": "The system will store your choice. If you change your mind, access: <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -1142,7 +1147,7 @@
                 },
                 {
                     "id": "widgets-label-record",
-                    "value": "2. Target record \/ instance",
+                    "value": "2. Target record / instance",
                     "type": "string"
                 },
                 {
@@ -1173,5 +1178,5 @@
             ]
         }
     },
-    "asset_version": "8361139a14ff7da9"
+    "asset_version": "28f6d345900fb5ae"
 }

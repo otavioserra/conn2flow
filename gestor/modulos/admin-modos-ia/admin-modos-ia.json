@@ -74,7 +74,7 @@
                     "path": "admin-modos-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -90,10 +90,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "5531e0974cbb6606b43187324425fac5",
+                        "html": "9e5d687b5c57c0a7b8c412723721c158",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5531e0974cbb6606b43187324425fac5"
+                        "combined": "9e5d687b5c57c0a7b8c412723721c158"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -104,7 +104,7 @@
                     "path": "admin-modos-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -120,10 +120,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "b33c35e14544bf4272107670a0844d41",
+                        "html": "dfdce375dc6abb0bc5f97fd31a58eb87",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b33c35e14544bf4272107670a0844d41"
+                        "combined": "dfdce375dc6abb0bc5f97fd31a58eb87"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -227,7 +227,7 @@
                     "path": "admin-modos-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -243,10 +243,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "5531e0974cbb6606b43187324425fac5",
+                        "html": "9e5d687b5c57c0a7b8c412723721c158",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5531e0974cbb6606b43187324425fac5"
+                        "combined": "9e5d687b5c57c0a7b8c412723721c158"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -257,7 +257,7 @@
                     "path": "admin-modos-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -273,10 +273,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "b33c35e14544bf4272107670a0844d41",
+                        "html": "dfdce375dc6abb0bc5f97fd31a58eb87",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b33c35e14544bf4272107670a0844d41"
+                        "combined": "dfdce375dc6abb0bc5f97fd31a58eb87"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }

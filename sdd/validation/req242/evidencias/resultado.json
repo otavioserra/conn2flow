@@ -1,0 +1,1191 @@
+{
+ "data": "2026-10-06T11:36:54.011Z",
+ "base": "https://conn2flow.local",
+ "total": 112,
+ "aprovados": 112,
+ "falhas": 0,
+ "resultados": [
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "aba ativa sem fundo colorido",
+   "ok": true,
+   "detalhe": [
+    {
+     "tab": "forms-search-general",
+     "dica": "Dados principais do formulário",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "forms-search-preview",
+     "dica": "Veja o formulário como o visitante verá",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "visualizacao-pagina",
+     "dica": "Clique para abrir a visualização da página.",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "prompt",
+     "dica": "Clique para abrir o Prompt IA",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "codigo-html",
+     "dica": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    }
+   ]
+  },
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "todas as abas com dica",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "botão Copiar numa linha só, ao lado do campo",
+   "ok": true,
+   "detalhe": {
+    "h": 32,
+    "w": 80.703125,
+    "ws": "nowrap",
+    "mesmaLinha": true,
+    "dica": "Copiar a variável do widget"
+   }
+  },
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "campos da linha com respiro",
+   "ok": true,
+   "detalhe": [
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px"
+   ]
+  },
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "select de tipo flutua fora do container, sem barra de rolagem",
+   "ok": true,
+   "detalhe": {
+    "flutuante": true,
+    "pos": "fixed",
+    "rolagemVertical": 0,
+    "visivel": true,
+    "opcoes": 12
+   }
+  },
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "rolar a página não fecha o select",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "1. forms-search/adicionar",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "aba ativa sem fundo colorido",
+   "ok": true,
+   "detalhe": [
+    {
+     "tab": "forms-general",
+     "dica": "Dados principais do formulário",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "forms-preview",
+     "dica": "Veja o formulário como o visitante verá",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "visualizacao-pagina",
+     "dica": "Clique para abrir a visualização da página.",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "prompt",
+     "dica": "Clique para abrir o Prompt IA",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    },
+    {
+     "tab": "codigo-html",
+     "dica": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
+     "fundo": "rgba(0, 0, 0, 0)",
+     "ativa": true
+    }
+   ]
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "todas as abas com dica",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "botão Copiar numa linha só, ao lado do campo",
+   "ok": true,
+   "detalhe": {
+    "h": 32,
+    "w": 80.703125,
+    "ws": "nowrap",
+    "mesmaLinha": true,
+    "dica": "Copiar a variável do widget"
+   }
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "campos da linha com respiro",
+   "ok": true,
+   "detalhe": [
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px"
+   ]
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "select de tipo flutua fora do container, sem barra de rolagem",
+   "ok": true,
+   "detalhe": {
+    "flutuante": true,
+    "pos": "fixed",
+    "rolagemVertical": 0,
+    "visivel": true,
+    "opcoes": 12
+   }
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "rolar a página não fecha o select",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "2. forms/adicionar",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "3. forms-submissions/view",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "forms-submissions/view/?id=cupom-assinatura-2"
+  },
+  {
+   "grupo": "3. forms-submissions/view",
+   "nome": "três abas com dica",
+   "ok": true,
+   "detalhe": [
+    "Informações do envio e campos preenchidos",
+    "Histórico e envio de respostas ao contato",
+    "Dados do envio em JSON formatado"
+   ]
+  },
+  {
+   "grupo": "3. forms-submissions/view",
+   "nome": "select de status no padrão c2fc-campo-selecao",
+   "ok": true,
+   "detalhe": {
+    "classe": "c2fc-campo-selecao forms-submissions-status",
+    "estilo": null,
+    "borda": "8px"
+   }
+  },
+  {
+   "grupo": "3. forms-submissions/view",
+   "nome": "JSON em CodeMirror somente leitura, formatado e com realce",
+   "ok": true,
+   "detalhe": {
+    "modo": "application/json",
+    "leitura": true,
+    "tema": "default",
+    "linhas": 83,
+    "realce": 106,
+    "valido": true,
+    "textareaVisivel": false,
+    "fundo": "rgb(248, 250, 252)"
+   }
+  },
+  {
+   "grupo": "3. forms-submissions/view",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "presentations/editar/?id=conn2flow"
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "select de conteúdo lista os slides com nome e identificador",
+   "ok": true,
+   "detalhe": [
+    "1 · Conn 2 Flow (#slide-1)",
+    "2 · A Plataforma para a Era da IA (#slide-2)",
+    "3 · A Analogia da Infraestrutura (#slide-3)"
+   ]
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "botão \"Editar visual\" em cada cartão, com dica",
+   "ok": true,
+   "detalhe": {
+    "cartoes": 8,
+    "visual": 8,
+    "opcoes": [
+     "1 · Conn 2 Flow (#slide-1)",
+     "2 · A Plataforma para a Era da IA (#slide-2)",
+     "3 · A Analogia da Infraestrutura (#slide-3)",
+     "4 · O Futuro do Desenvolvimento (#slide-4)",
+     "5 · Pronto Para Uso (#slide-5)",
+     "6 · Visão de Futuro (#slide-6)",
+     "7 · Rodada Seed (#slide-7)",
+     "8 · O Futuro (#slide-8)"
+    ],
+    "dicas": true
+   }
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "texto de ajuda do quadro com ícone e texto lado a lado",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "diálogo do slide abre com \"Editar visual\", Cancelar e Salvar",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "Cancelar fica no quadro de slides (mesma aba, mesma rolagem)",
+   "ok": true,
+   "detalhe": {
+    "abaAntes": "hep-preview",
+    "rolagemAntes": 1219,
+    "depoisCancelar": {
+     "aba": "hep-preview",
+     "rolagem": 1219,
+     "modal": false
+    }
+   }
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "Salvar aplica e fica no quadro de slides",
+   "ok": true,
+   "detalhe": {
+    "aba": "hep-preview",
+    "rolagem": 1219,
+    "cartoes": 8
+   }
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "\"Editar visual\" leva ao editor, por escolha",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "4. presentations/editar",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "cards com capa OU ícone, nunca os dois (66 cards, 66 com capa)",
+   "ok": true,
+   "detalhe": {
+    "ambos": [],
+    "nenhum": []
+   }
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "hover, repouso e ativa iguais nas duas abas",
+   "ok": true,
+   "detalhe": {
+    "hWidgets": {
+     "borda": "rgb(203, 213, 225)",
+     "cor": "rgb(51, 65, 85)",
+     "peso": "600",
+     "largura": "2px"
+    },
+    "hModulos": {
+     "borda": "rgb(203, 213, 225)",
+     "cor": "rgb(51, 65, 85)",
+     "peso": "600",
+     "largura": "2px"
+    },
+    "rWidgets": {
+     "borda": "rgba(0, 0, 0, 0)",
+     "cor": "rgb(100, 116, 139)",
+     "peso": "600",
+     "largura": "2px"
+    },
+    "rModulos": {
+     "borda": "rgba(0, 0, 0, 0)",
+     "cor": "rgb(100, 116, 139)",
+     "peso": "600",
+     "largura": "2px"
+    },
+    "aModulos": {
+     "borda": "rgb(2, 132, 199)",
+     "cor": "rgb(2, 132, 199)",
+     "peso": "600",
+     "largura": "2px"
+    },
+    "aWidgets": {
+     "borda": "rgb(2, 132, 199)",
+     "cor": "rgb(2, 132, 199)",
+     "peso": "600",
+     "largura": "2px"
+    }
+   }
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "menu de opções em linhas, compacto (raio 8 px, texto 12 px, ícones)",
+   "ok": true,
+   "detalhe": {
+    "raio": "8px",
+    "fonte": "12px",
+    "padding": "4px",
+    "sombra": true,
+    "itens": 3,
+    "alinhados": true,
+    "altura": [
+     34,
+     32,
+     32
+    ]
+   }
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "widget isolado pode pedir tela cheia (sandbox mantido)",
+   "ok": true,
+   "detalhe": {
+    "allow": "fullscreen",
+    "tela": true,
+    "sandbox": "allow-scripts",
+    "malha": "radial-gradient(circle at 1px 1px, rgba(14, 165, 233, 0.5) 1px, rgba(0, 0, 0, 0) 1.5px), linear-gradient(rgba(14, 165, 233, 0.07) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg, rgba(14, 165, 233, 0.07) 1px, rgba(0, 0, 0, 0) 1px)",
+    "tamanho": "20px 20px, 20px 20px, 20px 20px",
+    "botoes": [
+     "Arraste para reorganizar",
+     "Trocar widget",
+     "Remover widget"
+    ]
+   }
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "botões do widget com dica",
+   "ok": true,
+   "detalhe": [
+    "Arraste para reorganizar",
+    "Trocar widget",
+    "Remover widget"
+   ]
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "malha pontilhada de 20 px, sem as linhas de coluna",
+   "ok": true,
+   "detalhe": {
+    "malha": "radial-gradient(circle at 1px 1px, rgba(14, 165, 233, 0.5) 1px, rgba(0, 0, 0, 0) 1.5px), linear-gradient(rgba(14, 165, 233, 0.07) 1px, rgba(0, 0, 0, 0) 1px), li",
+    "tamanho": "20px 20px, 20px 20px, 20px 20px"
+   }
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "documento do widget com CSS e tela cheia habilitada",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "altura mínima de 120 px com a malha visível durante o arrasto",
+   "ok": true,
+   "detalhe": {
+    "altura": "120px",
+    "opacidade": "1",
+    "interagindo": true,
+    "rotulo": "4 × 120 px"
+   }
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "passos verticais de 20 px e teto de 960 px",
+   "ok": true,
+   "detalhe": {
+    "passo": 720,
+    "maximo": "960px"
+   }
+  },
+  {
+   "grupo": "5-7. dashboard",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "18 módulos abertos",
+   "ok": true,
+   "detalhe": [
+    {
+     "rota": "admin-ia-servidores/",
+     "status": 404
+    }
+   ]
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "tipografia igual em todos os módulos: item (-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif|14px|500|20px|normal)",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "tipografia igual em todos os módulos: ativo (-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif|14px|600|20px|normal)",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "tipografia igual em todos os módulos: grupo (-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif|12px|600|16px|0.6px)",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "tipografia igual em todos os módulos: topbar (-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif|14px|500|20px|normal)",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "item do menu com peso 500 e ativo com 600",
+   "ok": true,
+   "detalhe": [
+    "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif|14px|500|20px|normal",
+    "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif|14px|600|20px|normal"
+   ]
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "\"mais atalhos\" encostado no perfil, à direita, em todos",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "loja, meus pedidos e área do associado fora do menu do painel",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "8-9. sidebar e topbar",
+   "nome": "gestão de associados continua no menu",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "10. subscriptions/view",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "subscriptions/view/?id=SUB-TM4YPN-D02EF"
+  },
+  {
+   "grupo": "10. subscriptions/view",
+   "nome": "abas e botões com dica do painel",
+   "ok": true,
+   "detalhe": {
+    "abas": [
+     "Campos preenchidos pelo cliente no formulário de submissão",
+     "Respostas, gerenciamento de serviço e histórico de comunicação",
+     "Cobranças, faturas e eventos do Stripe",
+     "Dados JSON brutos da submissão"
+    ],
+    "botoes": [
+     "Gravar o status escolhido",
+     "Zerar as trocas de plano, reativações e a trava de checkout deste cliente",
+     "Enviar a resposta por e-mail ao cliente",
+     "Gravar o estágio e avisar o cliente"
+    ],
+    "fomantic": 0
+   }
+  },
+  {
+   "grupo": "10. subscriptions/view",
+   "nome": "select de status aberto por inteiro, sem rolagem no container",
+   "ok": true,
+   "detalhe": {
+    "flutuante": true,
+    "rolagem": 0,
+    "visivel": true,
+    "z": "100050"
+   }
+  },
+  {
+   "grupo": "10. subscriptions/view",
+   "nome": "ícone do campo à direita, fora da área do texto",
+   "ok": true,
+   "detalhe": [
+    {
+     "direita": true,
+     "dentro": true,
+     "reserva": true
+    },
+    {
+     "direita": true,
+     "dentro": true,
+     "reserva": true
+    }
+   ]
+  },
+  {
+   "grupo": "10. subscriptions/view",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "11. subscriptions-config",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "11. subscriptions-config",
+   "nome": "modal do seletor sem rolagem própria a 700 px de altura",
+   "ok": true,
+   "detalhe": {
+    "rolagemModal": 0,
+    "rolagemConteudo": 0,
+    "overflow": "hidden",
+    "cabe": true,
+    "acoesVisiveis": true,
+    "iframe": 520
+   }
+  },
+  {
+   "grupo": "11. subscriptions-config",
+   "nome": "botões do gerenciador arredondados (8 px)",
+   "ok": true,
+   "detalhe": [
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px",
+    "8px"
+   ]
+  },
+  {
+   "grupo": "11. subscriptions-config",
+   "nome": "fora do modo múltiplo o título é o do gerenciador",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "galleries/editar/?id=e2e-req222-galleries"
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "textos de ajuda com ícone e texto na mesma linha",
+   "ok": true,
+   "detalhe": [
+    {
+     "exibicao": "flex",
+     "lado": true,
+     "alinhado": true,
+     "fonte": "12px"
+    },
+    {
+     "exibicao": "inline-flex",
+     "lado": true,
+     "alinhado": true,
+     "fonte": "12px"
+    }
+   ]
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "controles de exibição em grade horizontal (4 colunas no desktop)",
+   "ok": true,
+   "detalhe": {
+    "chaves": 4,
+    "campos": 4,
+    "larguraCartao": 1024,
+    "larguraCampos": 990
+   }
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "rótulos das chaves com cursor de clique",
+   "ok": true,
+   "detalhe": [
+    "pointer",
+    "pointer",
+    "pointer",
+    "pointer"
+   ]
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "abas do conteúdo limpas e com dica",
+   "ok": true,
+   "detalhe": [
+    {
+     "dica": "Veja a galeria como o visitante verá",
+     "fundo": "rgba(0, 0, 0, 0)"
+    },
+    {
+     "dica": "Edite o HTML e o CSS da galeria",
+     "fundo": "rgba(0, 0, 0, 0)"
+    },
+    {
+     "dica": "Código para inserir a galeria numa página",
+     "fundo": "rgba(0, 0, 0, 0)"
+    }
+   ]
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "sub-aba Variáveis com espaço entre os ícones",
+   "ok": true,
+   "detalhe": {
+    "barra": "8px",
+    "margem": "12px",
+    "linhas": [
+     8,
+     8,
+     8
+    ]
+   }
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "seletor aberto em modo múltiplo",
+   "ok": true,
+   "detalhe": "https://conn2flow.local/admin-arquivos/?paginaIframe=sim&multiplo=sim"
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "cabeçalho do modal pede uma ou mais imagens",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "título dinâmico \"Selecione uma ou mais imagens abaixo...\"",
+   "ok": true,
+   "detalhe": "Selecione uma ou mais imagens abaixo..."
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "bandeja escondida sem seleção",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "bandeja com as miniaturas ao lado de Cancelar e Incluir Selecionados",
+   "ok": true,
+   "detalhe": {
+    "visivel": true,
+    "miniaturas": 2,
+    "imagens": true,
+    "contagem": "2",
+    "presa": true,
+    "botoes": true,
+    "mesmaLinha": true
+   }
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "o \"×\" da miniatura desmarca o arquivo",
+   "ok": true,
+   "detalhe": {
+    "miniaturas": 1,
+    "marcados": 1,
+    "destacados": 1
+   }
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "Cancelar limpa a seleção e esconde a bandeja",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "Incluir Selecionados entrega os arquivos marcados a quem abriu o seletor",
+   "ok": true,
+   "detalhe": {
+    "escolhidos": [
+     "asset-version.json",
+     "e2e-req222-1791127366058.png"
+    ],
+    "recebidos": [
+     "asset-version.json",
+     "e2e-req222-1791127366058.png"
+    ]
+   }
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "depois de incluir, a seleção e a bandeja zeram",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "12. galleries/editar e seletor de arquivos",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "13. subscriptions-service-stages e subscriptions-plans",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "13. subscriptions-service-stages e subscriptions-plans",
+   "nome": "cabeçalho numa linha e rótulos sem palavra partida",
+   "ok": true,
+   "detalhe": {
+    "cabecalho": [
+     45,
+     45,
+     45,
+     45,
+     45,
+     45
+    ],
+    "maior": 23,
+    "rolagem": 0
+   }
+  },
+  {
+   "grupo": "13. subscriptions-service-stages e subscriptions-plans",
+   "nome": "plano abre com HTTP 200",
+   "ok": true,
+   "detalhe": "subscriptions-plans/editar/?id=acceleration"
+  },
+  {
+   "grupo": "13. subscriptions-service-stages e subscriptions-plans",
+   "nome": "seis abas do plano com dica",
+   "ok": true,
+   "detalhe": [
+    "Nome, idioma e layout do plano",
+    "Formulário, tipo de serviço e ligação com o gateway",
+    "Pagamentos do plano e perfil criado no cadastro",
+    "Veja o plano como o visitante verá",
+    "Edite o HTML e o CSS do plano",
+    "Código para inserir o plano numa página"
+   ]
+  },
+  {
+   "grupo": "13. subscriptions-service-stages e subscriptions-plans",
+   "nome": "variável do widget numa linha, com Copiar compacto ao lado",
+   "ok": true,
+   "detalhe": {
+    "altura": 32,
+    "largura": 81,
+    "mesmaLinha": true,
+    "campo": 42
+   }
+  },
+  {
+   "grupo": "13. subscriptions-service-stages e subscriptions-plans",
+   "nome": "todos os selects de Preços e Perfil no padrão",
+   "ok": true,
+   "detalhe": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "grupo": "13. subscriptions-service-stages e subscriptions-plans",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "14. product-reviews",
+   "nome": "product-reviews/ HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "14. product-reviews",
+   "nome": "product-reviews/ com título, botões e selects do painel",
+   "ok": true,
+   "detalhe": {
+    "h1": 1,
+    "botoes": [
+     true,
+     true
+    ],
+    "selects": [
+     true,
+     true
+    ],
+    "cru": false,
+    "rolagem": 0
+   }
+  },
+  {
+   "grupo": "14. product-reviews",
+   "nome": "product-reviews/settings/ HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "14. product-reviews",
+   "nome": "product-reviews/settings/ com título, botões e selects do painel",
+   "ok": true,
+   "detalhe": {
+    "h1": 1,
+    "botoes": [
+     true,
+     true
+    ],
+    "selects": [],
+    "cru": false,
+    "rolagem": 0
+   }
+  },
+  {
+   "grupo": "15. coupons/edit",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": "coupons/edit/?id=aff97147"
+  },
+  {
+   "grupo": "15. coupons/edit",
+   "nome": "todos os selects com o controle do painel",
+   "ok": true,
+   "detalhe": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "grupo": "15. coupons/edit",
+   "nome": "rótulo do checkbox com cursor de clique",
+   "ok": true,
+   "detalhe": [
+    "pointer",
+    "pointer"
+   ]
+  },
+  {
+   "grupo": "15. coupons/edit",
+   "nome": "\"Onde vale\" com busca na lista",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "15. coupons/edit",
+   "nome": "escolha vira ficha removível",
+   "ok": true,
+   "detalhe": {
+    "fichas": 1,
+    "marcadosAntes": 0
+   }
+  },
+  {
+   "grupo": "15. coupons/edit",
+   "nome": "o \"×\" da ficha tira o item",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "15. coupons/edit",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "16. gateways-pagamentos/editar",
+   "nome": "padrão ativo em âmbar com estrela cheia (gateways-pagamentos/editar/?id=stripe-sandbox)",
+   "ok": true,
+   "detalhe": {
+    "destaque": true,
+    "fundo": "rgb(245, 158, 11)",
+    "cor": "rgb(255, 255, 255)",
+    "cheia": "rgb(255, 255, 255)",
+    "dica": "Este gateway já é o padrão do sistema",
+    "rotulo": "Gateway padrão",
+    "aviso": true,
+    "folga": 16
+   }
+  },
+  {
+   "grupo": "16. gateways-pagamentos/editar",
+   "nome": "aviso \"Gateway padrão\" com respiro em cima",
+   "ok": true,
+   "detalhe": 16
+  },
+  {
+   "grupo": "16. gateways-pagamentos/editar",
+   "nome": "pelo menos um gateway padrão conferido",
+   "ok": true,
+   "detalhe": {
+    "padrao": 1,
+    "comum": 0,
+    "rotas": 1
+   }
+  },
+  {
+   "grupo": "17. analytics-manager",
+   "nome": "HTTP 200",
+   "ok": true,
+   "detalhe": ""
+  },
+  {
+   "grupo": "17. analytics-manager",
+   "nome": "botões no padrão, com dica nas ações de pipeline",
+   "ok": true,
+   "detalhe": {
+    "botoes": 13,
+    "padrao": true,
+    "dicas": true,
+    "cartoes": [
+     [
+      "12px",
+      "24px",
+      "rgb(255, 255, 255)"
+     ],
+     [
+      "12px",
+      "24px",
+      "rgb(255, 255, 255)"
+     ],
+     [
+      "12px",
+      "24px",
+      "rgb(255, 255, 255)"
+     ]
+    ],
+    "selects": true,
+    "cru": false
+   }
+  },
+  {
+   "grupo": "17. analytics-manager",
+   "nome": "cartões brancos (raio 12 px, padding 24 px) e selects padronizados",
+   "ok": true,
+   "detalhe": [
+    [
+     "12px",
+     "24px",
+     "rgb(255, 255, 255)"
+    ],
+    [
+     "12px",
+     "24px",
+     "rgb(255, 255, 255)"
+    ],
+    [
+     "12px",
+     "24px",
+     "rgb(255, 255, 255)"
+    ]
+   ]
+  },
+  {
+   "grupo": "17. analytics-manager",
+   "nome": "tela do pipeline com botões no padrão",
+   "ok": true,
+   "detalhe": {
+    "botoes": 15,
+    "padrao": true,
+    "fora": []
+   }
+  },
+  {
+   "grupo": "17. analytics-manager",
+   "nome": "sem erro de JavaScript",
+   "ok": true,
+   "detalhe": []
+  },
+  {
+   "grupo": "390 px",
+   "nome": "dashboard/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "forms/adicionar/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "forms-search/adicionar/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "galleries/adicionar/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "coupons/add/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "product-reviews/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "analytics-manager/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "subscriptions-config/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "subscriptions-service-stages/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "presentations/adicionar/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  },
+  {
+   "grupo": "390 px",
+   "nome": "gateways-pagamentos/ sem rolagem horizontal",
+   "ok": true,
+   "detalhe": {
+    "status": 200,
+    "sobra": 0
+   }
+  }
+ ]
+}

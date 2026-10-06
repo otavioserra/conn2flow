@@ -555,3 +555,29 @@ body.c2f-arquivos-iframe {
     padding: 16px;
     background: #f8fafc;
 }
+
+/* REQ-242: bandeja do seletor (iframe) — miniaturas do que está marcado, com remoção direta, ao lado de
+   Cancelar e Incluir Selecionados. Fica presa à base do modal enquanto a lista rola. */
+.c2f-pick-tray.hidden { display: none; }
+.c2f-pick-tray:not(.hidden) {
+    position: sticky;
+    bottom: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 8px 12px;
+    border: 1px solid #bae6fd;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .97);
+    box-shadow: 0 -8px 20px -10px rgba(15, 23, 42, .35);
+}
+.c2f-pick-tray-thumbs { display: flex; flex: 1; min-width: 0; gap: 10px; overflow-x: auto; padding: 8px 4px 4px; scrollbar-width: thin; }
+.c2f-pick-thumb { position: relative; flex: none; width: 56px; height: 56px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f1f5f9; }
+.c2f-pick-thumb img { display: block; width: 100%; height: 100%; border-radius: 7px; object-fit: cover; }
+.c2f-pick-thumb-remove { position: absolute; top: -7px; right: -7px; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border: 2px solid #fff; border-radius: 50%; background: #0f172a; color: #fff; font: 700 13px/1 system-ui, sans-serif; cursor: pointer; }
+.c2f-pick-thumb-remove:hover, .c2f-pick-thumb-remove:focus-visible { background: #dc2626; }
+@media (max-width: 520px) {
+    .c2f-pick-tray:not(.hidden) { flex-direction: column; align-items: stretch; }
+}

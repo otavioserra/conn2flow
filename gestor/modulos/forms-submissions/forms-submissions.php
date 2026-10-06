@@ -29,6 +29,16 @@ function forms_submissions_get_status_label($statusId){
 function forms_submissions_visualizar(){
 	global $_GESTOR;
 	$_GESTOR['tailwind-page-bundle'] = true;
+
+	// ===== CodeMirror para a aba de dados em JSON (somente leitura).
+
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	if(function_exists('assets_externos_incluir')){
+		assets_externos_incluir('codemirror');
+	}
+
 	global $_CONFIG;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
@@ -134,6 +144,8 @@ function forms_submissions_visualizar(){
 			}
 		}
 
+		// O JSON vem do visitante e vai para dentro de um <textarea>: escapa o HTML e desarma marcador de variável.
+		$fields_values_pretty = str_replace('@[[', '&#64;[[', htmlspecialchars((string)$fields_values_pretty, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_values#',$fields_values_pretty);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#reply_email#',$replyEmail);
 		

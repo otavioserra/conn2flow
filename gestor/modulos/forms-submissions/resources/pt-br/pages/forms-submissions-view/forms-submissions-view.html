@@ -1,6 +1,6 @@
 <div class="req222-page space-y-4" data-js-id-missing="@[[js-id-missing]]@" data-js-status-error="@[[js-status-error]]@" data-js-communication-error="@[[js-communication-error]]@" data-js-email-missing="@[[js-email-missing]]@" data-js-reply-confirm="@[[js-reply-confirm]]@" data-js-reply-error="@[[js-reply-error]]@" data-js-reply-sent="@[[js-reply-sent]]@" data-not-applicable-label="@[[not-applicable-label]]@">
 <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-<div class="c2fc-abas" data-c2f-abas><div class="c2fc-abas-lista"><button type="button" class="c2fc-aba" data-c2f-aba="submission-data"><i data-lucide="list" class="size-4"></i>@[[ui-tab-data]]@</button><button type="button" class="c2fc-aba" data-c2f-aba="submission-replies"><i data-lucide="reply" class="size-4"></i>@[[ui-tab-replies]]@</button><button type="button" class="c2fc-aba" data-c2f-aba="submission-json"><i data-lucide="code" class="size-4"></i>@[[ui-tab-json]]@</button></div>
+<div class="c2fc-abas" data-c2f-abas><div class="c2fc-abas-lista"><button type="button" class="c2fc-aba" data-c2f-aba="submission-data" data-c2f-dica="@[[ui-tab-data-tip]]@" data-c2f-dica-pos="top left"><i data-lucide="list" class="size-4"></i>@[[ui-tab-data]]@</button><button type="button" class="c2fc-aba" data-c2f-aba="submission-replies" data-c2f-dica="@[[ui-tab-replies-tip]]@" data-c2f-dica-pos="top left"><i data-lucide="reply" class="size-4"></i>@[[ui-tab-replies]]@</button><button type="button" class="c2fc-aba" data-c2f-aba="submission-json" data-c2f-dica="@[[ui-tab-json-tip]]@" data-c2f-dica-pos="top left"><i data-lucide="braces" class="size-4"></i>@[[ui-tab-json]]@</button></div>
 <div data-c2f-painel="submission-data"><!-- ===== Informações Básicas ===== -->
 <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 definition table">
     <thead>
@@ -33,12 +33,12 @@
             <td class="border-b border-slate-200 px-3 py-2 align-top">
                 <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                     #form_status_badge#
-                    <select id="form-status-select" class="c2fc-campo-selecao dropdown" style="min-width: 160px;">
+                    <select id="form-status-select" class="c2fc-campo-selecao forms-submissions-status" aria-label="@[[ui-status-label]]@">
                         <!-- status_option < -->
                         <option value="#status_id#" #status_selected#>#status_name#</option>
                         <!-- status_option > -->
                     </select>
-                    <button id="btn-save-status" class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno mini blue labeled icon button">
+                    <button type="button" id="btn-save-status" class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno" data-c2f-dica="@[[ui-status-save-tip]]@">
                         <i data-lucide="save" class="inline-block size-4 shrink-0 align-middle"></i> Salvar
                     </button>
                 </div>
@@ -106,7 +106,7 @@
             <label class="c2fc-campo-rotulo">Mensagem</label>
             <textarea class="c2fc-campo-entrada" id="reply-message" rows="8" placeholder="Digite sua resposta aqui..."></textarea>
         </div>
-        <button id="btn-send-reply" class="c2fc-botao c2fc-botao-primario blue labeled icon button">
+        <button type="button" id="btn-send-reply" class="c2fc-botao c2fc-botao-primario" data-c2f-dica="@[[ui-reply-send-tip]]@" data-c2f-dica-pos="top left">
             <i data-lucide="send" class="inline-block size-4 shrink-0 align-middle"></i> Enviar Resposta
         </button>
     </div>
@@ -114,15 +114,11 @@
 <!-- reply_section > -->
 
 </div>
-<div data-c2f-painel="submission-json" hidden><!-- ===== Dados JSON Brutos ===== -->
-<div class="styled fluid accordion">
-    <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
-        <i data-lucide="chevron-down" class="inline-block size-4 shrink-0 align-middle"></i>
-        <i data-lucide="code" class="inline-block size-4 shrink-0 align-middle"></i> Dados JSON Brutos
-    </summary>
-    <div class="content">
-        <div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment"><textarea class="c2fc-campo-entrada codemirror-json">#fields_values#</textarea></div>
-    </div></details>
+<div data-c2f-painel="submission-json" hidden>
+<div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+    <p class="inline-flex items-center gap-2 text-sm font-semibold text-slate-800"><i data-lucide="braces" class="size-4 shrink-0"></i>@[[ui-json-title]]@</p>
+    <button type="button" id="btn-copy-submission-json" class="c2fc-botao c2fc-botao-compacto" data-c2f-dica="@[[ui-json-copy-tip]]@" data-c2f-dica-pos="top right" data-copied="@[[ui-json-copied]]@"><i data-lucide="copy" class="size-4 shrink-0"></i>@[[ui-json-copy]]@</button>
 </div>
+<div class="forms-submissions-json overflow-hidden rounded-lg border border-slate-200 bg-slate-50"><textarea class="codemirror-json" readonly spellcheck="false" aria-label="@[[ui-json-title]]@">#fields_values#</textarea></div>
 </div>
 </div></div></div>

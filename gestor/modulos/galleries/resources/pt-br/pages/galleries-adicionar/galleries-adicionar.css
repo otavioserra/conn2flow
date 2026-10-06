@@ -25,4 +25,3 @@
 .req222-page #forms-fields-table, .req222-page #forms-search-fields-table { min-width: 850px; }
 .req222-page .tab:not(.active) { display: none; }
 .req222-page .tab.active { display: block; }
-.req222-page .c2fc-aba.active { color: #0369a1; background: #e0f2fe; }

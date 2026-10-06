@@ -85,6 +85,21 @@ function adminArquivosPayloadPicker(item) {
 	};
 }
 
+// req-242: miniaturas da bandeja do seletor. Só arquivos entram (pasta não é despachada); cada uma leva
+// o caminho no botão de remover, que desmarca o item sem fechar o seletor.
+function adminArquivosBandejaHtml(arquivos, rotuloRemover) {
+	var html = '';
+	(arquivos || []).forEach(function (a) {
+		if (!a || !a.caminho) return;
+		var nome = adminArquivosEsc(a.nome || a.caminho);
+		html += '<div class="c2f-pick-thumb" role="listitem" title="' + nome + '">' +
+			'<img src="' + adminArquivosEsc(a.imgSrc || '') + '" alt="' + nome + '" loading="lazy">' +
+			'<button type="button" class="c2f-pick-thumb-remove" data-caminho="' + adminArquivosEsc(a.caminho) + '" aria-label="' + adminArquivosEsc(rotuloRemover || '') + ': ' + nome + '">&times;</button>' +
+			'</div>';
+	});
+	return html;
+}
+
 // Exposição para testes (Node) sem quebrar o browser.
 if (typeof module !== 'undefined' && module.exports) {
 	module.exports = {
@@ -95,7 +110,8 @@ if (typeof module !== 'undefined' && module.exports) {
 		adminArquivosTipoPorNome: adminArquivosTipoPorNome,
 		adminArquivosArquivosSelecionados: adminArquivosArquivosSelecionados,
 		adminArquivosPickVisivel: adminArquivosPickVisivel,
-		adminArquivosPayloadPicker: adminArquivosPayloadPicker
+		adminArquivosPayloadPicker: adminArquivosPayloadPicker,
+		adminArquivosBandejaHtml: adminArquivosBandejaHtml
 	};
 }
 
@@ -106,6 +122,11 @@ $(document).ready(function () {
 	var cfg = gestor.adminArquivos;
 	// req-240: no seletor (iframe) o corpo ganha a margem do gerenciador; o layout de iframe não a traz.
 	if (cfg.paginaIframe && document.body) document.body.classList.add('c2f-arquivos-iframe');
+	// req-242: aberto para escolher várias imagens, o título diz o que fazer.
+	var tituloSeletor = document.getElementById('c2f-files-title');
+	if (cfg.selecaoMultipla && tituloSeletor && tituloSeletor.getAttribute('data-title-multiple')) {
+		tituloSeletor.textContent = tituloSeletor.getAttribute('data-title-multiple');
+	}
 	var i18n = cfg.i18n || {};
 	var t = function (id) { return typeof i18n[id] !== 'undefined' ? i18n[id] : id; };
 	var iconePadrao = {
@@ -145,7 +166,7 @@ $(document).ready(function () {
 		// Mantém o href do botão "Adicionar" apontando para a pasta atual.
 		function atualizarAddHref() {
 			var href = gestor.raiz + gestor.moduloId + '/adicionar/?dir=' + encodeURIComponent(estado.dir);
-			if (cfg.paginaIframe) href += '&paginaIframe=sim';
+			if (cfg.paginaIframe) href += '&paginaIframe=sim' + (cfg.selecaoMultipla ? '&multiplo=sim' : '');
 			$('.c2f-folder-tools a[data-id="adicionar"]').attr('href', href);
 		}
 
@@ -240,8 +261,8 @@ $(document).ready(function () {
 				'    <div class="c2f-sub c2f-col-size">—</div>' +
 				'  </div>' +
 				'  <div class="c2f-actions">' +
-				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i></button>' +
-				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i></button>' +
+				'    <button class="rounded-lg border bg-white p-1.5 c2f-rename text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 border-slate-300" title="' + adminArquivosEsc(t('folder-rename')) + '"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i></button>' +
+				'    <button class="rounded-lg border bg-white p-1.5 text-rose-700 c2f-del text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 border-slate-300" title="' + adminArquivosEsc(t('list-button-del')) + '"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -250,8 +271,8 @@ $(document).ready(function () {
 			var cam = adminArquivosEsc(a.caminho);
 			var img = a.imgSrc || iconePadrao[a.tipo] || iconePadrao.file;
 			var acaoSelecionar = cfg.paginaIframe
-				? '<button class="rounded border bg-white p-1 text-sky-700 c2f-select" title="' + adminArquivosEsc(t('list-button-select')) + '"><i data-lucide="check" class="size-4" aria-hidden="true"></i></button>'
-				: '<button class="rounded border bg-white p-1 c2f-copy" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i data-lucide="link" class="size-4" aria-hidden="true"></i></button>';
+				? '<button class="rounded-lg border bg-white p-1.5 text-sky-700 c2f-select text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 border-slate-300" title="' + adminArquivosEsc(t('list-button-select')) + '"><i data-lucide="check" class="size-4" aria-hidden="true"></i></button>'
+				: '<button class="rounded-lg border bg-white p-1.5 c2f-copy text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 border-slate-300" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i data-lucide="link" class="size-4" aria-hidden="true"></i></button>';
 			return '' +
 				'<div class="c2f-item c2f-file" data-tipo="arquivo" data-caminho="' + cam + '" data-nome="' + adminArquivosEsc(a.nome) + '"' +
 				'     data-url="' + adminArquivosEsc(a.url) + '" data-mime="' + adminArquivosEsc(a.mime) + '" data-tipoarq="' + adminArquivosEsc(a.tipo) + '">' +
@@ -265,8 +286,8 @@ $(document).ready(function () {
 				'  </div>' +
 				'  <div class="c2f-actions">' +
 				acaoSelecionar +
-				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i></button>' +
-				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i></button>' +
+				'    <button class="rounded-lg border bg-white p-1.5 c2f-rename text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 border-slate-300" title="' + adminArquivosEsc(t('folder-rename')) + '"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i></button>' +
+				'    <button class="rounded-lg border bg-white p-1.5 text-rose-700 c2f-del text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 border-slate-300" title="' + adminArquivosEsc(t('list-button-del')) + '"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -459,22 +480,22 @@ $(document).ready(function () {
 			// copiar URL, além de renomear e excluir.
 			var acoes = '';
 			if (cfg.paginaIframe) {
-				acoes += '<button class="rounded bg-sky-700 px-3 py-2 text-white c2f-gal-select"><i data-lucide="check" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
+				acoes += '<button class="rounded-lg bg-sky-700 px-3 py-2 text-white c2f-gal-select text-sm font-medium shadow-sm transition-colors hover:bg-sky-800"><i data-lucide="check" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
 			} else {
-				acoes += '<button class="rounded border px-3 py-2 c2f-gal-copy"><i data-lucide="link" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
+				acoes += '<button class="rounded-lg border px-3 py-2 c2f-gal-copy text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100"><i data-lucide="link" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
 			}
-			acoes += '<a class="rounded border px-3 py-2 c2f-gal-open" target="_blank" rel="noopener"><i data-lucide="external-link" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('open-new-tab')) + '</a>';
-			acoes += '<button class="rounded border px-3 py-2 c2f-gal-rename"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
-			acoes += '<button class="rounded bg-rose-700 px-3 py-2 text-white c2f-gal-del"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
+			acoes += '<a class="rounded-lg border px-3 py-2 c2f-gal-open text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" target="_blank" rel="noopener"><i data-lucide="external-link" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('open-new-tab')) + '</a>';
+			acoes += '<button class="rounded-lg border px-3 py-2 c2f-gal-rename text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100"><i data-lucide="pencil" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
+			acoes += '<button class="rounded-lg bg-rose-700 px-3 py-2 text-white c2f-gal-del text-sm font-medium shadow-sm transition-colors hover:bg-rose-800"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
 
 			var html =
 				'<dialog class="c2f-gallery-modal" id="c2f-gallery-modal">' +
 				'  <button type="button" class="c2f-gallery-close" aria-label="' + adminArquivosEsc(window.c2fControles.texto('fechar')) + '">×</button>' +
 				'  <div class="c2f-gallery-header"><span class="c2f-gallery-name"></span> <span class="c2f-gallery-counter"></span></div>' +
 				'  <div class="content c2f-gallery-content">' +
-				'    <button class="rounded border p-2 c2f-gallery-prev" aria-label="Previous"><i data-lucide="chevron-left" class="size-5" aria-hidden="true"></i></button>' +
+				'    <button class="rounded-lg border p-2 c2f-gallery-prev text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" aria-label="Previous"><i data-lucide="chevron-left" class="size-5" aria-hidden="true"></i></button>' +
 				'    <div class="c2f-gallery-stage"><img class="c2f-gallery-img" src=""></div>' +
-				'    <button class="rounded border p-2 c2f-gallery-next" aria-label="Next"><i data-lucide="chevron-right" class="size-5" aria-hidden="true"></i></button>' +
+				'    <button class="rounded-lg border p-2 c2f-gallery-next text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" aria-label="Next"><i data-lucide="chevron-right" class="size-5" aria-hidden="true"></i></button>' +
 				'  </div>' +
 				'  <div class="c2f-gallery-strip"></div>' +
 				'  <div class="c2f-gallery-actions">' + acoes + '</div>' +
@@ -689,7 +710,30 @@ $(document).ready(function () {
 			$('#c2f-selection-count').text(n);
 			$('#c2f-selection-bar').toggleClass('hidden', n === 0);
 			$('#c2f-pick-selected').toggleClass('hidden', !adminArquivosPickVisivel(cfg.paginaIframe, arquivosSelecionados()));
+			atualizarBandeja();
 		}
+
+		// req-242: bandeja do seletor com as miniaturas do que está marcado.
+		function atualizarBandeja() {
+			var bandeja = document.getElementById('c2f-pick-tray');
+			if (!bandeja) return;
+			var arquivos = arquivosSelecionados();
+			var visivel = adminArquivosPickVisivel(cfg.paginaIframe, arquivos);
+			bandeja.classList.toggle('hidden', !visivel);
+			document.getElementById('c2f-pick-tray-count').textContent = arquivos.length;
+			document.getElementById('c2f-pick-tray-thumbs').innerHTML = visivel ? adminArquivosBandejaHtml(arquivos, bandeja.getAttribute('data-remove-label') || t('picker-tray-remove')) : '';
+		}
+
+		$('#c2f-pick-tray').on('click', '.c2f-pick-thumb-remove', function () {
+			var cam = this.getAttribute('data-caminho');
+			var $caixa = $lista.find('.c2f-item').filter(function () { return this.getAttribute('data-caminho') === cam; }).find('.c2f-sel');
+			if ($caixa.length) { $caixa.prop('checked', false).trigger('change'); return; }
+			// item fora da lista atual (busca ou filtro mudou): sai só do estado
+			delete estado.selecionados[cam];
+			atualizarBarraSelecao();
+		});
+		$('#c2f-pick-tray-confirm').on('click', function () { $('#c2f-pick-selected').trigger('click'); });
+		$('#c2f-pick-tray-cancel').on('click', function () { limparSelecao(); });
 
 		// Zera a seleção no estado E no DOM (itens e "selecionar todos"), para que o próximo lote comece limpo.
 		function limparSelecao() {

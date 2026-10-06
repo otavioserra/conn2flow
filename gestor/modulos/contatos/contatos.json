@@ -61,22 +61,23 @@
                     "name": "Base E-mail",
                     "id": "base-email",
                     "framework_css": "tailwindcss",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
                         "html": "6b607bac08f7fd2a232bdb7666549c91",
-                        "css": "264aa703cd8ab87718946d4459f30d4a",
+                        "css": "aa04d41d7f0be2cebd6ed5afb5e69380",
                         "css_precompiled": "",
-                        "combined": "5e752bad7892e224bdb1c5e1e35d460d"
+                        "combined": "5cc3260df8294ad97b7cb307528442fd"
                     }
                 },
                 {
                     "name": "E-mail Preparado",
                     "id": "prepared-email",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "f17a5684a66dc1fe6d82ad1049283e1f",
+                        "html": "2e3bb50c8268ba56d6de8e793d4f1062",
                         "css": "",
-                        "combined": "f17a5684a66dc1fe6d82ad1049283e1f"
+                        "css_precompiled": "",
+                        "combined": "2e3bb50c8268ba56d6de8e793d4f1062"
                     }
                 }
             ],
@@ -89,11 +90,12 @@
                     "type": "system",
                     "option": "contact",
                     "without_permission": true,
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "90f095ea0065138df436d299f86b7d7e",
+                        "html": "8111f9a18d1b11bd907a67ae36bd47bd",
                         "css": "",
-                        "combined": "90f095ea0065138df436d299f86b7d7e"
+                        "css_precompiled": "",
+                        "combined": "8111f9a18d1b11bd907a67ae36bd47bd"
                     }
                 },
                 {
@@ -105,11 +107,12 @@
                     "option": "contact-success",
                     "html_extra_head": "<meta name=\"robots\" content=\"noindex\">",
                     "without_permission": true,
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "a73b4f70c6d3b68ad93481f98d554d93",
+                        "html": "779622bcaf3594ccf55e77bc81fad401",
                         "css": "",
-                        "combined": "a73b4f70c6d3b68ad93481f98d554d93"
+                        "css_precompiled": "",
+                        "combined": "779622bcaf3594ccf55e77bc81fad401"
                     }
                 }
             ]
@@ -160,11 +163,12 @@
                 {
                     "name": "Prepared Email",
                     "id": "prepared-email",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "3197956958cb961e35a725634595df45",
+                        "html": "937ef941f288914198b923d8f94dc8d5",
                         "css": "",
-                        "combined": "3197956958cb961e35a725634595df45"
+                        "css_precompiled": "",
+                        "combined": "937ef941f288914198b923d8f94dc8d5"
                     }
                 }
             ],
@@ -177,11 +181,12 @@
                     "type": "system",
                     "option": "contact",
                     "without_permission": true,
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "635c2d742d3daf349658f401c37c73f5",
+                        "html": "a9a980b4094615100b2231383db499a1",
                         "css": "",
-                        "combined": "635c2d742d3daf349658f401c37c73f5"
+                        "css_precompiled": "",
+                        "combined": "a9a980b4094615100b2231383db499a1"
                     }
                 },
                 {
@@ -193,11 +198,12 @@
                     "option": "contact-success",
                     "html_extra_head": "<meta name=\"robots\" content=\"noindex\">",
                     "without_permission": true,
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "3a0212a663066e31acdb00e4b55650fa",
+                        "html": "888b786da6de6d241b83fbafa3550d29",
                         "css": "",
-                        "combined": "3a0212a663066e31acdb00e4b55650fa"
+                        "css_precompiled": "",
+                        "combined": "888b786da6de6d241b83fbafa3550d29"
                     }
                 }
             ]

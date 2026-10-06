@@ -171,7 +171,7 @@
                     "name": "Páginas Índice - Listar",
                     "id": "pages-index",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/",
+                    "path": "pages-index/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -226,15 +226,15 @@
                     "name": "Páginas Índice - Adicionar",
                     "id": "pages-index-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/adicionar\/",
+                    "path": "pages-index/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "6f2de9cc7338976e10ae8d9f1adf910b",
-                        "css": "8845ceddcf5692dad90ad872e76763b4",
+                        "html": "ecab8b9281694af7c93660fda243a3ed",
+                        "css": "f1663baa90072c47d7aa1b3575528e3f",
                         "css_precompiled": "",
-                        "combined": "b11f07772b88d1b19e20efc73b31af69"
+                        "combined": "fb9813f11ea9d9b3d9d0c33abe67e6fe"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -332,7 +332,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/pages-index.php"
+                        "../../../../pages-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -340,15 +340,15 @@
                     "name": "Páginas Índice - Editar",
                     "id": "pages-index-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/editar\/",
+                    "path": "pages-index/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "74247d6f6878e1a05ef9aa41b9cd168c",
-                        "css": "8845ceddcf5692dad90ad872e76763b4",
+                        "html": "d34808d942423f1b7d8e14e00343da03",
+                        "css": "f1663baa90072c47d7aa1b3575528e3f",
                         "css_precompiled": "",
-                        "combined": "69235dd7b638b19824e222953c22478f"
+                        "combined": "66b1f407605d603a97c8a0d2745adcbc"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -446,7 +446,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/pages-index.php"
+                        "../../../../pages-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -454,15 +454,15 @@
                     "name": "Páginas Índice - Clonar",
                     "id": "pages-index-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/clonar\/",
+                    "path": "pages-index/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "6e4164a1fbc7c1450ace7a1e9560fd66",
-                        "css": "8845ceddcf5692dad90ad872e76763b4",
+                        "html": "2c88ea399587a67a3769ff7004a6c220",
+                        "css": "f1663baa90072c47d7aa1b3575528e3f",
                         "css_precompiled": "",
-                        "combined": "2c572ef28d048ca35da6276e70370303"
+                        "combined": "c22c9ca9640a76098922177cb0f71c10"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -560,7 +560,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/pages-index.php"
+                        "../../../../pages-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -568,7 +568,7 @@
                     "name": "Busca de Páginas",
                     "id": "pages-index-search",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "pages-index-search\/",
+                    "path": "pages-index-search/",
                     "type": "pagina",
                     "without_permission": 1,
                     "framework_css": "tailwindcss",
@@ -775,7 +775,7 @@
                     "name": "Pages Index - List",
                     "id": "pages-index",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/",
+                    "path": "pages-index/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -830,15 +830,15 @@
                     "name": "Pages Index - Add",
                     "id": "pages-index-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/adicionar\/",
+                    "path": "pages-index/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "fd2aaf5453fb4520fcc7cfa085efeb49",
-                        "css": "8845ceddcf5692dad90ad872e76763b4",
+                        "html": "14fe32da877341c7bd3dc459ab491d95",
+                        "css": "f1663baa90072c47d7aa1b3575528e3f",
                         "css_precompiled": "",
-                        "combined": "489380c71691733609aebcb7ad284ca6"
+                        "combined": "4d029d5d72bc56416c901eb448f6b719"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -936,7 +936,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/pages-index.php"
+                        "../../../../pages-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -944,15 +944,15 @@
                     "name": "Pages Index - Edit",
                     "id": "pages-index-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/editar\/",
+                    "path": "pages-index/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "0493608ce99883962ce79369843a09ca",
-                        "css": "8845ceddcf5692dad90ad872e76763b4",
+                        "html": "9c11ae6b6c2c8d23b49bec401fff6f6f",
+                        "css": "f1663baa90072c47d7aa1b3575528e3f",
                         "css_precompiled": "",
-                        "combined": "c5900e788b5588722ce3f013dc239b2c"
+                        "combined": "449221d97ca1da68537f86924738d46d"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1050,7 +1050,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/pages-index.php"
+                        "../../../../pages-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -1058,15 +1058,15 @@
                     "name": "Pages Index - Clone",
                     "id": "pages-index-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "pages-index\/clonar\/",
+                    "path": "pages-index/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "08da5b0bdb1af6a423060cb14ca87a12",
-                        "css": "8845ceddcf5692dad90ad872e76763b4",
+                        "html": "8782151468acf7195d776c85ea9b23ff",
+                        "css": "f1663baa90072c47d7aa1b3575528e3f",
                         "css_precompiled": "",
-                        "combined": "2625d28d4622ef2791c3f1e04848fced"
+                        "combined": "0f36cedf074369adc65ba2bfb1577b87"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1164,7 +1164,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/pages-index.php"
+                        "../../../../pages-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -1172,7 +1172,7 @@
                     "name": "Page Search",
                     "id": "pages-index-search",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "pages-index-search\/",
+                    "path": "pages-index-search/",
                     "type": "pagina",
                     "without_permission": 1,
                     "framework_css": "tailwindcss",
@@ -1249,5 +1249,5 @@
             ]
         }
     },
-    "asset_version": "8eae89dddd9869d0"
+    "asset_version": "b9a7890f1ecfc8e6"
 }

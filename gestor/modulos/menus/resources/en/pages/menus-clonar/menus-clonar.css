@@ -24,7 +24,6 @@
 .req222-page #forms-fields-table, .req222-page #forms-search-fields-table { min-width: 850px; }
 .req222-page .tab:not(.active) { display: none; }
 .req222-page .tab.active { display: block; }
-.req222-page .c2fc-aba.active { color: #0369a1; background: #e0f2fe; }
 
 .req222-page .menu-panel { border: 1px solid #e2e8f0; border-radius: 12px; background: white; padding: 16px; margin: 16px 0; min-width: 0; }
 .req222-page .menu-panel-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin: 16px 0; }

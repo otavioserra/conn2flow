@@ -27,8 +27,8 @@
 
 <div class="forms-search-main-tabs">
 <div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuForms">
-    <a class="c2fc-aba active item" data-tab="forms-search-general"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> General</a>
-    <a class="c2fc-aba item" data-tab="forms-search-fields"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Extra Fields</a>
+    <a class="c2fc-aba active item" data-tab="forms-search-general" data-c2f-dica="Main form settings" data-c2f-dica-pos="top left"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> General</a>
+    <a class="c2fc-aba item" data-tab="forms-search-fields" data-c2f-dica="Extra filters, besides the search field" data-c2f-dica-pos="top left"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Extra Fields</a>
 </div>
 
 <div class="c2fc-painel-aba min-w-0 bottom attached active tab segment" data-tab="forms-search-general">
@@ -40,7 +40,7 @@
 
 <div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-search-fields">
     <div class="c2fc-alerta c2fc-alerta-info my-4 info message">The required <code>search</code> field is included automatically. Add only optional filters here.</div>
-    <button type="button" class="c2fc-botao c2fc-botao-primario primary button" id="btn-add-form-field"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Field</button>
+    <button type="button" class="c2fc-botao c2fc-botao-primario primary button" id="btn-add-form-field" data-c2f-dica="Add a field" data-c2f-dica-pos="top left"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Field</button>
     <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" id="forms-search-fields-table">
         <thead><tr><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:40px;"></th><th class="border-b border-slate-200 px-3 py-2 align-top">Label</th><th class="border-b border-slate-200 px-3 py-2 align-top">Name</th><th class="border-b border-slate-200 px-3 py-2 align-top">Type</th><th class="border-b border-slate-200 px-3 py-2 align-top">Placeholder</th><th class="border-b border-slate-200 px-3 py-2 align-top">Options</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:90px;">Required</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:60px;"></th></tr></thead>
         <tbody></tbody>
@@ -53,12 +53,12 @@
 <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Template</label><select data-c2f-select id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown" name="template_id"><option value="">#template_placeholder_option#</option>#template_id_options#</select></div>
 
 <div class="forms-search-content-tabs">
-<div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuConteudoForm"><a class="c2fc-aba active item" data-tab="forms-search-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a><a class="c2fc-aba item" data-tab="forms-search-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML Editor</a><a class="c2fc-aba item" data-tab="forms-search-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget Code</a></div>
+<div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuConteudoForm"><a class="c2fc-aba active item" data-tab="forms-search-preview" data-c2f-dica="See the form as visitors will" data-c2f-dica-pos="top left"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a><a class="c2fc-aba item" data-tab="forms-search-editor" data-c2f-dica="Edit the form HTML and CSS" data-c2f-dica-pos="top left"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML Editor</a><a class="c2fc-aba item" data-tab="forms-search-widget" data-c2f-dica="Code to place the form on a page" data-c2f-dica-pos="top left"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget Code</a></div>
 <div class="c2fc-painel-aba min-w-0 bottom attached active tab segment" data-tab="forms-search-preview"><div style="position:relative;"><iframe id="iframe-forms-search-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="c2fc-cobertura ui dimmer forms-search-preview-dimmer"><div class="c2fc-giro loader"></div></div></div></div>
 <div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-search-editor">
     #html-editor#
 </div>
-<div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-search-widget"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Widget Variable</label><div class="flex items-center gap-2 min-w-0 action input"><input class="c2fc-campo-entrada" type="text" id="forms-search-widget-val" readonly><button type="button" id="btn-copy-forms-search-widget-val" class="c2fc-botao c2fc-botao-primario teal button"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copy</button></div></div><h4 class="text-lg font-semibold text-slate-800 my-4 header">HTML Code</h4><div style="border:1px solid #ccc;"><textarea class="c2fc-campo-entrada" id="forms-search-widget-code"></textarea></div></div>
+<div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-search-widget"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Widget Variable</label><div class="flex items-center gap-2 min-w-0 action input"><input class="c2fc-campo-entrada min-w-0 flex-1" type="text" id="forms-search-widget-val" readonly><button type="button" id="btn-copy-forms-search-widget-val" class="c2fc-botao c2fc-botao-primario teal button c2fc-botao-compacto" data-c2f-dica="Copy the widget variable" data-c2f-dica-pos="top right"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copy</button></div></div><h4 class="text-lg font-semibold text-slate-800 my-4 header">HTML Code</h4><div style="border:1px solid #ccc;"><textarea class="c2fc-campo-entrada" id="forms-search-widget-code"></textarea></div></div>
 </div>
 
 </div>

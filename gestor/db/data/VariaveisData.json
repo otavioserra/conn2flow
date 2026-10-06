@@ -3656,6 +3656,42 @@
     {
         "language": "pt-br",
         "modulo": "admin-arquivos",
+        "id": "picker-title-multiple",
+        "valor": "Selecione uma ou mais imagens abaixo...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-label",
+        "valor": "Arquivos selecionados",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-remove",
+        "valor": "Remover da seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
         "id": "select-all",
         "valor": "Selecionar Todos",
         "tipo": "string",
@@ -4495,6 +4531,42 @@
         "modulo": "admin-arquivos",
         "id": "pick-selected",
         "valor": "Add Selected",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "picker-title-multiple",
+        "valor": "Select one or more images below...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-label",
+        "valor": "Selected files",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-remove",
+        "valor": "Remove from selection",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -15942,7 +16014,97 @@
         "language": "pt-br",
         "modulo": "forms-submissions",
         "id": "not-applicable-label",
-        "valor": "NÃ£o se aplica",
+        "valor": "Não se aplica",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-data-tip",
+        "valor": "Informações do envio e campos preenchidos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-replies-tip",
+        "valor": "Histórico e envio de respostas ao contato",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-json-tip",
+        "valor": "Dados do envio em JSON formatado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-status-label",
+        "valor": "Status do contato",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-status-save-tip",
+        "valor": "Gravar o status escolhido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-reply-send-tip",
+        "valor": "Enviar a resposta por e-mail ao contato",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-json-title",
+        "valor": "Dados do envio em JSON",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-json-copy",
+        "valor": "Copiar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-json-copy-tip",
+        "valor": "Copiar o JSON completo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-json-copied",
+        "valor": "JSON copiado.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -16159,6 +16321,96 @@
         "modulo": "forms-submissions",
         "id": "not-applicable-label",
         "valor": "Not applicable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-data-tip",
+        "valor": "Submission details and filled fields",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-replies-tip",
+        "valor": "History and replies to the contact",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-json-tip",
+        "valor": "Submission data as formatted JSON",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-status-label",
+        "valor": "Contact status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-status-save-tip",
+        "valor": "Save the selected status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-reply-send-tip",
+        "valor": "E-mail the reply to the contact",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-json-title",
+        "valor": "Submission data as JSON",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-json-copy",
+        "valor": "Copy",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-json-copy-tip",
+        "valor": "Copy the full JSON",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-json-copied",
+        "valor": "JSON copied.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

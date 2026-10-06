@@ -3,7 +3,7 @@
 Implementação do meio de campo controlado para desacoplar a manipulação indiscriminada de `$_GESTOR` sem quebrar o código procedural existente, servindo como fundação para a futura refatoração OOP da Linha 3.1.
 
 - **Status**: `in-review`
-- **Requisição associada**: [req-229.md](../human-requests/archive/req-229.md)
+- **Requisição associada**: [req-229.md](../../human-requests/archive/req-229.md)
 - **Branch**: `feat/req-229`
 - **Data**: 2026-10-04
 

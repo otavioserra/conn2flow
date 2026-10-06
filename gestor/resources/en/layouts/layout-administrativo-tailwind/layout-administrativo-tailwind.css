@@ -118,3 +118,22 @@ body.c2f-toolbar-ativa #c2f-admin-shell [data-admin-conteudo] {
 /* REQ-238: page headings share size, alignment and module icon dimensions. */
 [data-admin-main] h1 { display: flex; align-items: center; gap: .5rem; font-size: 1.5rem; line-height: 2rem; font-weight: 700; color: #0f172a; }
 [data-admin-main] h1 > svg { width: 1.5rem; height: 1.5rem; flex-shrink: 0; }
+
+/* REQ-242: favoritos e "mais atalhos" sempre ancorados à direita, ao lado do perfil; a ordem dos
+   bundles de cada módulo não decide mais o alinhamento nem o respiro da barra. */
+[data-admin-topbar] > nav { justify-content: flex-end; }
+@media (min-width: 640px) {
+    [data-admin-topbar] { gap: .75rem; padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* REQ-242: tipografia do menu lateral igual em todos os módulos, sem herdar fonte ou tamanho da página.
+   O tema Tailwind de um projeto pode trocar a fonte padrão (o site público usa outra); o painel mantém a dele. */
+body:has(> #c2f-admin-shell), #c2f-admin-shell { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+[data-admin-sidebar] { font-size: .875rem; line-height: 1.25rem; }
+[data-admin-sidebar] [data-menu-item] { font-family: inherit; font-size: .875rem; line-height: 1.25rem; letter-spacing: normal; text-transform: none; }
+[data-admin-sidebar] [data-menu-grupo-titulo] { font-family: inherit; line-height: 1rem; }
+
+/* REQ-242: os avisos invisíveis da barra não ocupam lugar na linha. Sem isto, num módulo cujo bundle não traz
+   `sr-only`, o parágrafo de status virava item do flex e empurrava o perfil 12 px para a esquerda. */
+[data-admin-topbar] > [data-topbar-status] { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+[data-admin-topbar] > [data-topbar-error][hidden] { display: none; }

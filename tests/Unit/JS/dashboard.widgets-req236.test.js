@@ -66,9 +66,13 @@ describe('Dashboard widget instances (req-236)',()=>{
  });
  it('retains pixel heights across reload, limits them and exposes one resize handle per instance',async()=>{
   boot([{id:'menus',height_px:600,instance_id:'one'},{id:'menus',height_px:9999,instance_id:'two'}]);await settle();
-  const cards=document.querySelectorAll('.dashboard-widget-card');expect(cards[0].style.height).toBe('600px');expect(cards[1].style.height).toBe('780px');
+  const cards=document.querySelectorAll('.dashboard-widget-card');expect(cards[0].style.height).toBe('600px');expect(cards[1].style.height).toBe('960px');
   expect(document.querySelectorAll('.dashboard-widget-resize-handle')).toHaveLength(2);
   expect(document.querySelectorAll('iframe')[0].getAttribute('sandbox')).toBe('allow-scripts');
+  // req-242: o isolamento continua igual; só a tela cheia passa a ser permitida, e o mínimo desce a 120 px.
+  expect(document.querySelectorAll('iframe')[0].getAttribute('allow')).toBe('fullscreen');
+  expect(document.querySelectorAll('iframe')[0].hasAttribute('allowfullscreen')).toBe(true);
+  expect(cards[0].style.minHeight).toBe('120px');
  });
  it('announces the edit state through the semantic switch',()=>{
   boot();const button=document.getElementById('dashboard-edit-mode');expect(button.getAttribute('aria-checked')).toBe('false');
