@@ -68,9 +68,12 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
     // ----- Loja: imagem e botão de carrinho (REQ-111)
     if (inicial.widgets.includes('products-index')) {
       const img = await clicar('products-index', () => { const a = [...document.querySelectorAll('a[href^="/store/"]')].find(x => x.offsetParent !== null); if (!a) return null; a.setAttribute('data-roteiro', '1'); return {href: a.getAttribute('href')}; });
-      conferir('loja: imagem do produto abre a página do produto fora', foiParaFora(img), img);
+      // Instalação sem produto cadastrado: a vitrine vem vazia e não há o que clicar.
+      if (img && img.alvo === null) conferir('loja sem produto nesta instalação: caso não exercitado', true);
+      else conferir('loja: imagem do produto abre a página do produto fora', foiParaFora(img), img);
       const carrinho = await clicar('products-index', () => { const b = [...document.querySelectorAll('[data-store-add]')].find(x => x.offsetParent !== null); if (!b) return null; const cartao = b.closest('article, li, tr, [data-product-id]'), a = cartao && cartao.querySelector('a[href]'); b.setAttribute('data-roteiro', '1'); return {href: a ? a.getAttribute('href') : '/cart/', produto: b.getAttribute('data-store-add')}; });
-      conferir('loja: adicionar ao carrinho leva a página de fora à página do produto', foiParaFora(carrinho), carrinho);
+      if (carrinho && carrinho.alvo === null) conferir('loja sem botão de carrinho nesta instalação: caso não exercitado', true);
+      else conferir('loja: adicionar ao carrinho leva a página de fora à página do produto', foiParaFora(carrinho), carrinho);
       await foto('2-loja-carrinho-fora');
     } else conferir('layout sem widget da loja: caso não exercitado', true);
 

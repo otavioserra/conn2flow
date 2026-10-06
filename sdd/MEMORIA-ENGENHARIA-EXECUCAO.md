@@ -224,3 +224,10 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Relato de "ainda não funciona" depois de uma correção**: sondar o HTML real do caso (atributos do link, tipo do elemento, script que trata o clique) antes de mexer; aqui eram três causas diferentes.
 - **Roteiro que supõe um modo ou preferência do usuário do Lab** fixa o estado no começo e devolve no fim: o humano muda o próprio Dashboard entre uma execução e outra.
 - **Teste que compara arquivo-fonte com `\n`** falha em cópia de trabalho CRLF: normalizar a worktree inteira antes de culpar a mudança.
+
+### Instalação da linha 3.1 no Lab (2026-10-06)
+- **`https://v3.1-conn2flow.local:8443/`**, projeto `conn2flow-v31-local`, usuário HestiaCP `u11`. Criada pelo host-manager do site (REQ-112 / BATCH-106 no `conn2flow-site`). Publicar com o core e o site na branch `3.1`; roteiros com `C2F_BASE` apontando para ela e cookie de `auth:cookie --project=conn2flow-v31-local`.
+- **Instalação nova não tem widgets no Dashboard**: `sdd/validation/req248/preparar-area-de-widgets.cjs` monta um de cada tipo que tiver registro.
+- **Domínio `.local` novo no Lab** nasce escutando no IP da máquina; para abrir pelo Windows (`127.0.0.1`) a escuta do nginx do domínio precisa ficar sem IP, como nas contas antigas. Só a porta 8443; a 443 é de outro serviço.
+- **`ssh_public_path` no projeto** quebra a etapa de assets do pipeline em origem Windows (rsync lê `C:/` como remoto): deixar sem, como no `conn2flow-site-local`.
+- **Cache do Tailwind do pipeline é por conteúdo**: trocar de branch numa worktree CRLF e normalizar depois recompila tudo (12 minutos no site). Normalizar para LF antes da primeira publicação da branch; com cache, a publicação leva cerca de 1 minuto.
