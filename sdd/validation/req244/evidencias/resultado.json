@@ -1,0 +1,3345 @@
+[
+  {
+    "name": "Dashboard HTTP 200",
+    "ok": true
+  },
+  {
+    "name": "Preferências de teste salvas",
+    "ok": true
+  },
+  {
+    "name": "Deck tem fundo e tokens de tema",
+    "ok": true,
+    "details": {
+      "deck": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(25, 42, 70)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "block"
+      },
+      "slide": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "flex"
+      },
+      "next": {
+        "color": "rgba(255, 255, 255, 0.6)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "flex"
+      },
+      "details": [
+        {
+          "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "72px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-6xl font-black mb-4",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-3xl md:text-4xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "10px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-5xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "rules": [
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".text-5xl",
+          "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading, var(--text-5xl--line-height)); }"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".text-sm",
+          "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading, var(--text-sm--line-height)); }"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".md\\:text-8xl",
+          "css": ".md\\:text-8xl {\n  @media (width >= 48rem) {\n  font-size: var(--text-8xl); line-height: var(--tw-leading, var(--text-8xl--line-height));\n}\n}"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".md\\:text-base",
+          "css": ".md\\:text-base {\n  @media (width >= 48rem) {\n  font-size: var(--text-base); line-height: var(--tw-leading, var(--text-base--line-height));\n}\n}"
+        },
+        {
+          "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+          "selector": ".text-5xl",
+          "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+        },
+        {
+          "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+          "selector": ".text-sm",
+          "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+        }
+      ],
+      "blue": "rgb(29 170 198)",
+      "width": 1072,
+      "height": 549,
+      "overflow": 0,
+      "count": "1",
+      "icons": 0
+    }
+  },
+  {
+    "name": "Paridade de fundo, cor, fonte e controles",
+    "ok": true,
+    "details": {
+      "actual": {
+        "deck": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(25, 42, 70)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "block"
+        },
+        "slide": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "next": {
+          "color": "rgba(255, 255, 255, 0.6)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "details": [
+          {
+            "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "72px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "700"
+          },
+          {
+            "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "700"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "20px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-6xl font-black mb-4",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "60px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "60px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-3xl md:text-4xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "10px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-5xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "60px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+            "color": "rgb(0, 0, 0)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "20px",
+            "weight": "700"
+          }
+        ],
+        "rules": [
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading, var(--text-5xl--line-height)); }"
+          },
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading, var(--text-sm--line-height)); }"
+          },
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl {\n  @media (width >= 48rem) {\n  font-size: var(--text-8xl); line-height: var(--tw-leading, var(--text-8xl--line-height));\n}\n}"
+          },
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base {\n  @media (width >= 48rem) {\n  font-size: var(--text-base); line-height: var(--tw-leading, var(--text-base--line-height));\n}\n}"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+          }
+        ],
+        "blue": "rgb(29 170 198)",
+        "width": 1072,
+        "height": 549,
+        "overflow": 0,
+        "count": "1",
+        "icons": 0
+      },
+      "expected": {
+        "deck": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(25, 42, 70)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "block"
+        },
+        "slide": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "next": {
+          "color": "rgba(255, 255, 255, 0.6)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "details": [
+          {
+            "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "72px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "700"
+          },
+          {
+            "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "700"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "20px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-6xl font-black mb-4",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "60px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "60px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-3xl md:text-4xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "10px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-5xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "60px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+            "color": "rgb(0, 0, 0)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "20px",
+            "weight": "700"
+          }
+        ],
+        "rules": [
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading,var(--text-5xl--line-height)); }"
+          },
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading,var(--text-sm--line-height)); }"
+          },
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities (min-width: 48rem)",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl { font-size: var(--text-8xl); line-height: var(--tw-leading,var(--text-8xl--line-height)); }"
+          },
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities (min-width: 48rem)",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base { font-size: var(--text-base); line-height: var(--tw-leading,var(--text-base--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading,var(--text-5xl--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading,var(--text-sm--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities",
+            "selector": ".text-sm\\!",
+            "css": ".text-sm\\! { font-size: var(--text-sm) !important; line-height: var(--tw-leading,var(--text-sm--line-height)) !important; }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities (min-width: 48rem)",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl { font-size: var(--text-8xl); line-height: var(--tw-leading,var(--text-8xl--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities (min-width: 48rem)",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base { font-size: var(--text-base); line-height: var(--tw-leading,var(--text-base--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities (min-width: 48rem)",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl { font-size: var(--text-8xl,6rem); line-height: var(--tw-leading,var(--text-8xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities (min-width: 48rem)",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base { font-size: var(--text-base,1rem); line-height: var(--tw-leading,var(--text-base--line-height,calc(1.5 / 1))); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:non utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:non utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+          }
+        ],
+        "blue": "#1daac6",
+        "width": 1072,
+        "height": 549,
+        "overflow": 0,
+        "count": "1",
+        "icons": 0
+      }
+    }
+  },
+  {
+    "name": "Paridade de títulos, gradientes e destaques",
+    "ok": true,
+    "details": {
+      "actual": [
+        {
+          "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "72px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-6xl font-black mb-4",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-3xl md:text-4xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "10px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-5xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "expected": [
+        {
+          "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "72px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-6xl font-black mb-4",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-3xl md:text-4xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "10px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-5xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Navegação avança o slide",
+    "ok": true
+  },
+  {
+    "name": "Pontos selecionam o terceiro slide",
+    "ok": true
+  },
+  {
+    "name": "Seta anterior retorna ao segundo slide",
+    "ok": true
+  },
+  {
+    "name": "Tela cheia permitida",
+    "ok": true
+  },
+  {
+    "name": "Botão ativa tela cheia",
+    "ok": true
+  },
+  {
+    "name": "Botão encerra tela cheia",
+    "ok": true
+  },
+  {
+    "name": "Iframe preenche corpo em 1366",
+    "ok": true,
+    "details": {
+      "body": 549,
+      "frame": 549,
+      "width": 1072,
+      "padding": "0px"
+    }
+  },
+  {
+    "name": "Sem overflow horizontal em 1366",
+    "ok": true,
+    "details": {
+      "deck": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(25, 42, 70)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "block"
+      },
+      "slide": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "flex"
+      },
+      "next": {
+        "color": "rgba(255, 255, 255, 0.6)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "flex"
+      },
+      "details": [
+        {
+          "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "72px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "700"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-6xl font-black mb-4",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-3xl md:text-4xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "10px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-5xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "60px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "rules": [
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".text-5xl",
+          "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading, var(--text-5xl--line-height)); }"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".text-sm",
+          "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading, var(--text-sm--line-height)); }"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".md\\:text-8xl",
+          "css": ".md\\:text-8xl {\n  @media (width >= 48rem) {\n  font-size: var(--text-8xl); line-height: var(--tw-leading, var(--text-8xl--line-height));\n}\n}"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".md\\:text-base",
+          "css": ".md\\:text-base {\n  @media (width >= 48rem) {\n  font-size: var(--text-base); line-height: var(--tw-leading, var(--text-base--line-height));\n}\n}"
+        },
+        {
+          "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+          "selector": ".text-5xl",
+          "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+        },
+        {
+          "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+          "selector": ".text-sm",
+          "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+        }
+      ],
+      "blue": "rgb(29 170 198)",
+      "width": 1072,
+      "height": 549,
+      "overflow": 0,
+      "count": "2",
+      "icons": 0
+    }
+  },
+  {
+    "name": "Iframe preenche corpo em 390",
+    "ok": true,
+    "details": {
+      "body": 549,
+      "frame": 549,
+      "width": 356,
+      "padding": "0px"
+    }
+  },
+  {
+    "name": "Sem overflow horizontal em 390",
+    "ok": true,
+    "details": {
+      "deck": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(25, 42, 70)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "block"
+      },
+      "slide": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "flex"
+      },
+      "next": {
+        "color": "rgba(255, 255, 255, 0.6)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "Inter, sans-serif",
+        "weight": "400",
+        "display": "flex"
+      },
+      "details": [
+        {
+          "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "24px",
+          "weight": "700"
+        },
+        {
+          "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "24px",
+          "weight": "700"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "18px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-6xl font-black mb-4",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "12px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-3xl md:text-4xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "30px",
+          "weight": "900"
+        },
+        {
+          "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "10px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-4xl md:text-5xl font-black text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+          "color": "rgb(29, 170, 198)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "14px",
+          "weight": "700"
+        },
+        {
+          "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "36px",
+          "weight": "900"
+        },
+        {
+          "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+          "color": "rgb(255, 255, 255)",
+          "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "16px",
+          "weight": "400"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+          "color": "rgba(0, 0, 0, 0)",
+          "background": "rgba(0, 0, 0, 0)",
+          "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+          "font": "Inter, sans-serif",
+          "size": "48px",
+          "weight": "900"
+        },
+        {
+          "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(29, 170, 198)",
+          "gradient": "none",
+          "font": "Inter, sans-serif",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "rules": [
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".text-5xl",
+          "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading, var(--text-5xl--line-height)); }"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".text-sm",
+          "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading, var(--text-sm--line-height)); }"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".md\\:text-8xl",
+          "css": ".md\\:text-8xl {\n  @media (width >= 48rem) {\n  font-size: var(--text-8xl); line-height: var(--tw-leading, var(--text-8xl--line-height));\n}\n}"
+        },
+        {
+          "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+          "selector": ".md\\:text-base",
+          "css": ".md\\:text-base {\n  @media (width >= 48rem) {\n  font-size: var(--text-base); line-height: var(--tw-leading, var(--text-base--line-height));\n}\n}"
+        },
+        {
+          "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+          "selector": ".text-5xl",
+          "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+        },
+        {
+          "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+          "selector": ".text-sm",
+          "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+        }
+      ],
+      "blue": "rgb(29 170 198)",
+      "width": 356,
+      "height": 549,
+      "overflow": 0,
+      "count": "2",
+      "icons": 0
+    }
+  },
+  {
+    "name": "Paridade de estilos em 390 px",
+    "ok": true,
+    "details": {
+      "actual": {
+        "deck": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(25, 42, 70)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "block"
+        },
+        "slide": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "next": {
+          "color": "rgba(255, 255, 255, 0.6)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "details": [
+          {
+            "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "24px",
+            "weight": "700"
+          },
+          {
+            "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "24px",
+            "weight": "700"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "18px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-6xl font-black mb-4",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "12px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-3xl md:text-4xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "900"
+          },
+          {
+            "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "10px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-5xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+            "color": "rgb(0, 0, 0)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "20px",
+            "weight": "700"
+          }
+        ],
+        "rules": [
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading, var(--text-5xl--line-height)); }"
+          },
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading, var(--text-sm--line-height)); }"
+          },
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl {\n  @media (width >= 48rem) {\n  font-size: var(--text-8xl); line-height: var(--tw-leading, var(--text-8xl--line-height));\n}\n}"
+          },
+          {
+            "source": "<style>/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */\n@layer properties;\n@layer t utilities",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base {\n  @media (width >= 48rem) {\n  font-size: var(--text-base); line-height: var(--tw-leading, var(--text-base--line-height));\n}\n}"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n\n        /*! tailwindcss v4.3.3 | MIT License | ht utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+          }
+        ],
+        "blue": "rgb(29 170 198)",
+        "width": 356,
+        "height": 549,
+        "overflow": 0,
+        "count": "2",
+        "icons": 0
+      },
+      "expected": {
+        "deck": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(25, 42, 70)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "block"
+        },
+        "slide": {
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "next": {
+          "color": "rgba(255, 255, 255, 0.6)",
+          "background": "rgba(0, 0, 0, 0)",
+          "font": "Inter, sans-serif",
+          "weight": "400",
+          "display": "flex"
+        },
+        "details": [
+          {
+            "classes": "absolute top-[-10%] left-[-5%] w-125 h-125 bg-c2f-blue/10 rounded-full blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-2 h-2 rounded-full bg-c2f-blue mr-2 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-7xl font-black mb-4 tracking-tight",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-2xl md:text-3xl font-bold text-white mb-6 flex flex-col md:flex-row items-center justify-center gap-3",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "24px",
+            "weight": "700"
+          },
+          {
+            "classes": "bg-linear-to-r from-c2f-blue to-purple-400 bg-clip-text text-transparent",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.714 0.203 305.504) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "24px",
+            "weight": "700"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-c2f-blue to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400 font-bold",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, oklch(0.718 0.202 349.761) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "18px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-6xl font-black mb-4",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-tr from-c2f-blue/20 to-purple-500/20 rounded-2xl blur-2xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right top, oklab(0.681557 -0.093873 -0.0677959 / 0.2) 0%, oklab(0.627 0.147802 -0.219953 / 0.2) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute bottom-0 inset-x-0 bg-linear-to-t from-black/80 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to top, oklab(0 0 0 / 0.8) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-3xl md:text-5xl font-black mb-6 md:mb-10 text-center text-white w-full drop-shadow-xl",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-y-0 w-px bg-linear-to-b from-transparent via-blue-500/30 to-transparent",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(rgba(0, 0, 0, 0) 0%, oklab(0.623 -0.0378409 -0.210628 / 0.3) 50%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.546 0.245 262.881) 0%, oklch(0.558 0.288 302.321) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "12px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-3xl md:text-4xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.707 0.165 254.624) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "30px",
+            "weight": "900"
+          },
+          {
+            "classes": "bg-linear-to-b from-c2f-blue/10 to-transparent border border-c2f-blue/30 p-5 rounded-2xl relative overflow-hidden group",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(oklab(0.681557 -0.093873 -0.0677959 / 0.1) 0%, rgba(0, 0, 0, 0) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue/5 animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.05)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "w-10 h-10 bg-c2f-blue/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform relative z-10",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.2)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute top-4 right-4 text-[10px] bg-c2f-blue px-2 py-0.5 rounded text-white font-bold opacity-80",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "10px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-4xl md:text-5xl font-black text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.714 0.203 305.504) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-c2f-blue text-sm md:text-base font-bold uppercase tracking-[0.2em] mb-2",
+            "color": "rgb(29, 170, 198)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "14px",
+            "weight": "700"
+          },
+          {
+            "classes": "text-transparent bg-clip-text bg-linear-to-r from-green-400 to-c2f-blue",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, oklch(0.792 0.209 151.711) 0%, rgb(29, 170, 198) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklch(0.707 0.022 261.325) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "36px",
+            "weight": "900"
+          },
+          {
+            "classes": "flex-1 bg-c2f-blue/10 border border-c2f-blue/20 p-4 rounded-xl text-center",
+            "color": "rgb(255, 255, 255)",
+            "background": "oklab(0.681557 -0.093873 -0.0677959 / 0.1)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "absolute inset-0 bg-linear-to-br from-green-500/10 to-c2f-blue/10 rounded-3xl blur-3xl animate-pulse",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right bottom, oklab(0.723 -0.18885 0.110891 / 0.1) 0%, oklab(0.681557 -0.093873 -0.0677959 / 0.1) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "16px",
+            "weight": "400"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-2 relative z-10 text-white",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "text-5xl md:text-8xl font-black mb-8 relative z-10 text-transparent bg-clip-text bg-linear-to-r from-c2f-blue to-purple-500",
+            "color": "rgba(0, 0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "gradient": "linear-gradient(to right, rgb(29, 170, 198) 0%, oklch(0.627 0.265 303.9) 100%)",
+            "font": "Inter, sans-serif",
+            "size": "48px",
+            "weight": "900"
+          },
+          {
+            "classes": "absolute inset-0 bg-c2f-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300",
+            "color": "rgb(0, 0, 0)",
+            "background": "rgb(29, 170, 198)",
+            "gradient": "none",
+            "font": "Inter, sans-serif",
+            "size": "20px",
+            "weight": "700"
+          }
+        ],
+        "rules": [
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading,var(--text-5xl--line-height)); }"
+          },
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading,var(--text-sm--line-height)); }"
+          },
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities (min-width: 48rem)",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl { font-size: var(--text-8xl); line-height: var(--tw-leading,var(--text-8xl--line-height)); }"
+          },
+          {
+            "source": "<link rel=\"stylesheet\" href=\"/pt-br/tailwindcss/output.css?v=1.0.1\"> utilities (min-width: 48rem)",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base { font-size: var(--text-base); line-height: var(--tw-leading,var(--text-base--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl); line-height: var(--tw-leading,var(--text-5xl--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm); line-height: var(--tw-leading,var(--text-sm--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities",
+            "selector": ".text-sm\\!",
+            "css": ".text-sm\\! { font-size: var(--text-sm) !important; line-height: var(--tw-leading,var(--text-sm--line-height)) !important; }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities (min-width: 48rem)",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl { font-size: var(--text-8xl); line-height: var(--tw-leading,var(--text-8xl--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"layout-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none) utilities (min-width: 48rem)",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base { font-size: var(--text-base); line-height: var(--tw-leading,var(--text-base--line-height)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities (min-width: 48rem)",
+            "selector": ".md\\:text-8xl",
+            "css": ".md\\:text-8xl { font-size: var(--text-8xl,6rem); line-height: var(--tw-leading,var(--text-8xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"page-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:none))  utilities (min-width: 48rem)",
+            "selector": ".md\\:text-base",
+            "css": ".md\\:text-base { font-size: var(--text-base,1rem); line-height: var(--tw-leading,var(--text-base--line-height,calc(1.5 / 1))); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:non utilities",
+            "selector": ".text-5xl",
+            "css": ".text-5xl { font-size: var(--text-5xl,3rem); line-height: var(--tw-leading,var(--text-5xl--line-height,1)); }"
+          },
+          {
+            "source": "<style data-tailwind-role=\"resource-precompiled\">\n@layer properties{@supports (((-webkit-hyphens:non utilities",
+            "selector": ".text-sm",
+            "css": ".text-sm { font-size: var(--text-sm,.875rem); line-height: var(--tw-leading,var(--text-sm--line-height,calc(1.25 / .875))); }"
+          }
+        ],
+        "blue": "#1daac6",
+        "width": 356,
+        "height": 549,
+        "overflow": 0,
+        "count": "1",
+        "icons": 0
+      }
+    }
+  },
+  {
+    "name": "Resize acompanha nova altura",
+    "ok": true
+  },
+  {
+    "name": "forms-search renderizado",
+    "ok": true
+  },
+  {
+    "name": "forms-search tem HTML e compilador",
+    "ok": true
+  },
+  {
+    "name": "pages-index renderizado",
+    "ok": true
+  },
+  {
+    "name": "pages-index tem HTML e compilador",
+    "ok": true
+  },
+  {
+    "name": "menus renderizado",
+    "ok": true
+  },
+  {
+    "name": "menus tem HTML e compilador",
+    "ok": true
+  },
+  {
+    "name": "galleries renderizado",
+    "ok": true
+  },
+  {
+    "name": "galleries tem HTML e compilador",
+    "ok": true
+  },
+  {
+    "name": "cookie-consent renderizado",
+    "ok": true
+  },
+  {
+    "name": "cookie-consent tem HTML e compilador",
+    "ok": true
+  },
+  {
+    "name": "Sem exceções JavaScript",
+    "ok": true,
+    "details": []
+  },
+  {
+    "name": "Preferências originais restauradas",
+    "ok": true
+  }
+]

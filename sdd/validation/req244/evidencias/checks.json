@@ -1,0 +1,22 @@
+{
+    "date": "2026-10-06",
+    "core_branch": "feat/req-244",
+    "site_branch": "feat/req-109",
+    "core_vitest": {"files": 48, "tests": 553, "failures": 0},
+    "core_phpunit": {"tests": 1629, "assertions": 16228, "failures": 0, "errors": 0, "skipped": 4},
+    "site_vitest": {"files": 2, "tests": 13, "failures": 0},
+    "site_phpunit": {"tests": 31, "assertions": 1679, "failures": 0, "errors": 0},
+    "php_environment": "PHP 8.5.10 on the Lab VM, sources read from the isolated worktrees through /mnt/c",
+    "negative_php": "Old dashboard.php fails because the template is skipped with nonempty css_compiled",
+    "negative_js": "Old dashboard.js fails the hydration test at the missing flex-col class",
+    "resource_build": {"core_resources": 511, "site_resources": 1176, "exit_code": 0},
+    "final_pipeline": {"command": "project:update-all conn2flow-site-local --no-wait", "exit_code": 0, "css_rebuild_errors": 0, "scoped_source_hash_mismatches": 0},
+    "browser": {"checks": 29, "failures": 0, "desktop_width": 1366, "mobile_width": 390, "pilot_slides": 8, "preferences_restored": true},
+    "known_environment_notes": [
+        "PHP suites initially needed local LF normalization for inherited tests that extract source text literally",
+        "PHPUnit reports skipped tests and deprecations; no failures or errors",
+        "The shared Lab retains unrelated newer files from REQ-243 and ten preexisting 3d-catalog assets",
+        "Optional dist publication is skipped without ssh_public_path; assets are served through arquivo-estatico",
+        "Catalog checks cover initial rendering and JS errors, not remote pagination, form submission or external navigation"
+    ]
+}
