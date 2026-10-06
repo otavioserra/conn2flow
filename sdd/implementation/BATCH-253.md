@@ -63,22 +63,3 @@ Revisão findings-first: sem achados bloqueantes no código final. Conferidos fi
 **Evidência**: `sdd/validation/req244/widget-apresentacao-precedencia.cjs`, **24/24**. Navega pela seta nos oito slides e compara 27 propriedades computadas de cada elemento entre o widget e a página na mesma largura: zero diferença. Confere também que nenhuma pré-compilada vem depois da folha gerada e que `galleries`, `forms-search`, `cookie-consent`, `menus` e `pages-index` seguem inteiros. Imagens em `sdd/validation/req244/evidencias-precedencia/`. Guarda em `tests/Unit/JS/dashboard.widgets-req236.test.js` (folha parcial antes do compilador).
 
 **Limite**: a ordem depende de o compilador do navegador anexar a folha ao fim do `head` no momento em que roda; o roteiro falha se isso mudar numa troca de versão. Um registro salvo pelo editor (`css_compiled`) segue a mesma ordem e não foi exercitado com apresentação editada.
-
-## Extensão: configurações por widget (2026-10-06, pedido direto do Engenheiro Chefe)
-
-Botão novo no cabeçalho do card, ao lado do de trocar o widget, visível só no modo de edição. Abre um pop-up com a aparência daquele widget. O botão de trocar passou ao ícone `arrow-left-right`; o de configurações ficou com `settings-2`.
-
-| Controle | Efeito | Padrão |
-|---|---|---|
-| Mostrar cabeçalho | desligado, o cabeçalho some fora do modo de edição e o widget ocupa o card inteiro; no modo de edição ele aparece sempre (borda tracejada) | ligado |
-| Título | texto próprio no cabeçalho e no `title` do iframe; vazio usa o nome do widget; trocar o widget limpa | vazio |
-| Cor de fundo própria | cor do card; em fundo escuro o cabeçalho passa a texto claro | desligada |
-| Mostrar borda e sombra | desligado, o card fica sem moldura fora da edição | ligado |
-| Margem interna | nenhuma, pequena (8 px), média (16 px) ou grande (24 px) em volta do conteúdo | nenhuma |
-| Atualizar sozinho | recarrega o widget a cada 1, 5 ou 15 minutos, só com a aba visível e fora do modo de edição | não atualizar |
-
-**Como foi feito**: as opções vão em `options` de cada item de `dashboard_widgets_layout` (a mesma preferência do usuário, sem tabela nova). `normalizeOptions()` descarta valor fora da lista ao ler e ao gravar; a cor só passa como `#rrggbb`. `applyOptions()` aplica no card que já está na tela, sem recarregar o iframe. Chaves do pop-up no estilo do menu de opções do Dashboard (`dashboard-menu-item` com `dashboard-edit-track`). 21 variáveis por idioma em `dashboard.json`.
-
-**Evidência**: `tests/Unit/JS/dashboard.widget-config.test.js` (5 testes, usa o pop-up do componente real nos dois idiomas) e `sdd/validation/req244/widget-config-browser.cjs` no Lab, **15/15**: botão só na edição, pop-up centralizado, aplicar sem recarregar o iframe, cabeçalho some fora da edição, volta do servidor depois de recarregar, sem moldura, 390 px e restaurar padrão. Imagens em `sdd/validation/req244/evidencias-config/`. PHPUnit 1.672 e Vitest 578 verdes; roteiro de precedência repetido, 24/24.
-
-**Limites**: a atualização automática foi exercitada só no teste com relógio simulado, não no Lab. O layout é gravado inteiro a cada mudança: dois navegadores do mesmo usuário abertos ao mesmo tempo sobrescrevem um ao outro (já era assim para posição e tamanho). O conteúdo do iframe não recebe a cor: widget com fundo próprio opaco cobre a cor do card, que aparece só na margem e no cabeçalho.

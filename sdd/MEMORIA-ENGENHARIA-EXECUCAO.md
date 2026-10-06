@@ -188,9 +188,3 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Defeito de widget com vários estados se procura em todos**: o primeiro slide saía certo e os seguintes não. Roteiro navega pela seta e compara o estilo computado elemento a elemento com a página pública na mesma largura (`sdd/validation/req244/widget-apresentacao-precedencia.cjs`).
 - **"Funciona como página" pode ser só falta de publicação**: a página do Lab estava sem a branch que introduzia o defeito. Antes de comparar, conferir quais branches estão publicadas.
 - **Selects em bloco clonado**: a cópia traz a casca do controle sem eventos; `observarSelects()` refaz a cópia que não tem a propriedade `c2fcViva`.
-
-### Configurações por widget no Dashboard (2026-10-06)
-- **Opção nova de widget** entra em `normalizeOptions()` (lista fechada de valores) e em `applyOptions()`; o pop-up é `#dashboard-widget-config-modal` no componente `dashboard-cards-tailwind`, com `data-widget-option="<nome>"` em cada controle.
-- **Select do painel usa `c2fc-campo-selecao`**, não `c2fc-campo-entrada`: a guarda `IconesLucideReq240Test` reprova.
-- **Roteiro que mexe em preferência do usuário guarda e devolve o estado inicial**: o Engenheiro Chefe usa o mesmo usuário no Lab ao mesmo tempo. Alternar chave por clique sem ler o estado antes inverte o que ele deixou.
-- **Foto logo depois de clicar numa chave animada** pega a transição no meio: esperar 400 ms antes da evidência.

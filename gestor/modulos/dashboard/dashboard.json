@@ -262,12 +262,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.23",
+                    "version": "1.20",
                     "checksum": {
-                        "html": "3b38dae6c343b73c5a31c145090dfe79",
-                        "css": "d5f05e471069821de41711d0df252734",
+                        "html": "cd6e922577e6e7d87fc3bea05954e4c7",
+                        "css": "3ded8a8c11a8cf670976341d0d8ff0a6",
                         "css_precompiled": "",
-                        "combined": "ca8d2c3cf0352b96d6440186a39aee51"
+                        "combined": "6ca0d5cd6416c2fba51cfc1c2c5d8e37"
                     }
                 }
             ],
@@ -608,111 +608,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "widgets-label-config",
-                    "value": "Configurações do widget",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-title",
-                    "value": "Configurações do widget",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-desc",
-                    "value": "Personalize a aparência deste widget:",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-header",
-                    "value": "Mostrar cabeçalho",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-header-help",
-                    "value": "Desligado, o widget fica só com o conteúdo. Com o modo de edição ligado o cabeçalho aparece sempre.",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-name",
-                    "value": "Título",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-background",
-                    "value": "Cor de fundo própria",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-background-help",
-                    "value": "Desligado, o widget usa o fundo padrão do painel.",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-frame",
-                    "value": "Mostrar borda e sombra",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding",
-                    "value": "Margem interna",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-none",
-                    "value": "Nenhuma",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-small",
-                    "value": "Pequena",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-medium",
-                    "value": "Média",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-large",
-                    "value": "Grande",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh",
-                    "value": "Atualizar sozinho",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-off",
-                    "value": "Não atualizar",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-1",
-                    "value": "A cada 1 minuto",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-5",
-                    "value": "A cada 5 minutos",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-15",
-                    "value": "A cada 15 minutos",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-reset",
-                    "value": "Restaurar padrão",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-save",
-                    "value": "Aplicar",
-                    "type": "string"
-                },
-                {
                     "id": "widgets-label-more",
                     "value": "Carregar mais",
                     "type": "string"
@@ -930,12 +825,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.23",
+                    "version": "1.20",
                     "checksum": {
-                        "html": "3b38dae6c343b73c5a31c145090dfe79",
-                        "css": "d5f05e471069821de41711d0df252734",
+                        "html": "cd6e922577e6e7d87fc3bea05954e4c7",
+                        "css": "3ded8a8c11a8cf670976341d0d8ff0a6",
                         "css_precompiled": "",
-                        "combined": "ca8d2c3cf0352b96d6440186a39aee51"
+                        "combined": "6ca0d5cd6416c2fba51cfc1c2c5d8e37"
                     }
                 }
             ],
@@ -1276,111 +1171,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "widgets-label-config",
-                    "value": "Widget settings",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-title",
-                    "value": "Widget settings",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-desc",
-                    "value": "Customize how this widget looks:",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-header",
-                    "value": "Show header",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-header-help",
-                    "value": "When off, only the widget content is shown. With edit mode on the header is always visible.",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-name",
-                    "value": "Title",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-background",
-                    "value": "Custom background color",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-background-help",
-                    "value": "When off, the widget uses the default panel background.",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-frame",
-                    "value": "Show border and shadow",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding",
-                    "value": "Inner spacing",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-none",
-                    "value": "None",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-small",
-                    "value": "Small",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-medium",
-                    "value": "Medium",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-padding-large",
-                    "value": "Large",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh",
-                    "value": "Auto refresh",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-off",
-                    "value": "Do not refresh",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-1",
-                    "value": "Every minute",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-5",
-                    "value": "Every 5 minutes",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-refresh-15",
-                    "value": "Every 15 minutes",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-reset",
-                    "value": "Restore defaults",
-                    "type": "string"
-                },
-                {
-                    "id": "widgets-config-save",
-                    "value": "Apply",
-                    "type": "string"
-                },
-                {
                     "id": "widgets-label-more",
                     "value": "Load more",
                     "type": "string"
@@ -1388,5 +1178,5 @@
             ]
         }
     },
-    "asset_version": "de5d20ae20dddc1d"
+    "asset_version": "cc3cf1be4fc6ea15"
 }
