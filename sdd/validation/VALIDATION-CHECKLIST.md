@@ -3,6 +3,18 @@
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-253 — REQ-244 / Site REQ-109
+
+- [x] Backend: colunas opcionais, template/autoria/head completos, tema e assets oficiais.
+- [x] Frontend: base → tema/compilador → folhas do widget, origem opaca e geometria sem padding/overflow.
+- [x] Apresentações: template e altura embedded; consentimento compatível com o sandbox.
+- [x] Compilação oficial: Core 511 / Site 1176 recursos; pipeline final e css:rebuild com saída 0.
+- [x] Vitest: Core 553 / Site 13; PHPUnit: Core 1629 / Site 31, sem falhas/erros (skips/deprecações registrados).
+- [x] Navegador 29/29: oito slides, desktop/mobile, setas/pontos/tela cheia, resize, catálogo e restauração das preferências.
+- [ ] Homologação humana / consolidação em main.
+
+Detalhes: [BATCH-253](../implementation/BATCH-253.md), [resultado](req244/evidencias/resultado.json) e [métricas/limites](req244/evidencias/checks.json).
+
 ## BATCH-251 — REQ-242
 
 - [x] `forms-search` e `forms`: abas sem fundo, copiar numa linha, select de tipo flutuante sem rolagem no container, dicas.

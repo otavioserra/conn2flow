@@ -1,0 +1,77 @@
+{
+  "status": "Ok",
+  "data": [
+    {
+      "id": "presentations",
+      "name": "Apresentações",
+      "icon": "tv",
+      "tabela": "presentations"
+    },
+    {
+      "id": "product-reviews",
+      "name": "Avaliações de produto",
+      "icon": "star",
+      "tabela": "product_reviews"
+    },
+    {
+      "id": "cookie-consent",
+      "name": "Consentimento de Cookies",
+      "icon": "cookie bite",
+      "tabela": "cookie_consent"
+    },
+    {
+      "id": "publisher-highlights",
+      "name": "Destaques",
+      "icon": "star",
+      "tabela": "publisher_highlights"
+    },
+    {
+      "id": "forms-search",
+      "name": "Formulário de Busca",
+      "icon": "search",
+      "tabela": "forms_search"
+    },
+    {
+      "id": "forms",
+      "name": "Formulários",
+      "icon": "clipboard list",
+      "tabela": "forms"
+    },
+    {
+      "id": "galleries",
+      "name": "Galerias",
+      "icon": "images",
+      "tabela": "galleries"
+    },
+    {
+      "id": "publisher-index",
+      "name": "Índice",
+      "icon": "list",
+      "tabela": "publisher_index"
+    },
+    {
+      "id": "products-index",
+      "name": "Índice de produtos",
+      "icon": "th",
+      "tabela": "products_index"
+    },
+    {
+      "id": "menus",
+      "name": "Menus",
+      "icon": "bars",
+      "tabela": "menus"
+    },
+    {
+      "id": "pages-index",
+      "name": "Páginas Índice",
+      "icon": "list",
+      "tabela": "pages_index"
+    },
+    {
+      "id": "subscriptions-plans",
+      "name": "Planos de Assinatura",
+      "icon": "credit card outline",
+      "tabela": "subscriptions_plans"
+    }
+  ]
+}

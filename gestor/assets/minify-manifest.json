@@ -215,9 +215,9 @@
         "minificado": 8631
     },
     "gestor/modulos/cookie-consent/cookie-consent.widget.js": {
-        "sha1": "80c1bb7c4a545cb671b70b6fde1dbd325d3f49bc",
-        "origem": 12062,
-        "minificado": 5705
+        "sha1": "a300a8fe3edcba579ea9a04b99ad825317fadd9a",
+        "origem": 12518,
+        "minificado": 5773
     },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
         "sha1": "29cfd666ffac20ffcefeda8655f38b832406cc86",
@@ -225,9 +225,9 @@
         "minificado": 5440
     },
     "gestor/modulos/dashboard/dashboard.js": {
-        "sha1": "a38a6c466a2a6ee54df8d287e1c1fc7e25ab8f22",
-        "origem": 43227,
-        "minificado": 22066
+        "sha1": "89c57b86c055ad6bf154eb2af6b972cf1ef65a2c",
+        "origem": 45820,
+        "minificado": 22949
     },
     "gestor/modulos/dashboard/dashboard.toolbar.js": {
         "sha1": "738079037c80bdc0a9586b7b8a440fc23e64c1bc",

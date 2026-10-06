@@ -12,17 +12,38 @@ function boot(layout=[], failRender=false){
  const fetch=vi.fn(async (_url,options)=>{
   const params=new URLSearchParams(options.body);calls.push(Object.fromEntries(params));
   const action=params.get('ajaxOpcao');
-  const data=action==='widgets-catalogo'?[{id:'menus',name:'Menus'}]:action==='widgets-registros'?{items:[{id:'main-menu',nome:'Main'}],tem_mais:false}:{html:'<p>Rendered</p>',css:''};
+  const data=action==='widgets-catalogo'?[{id:'menus',name:'Menus'}]:action==='widgets-registros'?{items:[{id:'main-menu',nome:'Main'}],tem_mais:false}:{html:'<p>Rendered</p>',css:'<style data-tailwind-role="layout-precompiled">.baseline{color:blue}</style><style>.widget{color:red}</style>',theme_styles:'@theme { --color-c2f-blue: #1daac6; }',tailwind_compiler_url:'/vendor/tailwind.js',lucide_url:'/vendor/lucide.js'};
   return {ok:!(failRender && action==='widget-render'),json:async()=>({status:'Ok',data})};
  });
  function Sortable(_grid,options){sortable=this;this.options=options;this.disabled=null;this.option=(_key,value)=>{this.disabled=value;};this.destroy=()=>{};}
  new Function('document','gestor','fetch','getLocalStorage','setLocalStorage','dashboardSalvarPreferenciaBackend','Sortable','sessionStorage',init+'\ninitDashboardWidgets();')(document,gestor,fetch,()=>null,()=>{},(_key,value)=>{saved=structuredClone(value);},Sortable,sessionStorage);
 }
 beforeEach(()=>{
+ const documents=new WeakMap();
+ vi.spyOn(HTMLIFrameElement.prototype,'srcdoc','set').mockImplementation(function(value){documents.set(this,value);});
+ vi.spyOn(HTMLIFrameElement.prototype,'srcdoc','get').mockImplementation(function(){return documents.get(this)||'';});
  saved=null;calls=[];sessionStorage.clear();
  document.body.innerHTML='<details id="dashboard-options"></details><button id="dashboard-edit-mode" role="switch" data-label-on="Edit on" data-label-off="Edit off"><span data-edit-label></span></button><button id="dashboard-btn-add-widget"></button><button id="dashboard-btn-reset-widgets"></button><div id="dashboard-widgets-empty"></div><div id="dashboard-widgets-grid" data-label-type="Type" data-label-record="Record" data-label-loading="Loading" data-label-error="Error"></div><div id="dashboard-widgets-modal" class="hidden"><button class="dashboard-widgets-modal-close"></button><input id="dashboard-widget-search" type="search"><button id="dashboard-widget-reset-selection"></button><span id="dashboard-widget-selection"></span><div id="dashboard-widgets-modal-list"></div></div>';
 });
 describe('Dashboard widget instances (req-236)',()=>{
+ it('hydrates an isolated full-size document with authored CSS, theme and official compiler (req-244)',async()=>{
+  boot([{id:'presentations',registro_id:'conn2flow'}]);await settle();
+  const frame=document.querySelector('iframe'),card=frame.closest('.dashboard-widget-card');
+  const doc=new DOMParser().parseFromString(frame.srcdoc.replace(/<script/g,'<script type="text/plain"'),'text/html');
+  expect(card.classList.contains('flex-col')).toBe(true);
+  expect(frame.classList.contains('h-full')).toBe(true);
+  expect(frame.parentElement.classList.contains('p-0')).toBe(true);
+  expect(doc.querySelector('meta[charset]').getAttribute('charset')).toBe('utf-8');
+  expect(doc.querySelector('style[type="text/tailwindcss"]').textContent).toContain('--color-c2f-blue');
+  expect(doc.querySelector('script[src$="/vendor/tailwind.js"]')).not.toBeNull();
+  const baseline=frame.srcdoc.indexOf('.baseline'),theme=frame.srcdoc.indexOf('--color-c2f-blue'),compiler=frame.srcdoc.indexOf('/vendor/tailwind.js'),authored=frame.srcdoc.indexOf('.widget');
+  expect(baseline).toBeLessThan(theme);
+  expect(theme).toBeLessThan(compiler);
+  expect(compiler).toBeLessThan(authored);
+  expect(doc.querySelector('base').href).not.toContain('localhosthttp');
+  expect(doc.head.textContent).toContain('.widget{color:red}');
+  expect(doc.body.textContent).toContain('Rendered');
+ });
  it('starts in view mode and enables sorting only after edit toggle',()=>{
   boot([{id:'menus',registro_id:'main-menu'}]);
   expect(sortable.disabled).toBe(true);

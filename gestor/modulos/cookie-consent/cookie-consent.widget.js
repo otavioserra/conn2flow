@@ -206,7 +206,8 @@
             version: raiz.getAttribute('data-version') || '1',
             days: Math.max(1, parseInt(raiz.getAttribute('data-expiry-days'), 10) || 180),
             consentMode: raiz.getAttribute('data-consent-mode') === 'true',
-            preview: raiz.getAttribute('data-preview') === 'true'
+            // O Dashboard é um documento isolado: a decisão ali só vale para a demonstração.
+            preview: raiz.getAttribute('data-preview') === 'true' || document.documentElement.hasAttribute('data-c2f-dashboard-widget')
         };
 
         var salvo = cfg.preview ? null : lerCookie();
