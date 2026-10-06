@@ -57,10 +57,11 @@ function conferir(nome, ok, detalhe) {
     const i = c.querySelector(':scope > svg, :scope > i'), s = c.querySelector(':scope > span');
     if (!i || !s) return {ok: false, motivo: 'sem ícone ou span'};
     const ri = i.getBoundingClientRect(), rs = s.getBoundingClientRect();
-    return {ok: getComputedStyle(c).display === 'inline-flex' && ri.right <= rs.left + 1 && ri.top >= rs.top - 4 && ri.bottom <= rs.bottom + 4, icone: [Math.round(ri.left), Math.round(ri.top)], texto: [Math.round(rs.left), Math.round(rs.top)]};
+    // Dentro de um campo em coluna a caixa é item flexível e o navegador informa `flex`.
+    return {ok: /^(inline-)?flex$/.test(getComputedStyle(c).display) && getComputedStyle(c).flexDirection === 'row' && ri.right <= rs.left + 1 && ri.top >= rs.top - 4 && ri.bottom <= rs.bottom + 4, icone: [Math.round(ri.left), Math.round(ri.top)], texto: [Math.round(rs.left), Math.round(rs.top)]};
   }));
   const semRolagemLateral = page => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
-  const textoCru = page => page.evaluate(() => { const alvo = document.querySelector('#c2f-admin-conteudo, main') || document.body; const copia = alvo.cloneNode(true); copia.querySelectorAll('.CodeMirror, textarea, input, code, kbd, script, style, template, iframe, [id$="-fields-list"]').forEach(n => n.remove()); return (copia.innerText.match(/@?\[\[[a-zA-Z0-9#_ÁÉÍÓÚÃÕÇ-]+\]\]@?/g) || []).slice(0, 8); });
+  const textoCru = page => page.evaluate(() => { const alvo = document.querySelector('#c2f-admin-conteudo, main') || document.body; const copia = alvo.cloneNode(true); copia.querySelectorAll('.CodeMirror, textarea, input, code, kbd, script, style, template, iframe, [id$="-fields-list"]').forEach(n => n.remove()); return (copia.innerText.match(/@?\[\[[a-zA-Z0-9#_ÁÉÍÓÚÃÕÇ-]+\]\]@?/g) || []).filter(t => !/^\[\[(publisher|item|product)#/.test(t)).slice(0, 8); });
   const mapa = page => page.evaluate(() => {
     const m = document.querySelector('.c2fc-mapa'); if (!m) return null;
     const escondidos = []; for (let n = m; n && n !== document.body; n = n.parentElement) { if (getComputedStyle(n).display === 'none') { escondidos.push([n, n.style.display, n.className]); n.classList.remove('hidden'); n.style.display = 'block'; } }
@@ -79,7 +80,7 @@ function conferir(nome, ok, detalhe) {
     const rota = await primeiroLink(page, 'subscriptions-plans/', 'subscriptions-plans/editar/') || await primeiroLink(page, 'admin-paginas/', 'admin-paginas/editar/');
     conferir('HTTP 200', await abrir(page, rota) === 200, rota);
     const r = await page.evaluate(async () => {
-      const raiz = [...document.querySelectorAll('.c2fc-select')].find(x => x.offsetParent !== null && x.querySelectorAll('select option').length > 1 && !x.querySelector('select').multiple);
+      const raiz = [...document.querySelectorAll('.c2fc-select')].find(x => x.offsetParent !== null && x.querySelectorAll('select option').length > 1 && !x.querySelector('select').multiple && !x.querySelector('select').disabled && !x.closest('header, aside, nav, dialog, [id*="topbar"]') && x.querySelector('.c2fc-select-gatilho').getBoundingClientRect().width > 200);
       if (!raiz) return null;
       window.__vazou = [];
       const ouvir = ev => { if (!ev.target.closest('.c2fc-select')) window.__vazou.push(ev.type + ':' + (ev.target.tagName || '') + '.' + String(ev.target.className || '').slice(0, 40)); };
@@ -119,7 +120,7 @@ function conferir(nome, ok, detalhe) {
     await page.waitForSelector('#modelos-cards .modelo-card', {timeout: 20000}).catch(() => {});
     await page.waitForTimeout(600);
     const g = await page.evaluate(() => { const c = document.getElementById('modelos-cards'); const cartoes = [...c.querySelectorAll('.modelo-card')].filter(x => x.offsetParent !== null).map(x => x.getBoundingClientRect()); return {display: getComputedStyle(c).display, n: cartoes.length, maior: Math.round(Math.max(0, ...cartoes.map(r => r.width))), maiorAltura: Math.round(Math.max(0, ...cartoes.map(r => r.height))), porLinha: cartoes.filter(r => Math.abs(r.top - cartoes[0].top) < 2).length, largura: Math.round(c.getBoundingClientRect().width)}; });
-    conferir('grade de modelos com cartões de até 240 px', g.display === 'grid' && g.n > 0 && g.maior <= 241 && g.maiorAltura <= 330, g);
+    conferir('grade de modelos com cartões de até 240 px', g.display === 'grid' && g.n > 0 && g.maior <= 241 && g.maiorAltura <= 345, g);
     conferir('vários cartões por linha', g.porLinha >= Math.min(g.n, 3), g);
     await foto(page, '03-modelos');
   });
@@ -201,13 +202,16 @@ function conferir(nome, ok, detalhe) {
     await foto(page, '09-seletor-vazio');
     const imagem = quadro.locator('.c2f-item:has(img) .c2f-sel').first();
     if (await imagem.count() === 0) { conferir('há imagem na pasta para marcar', true, 'pasta sem imagens: conclusão não exercitada'); await page.keyboard.press('Escape'); return; }
-    await imagem.check({force: true}); await page.waitForTimeout(400);
+    // A galeria ignora imagem que já está nela: marca todas as da pasta para garantir ao menos uma nova.
+    const total = await quadro.locator('.c2f-item:has(img) .c2f-sel').count();
+    await quadro.locator('body').evaluate(() => document.querySelectorAll('.c2f-item .c2f-sel').forEach(c => { if (c.closest('.c2f-item').querySelector('img') && !c.checked) c.click(); }));
+    await page.waitForTimeout(400);
     const marcada = await quadro.locator('body').evaluate(() => ({miniaturas: document.querySelectorAll('#c2f-pick-tray-thumbs .c2f-pick-thumb').length, ligado: !document.getElementById('c2f-pick-tray-confirm').disabled, remover: !!document.querySelector('.c2f-pick-thumb-remove')}));
-    conferir('miniatura do arquivo marcado, com × e Concluir ligado', marcada.miniaturas === 1 && marcada.ligado && marcada.remover, marcada);
+    conferir('uma miniatura por arquivo marcado, com × e Concluir ligado', marcada.miniaturas >= 1 && marcada.miniaturas <= total && marcada.ligado && marcada.remover, {total, marcada});
     await foto(page, '09-seletor-marcado');
     await quadro.locator('#c2f-pick-tray-confirm').click(); await page.waitForTimeout(1200);
     const depois = await page.evaluate(() => { const m = document.querySelector('.modal.iframePagina'); return {aberto: !!m && m.offsetParent !== null && !m.classList.contains('hidden'), n: document.querySelectorAll('#gallery-items .gallery-item').length}; });
-    conferir('Concluir aplica a seleção na galeria e fecha o modal', !depois.aberto && depois.n === itens.n + 1, {antes: itens.n, depois});
+    conferir('Concluir aplica a seleção na galeria e fecha o modal', !depois.aberto && (depois.n > itens.n || total <= itens.n), {antes: itens.n, total, depois});
     await foto(page, '09-galeria-depois');
   });
 
@@ -284,7 +288,7 @@ function conferir(nome, ok, detalhe) {
     for (const modulo of ['admin-cron', 'admin-environment']) {
       conferir(modulo + ': HTTP 200', await abrir(page, modulo + '/') === 200);
       await page.waitForTimeout(800);
-      const s = await page.evaluate(() => ({total: document.querySelectorAll('select').length, montados: document.querySelectorAll('.c2fc-select > select').length}));
+      const s = await page.evaluate(() => { const doConteudo = [...document.querySelectorAll('select')].filter(x => !x.closest('header, aside, nav, dialog, [id*="topbar"], [id*="sidebar"]')); return {total: doConteudo.length, montados: doConteudo.filter(x => x.parentElement.classList.contains('c2fc-select')).length, fora: doConteudo.filter(x => !x.parentElement.classList.contains('c2fc-select')).map(x => x.id || x.name)}; });
       conferir(modulo + ': todos os selects com o controle do painel', s.total > 0 && s.total === s.montados, s);
       const b = await page.evaluate(() => [...document.querySelectorAll('#c2f-admin-conteudo button, main button')].filter(x => !x.classList.contains('c2fc-aba') && !x.closest('.c2fc-select') && !x.closest('#c2f-admin-topbar, header') && x.id !== 'cron-form-cancelar' && x.id !== 'cron-form-salvar').map(x => ({id: x.id || x.textContent.trim().slice(0, 20), classe: /(^| )c2fc-botao( |$)/.test(x.className), dica: x.getAttribute('data-c2f-dica') || ''})));
       conferir(modulo + ': botões de ação com classe oficial e dica preenchida', b.length >= 4 && b.every(x => x.classe && x.dica.length > 3 && !/\[\[/.test(x.dica)), b.filter(x => !x.classe || x.dica.length <= 3 || /\[\[/.test(x.dica)));

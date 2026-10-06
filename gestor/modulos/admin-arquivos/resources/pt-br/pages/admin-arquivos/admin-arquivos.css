@@ -507,6 +507,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    /* REQ-243: mesma altura dos botões de ação ao lado (texto de 20 px de linha + respiro + borda). */
+    min-height: 34px;
     border-color: #cbd5e1;
     background: #fff;
     color: #475569;

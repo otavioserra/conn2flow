@@ -65,9 +65,9 @@
         "minificado": 1609
     },
     "gestor/assets/interface/controles.js": {
-        "sha1": "2c73bb8c751f2b158207c06f0d55f4ce89256f2d",
-        "origem": 62378,
-        "minificado": 32269
+        "sha1": "0a12a13307d7cc09b0af10c0aa8e7979bd3cfc8e",
+        "origem": 62690,
+        "minificado": 32366
     },
     "gestor/assets/interface/editor-texto.js": {
         "sha1": "3a4a2787e357221082a3ec7566bc939804c7a12c",

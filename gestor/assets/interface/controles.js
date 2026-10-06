@@ -385,14 +385,20 @@
             else if (ev.key === 'Tab' && aberto) this.fechar(false);
         },
 
-        // Segura o restante do gesto do mouse (mouseup e click) na fase de captura, até o botão ser solto.
+        // Segura o restante do gesto do mouse (pointerup, mouseup e click) na fase de captura, até o botão ser
+        // solto. O mouseup entra na conta: boa parte dos botões antigos do painel age em `mouseup`.
         _engolirClique: function () {
             var parar = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
-            var soltar = function () {
+            var soltar = function (ev) {
+                parar(ev);
                 document.removeEventListener('mouseup', soltar, true);
-                setTimeout(function () { document.removeEventListener('click', parar, true); }, 0);
+                setTimeout(function () {
+                    document.removeEventListener('click', parar, true);
+                    document.removeEventListener('pointerup', parar, true);
+                }, 0);
             };
             document.addEventListener('click', parar, true);
+            document.addEventListener('pointerup', parar, true);
             document.addEventListener('mouseup', soltar, true);
         },
 

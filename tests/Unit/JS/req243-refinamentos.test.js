@@ -47,14 +47,20 @@ describe('clique na opção do select não vaza (req-243)', () => {
     const s = c.select(document.querySelector('select'));
     const atras = document.getElementById('atras');
     const acionado = vi.fn();
+    const solto = vi.fn();
     atras.addEventListener('click', acionado);
+    // Botões antigos do painel agem em mouseup: ele também não pode chegar.
+    atras.addEventListener('mouseup', solto);
     s._engolirClique();
-    atras.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+    atras.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true }));
+    expect(solto).not.toHaveBeenCalled();
     atras.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     expect(acionado).not.toHaveBeenCalled();
     await new Promise((r) => setTimeout(r, 5));
     atras.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     expect(acionado).toHaveBeenCalledTimes(1);
+    atras.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true }));
+    expect(solto).toHaveBeenCalledTimes(1);
   });
 
   it('a opção de valor vazio ("Todos") pode ser escolhida de volta e dispara change', () => {
