@@ -4,7 +4,7 @@ Requisição: [REQ-246](../human-requests/req-246.md). Data: 2026-10-06.
 Status: `in-progress`. Autonomia: `autonomo_monitorado`.
 
 - [x] Árvores inicialmente limpas; checkout main, pull e fetch nos dois repositórios.
-- [x] Merge de origin/feat/req-243 e, conforme coordenação e orientação humana, origin/integ/widget-apresentacao (84deb54a); main consolidada 914c7b10.
+- [x] Integração até 84deb54a, conforme resposta humana posterior: configurações de 515c764c permanecem para REQ-247.
 - [x] PHPUnit e Vitest completos: 1.672 / 573 testes, zero falhas.
 - [x] Auditoria inicial: 245 itens com avisos, 277 avisos, zero erros; legado zero.
 - [x] Documentação bilíngue, extração de bibliotecas e compilação do site.
@@ -23,9 +23,9 @@ A publicação usa `ai-workspace/pt-br/docs/` e `ai-workspace/en/docs/` como fon
 
 ### Integração e suítes
 
-Main Core `914c7b10`, Site `93fd51d1`, depois de pull das coordenações `991d5b28` / `ae677055`. Incorporadas as pontas atuais por nome remoto: Core 243, 245 e 244 via integração `84deb54a`; Site 108 e 109 via `a7192e75`. O caminho curto está expressamente autorizado nas requisições e pelo humano; inclui a correção posterior de precedência no widget.
+Main Core inicial 914c7b10, Site 93fd51d1. Core incorpora 243/245/244 e a correção de precedência até 84deb54a; Site incorpora 108/109 e a7192e75. Origin/main recebeu depois f53e0a67 e 27c185dc, incluindo a seção 5.6 e reserva da REQ-247. Antes de chegar a resposta humana, 515c764c foi incorporado localmente; o humano confirmou expressamente manter a Fase B até 84deb54a, e a incorporação adicional será revertida sem apagar a branch de origem. A decisão humana prevalece sobre a seção 5.6.
 
-As quatro suítes foram executadas neste lote. Core PHPUnit: 1.672 testes, 17.527 asserções, zero falhas/erros, quatro skips, quatro deprecações e três deprecações PHPUnit. Vitest: 49 arquivos, 573 testes. Site PHPUnit: 53 testes, 2.403 asserções; Vitest: dois arquivos, 13 testes. [Comandos e resultados](../validation/req246/tests-summary.json). PHP executado sob Linux na VM, com os arquivos do workspace montados; o comando do Core corresponde ao script `composer test`. Site não possui composer.json e usa o runner compartilhado com `req238-phpunit.xml`. Npm usa npm.cmd porque a política PowerShell bloqueia npm.ps1. Avisos ECONNREFUSED do happy-dom não causaram falha.
+As quatro suítes foram executadas neste lote. Core PHPUnit: 1.672 testes, 17.527 asserções, zero falhas/erros, quatro skips, quatro deprecações e três deprecações PHPUnit. Vitest do recorte confirmado: 49 arquivos, 573 testes. A rodada transitória com 515c764c também passou (578), mas não representa o estado final. Site PHPUnit: 53 testes, 2.403 asserções; Vitest: dois arquivos, 13 testes. [Comandos e resultados](../validation/req246/tests-summary.json). PHP executado sob Linux na VM, com os arquivos do workspace montados; Core executou literalmente o script `composer test`, invocando o composer.phar disponível. Site não possui composer.json e usa o runner compartilhado com `req238-phpunit.xml`. Npm usa npm.cmd porque a política PowerShell bloqueia npm.ps1. Avisos ECONNREFUSED/AbortError do happy-dom não causaram falha.
 
 ### Cobertura da documentação
 
@@ -54,4 +54,8 @@ Atualização real pela tarefa automática com sucesso e rollback continua uma l
 
 `ai:archive-sdd --keep=10 --repair-links` no Core e com `--repo` no Site, pela CLI do Core. Core: oito arquivos arquivados e 14 links reparados. Site: dois lotes arquivados, 160 links antigos reparados, mais três links de índice. Sete referências históricas apontavam para nomes de documentos planejados inexistentes; mantidos seus rótulos como texto, explicitando a ausência. Gate posterior sem links órfãos; dez lotes na raiz de cada repositório. Nenhuma especificação normativa alterada.
 
-Checkout CRLF normalizado para LF antes da compilação; seleção do commit usa diff sem diferenças de fim de linha e caminhos explícitos. O roteiro de precedência ganhou C2F_OUTPUT para preservar as evidências antigas ao executar esta rodada. Pipeline e navegador em coleta; recibos finais abaixo serão preenchidos antes do push.
+Checkout CRLF normalizado para LF antes da compilação; seleção do commit usa diff sem diferenças de fim de linha e caminhos explícitos. O roteiro de precedência ganhou C2F_OUTPUT para preservar evidências antigas. O merge adicional gerou oito conflitos exclusivamente em Data.json, CSS pré-compilado e manifesto; fontes integradas preservadas e derivados recompilados pela CLI (quatro recursos novos, 507 em cache).
+
+As configurações por widget de 515c764c foram retiradas da documentação desta Fase B, em obediência ao recorte humano; a branch de origem e o trabalho separado da REQ-247 permanecem preservados.
+
+Primeiro pipeline encerrou com saída 0 e 778 arquivos conferidos por hash. Uma publicação externa posterior de 515c764c com acervo antigo desativou as páginas novas. O navegador detectou a manutenção e, depois, conteúdo desatualizado (2/36); [evidência da concorrência](../validation/req246/docs-browser/competing-publication-failure.json). A rodada final republica código integrado e acervo atualizado. Três arquivos gerados estavam mapeados por outro processo no Windows, impedindo truncamento; substituição atômica local liberou sua regeneração. Pipeline e navegador finais em coleta.

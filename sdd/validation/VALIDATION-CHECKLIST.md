@@ -4,7 +4,7 @@
 
 - [x] Main atualizada e branches integradas, incluindo a correção posterior da apresentação (84deb54a).
 - [x] PHPUnit completo: 1.672 testes, 17.527 asserções, zero falhas/erros; quatro skips e deprecações registrados.
-- [x] Vitest completo: 49 arquivos, 573 testes aprovados.
+- [x] Vitest completo: 49 arquivos, 573 testes aprovados no recorte até 84deb54a.
 - [x] Histórico de 36 requisições levantado; extração das bibliotecas e documentação bilíngue atualizadas a partir do código.
 - [ ] Auditoria final, build idempotente e links HTTP da documentação.
 - [ ] Pipeline completo do Lab e comparação SQL antes/depois.
