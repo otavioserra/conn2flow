@@ -80,7 +80,7 @@ final class RefinamentosReq242Test extends TestCase
         $html = $this->ler("modulos/forms-submissions/resources/$idioma/pages/forms-submissions-view/forms-submissions-view.html");
         $this->assertMatchesRegularExpression('/<textarea class="codemirror-json" readonly/', $html);
         $this->assertStringNotContainsString('<details', $html);
-        $this->assertMatchesRegularExpression('/<select id="form-status-select" class="c2fc-campo-selecao[ "]/', $html);
+        $this->assertMatchesRegularExpression('/<select id="form-status-select" data-c2f-select="1" class="c2fc-campo-selecao[ "]/', $html);
         $this->assertStringNotContainsString('style="min-width: 160px;"', $html);
 
         $js = $this->ler('modulos/forms-submissions/forms-submissions.js');

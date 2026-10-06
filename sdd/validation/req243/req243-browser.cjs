@@ -474,6 +474,70 @@ function conferir(nome, ok, detalhe) {
     await foto(page, '25-host-manager', true);
   });
 
+  // ================================================================ PENTE FINO (terceira passada)
+  await grupo('27. pente fino: envios, planos, associados, variáveis e títulos', async () => {
+    const envio = await primeiroLink(page, 'forms-submissions/', 'forms-submissions/view/');
+    if (envio) { await abrir(page, envio); conferir('forms-submissions/view: select de status com o controle do painel', await page.evaluate(() => !!document.querySelector('.c2fc-select > #form-status-select')), envio); }
+    else conferir('forms-submissions sem envio para abrir', true);
+
+    const plano = await primeiroLink(page, 'subscriptions-plans/', 'subscriptions-plans/editar/');
+    conferir('subscriptions-plans/editar abre', await abrir(page, plano) === 200, plano);
+    await page.waitForTimeout(1200);
+    const troca = await page.evaluate(async () => {
+      const s = document.getElementById('template_id'); const outro = [...s.options].find(o => o.value && o.value !== s.value && !/-modificado$/.test(o.value)); if (!outro) return null;
+      const ler = () => { const cm = document.querySelector('textarea[name="html"]'); const ed = cm && cm.nextElementSibling && cm.nextElementSibling.CodeMirror; return ed ? ed.getValue() : (cm || {}).value; };
+      const antes = ler();
+      let redesenhos = 0; const original = window.html_editor_refresh_preview; window.html_editor_refresh_preview = function () { redesenhos++; return original && original.apply(this, arguments); };
+      window.c2fControles.de(s).definir(outro.value);
+      await new Promise(r => setTimeout(r, 2500));
+      const depois = ler();
+      return {mudou: antes !== depois, redesenhos, tamanho: String(depois || '').length};
+    });
+    if (troca) conferir('trocar o modelo grava o HTML novo no editor e redesenha a visualização dele', troca.mudou && troca.redesenhos >= 1 && troca.tamanho > 20, troca);
+    else conferir('plano com um modelo só: troca não exercitada', true);
+
+    const associado = await primeiroLink(page, 'affiliates/', 'affiliates/edit/');
+    conferir('affiliates/edit abre', await abrir(page, associado) === 200, associado);
+    const taxa = page.locator('#affiliate-rate_subscriptions');
+    await taxa.fill(''); await taxa.pressSequentially('ab12,759x'); await page.waitForTimeout(150);
+    const a = await page.evaluate(() => ({valor: document.getElementById('affiliate-rate_subscriptions').value, selects: document.querySelectorAll('.c2fc-select > select').length, nativos: [...document.querySelectorAll('form.interfaceFormPadrao select')].filter(x => !x.closest('.c2fc-select')).length, entradas: [...document.querySelectorAll('form.interfaceFormPadrao input[type=text], form.interfaceFormPadrao input[type=email], form.interfaceFormPadrao textarea')].filter(i => i.offsetParent !== null).every(i => i.classList.contains('c2fc-campo-entrada')), enviado: new FormData(document.getElementById('affiliate-rate_subscriptions').form).get('rate_subscriptions')}));
+    conferir('comissão aceita só percentual (12,75) e o formulário leva 12.75', a.valor === '12,75' && a.enviado === '12.75', a);
+    conferir('selects com o controle e campos de texto no padrão', a.selects >= 3 && a.nativos === 0 && a.entradas, a);
+    await taxa.fill(''); await taxa.pressSequentially('250'); await page.waitForTimeout(100);
+    conferir('percentual não passa de 100', await taxa.inputValue() === '100', await taxa.inputValue());
+    await foto(page, '27-affiliates-edit', true);
+    const detalhes = associado.replace('affiliates/edit/', 'affiliates/details/');
+    conferir('affiliates/details abre', await abrir(page, detalhes) === 200, detalhes);
+    const ajuste = page.locator('input[name="adjust_amount"]');
+    await ajuste.fill(''); await ajuste.pressSequentially('zz1500'); await page.waitForTimeout(150);
+    const d = await page.evaluate(() => ({valor: document.querySelector('input[name="adjust_amount"]').value, tipo: !!document.querySelector('.c2fc-select > select[name="adjust_type"]'), noRotulo: !!document.querySelector('select[name="adjust_type"]').closest('label'), botoes: [...document.querySelectorAll('form button[type="submit"]')].filter(b => b.offsetParent !== null && !b.closest('header, aside, nav')).map(b => /(^| )c2fc-botao( |$)/.test(b.className))}));
+    conferir('valor do ajuste aceita só dinheiro (R$ 15,00)', /15,00/.test(d.valor) && !/z/.test(d.valor), d);
+    conferir('select do tipo com o controle, fora do rótulo, e botões no padrão', d.tipo && !d.noRotulo && d.botoes.length > 0 && d.botoes.every(Boolean), d);
+    await foto(page, '27-affiliates-details', true);
+
+    conferir('variables abre', await abrir(page, 'variables/?id=product-types') === 200);
+    await page.waitForTimeout(600);
+    await page.locator('.variavelBtnAdicionarAbaixo, .variavelBtnAdicionar').last().dispatchEvent('mouseup'); await page.waitForTimeout(700);
+    const caixa = await page.evaluate(() => { const c = [...document.querySelectorAll('.card.adicionar')].find(x => x.offsetParent !== null); if (!c) return null; const s = c.querySelector('select'); const casca = s && s.closest('.c2fc-select'); if (casca) casca.setAttribute('data-roteiro-tipo', '1'); return {select: !!s, casca: !!casca, viva: !!(casca && casca.c2fcViva), opcoes: s ? s.options.length : 0, antes: s ? s.value : null}; });
+    conferir('a caixa de adicionar variável aparece com o select do tipo montado', caixa && caixa.select && caixa.casca && caixa.viva && caixa.opcoes > 3, caixa);
+    if (caixa && caixa.casca) {
+      await page.click('[data-roteiro-tipo] .c2fc-select-gatilho'); await page.waitForTimeout(250);
+      const aberto = await page.evaluate(() => { const p = document.querySelector('[data-roteiro-tipo] .c2fc-select-painel'); return p.classList.contains('c2fc-oculto') ? 0 : p.querySelectorAll('.c2fc-select-opcao').length; });
+      await page.locator('[data-roteiro-tipo] .c2fc-select-opcao').nth(3).click(); await page.waitForTimeout(300);
+      const depois = await page.evaluate(() => { const c = document.querySelector('[data-roteiro-tipo]'); return {valor: c.querySelector('select').value, rotulo: c.querySelector('.c2fc-select-gatilho').textContent.trim()}; });
+      conferir('o select do tipo abre, escolhe e mostra a opção escolhida', aberto > 3 && depois.valor !== caixa.antes && depois.rotulo.length > 1, {aberto, caixa, depois});
+      await foto(page, '27-variables-adicionar');
+    }
+
+    const titulos = [];
+    for (const tela of ['', 'usuarios/', 'planos/', 'hestiacp/', 'logs/', 'updates/', 'distribuido/']) {
+      await abrir(page, 'host-manager/' + tela);
+      titulos.push(await page.evaluate(t => { const h = document.querySelector('[id^="host-manager-admin"] h1'); const cab = h.closest('.flex.items-start.gap-3') || h.parentElement; return {tela: t, titulo: h.textContent.trim().slice(0, 30), icones: cab.querySelectorAll('svg, i[data-lucide]').length}; }, tela));
+    }
+    conferir('host-manager: no máximo um ícone no título em cada uma das sete telas', titulos.every(t => t.icones <= 1), titulos);
+    await foto(page, '27-host-manager-titulo');
+  });
+
   // ================================================================ 390 px
   await grupo('26. telas alteradas em 390 px sem rolagem lateral', async () => {
     const celular = await novo(390, 844);

@@ -4141,7 +4141,7 @@
             "built_at": "2026-10-06T15:04:27+00:00"
         },
         "module|forms-submissions|en|pages|forms-submissions-view": {
-            "fingerprint": "737e22ec5599b9f3ecd335a19401b24e3835e65cdd5b4ecf89e3efd5e4e48ca1",
+            "fingerprint": "b04d39f3ed5b8814ed4e39a2336ded9d631da35fcaf342d8d4460366485d1ad3",
             "output_hash": "bc088000be4df7d7c78f9fe90fc25969c47b57f6e50242b2ece8bf3424e5c543",
             "output": "modulos/forms-submissions/resources/en/pages/forms-submissions-view/forms-submissions-view.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -4159,7 +4159,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T15:04:27+00:00"
+            "built_at": "2026-10-06T18:45:34+00:00"
         },
         "module|forms-submissions|pt-br|pages|forms-submissions-list": {
             "fingerprint": "c0229e1b320083e831395d73f56c3e9ecd4dd2e4f3f1a6cdbd4dd8469fd73651",
@@ -4180,7 +4180,7 @@
             "built_at": "2026-10-06T15:04:28+00:00"
         },
         "module|forms-submissions|pt-br|pages|forms-submissions-view": {
-            "fingerprint": "b85ec82e90361b202f1bc66435f41c0798a26a9938ac2a34c4edcdaea1ff7a3e",
+            "fingerprint": "78f4d665da914bbfc1a4a83fa944ec16da27b9b0967c222f419116e070e7883c",
             "output_hash": "70def9696987fe89f3f03221619d83a876ad01779832029f69f8fb8efa2e9899",
             "output": "modulos/forms-submissions/resources/pt-br/pages/forms-submissions-view/forms-submissions-view.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -4198,7 +4198,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T15:04:28+00:00"
+            "built_at": "2026-10-06T18:45:34+00:00"
         },
         "module|forms|en|components|forms-info-definition-tailwind": {
             "fingerprint": "498f3b9b28e69f9d7261df12e10aa9622e41e323a70cb55a1ae7f834b813c2f5",

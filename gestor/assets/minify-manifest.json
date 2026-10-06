@@ -60,14 +60,14 @@
         "minificado": 13929
     },
     "gestor/assets/interface/campo-moeda.js": {
-        "sha1": "f077987d0dc097c1c017daf3096f9ef74d92914f",
-        "origem": 2835,
-        "minificado": 1609
+        "sha1": "815f2e7c873083a6e3239326b167395509cc456c",
+        "origem": 4865,
+        "minificado": 2594
     },
     "gestor/assets/interface/controles.js": {
-        "sha1": "0a12a13307d7cc09b0af10c0aa8e7979bd3cfc8e",
-        "origem": 62690,
-        "minificado": 32366
+        "sha1": "c82dbb222480ec46479bcbb97deb120bb1109d8c",
+        "origem": 63856,
+        "minificado": 32694
     },
     "gestor/assets/interface/editor-texto.js": {
         "sha1": "3a4a2787e357221082a3ec7566bc939804c7a12c",

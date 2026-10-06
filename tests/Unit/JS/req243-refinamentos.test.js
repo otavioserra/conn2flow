@@ -112,6 +112,53 @@ describe('select acompanha o script da página (req-243)', () => {
   });
 });
 
+describe('pente fino: select de caixa clonada e máscara de percentual (req-243)', () => {
+  it('cópia de um controle já montado é refeita quando entra na página', async () => {
+    const c = controles();
+    document.body.innerHTML = '<div id="modelo">' + SELECT + '</div><div id="destino"></div>';
+    c.select(document.querySelector('#modelo select'));
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+    const copia = document.getElementById('modelo').firstElementChild.cloneNode(true);
+    document.getElementById('destino').appendChild(copia);
+    await new Promise((r) => setTimeout(r, 10));
+    const nativo = document.querySelector('#destino select');
+    expect(document.querySelectorAll('#destino .c2fc-select').length).toBe(1);
+    expect(document.querySelector('#destino .c2fc-select').c2fcViva).toBe(true);
+    document.querySelector('#destino .c2fc-select-gatilho').click();
+    document.querySelectorAll('#destino .c2fc-select-opcao')[2].dispatchEvent(new MouseEvent('mousedown', { bubbles: true, cancelable: true }));
+    expect(nativo.value).toBe('b');
+    // O controle de origem continua inteiro e com a própria casca.
+    expect(c.de(document.querySelector('#modelo select'))).not.toBeNull();
+    expect(document.querySelector('#modelo .c2fc-select').c2fcViva).toBe(true);
+  });
+
+  it('percentual aceita só número de 0 a 100 com até duas casas e transporta com ponto', () => {
+    delete window.C2FCampoMoeda;
+    document.body.innerHTML = '<form><input name="rate" data-c2f-mascara="percentual" value="10.00"><input name="outra" data-c2f-mascara="percentual" value="12.50"></form>';
+    vm.runInThisContext(ler('gestor/assets/interface/campo-moeda.js'), { filename: 'campo-moeda.js' });
+    const m = window.C2FCampoMoeda;
+    m.iniciar(document);
+    const [rate, outra] = document.querySelectorAll('input');
+    expect(rate.value).toBe('10');
+    expect(outra.value).toBe('12,5');
+    expect(m.percentual('abc')).toBe('');
+    expect(m.percentual('1x5,759')).toBe('15,75');
+    expect(m.percentual('250')).toBe('100');
+    expect(m.percentual('100,5')).toBe('100,');
+    expect(m.percentual(',5')).toBe('0,5');
+    rate.value = 'q7.25%';
+    rate.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(rate.value).toBe('7,25');
+    // O ambiente de teste não dispara `formdata` ao montar o FormData: o evento é entregue à mão.
+    const dados = new FormData(document.querySelector('form'));
+    const evento = new Event('formdata');
+    evento.formData = dados;
+    document.querySelector('form').dispatchEvent(evento);
+    expect(dados.get('rate')).toBe('7.25');
+    expect(dados.get('outra')).toBe('12.5');
+  });
+});
+
 describe('alerta com ênfase segura (req-243)', () => {
   it('só as tags de ênfase viram elemento, sem atributos; o resto entra como texto', () => {
     const c = controles();
