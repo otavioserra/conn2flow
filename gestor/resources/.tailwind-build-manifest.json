@@ -3528,15 +3528,15 @@
             "built_at": "2026-10-06T15:04:19+00:00"
         },
         "module|dashboard|en|components|dashboard-cards-tailwind": {
-            "fingerprint": "5a1bccb0f3b2e344bca1a0adcd8f050258b7d3a302b513195adc21b15fca7e07",
-            "output_hash": "2148e03c10d96adda8eebeebf0139c50b12d2c2a11b3614b1afe70d63ef0aeeb",
+            "fingerprint": "edeb8621640b06fb536dec879d421dc051de02696eb572a746bfd886d2c7719b",
+            "output_hash": "7b1c6b141edfd24556488849abfd62db10ce5284d0f7373715161f842ef662c0",
             "output": "modulos/dashboard/resources/en/components/dashboard-cards-tailwind/dashboard-cards-tailwind.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
                 "modulos/dashboard/resources/en/components/dashboard-cards-tailwind/dashboard-cards-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T15:04:20+00:00"
+            "built_at": "2026-10-06T20:12:23+00:00"
         },
         "module|dashboard|en|components|dashboard-site-toolbar-menu": {
             "fingerprint": "484a92e1994cb73d0009cd3bb474ec80d337aeb09b5fafc75310c965c10a8737",
@@ -3583,8 +3583,8 @@
             "built_at": "2026-10-06T15:04:20+00:00"
         },
         "module|dashboard|en|pages|dashboard": {
-            "fingerprint": "8966a197cb1ecc290df22b99acf3b7c8b2ba963ef9019ee45ec62019146ad686",
-            "output_hash": "5afddfc75e7e801e0a0f66f876462df87f92b42262e0606cc724bb4b716e8bed",
+            "fingerprint": "ce4021cf24504c46d0ef02f867460a3ee63626f9213bb140d6f4b00a6f04c0a8",
+            "output_hash": "ed0ea296411ca9cc51549f7e20edfe741e3e5602eb22d5f41cb1abac681d35b7",
             "output": "modulos/dashboard/resources/en/pages/dashboard/dashboard.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -3599,7 +3599,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T19:48:43+00:00"
+            "built_at": "2026-10-06T20:12:23+00:00"
         },
         "module|dashboard|en|pages|dashboard-site-toolbar": {
             "fingerprint": "f40cec69504977a6171a2ff6f658d282b9dd2377f9ee33a6e2cdb70cee865b67",
@@ -3621,15 +3621,15 @@
             "built_at": "2026-10-06T15:04:21+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-cards-tailwind": {
-            "fingerprint": "66b7638326084fd6c742c05b727d8053deb9e8b9d553f2d7c2569f3f0b997a4a",
-            "output_hash": "2148e03c10d96adda8eebeebf0139c50b12d2c2a11b3614b1afe70d63ef0aeeb",
+            "fingerprint": "b93c60b5716d1965fd15f09c8b27a69fe31eb7a9e1d38e15ab7c0fe7f50c53c4",
+            "output_hash": "7b1c6b141edfd24556488849abfd62db10ce5284d0f7373715161f842ef662c0",
             "output": "modulos/dashboard/resources/pt-br/components/dashboard-cards-tailwind/dashboard-cards-tailwind.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
                 "modulos/dashboard/resources/pt-br/components/dashboard-cards-tailwind/dashboard-cards-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T15:04:21+00:00"
+            "built_at": "2026-10-06T20:12:23+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-site-toolbar-menu": {
             "fingerprint": "c358c4e72cdf1b3a1944fc61ac4177ea77b32e87844d401599f60d1c7630ceb9",
@@ -3676,8 +3676,8 @@
             "built_at": "2026-10-06T15:04:22+00:00"
         },
         "module|dashboard|pt-br|pages|dashboard": {
-            "fingerprint": "557b4a5c81dc89d628cb3dffc25feac0b2540c18a797d7417c799d84f6467526",
-            "output_hash": "96e42ffd31043cf4225a9c2f0cafe5130d06deee1895f66ecca6b5ebe9f03d28",
+            "fingerprint": "1aca468b96291f2a236523840732ff815f593e7e0a1abfc650ba379eda2acf34",
+            "output_hash": "313dc03176c6ee41c2f01f40d4fbd15dc767cc65758d5d9728fd08e03a66cc3b",
             "output": "modulos/dashboard/resources/pt-br/pages/dashboard/dashboard.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -3692,7 +3692,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T19:48:43+00:00"
+            "built_at": "2026-10-06T20:12:23+00:00"
         },
         "module|dashboard|pt-br|pages|dashboard-site-toolbar": {
             "fingerprint": "704fa9707dbf417e4e25804b5b819eaa31a5b8af15178f368fe66d0f433823b9",
