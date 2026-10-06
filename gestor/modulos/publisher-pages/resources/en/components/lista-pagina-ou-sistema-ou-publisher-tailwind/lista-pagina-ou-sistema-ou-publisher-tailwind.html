@@ -1,25 +1,17 @@
-<div class="c2fc-pagina">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <label class="c2fc-campo-rotulo">#tipo#</label>
-        <div class="c2fc-campo">
-            <label class="radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Click to show Page type" data-position="top left"
-                data-inverted="">
-                <input type="radio" name="tipo" tabindex="1" value="pagina" #checked_pagina#>
-                <span>#pagina#</span>
-            </label>
-        </div>
-        <div class="c2fc-campo">
-            <label class="radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Click to show System type" data-position="top left"
-                data-inverted="">
-                <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#>
-                <span>#sistema#</span>
-            </label>
-        </div>
-        <div class="c2fc-campo">
-            <label class="radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Click to show both" data-position="top left" data-inverted="">
-                <input type="radio" name="tipo" value="ambos" tabindex="0" #checked_ambos#>
-                <span>#ambos#</span>
-            </label>
-        </div>
-    </div>
+<div class="mb-4 flex flex-wrap items-end gap-x-6 gap-y-3">
+    <fieldset class="flex flex-wrap items-center gap-4">
+        <legend class="c2fc-campo-rotulo mb-1">#tipo#</legend>
+        <label class="radio checkbox inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Click to show Page type">
+            <input type="radio" name="tipo" tabindex="1" value="pagina" #checked_pagina#>
+            <span>#pagina#</span>
+        </label>
+        <label class="radio checkbox inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Click to show System type">
+            <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#>
+            <span>#sistema#</span>
+        </label>
+        <label class="radio checkbox inline-flex cursor-pointer items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Click to show both">
+            <input type="radio" name="tipo" tabindex="0" value="ambos" #checked_ambos#>
+            <span>#ambos#</span>
+        </label>
+    </fieldset>
 </div>

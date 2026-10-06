@@ -3,10 +3,10 @@
     <input type="text" name="name" placeholder="Ex: Destaques da Home - Notícias (cópia)" class="c2fc-campo-entrada">
 </div>
 
-<div class="c2fc-alerta c2fc-alerta-info message">
+<div class="c2fc-alerta c2fc-alerta-info message my-4">
     <i data-lucide="info" class="size-4 shrink-0"></i>
-    <div class="content c2fc-dialogo-corpo">
-        <div class="header c2fc-dialogo-titulo">Clone fiel do bloco de origem</div>
+    <div class="content">
+        <div class="header">Clone fiel do bloco de origem</div>
         <p>O HTML e o CSS do bloco original já estão carregados no editor abaixo. Ajuste as regras, modelo e
             mapeamento conforme necessário. Após salvar, o registro original permanece inalterado.</p>
     </div>
@@ -17,7 +17,7 @@
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <div class="c2fc-campo" id="order-by-wrapper">
         <label class="c2fc-campo-rotulo">Ordenação</label>
-        <select id="order_by" class="c2fc-campo-selecao dropdown" name="order_by">
+        <select data-c2f-select="1" id="order_by" class="c2fc-campo-selecao dropdown" name="order_by">
             <option value="date_desc">Por data (mais recentes primeiro)</option>
             <option value="date_asc">Por data (mais antigas primeiro)</option>
             <option value="title_asc">Alfabética (A-Z)</option>
@@ -28,10 +28,10 @@
 
 <div class="c2fc-campo" id="manual-items-wrapper" style="display:none;">
     <label class="c2fc-campo-rotulo">Itens selecionados (ordem)</label>
-    <div class="c2fc-selo" style="margin: 8px 0; display: block;">
+    <div class="c2fc-rotulo label inline-flex items-center gap-2" style="margin: 8px 0;">
         <i data-lucide="mouse-pointer" class="size-4 shrink-0"></i>
-        Selecione abaixo as publicações ativas do publicador escolhido. A ordem de inclusão será preservada
-        na renderização. Para remover um item, clique no &laquo;x&raquo; ao lado dele.
+        <span>Selecione abaixo as publicações ativas do publicador escolhido. A ordem de inclusão será preservada
+        na renderização. Para remover um item, clique no &laquo;x&raquo; ao lado dele.</span>
     </div>
     <!-- req-014: autocomplete de busca Ajax + tags reordenáveis (substitui o dropdown múltiplo) -->
     <div class="flex flex-wrap gap-2 search-autocomplete-wrapper" style="position: relative;">
@@ -85,7 +85,7 @@
 
 <div class="c2fc-campo">
     <label class="c2fc-campo-rotulo">Modelo (Recurso)</label>
-    <select id="template_id" class="c2fc-campo-selecao dropdown templateDropdown" name="template_id">
+    <select data-c2f-select="1" id="template_id" class="c2fc-campo-selecao dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
@@ -102,24 +102,24 @@
     </div>
 
     <div class="c2fc-alerta c2fc-alerta-erro message negative hidden" id="error-message">
-        <div class="header c2fc-dialogo-titulo">Erro!</div>
+        <div class="header">Erro!</div>
         <p id="error-message-content"></p>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div class="min-w-0">
         <div class="row">
             <div class="min-w-0">
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-3 template-fields-list">
+                <div class="template-fields-list c2fc-mapa grid grid-cols-1 gap-4 md:grid-cols-3">
                     <div class="min-w-0">
-                        <h5>Variáveis do Modelo <kbd class="c2fc-selo">[[item#...]]</kbd></h5>
+                        <h5 class="c2fc-mapa-titulo">Variáveis do Modelo <kbd class="c2fc-selo">[[item#...]]</kbd></h5>
                         <div id="available-fields-list"></div>
                     </div>
                     <div class="min-w-0">
-                        <h5>Campos do Publicador</h5>
+                        <h5 class="c2fc-mapa-titulo">Campos do Publicador</h5>
                         <div id="missing-fields-list"></div>
                     </div>
                     <div class="min-w-0">
-                        <h5>Vinculados: Variável <kbd class="c2fc-selo"><i data-lucide="arrow-left-right" class="size-4"></i></kbd> Campo</h5>
+                        <h5 class="c2fc-mapa-titulo">Vinculados: Variável <kbd class="c2fc-selo"><i data-lucide="arrow-left-right" class="size-4"></i></kbd> Campo</h5>
                         <div id="linked-fields-list"></div>
                     </div>
                 </div>
@@ -137,33 +137,33 @@
     <a class="c2fc-aba item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0"></i> Editor HTML</a>
     <a class="c2fc-aba item" data-tab="hep-widget"><i data-lucide="boxes" class="size-4 shrink-0"></i> Código do Widget</a>
 </div>
-<div class="c2fc-painel-aba tab active" data-tab="hep-preview">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 tab active" data-tab="hep-preview">
     <div style="position: relative;">
-        <iframe id="iframe-pages-index-preview" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
+        <iframe id="iframe-pages-index-preview" class="block w-full rounded-lg border border-slate-300 bg-white" style="height:900px;"></iframe>
         <div class="c2fc-cobertura ui dimmer hep-preview-dimmer">
             <div class="c2fc-giro"></div>
         </div>
     </div>
 </div>
-<div class="c2fc-painel-aba tab hidden" data-tab="hep-editor">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 tab hidden" data-tab="hep-editor">
     #html-editor#
 </div>
-<div class="c2fc-painel-aba tab hidden" data-tab="hep-widget">
-    <div class="c2fc-alerta c2fc-alerta-info message">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 tab hidden" data-tab="hep-widget">
+    <div class="c2fc-alerta c2fc-alerta-info message my-4">
         <i data-lucide="boxes" class="size-4 shrink-0"></i>
-        <div class="content c2fc-dialogo-corpo">
-            <div class="header c2fc-dialogo-titulo">Bloco envelopado do widget</div>
+        <div class="content">
+            <div class="header">Bloco envelopado do widget</div>
             <p>Copie o trecho abaixo e cole em qualquer página física do site para injetar este
                 bloco de destaques. O comentário <code>&lt;!-- widgets#pages-index-&gt;render(...) --&gt;</code>
                 serve como wrapper: o motor do gestor reconhece e substitui pelo HTML renderizado
                 com as publicações reais no momento da requisição.</p>
         </div>
     </div>
-    <div class="c2fc-campo" style="margin-top:1rem;">
+    <div class="c2fc-campo min-w-0 mb-4" style="margin-top:1rem;">
         <label class="c2fc-campo-rotulo">Variável do Widget</label>
-        <div class="flex flex-wrap gap-2 action">
-            <input type="text" id="hep-widget-val" readonly class="c2fc-campo-entrada">
-            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario">
+        <div class="flex items-center gap-2 min-w-0 action input">
+            <input type="text" id="hep-widget-val" readonly class="c2fc-campo-entrada min-w-0 flex-1">
+            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario c2fc-botao-compacto">
                 <i data-lucide="copy" class="size-4 shrink-0"></i> Copiar
             </button>
         </div>

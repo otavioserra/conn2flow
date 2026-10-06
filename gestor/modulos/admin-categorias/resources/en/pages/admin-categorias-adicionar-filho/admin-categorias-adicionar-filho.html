@@ -1,13 +1,16 @@
-<div class="mb-4 rounded bg-sky-50 p-3 text-sky-900">
-    <b>#form-name-parent-label#:</b> #categoria-pai-texto#.
+<div class="mb-4 inline-flex items-center gap-2 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-900">
+    <i data-lucide="folder-tree" class="size-4 shrink-0"></i>
+    <span><b>#form-name-parent-label#:</b> #categoria-pai-texto#.</span>
 </div>
-<div class="mb-4">
-    <label class="mb-1 block text-sm font-medium">#form-name-label#</label>
-    <input class="w-full rounded border border-slate-300 px-3 py-2" type="text" name="nome"
-        placeholder="#form-name-placeholder#">
-</div>
-<div class="mb-4">
-    <label class="mb-1 block text-sm font-medium">@[[form-plugin-label]]@</label>
-    <span>#select-plugin#</span>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo min-w-0">
+        <label class="c2fc-campo-rotulo" for="admin-categorias-filho-nome">#form-name-label#</label>
+        <input class="c2fc-campo-entrada" id="admin-categorias-filho-nome" type="text" name="nome"
+            placeholder="#form-name-placeholder#">
+    </div>
+    <div class="c2fc-campo min-w-0">
+        <label class="c2fc-campo-rotulo">@[[form-plugin-label]]@</label>
+        <span>#select-plugin#</span>
+    </div>
 </div>
 <input type="hidden" name="id_pai" value="#id-pai#">

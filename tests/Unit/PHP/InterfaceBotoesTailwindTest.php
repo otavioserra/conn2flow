@@ -87,7 +87,10 @@ final class InterfaceBotoesTailwindTest extends TestCase
 
         // req-219: dica da biblioteca (data-c2f-dica), não o title nativo
         self::assertStringContainsString('data-c2f-dica="Incluir &quot;novo&quot;"', $html);
-        self::assertStringContainsString('data-c2f-dica=""', $html);
+        // REQ-243: botão declarado sem dica usa o rótulo; dica vazia desenhava um balão sem texto.
+        self::assertStringNotContainsString('data-c2f-dica=""', $html);
+        self::assertStringContainsString('data-c2f-dica="Desativar"', $html);
+        self::assertStringContainsString('data-c2f-dica="Excluir"', $html);
         self::assertStringNotContainsString(' title=', $html);
     }
 

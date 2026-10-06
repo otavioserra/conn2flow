@@ -36,7 +36,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.24",
+                    "version": "1.25",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -60,10 +60,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "f76acbd013511d33cb8d30062d94a2af",
-                        "css": "063b4057599d341d5c484d623a264259",
+                        "html": "bea0fc26ee91b0660b630e4f27f7fba5",
+                        "css": "ab4637d7b354244e358fc0636cf50aca",
                         "css_precompiled": "",
-                        "combined": "e0aef3100444cb389f2c7a5e0c14b09b"
+                        "combined": "73a244ff954c6a06aa48eca507c9185e"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -482,6 +482,31 @@
                     "type": "string"
                 },
                 {
+                    "id": "picker-tray-confirm",
+                    "value": "Concluir seleção",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-empty",
+                    "value": "Marque as imagens na lista e conclua a seleção.",
+                    "type": "string"
+                },
+                {
+                    "id": "add-button-tooltip",
+                    "value": "Enviar novos arquivos para a pasta atual",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-new-tooltip",
+                    "value": "Criar uma pasta dentro da pasta atual",
+                    "type": "string"
+                },
+                {
+                    "id": "select-all-tooltip",
+                    "value": "Marcar ou desmarcar todos os arquivos da lista",
+                    "type": "string"
+                },
+                {
                     "id": "select-all",
                     "value": "Selecionar Todos",
                     "type": "string"
@@ -634,7 +659,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.24",
+                    "version": "1.25",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -658,10 +683,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "f76acbd013511d33cb8d30062d94a2af",
-                        "css": "063b4057599d341d5c484d623a264259",
+                        "html": "bea0fc26ee91b0660b630e4f27f7fba5",
+                        "css": "ab4637d7b354244e358fc0636cf50aca",
                         "css_precompiled": "",
-                        "combined": "e0aef3100444cb389f2c7a5e0c14b09b"
+                        "combined": "73a244ff954c6a06aa48eca507c9185e"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -1080,6 +1105,31 @@
                     "type": "string"
                 },
                 {
+                    "id": "picker-tray-confirm",
+                    "value": "Finish selection",
+                    "type": "string"
+                },
+                {
+                    "id": "picker-tray-empty",
+                    "value": "Tick the images in the list and finish the selection.",
+                    "type": "string"
+                },
+                {
+                    "id": "add-button-tooltip",
+                    "value": "Upload new files to the current folder",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-new-tooltip",
+                    "value": "Create a folder inside the current folder",
+                    "type": "string"
+                },
+                {
+                    "id": "select-all-tooltip",
+                    "value": "Tick or untick every file in the list",
+                    "type": "string"
+                },
+                {
                     "id": "select-all",
                     "value": "Select All",
                     "type": "string"
@@ -1222,5 +1272,5 @@
             ]
         }
     },
-    "asset_version": "4e9914360b781fd8"
+    "asset_version": "fd8b148557766282"
 }

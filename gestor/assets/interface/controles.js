@@ -128,13 +128,34 @@
 
     var focoAnterior = [];
 
+    // Mensagem com ênfase vinda das variáveis do sistema (`<b>NÃO</b>`): só as tags de ênfase desta lista
+    // viram elemento, e sem atributo nenhum; o resto da marcação entra como texto.
+    var TAGS_FORMATADAS = { B: 1, STRONG: 1, I: 1, EM: 1, U: 1, BR: 1, CODE: 1 };
+    function formatado(destino, mensagem) {
+        var origem = new DOMParser().parseFromString('<body>' + String(mensagem === undefined || mensagem === null ? '' : mensagem) + '</body>', 'text/html').body;
+        (function copiar(de, para) {
+            Array.prototype.forEach.call(de.childNodes, function (no) {
+                if (no.nodeType === 3) { para.appendChild(document.createTextNode(no.nodeValue)); return; }
+                if (no.nodeType !== 1) return;
+                if (/^(SCRIPT|STYLE|IFRAME|OBJECT|EMBED|TEMPLATE)$/.test(no.tagName)) return;
+                if (!TAGS_FORMATADAS[no.tagName]) { copiar(no, para); return; }
+                var limpo = document.createElement(no.tagName.toLowerCase());
+                para.appendChild(limpo);
+                copiar(no, limpo);
+            });
+        })(origem, destino);
+        return destino;
+    }
+
     function dialogo(tipo, mensagem, valor, opcoes) {
         opcoes = opcoes || {};
         return new Promise(function (resolver) {
             var entrada = tipo === 'perguntar' ? el('input', { type: 'text', 'class': 'c2fc-entrada', value: valor === undefined || valor === null ? '' : String(valor) }) : null;
             var corpo = el('div', { 'class': 'c2fc-dialogo-corpo' });
             var paragrafo = el('p');
-            if (opcoes.html) paragrafo.innerHTML = String(mensagem); else paragrafo.textContent = String(mensagem === undefined ? '' : mensagem);
+            if (opcoes.html) paragrafo.innerHTML = String(mensagem);
+            else if (opcoes.formatado) formatado(paragrafo, mensagem);
+            else paragrafo.textContent = String(mensagem === undefined ? '' : mensagem);
             corpo.appendChild(paragrafo);
             if (entrada) corpo.appendChild(entrada);
             var titulo = opcoes.titulo || (tipo === 'alerta' ? texto('atencao') : texto('confirmar'));
@@ -268,6 +289,22 @@
             document.addEventListener('mousedown', this._foraDeFoco);
             // Quem muda o nativo por fora (script antigo) vê o controle acompanhar.
             nativo.addEventListener('change', function () { self._desenharGatilho(); });
+            // REQ-243: script que escreve `select.value = x` (ou `selectedIndex`, ou troca as opções) não
+            // dispara `change`; sem acompanhar, o gatilho continuava mostrando a opção antiga.
+            ['value', 'selectedIndex'].forEach(function (prop) {
+                var original = global.HTMLSelectElement && Object.getOwnPropertyDescriptor(global.HTMLSelectElement.prototype, prop);
+                if (!original || !original.set || !original.get) return;
+                Object.defineProperty(nativo, prop, {
+                    configurable: true,
+                    enumerable: original.enumerable,
+                    get: function () { return original.get.call(this); },
+                    set: function (v) { original.set.call(this, v); self._desenharGatilho(); }
+                });
+            });
+            if (global.MutationObserver) {
+                this._observador = new global.MutationObserver(function () { self._desenharGatilho(); });
+                this._observador.observe(nativo, { childList: true, subtree: true });
+            }
             this._desenharGatilho();
         },
 
@@ -306,7 +343,14 @@
                 achadas.forEach(function (o) {
                     var item = el('li', { 'class': 'c2fc-select-opcao', role: 'option', id: idNovo('c2fc-o-'), 'aria-selected': o.selected && o.value !== '' ? 'true' : 'false',
                         'aria-disabled': o.disabled ? 'true' : null, 'data-valor': o.value, text: o.textContent });
-                    item.addEventListener('mousedown', function (ev) { ev.preventDefault(); self._escolher(o); });
+                    // A escolha fecha o painel já no mousedown; sem isolar, o mouseup e o click do mesmo gesto
+                    // caem no que estava atrás do painel (um botão, um link) e o acionam.
+                    item.addEventListener('mousedown', function (ev) {
+                        ev.preventDefault(); ev.stopPropagation();
+                        if (ev.isTrusted && !self.multiplo) self._engolirClique();
+                        self._escolher(o);
+                    });
+                    item.addEventListener('click', function (ev) { ev.preventDefault(); ev.stopPropagation(); });
                     lista.appendChild(item);
                     self.visiveis.push({ opcao: o, item: item });
                 });
@@ -339,6 +383,17 @@
             else if (ev.key === 'Enter' || (ev.key === ' ' && ev.target === this.gatilho)) { ev.preventDefault(); if (!aberto) this.abrir(); else if (this.visiveis[this.ativa]) this._escolher(this.visiveis[this.ativa].opcao); }
             else if (ev.key === 'Escape' && aberto) { ev.preventDefault(); ev.stopPropagation(); this.fechar(true); }
             else if (ev.key === 'Tab' && aberto) this.fechar(false);
+        },
+
+        // Segura o restante do gesto do mouse (mouseup e click) na fase de captura, até o botão ser solto.
+        _engolirClique: function () {
+            var parar = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
+            var soltar = function () {
+                document.removeEventListener('mouseup', soltar, true);
+                setTimeout(function () { document.removeEventListener('click', parar, true); }, 0);
+            };
+            document.addEventListener('click', parar, true);
+            document.addEventListener('mouseup', soltar, true);
         },
 
         _escolher: function (o) {
@@ -476,6 +531,9 @@
         destruir: function () {
             this.fechar(false);
             document.removeEventListener('mousedown', this._foraDeFoco);
+            if (this._observador) this._observador.disconnect();
+            delete this.nativo.value;
+            delete this.nativo.selectedIndex;
             this.raiz.parentNode.insertBefore(this.nativo, this.raiz);
             this.raiz.parentNode.removeChild(this.raiz);
             this.nativo.classList.remove('c2fc-nativo');
@@ -566,7 +624,7 @@
 
     global.c2fControles = {
         Controle: Controle, estender: estender, registrar: registrar, criar: criar, de: de, iniciar: iniciar,
-        tipos: tipos, dialogo: dialogos, aviso: aviso, carregando: carregando, texto: texto,
+        tipos: tipos, dialogo: dialogos, aviso: aviso, carregando: carregando, texto: texto, formatado: formatado,
         // Atalhos.
         select: function (nativo, opcoes) { return nativo && nativo.tagName === 'SELECT' ? criar('select', nativo, opcoes) : null; },
         instancia: de
@@ -943,7 +1001,7 @@
                 dados = JSON.parse(decodeURI(msg.data));
             } catch (e) { return; }
             if (!/^image\//.test(String(dados.tipo || ''))) {
-                dialogo('alerta', (config.alertas && config.alertas.naoImagem) || texto('atencao'));
+                dialogo('alerta', (config.alertas && config.alertas.naoImagem) || texto('atencao'), null, { formatado: true });
                 return;
             }
             imagemPreencher(atual, dados);
@@ -968,6 +1026,22 @@
     }
     global.c2fControles.marcarDataChecked = marcarDataChecked;
 
-    function preparar() { ponte(global.jQuery); marcarDataChecked(document); iniciar(document); imagemSeletor(); }
+    // REQ-243: select com `data-c2f-select` que entra na página depois da carga (linha clonada de um
+    // <template>, bloco vindo por AJAX) também vira controle. O que já está dentro de um controle fica de fora.
+    function observarSelects() {
+        if (!global.MutationObserver || !document.body) return;
+        var montar = function (no) { if (!no.closest('.c2fc-select') && !no.closest('template')) criar('select', no); };
+        new global.MutationObserver(function (registros) {
+            registros.forEach(function (registro) {
+                Array.prototype.forEach.call(registro.addedNodes, function (no) {
+                    if (no.nodeType !== 1) return;
+                    if (no.matches('select[data-c2f-select]')) montar(no);
+                    Array.prototype.forEach.call(no.querySelectorAll('select[data-c2f-select]'), montar);
+                });
+            });
+        }).observe(document.body, { childList: true, subtree: true });
+    }
+
+    function preparar() { ponte(global.jQuery); marcarDataChecked(document); iniciar(document); imagemSeletor(); observarSelects(); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', preparar); else preparar();
 })(window);

@@ -336,24 +336,24 @@
         "name": "Configuration - Fields Tailwind",
         "id": "configuracao-campos-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "c86c88eac56a6a5d45fd4833c65664f1",
+            "html": "67bcc65233e8cd38059104df415dc224",
             "css": "",
             "css_precompiled": "",
-            "combined": "c86c88eac56a6a5d45fd4833c65664f1"
+            "combined": "67bcc65233e8cd38059104df415dc224"
         }
     },
     {
         "name": "Configuration - Widget Tailwind",
         "id": "configuracao-widget-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "8c22bc5894b8e77cd27a55cbb1ae9566",
+            "html": "5ae5e004894f97d9210d93c056825baa",
             "css": "",
             "css_precompiled": "",
-            "combined": "8c22bc5894b8e77cd27a55cbb1ae9566"
+            "combined": "5ae5e004894f97d9210d93c056825baa"
         }
     },
     {
@@ -531,12 +531,12 @@
         "name": "HTML Editor Templates Tailwind",
         "id": "html-editor-modelos-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "b264ac3aa7304641fa0693e355a56c39",
+            "html": "47135faec6e6517192f4621c86d19e89",
             "css": "",
             "css_precompiled": "",
-            "combined": "b264ac3aa7304641fa0693e355a56c39"
+            "combined": "47135faec6e6517192f4621c86d19e89"
         }
     },
     {
@@ -658,24 +658,24 @@
         "name": "Interface Edit Form Tailwind",
         "id": "interface-formulario-edicao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.9",
+        "version": "1.10",
         "checksum": {
-            "html": "b70e3c66fb448ce1b97f557cd81ac005",
+            "html": "649f38a183b09a4e83e4a671ec315182",
             "css": "",
             "css_precompiled": "",
-            "combined": "b70e3c66fb448ce1b97f557cd81ac005"
+            "combined": "649f38a183b09a4e83e4a671ec315182"
         }
     },
     {
         "name": "Interface View Form Tailwind",
         "id": "interface-formulario-visualizacao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "ae5b7299656f7b9d632ffc99bd6e257a",
+            "html": "993fa9e288eccd04bd823b209b405411",
             "css": "",
             "css_precompiled": "",
-            "combined": "ae5b7299656f7b9d632ffc99bd6e257a"
+            "combined": "993fa9e288eccd04bd823b209b405411"
         }
     },
     {

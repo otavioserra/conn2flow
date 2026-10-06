@@ -127,7 +127,7 @@
                     "path": "admin-categorias/adicionar-filho/",
                     "type": "system",
                     "option": "adicionar-filho",
-                    "version": "1.4",
+                    "version": "1.5",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -143,10 +143,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "caa65daae7e0577737895332a6016c27",
+                        "html": "b1d1ad869a918285db59e00e479ce24a",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "caa65daae7e0577737895332a6016c27"
+                        "combined": "b1d1ad869a918285db59e00e479ce24a"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -346,7 +346,7 @@
                     "path": "admin-categorias/adicionar-filho/",
                     "type": "system",
                     "option": "adicionar-filho",
-                    "version": "1.4",
+                    "version": "1.5",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -362,10 +362,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "caa65daae7e0577737895332a6016c27",
+                        "html": "b1d1ad869a918285db59e00e479ce24a",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "caa65daae7e0577737895332a6016c27"
+                        "combined": "b1d1ad869a918285db59e00e479ce24a"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }

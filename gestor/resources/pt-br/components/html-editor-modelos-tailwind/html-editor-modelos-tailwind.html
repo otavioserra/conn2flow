@@ -9,7 +9,7 @@
             <i data-lucide="circle-x" class="size-4"></i>
         </button>
     </div>
-    <div class="modelos-cards grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="modelos-cards">
+    <div class="modelos-cards c2fc-modelos-grade" id="modelos-cards">
         <!-- Modelos serão carregados dinamicamente aqui -->
     </div>
     <div class="py-6 text-center" id="modelos-no-results" style="display: none;">
@@ -45,18 +45,18 @@
     </div>
 </div>
 <template id="modelo-card-template">
-    <div class="card modelo-card flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm" data-modelo-id="{{id}}">
-        <div class="aspect-4/3 overflow-hidden bg-slate-100">
+    <div class="card modelo-card c2fc-modelo-cartao flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm" data-modelo-id="{{id}}">
+        <div class="c2fc-modelo-capa aspect-4/3 overflow-hidden bg-slate-100">
             <img class="h-full w-full object-cover" src="{{thumbnail}}" alt="{{nome}}">
         </div>
-        <div class="flex-1 px-4 py-3">
-            <p class="font-semibold text-slate-900">{{nome}}</p>
+        <div class="flex-1 px-3 py-2">
+            <p class="truncate text-sm font-semibold text-slate-900" title="{{nome}}">{{nome}}</p>
             <p class="text-xs text-slate-500">
                 <span>{{target}}</span> • <span>{{language}}</span>
             </p>
         </div>
-        <div class="border-t border-slate-200 px-4 py-3">
-            <button type="button" class="modeloSelecionar c2fc-botao c2fc-botao-primario w-full justify-center" data-modelo-id="{{id}}"
+        <div class="border-t border-slate-200 px-3 py-2">
+            <button type="button" class="modeloSelecionar c2fc-botao c2fc-botao-primario c2fc-botao-compacto w-full justify-center" data-modelo-id="{{id}}"
                 data-c2f-dica-pos="top left" data-c2f-dica="Clique para selecionar este modelo">
                 Selecionar Modelo
             </button>

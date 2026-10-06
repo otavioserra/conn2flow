@@ -17,7 +17,7 @@
 
 <div class="field c2fc-campo min-w-0 mb-4">
     <label class="c2fc-campo-rotulo">Template (Resource)</label>
-    <select id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown relative min-w-0" name="template_id">
+    <select data-c2f-select="1" data-c2f-busca="1" id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown relative min-w-0" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
@@ -115,18 +115,17 @@
             <div class="min-w-0">
                 <div class="row min-w-0">
                     <div class="sixteen wide column min-w-0">
-                        <div class="template-fields-list grid grid-cols-1 gap-3">
+                        <div class="template-fields-list c2fc-mapa grid grid-cols-1 gap-4 md:grid-cols-3">
                             <div class="four wide column min-w-0">
-                                <h5>Template Fields</h5>
+                                <h5 class="c2fc-mapa-titulo">Template Variables</h5>
                                 <div id="available-fields-list"></div>
                             </div>
                             <div class="four wide column min-w-0">
-                                <h5>Publisher Fields</h5>
+                                <h5 class="c2fc-mapa-titulo">Publisher Fields</h5>
                                 <div id="missing-fields-list"></div>
                             </div>
                             <div class="eight wide column min-w-0">
-                                <h5>Linked Fields: Template <kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
-                                            class="exchange alternate icon"></i></kbd> Publisher</h5>
+                                <h5 class="c2fc-mapa-titulo">Linked (Variable/Field)</h5>
                                 <div id="linked-fields-list"></div>
                             </div>
                         </div>

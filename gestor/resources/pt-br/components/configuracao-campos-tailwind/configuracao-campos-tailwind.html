@@ -1,17 +1,17 @@
 <!-- string < --><input type="text" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
     value="#value-valor#"
-    class="campo string w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- string > -->
+    class="campo string c2fc-campo-entrada" /><!-- string > -->
 <!-- text < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
-    class="campo text min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- text > -->
+    class="campo text min-h-24 c2fc-campo-entrada">#value-valor#</textarea><!-- text > -->
 <!-- number < --><input type="number" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
     value="#value-valor#"
-    class="campo number w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- number > -->
+    class="campo number c2fc-campo-entrada" /><!-- number > -->
 <!-- quantidade < --><input type="text" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
     value="#value-valor#"
-    class="campo quantidade w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- quantidade > -->
+    class="campo quantidade c2fc-campo-entrada" /><!-- quantidade > -->
 <!-- dinheiro < --><input type="text" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
     value="#value-valor#"
-    class="campo dinheiro w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- dinheiro > -->
+    class="campo dinheiro c2fc-campo-entrada" /><!-- dinheiro > -->
 <!-- bool < -->
 <div class="campo bool flex items-center gap-2">
     <input type="checkbox" name="valor-#value-num#" value="1" checked
@@ -19,18 +19,18 @@
     <label></label>
 </div><!-- bool > -->
 <!-- editor-texto < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
-    class="campo editor-texto min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- editor-texto > -->
+    class="campo editor-texto min-h-24 c2fc-campo-entrada">#value-valor#</textarea><!-- editor-texto > -->
 <!-- css < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
-    class="campo css min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- css > -->
+    class="campo css min-h-24 c2fc-campo-entrada">#value-valor#</textarea><!-- css > -->
 <!-- js < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
-    class="campo js min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- js > -->
+    class="campo js min-h-24 c2fc-campo-entrada">#value-valor#</textarea><!-- js > -->
 <!-- html < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
-    class="campo html min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- html > -->
+    class="campo html min-h-24 c2fc-campo-entrada">#value-valor#</textarea><!-- html > -->
 <!-- datas-multiplas < -->
 <div class="calendar-multiple campo datas-multiplas space-y-2 rounded border border-slate-200 p-3">
     <div class="calendar-dates flex flex-wrap gap-2"></div>
     <input type="date"
-        class="calendarMultipleInput w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+        class="calendarMultipleInput c2fc-campo-entrada"
         aria-label="@[[variable-type-data-label]]@">
     <template class="calendar-date-template">
         <span class="date-value inline-flex items-center gap-1 rounded bg-slate-100 px-2 py-1 text-sm text-slate-800">
@@ -47,14 +47,14 @@
 <!-- data-hora < -->
 <div class="calendar campo data-hora">
     <input type="datetime-local" step="60" aria-label="@[[variable-type-data-hora-label]]@"
-        class="calendarInputDisplay w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+        class="calendarInputDisplay c2fc-campo-entrada">
     <input type="hidden" name="valor-#value-num#" value="#value-valor#" class="calendarInput">
 </div>
 <!-- data-hora > -->
 <!-- data < -->
 <div class="calendar campo data">
     <input type="date" aria-label="@[[variable-type-data-label]]@"
-        class="calendarInputDisplay w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+        class="calendarInputDisplay c2fc-campo-entrada">
     <input type="hidden" name="valor-#value-num#" value="#value-valor#" class="calendarInput">
 </div>
 <!-- data > -->

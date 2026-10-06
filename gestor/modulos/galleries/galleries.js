@@ -61,7 +61,13 @@ $(document).ready(function () {
             + '.gallery-item:not(.gallery-settings-form):hover,.gallery-item:not(.gallery-settings-form):focus-within{'
             + 'border-color:#2185d0;box-shadow:0 4px 14px rgba(33,133,208,0.22);}'
             + '.gallery-item.sortable-drag,.gallery-item.sortable-ghost{opacity:0.6;}'
-            + '.gallery-item-handle{cursor:grab;opacity:0.6;}'
+            // REQ-243: a alça de arrasto é um botão como os outros (sólida, mesma caixa e mesmo alinhamento).
+            + '.gallery-item-handle{cursor:grab;opacity:1;}'
+            + '.gallery-item-actions .c2fc-botao{flex:none;margin:0;align-self:center;}'
+            + '.gallery-item-actions .gallery-item-handle{border-color:#cbd5e1;background:#fff;color:#334155;}'
+            + '#gallery-items.view-medium .gallery-item-actions .c2fc-botao,'
+            + '#gallery-items.view-small .gallery-item-actions .c2fc-botao{pointer-events:auto;border-radius:999px;'
+            + 'box-shadow:0 1px 3px rgba(0,0,0,0.35);}'
             + '.gallery-item-handle:active{cursor:grabbing;}'
             + '.gallery-item-thumb{width:200px;height:140px;object-fit:cover;border-radius:3px;background:#f4f4f4;flex:0 0 auto;}'
             + '.gallery-item-body{flex:1;min-width:0;}'
@@ -392,6 +398,11 @@ $(document).ready(function () {
     window.addEventListener('message', function (e) {
         var data;
         try { data = JSON.parse(e.data); } catch (err) { return; }
+        // REQ-243: a bandeja do seletor avisa quando a escolha terminou (concluir ou cancelar) e o modal fecha.
+        if (data && data.moduloId === 'admin-arquivos-seletor') {
+            if (data.acao === 'concluir' || data.acao === 'cancelar') $('.modal.iframePagina').modal('hide');
+            return;
+        }
         if (!data || (data.moduloId !== 'admin-arquivos' && data.moduloId !== 'arquivos')) return;
 
         var dados;

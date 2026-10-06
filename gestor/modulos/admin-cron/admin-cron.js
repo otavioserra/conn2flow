@@ -273,11 +273,11 @@
             '</td>' +
             '<td class="px-4 py-3 text-right align-top">' +
                 '<div class="inline-flex flex-wrap justify-end gap-1">' +
-                    botaoHtml('run', t.id, rotulos.labelRun) +
-                    botaoHtml('toggle', t.id, t.ativo ? rotulos.labelPause : rotulos.labelActivate) +
-                    botaoHtml('edit', t.id, rotulos.labelEdit) +
-                    botaoHtml('logs', t.id, rotulos.labelLogs) +
-                    (t.origem === 'manual' ? botaoHtml('delete', t.id, rotulos.labelDelete) : '') +
+                    botaoHtml('run', t.id, rotulos.labelRun, t.nome) +
+                    botaoHtml('toggle', t.id, t.ativo ? rotulos.labelPause : rotulos.labelActivate, t.nome) +
+                    botaoHtml('edit', t.id, rotulos.labelEdit, t.nome) +
+                    botaoHtml('logs', t.id, rotulos.labelLogs, t.nome) +
+                    (t.origem === 'manual' ? botaoHtml('delete', t.id, rotulos.labelDelete, t.nome) : '') +
                 '</div>' +
             '</td>' +
             '</tr>';
@@ -287,9 +287,12 @@
      * `type="button"` é obrigatório: um `<button>` sem type dentro de qualquer form submete a
      * página e produz o recarregamento involuntário corrigido no BATCH-024.
      */
-    function botaoHtml(acao, id, rotulo) {
+    function botaoHtml(acao, id, rotulo, nome) {
+        // REQ-243: botões no padrão do painel, com a dica dizendo a ação e a tarefa em que ela vale.
+        var dica = nome ? rotulo + ': ' + nome : rotulo;
         return '<button type="button" data-acao="' + acao + '" data-id="' + escapar(id) + '" ' +
-            'class="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400">' +
+            'class="c2fc-botao c2fc-botao-pequeno' + (acao === 'delete' ? ' c2fc-botao-perigo-suave' : '') + '" ' +
+            'data-c2f-dica="' + escapar(dica).replace(/"/g, '&quot;') + '" data-c2f-dica-pos="top right">' +
             escapar(rotulo) + '</button>';
     }
 

@@ -8,13 +8,13 @@
         </div>
         <div class="flex items-center justify-end lg:col-span-2">
             <div class="flex gap-1 c2f-views">
-                <button class="c2f-view-btn rounded-lg border px-2 py-1 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="large"
+                <button class="c2f-view-btn rounded-lg border px-2.5 py-1.5 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="large"
                     data-content="@[[view-large]]@" data-c2f-dica="@[[view-large]]@" aria-label="@[[view-large]]@"><i data-lucide="layout-grid" class="size-4" aria-hidden="true"></i></button>
-                <button class="c2f-view-btn rounded-lg border px-2 py-1 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="medium"
+                <button class="c2f-view-btn rounded-lg border px-2.5 py-1.5 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="medium"
                     data-content="@[[view-medium]]@" data-c2f-dica="@[[view-medium]]@" aria-label="@[[view-medium]]@"><i data-lucide="grid-2x2" class="size-4" aria-hidden="true"></i></button>
-                <button class="c2f-view-btn rounded-lg border px-2 py-1 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="small"
+                <button class="c2f-view-btn rounded-lg border px-2.5 py-1.5 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="small"
                     data-content="@[[view-small]]@" data-c2f-dica="@[[view-small]]@" aria-label="@[[view-small]]@"><i data-lucide="grid-3x3" class="size-4" aria-hidden="true"></i></button>
-                <button class="c2f-view-btn rounded-lg border px-2 py-1 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="list" data-content="@[[view-list]]@" data-c2f-dica="@[[view-list]]@" aria-label="@[[view-list]]@"><i data-lucide="list" class="size-4" aria-hidden="true"></i></button>
+                <button class="c2f-view-btn rounded-lg border px-2.5 py-1.5 text-sm font-medium shadow-sm transition-colors border-slate-300 bg-white hover:bg-slate-100" data-view="list" data-content="@[[view-list]]@" data-c2f-dica="@[[view-list]]@" aria-label="@[[view-list]]@"><i data-lucide="list" class="size-4" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>
@@ -28,12 +28,12 @@
 
     <!-- normal-tools < -->
     <div class="flex flex-wrap items-center gap-2 c2f-folder-tools">
-        <a class="inline-flex items-center gap-2 rounded-lg bg-emerald-700 px-3 py-2 text-white text-sm font-medium shadow-sm transition-colors hover:bg-emerald-800"
-            href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/adicionar/#paginaIframe#" data-id="adicionar">
+        <a class="inline-flex items-center gap-2 rounded-lg border border-emerald-700 bg-emerald-700 px-3 py-1.5 text-white text-sm font-medium shadow-sm transition-colors hover:bg-emerald-800"
+            href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/adicionar/#paginaIframe#" data-id="adicionar" data-c2f-dica="@[[add-button-tooltip]]@" data-c2f-dica-pos="bottom left">
             <i data-lucide="upload" class="size-4" aria-hidden="true"></i> @[[add-button-label]]@
         </a>
-        <button class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-slate-100" id="c2f-new-folder"><i data-lucide="folder-plus" class="size-4" aria-hidden="true"></i> @[[folder-new]]@</button>
-        <label class="ml-auto inline-flex items-center gap-2 c2f-select-all-box">
+        <button type="button" class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition-colors hover:bg-slate-100" id="c2f-new-folder" data-c2f-dica="@[[folder-new-tooltip]]@" data-c2f-dica-pos="bottom left"><i data-lucide="folder-plus" class="size-4" aria-hidden="true"></i> @[[folder-new]]@</button>
+        <label class="ml-auto inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 c2f-select-all-box" data-c2f-dica="@[[select-all-tooltip]]@" data-c2f-dica-pos="bottom right">
             <input type="checkbox" id="c2f-select-all">@[[select-all]]@
         </label>
     </div>
@@ -121,11 +121,12 @@
     </div>
 
     <div class="hidden c2f-pick-tray" id="c2f-pick-tray" role="region" aria-label="@[[picker-tray-label]]@" data-remove-label="@[[picker-tray-remove]]@">
+        <p class="hidden c2f-pick-tray-empty flex-1 text-sm text-slate-600" id="c2f-pick-tray-empty">@[[picker-tray-empty]]@</p>
         <div class="c2f-pick-tray-thumbs" id="c2f-pick-tray-thumbs" role="list"></div>
         <div class="flex shrink-0 flex-wrap items-center justify-end gap-2">
             <span class="hidden text-sm text-slate-600 sm:inline"><b id="c2f-pick-tray-count">0</b> @[[selected-count-label]]@</span>
             <button type="button" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100" id="c2f-pick-tray-cancel">@[[picker-tray-cancel]]@</button>
-            <button type="button" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" id="c2f-pick-tray-confirm"><i data-lucide="check" class="size-4" aria-hidden="true"></i> @[[pick-selected]]@</button>
+            <button type="button" class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-50" id="c2f-pick-tray-confirm"><i data-lucide="check" class="size-4" aria-hidden="true"></i> @[[picker-tray-confirm]]@</button>
         </div>
     </div>
 

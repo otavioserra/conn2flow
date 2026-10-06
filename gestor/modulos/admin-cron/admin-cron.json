@@ -21,20 +21,20 @@
                     "name": "Rotinas Automáticas",
                     "id": "admin-cron",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-cron\/",
+                    "path": "admin-cron/",
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "824ca3860646397302ed5ff38e49735b",
+                        "html": "15b9fcfc0b15becb4e768cf8abe609cb",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "824ca3860646397302ed5ff38e49735b"
+                        "combined": "15b9fcfc0b15becb4e768cf8abe609cb"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-cron.js"
+                        "../../../../admin-cron.js"
                     ],
                     "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas.",
                     "tailwind_bundle": true,
@@ -75,7 +75,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-225\/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
+                    "tailwind_dependencies_reason": "REQ-225/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
                 }
             ],
             "variables": [
@@ -127,6 +127,26 @@
                 {
                     "id": "button-new-task",
                     "value": "Nova tarefa",
+                    "type": "string"
+                },
+                {
+                    "id": "button-sync-modules-tooltip",
+                    "value": "Ler as tarefas declaradas pelos módulos e atualizar a lista",
+                    "type": "string"
+                },
+                {
+                    "id": "button-new-task-tooltip",
+                    "value": "Criar uma tarefa agendada manualmente",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-frequency-tooltip",
+                    "value": "Mostrar só as tarefas desta frequência",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-module-tooltip",
+                    "value": "Mostrar só as tarefas deste módulo",
                     "type": "string"
                 },
                 {
@@ -502,20 +522,20 @@
                     "name": "Scheduled Tasks",
                     "id": "admin-cron",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-cron\/",
+                    "path": "admin-cron/",
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "824ca3860646397302ed5ff38e49735b",
+                        "html": "15b9fcfc0b15becb4e768cf8abe609cb",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "824ca3860646397302ed5ff38e49735b"
+                        "combined": "15b9fcfc0b15becb4e768cf8abe609cb"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-cron.js"
+                        "../../../../admin-cron.js"
                     ],
                     "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities.",
                     "tailwind_bundle": true,
@@ -556,7 +576,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-225\/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
+                    "tailwind_dependencies_reason": "REQ-225/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
                 }
             ],
             "variables": [
@@ -608,6 +628,26 @@
                 {
                     "id": "button-new-task",
                     "value": "New task",
+                    "type": "string"
+                },
+                {
+                    "id": "button-sync-modules-tooltip",
+                    "value": "Read the tasks declared by the modules and refresh the list",
+                    "type": "string"
+                },
+                {
+                    "id": "button-new-task-tooltip",
+                    "value": "Create a scheduled task manually",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-frequency-tooltip",
+                    "value": "Show only the tasks with this frequency",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-module-tooltip",
+                    "value": "Show only the tasks of this module",
                     "type": "string"
                 },
                 {
@@ -978,5 +1018,5 @@
             ]
         }
     },
-    "asset_version": "9792fb3f9e62e42c"
+    "asset_version": "c66f170e9db653ad"
 }

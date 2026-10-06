@@ -191,6 +191,69 @@
     {
         "language": "pt-br",
         "modulo": "configuracao",
+        "id": "variavel-edit-btn",
+        "valor": "Editar variável",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "configuracao",
+        "id": "variavel-delete-btn",
+        "valor": "Excluir variável",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "configuracao",
+        "id": "variavel-cancel-btn",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "configuracao",
+        "id": "variavel-edit-title",
+        "valor": "Editar Variável",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "configuracao",
+        "id": "variavel-add-instructions",
+        "valor": "Preencha o identificador, o grupo, a descrição, o tipo e o valor. A variável é criada quando o formulário for salvo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "configuracao",
+        "id": "variavel-edit-instructions",
+        "valor": "Altere os campos abaixo. As mudanças valem quando o formulário for salvo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "configuracao",
+        "id": "form-value-placeholder",
+        "valor": "Valor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "configuracao",
         "id": "variavel-description-label",
         "valor": "Descrição",
         "tipo": "string",
@@ -1714,6 +1777,69 @@
         "modulo": "configuracao",
         "id": "variavel-add-btn",
         "valor": "Add Variable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "configuracao",
+        "id": "variavel-edit-btn",
+        "valor": "Edit variable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "configuracao",
+        "id": "variavel-delete-btn",
+        "valor": "Delete variable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "configuracao",
+        "id": "variavel-cancel-btn",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "configuracao",
+        "id": "variavel-edit-title",
+        "valor": "Edit Variable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "configuracao",
+        "id": "variavel-add-instructions",
+        "valor": "Fill in the identifier, group, description, type and value. The variable is created when the form is saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "configuracao",
+        "id": "variavel-edit-instructions",
+        "valor": "Change the fields below. The changes take effect when the form is saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "configuracao",
+        "id": "form-value-placeholder",
+        "valor": "Value",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3692,6 +3818,51 @@
     {
         "language": "pt-br",
         "modulo": "admin-arquivos",
+        "id": "picker-tray-confirm",
+        "valor": "Concluir seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-empty",
+        "valor": "Marque as imagens na lista e conclua a seleção.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "add-button-tooltip",
+        "valor": "Enviar novos arquivos para a pasta atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "folder-new-tooltip",
+        "valor": "Criar uma pasta dentro da pasta atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "select-all-tooltip",
+        "valor": "Marcar ou desmarcar todos os arquivos da lista",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
         "id": "select-all",
         "valor": "Selecionar Todos",
         "tipo": "string",
@@ -4567,6 +4738,51 @@
         "modulo": "admin-arquivos",
         "id": "picker-tray-remove",
         "valor": "Remove from selection",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-confirm",
+        "valor": "Finish selection",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "picker-tray-empty",
+        "valor": "Tick the images in the list and finish the selection.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-button-tooltip",
+        "valor": "Upload new files to the current folder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "folder-new-tooltip",
+        "valor": "Create a folder inside the current folder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "select-all-tooltip",
+        "valor": "Tick or untick every file in the list",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7994,6 +8210,42 @@
     {
         "language": "pt-br",
         "modulo": "admin-cron",
+        "id": "button-sync-modules-tooltip",
+        "valor": "Ler as tarefas declaradas pelos módulos e atualizar a lista",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "button-new-task-tooltip",
+        "valor": "Criar uma tarefa agendada manualmente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "filter-frequency-tooltip",
+        "valor": "Mostrar só as tarefas desta frequência",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "filter-module-tooltip",
+        "valor": "Mostrar só as tarefas deste módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
         "id": "filter-search-placeholder",
         "valor": "Buscar por nome, identificador ou callback",
         "tipo": "string",
@@ -8734,6 +8986,42 @@
         "modulo": "admin-cron",
         "id": "button-new-task",
         "valor": "New task",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "button-sync-modules-tooltip",
+        "valor": "Read the tasks declared by the modules and refresh the list",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "button-new-task-tooltip",
+        "valor": "Create a scheduled task manually",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "filter-frequency-tooltip",
+        "valor": "Show only the tasks with this frequency",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "filter-module-tooltip",
+        "valor": "Show only the tasks of this module",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9587,6 +9875,78 @@
     {
         "language": "pt-br",
         "modulo": "admin-environment",
+        "id": "tip-rotate-jwt",
+        "valor": "Generate new JWT keys; signed-in users must sign in again",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "tip-test-turnstile",
+        "valor": "Check the Turnstile keys against the service",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "tip-test-recaptcha-v3",
+        "valor": "Check the reCAPTCHA V3 keys against the service",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "tip-test-recaptcha-v2",
+        "valor": "Check the reCAPTCHA V2 keys against the service",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "tip-test-email",
+        "valor": "Send a test email with the settings entered",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "tip-test-paypal",
+        "valor": "Test the PayPal connection with the credentials entered",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "tip-save",
+        "valor": "Save the settings on this screen",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "tip-reload",
+        "valor": "Discard unsaved changes and reload the screen",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
         "id": "recaptcha-test-low-score",
         "valor": "Score do reCAPTCHA muito baixo: {score}. Possível bot detectado.",
         "tipo": "string",
@@ -9949,6 +10309,78 @@
         "modulo": "admin-environment",
         "id": "turnstile-test-label",
         "valor": "Test Turnstile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-rotate-jwt",
+        "valor": "Gerar novas chaves JWT; quem está conectado precisa entrar de novo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-test-turnstile",
+        "valor": "Conferir as chaves do Turnstile com o serviço",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-test-recaptcha-v3",
+        "valor": "Conferir as chaves do reCAPTCHA V3 com o serviço",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-test-recaptcha-v2",
+        "valor": "Conferir as chaves do reCAPTCHA V2 com o serviço",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-test-email",
+        "valor": "Enviar um e-mail de teste com as configurações informadas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-test-paypal",
+        "valor": "Testar a conexão com o PayPal usando as credenciais informadas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-save",
+        "valor": "Gravar as configurações desta tela",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "tip-reload",
+        "valor": "Descartar o que não foi salvo e recarregar a tela",
         "tipo": "string",
         "grupo": null,
         "descricao": null

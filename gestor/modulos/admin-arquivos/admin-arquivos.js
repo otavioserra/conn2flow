@@ -71,6 +71,18 @@ function adminArquivosPickVisivel(paginaIframe, arquivos) {
 	return !!paginaIframe && (arquivos || []).length > 0;
 }
 
+// REQ-243: no seletor de várias imagens a bandeja fica sempre à vista (com o botão de concluir); no seletor
+// de um arquivo só, ela aparece quando há algo marcado.
+function adminArquivosBandejaVisivel(paginaIframe, selecaoMultipla, arquivos) {
+	return !!paginaIframe && (!!selecaoMultipla || (arquivos || []).length > 0);
+}
+
+// REQ-243: aviso ao documento que abriu o seletor. O identificador é outro para os consumidores do canal de
+// arquivos (que leem `data` como um arquivo) ignorarem a mensagem.
+function adminArquivosMensagemSeletor(acao) {
+	return JSON.stringify({ moduloId: 'admin-arquivos-seletor', acao: acao });
+}
+
 // Mesmo contrato do envio individual (`.c2f-select`): o consumidor não distingue origem.
 // `tipo` carrega o MIME (é o que os consumidores testam com /image\//), não 'arquivo'/'pasta'.
 function adminArquivosPayloadPicker(item) {
@@ -110,6 +122,8 @@ if (typeof module !== 'undefined' && module.exports) {
 		adminArquivosTipoPorNome: adminArquivosTipoPorNome,
 		adminArquivosArquivosSelecionados: adminArquivosArquivosSelecionados,
 		adminArquivosPickVisivel: adminArquivosPickVisivel,
+		adminArquivosBandejaVisivel: adminArquivosBandejaVisivel,
+		adminArquivosMensagemSeletor: adminArquivosMensagemSeletor,
 		adminArquivosPayloadPicker: adminArquivosPayloadPicker,
 		adminArquivosBandejaHtml: adminArquivosBandejaHtml
 	};
@@ -718,11 +732,19 @@ $(document).ready(function () {
 			var bandeja = document.getElementById('c2f-pick-tray');
 			if (!bandeja) return;
 			var arquivos = arquivosSelecionados();
-			var visivel = adminArquivosPickVisivel(cfg.paginaIframe, arquivos);
+			var visivel = adminArquivosBandejaVisivel(cfg.paginaIframe, cfg.selecaoMultipla, arquivos);
 			bandeja.classList.toggle('hidden', !visivel);
 			document.getElementById('c2f-pick-tray-count').textContent = arquivos.length;
 			document.getElementById('c2f-pick-tray-thumbs').innerHTML = visivel ? adminArquivosBandejaHtml(arquivos, bandeja.getAttribute('data-remove-label') || t('picker-tray-remove')) : '';
+			// REQ-243: sem nada marcado a bandeja mostra a orientação e o botão de concluir fica desligado.
+			var vazio = document.getElementById('c2f-pick-tray-empty');
+			if (vazio) vazio.classList.toggle('hidden', arquivos.length > 0);
+			document.getElementById('c2f-pick-tray-thumbs').classList.toggle('hidden', arquivos.length === 0);
+			var confirmar = document.getElementById('c2f-pick-tray-confirm');
+			if (confirmar) confirmar.disabled = arquivos.length === 0;
 		}
+
+		atualizarBandeja();
 
 		$('#c2f-pick-tray').on('click', '.c2f-pick-thumb-remove', function () {
 			var cam = this.getAttribute('data-caminho');
@@ -732,8 +754,17 @@ $(document).ready(function () {
 			delete estado.selecionados[cam];
 			atualizarBarraSelecao();
 		});
-		$('#c2f-pick-tray-confirm').on('click', function () { $('#c2f-pick-selected').trigger('click'); });
-		$('#c2f-pick-tray-cancel').on('click', function () { limparSelecao(); });
+		// REQ-243: concluir aplica o que está marcado e pede ao documento de fora que feche o modal; cancelar
+		// fecha sem aplicar.
+		$('#c2f-pick-tray-confirm').on('click', function () {
+			if (arquivosSelecionados().length === 0) return;
+			$('#c2f-pick-selected').trigger('click');
+			window.parent.postMessage(adminArquivosMensagemSeletor('concluir'), '*');
+		});
+		$('#c2f-pick-tray-cancel').on('click', function () {
+			limparSelecao();
+			window.parent.postMessage(adminArquivosMensagemSeletor('cancelar'), '*');
+		});
 
 		// Zera a seleção no estado E no DOM (itens e "selecionar todos"), para que o próximo lote comece limpo.
 		function limparSelecao() {
