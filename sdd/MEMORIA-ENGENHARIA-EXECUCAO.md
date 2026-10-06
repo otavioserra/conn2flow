@@ -182,3 +182,9 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Abas nativas**: `data-c2f-abas` com `data-c2f-aba` / `data-c2f-painel`; o controle esconde com o atributo `hidden` e emite `mudou`. Abas aninhadas no mesmo elemento se misturam: manter cada conjunto no próprio invólucro.
 - **`/tmp` do Git Bash não é o `/tmp` do Python do Windows**: arquivo de trabalho vai no scratchpad, com caminho `C:/…`.
 - Roteiro: `sdd/validation/req245/req245-browser.cjs` (19 conferências); a rotina pela engine se exercita pelo AJAX `disparar` do `admin-cron`.
+
+### Widget de apresentação no Dashboard — precedência entre folhas Tailwind (2026-10-06)
+- **Duas folhas de utilities compiladas em separado não se somam, disputam**: ficam na mesma camada e vence a que vem depois. Folha parcial (template, 4 KB) depois da completa faz `grid-cols-1` vencer `md:grid-cols-3`. A folha completa tem de ser a última; no iframe do Dashboard o compilador do navegador entra depois das folhas do widget.
+- **Defeito de widget com vários estados se procura em todos**: o primeiro slide saía certo e os seguintes não. Roteiro navega pela seta e compara o estilo computado elemento a elemento com a página pública na mesma largura (`sdd/validation/req244/widget-apresentacao-precedencia.cjs`).
+- **"Funciona como página" pode ser só falta de publicação**: a página do Lab estava sem a branch que introduzia o defeito. Antes de comparar, conferir quais branches estão publicadas.
+- **Selects em bloco clonado**: a cópia traz a casca do controle sem eventos; `observarSelects()` refaz a cópia que não tem a propriedade `c2fcViva`.

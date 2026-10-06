@@ -51,3 +51,15 @@ Revisão findings-first: sem achados bloqueantes no código final. Conferidos fi
 - A referência de Apresentações usa outro contexto de navegador: compartilhar o contexto fez o Chrome entregar cliques ao elemento iframe do pai. Com contextos separados, eventos reais de mouse chegaram ao deck e a entrada em tela cheia funcionou. Escape não encerra fullscreen no headless; o roteiro usa o próprio botão para sair.
 - O catálogo adicional é verificado quanto a renderização, compilador e exceções JS. Paginação remota, submissão de formulários e navegação externa desses módulos não foram alteradas nem homologadas funcionalmente neste lote.
 - Memória de execução saudável (22.407 bytes / 158 linhas): não reescrita nem podada.
+
+## Correção posterior: precedência entre folhas no iframe (2026-10-06, executor da REQ-243)
+
+**Sintoma**: primeiro slide certo, slides seguintes empilhados numa coluna só. Não aparecia no primeiro slide, o que escondeu o defeito das conferências anteriores.
+
+**Causa**: o iframe recebia a folha completa gerada pelo compilador do navegador e, **depois** dela, a folha pré-compilada do template (4 KB, parcial). As duas ficam na camada `utilities`; na mesma camada vence a que vem depois. A utility simples da folha parcial (`grid-cols-1`, `flex-col`) vencia a responsiva da folha completa (`md:grid-cols-[1fr_auto_1fr]`, `md:flex-row`). Medido no slide 3: `grid-template-columns` de uma coluna com a regra `md:` presente no CSS.
+
+**Correção**: em `dashboard.js` o compilador entra depois das folhas do widget, então a folha que ele gera é a última da camada. CSS de autoria não tem camada e continua vencendo. No site (REQ-109), `presentations_widget_render_inline` deixa de incluir a pré-compilada do template: com ela a página pública passava a ter o mesmo defeito (a página só funcionava no Lab porque a REQ-109 não estava publicada).
+
+**Evidência**: `sdd/validation/req244/widget-apresentacao-precedencia.cjs`, **24/24**. Navega pela seta nos oito slides e compara 27 propriedades computadas de cada elemento entre o widget e a página na mesma largura: zero diferença. Confere também que nenhuma pré-compilada vem depois da folha gerada e que `galleries`, `forms-search`, `cookie-consent`, `menus` e `pages-index` seguem inteiros. Imagens em `sdd/validation/req244/evidencias-precedencia/`. Guarda em `tests/Unit/JS/dashboard.widgets-req236.test.js` (folha parcial antes do compilador).
+
+**Limite**: a ordem depende de o compilador do navegador anexar a folha ao fim do `head` no momento em que roda; o roteiro falha se isso mudar numa troca de versão. Um registro salvo pelo editor (`css_compiled`) segue a mesma ordem e não foi exercitado com apresentação editada.

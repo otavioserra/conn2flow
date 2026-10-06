@@ -952,12 +952,15 @@ $(document).ready(function () {
 					var layoutStyles = styles.match(/^<style data-tailwind-role="layout-precompiled">[\s\S]*?<\/style>/);
 					var layoutCss = layoutStyles ? layoutStyles[0] : '';
 					if (layoutCss) styles = styles.slice(layoutCss.length);
-					// A base vem antes do tema/runtime; folhas do widget mantêm a precedência da página pública.
+					// As folhas pré-compiladas do widget são parciais (template, registro): depois da folha completa,
+					// a utility simples delas (`grid-cols-1`) venceria a responsiva (`md:grid-cols-3`). O compilador
+					// entra por último: a folha que ele gera cobre o documento inteiro e fecha a camada de utilities.
+					// CSS de autoria não tem camada e continua vencendo, como na página pública.
 					// O iframe mantém origem opaca: inicialização acontece dentro do documento isolado.
 					var initScript = '<script>window.addEventListener("load",function(){if(window.lucide)window.lucide.createIcons();window.dispatchEvent(new Event("resize"));});<\/script>';
 					frame.srcdoc = '<!doctype html><html data-c2f-dashboard-widget><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(rootUrl)+'">'+
 						'<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden}body{font-family:var(--font-sans,system-ui,-apple-system,sans-serif)}</style>'+
-						layoutCss+(theme ? '<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">'+theme+'</style>' : '')+compiler+styles+
+						layoutCss+(theme ? '<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">'+theme+'</style>' : '')+styles+compiler+
 						'<script>window.gestor='+JSON.stringify({raiz:rootUrl}).replace(/</g, '\\u003c')+';<\/script>'+(jquery ? jquery.outerHTML : '')+lucideScript+
 						'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+initScript+'</body></html>';
 					body.replaceChildren(frame);

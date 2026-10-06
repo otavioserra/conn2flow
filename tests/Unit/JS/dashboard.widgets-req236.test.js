@@ -12,7 +12,7 @@ function boot(layout=[], failRender=false){
  const fetch=vi.fn(async (_url,options)=>{
   const params=new URLSearchParams(options.body);calls.push(Object.fromEntries(params));
   const action=params.get('ajaxOpcao');
-  const data=action==='widgets-catalogo'?[{id:'menus',name:'Menus'}]:action==='widgets-registros'?{items:[{id:'main-menu',nome:'Main'}],tem_mais:false}:{html:'<p>Rendered</p>',css:'<style data-tailwind-role="layout-precompiled">.baseline{color:blue}</style><style>.widget{color:red}</style>',theme_styles:'@theme { --color-c2f-blue: #1daac6; }',tailwind_compiler_url:'/vendor/tailwind.js',lucide_url:'/vendor/lucide.js'};
+  const data=action==='widgets-catalogo'?[{id:'menus',name:'Menus'}]:action==='widgets-registros'?{items:[{id:'main-menu',nome:'Main'}],tem_mais:false}:{html:'<p>Rendered</p>',css:'<style data-tailwind-role="layout-precompiled">.baseline{color:blue}</style><style data-tailwind-role="resource-precompiled">.grid-cols-1{}</style><style>.widget{color:red}</style>',theme_styles:'@theme { --color-c2f-blue: #1daac6; }',tailwind_compiler_url:'/vendor/tailwind.js',lucide_url:'/vendor/lucide.js'};
   return {ok:!(failRender && action==='widget-render'),json:async()=>({status:'Ok',data})};
  });
  function Sortable(_grid,options){sortable=this;this.options=options;this.disabled=null;this.option=(_key,value)=>{this.disabled=value;};this.destroy=()=>{};}
@@ -39,7 +39,11 @@ describe('Dashboard widget instances (req-236)',()=>{
   const baseline=frame.srcdoc.indexOf('.baseline'),theme=frame.srcdoc.indexOf('--color-c2f-blue'),compiler=frame.srcdoc.indexOf('/vendor/tailwind.js'),authored=frame.srcdoc.indexOf('.widget');
   expect(baseline).toBeLessThan(theme);
   expect(theme).toBeLessThan(compiler);
-  expect(compiler).toBeLessThan(authored);
+  // Folhas parciais do widget antes do compilador: a folha completa gerada por ele é a última das utilities.
+  expect(authored).toBeLessThan(compiler);
+  const partial=frame.srcdoc.indexOf('data-tailwind-role="resource-precompiled"');
+  expect(partial).toBeGreaterThan(-1);
+  expect(partial).toBeLessThan(compiler);
   expect(doc.querySelector('base').href).not.toContain('localhosthttp');
   expect(doc.head.textContent).toContain('.widget{color:red}');
   expect(doc.body.textContent).toContain('Rendered');
