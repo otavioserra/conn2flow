@@ -260,6 +260,7 @@
             var comBusca = op.busca !== undefined ? !!op.busca : (nativo.hasAttribute('data-c2f-busca') || !!this.ajax || nativo.options.length > 8);
             var idLista = idNovo('c2fc-l-');
             this.raiz = el('div', { 'class': 'c2fc-select' + (nativo.disabled ? ' c2fc-select-desabilitado' : '') });
+            this.raiz.c2fcViva = true;
             this.gatilho = el('div', { 'class': 'c2fc-select-gatilho', role: 'combobox', tabindex: nativo.disabled ? '-1' : '0', 'aria-haspopup': 'listbox',
                 'aria-expanded': 'false', 'aria-controls': idLista, 'aria-label': nativo.getAttribute('aria-label') || nativo.getAttribute('name') || '' });
             this.painel = el('div', { 'class': 'c2fc-select-painel c2fc-oculto' });
@@ -1036,13 +1037,32 @@
     // <template>, bloco vindo por AJAX) também vira controle. O que já está dentro de um controle fica de fora.
     function observarSelects() {
         if (!global.MutationObserver || !document.body) return;
-        var montar = function (no) { if (!no.closest('.c2fc-select') && !no.closest('template')) criar('select', no); };
+        var montar = function (no) {
+            if (no.closest('template')) return;
+            var casca = no.closest('.c2fc-select');
+            // Cópia de um controle já montado (linha ou caixa clonada do DOM, como a de "Adicionar variável"):
+            // a casca veio junto, mas sem o controle por trás, e o select não respondia. Sai a casca copiada
+            // e o select é montado de novo.
+            if (casca) {
+                // A marca é propriedade do elemento, não atributo: `cloneNode` não a leva, e é assim que se
+                // distingue a casca viva da copiada.
+                if (casca.c2fcViva) return;
+                casca.parentNode.insertBefore(no, casca);
+                casca.parentNode.removeChild(casca);
+                no.classList.remove('c2fc-nativo');
+                no.removeAttribute('aria-hidden');
+                no.removeAttribute('tabindex');
+            }
+            criar('select', no);
+        };
         new global.MutationObserver(function (registros) {
             registros.forEach(function (registro) {
                 Array.prototype.forEach.call(registro.addedNodes, function (no) {
                     if (no.nodeType !== 1) return;
-                    if (no.matches('select[data-c2f-select]')) montar(no);
-                    Array.prototype.forEach.call(no.querySelectorAll('select[data-c2f-select]'), montar);
+                    // Com o atributo, ou já dentro de uma casca de controle (cópia de controle montado por código).
+                    var serve = function (s) { return s.hasAttribute('data-c2f-select') || (s.parentElement && s.parentElement.classList.contains('c2fc-select')); };
+                    if (no.tagName === 'SELECT' && serve(no)) montar(no);
+                    Array.prototype.filter.call(no.querySelectorAll('select'), serve).forEach(montar);
                 });
             });
         }).observe(document.body, { childList: true, subtree: true });

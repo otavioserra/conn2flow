@@ -272,6 +272,13 @@ final class RefinamentosReq243Test extends TestCase
         }
     }
 
+    #[\PHPUnit\Framework\Attributes\DataProvider('idiomas')]
+    public function testSelectDeStatusDosEnviosUsaControleOficial(string $idioma): void
+    {
+        $html = $this->ler("modulos/forms-submissions/resources/$idioma/pages/forms-submissions-view/forms-submissions-view.html");
+        $this->assertMatchesRegularExpression('/<select id="form-status-select" data-c2f-select="1" class="c2fc-campo-selecao/', $html);
+    }
+
     public function testBotaoSemDicaUsaORotuloEHistoricoNaoApagaVariaveisDaPagina(): void
     {
         $interface = $this->ler('bibliotecas/interface.php');
