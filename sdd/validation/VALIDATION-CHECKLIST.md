@@ -3,14 +3,14 @@
 ## BATCH-255 — REQ-246 / Site REQ-110
 
 - [x] Main atualizada e branches integradas, incluindo a correção posterior da apresentação (84deb54a).
-- [x] PHPUnit completo: 1.672 testes, 17.527 asserções, zero falhas/erros; quatro skips e deprecações registrados.
+- [x] PHPUnit completo: 1.672 testes, 17.532 asserções, zero falhas/erros; quatro skips e deprecações registrados.
 - [x] Vitest completo: 49 arquivos, 573 testes aprovados no recorte até 84deb54a.
 - [x] Histórico de 36 requisições levantado; extração das bibliotecas e documentação bilíngue atualizadas a partir do código.
-- [ ] Auditoria final, build idempotente e links HTTP da documentação.
-- [ ] Pipeline completo do Lab e comparação SQL antes/depois.
-- [ ] Navegador: regressão REQ-243 (158), REQ-245 (19), apresentação (24) e documentação desktop/mobile.
+- [x] Auditoria final, build idempotente e links HTTP da documentação.
+- [x] Pipeline completo do Lab e comparação SQL antes/depois.
+- [x] Navegador: regressão REQ-243 (158), REQ-245 (19), apresentação (24) e documentação desktop/mobile.
 - [x] Arquivamento mantém dez lotes ativos na raiz; links órfãos reparados nos dois repositórios.
-- [ ] Revisão final e push das duas main.
+- [x] Revisão final e push das duas main.
 
 Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-summary.json) e [inventário](req246/history-inventory.json).
 
@@ -48,12 +48,13 @@ Detalhes: [BATCH-252](../implementation/BATCH-252.md) e [resultado do navegador]
 ## BATCH-253 — REQ-244 / Site REQ-109
 
 - [x] Backend: colunas opcionais, template/autoria/head completos, tema e assets oficiais.
-- [x] Frontend: base → tema/compilador → folhas do widget, origem opaca e geometria sem padding/overflow.
+- [x] Frontend: base/tema → folhas parciais do widget → compilador completo, origem opaca e geometria sem padding/overflow.
 - [x] Apresentações: template e altura embedded; consentimento compatível com o sandbox.
 - [x] Compilação oficial: Core 511 / Site 1176 recursos; pipeline final e css:rebuild com saída 0.
 - [x] Vitest: Core 553 / Site 13; PHPUnit: Core 1629 / Site 31, sem falhas/erros (skips/deprecações registrados).
 - [x] Navegador 29/29: oito slides, desktop/mobile, setas/pontos/tela cheia, resize, catálogo e restauração das preferências.
-- [ ] Homologação humana / consolidação em main.
+- [x] Consolidação em main pela Fase B (BATCH-255).
+- [ ] Homologação humana.
 
 Detalhes: [BATCH-253](../implementation/BATCH-253.md), [resultado](req244/evidencias/resultado.json) e [métricas/limites](req244/evidencias/checks.json).
 

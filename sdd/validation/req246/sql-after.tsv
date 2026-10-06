@@ -1,12 +1,16 @@
 language	active_docs
-en	177
-pt-br	627
+en	148
+pt-br	599
 language	id	status	user_modified	versao	body_sha256
-en	docs-concepts-admin-interface	A	0	23	fdbc8ae4501d7ba4318803137fc4cbd2f7672e07d03d7f00a4fd555e15ebe2fb
-en	docs-guides-site-administration	A	0	1	9e4a4ef2bca6a43c0b753d91350fd7476e665baaca72fc97a32ca106c1c6f074
-en	docs-reference-modules-admin-atualizacoes	A	0	23	f3de66c4a1baa58fedeaa519096e2ec36b4e282296b4af2fe58f8071c20ad651
-en	docs-reference-modules-dashboard	A	0	23	d07416a0b7e6e1cf879e570934ec99dcec7ee80ddf961313518de854f414f1b9
-pt-br	docs-concepts-admin-interface	A	0	25	bee388d87a932d454a60d5a9c438419c1fec05aca09932a3c3f454d72ed7e71f
-pt-br	docs-guides-site-administration	A	0	1	cfaf417cfdfc7e3c38a31252f678d8b9299b7bf58c2cb2125c20c1f4eb0c079f
-pt-br	docs-reference-modules-admin-atualizacoes	A	0	23	f0c665e79db52ad51fae127ba2a73db7e061f445b42becb53cbccb2f73d8e29b
-pt-br	docs-reference-modules-dashboard	A	0	22	a4ec400506fb9124d829948460b242d6ad479dbcff231ebe0f99bd9dc87a0194
+en	docs-concepts-admin-interface	A	0	25	28228de5ddc2cf434a1adbf18d265662b29eeee521e5cc555a27e542a3885e30
+en	docs-guides-site-administration	A	0	2	69afebdc4a138423c15a5e405b29d31a98080717b1212ce9847e559da79fcbb6
+en	docs-reference-libraries-atualizacoes-automatica	A	0	2	9c877cc8edf15c5e3832e38673f1f199cae72ebad02d2104418c99e87c1d4e96
+en	docs-reference-libraries-controles	A	0	2	053d14b998a03fa6fff9ed69850fa219f972dd8ec14c5a77f39fdd5c698d6a83
+en	docs-reference-modules-admin-atualizacoes	A	0	24	523cd02c5afedd0d08a49bb87f38707b139ec5030ab52a1de5fd51bf1732d877
+en	docs-reference-modules-dashboard	A	0	26	dc0191c59f7780af03c1ff49980ba9e84b98943ffd15127b62ae66cfa2b01614
+pt-br	docs-concepts-admin-interface	A	0	27	d8e4ae21c693f59530ce0a21ff17e1cde18493218da7914186156bc07eaa982c
+pt-br	docs-guides-site-administration	A	0	2	f41f73120c51036ec7b19d858622d8bc288bdb5d7e6195f3c25857cdfa0969dc
+pt-br	docs-reference-libraries-atualizacoes-automatica	A	0	2	e2987c3305f6a74c8354dc392202c0ec1ea04c2370bd5ecfd63bd8fd20261e1d
+pt-br	docs-reference-libraries-controles	A	0	2	6434485cb5748f172d6772df33db70bbfff983bc9d2ca232b88b136f41a38fd3
+pt-br	docs-reference-modules-admin-atualizacoes	A	0	24	913ebccf240c03614aa871ef38122f8064bcf29ac0d22281350d24fceaa2ac20
+pt-br	docs-reference-modules-dashboard	A	0	25	7ebf302a042033f844f06b06e39277704a69ca81c5fe5d7638995c15780df554

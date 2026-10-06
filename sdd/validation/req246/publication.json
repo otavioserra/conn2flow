@@ -1,0 +1,40 @@
+{
+    "date":  "2026-10-06",
+    "project":  "conn2flow-site-local",
+    "local":  true,
+    "command":  "php cli/c2f.php project:update-all conn2flow-site-local --no-wait",
+    "exitCode":  0,
+    "maintenance":  "off",
+    "scope":  {
+                  "core":  "84deb54a",
+                  "site":  "a7192e75",
+                  "req247":  "excluded by explicit human instruction"
+              },
+    "dashboardSha256":  "e6a234981ff63201776444fecd3366cbb4d7dc63e485d7bcf8e6ab7e8f0c4c66",
+    "docs":  {
+                 "pages":  747,
+                 "publications":  732,
+                 "landings":  5,
+                 "activeSqlEn":  148,
+                 "activeSqlPtBr":  599
+             },
+    "cssRebuild":  {
+                       "checked":  7,
+                       "regenerated":  2,
+                       "coherent":  5,
+                       "errors":  0
+                   },
+    "hashVerification":  {
+                             "contentDifferences":  0,
+                             "extraFiles":  [
+                                                "db/migrations/20261006200000_create_dashboard_layouts_table.php"
+                                            ],
+                             "reason":  "Preserved from separate REQ-247 publication according to REQ-246 section 5.7"
+                         },
+    "warnings":  [
+                     "Existing admin-categorias.js minification failure; authored JS fallback",
+                     "No ssh_public_path: assets served through arquivo-estatico",
+                     "Existing responsive sidecar concatenation warnings",
+                     "SDD sensitive content redacted by docs builder"
+                 ]
+}

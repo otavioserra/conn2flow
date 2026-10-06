@@ -5,6 +5,8 @@ section: reference
 order: 100
 sources:
   - gestor/bibliotecas/controles.php
+  - gestor/assets/interface/controles.js
+  - gestor/assets/interface/campo-moeda.js
 verified_at: 914c7b10
 ---
 
@@ -22,6 +24,12 @@ Helpers return HTML; JavaScript enhances behavior while retaining native form su
 - `controles_atributos`: Validates names; true becomes a valueless attribute, false/null are omitted.
 - `controles_campo`: Groups label, help, error and aria-describedby; types include text, area, select and switch.
 - `controles_botao`: Builds a button with variant and Lucide icon; escapes the label.
+
+## Control runtime
+
+The internal observarSelects observer initializes selects inserted after page load and rebuilds cloned control wrappers, whose events are not copied by cloneNode. Selects inside template are excluded until inserted into the document. Selection retains the native select for form submission.
+
+c2fControles.formatado allows only b, strong, i, em, u, br and code, without attributes. Percentage and currency masks are loaded by controles_incluir: they display pt-BR numbers and submit decimals with a dot during formdata; percentages are limited to 0–100 with two decimal places.
 
 ## Generated function reference
 

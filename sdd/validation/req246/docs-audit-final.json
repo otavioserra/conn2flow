@@ -21,6 +21,16 @@
             ]
         },
         {
+            "item": "en:concepts/css-and-tailwind.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
             "item": "en:concepts/global-variables.md",
             "score": 3,
             "issues": [
@@ -736,7 +746,17 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/admin-atualizacoes.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
                 }
             ]
         },
@@ -746,7 +766,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
                 }
             ]
         },
@@ -756,7 +776,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -766,7 +786,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
                 }
             ]
         },
@@ -786,7 +806,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 25 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 26 commit(s) desde verified_at."
                 }
             ]
         },
@@ -796,7 +816,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
                 }
             ]
         },
@@ -806,7 +826,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 31 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 32 commit(s) desde verified_at."
                 }
             ]
         },
@@ -816,7 +836,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
                 }
             ]
         },
@@ -826,7 +846,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
                 }
             ]
         },
@@ -836,7 +856,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
                 }
             ]
         },
@@ -846,7 +866,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
                 }
             ]
         },
@@ -856,7 +876,17 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/dashboard.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
                 }
             ]
         },
@@ -866,7 +896,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -876,7 +906,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
                 }
             ]
         },
@@ -886,7 +916,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -896,7 +926,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
                 }
             ]
         },
@@ -926,7 +956,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
                 }
             ]
         },
@@ -936,7 +966,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
                 }
             ]
         },
@@ -946,7 +976,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
                 }
             ]
         },
@@ -956,7 +986,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
                 }
             ]
         },
@@ -966,7 +996,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
                 }
             ]
         },
@@ -976,7 +1006,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -986,7 +1016,17 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "en:reference/modules/publisher-pages.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
                 }
             ]
         },
@@ -996,7 +1036,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1006,7 +1046,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1016,7 +1056,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1026,7 +1066,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1137,6 +1177,16 @@
                 {
                     "severity": "warning",
                     "message": "Fontes mudaram em 18 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:concepts/css-and-tailwind.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 2 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1856,7 +1906,17 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/admin-atualizacoes.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1866,7 +1926,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1876,7 +1936,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1886,7 +1946,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1906,7 +1966,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 25 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 26 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1916,7 +1976,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1926,7 +1986,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 31 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 32 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1936,7 +1996,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1946,7 +2006,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 7 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1956,7 +2016,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1966,7 +2026,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 3 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1976,7 +2036,17 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/dashboard.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 4 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1986,7 +2056,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -1996,7 +2066,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2006,7 +2076,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2016,7 +2086,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2046,7 +2116,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2056,7 +2126,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2066,7 +2136,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2076,7 +2146,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2086,7 +2156,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 12 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2096,7 +2166,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2106,7 +2176,17 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 13 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                }
+            ]
+        },
+        {
+            "item": "pt-br:reference/modules/publisher-pages.md",
+            "score": 3,
+            "issues": [
+                {
+                    "severity": "warning",
+                    "message": "Fontes mudaram em 1 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2116,7 +2196,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 16 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2126,7 +2206,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 14 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 15 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2136,7 +2216,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 10 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 11 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2146,7 +2226,7 @@
             "issues": [
                 {
                     "severity": "warning",
-                    "message": "Fontes mudaram em 8 commit(s) desde verified_at."
+                    "message": "Fontes mudaram em 9 commit(s) desde verified_at."
                 }
             ]
         },
@@ -2202,11 +2282,6 @@
         },
         {
             "item": "en:concepts/admin-interface.md",
-            "score": 0,
-            "issues": []
-        },
-        {
-            "item": "en:concepts/css-and-tailwind.md",
             "score": 0,
             "issues": []
         },
@@ -2351,22 +2426,7 @@
             "issues": []
         },
         {
-            "item": "en:reference/modules/admin-atualizacoes.md",
-            "score": 0,
-            "issues": []
-        },
-        {
             "item": "en:reference/modules/admin-cron.md",
-            "score": 0,
-            "issues": []
-        },
-        {
-            "item": "en:reference/modules/dashboard.md",
-            "score": 0,
-            "issues": []
-        },
-        {
-            "item": "en:reference/modules/publisher-pages.md",
             "score": 0,
             "issues": []
         },
@@ -2392,11 +2452,6 @@
         },
         {
             "item": "pt-br:concepts/admin-interface.md",
-            "score": 0,
-            "issues": []
-        },
-        {
-            "item": "pt-br:concepts/css-and-tailwind.md",
             "score": 0,
             "issues": []
         },
@@ -2541,22 +2596,7 @@
             "issues": []
         },
         {
-            "item": "pt-br:reference/modules/admin-atualizacoes.md",
-            "score": 0,
-            "issues": []
-        },
-        {
             "item": "pt-br:reference/modules/admin-cron.md",
-            "score": 0,
-            "issues": []
-        },
-        {
-            "item": "pt-br:reference/modules/dashboard.md",
-            "score": 0,
-            "issues": []
-        },
-        {
-            "item": "pt-br:reference/modules/publisher-pages.md",
             "score": 0,
             "issues": []
         },
@@ -2587,7 +2627,7 @@
     },
     "totals": {
         "error": 0,
-        "warning": 220,
+        "warning": 228,
         "info": 0
     }
 }

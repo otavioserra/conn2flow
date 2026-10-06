@@ -5,6 +5,8 @@ section: reference
 order: 100
 sources:
   - gestor/bibliotecas/controles.php
+  - gestor/assets/interface/controles.js
+  - gestor/assets/interface/campo-moeda.js
 verified_at: 914c7b10
 ---
 
@@ -22,6 +24,12 @@ Os ajudantes retornam HTML; o JavaScript adiciona comportamento preservando o en
 - `controles_atributos`: Valida nomes; true vira atributo sem valor, false/null são omitidos.
 - `controles_campo`: Agrupa rótulo, ajuda, erro e aria-describedby; tipos incluem texto, área, select e chave.
 - `controles_botao`: Gera botão com variante e ícone Lucide; escapa o rótulo.
+
+## Runtime dos controles
+
+O observador interno observarSelects monta selects inseridos depois da carga e reconstrói a casca de controles clonados, cujos eventos não são copiados por cloneNode. Selects dentro de template ficam de fora até serem inseridos no documento. A seleção conserva o select nativo para enviar o formulário.
+
+c2fControles.formatado permite somente b, strong, i, em, u, br e code, sem atributos. As máscaras percentual e moeda são carregadas por controles_incluir: exibem números no padrão pt-BR e enviam decimais com ponto no evento formdata; percentual limita 0–100 com duas casas.
 
 ## Referência extraída de funções
 

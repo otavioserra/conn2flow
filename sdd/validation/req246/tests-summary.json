@@ -1,7 +1,7 @@
 {
     "date":  "2026-10-06",
     "core":  {
-                 "head":  "448ca342",
+                 "head":  "9eedac94",
                  "phpunit":  {
                                  "command":  "ssh otavio@lab.conn2flow.local: php /mnt/c/ProgramData/ComposerSetup/bin/composer.phar test",
                                  "tests":  1672,
@@ -15,14 +15,14 @@
                              },
                  "vitest":  {
                                 "command":  "npm.cmd run test",
-                                "files":  50,
-                                "tests":  578,
+                                "files":  49,
+                                "tests":  573,
                                 "failed":  0,
                                 "exitCode":  0
                             }
              },
     "site":  {
-                 "head":  "93fd51d1",
+                 "head":  "d3435803",
                  "phpunit":  {
                                  "command":  "ssh otavio@lab.conn2flow.local: php ../conn2flow/vendor/bin/phpunit -c sdd/validation/req238-phpunit.xml",
                                  "tests":  53,

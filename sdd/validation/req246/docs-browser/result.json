@@ -1,0 +1,4311 @@
+{
+  "checks": [
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 1280,
+      "status": 200,
+      "needle": "ultima_automatica",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca atualizacoes-automatica.php",
+        "Referência extraída de funções"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/controles/",
+      "width": 1280,
+      "status": 200,
+      "needle": "observarSelects",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca controles.php",
+        "Runtime dos controles",
+        "Referência extraída de funções"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/admin-topbar/",
+      "width": 1280,
+      "status": 200,
+      "needle": "admin_topbar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca admin-topbar.php",
+        "Funções extraídas"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 1280,
+      "status": 200,
+      "needle": "interface_listar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca interface-listar-tailwind.php",
+        "Funções extraídas"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/dashboard/",
+      "width": 1280,
+      "status": 200,
+      "needle": "960",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Módulo dashboard",
+        "Como usar",
+        "Referência técnica",
+        "Limitações confirmadas",
+        "Veja também",
+        "Dashboard V3.4: módulos e widgets"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-atualizacoes/",
+      "width": 1280,
+      "status": 200,
+      "needle": "atualizacao-automatica.json",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Módulo admin-atualizacoes",
+        "Como usar",
+        "Referência técnica",
+        "Limitações confirmadas",
+        "Veja também",
+        "Manual e Automático"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-pages/",
+      "width": 1280,
+      "status": 200,
+      "needle": "textarea",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Módulo publisher-pages",
+        "Como usar",
+        "Referência técnica",
+        "Defeitos e divergências do legado",
+        "Veja também",
+        "Editor Tailwind e conteúdo escapado"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/site-administration/",
+      "width": 1280,
+      "status": 200,
+      "needle": "discount_value",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Administração do site em Tailwind",
+        "Produtos e catálogo",
+        "Cupons e afiliados",
+        "Fretes, pedidos e relatórios",
+        "Assinaturas e gateways",
+        "Apresentações e Dashboard",
+        "Operações, conteúdo e documentação",
+        "Fontes verificadas"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/admin-interface/",
+      "width": 1280,
+      "status": 200,
+      "needle": "c2fc-campo",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Interface administrativa",
+        "Componentes canônicos",
+        "Seletores e mensagens",
+        "Máscaras",
+        "Listagens e navegação"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 390,
+      "status": 200,
+      "needle": "ultima_automatica",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca atualizacoes-automatica.php",
+        "Referência extraída de funções"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/controles/",
+      "width": 390,
+      "status": 200,
+      "needle": "observarSelects",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca controles.php",
+        "Runtime dos controles",
+        "Referência extraída de funções"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/admin-topbar/",
+      "width": 390,
+      "status": 200,
+      "needle": "admin_topbar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca admin-topbar.php",
+        "Funções extraídas"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 390,
+      "status": 200,
+      "needle": "interface_listar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Biblioteca interface-listar-tailwind.php",
+        "Funções extraídas"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/dashboard/",
+      "width": 390,
+      "status": 200,
+      "needle": "960",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Módulo dashboard",
+        "Como usar",
+        "Referência técnica",
+        "Limitações confirmadas",
+        "Veja também",
+        "Dashboard V3.4: módulos e widgets"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-atualizacoes/",
+      "width": 390,
+      "status": 200,
+      "needle": "atualizacao-automatica.json",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Módulo admin-atualizacoes",
+        "Como usar",
+        "Referência técnica",
+        "Limitações confirmadas",
+        "Veja também",
+        "Manual e Automático"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-pages/",
+      "width": 390,
+      "status": 200,
+      "needle": "textarea",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Módulo publisher-pages",
+        "Como usar",
+        "Referência técnica",
+        "Defeitos e divergências do legado",
+        "Veja também",
+        "Editor Tailwind e conteúdo escapado"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/site-administration/",
+      "width": 390,
+      "status": 200,
+      "needle": "discount_value",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Administração do site em Tailwind",
+        "Produtos e catálogo",
+        "Cupons e afiliados",
+        "Fretes, pedidos e relatórios",
+        "Assinaturas e gateways",
+        "Apresentações e Dashboard",
+        "Operações, conteúdo e documentação",
+        "Fontes verificadas"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/admin-interface/",
+      "width": 390,
+      "status": 200,
+      "needle": "c2fc-campo",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Interface administrativa",
+        "Componentes canônicos",
+        "Seletores e mensagens",
+        "Máscaras",
+        "Listagens e navegação"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 1280,
+      "status": 200,
+      "needle": "ultima_automatica",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "atualizacoes-automatica.php library",
+        "Generated function reference"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/controles/",
+      "width": 1280,
+      "status": 200,
+      "needle": "observarSelects",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "controles.php library",
+        "Control runtime",
+        "Generated function reference"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/admin-topbar/",
+      "width": 1280,
+      "status": 200,
+      "needle": "admin_topbar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "admin-topbar.php library",
+        "Generated functions"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 1280,
+      "status": 200,
+      "needle": "interface_listar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "interface-listar-tailwind.php library",
+        "Generated functions"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/dashboard/",
+      "width": 1280,
+      "status": 200,
+      "needle": "960",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "dashboard module",
+        "How to use",
+        "Technical reference",
+        "Confirmed limitations",
+        "See also",
+        "Dashboard V3.4: modules and widgets"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-atualizacoes/",
+      "width": 1280,
+      "status": 200,
+      "needle": "atualizacao-automatica.json",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "admin-atualizacoes module",
+        "How to use",
+        "Technical reference",
+        "Confirmed limitations",
+        "See also",
+        "Manual and Automatic"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-pages/",
+      "width": 1280,
+      "status": 200,
+      "needle": "textarea",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "publisher-pages module",
+        "How to use",
+        "Technical reference",
+        "Defects and legacy discrepancies",
+        "See also",
+        "Tailwind editor and escaped content"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/site-administration/",
+      "width": 1280,
+      "status": 200,
+      "needle": "discount_value",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Site administration with Tailwind",
+        "Products and catalog",
+        "Coupons and affiliates",
+        "Shipping, orders and reports",
+        "Subscriptions and gateways",
+        "Presentations and Dashboard",
+        "Operations, content and documentation",
+        "Verified sources"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/admin-interface/",
+      "width": 1280,
+      "status": 200,
+      "needle": "c2fc-campo",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Administrative interface",
+        "Canonical components",
+        "Selects and messages",
+        "Input masks",
+        "Lists and navigation"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-automatica/",
+      "width": 390,
+      "status": 200,
+      "needle": "ultima_automatica",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "atualizacoes-automatica.php library",
+        "Generated function reference"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/controles/",
+      "width": 390,
+      "status": 200,
+      "needle": "observarSelects",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "controles.php library",
+        "Control runtime",
+        "Generated function reference"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/admin-topbar/",
+      "width": 390,
+      "status": 200,
+      "needle": "admin_topbar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "admin-topbar.php library",
+        "Generated functions"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface-listar-tailwind/",
+      "width": 390,
+      "status": 200,
+      "needle": "interface_listar",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "interface-listar-tailwind.php library",
+        "Generated functions"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/dashboard/",
+      "width": 390,
+      "status": 200,
+      "needle": "960",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "dashboard module",
+        "How to use",
+        "Technical reference",
+        "Confirmed limitations",
+        "See also",
+        "Dashboard V3.4: modules and widgets"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-atualizacoes/",
+      "width": 390,
+      "status": 200,
+      "needle": "atualizacao-automatica.json",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "admin-atualizacoes module",
+        "How to use",
+        "Technical reference",
+        "Confirmed limitations",
+        "See also",
+        "Manual and Automatic"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-pages/",
+      "width": 390,
+      "status": 200,
+      "needle": "textarea",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "publisher-pages module",
+        "How to use",
+        "Technical reference",
+        "Defects and legacy discrepancies",
+        "See also",
+        "Tailwind editor and escaped content"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/site-administration/",
+      "width": 390,
+      "status": 200,
+      "needle": "discount_value",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Site administration with Tailwind",
+        "Products and catalog",
+        "Coupons and affiliates",
+        "Shipping, orders and reports",
+        "Subscriptions and gateways",
+        "Presentations and Dashboard",
+        "Operations, content and documentation",
+        "Verified sources"
+      ],
+      "errors": [],
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/admin-interface/",
+      "width": 390,
+      "status": 200,
+      "needle": "c2fc-campo",
+      "contains": true,
+      "overflow": 0,
+      "headings": [
+        "Administrative interface",
+        "Canonical components",
+        "Selects and messages",
+        "Input masks",
+        "Lists and navigation"
+      ],
+      "errors": [],
+      "ok": true
+    }
+  ],
+  "linkChecks": [
+    {
+      "url": "https://conn2flow.local/docs/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/installation/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/documentation/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/site-administration/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/deploy-a-project/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/create-a-module/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/create-a-plugin/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/ci-cd/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/development-environment/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/guides/dev-tools-vscode/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-automatica/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/architecture/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/request-lifecycle/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/global-variables/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/resources/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/hooks/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/widgets/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/multilingual/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/plugins/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/projects/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/css-and-tailwind/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/admin-interface/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/system-updates/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/ai-security/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/concepts/vision/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/api/oauth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/api/system/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/api/auth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/api/modules/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/api/distributed/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/api/project/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/api/gateways/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/ai/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/assets/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/auth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/css/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/db/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/docker/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/docs/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/env/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/help/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/installer/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/manager/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/module/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/motion/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/page/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/plugin/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/project/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/resources/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/tailwind/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/cli/update/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/arquivo/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/assets-externos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-execucao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/autenticacao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/banco/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/admin-topbar/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/controles/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/db-data/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface-listar-tailwind/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/atualizacoes-choques/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/configuracao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/plugins-consts/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/2fa/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/comunicacao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/editor-texto/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/html-editor/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/formato/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/formulario/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/ftp/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/geral/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/hooks/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/host/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/html/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/plugins-installer/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/interface/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/ip/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/jwt/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/oauth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/log/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/modulo-distribuido/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/instalacao-manifesto/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/modelo/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/gestor/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/pagina/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/paypal/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/pdf/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/plugins/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/cron/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/seguranca/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/sitemap/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/stripe/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/oauth2/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/lang/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/deploy-lock/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/recursos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/usuario/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/variaveis/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/libraries/widgets/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-arquivos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-atualizacoes/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-categorias/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-componentes/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-cron/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-environment/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-layouts/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-modos-ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-paginas/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-plugins/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-prompts-ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/admin-templates/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/cookie-consent/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/contatos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/dashboard/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/forms-search/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/forms/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/forms-submissions/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/galleries/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/interface/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/modulos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/modulos-grupos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/modulos-operacoes/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/menus/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/pages-index/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/perfil-usuario/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-index/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-highlights/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/publisher-pages/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/usuarios/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/usuarios-perfis/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/reference/modules/variables/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.10/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.10.13/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.10.12/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.10.11/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.10.0/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.9/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.9.51/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/whats-new/2.9.39/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/00-baseline-architecture/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/01-project-synchronization/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/02-database-resource-synchronization/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/03-wrapped-widgets-and-publisher-highlights/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/README/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/DECISION-LOG/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-001-030/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-031-040/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-041-050/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-051-060/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-061-070/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-071-080/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-081-090/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-091-095/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-096-113/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/README/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/decisions/archive/decisions-114-122/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/CURRENT/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/README/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-238/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-239/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-240/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-241/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-242/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-243/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-244/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-245/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-246/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/req-247/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-001/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-002/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-003/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-004/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-005/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-006/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-007/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-008/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-009/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-010/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-011/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-012/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-013/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-014/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-015/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-016/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-017/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-018/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-019/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-020/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-021/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-022/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-023/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-024/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-025/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-026/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-027/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-028/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-029/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-031/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-032/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-033/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-034/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-035/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-036/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-037/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-038/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-039/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-040/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-041/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-042/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-043/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-044/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-045/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-046/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-047/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-048/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-049/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-050/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-051/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-052/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-053/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-054/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-055/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-056/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-057/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-058/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-059/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-060/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-061/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-062/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-063/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-064/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-065/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-066/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-067/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-068/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-069/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-070/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-071/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-072/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-073/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-074/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-075/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-076/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-077/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-078/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-079/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-080/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-081/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-082/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-083/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-084/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-086/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-087/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-088/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-089/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-090/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-091/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-092/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-093/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-094/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-095/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-096/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-097/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-098/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/README/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-106/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-107/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-109/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-110/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-111/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-112/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-113/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-114/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-115/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-116/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-117/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-118/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-119/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-120/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-121/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-122/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-123/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-124/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-125/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-126/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-127/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-128/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-129/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-130/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-131/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-132/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-133/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-134/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-135/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-136/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-137/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-138/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-139/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-140/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-141/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-142/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-143/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-144/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-145/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-146/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-147/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-148/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-149/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-150/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-151/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-152/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-153/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-154/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-155/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-156/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-157/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-158/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-159/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-160/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-161/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-162/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-163/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-164/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-165/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-166/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-167/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-168/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-169/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-170/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-171/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-172/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-173/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-174/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-175/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-176/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-177/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-178/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-179/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-180/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-181/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-182/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-183/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-184/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-185/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-186/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-187/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-188/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-189/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-190/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-191/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-192/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-193/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-194/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-195/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-196/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-197/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-198/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-199/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-200/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-201/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-202/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-203/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-204/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-205/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-206/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-207/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-208/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-209/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-210/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-211/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-212/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-213/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-214/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-215/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-216/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-217/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-218/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-219/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-220/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-221/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-222/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-223/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-224/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-225/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-226/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-227/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-228/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-229/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-230/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-231/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-232/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-233/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-234/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-235/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-236/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/human-requests/archive/req-237/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-INDEX/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-245/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-246/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-247/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-248/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-249/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-251/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-252/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-253/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-254/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/BATCH-255/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batches-000-017/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-002-wrapped-widgets-and-highlights/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-003-publisher-highlights-fixes/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batches-018-053/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-029-data-and-sync-optimization/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-030-auth-security/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-031-testing-framework/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-032-auth-expansion/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-033-api-security/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-034-visual-editor/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-035-visual-editor-refinements/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-036-visual-editor-actions/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-037-visual-style-helper/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-038-visual-helper-expansion/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-039-visual-editor-overhaul/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-040-widgets-and-ghost-adjustments/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-042-publisher-index-metrics-tests/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-049-forms-html-editor/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-050-forms-html-escape-tabs-templates/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batch-051-forms-options-radio-checkbox/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batches-054-093/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-056/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-058/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-059/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-060/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-061/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-062/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-063/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-065/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-075/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-077/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-078/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-079/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-080/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-081/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-082/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-083/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-085/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-088/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-090/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-093/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/batches-094-178/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-096/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-097/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-098/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/README/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-104/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-105/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-106/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-107/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-109/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-110/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-111/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-112/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-115/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-117/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-118/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-119/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-120/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-121/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-122/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-123/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-126/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-127/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-128/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-129/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-130-safe-banco-num-rows-and-php-warnings/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-133-project-identity-passthrough/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-134-html-sanitize-on-delivery/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-136/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-137/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-138/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-139/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-140/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-141/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-142/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-143/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-144/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-146/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-147/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-148/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-153/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-154/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-155/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-156/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-157/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-158/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-159/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-160/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-161/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-162/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-164/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-165/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-166/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-167/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-168/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-169/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-170/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-171/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-172/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-173/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-174/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-175/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-176/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-177/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-178/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-179/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-180/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-181/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-182/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-183/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-184/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-185/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-186/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-187/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-188/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-189/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-190/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-191/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-192/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-193/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-194/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-195/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-196/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-197/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-198/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-199/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-200/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-201/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-202/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-203/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-204/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-205/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-207/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-208/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-209/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-210/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-211/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-212/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-213/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-214/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-215/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-216/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-217/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-218/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-219/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-220/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-221/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-222/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-223/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-224/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-225/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-226/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-227/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-228/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-229/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-230/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-231/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-232/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-233/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-234/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-235/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-236/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-237/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-238/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-239/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-242/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-243/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/implementation/archive/BATCH-244/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/process/00-START-HERE/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/process/01-WORKFLOW/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/req227-catalog/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/VALIDATION-CHECKLIST/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/req225-inventory/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/validation-001-017/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/validation-018-053/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/validation-054-093/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/validation-094-110/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/README/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/validation-111-134/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/validation-136-173/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/docs/sdd/validation/archive/validation-176-239/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/installation/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/documentation/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/site-administration/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/create-a-plugin/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/create-a-module/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/development-environment/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/ci-cd/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/deploy-a-project/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/guides/dev-tools-vscode/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-automatica/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/architecture/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/request-lifecycle/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/global-variables/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/resources/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/hooks/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/widgets/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/multilingual/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/plugins/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/projects/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/css-and-tailwind/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/admin-interface/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/system-updates/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/ai-security/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/concepts/vision/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/api/auth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/api/distributed/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/api/gateways/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/api/modules/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/api/oauth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/api/project/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/api/system/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/ai/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/assets/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/auth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/css/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/db/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/docker/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/docs/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/env/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/help/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/installer/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/manager/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/module/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/motion/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/page/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/plugin/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/project/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/resources/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/tailwind/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/cli/update/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/admin-topbar/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/oauth2/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/recursos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/autenticacao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-execucao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/lang/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/controles/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/banco/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/db-data/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/atualizacoes-choques/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/deploy-lock/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/modulo-distribuido/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/comunicacao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/assets-externos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/arquivo/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/formato/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/formulario/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/ftp/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/geral/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/gestor/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/hooks/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/host/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/html/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/html-editor/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/modelo/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/instalacao-manifesto/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/interface-listar-tailwind/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/jwt/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/log/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/pagina/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/paypal/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/pdf/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/plugins-consts/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/plugins-installer/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/plugins/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/cron/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/seguranca/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/sitemap/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/oauth/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/stripe/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/editor-texto/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/2fa/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/usuario/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/configuracao/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/variaveis/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/ip/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/widgets/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-categorias/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-componentes/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-cron/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-environment/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-arquivos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-layouts/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-paginas/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-plugins/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-prompts-ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-templates/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-atualizacoes/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/admin-modos-ia/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/contatos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/cookie-consent/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/dashboard/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/forms/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/forms-submissions/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/galleries/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/interface/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/menus/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/modulos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/modulos-grupos/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/modulos-operacoes/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/pages-index/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-highlights/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-index/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/publisher-pages/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/forms-search/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/perfil-usuario/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/usuarios/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/usuarios-perfis/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/modules/variables/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.10/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.10.13/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.10.12/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.10.11/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.10.0/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.9/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.9.51/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/whats-new/2.9.39/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://conn2flow.local/en/docs/reference/libraries/",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "passed": 36,
+  "total": 36,
+  "brokenLinks": []
+}
