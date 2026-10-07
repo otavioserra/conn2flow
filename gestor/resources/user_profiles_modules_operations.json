@@ -13,6 +13,10 @@
     },
     {
         "perfil": "administradores",
+        "operacao": "modificar-permissao-da-pagina-de-lousa"
+    },
+    {
+        "perfil": "administradores",
         "operacao": "administrar-widgets-do-dashboard"
     }
 ]

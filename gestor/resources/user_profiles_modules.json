@@ -117,6 +117,10 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "dashboard-pages"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "publisher-pages"
     },
     {

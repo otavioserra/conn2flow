@@ -25,6 +25,14 @@
     },
     {
         "perfil": "administradores",
+        "operacao": "modificar-permissao-da-pagina-de-lousa",
+        "status": "A",
+        "versao": 1,
+        "checksum": "52cc95369dee6e7411e2be4dbc406908",
+        "user_modified": 0
+    },
+    {
+        "perfil": "administradores",
         "operacao": "modificar-permissao-do-publicador-da-pagina",
         "status": "A",
         "versao": 3,

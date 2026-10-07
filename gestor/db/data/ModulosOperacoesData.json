@@ -44,6 +44,17 @@
         "user_modified": 0
     },
     {
+        "modulo_id": "dashboard-pages",
+        "nome": "Modify Board Page Permission",
+        "id": "modificar-permissao-da-pagina-de-lousa",
+        "operacao": "permissao-pagina",
+        "status": "A",
+        "language": "en",
+        "versao": 1,
+        "checksum": "4be8bf6590bd6bc2b544a2720e3f3bf7",
+        "user_modified": 0
+    },
+    {
         "modulo_id": "publisher-pages",
         "nome": "Modify Page Publisher Permission",
         "id": "modificar-permissao-do-publicador-da-pagina",
@@ -96,6 +107,17 @@
         "language": "pt-br",
         "versao": 1,
         "checksum": "c6d1d2c8c2300bf2fa2ac041a69e2acc",
+        "user_modified": 0
+    },
+    {
+        "modulo_id": "dashboard-pages",
+        "nome": "Modificar Permissão da Página de Lousa",
+        "id": "modificar-permissao-da-pagina-de-lousa",
+        "operacao": "permissao-pagina",
+        "status": "A",
+        "language": "pt-br",
+        "versao": 1,
+        "checksum": "84a6bcd39ed4788487156082cd2b7743",
         "user_modified": 0
     },
     {

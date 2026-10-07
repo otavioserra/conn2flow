@@ -21,6 +21,13 @@
         "status": "A"
     },
     {
+        "modulo_id": "dashboard-pages",
+        "nome": "Modify Board Page Permission",
+        "id": "modificar-permissao-da-pagina-de-lousa",
+        "operacao": "permissao-pagina",
+        "status": "A"
+    },
+    {
         "modulo_id": "dashboard",
         "nome": "Manage Dashboard Widgets",
         "id": "administrar-widgets-do-dashboard",

@@ -137,6 +137,14 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "dashboard-pages",
+        "status": "A",
+        "versao": 1,
+        "checksum": "46084133d08244c8d8017314fedddb8f",
+        "user_modified": 0
+    },
+    {
+        "perfil": "administradores",
         "modulo": "forms",
         "status": "A",
         "versao": 3,

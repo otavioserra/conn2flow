@@ -1,0 +1,514 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "paginas",
+        "nome_especifico": "nome",
+        "id": "id",
+        "id_numerico": "id_paginas",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "templates": [
+                {
+                    "name": "Página de Lousa - Simples",
+                    "id": "dashboard-pages-simples",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "208f141a8a7fafe4f103f56925861659",
+                        "css": "4e657a94e73b68d1ace2fba600176aa4",
+                        "css_precompiled": "",
+                        "combined": "8981b43d72508ffb7b82bae4336f6828"
+                    }
+                },
+                {
+                    "name": "Página de Lousa - Largura total",
+                    "id": "dashboard-pages-largura-total",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "3efce5bb276a4396b75d67a2367e359e",
+                        "css": "2e79602c8bb8c9e04676daff38cd7c01",
+                        "css_precompiled": "",
+                        "combined": "0f708aa23de47aa8db75c54d217e0ba6"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Páginas de Lousa - Listar",
+                    "id": "dashboard-pages",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "dashboard-pages/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-253: componentes administrativos montados em runtime."
+                },
+                {
+                    "name": "Páginas de Lousa - Adicionar",
+                    "id": "dashboard-pages-adicionar",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "dashboard-pages/adicionar/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-253: componentes administrativos montados em runtime.",
+                    "checksum": {
+                        "html": "ff5e8841dab83e95f3dba558f53272e0",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "ff5e8841dab83e95f3dba558f53272e0"
+                    }
+                },
+                {
+                    "name": "Páginas de Lousa - Editar",
+                    "id": "dashboard-pages-editar",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "dashboard-pages/editar/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-253: componentes administrativos montados em runtime.",
+                    "checksum": {
+                        "html": "8ec21920f641199a8fa054305e26a481",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "8ec21920f641199a8fa054305e26a481"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome da página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Endereço da página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-board-label",
+                    "value": "Lousa",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-label",
+                    "value": "Modelo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout do site",
+                    "type": "string"
+                },
+                {
+                    "id": "form-controls-label",
+                    "value": "Controles de exibição",
+                    "type": "string"
+                },
+                {
+                    "id": "select-placeholder",
+                    "value": "Selecione...",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-name-required",
+                    "value": "Informe o nome da página.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-path-invalid",
+                    "value": "Informe um endereço para a página, com letras, números e hífen.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-path-exists",
+                    "value": "Já existe uma página com esse endereço. Escolha outro.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-board-missing",
+                    "value": "Escolha uma lousa do sistema que esteja ativa.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-template-missing",
+                    "value": "Escolha um modelo de página de lousa.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-layout-missing",
+                    "value": "Escolha um layout do site.",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "templates": [
+                {
+                    "name": "Board Page - Simple",
+                    "id": "dashboard-pages-simples",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "208f141a8a7fafe4f103f56925861659",
+                        "css": "4e657a94e73b68d1ace2fba600176aa4",
+                        "css_precompiled": "",
+                        "combined": "8981b43d72508ffb7b82bae4336f6828"
+                    }
+                },
+                {
+                    "name": "Board Page - Full width",
+                    "id": "dashboard-pages-largura-total",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "3efce5bb276a4396b75d67a2367e359e",
+                        "css": "2e79602c8bb8c9e04676daff38cd7c01",
+                        "css_precompiled": "",
+                        "combined": "0f708aa23de47aa8db75c54d217e0ba6"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Board Pages - List",
+                    "id": "dashboard-pages",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "dashboard-pages/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-253: componentes administrativos montados em runtime."
+                },
+                {
+                    "name": "Board Pages - Add",
+                    "id": "dashboard-pages-adicionar",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "dashboard-pages/adicionar/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-253: componentes administrativos montados em runtime.",
+                    "checksum": {
+                        "html": "9688a4b7e55741daa3ab814238530485",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "9688a4b7e55741daa3ab814238530485"
+                    }
+                },
+                {
+                    "name": "Board Pages - Edit",
+                    "id": "dashboard-pages-editar",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "dashboard-pages/editar/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-253: componentes administrativos montados em runtime.",
+                    "checksum": {
+                        "html": "ce96f277a585e0e72d27fe5ac93c7aa0",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "ce96f277a585e0e72d27fe5ac93c7aa0"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Page name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Page address",
+                    "type": "string"
+                },
+                {
+                    "id": "form-board-label",
+                    "value": "Board",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-label",
+                    "value": "Template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Site layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-controls-label",
+                    "value": "Display controls",
+                    "type": "string"
+                },
+                {
+                    "id": "select-placeholder",
+                    "value": "Select...",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-name-required",
+                    "value": "Enter the page name.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-path-invalid",
+                    "value": "Enter an address for the page, with letters, numbers and hyphens.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-path-exists",
+                    "value": "A page with this address already exists. Choose another.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-board-missing",
+                    "value": "Choose an active system board.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-template-missing",
+                    "value": "Choose a board page template.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-layout-missing",
+                    "value": "Choose a site layout.",
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "asset_version": "8413b8d01b5ba2a1"
+}

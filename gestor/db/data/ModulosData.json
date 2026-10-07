@@ -288,6 +288,24 @@
         "user_modified": 0
     },
     {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Board Pages",
+        "id": "dashboard-pages",
+        "titulo": "Board Pages",
+        "icone": "th large",
+        "icone_tailwind": "layout-dashboard",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "en",
+        "versao": 1,
+        "checksum": "3d3dba28f18555f4e1578eab13d5c328",
+        "user_modified": 0
+    },
+    {
         "modulo_grupo_id": "administracao-comunicacao",
         "nome": "Forms Definitions",
         "id": "forms",
@@ -915,6 +933,24 @@
         "language": "pt-br",
         "versao": 2,
         "checksum": "322a7c8e339687d89f42f50f138556b0",
+        "user_modified": 0
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Páginas de Lousa",
+        "id": "dashboard-pages",
+        "titulo": "Páginas de Lousa",
+        "icone": "th large",
+        "icone_tailwind": "layout-dashboard",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "pt-br",
+        "versao": 1,
+        "checksum": "9a302977a08918de476ed2312f209044",
         "user_modified": 0
     },
     {

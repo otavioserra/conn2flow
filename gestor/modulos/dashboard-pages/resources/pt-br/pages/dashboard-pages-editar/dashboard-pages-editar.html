@@ -1,0 +1,92 @@
+<div class="mb-4 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
+    <div class="font-semibold">Página publicada</div>
+    <div class="mt-1 break-all">#endereco#</div>
+    <div class="mt-3 flex flex-wrap gap-2">
+        <a class="c2fc-botao" href="#endereco#" target="_blank" rel="noopener" data-dashboard-pages-abrir><i data-lucide="external-link" class="size-4 shrink-0"></i> Abrir a página</a>
+        <a class="c2fc-botao" href="#editar-pagina#"><i data-lucide="pencil" class="size-4 shrink-0"></i> Editar no módulo de páginas</a>
+    </div>
+    <p class="mt-3">Salvar aqui monta o HTML da página de novo a partir do modelo. Ajuste feito à mão no módulo de páginas é substituído.</p>
+</div>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Nome da página</label>
+        <input type="text" name="nome" value="#nome#" maxlength="200" placeholder="Ex: Campanha de outubro" class="c2fc-campo-entrada">
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Endereço da página</label>
+        <input type="text" name="caminho" value="#caminho#" maxlength="200" placeholder="Ex: campanhas/outubro/" class="c2fc-campo-entrada" data-dashboard-pages-caminho>
+        <span class="c2fc-campo-ajuda">Letras, números e hífen, em minúsculas. Cada barra abre um nível.</span>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Lousa</label>
+        <select data-c2f-select="1" id="board_id" class="c2fc-campo-selecao dropdown" name="board_id">
+            <option value="">#opcao-vazia#</option>
+            #lousas#
+        </select>
+        <span class="c2fc-campo-ajuda">Lousas do sistema, criadas no Dashboard em Opções &gt; Layouts.</span>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Modelo</label>
+        <select data-c2f-select="1" id="template_id" class="c2fc-campo-selecao dropdown" name="template_id">
+            <option value="">#opcao-vazia#</option>
+            #modelos#
+        </select>
+        <span class="c2fc-campo-ajuda">A moldura da página em volta da lousa. Os modelos ficam no cadastro de modelos, com o alvo &laquo;dashboard-pages&raquo;.</span>
+    </div>
+</div>
+
+<a class="c2fc-botao" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=dashboard-pages">
+    <i data-lucide="plus" class="size-4 shrink-0"></i> Adicionar novo modelo
+</a>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Layout do site</label>
+        <select data-c2f-select="1" id="layout_id" class="c2fc-campo-selecao dropdown" name="layout_id">
+            <option value="">#opcao-vazia#</option>
+            #layouts#
+        </select>
+        <span class="c2fc-campo-ajuda">Cabeçalho, rodapé e estilos em que a página é montada.</span>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Acesso</label>
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="sem_permissao" value="1" #publica# #publica-travada#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Página pública (abre sem login)</span></label>
+    </div>
+</div>
+
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Controles de exibição</h4>
+<p class="c2fc-campo-ajuda">Ligue e desligue partes da lousa nesta página. A lousa em si não muda.</p>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_title" value="1" #show_title# data-dashboard-pages-titulo><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Título da página</span></label>
+    </div>
+    <div class="c2fc-campo" data-dashboard-pages-titulo-texto>
+        <label class="c2fc-campo-rotulo">Texto do título</label>
+        <input type="text" name="title" value="#titulo#" maxlength="160" placeholder="Em branco, usa o nome da página" class="c2fc-campo-entrada">
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_item_titles" value="1" #show_item_titles#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Títulos dos itens</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_frames" value="1" #show_frames#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Molduras dos itens</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_backgrounds" value="1" #show_backgrounds#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Fundos dos itens</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_objects" value="1" #show_objects#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Objetos livres (texto, forma, imagem, ícone, botão)</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Arranjo</label>
+        <select data-c2f-select="1" id="mode" class="c2fc-campo-selecao dropdown" name="mode">
+            <option value="auto" #mode-auto#>O mesmo da lousa</option>
+            <option value="grade" #mode-grade#>Sempre em grade</option>
+            <option value="lousa" #mode-lousa#>Sempre em lousa</option>
+        </select>
+    </div>
+</div>

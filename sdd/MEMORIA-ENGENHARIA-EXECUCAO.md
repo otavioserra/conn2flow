@@ -256,3 +256,13 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Widget novo de módulo**: entrada em `resources.<idioma>.widgets` do JSON do módulo (`id`, `name`, `icon`, `tabela`), `<módulo>.widget.php` com `<módulo>_render($params)` e, se houver script, `<módulo>.widget.js` incluído por `gestor_pagina_javascript_incluir([tipo => widget])`. A tabela dos registros precisa de `id`, `name`, `language` e `status`.
 - **Troca de marcadores com conteúdo de terceiros**: `strtr` numa passada só; `str_replace` em sequência relê o que acabou de entrar.
 - **Página de teste por SQL** na instalação local: copiar `layout_id`, `tipo`, `sem_permissao` e `framework_css` de uma página pública; `project` nulo.
+
+### REQ-253 / BATCH-262 — módulo `dashboard-pages`, linha 3.1 (2026-10-07)
+
+- **Módulo novo, o que registrar**: `<módulo>.json` (`tabela`, `bibliotecas`, páginas com `tailwind_dependencies` copiadas de um módulo vizinho), entrada em `resources/<idioma>/modules.json`, `user_profiles_modules.json` e, se houver operação, `module_operations.json` + `user_profiles_modules_operations.json`. `Req203LanguageAgnosticResourcesTest` conta essas listas.
+- **Módulo cuja tabela é `paginas`** (como `publisher-pages`): tabela de apoio para o vínculo e `where` com `id IN (SELECT page_id ...)` na listagem.
+- **Status e excluir por GET exigem `_csrf_token`** (`interface_acao_get_exigir_csrf`). Roteiro pega o endereço com token do botão da tela de edição (`a[href*="opcao=status"]`, `button.excluir[data-href]`).
+- **Envio de formulário da interface no roteiro**: `document.querySelector('input[name="..."]').form.requestSubmit()`.
+- **Modelo de sistema** (`templates`) entra por `resources/<idioma>/templates/<id>/<id>.html` e `.css`, com `target` no JSON do módulo.
+- **Erro intermitente do PHPUnit** (1 erro, some ao repetir) visto duas vezes logo após roteiros de navegador; ainda sem teste identificado. Guardar a saída de toda execução da suíte.
+- **Instalação da 3.1 não tem senha de administrador anotada**: o acesso do agente é por `auth:cookie`.

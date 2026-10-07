@@ -3527,6 +3527,116 @@
             "safelist": [],
             "built_at": "2026-10-06T22:00:24+00:00"
         },
+        "module|dashboard-pages|en|pages|dashboard-pages": {
+            "fingerprint": "f6e55ee0e98fbc74e68f070fb0820ce7d2449cba4257dc855d0d94aa82fb494a",
+            "output_hash": "0641732190412b2ba2e60b72dd78f8ecbc00301f83eb40f7922820b9ab370612",
+            "output": "modulos/dashboard-pages/resources/en/pages/dashboard-pages/dashboard-pages.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/dashboard-pages/resources/en/pages/dashboard-pages/dashboard-pages.html",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/en/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/en/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/en/components/interface-listar-tailwind/interface-listar-tailwind.html",
+                "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-07T12:18:43+00:00"
+        },
+        "module|dashboard-pages|en|pages|dashboard-pages-adicionar": {
+            "fingerprint": "91e82160e148f00f38c6734d8105d359da29b3d83c52d539f61915602651f46e",
+            "output_hash": "b0b679eb4244a0c39644051ae95342d11a6f7c2bdb8d65252aa900b32ba31163",
+            "output": "modulos/dashboard-pages/resources/en/pages/dashboard-pages-adicionar/dashboard-pages-adicionar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/dashboard-pages/resources/en/pages/dashboard-pages-adicionar/dashboard-pages-adicionar.html",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/en/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/en/components/interface-formulario-inclusao-tailwind/interface-formulario-inclusao-tailwind.html",
+                "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-07T12:18:43+00:00"
+        },
+        "module|dashboard-pages|en|pages|dashboard-pages-editar": {
+            "fingerprint": "887edb5866b10f5a72686ea3ec8937d6e6ad0d53ba7b03425767dcecba67246c",
+            "output_hash": "6bd408ccd7330d50936bd7919b6f55a5b8a9f1faf9784445a194fffece560583",
+            "output": "modulos/dashboard-pages/resources/en/pages/dashboard-pages-editar/dashboard-pages-editar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/dashboard-pages/resources/en/pages/dashboard-pages-editar/dashboard-pages-editar.html",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/en/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/en/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-07T12:18:43+00:00"
+        },
+        "module|dashboard-pages|pt-br|pages|dashboard-pages": {
+            "fingerprint": "03d12a74ecb0f25fc75b78ca4febcd9baa1ff52fc953e81a69fb2fb0b6339aec",
+            "output_hash": "0f223579dc745273d686b8ac3caa43fff07ad38f2c8f1e0bb85e5bdc0aec83c5",
+            "output": "modulos/dashboard-pages/resources/pt-br/pages/dashboard-pages/dashboard-pages.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/dashboard-pages/resources/pt-br/pages/dashboard-pages/dashboard-pages.html",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/pt-br/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/pt-br/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/pt-br/components/interface-listar-tailwind/interface-listar-tailwind.html",
+                "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-07T12:18:44+00:00"
+        },
+        "module|dashboard-pages|pt-br|pages|dashboard-pages-adicionar": {
+            "fingerprint": "9b6cf72450c6f5b64b67b8535f62575845ac834d16574c3ebc46e45bfee9909a",
+            "output_hash": "f98f025c0d1424fdaee5839f34c97e20d545421953c19ee0beb01ee0a63e84ce",
+            "output": "modulos/dashboard-pages/resources/pt-br/pages/dashboard-pages-adicionar/dashboard-pages-adicionar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/dashboard-pages/resources/pt-br/pages/dashboard-pages-adicionar/dashboard-pages-adicionar.html",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/pt-br/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/pt-br/components/interface-formulario-inclusao-tailwind/interface-formulario-inclusao-tailwind.html",
+                "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-07T12:18:44+00:00"
+        },
+        "module|dashboard-pages|pt-br|pages|dashboard-pages-editar": {
+            "fingerprint": "120c52120184ec62e385857517e92ff47d18630feee45b3094b33523ddfa0807",
+            "output_hash": "fe0465149b12fd69a067a989bfe439b9852b28fdaf966922f002f8472e019c8f",
+            "output": "modulos/dashboard-pages/resources/pt-br/pages/dashboard-pages-editar/dashboard-pages-editar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/dashboard-pages/resources/pt-br/pages/dashboard-pages-editar/dashboard-pages-editar.html",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/pt-br/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/pt-br/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-07T12:18:44+00:00"
+        },
         "module|dashboard|en|components|dashboard-cards-tailwind": {
             "fingerprint": "2eba2ee96dce6c5b89722611a3490dd52a40ec84cfa6e10fd66b33ddc80a5f4b",
             "output_hash": "80618f9a19083e6b64667eb30320b16279f2517e07b444621bc419831585e558",

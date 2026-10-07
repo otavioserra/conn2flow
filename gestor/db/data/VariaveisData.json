@@ -18757,6 +18757,240 @@
     },
     {
         "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "form-name-label",
+        "valor": "Nome da página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "form-path-label",
+        "valor": "Endereço da página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "form-board-label",
+        "valor": "Lousa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "form-template-label",
+        "valor": "Modelo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "form-layout-label",
+        "valor": "Layout do site",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "form-controls-label",
+        "valor": "Controles de exibição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "select-placeholder",
+        "valor": "Selecione...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "alert-name-required",
+        "valor": "Informe o nome da página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "alert-path-invalid",
+        "valor": "Informe um endereço para a página, com letras, números e hífen.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "alert-path-exists",
+        "valor": "Já existe uma página com esse endereço. Escolha outro.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "alert-board-missing",
+        "valor": "Escolha uma lousa do sistema que esteja ativa.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "alert-template-missing",
+        "valor": "Escolha um modelo de página de lousa.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard-pages",
+        "id": "alert-layout-missing",
+        "valor": "Escolha um layout do site.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "form-name-label",
+        "valor": "Page name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "form-path-label",
+        "valor": "Page address",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "form-board-label",
+        "valor": "Board",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "form-template-label",
+        "valor": "Template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "form-layout-label",
+        "valor": "Site layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "form-controls-label",
+        "valor": "Display controls",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "select-placeholder",
+        "valor": "Select...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "alert-name-required",
+        "valor": "Enter the page name.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "alert-path-invalid",
+        "valor": "Enter an address for the page, with letters, numbers and hyphens.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "alert-path-exists",
+        "valor": "A page with this address already exists. Choose another.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "alert-board-missing",
+        "valor": "Choose an active system board.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "alert-template-missing",
+        "valor": "Choose a board page template.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard-pages",
+        "id": "alert-layout-missing",
+        "valor": "Choose a site layout.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "forms",
         "id": "form-name-label",
         "valor": "Nome",

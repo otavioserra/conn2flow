@@ -17,6 +17,21 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-262 — REQ-253 (linha 3.1)
+
+- [x] Módulo "Páginas de Lousa" no menu; listar, adicionar e editar.
+- [x] Página criada pelo formulário abre no endereço informado, com modelo e controles aplicados.
+- [x] Endereço repetido e lousa inexistente recusados; ação de status ou exclusão sem token não tem efeito.
+- [x] Desativar, reativar e excluir valem para a página; usuário sem o módulo não acessa.
+- [x] PHPUnit 1.709 e Vitest 646; navegador 28/28 em `v3.1-conn2flow.local`.
+- [ ] Erro intermitente da suíte PHP (1 erro em 1 de 7 execuções), teste não identificado.
+- [ ] Trocar lousa, layout e acesso na edição; modelo novo criado no `admin-templates`.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-262](../implementation/BATCH-262.md).
+
+---
+
 ## BATCH-261 — REQ-252 (linha 3.1)
 
 - [x] Widget "Lousa" no cadastro; lousas do sistema como registros.

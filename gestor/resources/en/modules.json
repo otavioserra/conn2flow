@@ -435,6 +435,20 @@
     },
     {
         "modulo_grupo_id": "administracao-gestor",
+        "nome": "Board Pages",
+        "id": "dashboard-pages",
+        "titulo": "Board Pages",
+        "icone": "th large",
+        "icone_tailwind": "layout-dashboard",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
         "nome": "Publisher Pages",
         "id": "publisher-pages",
         "titulo": "Publisher Pages",

@@ -1,0 +1,4 @@
+/* Página de lousa, modelo de largura total: a lousa usa a janela inteira e o título fica centrado. */
+.c2f-lousa-pagina-larga { padding: 24px 16px 48px; }
+.c2f-lousa-pagina-larga-cabecalho { margin: 0 0 24px; text-align: center; }
+.c2f-lousa-pagina-larga-titulo { margin: 0; font-size: clamp(1.75rem, 4vw, 3rem); font-weight: 700; line-height: 1.15; }

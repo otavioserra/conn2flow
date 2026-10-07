@@ -219,6 +219,11 @@
         "origem": 12231,
         "minificado": 5773
     },
+    "gestor/modulos/dashboard-pages/dashboard-pages.js": {
+        "sha1": "a4e8b496566fa8ea56e1ae24f87011e10894e323",
+        "origem": 1680,
+        "minificado": 891
+    },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
         "sha1": "29cfd666ffac20ffcefeda8655f38b832406cc86",
         "origem": 17198,

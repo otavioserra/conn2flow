@@ -9,6 +9,9 @@
  * objetos livres (texto, forma, imagem, ícone, botão) saem dos moldes do componente
  * `dashboard-lousa-widget`. A página é só leitura: quem edita a lousa continua no Dashboard.
  *
+ * Controles de exibição (REQ-253), parâmetros opcionais da assinatura; ausente vale ligado:
+ *   `titulos`, `molduras`, `fundos`, `objetos` (false desliga) e `modo` (`grade` ou `lousa` no lugar do modo da lousa).
+ *
  * O que o autor escreveu entra como texto escapado; cor, imagem, destino, fonte e ícone passam de novo
  * pela normalização de `dashboard-layout.php` antes de chegar a um atributo.
  */
@@ -148,6 +151,12 @@ function dashboard_render($params){
 	// autor ou HTML de widget que contenha um marcador sai como está.
 	$celula = str_replace('<!-- titulo < -->'.$moldeTitulo.'<!-- titulo > -->', '#bloco-titulo#', $molde);
 
+	$exibir = Array();
+	foreach(Array('titulos', 'molduras', 'fundos', 'objetos') as $controle){
+		$exibir[$controle] = !array_key_exists($controle, $params) || filter_var($params[$controle], FILTER_VALIDATE_BOOLEAN);
+	}
+	$modo = in_array((string)($params['modo'] ?? ''), Array('grade', 'lousa'), true) ? (string)$params['modo'] : ((string)($lousa['mode'] ?? '') === 'lousa' ? 'lousa' : 'grade');
+
 	gestor_incluir_biblioteca('widgets');
 	$fontes = Array();
 	$icones = false;
@@ -155,6 +164,9 @@ function dashboard_render($params){
 	foreach($itens as $item){
 		$o = $item['options'];
 		$objeto = $item['id'] === 'objeto';
+		if($objeto && !$exibir['objetos']) continue;
+		if(!$exibir['molduras']) $o['frame'] = false;
+		if(!$exibir['fundos']){ $o['background'] = ''; $o['bgImage'] = ''; }
 		if($objeto){
 			$conteudo = dashboard_widget_lousa_objeto($item['object'] ?? null, $moldes, $fontes, $icones);
 		} else {
@@ -171,7 +183,7 @@ function dashboard_render($params){
 
 		// Na página o título só aparece quando o autor escreveu um; o nome do widget é coisa do painel.
 		$titulo = '';
-		if($o['header'] && $o['title'] !== ''){
+		if($exibir['titulos'] && $o['header'] && $o['title'] !== ''){
 			if($o['titleFont'] !== '') $fontes[$o['titleFont']] = true;
 			$titulo = strtr($moldeTitulo, Array(
 				'#titulo-estilo#' => dashboard_widget_lousa_estilo(Array('font-family' => dashboard_widget_lousa_familia($o['titleFont']))),
@@ -235,7 +247,7 @@ function dashboard_render($params){
 
 	// A casca recebe modo e endereço do Lucide antes de os itens entrarem.
 	$casca = strtr(str_replace('<!-- objetos < -->'.$moldes.'<!-- objetos > -->', '', $componente), Array(
-		'#modo#' => (string)($lousa['mode'] ?? '') === 'lousa' ? 'lousa' : 'grade',
+		'#modo#' => $modo,
 		'#lucide#' => htmlspecialchars($lucide, ENT_QUOTES, 'UTF-8'),
 	));
 	$partes = explode('<!-- item < -->'.$molde.'<!-- item > -->', $casca, 2);

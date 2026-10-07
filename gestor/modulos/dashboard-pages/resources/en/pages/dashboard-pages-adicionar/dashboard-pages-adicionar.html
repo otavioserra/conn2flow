@@ -1,0 +1,82 @@
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Page name</label>
+        <input type="text" name="nome" value="#nome#" maxlength="200" placeholder="E.g.: October campaign" class="c2fc-campo-entrada">
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Page address</label>
+        <input type="text" name="caminho" value="#caminho#" maxlength="200" placeholder="E.g.: campaigns/october/" class="c2fc-campo-entrada" data-dashboard-pages-caminho>
+        <span class="c2fc-campo-ajuda">Lowercase letters, numbers and hyphens. Each slash opens a level.</span>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Board</label>
+        <select data-c2f-select="1" id="board_id" class="c2fc-campo-selecao dropdown" name="board_id">
+            <option value="">#opcao-vazia#</option>
+            #lousas#
+        </select>
+        <span class="c2fc-campo-ajuda">System boards, created on the Dashboard under Options &gt; Layouts.</span>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Template</label>
+        <select data-c2f-select="1" id="template_id" class="c2fc-campo-selecao dropdown" name="template_id">
+            <option value="">#opcao-vazia#</option>
+            #modelos#
+        </select>
+        <span class="c2fc-campo-ajuda">The page frame around the board. Templates live in the template registry, with the &laquo;dashboard-pages&raquo; target.</span>
+    </div>
+</div>
+
+<a class="c2fc-botao" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=dashboard-pages">
+    <i data-lucide="plus" class="size-4 shrink-0"></i> Add new template
+</a>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Site layout</label>
+        <select data-c2f-select="1" id="layout_id" class="c2fc-campo-selecao dropdown" name="layout_id">
+            <option value="">#opcao-vazia#</option>
+            #layouts#
+        </select>
+        <span class="c2fc-campo-ajuda">Header, footer and styles the page is built on.</span>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Access</label>
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="sem_permissao" value="1" #publica# #publica-travada#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Public page (opens without login)</span></label>
+    </div>
+</div>
+
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Display controls</h4>
+<p class="c2fc-campo-ajuda">Turn parts of the board on and off on this page. The board itself does not change.</p>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_title" value="1" #show_title# data-dashboard-pages-titulo><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Page title</span></label>
+    </div>
+    <div class="c2fc-campo" data-dashboard-pages-titulo-texto>
+        <label class="c2fc-campo-rotulo">Title text</label>
+        <input type="text" name="title" value="#titulo#" maxlength="160" placeholder="Blank uses the page name" class="c2fc-campo-entrada">
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_item_titles" value="1" #show_item_titles#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Item titles</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_frames" value="1" #show_frames#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Item frames</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_backgrounds" value="1" #show_backgrounds#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Item backgrounds</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-chave checkbox"><input type="checkbox" name="show_objects" value="1" #show_objects#><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Free objects (text, shape, image, icon, button)</span></label>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Arrangement</label>
+        <select data-c2f-select="1" id="mode" class="c2fc-campo-selecao dropdown" name="mode">
+            <option value="auto" #mode-auto#>Same as the board</option>
+            <option value="grade" #mode-grade#>Always grid</option>
+            <option value="lousa" #mode-lousa#>Always board</option>
+        </select>
+    </div>
+</div>
