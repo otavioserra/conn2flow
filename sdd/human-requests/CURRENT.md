@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-262.md](req-262.md) (BATCH-271 `in-progress`, 2026-10-07, Core — linha `3.0`, branch `feat/req-262`): pontos de extensão do uso de IA na camada de provedores — autorizar o pedido antes da chamada e pedido concluído com o consumo. Base da REQ-116 do site (créditos de IA por perfil).
   - [req-261.md](req-261.md) (BATCH-270 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.0`, nas três branches): ponto de extensão geral das telas do painel (`interface` / `pagina`), para um módulo acrescentar um recurso a qualquer tela. Base da REQ-114 do site (IA nos campos de formulário).
   - [req-260.md](req-260.md) (BATCH-269 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.0`, nas três branches; testes em `https://v3.1-conn2flow.local/`): camada de provedores de IA — Gemini, Claude, OpenAI e compatíveis, texto e imagem, com a chave em cabeçalho; cadastro de servidores com os quatro tipos. Frente 1 da BL-026 do site (agentes de IA).
   - [req-259.md](req-259.md) (BATCH-268 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): Fase 5 da lousa — a lousa publicada emite o evento de página `c2f:analytics` (visita, item visto, clique), que o módulo de análise do site já escuta, e ganha identificadores estáveis na marcação.
