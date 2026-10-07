@@ -190,6 +190,25 @@ final class IaProvedoresReq260Test extends TestCase
         $this->assertStringNotContainsString('AIzaSyA1234567890abcdefghij', $gemini['message']);
     }
 
+    public function testConexaoComOBancoESoltaAntesDaEsperaPeloProvedor(): void
+    {
+        $fonte = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/ia-provedores.php');
+        $http = substr($fonte, (int)strpos($fonte, 'function ia_provedor_http('), 400);
+        $this->assertTrue(strpos($http, 'ia_provedor_banco_soltar();') < strpos($http, 'curl_init()'));
+
+        // Sem conexão aberta, ou fora do sistema (sem a biblioteca de banco), não faz nada e não falha.
+        $antes = $GLOBALS['_BANCO'] ?? null;
+        $GLOBALS['_BANCO'] = ['conexao' => null];
+        ia_provedor_banco_soltar();
+        $this->assertSame(['conexao' => null], $GLOBALS['_BANCO']);
+        unset($GLOBALS['_BANCO']);
+        ia_provedor_banco_soltar();
+        if ($antes !== null) {
+            $GLOBALS['_BANCO'] = $antes;
+        }
+        $this->assertTrue(true);
+    }
+
     public function testPedidoDeImagem(): void
     {
         $gemini = ia_provedor_pedido_imagem($this->servidor('gemini'), ['prompt' => 'Um farol ao entardecer', 'tamanho' => '1536x1024']);

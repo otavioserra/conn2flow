@@ -305,8 +305,26 @@ function ia_provedor_resposta_imagem($tipo, $http, $dados){
 
 // ===== Rede
 
+/**
+ * Solta a conexão com o banco antes da espera pelo provedor. Um pedido de IA pode levar mais tempo do que o banco
+ * mantém uma conexão parada; quando isso acontecia, a gravação feita logo depois da resposta (registro de uso,
+ * por exemplo) se perdia sem erro na tela. Com a conexão solta, a consulta seguinte abre uma nova.
+ */
+function ia_provedor_banco_soltar(){
+	global $_BANCO;
+
+	if(!isset($_BANCO['conexao']) || !function_exists('banco_fechar_conexao')) return;
+	try {
+		if($_BANCO['conexao']) @mysqli_close($_BANCO['conexao']);
+	} catch (\Throwable $e) {
+		// Conexão que já caiu não fecha: basta esquecê-la.
+	}
+	unset($_BANCO['conexao']);
+}
+
 /** Envia o pedido montado e devolve `http` e `dados` (JSON decodificado), ou `erro` de comunicação. */
 function ia_provedor_http($pedido, $tempo = 120){
+	ia_provedor_banco_soltar();
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $pedido['url']);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

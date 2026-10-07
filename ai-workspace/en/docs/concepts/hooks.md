@@ -110,6 +110,14 @@ Every module that uses `interface_iniciar()`/`interface_finalizar()` fires, with
 | `excluir.banco` | after deleting | `$id` |
 | `status.banco` | after changing the status | `$id`, `$status` |
 
+After those, the interface fires one event that applies to **any screen**, under the `interface` namespace:
+
+| Namespace | Event | When | Arguments |
+|---|---|---|---|
+| `interface` | `pagina` | GET, after the interface builds the screen, in every module | `$modulo`, `$opcao` |
+
+Use it when the feature belongs to the whole panel (a button on every form, for instance) rather than to one screen of one module. The hook changes `$_GESTOR['pagina']` and includes its own JavaScript; since it runs on every screen, it should return early when it does not apply.
+
 `<opcao>` is `listar`, `adicionar`, `editar`, `clonar`, `visualizar`, `config`… When the module sets a `$_GESTOR['interface-opcao']` different from `opcao`, the event fires for both. Hooks get their data from `$_GESTOR`/`$_REQUEST`, since there are no arguments: a typical `editar.parametros` adds fields or changes `$_GESTOR['interface']`.
 
 ### Specific modules

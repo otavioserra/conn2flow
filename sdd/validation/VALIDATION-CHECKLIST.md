@@ -43,6 +43,19 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-270 — REQ-261 (linha 3.0)
+
+- [x] `interface` / `pagina` disparado em toda tela montada pela interface, fora de envio de formulário, com módulo e opção.
+- [x] Sem ninguém registrado, a tela sai igual.
+- [x] Teste automatizado e documentação nos dois idiomas.
+- [x] Camada de provedores solta a conexão com o banco antes da espera: oito pedidos, oito registros.
+- [x] PHPUnit 1.750; roteiros do site e da REQ-260 nos dois ambientes de teste.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-270](../implementation/BATCH-270.md).
+
+---
+
 ## BATCH-269 — REQ-260 (linha 3.0)
 
 - [x] Cadastrar e editar servidor dos quatro tipos, com endereço base e modelos.

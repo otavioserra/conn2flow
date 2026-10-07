@@ -229,3 +229,9 @@ BATCH-216 a BATCH-229 (2026-10-02 a 2026-10-04: módulo `cookie-consent`, prévi
 - **Célula condicional com marcador dentro** (`<!-- x < -->#tipo#<!-- x > -->`): trocar o marcador na célula antes de colocá-la na linha; a troca feita antes na linha não alcança o que entra depois.
 - **Rolagem em 390 px no roteiro**: abrir a página já na largura de celular. Redimensionar a janela aberta deixa o menu lateral do painel no estado de desktop e acusa rolagem que não existe.
 - **Pedido do editor à IA no roteiro**: `ajaxOpcao=html-editor-ia-requests` em tela com editor (`admin-paginas/adicionar/`), com `server_id`, `mode`, `prompt` e `data`; volta `status: Ok` e `data.html_gerado`.
+
+### REQ-261 / BATCH-270 — ponto de extensão geral e conexão com o banco em pedido de IA (2026-10-07)
+
+- **Recurso para todas as telas do painel**: hook `interface` / `pagina` (módulo e opção como argumentos), disparado no `interface_finalizar()` depois dos pontos por módulo. O callback sai cedo quando não se aplica.
+- **Espera longa por serviço externo derruba a conexão com o banco**: o `banco_query()` só conecta quando não há conexão e não reconecta a que caiu; a gravação depois da espera falha com erro só no log. Antes de espera longa, soltar a conexão (`ia_provedor_banco_soltar()` é o modelo). Sintoma: registro que some de vez em quando, nos pedidos mais demorados.
+- **O mesmo título de comentário abre dois blocos em `interface.php`** ("Disparar hook de página"): em teste de fonte, usar a última ocorrência.

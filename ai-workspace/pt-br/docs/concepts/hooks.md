@@ -110,6 +110,14 @@ Todo módulo que usa `interface_iniciar()`/`interface_finalizar()` dispara, com 
 | `excluir.banco` | depois de excluir | `$id` |
 | `status.banco` | depois de trocar o status | `$id`, `$status` |
 
+Depois desses, a interface dispara um evento que vale para **qualquer tela**, com namespace `interface`:
+
+| Namespace | Evento | Quando | Argumentos |
+|---|---|---|---|
+| `interface` | `pagina` | GET, depois de a interface montar a tela, em todo módulo | `$modulo`, `$opcao` |
+
+Use-o quando o recurso é do painel inteiro (um botão em todo formulário, por exemplo) e não de uma tela de um módulo. O hook altera `$_GESTOR['pagina']` e inclui o JavaScript dele; como roda em toda tela, deve sair cedo quando não se aplica.
+
 `<opcao>` é `listar`, `adicionar`, `editar`, `clonar`, `visualizar`, `config`… Quando o módulo define `$_GESTOR['interface-opcao']` diferente da `opcao`, o evento dispara para as duas. Os hooks recebem os dados por `$_GESTOR`/`$_REQUEST`, já que não há argumentos: um `editar.parametros` típico acrescenta campos ou altera `$_GESTOR['interface']`.
 
 ### Módulos específicos

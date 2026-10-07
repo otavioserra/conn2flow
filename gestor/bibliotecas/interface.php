@@ -6001,6 +6001,9 @@ function interface_finalizar($params = false){
 		if(isset($_GESTOR['interface-opcao'])) {
 			hook_do_action($_GESTOR['modulo-id'], $_GESTOR['interface-opcao'] . '.pagina');
 		}
+		// REQ-261: ponto de extensão geral. Vale para qualquer tela montada pela interface, para o módulo que
+		// acrescenta um recurso ao painel inteiro sem se registrar tela por tela.
+		hook_do_action('interface', 'pagina', (string)($_GESTOR['modulo-id'] ?? ''), (string)($_GESTOR['opcao'] ?? ''));
 	}
 	
 	// ===== Imprimir alerta
