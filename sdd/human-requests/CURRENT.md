@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-254.md](req-254.md) (BATCH-263 `in-progress`, 2026-10-07, Core — linha `3.1`, branch `feat/req-254`; testes em `https://v3.1-conn2flow.local/`): editor HTML e clonar no módulo "Páginas de Lousa", no padrão do `publisher-index` (modelo carregado no editor; a página sai do HTML do editor mais os controles).
   - [req-253.md](req-253.md) (BATCH-262 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): Fase 3B da lousa — módulo "Páginas de Lousa" (`dashboard-pages`): página em `paginas` como no `publisher-pages`, com controles de exibição e modelo como no `publisher-index`, no lugar de publicador e variáveis.
   - [req-252.md](req-252.md) (BATCH-261 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): Fase 3A da lousa — widget "Lousa" no cadastro de widgets: uma lousa do sistema renderizada dentro de qualquer página, sem iframe e só leitura. O módulo `dashboard-pages` vem na requisição seguinte.
   - [req-251.md](req-251.md) (BATCH-260 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): Fase 2 da lousa — lousa nomeada como registro do sistema, duplicar inteira e versões com restauração. Rumo da linha em `DEC-133`.
