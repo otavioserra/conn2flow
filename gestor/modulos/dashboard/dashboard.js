@@ -1472,13 +1472,68 @@ $(document).ready(function () {
 			var mine = profilesData.perfil_atual, own = (profilesData.perfis || []).some(function (p) { return p.id === mine && p.publicado; });
 			if (published.indexOf(mine) !== -1 || (published.indexOf('*') !== -1 && !own)) { profileWidgets = copyLayout(layout).map(normalizeWidget); profileMode = mode; profileFirst = first; if (source === 'profile') { widgets = profileWidgets; render(); syncTabs(); } }
 		}
-		function openLayouts() { if (!layoutsModal || !canEdit) return; returnFocus = document.activeElement; layoutStatus(''); drawSaved(); layoutsModal.classList.remove('hidden'); loadProfiles(); var name = document.getElementById('dashboard-widgets-layout-name'); if (name) name.focus(); }
+		// ----- REQ-251: lousas nomeadas (registro do sistema), duplicar e versões
+		function modeLabel(mode) { return layoutLabel(mode === 'lousa' ? 'mode-board' : 'mode-grid'); }
+		function drawBoards(list) {
+			var box = document.getElementById('dashboard-boards-list'); if (!box) return;
+			box.innerHTML = '';
+			if (!list.length) { var none = document.createElement('p'); none.className = 'dashboard-layout-empty'; none.textContent = layoutLabel('board-none'); box.appendChild(none); return; }
+			list.forEach(function (board) {
+				var group = document.createElement('div'); group.className = 'dashboard-board'; group.setAttribute('data-board', board.id);
+				var row = layoutRow(board.nome, modeLabel(board.modo) + ' · ' + board.total + ' ' + layoutLabel('board-items') + ' · ' + layoutLabel('board-version') + ' ' + board.versao);
+				layoutButton(row, layoutLabel('board-open'), 'data-board-open', board.id); layoutButton(row, layoutLabel('board-update'), 'data-board-update', board.id);
+				layoutButton(row, layoutLabel('board-duplicate'), 'data-board-duplicate', board.id); layoutButton(row, layoutLabel('board-versions'), 'data-board-versions', board.id);
+				layoutButton(row, layoutLabel('delete'), 'data-board-delete', board.id, true);
+				group.appendChild(row);
+				var versions = document.createElement('div'); versions.className = 'dashboard-board-versions'; versions.hidden = true; group.appendChild(versions);
+				box.appendChild(group);
+			});
+		}
+		function loadBoards() { return request('lousas-listar').then(function (data) { drawBoards((data && data.lousas) || []); }).catch(function () { layoutStatus(labels.error); }); }
+		function drawVersions(box, data) {
+			box.innerHTML = ''; box.hidden = false;
+			if (!(data.versoes || []).length) { var none = document.createElement('p'); none.className = 'dashboard-layout-empty'; none.textContent = layoutLabel('board-no-versions'); box.appendChild(none); return; }
+			data.versoes.forEach(function (version) {
+				var row = layoutRow(layoutLabel('board-version') + ' ' + version.versao, modeLabel(version.modo) + ' · ' + version.total + ' ' + layoutLabel('board-items') + ' · ' + version.data);
+				var button = document.createElement('button'); button.type = 'button'; button.className = 'c2fc-botao'; button.textContent = layoutLabel('board-restore');
+				button.setAttribute('data-board-restore', data.id); button.setAttribute('data-board-version', version.versao); row.appendChild(button);
+				box.appendChild(row);
+			});
+		}
+		// Ações de lousa do pop-up de layouts. Devolve `true` quando o clique era de uma delas.
+		function boardAction(hit) {
+			var button, done = function () { layoutStatus(layoutLabel('done')); return loadBoards(); }, fail = function () { layoutStatus(labels.error); };
+			var mode = function () { return board() ? 'lousa' : 'grade'; };
+			if (hit('#dashboard-board-create')) {
+				var input = document.getElementById('dashboard-board-name'), name = input.value.trim().slice(0, 120);
+				if (!name) { layoutStatus(layoutLabel('name')); input.focus(); return true; }
+				request('lousa-salvar', {nome: name, layout: copyLayout(widgets), modo: mode()}).then(function () { input.value = ''; return done(); }).catch(fail);
+				return true;
+			}
+			if ((button = hit('[data-board-open]'))) {
+				request('lousa-obter', {id: button.getAttribute('data-board-open')}).then(function (data) { adopt(data.widgets || [], data.modo === 'lousa' ? 'board' : 'grid'); layoutStatus(layoutLabel('done')); }).catch(fail);
+				return true;
+			}
+			if ((button = hit('[data-board-update]'))) { request('lousa-salvar', {id: button.getAttribute('data-board-update'), layout: copyLayout(widgets), modo: mode()}).then(done).catch(fail); return true; }
+			if ((button = hit('[data-board-duplicate]'))) { request('lousa-duplicar', {id: button.getAttribute('data-board-duplicate')}).then(done).catch(fail); return true; }
+			if ((button = hit('[data-board-delete]'))) { request('lousa-excluir', {id: button.getAttribute('data-board-delete')}).then(done).catch(fail); return true; }
+			if ((button = hit('[data-board-versions]'))) {
+				var box = button.closest('.dashboard-board').querySelector('.dashboard-board-versions');
+				if (!box.hidden) { box.hidden = true; return true; }
+				request('lousa-versoes', {id: button.getAttribute('data-board-versions')}).then(function (data) { drawVersions(box, data); }).catch(fail);
+				return true;
+			}
+			if ((button = hit('[data-board-restore]'))) { request('lousa-restaurar', {id: button.getAttribute('data-board-restore'), versao: button.getAttribute('data-board-version')}).then(done).catch(fail); return true; }
+			return false;
+		}
+		function openLayouts() { if (!layoutsModal || !canEdit) return; returnFocus = document.activeElement; layoutStatus(''); drawSaved(); layoutsModal.classList.remove('hidden'); loadProfiles(); loadBoards(); var name = document.getElementById('dashboard-widgets-layout-name'); if (name) name.focus(); }
 		function closeLayouts() { if (!layoutsModal || layoutsModal.classList.contains('hidden')) return; layoutsModal.classList.add('hidden'); if (returnFocus && returnFocus.isConnected) returnFocus.focus(); }
 		var layoutsButton = document.getElementById('dashboard-btn-layouts');
 		if (layoutsButton) layoutsButton.addEventListener('click', openLayouts);
 		if (layoutsModal) layoutsModal.addEventListener('click', function (e) {
 			var hit = function (selector) { return e.target.closest(selector); }, button;
 			if (e.target === layoutsModal || hit('.dashboard-widgets-layouts-close')) { closeLayouts(); return; }
+			if (boardAction(hit)) return;
 			if (hit('#dashboard-widgets-layout-save')) {
 				var input = document.getElementById('dashboard-widgets-layout-name'), name = input.value.trim().slice(0, 60);
 				if (!name) { layoutStatus(layoutLabel('name')); input.focus(); return; }

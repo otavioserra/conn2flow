@@ -210,7 +210,10 @@
     <div id="dashboard-widgets-layouts-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm hidden" role="dialog" aria-modal="true" aria-labelledby="dashboard-widgets-layouts-title"
         data-label-apply="@[[widgets-layouts-apply]]@" data-label-delete="@[[widgets-layouts-delete]]@" data-label-remove="@[[widgets-layouts-remove]]@" data-label-all="@[[widgets-layouts-all]]@"
         data-label-published="@[[widgets-layouts-published]]@" data-label-count="@[[widgets-layouts-count]]@" data-label-done="@[[widgets-layouts-done]]@" data-label-none="@[[widgets-layouts-none]]@"
-        data-label-name="@[[widgets-layouts-name-required]]@" data-label-pick="@[[widgets-layouts-sem-perfil]]@">
+        data-label-name="@[[widgets-layouts-name-required]]@" data-label-pick="@[[widgets-layouts-sem-perfil]]@"
+        data-label-board-open="@[[widgets-boards-open]]@" data-label-board-update="@[[widgets-boards-update]]@" data-label-board-duplicate="@[[widgets-boards-duplicate]]@" data-label-board-versions="@[[widgets-boards-versions]]@"
+        data-label-board-restore="@[[widgets-boards-restore]]@" data-label-board-none="@[[widgets-boards-none]]@" data-label-board-no-versions="@[[widgets-boards-no-versions]]@" data-label-board-version="@[[widgets-boards-version]]@"
+        data-label-board-items="@[[widgets-boards-items]]@" data-label-mode-grid="@[[widgets-boards-mode-grid]]@" data-label-mode-board="@[[widgets-boards-mode-board]]@">
         <div class="relative flex max-h-full w-full max-w-2xl flex-col rounded-2xl border border-slate-200 bg-white shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
                 <div class="flex min-w-0 items-center gap-2">
@@ -223,6 +226,15 @@
             </div>
             <div class="min-h-0 space-y-6 overflow-y-auto px-6 py-4">
                 <section>
+                    <h4 class="text-sm font-semibold text-slate-900">@[[widgets-boards-title]]@</h4>
+                    <p class="mt-1 text-xs text-slate-500">@[[widgets-boards-help]]@</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <input type="text" id="dashboard-board-name" class="c2fc-campo-entrada min-w-0 flex-1" maxlength="120" placeholder="@[[widgets-boards-name]]@" aria-label="@[[widgets-boards-name]]@">
+                        <button type="button" id="dashboard-board-create" class="c2fc-botao c2fc-botao-primario"><i data-lucide="plus" class="size-4"></i> @[[widgets-boards-create]]@</button>
+                    </div>
+                    <div id="dashboard-boards-list" class="mt-3 space-y-2"></div>
+                </section>
+                <section class="border-t border-slate-200 pt-4">
                     <h4 class="text-sm font-semibold text-slate-900">@[[widgets-layouts-saved]]@</h4>
                     <p class="mt-1 text-xs text-slate-500">@[[widgets-layouts-saved-help]]@</p>
                     <div class="mt-3 flex flex-wrap gap-2">

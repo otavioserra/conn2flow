@@ -3386,6 +3386,234 @@ function dashboard_widgets_url_edicao($widget_id, $registro_id){
 	return ($_GESTOR['url-raiz'] ?? '/').ltrim((string)$pagina['caminho'], '/').'?id='.rawurlencode((string)$registro_id);
 }
 
+// ===== Lousas nomeadas: registro do sistema, duplicar e versões (REQ-251)
+
+/** Quantas versões anteriores de uma lousa ficam guardadas. */
+function dashboard_lousas_limite_versoes(){
+	return 20;
+}
+
+/** Identificador a partir do nome: minúsculas sem acento, hífen entre palavras, até 80 caracteres. */
+function dashboard_lousas_slug($nome){
+	$nome = strtr((string)$nome, Array(
+		'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e', 'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+		'ó' => 'o', 'ò' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u', 'ç' => 'c', 'ñ' => 'n',
+		'Á' => 'a', 'À' => 'a', 'Â' => 'a', 'Ã' => 'a', 'Ä' => 'a', 'É' => 'e', 'È' => 'e', 'Ê' => 'e', 'Ë' => 'e', 'Í' => 'i', 'Ì' => 'i', 'Î' => 'i', 'Ï' => 'i',
+		'Ó' => 'o', 'Ò' => 'o', 'Ô' => 'o', 'Õ' => 'o', 'Ö' => 'o', 'Ú' => 'u', 'Ù' => 'u', 'Û' => 'u', 'Ü' => 'u', 'Ç' => 'c', 'Ñ' => 'n',
+	));
+	$slug = trim((string)preg_replace('/[^a-z0-9]+/', '-', strtolower($nome)), '-');
+	$slug = trim(substr($slug, 0, 80), '-');
+	return $slug !== '' ? $slug : 'lousa';
+}
+
+function dashboard_lousas_modo($valor){
+	return (string)$valor === 'lousa' ? 'lousa' : 'grade';
+}
+
+/** Nome de lousa: sem quebra de linha, espaços colapsados, até 120 caracteres. */
+function dashboard_lousas_nome($valor){
+	return mb_substr(trim((string)preg_replace('/\s+/u', ' ', (string)$valor)), 0, 120);
+}
+
+function dashboard_lousas_onde($id){
+	global $_GESTOR;
+	return "WHERE id='".banco_escape_field((string)$id)."' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A'";
+}
+
+/** Registro da lousa ativa com esse identificador, ou nulo. */
+function dashboard_lousas_linha($id){
+	$id = (string)$id;
+	if(!preg_match('/^[a-z0-9-]{1,120}$/', $id)) return null;
+	$linha = banco_select(Array(
+		'unico' => true, 'tabela' => 'dashboard_boards',
+		'campos' => Array('id_dashboard_boards', 'id', 'name', 'mode', 'layout', 'versao', 'data_modificacao'),
+		'extra' => dashboard_lousas_onde($id).' LIMIT 1',
+	));
+	return $linha ?: null;
+}
+
+/** Primeiro identificador livre a partir de uma base (`base`, `base-2`, `base-3`…). */
+function dashboard_lousas_id_livre($base){
+	global $_GESTOR;
+	$id = $base;
+	for($n = 2; $n < 500; $n++){
+		$existe = banco_select(Array(
+			'unico' => true, 'tabela' => 'dashboard_boards', 'campos' => Array('id_dashboard_boards'),
+			'extra' => "WHERE id='".banco_escape_field($id)."' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' LIMIT 1",
+		));
+		if(!$existe) return $id;
+		$id = substr($base, 0, 110).'-'.$n;
+	}
+	return $base.'-'.bin2hex(random_bytes(4));
+}
+
+function dashboard_lousas_resumo($linha){
+	return Array(
+		'id' => (string)$linha['id'],
+		'nome' => (string)$linha['name'],
+		'modo' => dashboard_lousas_modo($linha['mode'] ?? ''),
+		'versao' => (int)($linha['versao'] ?? 1),
+		'total' => count(dashboard_widgets_layout_normalizar($linha['layout'] ?? null)),
+		'atualizada' => (string)($linha['data_modificacao'] ?? $linha['data_criacao'] ?? ''),
+	);
+}
+
+function dashboard_lousas_inserir($id, $nome, $modo, $layout){
+	global $_GESTOR;
+	banco_insert_name(Array(
+		Array('id', $id), Array('name', $nome), Array('language', $_GESTOR['linguagem-codigo']), Array('mode', $modo),
+		Array('layout', json_encode($layout, JSON_UNESCAPED_UNICODE)), Array('status', 'A'), Array('versao', 1, true),
+		Array('id_usuarios', (int)($_GESTOR['usuario-id'] ?? 0), true),
+	), 'dashboard_boards');
+}
+
+/** Guarda o estado atual da lousa no histórico e poda o que passa do limite. */
+function dashboard_lousas_guardar_versao($linha){
+	global $_GESTOR;
+	$lang = $_GESTOR['linguagem-codigo'];
+	banco_insert_name(Array(
+		Array('board_id', $linha['id']), Array('language', $lang), Array('versao', (int)$linha['versao'], true), Array('name', $linha['name']),
+		Array('mode', dashboard_lousas_modo($linha['mode'])), Array('layout', (string)$linha['layout']), Array('id_usuarios', (int)($_GESTOR['usuario-id'] ?? 0), true),
+	), 'dashboard_boards_versions');
+	$guardadas = banco_select(Array(
+		'tabela' => 'dashboard_boards_versions', 'campos' => Array('id_dashboard_boards_versions'),
+		'extra' => "WHERE board_id='".banco_escape_field($linha['id'])."' AND language='".banco_escape_field($lang)."' ORDER BY id_dashboard_boards_versions DESC",
+	)) ?: Array();
+	foreach(array_slice($guardadas, dashboard_lousas_limite_versoes()) as $antiga){
+		banco_delete('dashboard_boards_versions', "WHERE id_dashboard_boards_versions='".banco_escape_field($antiga['id_dashboard_boards_versions'])."'");
+	}
+}
+
+/** Substitui o conteúdo da lousa e sobe a versão. O nome só muda quando vem preenchido. */
+function dashboard_lousas_atualizar($linha, $layout, $modo, $nome = ''){
+	global $_GESTOR;
+	$campos = Array(
+		"layout='".banco_escape_field(json_encode($layout, JSON_UNESCAPED_UNICODE))."'",
+		"mode='".banco_escape_field($modo)."'",
+		"versao='".((int)$linha['versao'] + 1)."'",
+		"id_usuarios='".(int)($_GESTOR['usuario-id'] ?? 0)."'",
+		"data_modificacao=NOW()",
+	);
+	if($nome !== '') $campos[] = "name='".banco_escape_field($nome)."'";
+	banco_update(banco_campos_virgulas($campos), 'dashboard_boards', "WHERE id_dashboard_boards='".banco_escape_field($linha['id_dashboard_boards'])."'");
+}
+
+function dashboard_lousas_erro($variavel = 'widgets-label-error'){
+	gestor_set('ajax-json', Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => $variavel))));
+}
+
+/** Roda uma ação de lousa só para quem administra widgets, devolvendo erro em falha de banco. */
+function dashboard_lousas_acao(callable $acao){
+	if(!dashboard_widgets_pode_administrar()){ dashboard_widgets_negar(); return; }
+	try {
+		$acao();
+	} catch (\Throwable $e) {
+		error_log('dashboard_lousas: '.$e->getMessage());
+		dashboard_lousas_erro();
+	}
+}
+
+/** AJAX — lousas ativas do idioma atual. */
+function dashboard_ajax_lousas_listar(){
+	dashboard_lousas_acao(function(){
+		global $_GESTOR;
+		$linhas = banco_select(Array(
+			'tabela' => 'dashboard_boards', 'campos' => Array('id', 'name', 'mode', 'layout', 'versao', 'data_modificacao'),
+			'extra' => "WHERE status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' ORDER BY name ASC",
+		)) ?: Array();
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('lousas' => array_map('dashboard_lousas_resumo', $linhas))));
+	});
+}
+
+/** AJAX — cria uma lousa (sem `id`) ou grava por cima de uma existente, guardando a versão anterior. */
+function dashboard_ajax_lousa_salvar(){
+	dashboard_lousas_acao(function(){
+		$layout = dashboard_widgets_layout_normalizar($_REQUEST['layout'] ?? null);
+		$modo = dashboard_lousas_modo($_REQUEST['modo'] ?? '');
+		$nome = dashboard_lousas_nome($_REQUEST['nome'] ?? '');
+		$id = trim((string)($_REQUEST['id'] ?? ''));
+		if($id === ''){
+			if($nome === ''){ dashboard_lousas_erro('widgets-boards-name-required'); return; }
+			$id = dashboard_lousas_id_livre(dashboard_lousas_slug($nome));
+			dashboard_lousas_inserir($id, $nome, $modo, $layout);
+		} else {
+			$linha = dashboard_lousas_linha($id);
+			if(!$linha){ dashboard_lousas_erro('widgets-boards-not-found'); return; }
+			dashboard_lousas_guardar_versao($linha);
+			dashboard_lousas_atualizar($linha, $layout, $modo, $nome);
+		}
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => dashboard_lousas_resumo(dashboard_lousas_linha($id))));
+	});
+}
+
+/** AJAX — conteúdo de uma lousa, para abrir no layout de quem pede. */
+function dashboard_ajax_lousa_obter(){
+	dashboard_lousas_acao(function(){
+		$linha = dashboard_lousas_linha($_REQUEST['id'] ?? '');
+		if(!$linha){ dashboard_lousas_erro('widgets-boards-not-found'); return; }
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => array_merge(dashboard_lousas_resumo($linha), Array('widgets' => dashboard_widgets_layout_normalizar($linha['layout'])))));
+	});
+}
+
+/** AJAX — cópia inteira de uma lousa, com outro identificador e o nome marcado como cópia. */
+function dashboard_ajax_lousa_duplicar(){
+	dashboard_lousas_acao(function(){
+		$linha = dashboard_lousas_linha($_REQUEST['id'] ?? '');
+		if(!$linha){ dashboard_lousas_erro('widgets-boards-not-found'); return; }
+		$nome = dashboard_lousas_nome($linha['name'].' '.gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-boards-copy-suffix')));
+		$id = dashboard_lousas_id_livre(dashboard_lousas_slug($nome));
+		dashboard_lousas_inserir($id, $nome, dashboard_lousas_modo($linha['mode']), dashboard_widgets_layout_normalizar($linha['layout']));
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => dashboard_lousas_resumo(dashboard_lousas_linha($id))));
+	});
+}
+
+/** AJAX — tira a lousa da lista. O registro e o histórico ficam no banco. */
+function dashboard_ajax_lousa_excluir(){
+	dashboard_lousas_acao(function(){
+		$linha = dashboard_lousas_linha($_REQUEST['id'] ?? '');
+		if(!$linha){ dashboard_lousas_erro('widgets-boards-not-found'); return; }
+		banco_update("status='D',data_modificacao=NOW()", 'dashboard_boards', "WHERE id_dashboard_boards='".banco_escape_field($linha['id_dashboard_boards'])."'");
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('id' => $linha['id'])));
+	});
+}
+
+/** AJAX — versões guardadas de uma lousa, da mais nova para a mais antiga. */
+function dashboard_ajax_lousa_versoes(){
+	dashboard_lousas_acao(function(){
+		global $_GESTOR;
+		$linha = dashboard_lousas_linha($_REQUEST['id'] ?? '');
+		if(!$linha){ dashboard_lousas_erro('widgets-boards-not-found'); return; }
+		$versoes = banco_select(Array(
+			'tabela' => 'dashboard_boards_versions', 'campos' => Array('versao', 'name', 'mode', 'layout', 'data_criacao'),
+			'extra' => "WHERE board_id='".banco_escape_field($linha['id'])."' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' ORDER BY id_dashboard_boards_versions DESC",
+		)) ?: Array();
+		$saida = Array();
+		foreach($versoes as $versao){
+			$saida[] = Array('versao' => (int)$versao['versao'], 'nome' => (string)$versao['name'], 'modo' => dashboard_lousas_modo($versao['mode']),
+				'total' => count(dashboard_widgets_layout_normalizar($versao['layout'])), 'data' => (string)$versao['data_criacao']);
+		}
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('id' => $linha['id'], 'atual' => (int)$linha['versao'], 'versoes' => $saida)));
+	});
+}
+
+/** AJAX — devolve à lousa o conteúdo de uma versão guardada; o estado atual também vira versão. */
+function dashboard_ajax_lousa_restaurar(){
+	dashboard_lousas_acao(function(){
+		global $_GESTOR;
+		$linha = dashboard_lousas_linha($_REQUEST['id'] ?? '');
+		$numero = (int)($_REQUEST['versao'] ?? 0);
+		if(!$linha || $numero < 1){ dashboard_lousas_erro('widgets-boards-not-found'); return; }
+		$versao = banco_select(Array(
+			'unico' => true, 'tabela' => 'dashboard_boards_versions', 'campos' => Array('mode', 'layout'),
+			'extra' => "WHERE board_id='".banco_escape_field($linha['id'])."' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND versao='".$numero."' ORDER BY id_dashboard_boards_versions DESC LIMIT 1",
+		));
+		if(!$versao){ dashboard_lousas_erro('widgets-boards-not-found'); return; }
+		dashboard_lousas_guardar_versao($linha);
+		dashboard_lousas_atualizar($linha, dashboard_widgets_layout_normalizar($versao['layout']), dashboard_lousas_modo($versao['mode']));
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => dashboard_lousas_resumo(dashboard_lousas_linha($linha['id']))));
+	});
+}
+
 /**
  * req-226 (CA-2, CA-4): Endpoint AJAX para salvar preferências de densidade, abas e widgets.
  */
@@ -3576,6 +3804,14 @@ function dashboard_start(){
 			case 'widgets-layouts': dashboard_ajax_widgets_layouts(); break;
 			case 'widgets-layout-publicar': dashboard_ajax_widgets_layout_publicar(); break;
 			case 'widgets-layout-remover': dashboard_ajax_widgets_layout_remover(); break;
+			// REQ-251: lousas nomeadas
+			case 'lousas-listar': dashboard_ajax_lousas_listar(); break;
+			case 'lousa-salvar': dashboard_ajax_lousa_salvar(); break;
+			case 'lousa-obter': dashboard_ajax_lousa_obter(); break;
+			case 'lousa-duplicar': dashboard_ajax_lousa_duplicar(); break;
+			case 'lousa-excluir': dashboard_ajax_lousa_excluir(); break;
+			case 'lousa-versoes': dashboard_ajax_lousa_versoes(); break;
+			case 'lousa-restaurar': dashboard_ajax_lousa_restaurar(); break;
 			// Toolbar e legado
 			case 'site-toolbar-render': dashboard_ajax_site_toolbar_render(); break;
 			case 'site-toolbar-widget-types': dashboard_ajax_site_toolbar_widget_types(); break;

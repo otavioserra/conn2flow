@@ -225,9 +225,9 @@
         "minificado": 5440
     },
     "gestor/modulos/dashboard/dashboard.js": {
-        "sha1": "d0ac9025dc9b5d12ecb8027d99577f25d57451d8",
-        "origem": 89260,
-        "minificado": 48606
+        "sha1": "ce9d30cdf21a176dc0630782b0cd219c8b2d1454",
+        "origem": 93967,
+        "minificado": 51602
     },
     "gestor/modulos/dashboard/dashboard.toolbar.js": {
         "sha1": "738079037c80bdc0a9586b7b8a440fc23e64c1bc",

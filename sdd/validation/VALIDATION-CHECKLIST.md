@@ -17,6 +17,20 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-260 — REQ-251 (linha 3.1)
+
+- [x] Lousa do sistema criada com o layout atual, aberta no layout próprio e gravada por cima.
+- [x] Cada gravação guarda a versão anterior; restaurar devolve o conteúdo e guarda a que estava.
+- [x] Duplicar gera lousa independente; excluir tira da lista.
+- [x] As sete ações recusadas pelo servidor para quem não tem `widgets-administrar`.
+- [x] PHPUnit 1.697 e Vitest 631 sem falhas; navegador 18/18 em `v3.1-conn2flow.local`; 390 px sem rolagem lateral.
+- [ ] Conferir com um segundo administrador real (a instalação só tem um).
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-260](../implementation/BATCH-260.md).
+
+---
+
 ## BATCH-259 — REQ-250 (linha 3.1)
 
 - [x] Objetos livres (texto, forma, imagem, ícone, botão) criados, configurados, duplicados e persistidos.

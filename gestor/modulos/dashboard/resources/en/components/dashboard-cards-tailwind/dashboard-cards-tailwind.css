@@ -528,3 +528,8 @@ html.dashboard-window-open { overflow: hidden; }
 #dashboard-widget-config-modal [hidden] { display: none !important; }
 /* O seletor de imagem abre por cima do pop-up de configurações, que está na mesma camada dos outros pop-ups. */
 #dashboard-image-picker { z-index: 60; }
+
+/* REQ-251: lousas nomeadas no pop-up de layouts. */
+.dashboard-board-versions { margin: 6px 0 0 16px; display: grid; gap: 6px; }
+.dashboard-board-versions[hidden] { display: none; }
+.dashboard-board-versions .dashboard-layout-row { background: #f8fafc; }

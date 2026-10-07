@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-251.md](req-251.md) (BATCH-260 `in-progress`, 2026-10-07, Core — linha `3.1`, branch `feat/req-251`; testes em `https://v3.1-conn2flow.local/`): Fase 2 da lousa — lousa nomeada como registro do sistema, duplicar inteira e versões com restauração. Rumo da linha em `DEC-133`.
+  - [req-251.md](req-251.md) (BATCH-260 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): Fase 2 da lousa — lousa nomeada como registro do sistema, duplicar inteira e versões com restauração. Rumo da linha em `DEC-133`.
   - [req-250.md](req-250.md) (BATCH-259 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): Fase 1 da lousa — objetos livres (texto, forma, imagem do gerenciador, ícone, botão de chamada), esconder por largura de tela em três limiares, imagem de fundo com opacidade e Google Fonts no texto e no título das caixas. Não entra na `main` nem na `3.0`.
   - [req-249.md](req-249.md) (BATCH-258 `implemented-pending-homologation`, 2026-10-06, Core, coordenada com a REQ-111 do site): Widgets do Dashboard — link, formulário e navegação por script sempre para fora do quadro, opção de a aba de widgets vir antes da de módulos (guardada nos layouts e nos perfis) e plano de evolução da lousa.
   - [req-248.md](req-248.md) (BATCH-257 `implemented-pending-homologation`, 2026-10-06, Core): Área de widgets com dois modos — grade (padrão, com widgets por linha) e lousa de posição livre, com botão de troca — mais janela cheia, opções em botão flutuante e Tailwind fixado em 4.3.3.

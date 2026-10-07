@@ -262,12 +262,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.29",
+                    "version": "1.30",
                     "checksum": {
-                        "html": "a555c163f54f6a845a7a930e45e28c00",
-                        "css": "c35139a412ccb9cd195f6856cf656866",
+                        "html": "654d58ac415527a15f5dfaa3a1962f8c",
+                        "css": "bd7d8db6f1aab7d8f216ce78b0049733",
                         "css_precompiled": "",
-                        "combined": "3b63e70742a7de4a59a70bf90e809846"
+                        "combined": "fd9800b7f86733d5eb5e9705571896ca"
                     }
                 }
             ],
@@ -670,6 +670,96 @@
                 {
                     "id": "widgets-first",
                     "value": "Widgets antes dos módulos",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-title",
+                    "value": "Lousas do sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-help",
+                    "value": "Lousa com nome, que todo administrador de widgets vê. Gravar por cima guarda a versão anterior.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-name",
+                    "value": "Nome da lousa",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-create",
+                    "value": "Criar com o layout atual",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-open",
+                    "value": "Abrir",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-update",
+                    "value": "Gravar por cima",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-duplicate",
+                    "value": "Duplicar",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-versions",
+                    "value": "Versões",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-restore",
+                    "value": "Restaurar",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-none",
+                    "value": "Nenhuma lousa criada ainda.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-no-versions",
+                    "value": "Esta lousa ainda não tem versão anterior.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-version",
+                    "value": "Versão",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-items",
+                    "value": "itens",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-mode-grid",
+                    "value": "Grade",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-mode-board",
+                    "value": "Lousa",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-copy-suffix",
+                    "value": "(cópia)",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-name-required",
+                    "value": "Dê um nome à lousa.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-not-found",
+                    "value": "Lousa não encontrada.",
                     "type": "string"
                 },
                 {
@@ -1340,12 +1430,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.29",
+                    "version": "1.30",
                     "checksum": {
-                        "html": "a555c163f54f6a845a7a930e45e28c00",
-                        "css": "c35139a412ccb9cd195f6856cf656866",
+                        "html": "654d58ac415527a15f5dfaa3a1962f8c",
+                        "css": "bd7d8db6f1aab7d8f216ce78b0049733",
                         "css_precompiled": "",
-                        "combined": "3b63e70742a7de4a59a70bf90e809846"
+                        "combined": "fd9800b7f86733d5eb5e9705571896ca"
                     }
                 }
             ],
@@ -1748,6 +1838,96 @@
                 {
                     "id": "widgets-first",
                     "value": "Widgets before modules",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-title",
+                    "value": "System boards",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-help",
+                    "value": "A named board every widget administrator can see. Overwriting keeps the previous version.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-name",
+                    "value": "Board name",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-create",
+                    "value": "Create from current layout",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-open",
+                    "value": "Open",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-update",
+                    "value": "Overwrite",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-duplicate",
+                    "value": "Duplicate",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-versions",
+                    "value": "Versions",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-restore",
+                    "value": "Restore",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-none",
+                    "value": "No board created yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-no-versions",
+                    "value": "This board has no previous version yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-version",
+                    "value": "Version",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-items",
+                    "value": "items",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-mode-grid",
+                    "value": "Grid",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-mode-board",
+                    "value": "Board",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-copy-suffix",
+                    "value": "(copy)",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-name-required",
+                    "value": "Give the board a name.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-not-found",
+                    "value": "Board not found.",
                     "type": "string"
                 },
                 {
@@ -2208,5 +2388,5 @@
             ]
         }
     },
-    "asset_version": "a5c0b6bebe372db9"
+    "asset_version": "17191fa4bdb46ca9"
 }

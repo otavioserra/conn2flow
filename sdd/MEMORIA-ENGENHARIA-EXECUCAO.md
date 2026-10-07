@@ -239,3 +239,11 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Google Fonts `css2`**: pedir peso que a família não tem devolve erro para a folha inteira; Bebas Neue vai sem pesos.
 - **happy-dom busca folha e iframe na rede**: `window.happyDOM.settings.disableCSSFileLoading` e `disableIframePageLoading` nos testes que criam `<link>` ou `iframe` com endereço.
 - **Seletor com aspas aninhadas** (`[data-x='[y="z"]']`) não funciona no happy-dom: achar pelo atributo e filtrar em JS.
+
+### REQ-251 / BATCH-260 — fase 2 da lousa, linha 3.1 (2026-10-07)
+
+- **Lousa do sistema** mora em `dashboard_boards` (único por `id` + `language`) e o histórico em `dashboard_boards_versions` (20 por lousa). Excluir é status `D`; o identificador não volta a ficar livre.
+- **Ações AJAX novas do Dashboard** passam por `dashboard_lousas_acao()`: guarda de permissão antes de qualquer consulta e mensagem genérica na falha.
+- **`error_log()` grava mesmo com `log_errors=0`**: teste que roda PHP em processo à parte com `2>&1` deve ler a resposta na última linha, não na saída inteira.
+- **Instalação da 3.1 só tinha o administrador**: para testar recusa foi criado no banco local o usuário 2, `usuario-de-roteiro` (perfil `cloud-nano`); `auth:cookie --project=conn2flow-v31-local --user=2`.
+- **Arquivo novo de migração** entra no pacote do `project:update-all` como qualquer outro; a tabela nasce na própria rodada.
