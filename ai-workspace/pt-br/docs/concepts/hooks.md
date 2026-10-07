@@ -120,6 +120,21 @@ Use-o quando o recurso é do painel inteiro (um botão em todo formulário, por 
 
 `<opcao>` é `listar`, `adicionar`, `editar`, `clonar`, `visualizar`, `config`… Quando o módulo define `$_GESTOR['interface-opcao']` diferente da `opcao`, o evento dispara para as duas. Os hooks recebem os dados por `$_GESTOR`/`$_REQUEST`, já que não há argumentos: um `editar.parametros` típico acrescenta campos ou altera `$_GESTOR['interface']`.
 
+### Uso de IA (`ia-provedores.php`)
+
+Todo pedido de IA passa pela camada de provedores, que dispara dois pontos:
+
+| Namespace | Evento | Tipo | Quando | Argumentos |
+|---|---|---|---|---|
+| `ia-provedores` | `pedido.autorizar` | filter | antes de falar com o provedor | `''`, `$contexto` → devolva uma mensagem para recusar o pedido |
+| `ia-provedores` | `pedido.concluido` | action | depois da resposta, em sucesso e em falha | `$dados` |
+
+`$contexto` traz `tipo` (`texto` ou `imagem`), `provedor`, `modelo`, `recurso` e `referencia`. `$dados` é o contexto mais `status` (`success` ou `error`), `tokens_entrada`, `tokens_saida` e `imagens`. Nenhum dos dois recebe o conteúdo do pedido nem a chave.
+
+`recurso` e `referencia` são informados por quem chama a camada, no pedido: o Assistente IA do editor manda `editor-html` e o módulo; o teste de conexão manda `teste-conexao`. Um recurso novo informa o seu.
+
+Servem para cota, crédito, auditoria e medição de uso sem alterar quem chama. Pedido recusado volta a quem chamou com `bloqueado` verdadeiro e a mensagem de quem recusou. Erro dentro do callback vai para o log e o pedido segue: quem precisa barrar em caso de erro trata isso no próprio callback.
+
 ### Módulos específicos
 
 | Namespace | Evento | Tipo | Argumentos |

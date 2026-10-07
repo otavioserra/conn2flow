@@ -344,27 +344,119 @@ function ia_provedor_http($pedido, $tempo = 120){
 	return Array('http' => $http, 'dados' => is_array($dados) ? $dados : null);
 }
 
-/** Texto de ponta a ponta. Devolve o que `ia_provedor_resposta_texto()` devolve, mais `modelo`. */
+// ===== Pontos de extensão do uso de IA (REQ-262)
+
+/**
+ * Contexto de um pedido para os pontos de extensão: `tipo` (`texto` ou `imagem`), `provedor`, `modelo`, e o
+ * `recurso` e a `referencia` que quem chamou informou no pedido (quem pediu e para quê). Nada do conteúdo do
+ * pedido e nada da chave.
+ */
+function ia_provedor_contexto($tipo, $servidor, $pedido, $modelo){
+	$recurso = strtolower(trim((string)($pedido['recurso'] ?? '')));
+	$recurso = preg_match('/^[a-z0-9][a-z0-9._\-]{0,59}$/', $recurso) ? $recurso : '';
+	$referencia = trim((string)preg_replace('/[\x00-\x1F\x7F]/', '', (string)($pedido['referencia'] ?? '')));
+
+	return Array(
+		'tipo' => $tipo === 'imagem' ? 'imagem' : 'texto',
+		'provedor' => (string)($servidor['tipo'] ?? ''),
+		'modelo' => (string)$modelo,
+		'recurso' => $recurso,
+		'referencia' => mb_substr($referencia, 0, 120),
+	);
+}
+
+/** As funções de hook do sistema estão à mão? Fora do sistema (teste, script) a camada segue sem os pontos. */
+function ia_provedor_hooks_disponiveis(){
+	if(!function_exists('hook_apply_filters') && function_exists('gestor_incluir_biblioteca')){
+		try { gestor_incluir_biblioteca('hooks'); } catch (\Throwable $e) {}
+	}
+
+	return function_exists('hook_apply_filters') && function_exists('hook_do_action');
+}
+
+/**
+ * Ponto `ia-provedores` / `pedido.autorizar` (filtro): chamado antes de falar com o provedor. Quem se registra
+ * recebe a recusa acumulada (vazia) e o contexto, e devolve uma mensagem para recusar o pedido. Devolve a
+ * mensagem de recusa, ou vazio quando o pedido pode seguir. Erro dentro de quem se registrou não derruba o
+ * pedido: vai para o log e o pedido segue (quem precisa barrar em caso de erro trata isso no próprio callback).
+ */
+function ia_provedor_autorizar($contexto){
+	if(!ia_provedor_hooks_disponiveis()) return '';
+	try {
+		$recusa = hook_apply_filters('ia-provedores', 'pedido.autorizar', '', $contexto);
+	} catch (\Throwable $e) {
+		error_log('ia-provedores: erro em pedido.autorizar: '.$e->getMessage());
+		return '';
+	}
+
+	return is_string($recusa) ? trim($recusa) : '';
+}
+
+/**
+ * Ponto `ia-provedores` / `pedido.concluido` (ação): chamado depois da resposta, em sucesso e em falha, com o
+ * contexto mais `status`, `tokens_entrada`, `tokens_saida` e `imagens`.
+ */
+function ia_provedor_concluir($contexto, $uso){
+	if(!ia_provedor_hooks_disponiveis()) return;
+	$dados = array_merge($contexto, Array(
+		'status' => ($uso['status'] ?? '') === 'success' ? 'success' : 'error',
+		'tokens_entrada' => max(0, (int)($uso['tokens_entrada'] ?? 0)),
+		'tokens_saida' => max(0, (int)($uso['tokens_saida'] ?? 0)),
+		'imagens' => max(0, (int)($uso['imagens'] ?? 0)),
+	));
+	try {
+		hook_do_action('ia-provedores', 'pedido.concluido', $dados);
+	} catch (\Throwable $e) {
+		error_log('ia-provedores: erro em pedido.concluido: '.$e->getMessage());
+	}
+}
+
+/**
+ * Texto de ponta a ponta. Devolve o que `ia_provedor_resposta_texto()` devolve, mais `modelo`.
+ * O pedido pode trazer `recurso` e `referencia`, que identificam quem pediu para os pontos de extensão.
+ * Pedido recusado no ponto de autorização volta com `bloqueado` verdadeiro e a mensagem de quem recusou.
+ */
 function ia_provedor_gerar_texto($servidor, $pedido, $tempo = 120){
 	$http = ia_provedor_pedido_texto($servidor, $pedido);
 	if(isset($http['erro'])) return Array('status' => 'error', 'message' => $http['erro']);
+	$contexto = ia_provedor_contexto('texto', $servidor, $pedido, $http['modelo']);
+	$recusa = ia_provedor_autorizar($contexto);
+	if($recusa !== '') return Array('status' => 'error', 'message' => $recusa, 'bloqueado' => true, 'modelo' => $http['modelo']);
 	$retorno = ia_provedor_http($http, $tempo);
-	if(isset($retorno['erro'])) return Array('status' => 'error', 'message' => $retorno['erro']);
+	if(isset($retorno['erro'])){
+		ia_provedor_concluir($contexto, Array('status' => 'error'));
+		return Array('status' => 'error', 'message' => $retorno['erro'], 'modelo' => $http['modelo']);
+	}
 	$resposta = ia_provedor_resposta_texto($servidor['tipo'] ?? '', $retorno['http'], $retorno['dados']);
 	$resposta['modelo'] = $http['modelo'];
 	$resposta['resposta_completa'] = $retorno['dados'];
+	ia_provedor_concluir($contexto, Array(
+		'status' => $resposta['status'],
+		'tokens_entrada' => $resposta['tokens_entrada'] ?? 0,
+		'tokens_saida' => $resposta['tokens_saida'] ?? 0,
+	));
 
 	return $resposta;
 }
 
-/** Imagem de ponta a ponta. */
+/** Imagem de ponta a ponta. Aceita `recurso` e `referencia` no pedido e passa pelos mesmos pontos de extensão. */
 function ia_provedor_gerar_imagem($servidor, $pedido, $tempo = 180){
 	$http = ia_provedor_pedido_imagem($servidor, $pedido);
 	if(isset($http['erro'])) return Array('status' => 'error', 'message' => $http['erro']);
+	$contexto = ia_provedor_contexto('imagem', $servidor, $pedido, $http['modelo']);
+	$recusa = ia_provedor_autorizar($contexto);
+	if($recusa !== '') return Array('status' => 'error', 'message' => $recusa, 'bloqueado' => true, 'modelo' => $http['modelo']);
 	$retorno = ia_provedor_http($http, $tempo);
-	if(isset($retorno['erro'])) return Array('status' => 'error', 'message' => $retorno['erro']);
+	if(isset($retorno['erro'])){
+		ia_provedor_concluir($contexto, Array('status' => 'error'));
+		return Array('status' => 'error', 'message' => $retorno['erro'], 'modelo' => $http['modelo']);
+	}
 	$resposta = ia_provedor_resposta_imagem($servidor['tipo'] ?? '', $retorno['http'], $retorno['dados']);
 	$resposta['modelo'] = $http['modelo'];
+	ia_provedor_concluir($contexto, Array(
+		'status' => $resposta['status'],
+		'imagens' => $resposta['status'] === 'success' ? count($resposta['imagens'] ?? Array()) : 0,
+	));
 
 	return $resposta;
 }
@@ -376,6 +468,7 @@ function ia_provedor_gerar_imagem($servidor, $pedido, $tempo = 180){
 function ia_provedor_testar($servidor){
 	$resposta = ia_provedor_gerar_texto($servidor, Array(
 		'mensagens' => Array(Array('papel' => 'user', 'texto' => 'Connection test. Reply with just: OK')),
+		'recurso' => 'teste-conexao',
 	), 30);
 
 	return $resposta['status'] === 'success' ? Array('ok' => true, 'modelo' => $resposta['modelo']) : Array('ok' => false, 'mensagem' => (string)($resposta['message'] ?? ''));

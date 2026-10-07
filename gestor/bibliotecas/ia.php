@@ -306,6 +306,9 @@ function ia_enviar_prompt($params = false){
 
 	$pedido = Array(
 		'mensagens' => Array(Array('papel' => 'user', 'texto' => (string)$prompt)),
+		// REQ-262: quem pediu, para os pontos de extensão do uso de IA.
+		'recurso' => 'editor-html',
+		'referencia' => (string)($_GESTOR['modulo-id'] ?? ''),
 	);
 
 	// A lista de modelos da tela é do Gemini: em outro provedor vale o modelo do cadastro do servidor.

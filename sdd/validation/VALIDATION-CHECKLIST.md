@@ -43,6 +43,19 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-271 — REQ-262 (linha 3.0)
+
+- [x] Sem ninguém registrado, tudo funciona como antes (roteiro da REQ-260, 24/24).
+- [x] Recusa no ponto de autorização impede o pedido ao provedor e devolve a mensagem.
+- [x] O ponto de conclusão recebe o consumo em sucesso e em falha.
+- [x] Erro dentro de quem se registrou não derruba o pedido.
+- [x] Teste automatizado e documentação nos dois idiomas; PHPUnit 1.755.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-271](../implementation/BATCH-271.md).
+
+---
+
 ## BATCH-270 — REQ-261 (linha 3.0)
 
 - [x] `interface` / `pagina` disparado em toda tela montada pela interface, fora de envio de formulário, com módulo e opção.

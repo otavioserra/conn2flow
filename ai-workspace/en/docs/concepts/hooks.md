@@ -120,6 +120,21 @@ Use it when the feature belongs to the whole panel (a button on every form, for 
 
 `<opcao>` is `listar`, `adicionar`, `editar`, `clonar`, `visualizar`, `config`… When the module sets a `$_GESTOR['interface-opcao']` different from `opcao`, the event fires for both. Hooks get their data from `$_GESTOR`/`$_REQUEST`, since there are no arguments: a typical `editar.parametros` adds fields or changes `$_GESTOR['interface']`.
 
+### AI usage (`ia-provedores.php`)
+
+Every AI request goes through the provider layer, which fires two events:
+
+| Namespace | Event | Type | When | Arguments |
+|---|---|---|---|---|
+| `ia-provedores` | `pedido.autorizar` | filter | before talking to the provider | `''`, `$contexto` → return a message to refuse the request |
+| `ia-provedores` | `pedido.concluido` | action | after the response, on success and on failure | `$dados` |
+
+`$contexto` carries `tipo` (`texto` or `imagem`), `provedor`, `modelo`, `recurso` and `referencia`. `$dados` is the context plus `status` (`success` or `error`), `tokens_entrada`, `tokens_saida` and `imagens`. Neither receives the request content or the key.
+
+`recurso` and `referencia` are provided by whoever calls the layer, in the request: the editor's AI Assistant sends `editor-html` and the module; the connection test sends `teste-conexao`. A new feature sends its own.
+
+They serve quotas, credits, auditing and usage metering without changing the callers. A refused request returns to the caller with `bloqueado` set to true and the refuser's message. An error inside the callback goes to the log and the request proceeds: whoever needs to block on error handles that inside the callback.
+
 ### Specific modules
 
 | Namespace | Event | Type | Arguments |
