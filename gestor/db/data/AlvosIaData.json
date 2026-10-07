@@ -56,6 +56,20 @@
         "versao": 13
     },
     {
+        "nome": "Lousas do Dashboard",
+        "id": "dashboard-boards",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 31
+    },
+    {
+        "nome": "Dashboard Boards",
+        "id": "dashboard-boards",
+        "language": "en",
+        "status": "A",
+        "versao": 31
+    },
+    {
         "nome": "Páginas de Lousa",
         "id": "dashboard-pages",
         "language": "pt-br",

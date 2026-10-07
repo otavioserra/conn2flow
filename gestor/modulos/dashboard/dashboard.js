@@ -1490,6 +1490,21 @@ $(document).ready(function () {
 			});
 		}
 		function loadBoards() { return request('lousas-listar').then(function (data) { drawBoards((data && data.lousas) || []); }).catch(function () { layoutStatus(labels.error); }); }
+		// REQ-258: modelos de lousa prontos, para criar uma lousa do sistema sem partir do layout atual.
+		function loadBoardModels() {
+			var select = document.getElementById('dashboard-board-model'); if (!select) return Promise.resolve();
+			return request('lousa-modelos').then(function (data) {
+				var chosen = select.value;
+				while (select.options.length > 1) select.remove(1);
+				((data && data.modelos) || []).forEach(function (model) {
+					var option = document.createElement('option'); option.value = model.id;
+					option.textContent = model.nome + ' (' + model.total + ' ' + layoutLabel('board-items') + ')';
+					select.appendChild(option);
+				});
+				select.value = chosen;
+				if (select.selectedIndex < 0) select.selectedIndex = 0;
+			}).catch(function () {});
+		}
 		function drawVersions(box, data) {
 			box.innerHTML = ''; box.hidden = false;
 			if (!(data.versoes || []).length) { var none = document.createElement('p'); none.className = 'dashboard-layout-empty'; none.textContent = layoutLabel('board-no-versions'); box.appendChild(none); return; }
@@ -1510,6 +1525,16 @@ $(document).ready(function () {
 				request('lousa-salvar', {nome: name, layout: copyLayout(widgets), modo: mode()}).then(function () { input.value = ''; return done(); }).catch(fail);
 				return true;
 			}
+			if (hit('#dashboard-board-from-model')) {
+				var select = document.getElementById('dashboard-board-model'), field = document.getElementById('dashboard-board-name');
+				if (!select || !select.value) { layoutStatus(layoutLabel('board-model-required')); if (select) select.focus(); return true; }
+				request('lousa-de-modelo', {modelo: select.value, nome: field ? field.value.trim().slice(0, 120) : ''}).then(function (data) {
+					if (field) field.value = '';
+					select.selectedIndex = 0;
+					return loadBoards().then(function () { layoutStatus(data && data.fora ? layoutLabel('board-model-skipped').replace('#n#', data.fora) : layoutLabel('done')); });
+				}).catch(fail);
+				return true;
+			}
 			if ((button = hit('[data-board-open]'))) {
 				request('lousa-obter', {id: button.getAttribute('data-board-open')}).then(function (data) { adopt(data.widgets || [], data.modo === 'lousa' ? 'board' : 'grid'); layoutStatus(layoutLabel('done')); }).catch(fail);
 				return true;
@@ -1526,7 +1551,7 @@ $(document).ready(function () {
 			if ((button = hit('[data-board-restore]'))) { request('lousa-restaurar', {id: button.getAttribute('data-board-restore'), versao: button.getAttribute('data-board-version')}).then(done).catch(fail); return true; }
 			return false;
 		}
-		function openLayouts() { if (!layoutsModal || !canEdit) return; returnFocus = document.activeElement; layoutStatus(''); drawSaved(); layoutsModal.classList.remove('hidden'); loadProfiles(); loadBoards(); var name = document.getElementById('dashboard-widgets-layout-name'); if (name) name.focus(); }
+		function openLayouts() { if (!layoutsModal || !canEdit) return; returnFocus = document.activeElement; layoutStatus(''); drawSaved(); layoutsModal.classList.remove('hidden'); loadProfiles(); loadBoards(); loadBoardModels(); var name = document.getElementById('dashboard-widgets-layout-name'); if (name) name.focus(); }
 		function closeLayouts() { if (!layoutsModal || layoutsModal.classList.contains('hidden')) return; layoutsModal.classList.add('hidden'); if (returnFocus && returnFocus.isConnected) returnFocus.focus(); }
 		var layoutsButton = document.getElementById('dashboard-btn-layouts');
 		if (layoutsButton) layoutsButton.addEventListener('click', openLayouts);

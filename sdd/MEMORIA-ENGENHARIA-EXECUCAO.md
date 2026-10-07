@@ -281,3 +281,10 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Aba do editor no roteiro**: `a[data-tab="modelos"]`; procurar pelo texto "Modelos" clica no item do menu lateral.
 - **Lab da 3.1 sem servidor de IA**: o Assistente IA só mostra o aviso; modo de IA não dá para exercitar ali.
 - **Alerta de vírus do Windows** aparece em comandos que rodam PHPUnit (scripts temporários executados) e Chromium sem tela; saída faltando pode ser bloqueio.
+
+### REQ-258 / BATCH-267 — modelos de lousa prontos, linha 3.1 (2026-10-07)
+
+- **Modelo de lousa** é um modelo do cadastro (`templates`, alvo `dashboard-boards`) cujo HTML é o arranjo em JSON. Lido por `dashboard_widgets_layout_ler`, o mesmo caminho das lousas. Widget no modelo traz só o tipo; o registro é o primeiro ativo da instalação.
+- **Recurso novo num módulo que já tem JSON grande**: inserir as chaves por texto antes de uma chave existente, com o mesmo estilo de barra do arquivo, em vez de regravar o JSON inteiro.
+- **Requisições 256 e 257 são da linha 3.0** (miniaturas e aba Modelos); a 3.1 pulou esses números. A `main` não foi trazida para a `3.1` por decisão do Engenheiro Chefe.
+- **Pipeline da 3.1 pode passar de 10 minutos** depois de mexer na árvore do site: rodar em segundo plano e esperar o aviso.

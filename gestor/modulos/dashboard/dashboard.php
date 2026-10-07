@@ -3492,6 +3492,96 @@ function dashboard_ajax_lousa_restaurar(){
 	});
 }
 
+// ----- Modelos de lousa (REQ-258): modelos do cadastro de modelos com o alvo `dashboard-boards`, cujo conteúdo é o
+// arranjo em JSON (`{"modo": ..., "widgets": [...]}`). O widget do modelo diz só o tipo; o registro é da instalação.
+
+/** Modelo de lousa ativo com esse identificador, ou nulo. */
+function dashboard_lousas_modelo($id){
+	global $_GESTOR;
+	if(!preg_match('/^[a-zA-Z0-9_-]{1,200}$/', (string)$id)) return null;
+	return banco_select(Array(
+		'unico' => true, 'tabela' => 'templates', 'campos' => Array('id', 'nome', 'html'),
+		'extra' => "WHERE id='".banco_escape_field((string)$id)."' AND target='dashboard-boards' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A' LIMIT 1",
+	)) ?: null;
+}
+
+/**
+ * Arranjo de um modelo: o JSON do conteúdo, pela mesma leitura e normalização das lousas. Devolve nulo quando o
+ * conteúdo não é um arranjo (JSON inválido ou sem item aproveitável).
+ */
+function dashboard_lousas_modelo_arranjo($conteudo){
+	$dados = json_decode(trim((string)$conteudo), true);
+	if(!is_array($dados)) return null;
+	$arranjo = dashboard_widgets_layout_ler($dados);
+	return $arranjo['widgets'] ? $arranjo : null;
+}
+
+/** Primeiro registro ativo de um tipo de widget nesta instalação, ou vazio. */
+function dashboard_lousas_primeiro_registro($widget_id){
+	global $_GESTOR;
+	$def = dashboard_widget_definicao($widget_id);
+	if(!$def) return '';
+	$onde = "WHERE status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'";
+	$coluna = trim((string)($def['coluna_where'] ?? ''));
+	if($coluna !== '' && preg_match('/^[a-zA-Z0-9_]+$/', $coluna)) $onde .= " AND ".$coluna."='".banco_escape_field($widget_id)."'";
+	$registro = banco_select(Array('unico' => true, 'tabela' => $def['tabela'], 'campos' => Array('id'), 'extra' => $onde.' ORDER BY id ASC LIMIT 1'));
+	return $registro ? (string)$registro['id'] : '';
+}
+
+/**
+ * Liga cada widget do arranjo a um registro da instalação. Quem já traz registro fica como está; quem não traz
+ * recebe o primeiro registro ativo do tipo; tipo sem registro (ou lousa dentro de lousa) fica de fora.
+ * Devolve os itens que entram e quantos ficaram de fora. Objeto livre entra sempre.
+ */
+function dashboard_lousas_modelo_ligar($itens){
+	$entram = Array(); $fora = 0; $achados = Array();
+	foreach($itens as $item){
+		if($item['id'] === 'objeto'){ $entram[] = $item; continue; }
+		if($item['id'] === 'dashboard'){ $fora++; continue; }
+		if($item['registro_id'] === ''){
+			if(!array_key_exists($item['id'], $achados)) $achados[$item['id']] = dashboard_lousas_primeiro_registro($item['id']);
+			$item['registro_id'] = $achados[$item['id']];
+		}
+		if($item['registro_id'] === ''){ $fora++; continue; }
+		$entram[] = $item;
+	}
+	return Array('itens' => $entram, 'fora' => $fora);
+}
+
+/** AJAX — modelos de lousa do idioma atual. */
+function dashboard_ajax_lousa_modelos(){
+	dashboard_lousas_acao(function(){
+		global $_GESTOR;
+		$linhas = banco_select(Array(
+			'tabela' => 'templates', 'campos' => Array('id', 'nome', 'html'),
+			'extra' => "WHERE target='dashboard-boards' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A' ORDER BY nome ASC",
+		)) ?: Array();
+		$modelos = Array();
+		foreach($linhas as $linha){
+			$arranjo = dashboard_lousas_modelo_arranjo($linha['html'] ?? '');
+			// Modelo com conteúdo que não é um arranjo não é oferecido.
+			if($arranjo) $modelos[] = Array('id' => (string)$linha['id'], 'nome' => (string)$linha['nome'], 'modo' => $arranjo['modo'], 'total' => count($arranjo['widgets']));
+		}
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('modelos' => $modelos)));
+	});
+}
+
+/** AJAX — cria uma lousa do sistema a partir de um modelo. Sem nome, usa o do modelo. */
+function dashboard_ajax_lousa_de_modelo(){
+	dashboard_lousas_acao(function(){
+		$modelo = dashboard_lousas_modelo($_REQUEST['modelo'] ?? '');
+		$arranjo = $modelo ? dashboard_lousas_modelo_arranjo($modelo['html'] ?? '') : null;
+		if(!$arranjo){ dashboard_lousas_erro('widgets-boards-model-missing'); return; }
+		$ligado = dashboard_lousas_modelo_ligar($arranjo['widgets']);
+		if(!$ligado['itens']){ dashboard_lousas_erro('widgets-boards-model-empty'); return; }
+		$nome = dashboard_lousas_nome($_REQUEST['nome'] ?? '');
+		if($nome === '') $nome = dashboard_lousas_nome($modelo['nome']);
+		$id = dashboard_lousas_id_livre(dashboard_lousas_slug($nome));
+		dashboard_lousas_inserir($id, $nome, $arranjo['modo'], $ligado['itens']);
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => dashboard_lousas_resumo(dashboard_lousas_linha($id)) + Array('fora' => $ligado['fora'])));
+	});
+}
+
 /**
  * req-226 (CA-2, CA-4): Endpoint AJAX para salvar preferências de densidade, abas e widgets.
  */
@@ -3690,6 +3780,9 @@ function dashboard_start(){
 			case 'lousa-excluir': dashboard_ajax_lousa_excluir(); break;
 			case 'lousa-versoes': dashboard_ajax_lousa_versoes(); break;
 			case 'lousa-restaurar': dashboard_ajax_lousa_restaurar(); break;
+			// REQ-258: modelos de lousa
+			case 'lousa-modelos': dashboard_ajax_lousa_modelos(); break;
+			case 'lousa-de-modelo': dashboard_ajax_lousa_de_modelo(); break;
 			// Toolbar e legado
 			case 'site-toolbar-render': dashboard_ajax_site_toolbar_render(); break;
 			case 'site-toolbar-widget-types': dashboard_ajax_site_toolbar_widget_types(); break;

@@ -3746,7 +3746,7 @@
             "built_at": "2026-10-07T12:43:58+00:00"
         },
         "module|dashboard|en|components|dashboard-cards-tailwind": {
-            "fingerprint": "2eba2ee96dce6c5b89722611a3490dd52a40ec84cfa6e10fd66b33ddc80a5f4b",
+            "fingerprint": "8334932fe3c30c50150643d468137e18bcad42825378c1e1007f961560b29030",
             "output_hash": "80618f9a19083e6b64667eb30320b16279f2517e07b444621bc419831585e558",
             "output": "modulos/dashboard/resources/en/components/dashboard-cards-tailwind/dashboard-cards-tailwind.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -3754,7 +3754,7 @@
                 "modulos/dashboard/resources/en/components/dashboard-cards-tailwind/dashboard-cards-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-07T10:31:26+00:00"
+            "built_at": "2026-10-07T15:29:20+00:00"
         },
         "module|dashboard|en|components|dashboard-site-toolbar-menu": {
             "fingerprint": "484a92e1994cb73d0009cd3bb474ec80d337aeb09b5fafc75310c965c10a8737",
@@ -3801,7 +3801,7 @@
             "built_at": "2026-10-06T22:00:25+00:00"
         },
         "module|dashboard|en|pages|dashboard": {
-            "fingerprint": "66814fa6147dbdf04f260fe7db4a7350376ac8ae38a4b955ad74a3761f692c94",
+            "fingerprint": "ff74968e334fd9aa5bb3db20a536b1e6fd7c594e3a11d6bb28e5c4b4d352b3ca",
             "output_hash": "8b5930bd6913e9def2727b6435b4486c04c21555ce2e0a0b6ac8153db32126cf",
             "output": "modulos/dashboard/resources/en/pages/dashboard/dashboard.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -3817,7 +3817,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-07T10:52:25+00:00"
+            "built_at": "2026-10-07T15:29:21+00:00"
         },
         "module|dashboard|en|pages|dashboard-site-toolbar": {
             "fingerprint": "f40cec69504977a6171a2ff6f658d282b9dd2377f9ee33a6e2cdb70cee865b67",
@@ -3839,7 +3839,7 @@
             "built_at": "2026-10-06T22:00:26+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-cards-tailwind": {
-            "fingerprint": "0ecfde90733d5471550aba2af2cae74c6d42a45e82d5bd8fff4ef8d365d60770",
+            "fingerprint": "7d5c6bbd9bb2906fde537a43887e81d29b5b86bac081dd433ff9e35973ea34c0",
             "output_hash": "80618f9a19083e6b64667eb30320b16279f2517e07b444621bc419831585e558",
             "output": "modulos/dashboard/resources/pt-br/components/dashboard-cards-tailwind/dashboard-cards-tailwind.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -3847,7 +3847,7 @@
                 "modulos/dashboard/resources/pt-br/components/dashboard-cards-tailwind/dashboard-cards-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-07T10:31:27+00:00"
+            "built_at": "2026-10-07T15:29:21+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-site-toolbar-menu": {
             "fingerprint": "c358c4e72cdf1b3a1944fc61ac4177ea77b32e87844d401599f60d1c7630ceb9",
@@ -3894,7 +3894,7 @@
             "built_at": "2026-10-06T22:00:27+00:00"
         },
         "module|dashboard|pt-br|pages|dashboard": {
-            "fingerprint": "4dad1f6fc1314f075291a7b0a33f1ad190953d347b4db69ba71cd90a3de5a329",
+            "fingerprint": "8cd0a7d0b70f3666f9b4e7270e7bfca74f709ae617269919ca021188a5f490b6",
             "output_hash": "88704b4d615b4fa4950c2e387d2e2bf1c8b5c88a532476bc45ac9eddda107ef0",
             "output": "modulos/dashboard/resources/pt-br/pages/dashboard/dashboard.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -3910,7 +3910,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-07T10:52:26+00:00"
+            "built_at": "2026-10-07T15:29:21+00:00"
         },
         "module|dashboard|pt-br|pages|dashboard-site-toolbar": {
             "fingerprint": "704fa9707dbf417e4e25804b5b819eaa31a5b8af15178f368fe66d0f433823b9",

@@ -52,6 +52,59 @@
     },
     "resources": {
         "pt-br": {
+            "ai_prompts_targets": [
+                {
+                    "id": "dashboard-boards",
+                    "name": "Lousas do Dashboard"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "dashboard-boards",
+                    "name": "Lousas do Dashboard",
+                    "target": "dashboard-boards",
+                    "default": true,
+                    "version": "1.0"
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Lousa - Boas-vindas",
+                    "id": "dashboard-boards-boas-vindas",
+                    "target": "dashboard-boards",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "b3b5a7837cecfdab5906bbdfe67c75b1",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "b3b5a7837cecfdab5906bbdfe67c75b1"
+                    }
+                },
+                {
+                    "name": "Lousa - Marketing",
+                    "id": "dashboard-boards-marketing",
+                    "target": "dashboard-boards",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4b4f73be298809dccbb2e6d4506e05f4",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "4b4f73be298809dccbb2e6d4506e05f4"
+                    }
+                },
+                {
+                    "name": "Lousa - Vitrine de conteúdo",
+                    "id": "dashboard-boards-vitrine",
+                    "target": "dashboard-boards",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "607b65bc623e9d2756a2763e6c3f30fa",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "607b65bc623e9d2756a2763e6c3f30fa"
+                    }
+                }
+            ],
             "widgets": [
                 {
                     "id": "dashboard",
@@ -281,12 +334,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.30",
+                    "version": "1.31",
                     "checksum": {
-                        "html": "654d58ac415527a15f5dfaa3a1962f8c",
+                        "html": "0dead04c92cc633c77eef5d73e3e384f",
                         "css": "bd7d8db6f1aab7d8f216ce78b0049733",
                         "css_precompiled": "",
-                        "combined": "fd9800b7f86733d5eb5e9705571896ca"
+                        "combined": "1ba3c52adb7d2d6bac9253ce5d5a45aa"
                     }
                 }
             ],
@@ -777,6 +830,36 @@
                     "type": "string"
                 },
                 {
+                    "id": "widgets-boards-model",
+                    "value": "Modelo de lousa...",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-from-model",
+                    "value": "Criar a partir do modelo",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-required",
+                    "value": "Escolha um modelo de lousa.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-skipped",
+                    "value": "Lousa criada. #n# widget(s) do modelo ficaram de fora: não há registro desse tipo nesta instalação.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-missing",
+                    "value": "Modelo de lousa não encontrado ou com conteúdo inválido.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-empty",
+                    "value": "Nenhum item deste modelo pode ser usado nesta instalação.",
+                    "type": "string"
+                },
+                {
                     "id": "widgets-boards-not-found",
                     "value": "Lousa não encontrada.",
                     "type": "string"
@@ -1239,6 +1322,59 @@
             ]
         },
         "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "dashboard-boards",
+                    "name": "Dashboard Boards"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "dashboard-boards",
+                    "name": "Dashboard Boards",
+                    "target": "dashboard-boards",
+                    "default": true,
+                    "version": "1.0"
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Board - Welcome",
+                    "id": "dashboard-boards-boas-vindas",
+                    "target": "dashboard-boards",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "e331240c8e2595ed7c37506a99e1a1a2",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "e331240c8e2595ed7c37506a99e1a1a2"
+                    }
+                },
+                {
+                    "name": "Board - Marketing",
+                    "id": "dashboard-boards-marketing",
+                    "target": "dashboard-boards",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "557e16475200a71db270ff35a004cc73",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "557e16475200a71db270ff35a004cc73"
+                    }
+                },
+                {
+                    "name": "Board - Content showcase",
+                    "id": "dashboard-boards-vitrine",
+                    "target": "dashboard-boards",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "45598e5c6f0338fedfeedd4e8a1077f0",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "45598e5c6f0338fedfeedd4e8a1077f0"
+                    }
+                }
+            ],
             "widgets": [
                 {
                     "id": "dashboard",
@@ -1468,12 +1604,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.30",
+                    "version": "1.31",
                     "checksum": {
-                        "html": "654d58ac415527a15f5dfaa3a1962f8c",
+                        "html": "0dead04c92cc633c77eef5d73e3e384f",
                         "css": "bd7d8db6f1aab7d8f216ce78b0049733",
                         "css_precompiled": "",
-                        "combined": "fd9800b7f86733d5eb5e9705571896ca"
+                        "combined": "1ba3c52adb7d2d6bac9253ce5d5a45aa"
                     }
                 }
             ],
@@ -1964,6 +2100,36 @@
                     "type": "string"
                 },
                 {
+                    "id": "widgets-boards-model",
+                    "value": "Board template...",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-from-model",
+                    "value": "Create from template",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-required",
+                    "value": "Choose a board template.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-skipped",
+                    "value": "Board created. #n# widget(s) from the template were left out: there is no record of that type in this installation.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-missing",
+                    "value": "Board template not found or with invalid content.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-boards-model-empty",
+                    "value": "No item of this template can be used in this installation.",
+                    "type": "string"
+                },
+                {
                     "id": "widgets-boards-not-found",
                     "value": "Board not found.",
                     "type": "string"
@@ -2426,5 +2592,5 @@
             ]
         }
     },
-    "asset_version": "fa6765b55f6a097c"
+    "asset_version": "dc60060be5e87d1f"
 }

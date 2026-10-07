@@ -17,6 +17,19 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-267 — REQ-258 (linha 3.1)
+
+- [x] Três modelos de lousa por idioma no cadastro de modelos; modo e alvo de IA no banco.
+- [x] Lousa criada pelo modelo no Dashboard; widgets ligados a registro; aviso dos que ficaram de fora.
+- [x] Conteúdo inválido, modelo de outro alvo e usuário sem a operação recusados.
+- [x] PHPUnit 1.716 e Vitest 654; navegador 13/13 em `v3.1-conn2flow.local`.
+- [ ] Editar um modelo de lousa no `admin-templates`; Assistente IA com servidor de IA.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-267](../implementation/BATCH-267.md).
+
+---
+
 ## BATCH-264 — REQ-255 (linha 3.1)
 
 - [x] Quatro modelos de página de lousa; os dois novos geram página no ar.

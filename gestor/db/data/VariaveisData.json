@@ -16229,6 +16229,60 @@
     {
         "language": "pt-br",
         "modulo": "dashboard",
+        "id": "widgets-boards-model",
+        "valor": "Modelo de lousa...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-boards-from-model",
+        "valor": "Criar a partir do modelo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-required",
+        "valor": "Escolha um modelo de lousa.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-skipped",
+        "valor": "Lousa criada. #n# widget(s) do modelo ficaram de fora: não há registro desse tipo nesta instalação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-missing",
+        "valor": "Modelo de lousa não encontrado ou com conteúdo inválido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-empty",
+        "valor": "Nenhum item deste modelo pode ser usado nesta instalação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
         "id": "widgets-boards-not-found",
         "valor": "Lousa não encontrada.",
         "tipo": "string",
@@ -17923,6 +17977,60 @@
         "modulo": "dashboard",
         "id": "widgets-boards-name-required",
         "valor": "Give the board a name.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model",
+        "valor": "Board template...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-boards-from-model",
+        "valor": "Create from template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-required",
+        "valor": "Choose a board template.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-skipped",
+        "valor": "Board created. #n# widget(s) from the template were left out: there is no record of that type in this installation.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-missing",
+        "valor": "Board template not found or with invalid content.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-boards-model-empty",
+        "valor": "No item of this template can be used in this installation.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

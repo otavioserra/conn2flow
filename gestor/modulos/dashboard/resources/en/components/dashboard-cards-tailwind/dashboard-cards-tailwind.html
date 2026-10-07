@@ -213,7 +213,8 @@
         data-label-name="@[[widgets-layouts-name-required]]@" data-label-pick="@[[widgets-layouts-sem-perfil]]@"
         data-label-board-open="@[[widgets-boards-open]]@" data-label-board-update="@[[widgets-boards-update]]@" data-label-board-duplicate="@[[widgets-boards-duplicate]]@" data-label-board-versions="@[[widgets-boards-versions]]@"
         data-label-board-restore="@[[widgets-boards-restore]]@" data-label-board-none="@[[widgets-boards-none]]@" data-label-board-no-versions="@[[widgets-boards-no-versions]]@" data-label-board-version="@[[widgets-boards-version]]@"
-        data-label-board-items="@[[widgets-boards-items]]@" data-label-mode-grid="@[[widgets-boards-mode-grid]]@" data-label-mode-board="@[[widgets-boards-mode-board]]@">
+        data-label-board-items="@[[widgets-boards-items]]@" data-label-mode-grid="@[[widgets-boards-mode-grid]]@" data-label-mode-board="@[[widgets-boards-mode-board]]@"
+        data-label-board-model-required="@[[widgets-boards-model-required]]@" data-label-board-model-skipped="@[[widgets-boards-model-skipped]]@">
         <div class="relative flex max-h-full w-full max-w-2xl flex-col rounded-2xl border border-slate-200 bg-white shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
                 <div class="flex min-w-0 items-center gap-2">
@@ -231,6 +232,12 @@
                     <div class="mt-3 flex flex-wrap gap-2">
                         <input type="text" id="dashboard-board-name" class="c2fc-campo-entrada min-w-0 flex-1" maxlength="120" placeholder="@[[widgets-boards-name]]@" aria-label="@[[widgets-boards-name]]@">
                         <button type="button" id="dashboard-board-create" class="c2fc-botao c2fc-botao-primario"><i data-lucide="plus" class="size-4"></i> @[[widgets-boards-create]]@</button>
+                    </div>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                        <select id="dashboard-board-model" class="c2fc-campo-selecao min-w-0 flex-1" aria-label="@[[widgets-boards-model]]@">
+                            <option value="">@[[widgets-boards-model]]@</option>
+                        </select>
+                        <button type="button" id="dashboard-board-from-model" class="c2fc-botao"><i data-lucide="layout-template" class="size-4"></i> @[[widgets-boards-from-model]]@</button>
                     </div>
                     <div id="dashboard-boards-list" class="mt-3 space-y-2"></div>
                 </section>
