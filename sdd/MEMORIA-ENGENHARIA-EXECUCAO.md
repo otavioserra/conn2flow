@@ -247,3 +247,12 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **`error_log()` grava mesmo com `log_errors=0`**: teste que roda PHP em processo à parte com `2>&1` deve ler a resposta na última linha, não na saída inteira.
 - **Instalação da 3.1 só tinha o administrador**: para testar recusa foi criado no banco local o usuário 2, `usuario-de-roteiro` (perfil `cloud-nano`); `auth:cookie --project=conn2flow-v31-local --user=2`.
 - **Arquivo novo de migração** entra no pacote do `project:update-all` como qualquer outro; a tabela nasce na própria rodada.
+
+### REQ-252 / BATCH-261 — widget "Lousa" em páginas, linha 3.1 (2026-10-07)
+
+- **Widget fora do iframe muda de comportamento**: `position: fixed` e medidas pela janela (`vh`) deixam de ser contidos. `contain: layout paint` na caixa prende o conteúdo fixo; medida pela janela continua sendo a do visitante.
+- **Roteiro que passa não basta**: 24/24 com a página coberta por um widget. Abrir a imagem antes de dar o lote por validado.
+- **Funções puras de layout** do Dashboard ficam em `dashboard-layout.php` (painel e widget incluem). Teste que extraía trecho de `dashboard.php` passa a dar `require` nesse arquivo.
+- **Widget novo de módulo**: entrada em `resources.<idioma>.widgets` do JSON do módulo (`id`, `name`, `icon`, `tabela`), `<módulo>.widget.php` com `<módulo>_render($params)` e, se houver script, `<módulo>.widget.js` incluído por `gestor_pagina_javascript_incluir([tipo => widget])`. A tabela dos registros precisa de `id`, `name`, `language` e `status`.
+- **Troca de marcadores com conteúdo de terceiros**: `strtr` numa passada só; `str_replace` em sequência relê o que acabou de entrar.
+- **Página de teste por SQL** na instalação local: copiar `layout_id`, `tipo`, `sem_permissao` e `framework_css` de uma página pública; `project` nulo.

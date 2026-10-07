@@ -52,6 +52,14 @@
     },
     "resources": {
         "pt-br": {
+            "widgets": [
+                {
+                    "id": "dashboard",
+                    "name": "Lousa",
+                    "icon": "th large",
+                    "tabela": "dashboard_boards"
+                }
+            ],
             "layouts": [
                 {
                     "name": "Layout Administrativo do Gestor 3D",
@@ -188,6 +196,17 @@
                 }
             ],
             "components": [
+                {
+                    "name": "Lousa em Página",
+                    "id": "dashboard-lousa-widget",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "2785a40a441d1e42f94f8cec51cf8bd6",
+                        "css": "e6918a0de2bd52e2a39103ce295b88c7",
+                        "css_precompiled": "",
+                        "combined": "6a6f20bb066797baf83596a039c720e0"
+                    }
+                },
                 {
                     "name": "Dashboard Cards",
                     "id": "dashboard-cards",
@@ -1220,6 +1239,14 @@
             ]
         },
         "en": {
+            "widgets": [
+                {
+                    "id": "dashboard",
+                    "name": "Board",
+                    "icon": "th large",
+                    "tabela": "dashboard_boards"
+                }
+            ],
             "layouts": [
                 {
                     "name": "Layout Administrativo do Gestor 3D",
@@ -1356,6 +1383,17 @@
                 }
             ],
             "components": [
+                {
+                    "name": "Board on Page",
+                    "id": "dashboard-lousa-widget",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "2785a40a441d1e42f94f8cec51cf8bd6",
+                        "css": "e6918a0de2bd52e2a39103ce295b88c7",
+                        "css_precompiled": "",
+                        "combined": "6a6f20bb066797baf83596a039c720e0"
+                    }
+                },
                 {
                     "name": "Dashboard Cards",
                     "id": "dashboard-cards",
@@ -2388,5 +2426,5 @@
             ]
         }
     },
-    "asset_version": "17191fa4bdb46ca9"
+    "asset_version": "fa6765b55f6a097c"
 }

@@ -49,7 +49,7 @@ PHP;
         $fim = strpos($fonte, "/**\n * req-226 (CA-4): Retorna catálogo de widgets ativos");
         self::assertNotFalse($inicio);
         self::assertNotFalse($fim);
-        $script = self::STUBS . "\n" . '$_REQUEST=' . var_export($request, true) . ";\n" . substr($fonte, $inicio, $fim - $inicio) . "\n" . $codigo
+        $script = self::STUBS . "\n" . '$_REQUEST=' . var_export($request, true) . ";\nrequire " . var_export(CONN2FLOW_GESTOR_ROOT . '/modulos/dashboard/dashboard-layout.php', true) . ";\n" . substr($fonte, $inicio, $fim - $inicio) . "\n" . $codigo
             . "\necho json_encode(['json'=>\$_GESTOR['ajax-json'] ?? null,'layouts'=>\$GLOBALS['layouts'],'prefs'=>\$GLOBALS['prefs'],'saida'=>\$saida ?? null]);";
         $arquivo = tempnam(sys_get_temp_dir(), 'req247-');
         try {

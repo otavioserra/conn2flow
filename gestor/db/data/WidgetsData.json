@@ -22,6 +22,28 @@
         "user_modified": 0
     },
     {
+        "id": "dashboard",
+        "name": "Lousa",
+        "icon": "th large",
+        "tabela": "dashboard_boards",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "dashboard",
+        "name": "Board",
+        "icon": "th large",
+        "tabela": "dashboard_boards",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
         "id": "forms",
         "name": "Formulários",
         "icon": "clipboard list",

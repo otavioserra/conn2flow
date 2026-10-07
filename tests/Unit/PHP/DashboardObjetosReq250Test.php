@@ -17,12 +17,8 @@ final class DashboardObjetosReq250Test extends TestCase
     /** Roda as funções da área de widgets num processo à parte e devolve `$saida`. */
     private function rodar(string $codigo, array $entrada)
     {
-        $fonte = $this->fonte();
-        $inicio = strpos($fonte, '// ===== Área de widgets: permissões, layout por perfil e layouts salvos (REQ-247)');
-        $fim = strpos($fonte, '/** Layout que vale para o perfil:');
-        self::assertNotFalse($inicio);
-        self::assertNotFalse($fim);
-        $script = "<?php\n\$entrada=" . var_export($entrada, true) . ";\n" . substr($fonte, $inicio, $fim - $inicio) . "\n" . $codigo . "\necho json_encode(\$saida);";
+        // REQ-252: a normalização mora em `dashboard-layout.php`, que o painel e o widget público incluem.
+        $script = "<?php\n\$entrada=" . var_export($entrada, true) . ";\nrequire " . var_export(CONN2FLOW_GESTOR_ROOT . '/modulos/dashboard/dashboard-layout.php', true) . ";\n" . $codigo . "\necho json_encode(\$saida);";
         $arquivo = tempnam(sys_get_temp_dir(), 'req250-');
         try {
             file_put_contents($arquivo, $script);

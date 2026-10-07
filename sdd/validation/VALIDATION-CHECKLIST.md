@@ -17,6 +17,21 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-261 — REQ-252 (linha 3.1)
+
+- [x] Widget "Lousa" no cadastro; lousas do sistema como registros.
+- [x] Página pública mostra widgets e objetos da lousa sem iframe, em grade e em lousa.
+- [x] Texto do autor escapado; destino e imagem recusados não chegam à página.
+- [x] Conteúdo de posição fixa de um widget fica dentro da caixa do item.
+- [x] PHPUnit 1.702 e Vitest 641 sem falhas; navegador 26/26 em `v3.1-conn2flow.local`; 390 px sem rolagem lateral.
+- [ ] Incluir o widget numa página pelo editor (as páginas de teste foram criadas no banco).
+- [ ] Menu, galeria, formulário e índice de páginas dentro de uma lousa publicada.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-261](../implementation/BATCH-261.md).
+
+---
+
 ## BATCH-260 — REQ-251 (linha 3.1)
 
 - [x] Lousa do sistema criada com o layout atual, aberta no layout próprio e gravada por cima.
