@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-259.md](req-259.md) (BATCH-268 `in-progress`, 2026-10-07, Core — linha `3.1`, branch `feat/req-259`; testes em `https://v3.1-conn2flow.local/`): Fase 5 da lousa — a lousa publicada emite o evento de página `c2f:analytics` (visita, item visto, clique), que o módulo de análise do site já escuta, e ganha identificadores estáveis na marcação.
   - [req-258.md](req-258.md) (BATCH-267 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): Fase 4 da lousa — modelos de lousa prontos como recurso do sistema (alvo `dashboard-boards`, arranjo em JSON, três modelos e modo IA) e "Criar a partir do modelo" no Dashboard. As REQ-256 e REQ-257 são da linha 3.0.
   - [req-255.md](req-255.md) (BATCH-264 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): quatro modelos de página de lousa (dois novos, com faixa, navegação, chamada e rodapé) e modo IA do alvo `dashboard-pages`, para as abas Modelos e Assistente IA do editor.
   - [req-254.md](req-254.md) (BATCH-263 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.1`; testes em `https://v3.1-conn2flow.local/`): editor HTML e clonar no módulo "Páginas de Lousa", no padrão do `publisher-index` (modelo carregado no editor; a página sai do HTML do editor mais os controles).
