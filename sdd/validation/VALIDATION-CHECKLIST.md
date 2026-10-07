@@ -17,6 +17,19 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-268 — REQ-259 (linha 3.1)
+
+- [x] Lousa publicada emite visita, item visto (uma vez) e clique, no contrato do módulo de análise.
+- [x] Identificadores da lousa e dos itens na marcação.
+- [x] Sem chamada a terceiros nem escrita na camada de dados pela lousa.
+- [x] PHPUnit 1.716 e Vitest 660; navegador 8/8 em `v3.1-conn2flow.local`.
+- [ ] Funil no `analytics-manager` com gatilho de evento personalizado e chegada no GA4.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-268](../implementation/BATCH-268.md).
+
+---
+
 ## BATCH-267 — REQ-258 (linha 3.1)
 
 - [x] Três modelos de lousa por idioma no cadastro de modelos; modo e alvo de IA no banco.

@@ -5,7 +5,8 @@
  * com as mesmas medidas e a mesma regra de arranjo da área de widgets do Dashboard (`arrange` em
  * `dashboard.js`): quem tem posição tenta ficar nela, encosta na borda se não couber e desce se o lugar
  * estiver ocupado; abaixo de 640 px, uma coluna. No modo grade quem posiciona é a folha do componente.
- * Também desenha os ícones dos objetos, carregando o Lucide quando a página ainda não tem.
+ * Também desenha os ícones dos objetos, carregando o Lucide quando a página ainda não tem, e emite os eventos de
+ * medição da lousa (REQ-259).
  */
 (function () {
 	var CELL = 90, GAP = 20, ROW = 20, MIN_COLS = 2, MAX_COLS = 24;
@@ -74,11 +75,57 @@
 		document.head.appendChild(script);
 	}
 
+	// ----- Medição (REQ-259)
+	// A lousa só avisa a página do que aconteceu, pelo evento `c2f:analytics` (`detail.event` e `detail.data`), o
+	// mesmo que o módulo de análise escuta no gatilho "evento personalizado". O core não envia nada a ninguém: sem
+	// quem escute, o evento não tem efeito. Os dados são da lousa e do item, nunca do visitante.
+	function emit(name, data) {
+		try { document.dispatchEvent(new CustomEvent('c2f:analytics', {detail: {event: name, data: data}})); } catch (e) { /* navegador sem CustomEvent */ }
+	}
+
+	function short(text, max) { return String(text == null ? '' : text).replace(/\s+/g, ' ').trim().slice(0, max); }
+
+	function itemData(board, item) {
+		var title = null;
+		Array.prototype.forEach.call(item.children, function (child) { if (child.classList.contains('c2f-lousa-titulo')) title = child; });
+		return {lousa: board.getAttribute('data-lousa') || '', item: Number(item.getAttribute('data-item')) || 0, tipo: item.getAttribute('data-tipo') || '', titulo: short(title ? title.textContent : '', 80)};
+	}
+
+	function measure(board) {
+		var id = board.getAttribute('data-lousa');
+		if (!id) return;
+		var items = Array.prototype.filter.call(board.children, function (el) { return el.classList.contains('c2f-lousa-item'); });
+		emit('lousa_view', {lousa: id, modo: board.getAttribute('data-mode') || '', itens: items.length});
+		// Item visto: uma vez por item, quando metade dele entra na tela.
+		if (typeof IntersectionObserver === 'function') {
+			var observer = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (!entry.isIntersecting) return;
+					observer.unobserve(entry.target);
+					emit('lousa_item_view', itemData(board, entry.target));
+				});
+			}, {threshold: 0.5});
+			items.forEach(function (item) { observer.observe(item); });
+		}
+		// Clique em link ou botão de qualquer item. O destino vai sem os parâmetros do endereço.
+		board.addEventListener('click', function (event) {
+			var target = event.target && event.target.closest ? event.target.closest('a[href], button, .c2f-lousa-acao') : null;
+			if (!target || !board.contains(target)) return;
+			var item = target.closest('.c2f-lousa-item');
+			if (!item) return;
+			var data = itemData(board, item);
+			data.texto = short(target.textContent, 80);
+			data.destino = String(target.getAttribute('href') || '').split('?')[0].split('#')[0].slice(0, 200);
+			emit('lousa_click', data);
+		});
+	}
+
 	function start() {
 		Array.prototype.forEach.call(document.querySelectorAll('[data-c2f-lousa]'), function (board) {
 			if (board._c2fLousa) return;
 			board._c2fLousa = true;
 			icons(board);
+			measure(board);
 			if (board.getAttribute('data-mode') !== 'lousa') return;
 			var seen = '';
 			function refresh() {

@@ -83,13 +83,15 @@ PHP;
                     'bgImage' => '/files/fundo.webp', 'bgOpacity' => 35, 'bgFit' => 'repeat']]),
             $this->widget('galleries', 'fotos', ['width' => 12, 'options' => ['frame' => false, 'header' => false, 'title' => 'Não aparece']]),
         ]]);
-        self::assertSame(1, preg_match('/^<div class="c2f-lousa" data-c2f-lousa data-mode="grade" data-lucide-url="">/', $r['html']));
+        self::assertSame(1, preg_match('/^<div class="c2f-lousa" data-c2f-lousa data-lousa="vendas" data-mode="grade" data-lucide-url="">/', $r['html']));
         self::assertStringNotContainsString('objeto-', $r['html']);
         self::assertStringNotContainsString('<!-- item', $r['html']);
         $itens = $this->itens($r['html']);
         self::assertCount(2, $itens);
 
         [$menu, $galeria] = $itens;
+        // REQ-259: posição e tipo de cada item, para a medição.
+        self::assertSame([['1', 'menus'], ['2', 'galleries']], array_map(static fn ($i) => [$i->getAttribute('data-item'), $i->getAttribute('data-tipo')], $itens));
         self::assertSame('c2f-lousa-item has-bg-image', $menu->getAttribute('class'));
         self::assertSame(['5', '300', '2', '4', 'md', 'dark'], array_map([$menu, 'getAttribute'], ['data-w', 'data-h', 'data-x', 'data-y', 'data-hide', 'data-tone']));
         self::assertSame('--c2f-w:5;--c2f-wt:3;--c2f-h:300px;background-color:#0f172a;--c2f-fundo:url("/files/fundo.webp");--c2f-fundo-opacidade:0.35;--c2f-fundo-tamanho:auto;--c2f-fundo-repetir:repeat;', $menu->getAttribute('style'));
@@ -133,6 +135,8 @@ PHP;
         foreach ($itens as $item) {
             self::assertSame('c2f-lousa-item is-frameless is-objeto', $item->getAttribute('class'));
         }
+        // REQ-259: os que não entram não contam na posição; o tipo do objeto vai junto.
+        self::assertSame(['1:objeto-text', '2:objeto-shape', '3:objeto-image', '4:objeto-icon', '5:objeto-button', '6:objeto-button'], array_map(static fn ($i) => $i->getAttribute('data-item') . ':' . $i->getAttribute('data-tipo'), $itens));
         $dentro = static fn (DOMElement $item): DOMElement => $item->lastChild->firstChild;
 
         $texto = $dentro($itens[0]);

@@ -12,6 +12,9 @@
  * Controles de exibição (REQ-253), parâmetros opcionais da assinatura; ausente vale ligado:
  *   `titulos`, `molduras`, `fundos`, `objetos` (false desliga) e `modo` (`grade` ou `lousa` no lugar do modo da lousa).
  *
+ * Medição (REQ-259): a casca leva `data-lousa` e cada item `data-item` (posição) e `data-tipo`; o controlador do
+ * widget emite o evento de página `c2f:analytics`, que o módulo de análise escuta quando existe.
+ *
  * O que o autor escreveu entra como texto escapado; cor, imagem, destino, fonte e ícone passam de novo
  * pela normalização de `dashboard-layout.php` antes de chegar a um atributo.
  */
@@ -161,6 +164,8 @@ function dashboard_render($params){
 	$fontes = Array();
 	$icones = false;
 	$saida = '';
+	// REQ-259: posição do item entre os que entram na página (começa em 1) e tipo, para a medição.
+	$posicao = 0;
 	foreach($itens as $item){
 		$o = $item['options'];
 		$objeto = $item['id'] === 'objeto';
@@ -212,8 +217,12 @@ function dashboard_render($params){
 		}
 		$classes = ($o['frame'] ? '' : ' is-frameless').($o['bgImage'] !== '' ? ' has-bg-image' : '').($objeto ? ' is-objeto' : '');
 
+		$posicao++;
+		$tipo = $objeto ? 'objeto-'.dashboard_widgets_objeto_normalizar($item['object'] ?? null)['type'] : $item['id'];
 		$saida .= strtr($celula, Array(
 			'#bloco-titulo#' => $titulo,
+			'#n#' => $posicao,
+			'#tipo#' => htmlspecialchars($tipo, ENT_QUOTES, 'UTF-8'),
 			'#classes#' => $classes,
 			'#w#' => $largura,
 			'#h#' => (int)$item['height_px'],
@@ -248,6 +257,7 @@ function dashboard_render($params){
 	// A casca recebe modo e endereço do Lucide antes de os itens entrarem.
 	$casca = strtr(str_replace('<!-- objetos < -->'.$moldes.'<!-- objetos > -->', '', $componente), Array(
 		'#modo#' => $modo,
+		'#lousa#' => htmlspecialchars((string)$lousa['id'], ENT_QUOTES, 'UTF-8'),
 		'#lucide#' => htmlspecialchars($lucide, ENT_QUOTES, 'UTF-8'),
 	));
 	$partes = explode('<!-- item < -->'.$molde.'<!-- item > -->', $casca, 2);

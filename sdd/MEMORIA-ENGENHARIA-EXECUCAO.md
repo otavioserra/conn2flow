@@ -288,3 +288,9 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Recurso novo num módulo que já tem JSON grande**: inserir as chaves por texto antes de uma chave existente, com o mesmo estilo de barra do arquivo, em vez de regravar o JSON inteiro.
 - **Requisições 256 e 257 são da linha 3.0** (miniaturas e aba Modelos); a 3.1 pulou esses números. A `main` não foi trazida para a `3.1` por decisão do Engenheiro Chefe.
 - **Pipeline da 3.1 pode passar de 10 minutos** depois de mexer na árvore do site: rodar em segundo plano e esperar o aviso.
+
+### REQ-259 / BATCH-268 — medição da lousa publicada, linha 3.1 (2026-10-07)
+
+- **Medição sem acoplar o core ao GA4**: o `analytics-manager` do site escuta o evento de página `c2f:analytics` (`detail.event`, `detail.data`) no gatilho "evento personalizado". O core só emite; quem envia ao GA4 é o módulo.
+- **Conferência de "não fala com terceiros"**: comparar com uma página sem o recurso e olhar o tipo do pedido (`resourceType`); o layout e o conteúdo dos widgets pedem imagem e fonte a outros servidores por conta própria.
+- **Arquivo de relatório para outra equipe** vai no repositório privado do site (`sdd/reviews/`), não no core, que é público.

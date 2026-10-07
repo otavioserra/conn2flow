@@ -252,12 +252,12 @@
                 {
                     "name": "Lousa em Página",
                     "id": "dashboard-lousa-widget",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "2785a40a441d1e42f94f8cec51cf8bd6",
+                        "html": "60733f4440efb6279a742f3a7ef25ba2",
                         "css": "e6918a0de2bd52e2a39103ce295b88c7",
                         "css_precompiled": "",
-                        "combined": "6a6f20bb066797baf83596a039c720e0"
+                        "combined": "4ec477261fce4c9641a2541d7ccd46a5"
                     }
                 },
                 {
@@ -1522,12 +1522,12 @@
                 {
                     "name": "Board on Page",
                     "id": "dashboard-lousa-widget",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "2785a40a441d1e42f94f8cec51cf8bd6",
+                        "html": "60733f4440efb6279a742f3a7ef25ba2",
                         "css": "e6918a0de2bd52e2a39103ce295b88c7",
                         "css_precompiled": "",
-                        "combined": "6a6f20bb066797baf83596a039c720e0"
+                        "combined": "4ec477261fce4c9641a2541d7ccd46a5"
                     }
                 },
                 {
@@ -2592,5 +2592,5 @@
             ]
         }
     },
-    "asset_version": "dc60060be5e87d1f"
+    "asset_version": "0a680a4b1f868d5e"
 }
