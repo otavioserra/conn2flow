@@ -2151,8 +2151,8 @@
             "built_at": "2026-10-06T22:00:09+00:00"
         },
         "module|admin-ia|en|pages|admin-ia-adicionar": {
-            "fingerprint": "e14c19d472a09942c77d3aa25aa6e1eee8452e697d2e15463e8b7f765cffb7f8",
-            "output_hash": "6529ca52cff53f43e4b01e8efc67d8c68b80d82dc9d69590f70719faf2629015",
+            "fingerprint": "eb0e7b4dd461f7bf054bf71db39114a9ffc87fb16d9a5e8b545d1562562cab97",
+            "output_hash": "b524bc95155e33b70705459c97c56fa2dc0efc4eaa515f9fc7c59b94205574c6",
             "output": "modulos/admin-ia/resources/en/pages/admin-ia-adicionar/admin-ia-adicionar.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2165,11 +2165,11 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T22:00:10+00:00"
+            "built_at": "2026-10-07T16:54:20+00:00"
         },
         "module|admin-ia|en|pages|admin-ia-editar": {
-            "fingerprint": "2294379ef2fd2f4a9159aaf711c195cd16d1ca5393cff2ecede7aa683a5cb454",
-            "output_hash": "ad267dfae1a8f5826de3991b0db1d5b1ab7aa209bd179e81c046979af660833a",
+            "fingerprint": "69709ee937ab6bc36a030d2393c2612388434e1eac053ff2e6cc2ed914a4e464",
+            "output_hash": "5131dbb59bd383df31314e9082f3f0499c8f3ff9200dc154b795986cf340ed59",
             "output": "modulos/admin-ia/resources/en/pages/admin-ia-editar/admin-ia-editar.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2182,7 +2182,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T22:00:10+00:00"
+            "built_at": "2026-10-07T16:54:20+00:00"
         },
         "module|admin-ia|en|pages|admin-ia-listar": {
             "fingerprint": "2cc3e9099ddbcc7f9ffd326074e2d3187b65b5b914893c24280f1b33998fc4ac",
@@ -2203,8 +2203,8 @@
             "built_at": "2026-10-06T22:00:10+00:00"
         },
         "module|admin-ia|pt-br|pages|admin-ia-adicionar": {
-            "fingerprint": "5c786d196436ae79d17bd559790787f3cd4571c00ffff76873e6b0212b433f26",
-            "output_hash": "d4c4f54598309c6478b59a6480930b6f59fb4dd01ec708392eb6efd159f756bd",
+            "fingerprint": "616515032d2bb4ac4b8183662d1f0b6983a6ed7e86cc0f3d8387070b8eb49b0b",
+            "output_hash": "89b1aa7c47dedd337a8b42617540bc7b8ccb35641ffe39416fb805fa20d29e51",
             "output": "modulos/admin-ia/resources/pt-br/pages/admin-ia-adicionar/admin-ia-adicionar.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2217,11 +2217,11 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T22:00:10+00:00"
+            "built_at": "2026-10-07T16:54:20+00:00"
         },
         "module|admin-ia|pt-br|pages|admin-ia-editar": {
-            "fingerprint": "62cdeb59f329ed78f1229cc732129df8820f5b306aa8ab48f3b175542ab1311a",
-            "output_hash": "3dd7d32518f01e50f7219fedad2bb6557cd6dbdf9001719bdbb8bfd3c3b55bc2",
+            "fingerprint": "a27ef8ba341067e223ba2d8c64eda1efba726fcbbc9b3c1ac351fd68bb854c2d",
+            "output_hash": "602771be95e013de1d4d6a7a319a365658ef2e6ece3ace122a7b391f48ef55bb",
             "output": "modulos/admin-ia/resources/pt-br/pages/admin-ia-editar/admin-ia-editar.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2234,7 +2234,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-06T22:00:11+00:00"
+            "built_at": "2026-10-07T16:54:21+00:00"
         },
         "module|admin-ia|pt-br|pages|admin-ia-listar": {
             "fingerprint": "dc78a9565c1ad3fdba8944caed77696c476928eef8e41065aeaf11fdd847dfb0",

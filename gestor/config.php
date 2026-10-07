@@ -370,6 +370,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'plugins-consts' => Array('plugins-consts.php'),
 	'plugins-installer' => Array('plugins-installer.php'),
 	'ia' => Array('ia.php'),
+	'ia-provedores' => Array('ia-provedores.php'),
     'html-editor' => Array('html-editor.php'),
     'editor-texto' => Array('editor-texto.php'),
     'assets-externos' => Array('assets-externos.php'),

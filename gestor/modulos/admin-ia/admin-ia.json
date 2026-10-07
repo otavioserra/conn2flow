@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.2",
+    "versao": "1.3.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -12,7 +12,7 @@
     },
     "apis": {
         "gemini": {
-            "urlGenerateContent": "https://generativelanguage.googleapis.com/v1beta/{MODEL}:generateContent?key={API_KEY}",
+            "urlGenerateContent": "https://generativelanguage.googleapis.com/v1beta/{MODEL}:generateContent",
             "defaultModel": "models/gemini-3-flash-preview"
         }
     },
@@ -79,7 +79,7 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.18",
+                    "version": "1.20",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -105,10 +105,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "7590a99906ce63f3f3679a36086c0722",
+                        "html": "c084f8a34db84df1a0aa020ad982dab1",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "7590a99906ce63f3f3679a36086c0722"
+                        "combined": "c084f8a34db84df1a0aa020ad982dab1"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -120,7 +120,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.23",
+                    "version": "1.25",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -146,10 +146,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "fd58c8e29ad6807f2fbc0b0f8dc0c129",
+                        "html": "846ebb2f5d5bd282fea125b16e3b18ec",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fd58c8e29ad6807f2fbc0b0f8dc0c129"
+                        "combined": "846ebb2f5d5bd282fea125b16e3b18ec"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -225,6 +225,81 @@
                 {
                     "id": "ui-provider-gemini",
                     "value": "Google Gemini",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-anthropic",
+                    "value": "Anthropic Claude",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-openai",
+                    "value": "OpenAI",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-compatible",
+                    "value": "Compatível com OpenAI (outros serviços e modelos locais)",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-base-url",
+                    "value": "Endereço base",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-base-url-hint",
+                    "value": "Deixe vazio para usar o endereço oficial do provedor. Obrigatório no tipo compatível com OpenAI (ex.: http://localhost:11434/v1).",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-model",
+                    "value": "Modelo de texto",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-model-hint",
+                    "value": "Deixe vazio para usar o modelo padrão do provedor.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-image-model",
+                    "value": "Modelo de imagem",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-image-model-hint",
+                    "value": "Usado na criação de imagens. Deixe vazio para usar o padrão do provedor, quando ele gera imagem.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-type-invalid",
+                    "value": "Tipo de servidor não suportado.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-base-url-invalid",
+                    "value": "Endereço base inválido. Use http:// ou https://, sem usuário, senha ou parâmetros.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-base-url-required",
+                    "value": "Informe o endereço base deste tipo de servidor.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-model-invalid",
+                    "value": "Nome de modelo inválido.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-model-required",
+                    "value": "Informe o modelo deste tipo de servidor.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-key-missing",
+                    "value": "Servidor sem chave configurada.",
                     "type": "string"
                 },
                 {
@@ -496,7 +571,7 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.19",
+                    "version": "1.21",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -522,10 +597,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "7590a99906ce63f3f3679a36086c0722",
+                        "html": "c084f8a34db84df1a0aa020ad982dab1",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "7590a99906ce63f3f3679a36086c0722"
+                        "combined": "c084f8a34db84df1a0aa020ad982dab1"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -537,7 +612,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.22",
+                    "version": "1.24",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -563,10 +638,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "fd58c8e29ad6807f2fbc0b0f8dc0c129",
+                        "html": "846ebb2f5d5bd282fea125b16e3b18ec",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fd58c8e29ad6807f2fbc0b0f8dc0c129"
+                        "combined": "846ebb2f5d5bd282fea125b16e3b18ec"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -642,6 +717,81 @@
                 {
                     "id": "ui-provider-gemini",
                     "value": "Google Gemini",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-anthropic",
+                    "value": "Anthropic Claude",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-openai",
+                    "value": "OpenAI",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-compatible",
+                    "value": "OpenAI-compatible (other services and local models)",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-base-url",
+                    "value": "Base URL",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-base-url-hint",
+                    "value": "Leave empty to use the provider's official address. Required for the OpenAI-compatible type (e.g. http://localhost:11434/v1).",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-model",
+                    "value": "Text model",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-model-hint",
+                    "value": "Leave empty to use the provider's default model.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-image-model",
+                    "value": "Image model",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-image-model-hint",
+                    "value": "Used for image creation. Leave empty to use the provider's default, when it generates images.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-type-invalid",
+                    "value": "Unsupported server type.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-base-url-invalid",
+                    "value": "Invalid base URL. Use http:// or https://, without user, password or parameters.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-base-url-required",
+                    "value": "Enter the base URL for this server type.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-model-invalid",
+                    "value": "Invalid model name.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-model-required",
+                    "value": "Enter the model for this server type.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-key-missing",
+                    "value": "Server has no key configured.",
                     "type": "string"
                 },
                 {
@@ -852,5 +1002,5 @@
             ]
         }
     },
-    "asset_version": "07e3f0f1c98a633e"
+    "asset_version": "48f3e113578aef11"
 }

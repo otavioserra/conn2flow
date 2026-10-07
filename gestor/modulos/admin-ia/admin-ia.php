@@ -12,6 +12,73 @@ gestor_incluir_biblioteca('autenticacao');
 
 // ===== Interfaces Auxiliares
 
+/** Nome do provedor para a tela, pelo tipo guardado no servidor. */
+function admin_ia_tipo_rotulo($tipo){
+    $ids = Array(
+        'gemini' => 'ui-provider-gemini',
+        'anthropic' => 'ui-provider-anthropic',
+        'openai' => 'ui-provider-openai',
+        'openai-compativel' => 'ui-provider-compatible',
+    );
+
+    return isset($ids[$tipo]) ? gestor_variaveis(Array('modulo' => 'admin-ia','id' => $ids[$tipo])) : (string)$tipo;
+}
+
+/** Padrões de cada provedor para a tela mostrar como sugestão nos campos (atributo HTML). */
+function admin_ia_provedores_json(){
+    gestor_incluir_biblioteca('ia-provedores');
+
+    $saida = Array();
+    foreach(ia_provedores() as $tipo => $dados){
+        $saida[$tipo] = Array(
+            'url_base' => $dados['url_base'],
+            'modelo' => $dados['modelo'],
+            'modelo_imagem' => $dados['modelo_imagem'],
+        );
+    }
+
+    return htmlspecialchars((string)json_encode($saida, JSON_UNESCAPED_SLASHES), ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * Tipo, endereço base e modelos vindos do formulário, conferidos pelo provedor.
+ * Devolve os campos prontos para gravar, ou `null` com a mensagem em `$erro`.
+ */
+function admin_ia_campos_provedor(&$erro){
+    gestor_incluir_biblioteca('ia-provedores');
+
+    $mensagem = function($id){ return gestor_variaveis(Array('modulo' => 'admin-ia','id' => $id)); };
+    $tipo = (string)($_REQUEST['tipo'] ?? '');
+    $dados = ia_provedor_dados($tipo);
+    if(!$dados){
+        $erro = $mensagem('msg-type-invalid');
+        return null;
+    }
+
+    $campos = Array('tipo' => $tipo);
+    foreach(Array('url_base','modelo','modelo_imagem') as $campo){
+        $bruto = trim((string)($_REQUEST[$campo] ?? ''));
+        $valor = $campo === 'url_base' ? ia_provedor_url_base_normalizar($bruto) : ia_provedor_modelo_normalizar($bruto);
+        if($bruto !== '' && $valor === ''){
+            $erro = $mensagem($campo === 'url_base' ? 'msg-base-url-invalid' : 'msg-model-invalid');
+            return null;
+        }
+        $campos[$campo] = $valor;
+    }
+
+    // Provedor sem endereço ou sem modelo padrão precisa que o cadastro informe.
+    if($dados['url_base'] === '' && $campos['url_base'] === ''){
+        $erro = $mensagem('msg-base-url-required');
+        return null;
+    }
+    if($dados['modelo'] === '' && $campos['modelo'] === ''){
+        $erro = $mensagem('msg-model-required');
+        return null;
+    }
+
+    return $campos;
+}
+
 function admin_ia_listar(){
     global $_GESTOR;
     
@@ -60,7 +127,7 @@ function admin_ia_listar(){
                 $cel_servidores = modelo_var_troca($cel_servidores,'<!-- tipo-outro -->','');
             } else {
                 $cel_servidores = modelo_var_troca($cel_servidores,'<!-- tipo-gemini -->','');
-                $cel_servidores = modelo_var_troca($cel_servidores,'<!-- tipo-outro -->',$cel['tipo-outro']);
+                $cel_servidores = modelo_var_troca($cel_servidores,'<!-- tipo-outro -->',modelo_var_troca($cel['tipo-outro'],'#tipo#',htmlspecialchars(admin_ia_tipo_rotulo($servidor['tipo']), ENT_QUOTES, 'UTF-8')));
             }
             
             // ===== Processar células condicionais de status
@@ -91,7 +158,9 @@ function admin_ia_adicionar(){
     // ===== Inclusão Módulo JS
     gestor_pagina_javascript_incluir();
     
-    // ===== A página já está carregada em $_GESTOR['pagina'], não precisamos fazer nada especial
+    // ===== Sugestões de endereço e modelo de cada provedor
+
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[provedores-json]]', admin_ia_provedores_json());
 }
 
 function admin_ia_editar(){
@@ -112,7 +181,7 @@ function admin_ia_editar(){
     $servidor = banco_select([
         'tabela' => 'servidores_ia',
         'campos' => '*',
-        'extra' => 'WHERE id_servidores_ia = ' . $id,
+        'extra' => 'WHERE id_servidores_ia = ' . (int)$id,
         'unico' => true
     ]);
     
@@ -148,6 +217,16 @@ function admin_ia_editar(){
     $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[tipo]]', $servidor['tipo']);
     $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[padrao]]', $servidor['padrao'] == '1' ? 'checked="checked"' : '');
     $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[chave-api]]', $chave_api_mascarada);
+
+    // ===== Provedor do servidor: tipo marcado, endereço base e modelos
+
+    foreach(Array('gemini' => 'sel-gemini','anthropic' => 'sel-anthropic','openai' => 'sel-openai','openai-compativel' => 'sel-compativel') as $tipo => $marcador){
+        $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[['.$marcador.']]', $servidor['tipo'] == $tipo ? 'selected' : '');
+    }
+    foreach(Array('url_base' => 'url-base','modelo' => 'modelo','modelo_imagem' => 'modelo-imagem') as $coluna => $marcador){
+        $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[['.$marcador.']]', htmlspecialchars((string)($servidor[$coluna] ?? ''), ENT_QUOTES, 'UTF-8'));
+    }
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[provedores-json]]', admin_ia_provedores_json());
 
     // ===== Processar células condicionais de status
     if($servidor['status'] == 'A'){
@@ -253,6 +332,18 @@ function admin_ia_ajax_salvar(){
         return;
     }
 
+    // ===== Provedor: tipo conhecido, endereço base e modelos
+
+    $erro_provedor = '';
+    $campos_provedor = admin_ia_campos_provedor($erro_provedor);
+    if(!$campos_provedor){
+        $_GESTOR['ajax-json'] = Array(
+            'status' => 'error',
+            'message' => $erro_provedor
+        );
+        return;
+    }
+
     // ===== Verificar se há outro servidor padrão para o mesmo tipo
     
     if($_REQUEST['padrao'] == 'on'){
@@ -284,6 +375,9 @@ function admin_ia_ajax_salvar(){
     banco_insert_name_campo('tipo',$tipo);
     banco_insert_name_campo('padrao',$padrao,true);
     banco_insert_name_campo('chave_api',$chave_api_encriptada);
+    banco_insert_name_campo('url_base',$campos_provedor['url_base']);
+    banco_insert_name_campo('modelo',$campos_provedor['modelo']);
+    banco_insert_name_campo('modelo_imagem',$campos_provedor['modelo_imagem']);
     banco_insert_name_campo('status','A');
     
     banco_insert_name
@@ -335,6 +429,18 @@ function admin_ia_ajax_editar(){
         return;
     }
 
+    // ===== Provedor: tipo conhecido, endereço base e modelos
+
+    $erro_provedor = '';
+    $campos_provedor = admin_ia_campos_provedor($erro_provedor);
+    if(!$campos_provedor){
+        $_GESTOR['ajax-json'] = Array(
+            'status' => 'error',
+            'message' => $erro_provedor
+        );
+        return;
+    }
+
     // ===== Verificar se há outro servidor padrão para o mesmo tipo
 		
     if($_REQUEST['padrao'] == 'on' && banco_select_campos_antes('padrao') != '1'){
@@ -347,6 +453,9 @@ function admin_ia_ajax_editar(){
     banco_update_campo('nome',$nome);
     banco_update_campo('tipo',$tipo);
     banco_update_campo('padrao',$padrao,true);
+    banco_update_campo('url_base',$campos_provedor['url_base']);
+    banco_update_campo('modelo',$campos_provedor['modelo']);
+    banco_update_campo('modelo_imagem',$campos_provedor['modelo_imagem']);
     
     // ===== Encriptar chave API apenas se foi alterada
     
@@ -404,7 +513,7 @@ function admin_ia_ajax_testar_conexao(){
     $servidor = banco_select([
         'tabela' => 'servidores_ia',
         'campos' => '*',
-        'extra' => 'WHERE id_servidores_ia = ' . $id,
+        'extra' => 'WHERE id_servidores_ia = ' . (int)$id,
         'unico' => true
     ]);
     
@@ -416,47 +525,28 @@ function admin_ia_ajax_testar_conexao(){
         return;
     }
     
-    // ===== Abrir chave pública e a senha da chave
+    // ===== Testar conexão pelo provedor do servidor (a chave é decifrada pela biblioteca e vai em cabeçalho)
 
-    $keyPublicPath = $_GESTOR['openssl-path'] . 'publica.key';
+    gestor_incluir_biblioteca('ia-provedores');
 
-    $fp = fopen($keyPublicPath,"r");
-    $keyPublicString = fread($fp,8192);
-    fclose($fp);
-
-    // ===== Descriptografar chave API
-    
-    $chave_api = autenticacao_decriptar_chave_publica(Array(
-        'criptografia' => $servidor['chave_api'],
-        'chavePublica' => $keyPublicString,
-    ));
-
-    // ===== Pegar dados do modelo do servidor
-
-    $gemini = $modulo["apis"]["gemini"];
-
-    $gemini['urlGenerateContent'] = modelo_var_troca_tudo($gemini['urlGenerateContent'],'{API_KEY}',$chave_api);
-    $gemini['urlGenerateContent'] = modelo_var_troca_tudo($gemini['urlGenerateContent'],'{MODEL}',$gemini['defaultModel']);
-
-    // ===== Testar conexão baseado no tipo
-    
     $resultado = false;
     $mensagem_erro = '';
     $tempo_inicio = microtime(true);
-    
-    switch($servidor['tipo']){
-        case 'gemini':
-            $resultado = admin_ia_testar_gemini($gemini['urlGenerateContent'], $mensagem_erro);
-            break;
-        default:
-            $mensagem_erro = 'Tipo de servidor não suportado.';
+
+    $servidor_ia = ia_provedor_servidor_do_banco($servidor);
+    if(!$servidor_ia){
+        $mensagem_erro = gestor_variaveis(Array('modulo' => 'admin-ia','id' => 'msg-key-missing'));
+    } else {
+        $teste = ia_provedor_testar($servidor_ia);
+        $resultado = $teste['ok'];
+        if(!$resultado) $mensagem_erro = $teste['mensagem'];
     }
-    
+
     $tempo_resposta = round(microtime(true) - $tempo_inicio, 2);
 
     // ===== Registrar log do teste
     
-    banco_insert_name_campo('id_servidores_ia',$id);
+    banco_insert_name_campo('id_servidores_ia',(int)$id);
     banco_insert_name_campo('sucesso',$resultado ? 1 : 0);
     banco_insert_name_campo('mensagem_erro',$mensagem_erro);
     banco_insert_name_campo('tempo_resposta',$tempo_resposta);
@@ -497,7 +587,7 @@ function admin_ia_ajax_historico_testes(){
     $historico = banco_select([
         'tabela' => 'logs_testes_ia',
         'campos' => '*',
-        'extra' => 'WHERE id_servidores_ia = ' . $id . ' ORDER BY data_teste DESC LIMIT 20'
+        'extra' => 'WHERE id_servidores_ia = ' . (int)$id . ' ORDER BY data_teste DESC LIMIT 20'
     ]);
     
     if(!is_array($historico)){
@@ -545,7 +635,7 @@ function admin_ia_ajax_excluir(){
     $servidor = banco_select([
         'tabela' => 'servidores_ia',
         'campos' => '*',
-        'extra' => 'WHERE id_servidores_ia = ' . $id,
+        'extra' => 'WHERE id_servidores_ia = ' . (int)$id,
         'unico' => true
     ]);
     
@@ -571,66 +661,6 @@ function admin_ia_ajax_excluir(){
         'status' => 'success',
         'message' => 'Servidor IA excluído com sucesso!'
     );
-}
-
-function admin_ia_testar_gemini($url_api, &$mensagem_erro){
-    // ===== Preparar requisição de teste
-     
-    $data = [
-        'contents' => [[
-            'parts' => [[
-                'text' => 'Olá, isso é um teste de conexão. Responda apenas "OK".'
-            ]]
-        ]]
-    ];
-    
-    $jsonData = json_encode($data);
-    
-    // ===== Fazer requisição cURL
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url_api);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlError = curl_error($ch);
-    
-    curl_close($ch);
-    
-    // ===== Verificar resposta
-    
-    if($curlError){
-        $mensagem_erro = 'Erro de conexão: ' . $curlError;
-        return false;
-    }
-    
-    if($httpCode !== 200){
-        $mensagem_erro = 'Erro HTTP ' . $httpCode;
-        if($response){
-            $responseData = json_decode($response, true);
-            if(isset($responseData['error']['message'])){
-                $mensagem_erro .= ': ' . $responseData['error']['message'];
-            }
-        }
-        return false;
-    }
-    
-    // ===== Verificar se resposta contém "OK"
-    
-    $responseData = json_decode($response, true);
-    $texto_resposta = $responseData['candidates'][0]['content']['parts'][0]['text'] ?? '';
-    
-    if(stripos($texto_resposta, 'OK') === false){
-        $mensagem_erro = 'Resposta inesperada da IA';
-        return false;
-    }
-    
-    return true;
 }
 
 function admin_ia_ajax_ativar(){

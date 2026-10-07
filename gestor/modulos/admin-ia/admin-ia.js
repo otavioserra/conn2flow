@@ -31,11 +31,57 @@ function adminIaHistoricoRenderizar(lista, template, historico, mensagemVazia) {
     });
 }
 
+// REQ-260: sugestões de endereço e modelos do provedor escolhido, mostradas como texto de exemplo dos campos.
+function adminIaSugestoesProvedor(provedores, tipo) {
+    var dados = provedores && typeof provedores === 'object' && Object.prototype.hasOwnProperty.call(provedores, tipo) ? provedores[tipo] : null;
+    return {
+        url_base: dados && dados.url_base ? String(dados.url_base) : '',
+        modelo: dados && dados.modelo ? String(dados.modelo) : '',
+        modelo_imagem: dados && dados.modelo_imagem ? String(dados.modelo_imagem) : ''
+    };
+}
+
+function adminIaAplicarSugestoes(form, provedores) {
+    if (!form) return;
+    var tipo = form.querySelector('[name="tipo"]');
+    var sugestoes = adminIaSugestoesProvedor(provedores, tipo ? tipo.value : '');
+    ['url_base', 'modelo', 'modelo_imagem'].forEach(function (nome) {
+        var campo = form.querySelector('[name="' + nome + '"]');
+        if (campo) campo.setAttribute('placeholder', sugestoes[nome]);
+    });
+}
+
+function adminIaCamposProvedor(form) {
+    var saida = {};
+    ['url_base', 'modelo', 'modelo_imagem'].forEach(function (nome) {
+        var campo = form ? form.querySelector('[name="' + nome + '"]') : null;
+        saida[nome] = campo ? String(campo.value || '').trim() : '';
+    });
+    return saida;
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { adminIaHistoricoRenderizar: adminIaHistoricoRenderizar };
+    module.exports = {
+        adminIaHistoricoRenderizar: adminIaHistoricoRenderizar,
+        adminIaSugestoesProvedor: adminIaSugestoesProvedor,
+        adminIaAplicarSugestoes: adminIaAplicarSugestoes,
+        adminIaCamposProvedor: adminIaCamposProvedor
+    };
 }
 
 $(document).ready(function () {
+
+    // ===== Provedor: sugestões nos campos de endereço e modelos =====
+    (function () {
+        var origem = document.getElementById('admin-ia-provedores');
+        var form = document.getElementById('form-servidor-ia') || document.getElementById('form-servidor-ia-edit');
+        if (!origem || !form) return;
+        var provedores = {};
+        try { provedores = JSON.parse(origem.getAttribute('data-provedores') || '{}'); } catch (e) { provedores = {}; }
+        adminIaAplicarSugestoes(form, provedores);
+        var tipo = form.querySelector('[name="tipo"]');
+        if (tipo) tipo.addEventListener('change', function () { adminIaAplicarSugestoes(form, provedores); });
+    })();
 
     // ===== Página Listar =====
     $('.testar-conexao').click(function () {
@@ -307,6 +353,7 @@ $(document).ready(function () {
             chave_api: formData.find(item => item.name === 'chave_api').value,
             padrao: formData.find(item => item.name === 'padrao') ? 'on' : 'off'
         };
+        Object.assign(data, adminIaCamposProvedor(this));
 
         $.ajax({
             type: 'POST',
@@ -389,6 +436,7 @@ $(document).ready(function () {
             chave_api: formData.find(item => item.name === 'chave_api').value,
             padrao: formData.find(item => item.name === 'padrao') ? 'on' : 'off'
         };
+        Object.assign(data, adminIaCamposProvedor(this));
 
         $.ajax({
             type: 'POST',

@@ -43,6 +43,21 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-269 — REQ-260 (linha 3.0)
+
+- [x] Cadastrar e editar servidor dos quatro tipos, com endereço base e modelos.
+- [x] Testar conexão vale para o tipo do servidor e registra o resultado no histórico.
+- [x] O pedido do editor continua respondendo com o servidor Gemini existente.
+- [x] A chave não aparece em endereço nem em mensagem de erro.
+- [x] Pedido e leitura de resposta de cada provedor cobertos por teste, sem rede.
+- [x] PHPUnit 1.746 e Vitest 664; navegador 24/24 em `v3.1-conn2flow.local`.
+- [ ] Pedido real a Claude, OpenAI e a um serviço compatível (falta chave).
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-269](../implementation/BATCH-269.md).
+
+---
+
 ## BATCH-268 — REQ-259 (linha 3.1)
 
 - [x] Lousa publicada emite visita, item visto (uma vez) e clique, no contrato do módulo de análise.

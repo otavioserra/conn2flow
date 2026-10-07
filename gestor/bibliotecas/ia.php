@@ -268,18 +268,6 @@ function ia_enviar_prompt($params = false){
 
 	if($params)foreach($params as $var => $val)$$var = $val;
 
-	// Pegar modelos disponíveis.
-	$adminIAData = json_decode(file_get_contents($_GESTOR['ROOT_PATH'].'/modulos/admin-ia/admin-ia.json'), true);
-
-	// Pegar modelo padrão e urlGenerateContent
-	$modelo_padrao = ($adminIAData && isset($adminIAData['apis']['gemini']['defaultModel']) ? $adminIAData['apis']['gemini']['defaultModel'] : 'gemini-1.5-flash');
-	$urlGenerateContent = ($adminIAData && isset($adminIAData['apis']['gemini']['urlGenerateContent']) ? $adminIAData['apis']['gemini']['urlGenerateContent'] : 'https:\/\/generativelanguage.googleapis.com\/v1beta\/{MODEL}:generateContent?key={API_KEY}');
-
-	// Se modelo não for fornecido, usar o padrão
-	if(!isset($modelo) || !$modelo){
-		$modelo = $modelo_padrao;
-	}
-
 	// Verificar se servidor_id foi fornecido
 	if(!isset($servidor_id) || !$servidor_id){
 		return array(
@@ -292,21 +280,11 @@ function ia_enviar_prompt($params = false){
 	$servidor = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'servidores_ia',
-		'campos' => Array(
-			'chave_api',
-		),
+		'campos' => '*',
 		'extra' =>
 			"WHERE id_servidores_ia = '".banco_escape_field($servidor_id)."' AND status = 'A'"
 	));
 
-	// ===== Abrir chave publica e a senha da chave
-    
-    $keyPublicPath = $_GESTOR['openssl-path'] . 'publica.key';
-    
-    $fp = fopen($keyPublicPath,"r");
-    $keyPublicString = fread($fp,8192);
-    fclose($fp);
-    
 	// Verificar se servidor foi encontrado
 	if(!$servidor){
 		return array(
@@ -314,107 +292,51 @@ function ia_enviar_prompt($params = false){
 			'message' => 'Servidor IA não encontrado ou inativo.',
 		);
 	}
-    
-	// Descriptografar chave API para uso
-	gestor_incluir_biblioteca('autenticacao');
 
-    $chave_api_descriptografada = autenticacao_decriptar_chave_publica(Array(
-        'criptografia' => $servidor['chave_api'],
-        'chavePublica' => $keyPublicString,
-    ));
+	// REQ-260: o pedido e a leitura da resposta são do provedor do servidor; a chave vai em cabeçalho.
+	gestor_incluir_biblioteca('ia-provedores');
 
-	// Preparar URL
-	$urlGenerateContent = modelo_var_troca($urlGenerateContent,'{MODEL}',$modelo);
-	$urlGenerateContent = modelo_var_troca($urlGenerateContent,'{API_KEY}',$chave_api_descriptografada);
+	$servidorIA = ia_provedor_servidor_do_banco($servidor);
+	if(!$servidorIA){
+		return array(
+			'status' => 'error',
+			'message' => 'Servidor IA sem chave configurada.',
+		);
+	}
 
-	// Preparar dados para envio à API Gemini
-	$requestData = array(
-		'contents' => array(
-			array(
-				'parts' => array(
-					array(
-						'text' => $prompt
-					)
-				)
-			)
-		)
+	$pedido = Array(
+		'mensagens' => Array(Array('papel' => 'user', 'texto' => (string)$prompt)),
 	);
 
-	// Configurar cURL para enviar requisição
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $urlGenerateContent);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestData));
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		'Content-Type: application/json'
-	));
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 120); // Timeout de 2 minutos
-
-	// Executar requisição
-	$response = curl_exec($ch);
-	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	$curlError = curl_error($ch);
-	curl_close($ch);
-
-	// Verificar se houve erro na requisição
-	if ($curlError) {
-		return array(
-			'status' => 'error',
-			'message' => 'Erro na comunicação com a API: ' . $curlError,
-		);
-	}
-
-	// Verificar código HTTP
-	if ($httpCode !== 200) {
-		return array(
-			'status' => 'error',
-			'message' => 'Erro na API Gemini (HTTP ' . $httpCode . '): ' . $response,
-		);
-	}
-
-	// Decodificar resposta JSON
-	$responseData = json_decode($response, true);
-	if (json_last_error() !== JSON_ERROR_NONE) {
-		return array(
-			'status' => 'error',
-			'message' => 'Erro ao processar resposta da API: JSON inválido',
-		);
-	}
-
-	// Verificar se a resposta contém os dados esperados
-	if (!isset($responseData['candidates']) || !is_array($responseData['candidates']) || empty($responseData['candidates'])) {
-		return array(
-			'status' => 'error',
-			'message' => 'Resposta da API não contém dados válidos',
-		);
-	}
-
-	// Extrair texto da resposta
-	$candidate = $responseData['candidates'][0];
-	if (!isset($candidate['content']['parts']) || !is_array($candidate['content']['parts']) || empty($candidate['content']['parts'])) {
-		return array(
-			'status' => 'error',
-			'message' => 'Conteúdo da resposta está vazio',
-		);
-	}
-
-	$generatedText = '';
-	foreach ($candidate['content']['parts'] as $part) {
-		if (isset($part['text'])) {
-			$generatedText .= $part['text'];
+	// A lista de modelos da tela é do Gemini: em outro provedor vale o modelo do cadastro do servidor.
+	if($servidorIA['tipo'] === 'gemini'){
+		if(isset($modelo) && $modelo){
+			$pedido['modelo'] = $modelo;
+		} else if($servidorIA['modelo'] === ''){
+			$adminIAData = json_decode((string)@file_get_contents($_GESTOR['ROOT_PATH'].'/modulos/admin-ia/admin-ia.json'), true);
+			if($adminIAData && isset($adminIAData['apis']['gemini']['defaultModel'])){
+				$pedido['modelo'] = $adminIAData['apis']['gemini']['defaultModel'];
+			}
 		}
+	}
+
+	$resposta = ia_provedor_gerar_texto($servidorIA, $pedido);
+
+	if($resposta['status'] !== 'success'){
+		return array(
+			'status' => 'error',
+			'message' => $resposta['message'],
+		);
 	}
 
 	// Preparar dados de retorno
 	$dataRetornoIA = array(
-		'texto_gerado' => $generatedText,
-		'modelo_usado' => $modelo,
-		'tokens_entrada' => isset($responseData['usageMetadata']['promptTokenCount']) ? $responseData['usageMetadata']['promptTokenCount'] : null,
-		'tokens_saida' => isset($responseData['usageMetadata']['candidatesTokenCount']) ? $responseData['usageMetadata']['candidatesTokenCount'] : null,
-		'tokens_total' => isset($responseData['usageMetadata']['totalTokenCount']) ? $responseData['usageMetadata']['totalTokenCount'] : null,
-		'resposta_completa' => $responseData
+		'texto_gerado' => $resposta['texto'],
+		'modelo_usado' => $resposta['modelo'],
+		'tokens_entrada' => $resposta['tokens_entrada'],
+		'tokens_saida' => $resposta['tokens_saida'],
+		'tokens_total' => $resposta['tokens_total'],
+		'resposta_completa' => $resposta['resposta_completa']
 	);
 
 	$return = array(

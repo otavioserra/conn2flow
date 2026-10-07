@@ -317,3 +317,12 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Antes do merge**, descartar mudança só de fim de linha nos arquivos que o outro lado também mexe (`git checkout HEAD -- sdd`), senão o merge recusa.
 - **Modelo cujo conteúdo não é HTML** (arranjo de lousa em JSON) precisa de desenho próprio no gerador de miniaturas: `lousaAmostra()` em `sdd/validation/req256/gerar-miniaturas.cjs`.
 - **Validar a união nos dois Labs** antes de enviar: roteiros da linha nova na instalação dela e, na instalação de lançamento, tabelas criadas, telas novas respondendo e os roteiros que não dependem de dado preparado.
+
+### REQ-260 / BATCH-269 — camada de provedores de IA (2026-10-07)
+
+- **Falar com IA é pela `ia-provedores.php`**: `ia_provedor_servidor_do_banco($linha)` e depois `ia_provedor_gerar_texto()` ou `ia_provedor_gerar_imagem()`. Nada de `curl` próprio nem de chave no endereço; `ia_enviar_prompt()` já usa a biblioteca.
+- **Teste de conexão sem limite de saída**: modelo que raciocina gasta o limite antes de responder e o teste falha à toa.
+- **Biblioteca nova precisa de registro** em `$_GESTOR['bibliotecas-dados']` (`gestor/config.php`), senão `gestor_incluir_biblioteca()` não inclui nada e não avisa.
+- **Célula condicional com marcador dentro** (`<!-- x < -->#tipo#<!-- x > -->`): trocar o marcador na célula antes de colocá-la na linha; a troca feita antes na linha não alcança o que entra depois.
+- **Rolagem em 390 px no roteiro**: abrir a página já na largura de celular. Redimensionar a janela aberta deixa o menu lateral do painel no estado de desktop e acusa rolagem que não existe.
+- **Pedido do editor à IA no roteiro**: `ajaxOpcao=html-editor-ia-requests` em tela com editor (`admin-paginas/adicionar/`), com `server_id`, `mode`, `prompt` e `data`; volta `status: Ok` e `data.html_gerado`.

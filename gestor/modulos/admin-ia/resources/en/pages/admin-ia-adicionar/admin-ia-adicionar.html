@@ -15,6 +15,9 @@
             <label class="c2fc-campo-rotulo" for="admin-ia-tipo">@[[ui-type]]@</label>
             <select id="admin-ia-tipo" class="c2fc-campo-selecao w-full" name="tipo" data-c2f-select="1" required>
                 <option value="gemini" selected>@[[ui-provider-gemini]]@</option>
+                <option value="anthropic">@[[ui-provider-anthropic]]@</option>
+                <option value="openai">@[[ui-provider-openai]]@</option>
+                <option value="openai-compativel">@[[ui-provider-compatible]]@</option>
             </select>
         </div>
         <label class="c2fc-chave">
@@ -27,6 +30,27 @@
             <input id="admin-ia-chave" class="c2fc-campo-entrada w-full" type="password" name="chave_api"
                 placeholder="@[[ui-api-key-placeholder]]@" required>
             <p class="text-sm text-slate-600">@[[ui-api-key-hint]]@</p>
+        </div>
+        <div id="admin-ia-provedores" class="hidden" aria-hidden="true" data-provedores="[[provedores-json]]"></div>
+        <div class="space-y-1">
+            <label class="c2fc-campo-rotulo" for="admin-ia-url-base">@[[ui-base-url]]@</label>
+            <input id="admin-ia-url-base" class="c2fc-campo-entrada w-full" type="text" name="url_base" maxlength="255"
+                autocomplete="off" spellcheck="false">
+            <p class="text-sm text-slate-600">@[[ui-base-url-hint]]@</p>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="space-y-1">
+                <label class="c2fc-campo-rotulo" for="admin-ia-modelo">@[[ui-model]]@</label>
+                <input id="admin-ia-modelo" class="c2fc-campo-entrada w-full" type="text" name="modelo" maxlength="150"
+                    autocomplete="off" spellcheck="false">
+                <p class="text-sm text-slate-600">@[[ui-model-hint]]@</p>
+            </div>
+            <div class="space-y-1">
+                <label class="c2fc-campo-rotulo" for="admin-ia-modelo-imagem">@[[ui-image-model]]@</label>
+                <input id="admin-ia-modelo-imagem" class="c2fc-campo-entrada w-full" type="text" name="modelo_imagem"
+                    maxlength="150" autocomplete="off" spellcheck="false">
+                <p class="text-sm text-slate-600">@[[ui-image-model-hint]]@</p>
+            </div>
         </div>
         <label class="c2fc-chave">
             <input type="checkbox" name="testar_conexao" checked>

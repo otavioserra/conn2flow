@@ -11702,6 +11702,141 @@
     {
         "language": "pt-br",
         "modulo": "admin-ia",
+        "id": "ui-provider-anthropic",
+        "valor": "Anthropic Claude",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-provider-openai",
+        "valor": "OpenAI",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-provider-compatible",
+        "valor": "Compatível com OpenAI (outros serviços e modelos locais)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-base-url",
+        "valor": "Endereço base",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-base-url-hint",
+        "valor": "Deixe vazio para usar o endereço oficial do provedor. Obrigatório no tipo compatível com OpenAI (ex.: http:\/\/localhost:11434\/v1).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-model",
+        "valor": "Modelo de texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-model-hint",
+        "valor": "Deixe vazio para usar o modelo padrão do provedor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-image-model",
+        "valor": "Modelo de imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-image-model-hint",
+        "valor": "Usado na criação de imagens. Deixe vazio para usar o padrão do provedor, quando ele gera imagem.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "msg-type-invalid",
+        "valor": "Tipo de servidor não suportado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "msg-base-url-invalid",
+        "valor": "Endereço base inválido. Use http:\/\/ ou https:\/\/, sem usuário, senha ou parâmetros.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "msg-base-url-required",
+        "valor": "Informe o endereço base deste tipo de servidor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "msg-model-invalid",
+        "valor": "Nome de modelo inválido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "msg-model-required",
+        "valor": "Informe o modelo deste tipo de servidor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "msg-key-missing",
+        "valor": "Servidor sem chave configurada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
         "id": "ui-status-active",
         "valor": "Ativo",
         "tipo": "string",
@@ -12172,6 +12307,141 @@
         "modulo": "admin-ia",
         "id": "ui-provider-gemini",
         "valor": "Google Gemini",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-provider-anthropic",
+        "valor": "Anthropic Claude",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-provider-openai",
+        "valor": "OpenAI",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-provider-compatible",
+        "valor": "OpenAI-compatible (other services and local models)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-base-url",
+        "valor": "Base URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-base-url-hint",
+        "valor": "Leave empty to use the provider's official address. Required for the OpenAI-compatible type (e.g. http:\/\/localhost:11434\/v1).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-model",
+        "valor": "Text model",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-model-hint",
+        "valor": "Leave empty to use the provider's default model.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-image-model",
+        "valor": "Image model",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-image-model-hint",
+        "valor": "Used for image creation. Leave empty to use the provider's default, when it generates images.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "msg-type-invalid",
+        "valor": "Unsupported server type.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "msg-base-url-invalid",
+        "valor": "Invalid base URL. Use http:\/\/ or https:\/\/, without user, password or parameters.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "msg-base-url-required",
+        "valor": "Enter the base URL for this server type.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "msg-model-invalid",
+        "valor": "Invalid model name.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "msg-model-required",
+        "valor": "Enter the model for this server type.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "msg-key-missing",
+        "valor": "Server has no key configured.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
