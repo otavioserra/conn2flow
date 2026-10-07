@@ -17,6 +17,20 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-263 — REQ-254 (linha 3.1)
+
+- [x] Editor HTML em adicionar, editar e clonar; modelo escolhido carrega no editor.
+- [x] HTML e estilo escritos no editor aparecem na página e voltam ao editor; controles continuam valendo.
+- [x] Clonar cria outra página sem alterar a origem.
+- [x] Salvar durante a carga do modelo espera a carga.
+- [x] PHPUnit 1.710 e Vitest 648; navegador 38/38 em `v3.1-conn2flow.local`.
+- [ ] Abas Modelos e Assistente IA do editor com o alvo `dashboard-pages`; clique no seletor visual de modelo.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-263](../implementation/BATCH-263.md).
+
+---
+
 ## BATCH-262 — REQ-253 (linha 3.1)
 
 - [x] Módulo "Páginas de Lousa" no menu; listar, adicionar e editar.
@@ -24,7 +38,7 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 - [x] Endereço repetido e lousa inexistente recusados; ação de status ou exclusão sem token não tem efeito.
 - [x] Desativar, reativar e excluir valem para a página; usuário sem o módulo não acessa.
 - [x] PHPUnit 1.709 e Vitest 646; navegador 28/28 em `v3.1-conn2flow.local`.
-- [ ] Erro intermitente da suíte PHP (1 erro em 1 de 7 execuções), teste não identificado.
+- [x] Erro "intermitente" da suíte PHP identificado no BATCH-263: era do comando de teste (`MSYS_NO_PATHCONV=1` com `OPENSSL_CONF`), não do produto.
 - [ ] Trocar lousa, layout e acesso na edição; modelo novo criado no `admin-templates`.
 - [ ] Homologação humana.
 

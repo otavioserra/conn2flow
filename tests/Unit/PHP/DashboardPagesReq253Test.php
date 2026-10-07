@@ -4,7 +4,7 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 /**
- * REQ-253 — módulo "Páginas de Lousa": controles de exibição, montagem do HTML da página a partir do
+ * REQ-253 e REQ-254 — módulo "Páginas de Lousa": editor HTML e clonar, controles de exibição, montagem do HTML da página a partir do
  * modelo, conferência do pedido e os controles como parâmetros do widget "Lousa".
  * Gravar, listar, desativar e a página no ar são conferidos pelo roteiro de navegador.
  */
@@ -139,6 +139,29 @@ PHP;
             . '<!-- widgets#dashboard->render({"grupo_slug":"vendas","id":"vendas","titulos":false,"molduras":false,"fundos":false,"objetos":false}) > --></section>', $ok['html']);
     }
 
+    public function testHtmlDoEditorValeNoLugarDoModelo(): void
+    {
+        $bom = ['nome' => 'Vendas', 'caminho' => 'vendas', 'board_id' => 'vendas', 'template_id' => 'dashboard-pages-simples', 'layout_id' => 'layout-site', 'show_title' => '1', 'show_item_titles' => '1',
+            'show_frames' => '1', 'show_backgrounds' => '1', 'show_objects' => '1'];
+        $banco = ['lousa' => true, 'modelo' => '<section>[[lousa#widget]]</section>', 'layout' => true];
+        $marcador = '<!-- widgets#dashboard->render({"grupo_slug":"vendas","id":"vendas"}) < --><!-- widgets#dashboard->render({"grupo_slug":"vendas","id":"vendas"}) > -->';
+
+        // Sem HTML do editor (ele ainda não tinha iniciado), vale o modelo, com o estilo dele.
+        $modelo = $this->rodar('$saida=dashboard_pages_pedido($entrada);', $bom, $banco)['saida'];
+        self::assertSame(['<section>[[lousa#widget]]</section>', '<section>' . $marcador . '</section>', '.x{}'], [$modelo['html_template'], $modelo['html'], $modelo['css']]);
+
+        // Com HTML do editor: ele é guardado como está e a página sai dele; as outras variáveis vão para o formato do banco.
+        $editor = '<main><h2>[[lousa#titulo]]</h2><a href="[[Pagina#Url-Raiz]]contato/">Fale</a>[[lousa#widget]]<p>@[[pagina#titulo]]@</p></main>';
+        $r = $this->rodar('$saida=dashboard_pages_pedido($entrada);', $bom + ['html' => $editor, 'css' => '.meu{color:red}', 'css_compiled' => '.c{background:url([[pagina#url-raiz]]a.png)}', 'html_extra_head' => ''], $banco)['saida'];
+        self::assertSame($editor, $r['html_template']);
+        self::assertSame('<main><h2>Vendas</h2><a href="@[[pagina#url-raiz]]@contato/">Fale</a>' . $marcador . '<p>@[[pagina#titulo]]@</p></main>', $r['html']);
+        self::assertSame(['.meu{color:red}', '.c{background:url(@[[pagina#url-raiz]]@a.png)}', ''], [$r['css'], $r['css_compiled'], $r['html_extra_head']]);
+
+        // Ida e volta das variáveis entre o editor e o banco.
+        $ida = $this->rodar('$saida=[dashboard_pages_variaveis($entrada[0], true), dashboard_pages_variaveis($entrada[1], false), dashboard_pages_variaveis("", true)];', ['a [[X#Y]] b @[[z#w]]@', 'a @[[x#y]]@ b'])['saida'];
+        self::assertSame(['a @[[x#y]]@ b @[[z#w]]@', 'a [[x#y]] b', ''], $ida);
+    }
+
     public function testWidgetObedeceAosControles(): void
     {
         $itens = [
@@ -187,14 +210,17 @@ PHP;
         $marcadores = [];
         foreach (['pt-br', 'en'] as $lang) {
             $r = $modulo['resources'][$lang];
-            self::assertSame(['dashboard-pages', 'dashboard-pages-adicionar', 'dashboard-pages-editar'], array_column($r['pages'], 'id'));
-            self::assertSame(['listar', 'adicionar', 'editar'], array_column($r['pages'], 'option'));
+            self::assertSame(['dashboard-pages', 'dashboard-pages-adicionar', 'dashboard-pages-editar', 'dashboard-pages-clonar'], array_column($r['pages'], 'id'));
+            self::assertSame(['listar', 'adicionar', 'editar', 'clonar'], array_column($r['pages'], 'option'));
+            foreach (array_slice($r['pages'], 1) as $comEditor) {
+                self::assertContains('html-editor-tailwind', array_column($comEditor['tailwind_dependencies'], 'id'), $lang . ' ' . $comEditor['id']);
+            }
             self::assertSame(['dashboard-pages', 'dashboard-pages'], array_column($r['templates'], 'target'));
             $variaveis = array_column($r['variables'], 'id');
             foreach ($usadas as $id) {
                 self::assertContains($id, $variaveis, "$lang $id");
             }
-            foreach (['adicionar', 'editar'] as $pagina) {
+            foreach (['adicionar', 'editar', 'clonar'] as $pagina) {
                 $html = (string) file_get_contents(self::MODULO . "resources/$lang/pages/dashboard-pages-$pagina/dashboard-pages-$pagina.html");
                 preg_match_all('/#[a-z_-]+#/', $html, $m);
                 $marcadores[$pagina][$lang] = array_values(array_unique($m[0]));
@@ -203,6 +229,8 @@ PHP;
                     self::assertSame(1, substr_count($html, $campo), "$lang $pagina $campo");
                 }
                 self::assertSame(substr_count($html, '<select'), substr_count($html, 'c2fc-campo-selecao'), "$lang $pagina");
+                // REQ-254: editor HTML nas três telas, e o seletor de modelo ligado a ele.
+                self::assertSame([1, 1], [substr_count($html, '#html-editor#'), substr_count($html, 'data-dashboard-pages-modelo')], "$lang $pagina");
             }
             foreach ($r['templates'] as $modelo) {
                 $html = (string) file_get_contents(self::MODULO . "resources/$lang/templates/{$modelo['id']}/{$modelo['id']}.html");
@@ -219,6 +247,11 @@ PHP;
                 self::assertTrue(str_contains($php, "'" . $marcador . "'") || str_contains($php, "'#'.\$chave.'#'") && str_starts_with($marcador, '#show_') || str_starts_with($marcador, '#mode-'), "$pagina $marcador");
             }
         }
+        self::assertContains('html-editor', $modulo['bibliotecas']);
+        foreach (["case 'clonar': dashboard_pages_clonar(); break;", "case 'template-load': dashboard_pages_ajax_template_load(); break;", "dashboard_pages_editor('editar',", "dashboard_pages_editor('adicionarEditar',"] as $trecho) {
+            self::assertStringContainsString($trecho, $php);
+        }
+        self::assertStringContainsString("->addColumn('html_template'", (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/db/migrations/20261007120000_add_html_template_to_dashboard_pages.php'));
         $perfis = json_decode((string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/resources/user_profiles_modules.json'), true);
         self::assertContains(['perfil' => 'administradores', 'modulo' => 'dashboard-pages'], $perfis);
         $migracao = (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/db/migrations/20261007110000_create_dashboard_pages_table.php');

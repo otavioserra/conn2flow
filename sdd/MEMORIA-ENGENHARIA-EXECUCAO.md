@@ -264,5 +264,13 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Status e excluir por GET exigem `_csrf_token`** (`interface_acao_get_exigir_csrf`). Roteiro pega o endereço com token do botão da tela de edição (`a[href*="opcao=status"]`, `button.excluir[data-href]`).
 - **Envio de formulário da interface no roteiro**: `document.querySelector('input[name="..."]').form.requestSubmit()`.
 - **Modelo de sistema** (`templates`) entra por `resources/<idioma>/templates/<id>/<id>.html` e `.css`, com `target` no JSON do módulo.
-- **Erro intermitente do PHPUnit** (1 erro, some ao repetir) visto duas vezes logo após roteiros de navegador; ainda sem teste identificado. Guardar a saída de toda execução da suíte.
+- **PHPUnit com 1 erro "que some"**: `CoreHelpersTest::testCriptografiaBasicaComChavesRsa` falha sempre que a suíte roda com `MSYS_NO_PATHCONV=1` no ambiente (o caminho de `OPENSSL_CONF` chega ao PHP no formato do Bash). Não exportar essa variável no mesmo comando da suíte; guardar a saída de toda execução.
 - **Instalação da 3.1 não tem senha de administrador anotada**: o acesso do agente é por `auth:cookie`.
+
+### REQ-254 / BATCH-263 — editor HTML e clonar no `dashboard-pages` (2026-10-07)
+
+- **Módulo de página sem editor HTML não é aceito**: o Engenheiro Chefe quer o editor em todo módulo que publica página, e clonar onde for simples. Ver como referência antes de enxugar.
+- **Editor HTML num módulo**: `html-editor` em `bibliotecas`, `#html-editor#` na página, `html_editor_componente([editar|adicionarEditar, modulo, alvo, alvos_modelos, layout_id])`, depois `#pagina-html#`, `#pagina-css#`, `#pagina-css-compiled#` e `#pagina-html-extra-head#`. O pedido traz `html`, `css`, `css_compiled` e `html_extra_head`. No cliente: `html_editor_get_html/set_html/set_css/refresh_preview`. Dependências Tailwind da página: copiar a lista completa de um módulo que já usa o editor.
+- **Clonar** é a opção `clonar` com a mesma marca de gravação do adicionar (`adicionar-banco`): formulário preenchido pela origem e a mesma função de inserção.
+- **Carga assíncrona antes de salvar**: troca de modelo por AJAX seguida de envio grava o conteúdo antigo; segurar o `submit` enquanto houver carga pendente e reenviar ao terminar.
+- **Hash de senha do painel**: `password_hash` Argon2 puro, sem tempero por instalação; hash gerado em qualquer PHP com Argon2 vale no campo `usuarios.senha`.

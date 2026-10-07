@@ -115,6 +115,47 @@ const LOUSA = 'roteiro-req-252-grade';
     v = await ver(NOVO);
     conferir('título próprio aparece como texto', v.h1 === 'Oferta <b>de</b> outubro', v.h1);
 
+    // ----- REQ-254: editor HTML
+    const editor = () => page.evaluate(() => ({campo: !!document.querySelector('textarea[name="html"]'), api: typeof window.html_editor_get_html === 'function', html: typeof window.html_editor_get_html === 'function' ? window.html_editor_get_html() : null}));
+    let e = await editor();
+    conferir('a edição tem o editor HTML, aberto com o HTML guardado da página (modelo de largura total)', e.campo && e.api && /c2f-lousa-pagina-larga/.test(e.html || '') && (e.html || '').includes('[[lousa#widget]]'), e);
+    await escolher('template_id', 'dashboard-pages-simples'); await page.waitForTimeout(1500);
+    e = await editor();
+    conferir('trocar o modelo carrega o HTML dele no editor', /class="c2f-lousa-pagina"/.test(e.html || '') && !/c2f-lousa-pagina-larga/.test(e.html || ''), (e.html || '').slice(0, 200));
+    const PROPRIO = '<section class="c2f-lousa-pagina">\n<!-- lousa-titulo < --><h1 class="c2f-lousa-pagina-titulo">[[lousa#titulo]]</h1><!-- lousa-titulo > -->\n<p class="roteiro-254">Escrito no editor ' + SELO + '</p>\n[[lousa#widget]]\n</section>';
+    await page.evaluate(([h, c]) => { window.html_editor_set_html(h); window.html_editor_set_css(c); }, [PROPRIO, '.c2f-lousa-pagina{max-width:1280px;margin:0 auto;padding:32px 16px}\n.roteiro-254{color:rgb(200, 0, 0);font-weight:700}']);
+    await page.waitForTimeout(500);
+    await enviar();
+    e = await editor();
+    conferir('o HTML escrito no editor volta ao editor depois de salvar', (e.html || '').includes('Escrito no editor ' + SELO) && (e.html || '').includes('[[lousa#widget]]'), (e.html || '').slice(0, 300));
+    v = await ver(NOVO);
+    const escrito = await publico.evaluate(() => { const p = document.querySelector('.roteiro-254'); return p ? {texto: p.textContent, cor: getComputedStyle(p).color} : null; });
+    conferir('o que foi escrito no editor aparece na página, com o estilo do editor', !!escrito && escrito.texto === 'Escrito no editor ' + SELO && escrito.cor === 'rgb(200, 0, 0)', escrito);
+    conferir('os controles continuam valendo sobre o HTML do editor', v.lousa && v.h1 === 'Oferta <b>de</b> outubro' && v.titulos === 0 && v.objetos === 0 && v.modo === 'lousa' && !v.marcadores, v);
+    await foto(publico, '5-pagina-html-do-editor', true);
+
+    // ----- REQ-254: clonar
+    const linkClonar = await page.evaluate(() => { const a = [...document.querySelectorAll('a[href]')].find(x => /dashboard-pages\/clonar\/\?/.test(x.getAttribute('href'))); return a ? a.getAttribute('href') : null; });
+    conferir('a edição tem o botão de clonar', !!linkClonar, linkClonar);
+    await page.goto(new URL(linkClonar || '/dashboard-pages/clonar/?id=' + encodeURIComponent(id), base).href, {waitUntil: 'networkidle'});
+    const clone = await page.evaluate(() => ({nome: document.querySelector('input[name="nome"]').value, caminho: document.querySelector('input[name="caminho"]').value, lousa: document.querySelector('select[name="board_id"]').value,
+      modelo: document.querySelector('select[name="template_id"]').value, layout: document.querySelector('select[name="layout_id"]').value, modo: document.querySelector('select[name="mode"]').value,
+      objetos: document.querySelector('input[name="show_objects"]').checked, titulo: document.querySelector('input[name="title"]').value, html: typeof window.html_editor_get_html === 'function' ? window.html_editor_get_html() : ''}));
+    conferir('clonar abre com os dados da origem, sem nome nem endereço', clone.nome === '' && clone.caminho === '' && clone.lousa === LOUSA && clone.modelo === 'dashboard-pages-simples' && clone.layout === 'layout-conn2flow-site'
+      && clone.modo === 'lousa' && clone.objetos === false && clone.titulo === 'Oferta <b>de</b> outubro' && clone.html.includes('Escrito no editor ' + SELO), Object.assign({}, clone, {html: clone.html.slice(0, 120)}));
+    await foto(page, '6-clonar', true);
+    await page.fill('input[name="nome"]', NOME + ' clone');
+    const caminhoClone = await page.inputValue('input[name="caminho"]');
+    await enviar();
+    const idClone = idDaUrl();
+    conferir('salvar o clone cria outra página e abre a edição dela', /\/dashboard-pages\/editar\//.test(page.url()) && !!idClone && idClone !== id, page.url());
+    if (idClone && idClone !== id) criadas.push(idClone);
+    const vClone = await ver(caminhoClone);
+    const escritoClone = await publico.evaluate(() => (document.querySelector('.roteiro-254') || {}).textContent || null);
+    conferir('o clone está no ar no endereço dele, com o HTML e os controles da origem', vClone.status === 200 && vClone.lousa && vClone.modo === 'lousa' && vClone.objetos === 0 && escritoClone === 'Escrito no editor ' + SELO, {vClone, escritoClone});
+    v = await ver(NOVO);
+    conferir('a página de origem continua igual', v.lousa && v.h1 === 'Oferta <b>de</b> outubro' && v.modo === 'lousa', v);
+
     // ----- Recusas
     await page.goto(base + '/dashboard-pages/adicionar/', {waitUntil: 'networkidle'});
     await page.fill('input[name="nome"]', NOME + ' repetida'); await page.fill('input[name="caminho"]', NOVO);

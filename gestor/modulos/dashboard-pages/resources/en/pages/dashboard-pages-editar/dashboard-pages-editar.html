@@ -5,7 +5,7 @@
         <a class="c2fc-botao" href="#endereco#" target="_blank" rel="noopener" data-dashboard-pages-abrir><i data-lucide="external-link" class="size-4 shrink-0"></i> Open the page</a>
         <a class="c2fc-botao" href="#editar-pagina#"><i data-lucide="pencil" class="size-4 shrink-0"></i> Edit in the pages module</a>
     </div>
-    <p class="mt-3">Saving here rebuilds the page HTML from the template. Manual changes made in the pages module are replaced.</p>
+    <p class="mt-3">The published page comes from the HTML in the editor below plus the display controls. Changes made directly in the pages module are replaced when you save here.</p>
 </div>
 
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -31,7 +31,7 @@
     </div>
     <div class="c2fc-campo">
         <label class="c2fc-campo-rotulo">Template</label>
-        <select data-c2f-select="1" id="template_id" class="c2fc-campo-selecao dropdown" name="template_id">
+        <select data-c2f-select="1" id="template_id" data-dashboard-pages-modelo class="c2fc-campo-selecao dropdown" name="template_id">
             <option value="">#opcao-vazia#</option>
             #modelos#
         </select>
@@ -90,3 +90,7 @@
         </select>
     </div>
 </div>
+
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Page HTML</h4>
+<p class="c2fc-campo-ajuda">Choosing a template loads its HTML and CSS here. What counts for the page is the content of this editor. Use <kbd class="c2fc-selo bg-sky-50 text-sky-800">[[lousa#widget]]</kbd> where the board should appear and <kbd class="c2fc-selo bg-sky-50 text-sky-800">[[lousa#titulo]]</kbd> for the title.</p>
+#html-editor#

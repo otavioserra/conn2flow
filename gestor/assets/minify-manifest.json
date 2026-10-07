@@ -220,9 +220,9 @@
         "minificado": 5773
     },
     "gestor/modulos/dashboard-pages/dashboard-pages.js": {
-        "sha1": "a4e8b496566fa8ea56e1ae24f87011e10894e323",
-        "origem": 1680,
-        "minificado": 891
+        "sha1": "519ed589e6370f1a3ab38f7f79f58d366a960c23",
+        "origem": 3760,
+        "minificado": 2020
     },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
         "sha1": "29cfd666ffac20ffcefeda8655f38b832406cc86",

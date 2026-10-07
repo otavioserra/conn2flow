@@ -10,8 +10,10 @@
  *     (alvo `dashboard-pages`), no lugar de publicador e campos variáveis;
  *   - `admin-paginas`: a página criada é uma página comum e continua editável lá.
  *
- * O HTML da página é o do modelo com o marcador do widget "Lousa" (REQ-252), que recebe os controles como
- * parâmetros. Salvar aqui monta o HTML de novo a partir do modelo.
+ * O editor HTML (REQ-254) guarda o HTML daquela página com o lugar da lousa e o lugar do título, como o
+ * `publisher-pages` guarda o modelo com as variáveis. Escolher um modelo carrega o HTML e o CSS dele no
+ * editor. A página publicada sai do HTML do editor mais os controles: o lugar da lousa vira o marcador do
+ * widget "Lousa" (REQ-252), que recebe os controles como parâmetros.
  */
 
 global $_GESTOR;
@@ -113,6 +115,35 @@ function dashboard_pages_html($modelo_html, $lousa_id, $schema, $nome){
 	));
 }
 
+/** Variável escrita no editor como `[[x]]` vai para o banco como `@[[x]]@`; a volta é para editar. */
+function dashboard_pages_variaveis($texto, $guardar){
+	global $_GESTOR;
+	$v = ($_GESTOR['variavel-global'] ?? Array()) + Array('open' => '@[[', 'close' => ']]@', 'openText' => '[[', 'closeText' => ']]');
+	$texto = (string)$texto;
+	if($texto === '') return '';
+	if($guardar){
+		// Quem já está no formato do banco fica; só o texto solto é convertido.
+		return preg_replace_callback('/(?<!@)'.preg_quote($v['openText'], '/').'(.+?)'.preg_quote($v['closeText'], '/').'(?!@)/', function($m) use ($v){ return $v['open'].strtolower($m[1]).$v['close']; }, $texto);
+	}
+
+	return preg_replace_callback('/'.preg_quote($v['open'], '/').'(.+?)'.preg_quote($v['close'], '/').'/', function($m) use ($v){ return $v['openText'].strtolower($m[1]).$v['closeText']; }, $texto);
+}
+
+/**
+ * HTML, CSS e cabeçalho extra que valem para a página: os do editor quando vieram no pedido, os do modelo
+ * quando o editor ainda não tinha iniciado.
+ */
+function dashboard_pages_recursos($pedido, $modelo){
+	$editor = trim((string)($pedido['html'] ?? '')) !== '';
+	$saida = Array('html_template' => $editor ? (string)$pedido['html'] : (string)($modelo['html'] ?? ''));
+	foreach(Array('css', 'css_compiled', 'css_precompiled', 'html_extra_head') as $campo){
+		$valor = ($editor && array_key_exists($campo, $pedido)) ? (string)$pedido[$campo] : (string)($modelo[$campo] ?? '');
+		$saida[$campo] = dashboard_pages_variaveis($valor, true);
+	}
+
+	return $saida;
+}
+
 // ===== Consultas
 
 function dashboard_pages_idioma(){
@@ -155,7 +186,7 @@ function dashboard_pages_layout($id){
 /** Vínculo da página com a lousa, o modelo e os controles; nulo quando a página não é deste módulo. */
 function dashboard_pages_vinculo($page_id){
 	return banco_select(Array(
-		'unico' => true, 'tabela' => 'dashboard_pages', 'campos' => Array('page_id', 'board_id', 'template_id', 'fields_schema'),
+		'unico' => true, 'tabela' => 'dashboard_pages', 'campos' => Array('page_id', 'board_id', 'template_id', 'fields_schema', 'html_template'),
 		'extra' => "WHERE page_id='".banco_escape_field((string)$page_id)."' AND language='".dashboard_pages_idioma()."' LIMIT 1",
 	)) ?: null;
 }
@@ -242,15 +273,17 @@ function dashboard_pages_pedido($pedido, $menos_id = null){
 	$layout = dashboard_pages_layout($pedido['layout_id'] ?? '');
 	if(!$layout) return Array('erro' => 'alert-layout-missing');
 	$schema = dashboard_pages_schema_do_pedido($pedido);
+	$recursos = dashboard_pages_recursos($pedido, $modelo);
 
-	return Array(
+	return $recursos + Array(
 		'nome' => $nome,
 		'caminho' => $caminho,
 		'lousa' => $lousa,
 		'modelo' => $modelo,
 		'layout' => $layout,
 		'schema' => $schema,
-		'html' => dashboard_pages_html($modelo['html'] ?? '', $lousa['id'], $schema, $nome),
+		// Primeiro a lousa e o título entram nos lugares deles; só depois as outras variáveis vão para o formato do banco.
+		'html' => dashboard_pages_variaveis(dashboard_pages_html($recursos['html_template'], $lousa['id'], $schema, $nome), true),
 		'publica' => !empty($pedido['sem_permissao']),
 	);
 }
@@ -285,6 +318,109 @@ function dashboard_pages_validacao(){
 	return $campos;
 }
 
+/** Põe o editor HTML na página, com o conteúdo que ele deve abrir. */
+function dashboard_pages_editor($modo, $conteudo){
+	global $_GESTOR;
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#html-editor#', html_editor_componente(Array(
+		$modo => true,
+		'modulo' => $_GESTOR['modulo#'.$_GESTOR['modulo-id']],
+		'alvo' => 'dashboard-pages',
+		'alvos_modelos' => 'dashboard-pages',
+		'layout_id' => (string)($conteudo['layout_id'] ?? ''),
+	)));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#pagina-html#', (string)($conteudo['html'] ?? ''));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#pagina-css#', (string)($conteudo['css'] ?? ''));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#pagina-css-compiled#', dashboard_pages_variaveis($conteudo['css_compiled'] ?? '', false));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#pagina-html-extra-head#', dashboard_pages_variaveis($conteudo['html_extra_head'] ?? '', false));
+}
+
+/** O que o editor abre para uma página que já existe: o HTML guardado dela (ou o do modelo) e o estilo da página. */
+function dashboard_pages_conteudo_da_pagina($page_id, $vinculo){
+	$pagina = banco_select(Array(
+		'unico' => true, 'tabela' => 'paginas', 'campos' => Array('layout_id', 'css', 'css_compiled', 'html_extra_head'),
+		'extra' => "WHERE id='".banco_escape_field((string)$page_id)."' AND language='".dashboard_pages_idioma()."' LIMIT 1",
+	)) ?: Array();
+	$html = (string)($vinculo['html_template'] ?? '');
+	if(trim($html) === ''){
+		$modelo = dashboard_pages_modelo($vinculo['template_id'] ?? '');
+		$html = (string)($modelo['html'] ?? '');
+	}
+
+	return Array('html' => $html) + $pagina;
+}
+
+/** AJAX: HTML e CSS de um modelo, para o editor. */
+function dashboard_pages_ajax_template_load(){
+	global $_GESTOR;
+
+	$modelo = dashboard_pages_modelo($_REQUEST['template_id'] ?? '');
+	if(!$modelo){
+		$_GESTOR['ajax-json'] = Array('status' => 'Erro', 'message' => dashboard_pages_texto('alert-template-missing'));
+		return;
+	}
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'id' => $modelo['id'],
+		'html' => (string)($modelo['html'] ?? ''),
+		'css' => (string)($modelo['css'] ?? ''),
+		'framework_css' => (string)($modelo['framework_css'] ?? ''),
+	);
+}
+
+/** Grava a página e o vínculo dela; devolve o identificador. Usada por adicionar e por clonar. */
+function dashboard_pages_inserir($dados){
+	global $_GESTOR;
+
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	$usuario = gestor_usuario();
+
+	$id = banco_identificador(Array(
+		'id' => banco_escape_field($dados['nome']),
+		'tabela' => Array(
+			'nome' => $modulo['tabela']['nome'],
+			'campo' => $modulo['tabela']['id'],
+			'id_nome' => $modulo['tabela']['id_numerico'],
+			'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+		),
+	));
+
+	$campos = Array(
+		Array('id_usuarios', (int)$usuario['id_usuarios'], true),
+		Array('nome', banco_escape_field($dados['nome'])),
+		Array('id', banco_escape_field($id)),
+		Array('layout_id', banco_escape_field($dados['layout']['id'])),
+		Array('tipo', 'pagina'),
+		Array('framework_css', banco_escape_field((string)($dados['layout']['framework_css'] ?: 'tailwindcss'))),
+		Array('caminho', banco_escape_field($dados['caminho'])),
+		Array('html', banco_escape_field($dados['html'])),
+		Array('language', banco_escape_field($_GESTOR['linguagem-codigo'])),
+		Array($modulo['tabela']['status'], 'A'),
+		Array($modulo['tabela']['versao'], '1', true),
+		Array($modulo['tabela']['data_criacao'], 'NOW()', true),
+		Array($modulo['tabela']['data_modificacao'], 'NOW()', true),
+	);
+	foreach(Array('css', 'css_compiled', 'css_precompiled', 'html_extra_head') as $campo){
+		if($dados[$campo] !== '') $campos[] = Array($campo, banco_escape_field($dados[$campo]));
+	}
+	// Só quem tem a operação decide se a página abre sem login; sem ela, a página nasce restrita.
+	if(gestor_acesso('permissao-pagina') && $dados['publica']) $campos[] = Array('sem_permissao', '1', true);
+
+	banco_insert_name($campos, $modulo['tabela']['nome']);
+	banco_insert_name(Array(
+		Array('page_id', banco_escape_field($id)),
+		Array('language', banco_escape_field($_GESTOR['linguagem-codigo'])),
+		Array('board_id', banco_escape_field($dados['lousa']['id'])),
+		Array('template_id', banco_escape_field($dados['modelo']['id'])),
+		Array('fields_schema', banco_escape_field(json_encode($dados['schema'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))),
+		Array('html_template', banco_escape_field($dados['html_template'])),
+	), 'dashboard_pages');
+
+	dashboard_pages_sitemap($id);
+
+	return $id;
+}
+
 // ===== Opções do módulo
 
 function dashboard_pages_adicionar(){
@@ -294,58 +430,55 @@ function dashboard_pages_adicionar(){
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
 	if(isset($_GESTOR['adicionar-banco'])){
-		$usuario = gestor_usuario();
 		$dados = dashboard_pages_pedido($_REQUEST);
 		if(isset($dados['erro'])) dashboard_pages_recusar($dados['erro'], 'adicionar/');
-
-		$id = banco_identificador(Array(
-			'id' => banco_escape_field($dados['nome']),
-			'tabela' => Array(
-				'nome' => $modulo['tabela']['nome'],
-				'campo' => $modulo['tabela']['id'],
-				'id_nome' => $modulo['tabela']['id_numerico'],
-				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
-			),
-		));
-
-		$campos = Array(
-			Array('id_usuarios', (int)$usuario['id_usuarios'], true),
-			Array('nome', banco_escape_field($dados['nome'])),
-			Array('id', banco_escape_field($id)),
-			Array('layout_id', banco_escape_field($dados['layout']['id'])),
-			Array('tipo', 'pagina'),
-			Array('framework_css', banco_escape_field((string)($dados['layout']['framework_css'] ?: 'tailwindcss'))),
-			Array('caminho', banco_escape_field($dados['caminho'])),
-			Array('html', banco_escape_field($dados['html'])),
-			Array('language', banco_escape_field($_GESTOR['linguagem-codigo'])),
-			Array($modulo['tabela']['status'], 'A'),
-			Array($modulo['tabela']['versao'], '1', true),
-			Array($modulo['tabela']['data_criacao'], 'NOW()', true),
-			Array($modulo['tabela']['data_modificacao'], 'NOW()', true),
-		);
-		foreach(Array('css', 'css_compiled', 'css_precompiled', 'html_extra_head') as $campo){
-			if(!empty($dados['modelo'][$campo])) $campos[] = Array($campo, banco_escape_field($dados['modelo'][$campo]));
-		}
-		// Só quem tem a operação decide se a página abre sem login; sem ela, a página nasce restrita.
-		if(gestor_acesso('permissao-pagina') && $dados['publica']) $campos[] = Array('sem_permissao', '1', true);
-
-		banco_insert_name($campos, $modulo['tabela']['nome']);
-		banco_insert_name(Array(
-			Array('page_id', banco_escape_field($id)),
-			Array('language', banco_escape_field($_GESTOR['linguagem-codigo'])),
-			Array('board_id', banco_escape_field($dados['lousa']['id'])),
-			Array('template_id', banco_escape_field($dados['modelo']['id'])),
-			Array('fields_schema', banco_escape_field(json_encode($dados['schema'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))),
-		), 'dashboard_pages');
-
-		dashboard_pages_sitemap($id);
+		$id = dashboard_pages_inserir($dados);
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 
 	dashboard_pages_formulario(Array('publica' => true, 'schema' => dashboard_pages_schema_padrao()));
+	dashboard_pages_editor('adicionarEditar', Array());
 	gestor_pagina_javascript_incluir();
 
 	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
+		'formulario' => Array('validacao' => dashboard_pages_validacao()),
+	);
+}
+
+/** Clonar: o formulário abre com os dados da página de origem, sem nome nem endereço; salvar cria outra página. */
+function dashboard_pages_clonar(){
+	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
+
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	$id = $_GESTOR['modulo-registro-id'];
+	$vinculo = dashboard_pages_vinculo($id);
+	if(!$vinculo) gestor_redirecionar_raiz();
+
+	if(isset($_GESTOR['adicionar-banco'])){
+		$dados = dashboard_pages_pedido($_REQUEST);
+		if(isset($dados['erro'])) dashboard_pages_recusar($dados['erro'], 'clonar/?'.$modulo['tabela']['id'].'='.rawurlencode((string)$id));
+		$id_novo = dashboard_pages_inserir($dados);
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id_novo);
+	}
+
+	$origem = banco_select(Array(
+		'unico' => true, 'tabela' => $modulo['tabela']['nome'], 'campos' => Array('layout_id', 'sem_permissao'),
+		'extra' => "WHERE ".$modulo['tabela']['id']."='".banco_escape_field((string)$id)."' AND ".$modulo['tabela']['status']."!='D' AND language='".dashboard_pages_idioma()."' LIMIT 1",
+	));
+	if(!$origem) gestor_redirecionar_raiz();
+
+	dashboard_pages_formulario(Array(
+		'layout_id' => $origem['layout_id'] ?? '',
+		'board_id' => $vinculo['board_id'],
+		'template_id' => $vinculo['template_id'],
+		'schema' => $vinculo['fields_schema'],
+		'publica' => !empty($origem['sem_permissao']),
+	));
+	dashboard_pages_editor('adicionarEditar', dashboard_pages_conteudo_da_pagina($id, $vinculo));
+	gestor_pagina_javascript_incluir();
+
+	$_GESTOR['interface']['clonar']['finalizar'] = Array(
 		'formulario' => Array('validacao' => dashboard_pages_validacao()),
 	);
 }
@@ -378,8 +511,7 @@ function dashboard_pages_editar(){
 			"html='".banco_escape_field($dados['html'])."'",
 		);
 		foreach(Array('css', 'css_compiled', 'css_precompiled', 'html_extra_head') as $campo){
-			if(!array_key_exists($campo, $dados['modelo'])) continue;
-			$editar[] = $campo.'='.(empty($dados['modelo'][$campo]) ? 'NULL' : "'".banco_escape_field($dados['modelo'][$campo])."'");
+			$editar[] = $campo.'='.($dados[$campo] === '' ? 'NULL' : "'".banco_escape_field($dados[$campo])."'");
 		}
 		if(gestor_acesso('permissao-pagina')) $editar[] = 'sem_permissao='.($dados['publica'] ? '1' : 'NULL');
 		$editar[] = 'user_modified=1';
@@ -391,6 +523,7 @@ function dashboard_pages_editar(){
 			"board_id='".banco_escape_field($dados['lousa']['id'])."'",
 			"template_id='".banco_escape_field($dados['modelo']['id'])."'",
 			"fields_schema='".banco_escape_field(json_encode($dados['schema'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))."'",
+			"html_template='".banco_escape_field($dados['html_template'])."'",
 		)), 'dashboard_pages', "WHERE page_id='".banco_escape_field((string)$id)."' AND language='".dashboard_pages_idioma()."'");
 
 		$alteracoes = Array();
@@ -420,6 +553,7 @@ function dashboard_pages_editar(){
 		'schema' => $vinculo['fields_schema'],
 		'publica' => !empty($retorno_bd['sem_permissao']),
 	));
+	dashboard_pages_editor('editar', dashboard_pages_conteudo_da_pagina($id, $vinculo));
 	gestor_pagina_javascript_incluir();
 
 	$status_atual = (string)($retorno_bd[$modulo['tabela']['status']] ?? '');
@@ -447,6 +581,13 @@ function dashboard_pages_editar(){
 				'tooltip' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'tooltip-button-insert')),
 				'icon' => 'plus circle',
 				'cor' => 'blue',
+			),
+			'clonar' => Array(
+				'url' => $raiz.'clonar/?'.$parametro,
+				'rotulo' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'label-button-clone')),
+				'tooltip' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'tooltip-button-clone')),
+				'icon' => 'clone',
+				'cor' => 'teal',
 			),
 			'status' => Array(
 				'url' => $raiz.'?opcao=status&'.$modulo['tabela']['status'].'='.($ativa ? 'I' : 'A').'&'.$parametro.'&redirect='.urlencode($_GESTOR['modulo-id'].'/editar/?'.$parametro),
@@ -498,6 +639,7 @@ function dashboard_pages_interfaces_padroes(){
 		),
 		'opcoes' => Array(
 			'editar' => Array('url' => 'editar/', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'tooltip-button-edit')), 'icon' => 'edit', 'cor' => 'basic blue'),
+			'clonar' => Array('url' => 'clonar/', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'tooltip-button-clone')), 'icon' => 'clone', 'cor' => 'basic teal'),
 			'ativar' => Array('opcao' => 'status', 'status_atual' => 'I', 'status_mudar' => 'A', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'tooltip-button-active')), 'icon' => 'eye slash', 'cor' => 'basic brown'),
 			'desativar' => Array('opcao' => 'status', 'status_atual' => 'A', 'status_mudar' => 'I', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'tooltip-button-desactive')), 'icon' => 'eye', 'cor' => 'basic green'),
 			'excluir' => Array('opcao' => 'excluir', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'tooltip-button-delete')), 'icon' => 'trash alternate', 'cor' => 'basic red'),
@@ -521,6 +663,11 @@ function dashboard_pages_start(){
 
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
+
+		switch($_GESTOR['ajax-opcao']){
+			case 'template-load': dashboard_pages_ajax_template_load(); break;
+		}
+
 		interface_ajax_finalizar();
 	} else {
 		dashboard_pages_interfaces_padroes();
@@ -530,6 +677,7 @@ function dashboard_pages_start(){
 		switch($_GESTOR['opcao']){
 			case 'adicionar': dashboard_pages_adicionar(); break;
 			case 'editar': dashboard_pages_editar(); break;
+			case 'clonar': dashboard_pages_clonar(); break;
 		}
 
 		interface_finalizar();
