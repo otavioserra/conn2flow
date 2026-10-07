@@ -30,6 +30,8 @@
 | [BL-026](BL-026-listagem-interface-tailwind.md) | Feature/Interface | PROMOTED | Listagem do `interface` (DataTables) em Tailwind; formulários e botões já têm variante (req-190) | Promovido para [req-219.md](../human-requests/archive/req-219.md) (fatia 5) | 2026-10-03 |
 | [BL-027](BL-027-sincronizacao-banco-memoria.md) | Bug/Performance | IN-DISCUSSION | Sincronização de banco lê tabelas inteiras (`fetchAll`); deploy por API estourou 128 MB | Contornado na req-191 (memory_limit 1024M no endpoint) | 2026-09-28 |
 | [BL-028](BL-028-atualizacao-segura-choques-backup-rollback.md) | Epic/Architecture | PROMOTED | Atualização segura: core canibalizável com choques registrados, exclusão de dados no ambiente, backup, rollback e trava de deploy | Promovido para req-197 a req-201 e req-245 (fases de infraestrutura avançada para Linha 3.1) | 2026-10-06 |
+| [BL-029](BL-029-phpunit-erro-intermitente-windows.md) | Spike/Reliability | ICEBOX | Erro intermitente na suíte PHPUnit no Windows (suspeita: bloqueio do antivírus) | Capturar o teste e cruzar com o histórico de proteção do Windows | 2026-10-07 |
+| [BL-030](BL-030-layouts-legados-email-impressao-iframe.md) | Architecture/Maintainability | ICEBOX | Aposentar ou marcar como legado os layouts de e-mail, impressão e iframe | Decidir entre esconder das listas, marcar legado ou remover | 2026-10-07 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 
