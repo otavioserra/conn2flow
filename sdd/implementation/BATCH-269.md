@@ -66,6 +66,7 @@ $i = ia_provedor_gerar_imagem($servidor, ['prompt' => '...', 'tamanho' => '1536x
 | Vitest (suíte inteira) | 664 testes em 60 arquivos — OK |
 | Testes da requisição | 24 de PHP (pedido e resposta de cada provedor, chave fora do endereço e do erro, conferência dos campos do cadastro) e 4 de JavaScript |
 | Roteiro de navegador em `v3.1-conn2flow.local` | 24/24 |
+| Memória de execução | podada no fecho do lote: de 48.212 bytes e 328 linhas para 35.425 bytes e 231 linhas, 23 seções preservadas; 13 seções de 2026-10-02 a 04 movidas na íntegra para `sdd/archive/MEMORIA-ENGENHARIA-EXECUCAO-2026-10-02-04.md` |
 
 O roteiro cria um servidor de teste do tipo compatível apontando para uma porta fechada, confere inclusão, recusas, edição, histórico e listagem, e o exclui no fim. Com o servidor Gemini que já existia, faz dois pedidos reais: o teste de conexão e um pedido do editor, que voltou com HTML, modelo e contagem de tokens.
 
