@@ -310,3 +310,21 @@ Ao transformar os três modais de sistema injetados em runtime (`interface-alert
 - Decisão: estilo de elemento gerado por PHP ou JS vai em classe `c2fc-*` própria (`controles.css`); utilities do Tailwind só no HTML dos recursos, que é o que o compilador enxerga.
 - Decisão: página Tailwind com o editor usa bundle (`tailwind_bundle` + `$_GESTOR['tailwind-page-bundle'] = true`); sem o flag, os sidecars dos componentes invertem as responsivas.
 - Consequência: cada módulo migra trocando layout e páginas e ganhando as variantes que faltam; a fatia 6 segue esse caminho por grupo de módulos.
+
+## DEC-133 - 2026-10-07 - accepted
+
+**Rumo da linha 3.1: sem reescrita do núcleo; lousa primeiro, depois a camada técnica.**
+
+Decisão do Engenheiro Chefe em 2026-10-07, depois do parecer técnico do executor.
+
+- **O núcleo continua procedural.** Não há reescrita para orientação a objetos: o desenho modular atual é rápido, tem teste e os agentes trabalham bem nele. Recursos modernos do PHP entram em código novo e nas bordas (tipos e `strict_types`, `enum`, objetos de valor, interface só onde há várias implementações). Medida que embasou: 315 arquivos e 123 mil linhas no `gestor`, 2.053 funções, 124 classes, 834 usos de `global $_GESTOR`, 865 escapes de SQL à mão, 112 arquivos com tipagem estrita.
+- **Ordem da 3.1:**
+  1. Lousa até o fim (plano em `sdd/implementation/BATCH-258.md`): lousa nomeada, duplicar e versões; publicação como página; modelos e parâmetros da URL; medição; compartilhamento com papéis.
+  2. Canal de atualização: auditoria, **níveis de proteção por caminho** (ideia do Engenheiro Chefe: o que um deploy pode ou não sobrescrever, com um nível de núcleo), pacote assinado, credencial própria de deploy e registro de auditoria.
+  3. **Escopos da API**: hoje a chave emitida dá acesso total; criar estrutura de permissão por escopo.
+  4. Watcher (agente de IA de fiscalização: integridade, acesso, fail2ban onde houver HestiaCP).
+  5. Consultas preparadas na camada de banco, em migração gradual.
+  6. **Biblioteca de acesso ao estado global** no lugar do acesso direto a `$_GESTOR` (a ponte `gestor_get`/`gestor_set` da REQ-229 existe e tem 22 usos), e tipagem estrita no restante.
+- **A liberdade de atualizar qualquer arquivo do sistema é característica do produto** e não será retirada; a segurança vem por camadas em cima dela.
+- **Bibliotecas v2 existentes**: a branch `origin/3.0.x` (2026-08-07, 4 commits próprios, 527 atrás da `main`) tem `gestor/bibliotecas/banco-v2.php` (dialetos MySQL e PostgreSQL) e `interface-v2.php`. Nunca entraram no núcleo. São o ponto de partida a avaliar no item 5.
+- **Linhas**: `main` e `3.0` são a de release; melhorias vão na `3.1` e podem ser levadas à 3.0 depois, por decisão do Engenheiro Chefe.
