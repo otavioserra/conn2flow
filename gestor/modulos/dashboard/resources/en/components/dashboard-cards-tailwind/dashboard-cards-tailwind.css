@@ -502,3 +502,29 @@ html.dashboard-window-open { overflow: hidden; }
 .dashboard-per-row button { width: 1.625rem; height: 1.625rem; border: 1px solid #cbd5e1; border-radius: .375rem; background: #fff; font-weight: 600; color: #334155; cursor: pointer; }
 .dashboard-per-row button:hover:not(:disabled) { border-color: #0284c7; color: #0369a1; }
 .dashboard-per-row button:disabled { opacity: .4; cursor: not-allowed; }
+
+/* REQ-250: objetos livres, esconder por largura, imagem de fundo e pop-up de configurações mais longo. */
+.dashboard-widget-card.is-hidden-now { display: none !important; }
+#dashboard-widgets-grid.is-editing .dashboard-widget-card[data-widget-hide] { outline: 2px dashed #f59e0b; outline-offset: -2px; }
+.dashboard-widget-card.has-bg-image::before { content: ""; position: absolute; inset: 0; z-index: 0; border-radius: inherit; background-image: var(--widget-bg-image); background-position: center; background-size: var(--widget-bg-size, cover); background-repeat: var(--widget-bg-repeat, no-repeat); opacity: var(--widget-bg-opacity, 1); pointer-events: none; }
+.dashboard-widget-card.has-bg-image > .dashboard-widget-card-header, .dashboard-widget-card.has-bg-image > .dashboard-widget-card-body { position: relative; z-index: 1; }
+.dashboard-widget-card.is-object .dashboard-widget-switch-btn, .dashboard-widget-card.is-object .dashboard-widget-edit-btn { display: none !important; }
+.dashboard-widget-card.is-object { min-height: 0; }
+.dashboard-object { display: flex; width: 100%; height: 100%; min-height: 0; align-items: center; justify-content: center; overflow: hidden; }
+.dashboard-object.is-placeholder { color: #94a3b8 !important; font-size: .875rem !important; font-weight: 500 !important; font-style: italic; }
+.dashboard-object-text { display: block; align-content: center; padding: 8px 12px; line-height: 1.2; white-space: pre-wrap; overflow-wrap: anywhere; }
+.dashboard-object-figure { width: 100%; height: 100%; }
+.dashboard-object-figure[data-shape="rounded"] { border-radius: 16px; }
+.dashboard-object-figure[data-shape="circle"] { border-radius: 50%; }
+.dashboard-object-figure[data-shape="line"] { height: 4px; border-radius: 2px; }
+.dashboard-object-image img { width: 100%; height: 100%; display: block; }
+.dashboard-object-icon svg { width: min(100%, 100cqh); height: 100%; max-height: 100%; }
+.dashboard-object-icon { padding: 8%; }
+.dashboard-object-action { display: inline-flex; max-width: 100%; align-items: center; justify-content: center; border-radius: 999px; padding: .6em 1.4em; text-align: center; text-decoration: none; line-height: 1.1; box-shadow: 0 6px 18px rgb(15 23 42 / 0.18); }
+.dashboard-object-action:hover { filter: brightness(1.08); }
+#dashboard-widgets-grid.is-editing .dashboard-object-action { pointer-events: none; }
+#dashboard-widget-config-modal > div { display: flex; max-height: calc(100vh - 32px); flex-direction: column; }
+#dashboard-widget-config-modal > div > .space-y-4 { min-height: 0; overflow-y: auto; }
+#dashboard-widget-config-modal [hidden] { display: none !important; }
+/* O seletor de imagem abre por cima do pop-up de configurações, que está na mesma camada dos outros pop-ups. */
+#dashboard-image-picker { z-index: 60; }

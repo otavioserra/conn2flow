@@ -99,7 +99,8 @@ PHP;
         $r = $this->rodar('$saida=dashboard_widgets_layout_normalizar($_REQUEST["layout"]);', [], [], ['layout' => json_encode($layout)])['saida'];
         self::assertCount(2, $r);
         self::assertSame(['id' => 'menus', 'name' => 'Menus', 'registro_id' => 'principal', 'instance_id' => 'ab', 'width' => 2, 'height' => 1, 'height_px' => 960, 'params' => ['grupo_slug' => 'principal'],
-            'options' => ['header' => false, 'frame' => true, 'title' => str_repeat('T', 80), 'background' => '', 'padding' => 'none', 'refresh' => 300], 'x' => null, 'y' => null], $r[0]);
+            'options' => ['header' => false, 'frame' => true, 'title' => str_repeat('T', 80), 'background' => '', 'padding' => 'none', 'refresh' => 300,
+                'hide' => '', 'bgImage' => '', 'bgOpacity' => 100, 'bgFit' => 'cover', 'titleFont' => ''], 'x' => null, 'y' => null], $r[0]);
         // REQ-248: na lousa a largura vai a 24 células.
         self::assertSame(20, $r[1]['width']);
         self::assertSame('perfil-1', $r[1]['instance_id']);

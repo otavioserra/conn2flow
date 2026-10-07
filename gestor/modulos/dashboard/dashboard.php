@@ -3131,6 +3131,44 @@ function dashboard_widgets_perfil_atual(){
 	return $perfil ? (string)$perfil['id'] : '';
 }
 
+/** Famílias do Google Fonts oferecidas na área de widgets (REQ-250). A mesma lista está em `dashboard.js`. */
+function dashboard_widgets_fontes(){
+	return Array('Inter', 'Roboto', 'Open Sans', 'Montserrat', 'Poppins', 'Lato', 'Raleway', 'Playfair Display', 'Merriweather', 'Oswald', 'Bebas Neue', 'Dancing Script', 'Roboto Mono');
+}
+
+/** Imagem escolhida no gerenciador: só caminho do próprio painel, sem `..`, com extensão de imagem. */
+function dashboard_widgets_imagem($valor){
+	$valor = (string)$valor;
+	return (preg_match('#^/[A-Za-z0-9_\-./%~]+\.(png|jpe?g|gif|webp|avif|svg)$#i', $valor) && strpos($valor, '..') === false && strpos($valor, '//') === false) ? $valor : '';
+}
+
+/** Objeto livre da lousa (REQ-250): texto, forma, imagem, ícone ou botão, só com atributos conhecidos. */
+function dashboard_widgets_objeto_normalizar($objeto){
+	if(!is_array($objeto)) $objeto = Array();
+	$cor = function($valor, $padrao){ $valor = strtolower((string)$valor); return preg_match('/^#[0-9a-f]{6}$/', $valor) ? $valor : $padrao; };
+	$em = function($valor, $lista, $padrao){ return in_array((string)$valor, $lista, true) ? (string)$valor : $padrao; };
+	$tamanho = (int)round((float)($objeto['size'] ?? 0));
+	$destino = trim((string)($objeto['href'] ?? ''));
+	return Array(
+		'type' => $em($objeto['type'] ?? '', Array('text', 'shape', 'image', 'icon', 'button'), 'text'),
+		'text' => mb_substr((string)($objeto['text'] ?? ''), 0, 2000),
+		'font' => $em($objeto['font'] ?? '', dashboard_widgets_fontes(), ''),
+		'size' => ($tamanho >= 10 && $tamanho <= 160) ? $tamanho : 28,
+		'weight' => (int)($objeto['weight'] ?? 700) === 400 ? 400 : 700,
+		'align' => $em($objeto['align'] ?? '', Array('left', 'center', 'right'), 'center'),
+		'color' => $cor($objeto['color'] ?? '', '#0f172a'),
+		'fill' => $cor($objeto['fill'] ?? '', '#0ea5e9'),
+		'shape' => $em($objeto['shape'] ?? '', Array('rect', 'rounded', 'circle', 'line'), 'rounded'),
+		'src' => dashboard_widgets_imagem($objeto['src'] ?? ''),
+		'fit' => ($objeto['fit'] ?? '') === 'contain' ? 'contain' : 'cover',
+		'alt' => mb_substr((string)($objeto['alt'] ?? ''), 0, 160),
+		'icon' => preg_match('/^[a-z0-9-]{1,40}$/', (string)($objeto['icon'] ?? '')) ? (string)$objeto['icon'] : 'star',
+		// Destino: http(s) ou caminho do painel; `javascript:` e `//host` ficam de fora.
+		'href' => preg_match('#^(https?://|/(?!/))[^\s"\'<>\\\\]*$#i', $destino) ? mb_substr($destino, 0, 500) : '',
+		'newTab' => ($objeto['newTab'] ?? false) === true,
+	);
+}
+
 /** Opções de aparência de um widget: só as chaves conhecidas, com valor dentro da lista. */
 function dashboard_widgets_opcoes_normalizar($opcoes){
 	if(!is_array($opcoes)) $opcoes = Array();
@@ -3144,6 +3182,12 @@ function dashboard_widgets_opcoes_normalizar($opcoes){
 		'background' => preg_match('/^#[0-9a-f]{6}$/', $fundo) ? $fundo : '',
 		'padding' => in_array($recuo, Array('none', 'small', 'medium', 'large'), true) ? $recuo : 'none',
 		'refresh' => in_array($atualizar, Array(0, 60, 300, 900), true) ? $atualizar : 0,
+		// REQ-250
+		'hide' => in_array((string)($opcoes['hide'] ?? ''), Array('sm', 'md', 'lg'), true) ? (string)$opcoes['hide'] : '',
+		'bgImage' => dashboard_widgets_imagem($opcoes['bgImage'] ?? ''),
+		'bgOpacity' => is_numeric($opcoes['bgOpacity'] ?? null) ? max(0, min(100, (int)round((float)$opcoes['bgOpacity']))) : 100,
+		'bgFit' => in_array((string)($opcoes['bgFit'] ?? ''), Array('cover', 'contain', 'repeat'), true) ? (string)$opcoes['bgFit'] : 'cover',
+		'titleFont' => in_array((string)($opcoes['titleFont'] ?? ''), dashboard_widgets_fontes(), true) ? (string)$opcoes['titleFont'] : '',
 	);
 }
 
@@ -3185,6 +3229,13 @@ function dashboard_widgets_layout_normalizar($layout){
 			'x' => dashboard_widgets_celula($item['x'] ?? null, 23),
 			'y' => dashboard_widgets_celula($item['y'] ?? null, 4000),
 		);
+		// REQ-250: objeto livre usa o identificador reservado `objeto` e leva os atributos dele.
+		if($id === 'objeto'){
+			$ultimo = count($saida) - 1;
+			$saida[$ultimo]['registro_id'] = '';
+			$saida[$ultimo]['params'] = Array();
+			$saida[$ultimo]['object'] = dashboard_widgets_objeto_normalizar($item['object'] ?? null);
+		}
 	}
 	return $saida;
 }

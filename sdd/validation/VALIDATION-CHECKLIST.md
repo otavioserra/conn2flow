@@ -17,6 +17,18 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-259 — REQ-250 (linha 3.1)
+
+- [x] Objetos livres (texto, forma, imagem, ícone, botão) criados, configurados, duplicados e persistidos.
+- [x] Entradas inseguras descartadas no cliente e no servidor (imagem, destino, ícone, fonte).
+- [x] Esconder por largura nos limiares de 640, 1024 e 1280 px, liberando o lugar na lousa.
+- [x] Imagem de fundo com opacidade e preenchimento; fonte do Google no texto e no título.
+- [x] PHPUnit 1.691 e Vitest 623 sem falhas; navegador 23/23 em `v3.1-conn2flow.local`; 390 px sem rolagem lateral.
+- [ ] Escolher um arquivo real no gerenciador (a instalação nova não tem arquivo enviado).
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-259](../implementation/BATCH-259.md).
+
 ## BATCH-258 — REQ-249
 
 - [x] Link com `target` próprio, formulário e botão de carrinho da loja levam a página de fora; âncora interna fica dentro.

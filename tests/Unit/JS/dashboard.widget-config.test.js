@@ -38,7 +38,8 @@ describe('Dashboard widget settings',()=>{
    for(const name of ['header','title','background-custom','background','frame','padding','refresh'])expect(html).toContain('data-widget-option="'+name+'"');
    for(const cls of ['dashboard-widget-config-close','dashboard-widget-config-reset','dashboard-widget-config-save','data-widget-config-name'])expect(html).toContain(cls);
    // Mesmo estilo visual do menu de opções: linha do menu com o trilho da chave.
-   expect(html.match(/dashboard-menu-item dashboard-widget-config-switch/g)).toHaveLength(3);
+   // Três chaves do widget e, desde a REQ-250, a de abrir o botão do objeto em nova aba.
+   expect(html.match(/dashboard-menu-item dashboard-widget-config-switch/g)).toHaveLength(4);
    expect(component(lang)).toContain('data-label-config="@[[widgets-label-config]]@"');
   }
  });
@@ -60,7 +61,8 @@ describe('Dashboard widget settings',()=>{
   option('background').value='#0f172a';option('padding').value='medium';option('refresh').value='300';
   document.querySelector('.dashboard-widget-config-save').click();
   expect(document.getElementById('dashboard-widget-config-modal').classList.contains('hidden')).toBe(true);
-  expect(saved[0].options).toEqual({header:false,frame:false,title:'Vendas',background:'#0f172a',padding:'medium',refresh:300});
+  // REQ-250 acrescentou opções (esconder, imagem de fundo, fonte do título); estas seis continuam as mesmas.
+  expect(saved[0].options).toMatchObject({header:false,frame:false,title:'Vendas',background:'#0f172a',padding:'medium',refresh:300});
   expect(card().classList.contains('is-headerless')).toBe(true);
   expect(card().classList.contains('is-frameless')).toBe(true);
   expect(card().getAttribute('data-widget-tone')).toBe('dark');

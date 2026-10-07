@@ -855,11 +855,41 @@ $(document).ready(function () {
 		// req-242: altura em passos de 20 px (a malha do redimensionamento), de 120 a 960 px.
 		var MIN_HEIGHT = 120, MAX_HEIGHT = 960, STEP_HEIGHT = 20;
 		var labels = {};
-		['type', 'record', 'loading', 'error', 'empty', 'remove', 'drag', 'more', 'resize', 'switch', 'select', 'config', 'duplicate', 'edit', 'empty-profile'].forEach(function (key) {
+		['type', 'record', 'loading', 'error', 'empty', 'remove', 'drag', 'more', 'resize', 'switch', 'select', 'config', 'duplicate', 'edit', 'empty-profile', 'object', 'object-empty', 'not-image'].forEach(function (key) {
 			labels[key] = grid.getAttribute('data-label-' + key) || '';
 		});
 		// Configurações por widget: gravadas com o layout, em `options`. Valor fora da lista volta ao padrão.
 		var PADDINGS = ['none', 'small', 'medium', 'large'], REFRESH = [0, 60, 300, 900];
+		// REQ-250: famílias do Google Fonts oferecidas (a mesma lista vale no servidor), limiares de largura para
+		// esconder um item e tipos de objeto livre. Objeto é um item do layout com o identificador reservado `objeto`.
+		var FONTS = ['Inter', 'Roboto', 'Open Sans', 'Montserrat', 'Poppins', 'Lato', 'Raleway', 'Playfair Display', 'Merriweather', 'Oswald', 'Bebas Neue', 'Dancing Script', 'Roboto Mono'];
+		var HIDE = {sm: 640, md: 1024, lg: 1280}, OBJECT_ID = 'objeto', OBJECT_TYPES = ['text', 'shape', 'image', 'icon', 'button'];
+		function safeColor(value, fallback) { return /^#[0-9a-f]{6}$/i.test(value || '') ? String(value).toLowerCase() : fallback; }
+		// Imagem: só caminho do próprio painel, sem `..` e com extensão de imagem (entra em `url("…")` e em `src`).
+		function safeImage(value) { value = String(value == null ? '' : value); return /^\/[A-Za-z0-9_\-.\/%~]+\.(png|jpe?g|gif|webp|avif|svg)$/i.test(value) && value.indexOf('..') === -1 && value.indexOf('//') === -1 ? value : ''; }
+		// Destino do botão: endereço http(s) ou caminho do painel; nada de `javascript:` nem `//host`.
+		function safeLink(value) { value = String(value == null ? '' : value).trim(); return /^(https?:\/\/|\/(?!\/))[^\s"'<>\\]*$/i.test(value) ? value.slice(0, 500) : ''; }
+		function normalizeObject(o) {
+			o = o && typeof o === 'object' ? o : {};
+			var size = Math.round(Number(o.size));
+			return {
+				type: OBJECT_TYPES.indexOf(o.type) !== -1 ? o.type : 'text',
+				text: String(o.text == null ? '' : o.text).slice(0, 2000),
+				font: FONTS.indexOf(o.font) !== -1 ? o.font : '',
+				size: size >= 10 && size <= 160 ? size : 28,
+				weight: Number(o.weight) === 400 ? 400 : 700,
+				align: ['left', 'center', 'right'].indexOf(o.align) !== -1 ? o.align : 'center',
+				color: safeColor(o.color, '#0f172a'),
+				fill: safeColor(o.fill, '#0ea5e9'),
+				shape: ['rect', 'rounded', 'circle', 'line'].indexOf(o.shape) !== -1 ? o.shape : 'rounded',
+				src: safeImage(o.src),
+				fit: o.fit === 'contain' ? 'contain' : 'cover',
+				alt: String(o.alt == null ? '' : o.alt).slice(0, 160),
+				icon: /^[a-z0-9-]{1,40}$/.test(o.icon || '') ? o.icon : 'star',
+				href: safeLink(o.href),
+				newTab: o.newTab === true
+			};
+		}
 		function normalizeOptions(o) {
 			o = o && typeof o === 'object' ? o : {};
 			return {
@@ -868,7 +898,13 @@ $(document).ready(function () {
 				title: String(o.title == null ? '' : o.title).trim().slice(0, 80),
 				background: /^#[0-9a-f]{6}$/i.test(o.background || '') ? String(o.background).toLowerCase() : '',
 				padding: PADDINGS.indexOf(o.padding) !== -1 ? o.padding : 'none',
-				refresh: REFRESH.indexOf(Number(o.refresh)) !== -1 ? Number(o.refresh) : 0
+				refresh: REFRESH.indexOf(Number(o.refresh)) !== -1 ? Number(o.refresh) : 0,
+				// REQ-250
+				hide: HIDE[o.hide] ? o.hide : '',
+				bgImage: safeImage(o.bgImage),
+				bgOpacity: o.bgOpacity === null || o.bgOpacity === undefined || o.bgOpacity === '' || !isFinite(Number(o.bgOpacity)) ? 100 : Math.max(0, Math.min(100, Math.round(Number(o.bgOpacity)))),
+				bgFit: ['cover', 'contain', 'repeat'].indexOf(o.bgFit) !== -1 ? o.bgFit : 'cover',
+				titleFont: FONTS.indexOf(o.titleFont) !== -1 ? o.titleFont : ''
 			};
 		}
 		function applyOptions(card, widget) {
@@ -885,6 +921,16 @@ $(document).ready(function () {
 			if (body) body.setAttribute('data-widget-padding', o.padding);
 			if (title) title.textContent = name;
 			if (frame) frame.title = name;
+			// REQ-250: esconder por largura, imagem de fundo e fonte do título.
+			if (o.hide) card.setAttribute('data-widget-hide', o.hide); else card.removeAttribute('data-widget-hide');
+			card.classList.toggle('has-bg-image', !!o.bgImage);
+			['--widget-bg-image', '--widget-bg-opacity', '--widget-bg-size', '--widget-bg-repeat'].forEach(function (name) { card.style.removeProperty(name); });
+			if (o.bgImage) {
+				card.style.setProperty('--widget-bg-image', 'url("' + o.bgImage + '")'); card.style.setProperty('--widget-bg-opacity', String(o.bgOpacity / 100));
+				card.style.setProperty('--widget-bg-size', o.bgFit === 'repeat' ? 'auto' : o.bgFit); card.style.setProperty('--widget-bg-repeat', o.bgFit === 'repeat' ? 'repeat' : 'no-repeat');
+			}
+			if (title) title.style.fontFamily = o.titleFont ? '"' + o.titleFont + '", sans-serif' : '';
+			useFonts();
 			clearInterval(card._refreshTimer); card._refreshTimer = null;
 			// Recarrega sozinho só com a aba visível e fora do modo de edição.
 			if (o.refresh) card._refreshTimer = setInterval(function () {
@@ -904,7 +950,7 @@ $(document).ready(function () {
 			var width = Math.round(Number(w.width));
 			if (!(width >= MIN_COLS && width <= MAX_COLS)) width = /full|12/.test(w.width) ? 12 : (/8/.test(w.width) ? 8 : (/2|6/.test(w.width) ? 6 : 4));
 			var pixels = Number(w.height_px) || (Number(w.height) === 2 ? 460 : 220);
-			return Object.assign({}, w, {width: width, height_px: Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}, options: normalizeOptions(w.options), x: cell(w.x, MAX_COLS - 1), y: cell(w.y, MAX_ROW)});
+			return Object.assign({}, w, {width: width, height_px: Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, pixels)), height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}, options: normalizeOptions(w.options), x: cell(w.x, MAX_COLS - 1), y: cell(w.y, MAX_ROW)}, w.id === OBJECT_ID ? {object: normalizeObject(w.object), registro_id: ''} : {});
 		}
 		function instanceId() { return 'widget-' + Date.now() + '-' + Math.random().toString(36).slice(2); }
 		function copyLayout(list) { return JSON.parse(JSON.stringify(list || [])); }
@@ -950,6 +996,47 @@ $(document).ready(function () {
 			card.style.height = (widget.height_px || (widget.height === 2 ? 460 : 220)) + 'px';
 			card.style.minHeight = MIN_HEIGHT + 'px';
 		}
+		// ----- Objetos livres, fontes e esconder por largura (REQ-250)
+		// Uma folha só do Google Fonts, com as famílias em uso no layout; some quando nenhuma é usada.
+		function useFonts() {
+			var used = {};
+			widgets.forEach(function (w) { var font = normalizeOptions(w.options).titleFont; if (font) used[font] = true; if (w.id === OBJECT_ID && w.object && FONTS.indexOf(w.object.font) !== -1) used[w.object.font] = true; });
+			var names = Object.keys(used).sort(), link = document.getElementById('dashboard-google-fonts');
+			if (!names.length) { if (link) link.remove(); return; }
+			// Peso 700 só onde a família tem; pedir um peso que não existe invalida a folha inteira.
+			var href = 'https://fonts.googleapis.com/css2?' + names.map(function (name) { return 'family=' + encodeURIComponent(name).replace(/%20/g, '+') + (name === 'Bebas Neue' ? '' : ':wght@400;700'); }).join('&') + '&display=swap';
+			if (!link) { link = document.createElement('link'); link.id = 'dashboard-google-fonts'; link.rel = 'stylesheet'; document.head.appendChild(link); }
+			if (link.getAttribute('href') !== href) link.setAttribute('href', href);
+		}
+		function viewport() { return (typeof window !== 'undefined' && window.innerWidth) || document.documentElement.clientWidth || 0; }
+		// Fora do modo de edição, o item marcado para sumir abaixo de uma largura não aparece nem ocupa lugar.
+		function hiddenNow(widget) { var hide = normalizeOptions(widget.options).hide; return !editing && !!hide && viewport() < HIDE[hide]; }
+		function drawObject(card, widget) {
+			var o = widget.object = normalizeObject(widget.object), body = card.querySelector('.dashboard-widget-card-body');
+			var box = document.createElement('div'), font = o.font ? '"' + o.font + '", sans-serif' : '';
+			box.className = 'dashboard-object dashboard-object-' + o.type;
+			card.setAttribute('data-object-type', o.type);
+			// Tudo por texto e atributo: nada do que o usuário escreve vira HTML.
+			if (o.type === 'text') {
+				box.textContent = o.text || labels['object-empty']; box.classList.toggle('is-placeholder', !o.text);
+				box.style.fontFamily = font; box.style.fontSize = o.size + 'px'; box.style.fontWeight = o.weight; box.style.textAlign = o.align; box.style.color = o.color;
+			} else if (o.type === 'shape') {
+				var shape = document.createElement('div'); shape.className = 'dashboard-object-figure'; shape.setAttribute('data-shape', o.shape); shape.style.backgroundColor = o.fill; box.appendChild(shape);
+			} else if (o.type === 'image') {
+				if (o.src) { var image = document.createElement('img'); image.src = o.src; image.alt = o.alt; image.loading = 'lazy'; image.style.objectFit = o.fit; box.appendChild(image); }
+				else { box.textContent = labels['object-empty']; box.classList.add('is-placeholder'); }
+			} else if (o.type === 'icon') {
+				var icon = document.createElement('i'); icon.setAttribute('data-lucide', o.icon); box.style.color = o.color; box.appendChild(icon);
+			} else {
+				var link = document.createElement('a'); link.className = 'dashboard-object-action'; link.textContent = o.text || labels['object-empty'];
+				if (o.href) link.href = o.href;
+				if (o.newTab) { link.target = '_blank'; link.rel = 'noopener'; }
+				link.style.backgroundColor = o.fill; link.style.color = o.color; link.style.fontFamily = font; link.style.fontSize = o.size + 'px'; link.style.fontWeight = o.weight;
+				box.appendChild(link);
+			}
+			body.replaceChildren(box);
+			icons(); useFonts();
+		}
 		// ----- Lousa (REQ-248)
 		// Colunas que cabem na largura disponível; abaixo de 640 px, uma só. Sem medida (teste), 12.
 		function boardCols() {
@@ -986,13 +1073,14 @@ $(document).ready(function () {
 		// Aplica o arranjo nos cards que já estão na tela: nenhum iframe recarrega.
 		function layout(first) {
 			grid.classList.toggle('is-board', board());
+			Array.from(grid.children).forEach(function (card) { var w = widgets.find(function (x) { return x.instance_id === card.dataset.widgetInstance; }); if (w) card.classList.toggle('is-hidden-now', hiddenNow(w)); });
 			if (!board()) {
 				// Grade: quem posiciona é a folha de estilo, pela largura em colunas e pela ordem.
 				grid.style.removeProperty('--board-cols'); grid.removeAttribute('data-board-cols');
 				Array.from(grid.children).forEach(function (card) { card.style.gridColumn = ''; card.style.gridRow = ''; card.removeAttribute('data-board-x'); card.removeAttribute('data-board-y'); });
 				return {};
 			}
-			var cols = boardCols(), places = arrange(widgets, cols, first || null);
+			var cols = boardCols(), places = arrange(widgets.filter(function (w) { return !hiddenNow(w); }), cols, first || null);
 			grid.style.setProperty('--board-cols', cols); grid.setAttribute('data-board-cols', cols);
 			Array.from(grid.children).forEach(function (card) {
 				var place = places[card.dataset.widgetInstance]; if (!place) return;
@@ -1025,6 +1113,8 @@ $(document).ready(function () {
 			}
 			if (!editing) grid.classList.remove('is-interacting');
 			if (grid._dashboardSortable) grid._dashboardSortable.option('disabled', !editing);
+			// Entrar ou sair da edição muda o que está escondido por largura.
+			if (grid.children.length) layout();
 			try { sessionStorage.setItem('dashboard_widgets_editing', String(editing)); } catch (_) {}
 		}
 		if (editButton) editButton.addEventListener('click', function () { setEditing(!editing); });
@@ -1057,7 +1147,8 @@ $(document).ready(function () {
 				});
 				grid.appendChild(card);
 				var body = card.querySelector('.dashboard-widget-card-body');
-				card._load = function () { request('widget-render', {widget_id:widget.id, registro_id:widget.registro_id, instance_id:widget.instance_id, params:widget.params}).then(function (data) {
+				if (widget.id === OBJECT_ID) card.classList.add('is-object');
+				card._load = widget.id === OBJECT_ID ? function () { drawObject(card, widget); } : function () { request('widget-render', {widget_id:widget.id, registro_id:widget.registro_id, instance_id:widget.instance_id, params:widget.params}).then(function (data) {
 					if (!card.isConnected) return;
 					// Atalho para a edição do registro: só endereço do próprio painel.
 					var editLink = card.querySelector('.dashboard-widget-edit-btn'), editUrl = null;
@@ -1163,7 +1254,7 @@ $(document).ready(function () {
 		document.querySelectorAll('.dashboard-widgets-modal-close').forEach(function(b){b.addEventListener('click',close);});
 		if (modal) modal.addEventListener('click',function(e){if(e.target===modal)close();});
 		document.addEventListener('keydown',function(e){
-			if(e.key==='Escape'){var popup=[modal,configModal,layoutsModal].some(function(m){return m && !m.classList.contains('hidden');});close();closeConfig();closeLayouts();if(!popup && inWindow())setWindow(false);}
+			if(e.key==='Escape'){var picking=pickerModal && !pickerModal.classList.contains('hidden');if(picking){closePicker();return;}var popup=[modal,configModal,layoutsModal].some(function(m){return m && !m.classList.contains('hidden');});close();closeConfig();closeLayouts();if(!popup && inWindow())setWindow(false);}
 			if(e.key==='Tab' && modal && !modal.classList.contains('hidden')){
 				var buttons=Array.from(modal.querySelectorAll('button:not([disabled]), input:not([disabled])')).filter(function(b){return !b.hidden;});var first=buttons[0],last=buttons[buttons.length-1];
 				if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
@@ -1186,6 +1277,26 @@ $(document).ready(function () {
 			option('header').checked = o.header; option('frame').checked = o.frame; option('title').value = o.title;
 			option('background-custom').checked = !!o.background; option('background').value = o.background || '#ffffff'; option('background').disabled = !o.background;
 			option('padding').value = o.padding; option('refresh').value = String(o.refresh);
+			if (option('hide')) { option('hide').value = o.hide; option('bgImage').value = o.bgImage; option('bgOpacity').value = String(o.bgOpacity); option('bgFit').value = o.bgFit; option('titleFont').value = o.titleFont; }
+		}
+		function objectField(name) { return configModal.querySelector('[data-object-option="' + name + '"]'); }
+		// Cada campo do objeto diz em `data-object-for` os tipos que o usam; só esses ficam à vista.
+		function showObjectFields(type) {
+			configModal.querySelectorAll('[data-object-for]').forEach(function (row) { row.hidden = row.getAttribute('data-object-for').split(' ').indexOf(type) === -1; });
+		}
+		function fillObject(o) {
+			var section = configModal.querySelector('[data-object-section]'); if (!section) return;
+			section.hidden = !o;
+			if (!o) return;
+			['type', 'text', 'font', 'align', 'color', 'fill', 'shape', 'src', 'fit', 'alt', 'icon', 'href'].forEach(function (name) { objectField(name).value = o[name]; });
+			objectField('size').value = String(o.size); objectField('weight').value = String(o.weight); objectField('newTab').checked = o.newTab;
+			showObjectFields(o.type);
+		}
+		function readObject() {
+			var o = {};
+			['type', 'text', 'font', 'size', 'weight', 'align', 'color', 'fill', 'shape', 'src', 'fit', 'alt', 'icon', 'href'].forEach(function (name) { o[name] = objectField(name).value; });
+			o.newTab = objectField('newTab').checked;
+			return normalizeObject(o);
 		}
 		function openConfig(instance) {
 			var widget = widgets.find(function (w) { return w.instance_id === instance; });
@@ -1194,6 +1305,7 @@ $(document).ready(function () {
 			configModal.querySelector('[data-widget-config-name]').textContent = widget.name || widget.id;
 			option('title').placeholder = widget.name || widget.id;
 			fillConfig(normalizeOptions(widget.options));
+			fillObject(widget.id === OBJECT_ID ? normalizeObject(widget.object) : null);
 			configModal.classList.remove('hidden'); option('header').focus();
 		}
 		function closeConfig() {
@@ -1203,18 +1315,25 @@ $(document).ready(function () {
 		}
 		if (configModal) {
 			option('background-custom').addEventListener('change', function () { option('background').disabled = !this.checked; });
+			if (objectField('type')) objectField('type').addEventListener('change', function () { showObjectFields(this.value); });
 			configModal.addEventListener('click', function (e) {
 				if (e.target === configModal || e.target.closest('.dashboard-widget-config-close')) { closeConfig(); return; }
 				if (e.target.closest('.dashboard-widget-config-reset')) { fillConfig(normalizeOptions(null)); return; }
+				var pick = e.target.closest('[data-pick-image]');
+				if (pick) { openPicker(configModal.querySelector(pick.getAttribute('data-pick-image'))); return; }
+				var clear = e.target.closest('[data-clear-image]');
+				if (clear) { configModal.querySelector(clear.getAttribute('data-clear-image')).value = ''; return; }
 				if (!e.target.closest('.dashboard-widget-config-save')) return;
 				var instance = configTarget, widget = widgets.find(function (w) { return w.instance_id === instance; });
 				if (widget) {
 					widget.options = normalizeOptions({header: option('header').checked, frame: option('frame').checked, title: option('title').value,
-						background: option('background-custom').checked ? option('background').value : '', padding: option('padding').value, refresh: option('refresh').value});
+						background: option('background-custom').checked ? option('background').value : '', padding: option('padding').value, refresh: option('refresh').value,
+						hide: option('hide') ? option('hide').value : '', bgImage: option('bgImage') ? option('bgImage').value : '', bgOpacity: option('bgOpacity') ? option('bgOpacity').value : 100, bgFit: option('bgFit') ? option('bgFit').value : 'cover', titleFont: option('titleFont') ? option('titleFont').value : ''});
+					if (widget.id === OBJECT_ID) widget.object = readObject();
 					// Aplica no card que já está na tela: o iframe não recarrega.
 					var card = Array.from(grid.children).find(function (c) { return c.dataset.widgetInstance === instance; });
-					if (card) applyOptions(card, widget);
-					save();
+					if (card) { applyOptions(card, widget); if (widget.id === OBJECT_ID) drawObject(card, widget); }
+					layout(); save();
 				}
 				closeConfig();
 			});
@@ -1268,7 +1387,7 @@ $(document).ready(function () {
 			if (perRow) perRow.querySelectorAll('button').forEach(function (b) { b.disabled = !editable() || board(); });
 			if (sourceButton) sourceButton.setAttribute('aria-checked', String(source === 'profile'));
 			if (sourceNotice) sourceNotice.classList.toggle('hidden', !(canEdit && source === 'profile'));
-			document.querySelectorAll('#dashboard-btn-add-widget, #dashboard-btn-reset-widgets, #dashboard-btn-toggle-headers').forEach(function (b) { b.disabled = !editable(); });
+			document.querySelectorAll('#dashboard-btn-add-widget, #dashboard-btn-add-object, #dashboard-btn-reset-widgets, #dashboard-btn-toggle-headers').forEach(function (b) { b.disabled = !editable(); });
 		}
 		function setSource(next) {
 			if (!canEdit) return;
@@ -1390,6 +1509,51 @@ $(document).ready(function () {
 			}
 		});
 		syncSource();
+		// ----- REQ-250: novo objeto e seletor de imagem
+		var objectButton = document.getElementById('dashboard-btn-add-object');
+		if (objectButton) objectButton.addEventListener('click', function () {
+			if (!editable()) return;
+			// Nasce como texto, sem cabeçalho nem moldura, e já abre nas configurações para escolher o tipo.
+			var created = normalizeWidget({id: OBJECT_ID, name: labels.object, instance_id: instanceId(), width: 4, height: 1, height_px: 160, object: {type: 'text'}, options: {header: false, frame: false}}, widgets.length);
+			widgets.push(created); render(); commit();
+			if (!editing) setEditing(true);
+			openConfig(created.instance_id);
+		});
+		var pickerModal = document.getElementById('dashboard-image-picker'), pickerTarget = null;
+		function pickerPath(file) {
+			var candidates = [file.caminho ? '/' + String(file.caminho).replace(/^\/+/, '') : '', file.imgSrc || ''];
+			for (var i = 0; i < candidates.length; i++) {
+				try { var url = new URL(candidates[i], location.origin); if (url.origin === location.origin && safeImage(url.pathname)) return url.pathname; } catch (_) {}
+			}
+			return '';
+		}
+		function openPicker(input) {
+			if (!pickerModal || !input) return;
+			pickerTarget = input;
+			pickerModal.querySelector('iframe').src = ((typeof gestor !== 'undefined' && gestor.raiz) || '/') + 'admin-arquivos/?paginaIframe=sim';
+			pickerModal.classList.remove('hidden');
+		}
+		function closePicker() {
+			if (!pickerModal || pickerModal.classList.contains('hidden')) return;
+			pickerModal.classList.add('hidden'); pickerModal.querySelector('iframe').removeAttribute('src'); pickerTarget = null;
+		}
+		if (pickerModal) {
+			pickerModal.addEventListener('click', function (e) { if (e.target === pickerModal || e.target.closest('.dashboard-image-picker-close')) closePicker(); });
+			// O gerenciador de arquivos avisa por mensagem; só vale a que vem do próprio painel, com o seletor aberto.
+			window.addEventListener('message', function (e) {
+				if (!pickerTarget || !pickerTarget.isConnected || e.origin !== location.origin) return;
+				var data, file;
+				try { data = JSON.parse(e.data); } catch (_) { return; }
+				if (!data) return;
+				if (data.moduloId === 'admin-arquivos-seletor') { if (data.acao === 'concluir' || data.acao === 'cancelar') closePicker(); return; }
+				if (data.moduloId !== 'admin-arquivos' && data.moduloId !== 'arquivos') return;
+				try { file = JSON.parse(decodeURI(data.data)); } catch (_) { return; }
+				var path = file && /^image\//.test(file.tipo || '') ? pickerPath(file) : '';
+				var note = pickerModal.querySelector('[data-picker-status]');
+				if (!path) { if (note) note.textContent = labels['not-image']; return; }
+				pickerTarget.value = path; closePicker();
+			});
+		}
 		var resetButton=document.getElementById('dashboard-btn-reset-widgets');
 		if(resetButton)resetButton.addEventListener('click',function(){if(!editable())return;widgets=[];save();render();});
 		grid.addEventListener('pointerdown',function(e){

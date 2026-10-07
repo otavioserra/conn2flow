@@ -231,3 +231,11 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Domínio `.local` novo no Lab** nasce escutando no IP da máquina; para abrir pelo Windows (`127.0.0.1`) a escuta do nginx do domínio precisa ficar sem IP, como nas contas antigas. A porta 443 do Windows é do proxy Caddy (`conn2flow-caddy`, distribuição Ubuntu do WSL, `/home/otavio/conn2flow-stack/Caddyfile`): domínio novo precisa de bloco ali e de certificado assinado pela autoridade local em `certs/` (`ca.crt`/`ca.key`), depois `docker restart conn2flow-caddy`. Todas as distribuições WSL dividem a rede: porta em uso sem processo visível no Lab é de outra distribuição.
 - **`ssh_public_path` no projeto** quebra a etapa de assets do pipeline em origem Windows (rsync lê `C:/` como remoto): deixar sem, como no `conn2flow-site-local`.
 - **Cache do Tailwind do pipeline é por conteúdo**: trocar de branch numa worktree CRLF e normalizar depois recompila tudo (12 minutos no site). Normalizar para LF antes da primeira publicação da branch; com cache, a publicação leva cerca de 1 minuto.
+
+### REQ-250 / BATCH-259 — fase 1 da lousa, linha 3.1 (2026-10-07)
+- **Objeto livre** é item do layout com `id: 'objeto'` e atributos em `object`; `drawObject()` desenha por texto e atributo (nada vira HTML). Tipo novo entra em `OBJECT_TYPES`, `normalizeObject`, `drawObject`, nos campos `data-object-for` do pop-up e em `dashboard_widgets_objeto_normalizar`.
+- **Listas iguais no cliente e no servidor** (fontes): teste lê a lista do JS e compara com a do PHP.
+- **Pop-up aberto a partir de outro pop-up** precisa de camada acima; os dois com `z-50` deixam o segundo atrás. Só o roteiro de navegador pegou.
+- **Google Fonts `css2`**: pedir peso que a família não tem devolve erro para a folha inteira; Bebas Neue vai sem pesos.
+- **happy-dom busca folha e iframe na rede**: `window.happyDOM.settings.disableCSSFileLoading` e `disableIframePageLoading` nos testes que criam `<link>` ou `iframe` com endereço.
+- **Seletor com aspas aninhadas** (`[data-x='[y="z"]']`) não funciona no happy-dom: achar pelo atributo e filtrar em JS.

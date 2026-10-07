@@ -16076,6 +16076,456 @@
     {
         "language": "pt-br",
         "modulo": "dashboard",
+        "id": "widgets-btn-add-object",
+        "valor": "Adicionar objeto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-name",
+        "valor": "Objeto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-empty",
+        "valor": "Objeto vazio: abra as configurações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-section",
+        "valor": "Objeto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-type",
+        "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-text",
+        "valor": "Texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-shape",
+        "valor": "Forma",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-image",
+        "valor": "Imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-icon",
+        "valor": "Ícone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-button",
+        "valor": "Botão de chamada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-text",
+        "valor": "Texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-font",
+        "valor": "Fonte",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-size",
+        "valor": "Tamanho (px)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-weight",
+        "valor": "Peso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-weight-normal",
+        "valor": "Normal",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-weight-bold",
+        "valor": "Negrito",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-align",
+        "valor": "Alinhamento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-align-left",
+        "valor": "Esquerda",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-align-center",
+        "valor": "Centro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-align-right",
+        "valor": "Direita",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-color",
+        "valor": "Cor do texto ou do ícone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-fill",
+        "valor": "Cor de preenchimento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape",
+        "valor": "Formato",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-rounded",
+        "valor": "Retângulo arredondado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-rect",
+        "valor": "Retângulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-circle",
+        "valor": "Círculo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-line",
+        "valor": "Linha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-src",
+        "valor": "Imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-fit",
+        "valor": "Preenchimento da imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-alt",
+        "valor": "Descrição da imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-icon",
+        "valor": "Nome do ícone (Lucide)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-href",
+        "valor": "Destino do botão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-object-newtab",
+        "valor": "Abrir em nova aba",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-font-default",
+        "valor": "Fonte padrão do painel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-image-pick",
+        "valor": "Escolher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-image-clear",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-image-picker-title",
+        "valor": "Escolha uma imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-image-not-image",
+        "valor": "Escolha um arquivo de imagem do painel.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-config-bg-image",
+        "valor": "Imagem de fundo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-config-bg-opacity",
+        "valor": "Opacidade da imagem de fundo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-config-bg-fit",
+        "valor": "Preenchimento do fundo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-bg-fit-cover",
+        "valor": "Cobrir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-bg-fit-contain",
+        "valor": "Conter",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-bg-fit-repeat",
+        "valor": "Repetir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-config-title-font",
+        "valor": "Fonte do título",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-config-hide",
+        "valor": "Esconder em tela estreita",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-hide-never",
+        "valor": "Nunca esconder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-hide-sm",
+        "valor": "Abaixo de 640 px (celular)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-hide-md",
+        "valor": "Abaixo de 1024 px (tablet)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-hide-lg",
+        "valor": "Abaixo de 1280 px (notebook)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
         "id": "widgets-per-row",
         "valor": "Widgets por linha (grade)",
         "tipo": "string",
@@ -17158,6 +17608,456 @@
         "modulo": "dashboard",
         "id": "widgets-first",
         "valor": "Widgets before modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-btn-add-object",
+        "valor": "Add object",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-name",
+        "valor": "Object",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-empty",
+        "valor": "Empty object: open the settings",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-section",
+        "valor": "Object",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-type",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-text",
+        "valor": "Text",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-shape",
+        "valor": "Shape",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-image",
+        "valor": "Image",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-icon",
+        "valor": "Icon",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-type-button",
+        "valor": "Call to action button",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-text",
+        "valor": "Text",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-font",
+        "valor": "Font",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-size",
+        "valor": "Size (px)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-weight",
+        "valor": "Weight",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-weight-normal",
+        "valor": "Regular",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-weight-bold",
+        "valor": "Bold",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-align",
+        "valor": "Alignment",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-align-left",
+        "valor": "Left",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-align-center",
+        "valor": "Center",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-align-right",
+        "valor": "Right",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-color",
+        "valor": "Text or icon color",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-fill",
+        "valor": "Fill color",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape",
+        "valor": "Shape",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-rounded",
+        "valor": "Rounded rectangle",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-rect",
+        "valor": "Rectangle",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-circle",
+        "valor": "Circle",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-shape-line",
+        "valor": "Line",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-src",
+        "valor": "Image",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-fit",
+        "valor": "Image fit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-alt",
+        "valor": "Image description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-icon",
+        "valor": "Icon name (Lucide)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-href",
+        "valor": "Button destination",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-object-newtab",
+        "valor": "Open in a new tab",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-font-default",
+        "valor": "Default panel font",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-image-pick",
+        "valor": "Choose",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-image-clear",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-image-picker-title",
+        "valor": "Choose an image",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-image-not-image",
+        "valor": "Choose an image file from the panel.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-config-bg-image",
+        "valor": "Background image",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-config-bg-opacity",
+        "valor": "Background image opacity",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-config-bg-fit",
+        "valor": "Background fit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-bg-fit-cover",
+        "valor": "Cover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-bg-fit-contain",
+        "valor": "Contain",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-bg-fit-repeat",
+        "valor": "Repeat",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-config-title-font",
+        "valor": "Title font",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-config-hide",
+        "valor": "Hide on narrow screens",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-hide-never",
+        "valor": "Never hide",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-hide-sm",
+        "valor": "Below 640 px (phone)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-hide-md",
+        "valor": "Below 1024 px (tablet)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-hide-lg",
+        "valor": "Below 1280 px (laptop)",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -75,7 +75,7 @@ const conferir = (nome, ok, extra) => { total++; if (!ok) falhas++; console.log(
     return {visivel: !m.classList.contains('hidden'), esq: Math.round(caixa.left), dir: Math.round(innerWidth - caixa.right), nome: m.querySelector('[data-widget-config-name]').textContent, cabecalho: o('header').checked, moldura: o('frame').checked, corTravada: o('background').disabled,
       chaves: m.querySelectorAll('.dashboard-menu-item.dashboard-widget-config-switch .dashboard-edit-track').length, trilhoLigado: getComputedStyle(o('header').nextElementSibling).backgroundColor, icones: m.querySelectorAll('svg').length, selects: m.querySelectorAll('select').length}; });
   conferir('o pop-up abre centralizado, com o nome do widget e os valores padrão', pop.visivel && Math.abs(pop.esq - pop.dir) <= 2 && pop.nome.length > 1 && pop.cabecalho && pop.moldura && pop.corTravada, pop);
-  conferir('chaves no estilo do menu de opções (linha, ícone e trilho azul quando ligada)', pop.chaves === 3 && pop.trilhoLigado === 'rgb(2, 132, 199)' && pop.icones >= 5 && pop.selects === 2, pop);
+  conferir('chaves no estilo do menu de opções (linha, ícone e trilho azul quando ligada)', pop.chaves >= 3 && pop.trilhoLigado === 'rgb(2, 132, 199)' && pop.icones >= 5 && pop.selects >= 2, pop);
   await foto('1-popup');
 
   await page.click('label:has([data-widget-option="header"])');
