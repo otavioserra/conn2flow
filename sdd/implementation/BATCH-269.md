@@ -66,6 +66,7 @@ $i = ia_provedor_gerar_imagem($servidor, ['prompt' => '...', 'tamanho' => '1536x
 | Vitest (suíte inteira) | 664 testes em 60 arquivos — OK |
 | Testes da requisição | 24 de PHP (pedido e resposta de cada provedor, chave fora do endereço e do erro, conferência dos campos do cadastro) e 4 de JavaScript |
 | Roteiro de navegador em `v3.1-conn2flow.local` | 24/24 |
+| Roteiro de navegador em `conn2flow.local` (linha 3.0) | 24/24 |
 | Memória de execução | podada no fecho do lote: de 48.212 bytes e 328 linhas para 35.425 bytes e 231 linhas, 23 seções preservadas; 13 seções de 2026-10-02 a 04 movidas na íntegra para `sdd/archive/MEMORIA-ENGENHARIA-EXECUCAO-2026-10-02-04.md` |
 
 O roteiro cria um servidor de teste do tipo compatível apontando para uma porta fechada, confere inclusão, recusas, edição, histórico e listagem, e o exclui no fim. Com o servidor Gemini que já existia, faz dois pedidos reais: o teste de conexão e um pedido do editor, que voltou com HTML, modelo e contagem de tokens.
@@ -75,7 +76,7 @@ O roteiro cria um servidor de teste do tipo compatível apontando para uma porta
 - **Claude, OpenAI e serviço compatível com chave real.** O pedido e a leitura da resposta de cada um estão cobertos por teste sem rede, escritos a partir do formato documentado. Nenhum pedido real foi feito a eles: não há chave cadastrada. O tipo compatível foi exercitado só até a falha de conexão.
 - **Geração de imagem** em qualquer provedor: a biblioteca monta o pedido e lê a resposta, mas ninguém a chama ainda. A primeira chamada real vem com o criador de imagens, no site.
 - **Assistente IA pela tela do editor** (clicar e ver o HTML entrar): o roteiro faz o mesmo pedido que a tela faz, pelo mesmo endereço, e confere a resposta; não clica nos botões.
-- **Instalação da linha 3.0** (`conn2flow.local`): recebe o lote publicado, sem roteiro próprio, porque não tem servidor de IA cadastrado.
+- Nada a mais na instalação da linha 3.0 (`conn2flow.local`): ela também tem um servidor Gemini cadastrado e o mesmo roteiro passou lá, 24/24, depois do fecho do lote.
 
 ## Limites conhecidos
 
