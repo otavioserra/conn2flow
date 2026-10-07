@@ -229,6 +229,7 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 
 - **Modelo novo precisa de miniatura**: `thumbnail` no recurso (`templates/images/<idioma>/<id>.webp`) e o arquivo em `gestor/assets/templates/images/`. `TemplatesMiniaturasReq256Test` falha sem isso. Gerador e passo a passo em `sdd/validation/req256/README.md`.
 - **Prévia crua não serve de miniatura**: é preciso repetir o bloco de item, tirar os blocos de estado vazio e preencher os marcadores; depois **abrir as folhas de conferência**, porque o gerador não sabe se ficou bom.
+- **Enquadrar miniatura**: nada de `zoom` com largura reduzida (cola o conteúdo à esquerda). Medir a caixa do conteúdo pintado, escalar com `transform` e centrar com margem; reduzir quando passa do quadro. O Engenheiro Chefe quer a área útil inteira, mesmo menor.
 - **Chave repetida em JSON**: a segunda vence. Recurso que já tinha `"thumbnail": ""` precisa ter a linha vazia removida.
 - **Árvore de trabalho nova**: junções de `node_modules` e `vendor` com `cmd //c "mklink /J ..."`, cópia de `dev-environment/data/environment.json`, e o primeiro `project:update-all` recompila o CSS inteiro (mais de 10 minutos): rodar em segundo plano.
 - **Linha 3.0**: trabalho de lançamento vai em árvore própria a partir de `origin/3.0`, entregue em `3.0` e `main`.

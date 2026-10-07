@@ -134,25 +134,62 @@ function amostra(html, lingua, alvo) {
     for (const m of grupo) {
       let html = amostra(m.html || '', m.language, m.target);
       // O aviso de cookies nasce escondido e é mostrado pelo script do widget; na amostra ele fica à mostra.
-      if (m.target === 'cookie-consent') html = html.replace(/(<section[^>]*data-cc-banner[^>]*?)\shidden(?=[\s>])/, '$1');
+      if (m.target === 'cookie-consent') html = html.replace(/(<section[^>]*data-cc-banner[^>]*?)\shidden(?=[\s>])/, '$1') + '<style>[data-cc-banner]{position:static !important;margin:0 !important;max-width:420px}</style>';
       const medida = await quadro.evaluate(([h, css, cheio, escuro]) => {
         document.querySelectorAll('style[data-amostra]').forEach(s => s.remove());
         const estilo = document.createElement('style'); estilo.setAttribute('data-amostra', '1'); estilo.textContent = css || ''; document.head.appendChild(estilo);
         document.body.innerHTML = '<div id="amostra-palco">' + h + '</div>';
         document.documentElement.scrollTop = 0; document.body.scrollTop = 0;
         const palco = document.getElementById('amostra-palco');
-        document.body.style.cssText = 'margin:0' + (escuro ? ';background:#0f1c34;padding:32px' : '');
+        document.body.style.cssText = 'margin:0;overflow:hidden' + (escuro ? ';background:#0f1c34' : '');
         return new Promise(r => setTimeout(() => {
-          // Conteúdo baixo (menu, busca, aviso) é ampliado e centrado, para não virar um risco num quadro branco.
+          // Enquadramento: mede a caixa do que está pintado (texto, imagem, campo, fundo, borda), amplia até caber com
+          // margem e centra no quadro. A largura do layout não muda, então nada quebra de linha por causa da ampliação.
+          const W = window.innerWidth, H = window.innerHeight, MARGEM = 40, MAXIMO = 1.6;
+          let x0, y0, x1, y1;
+          const pintado = el => {
+            if (/^(IMG|SVG|INPUT|TEXTAREA|SELECT|BUTTON|VIDEO|CANVAS|HR)$/i.test(el.tagName)) return true;
+            for (const n of el.childNodes) if (n.nodeType === 3 && n.textContent.trim()) return true;
+            const e = getComputedStyle(el);
+            if (e.backgroundImage !== 'none') return true;
+            const cor = e.backgroundColor.match(/[\d.]+/g) || [];
+            if (cor.length >= 3 && (cor.length < 4 || Number(cor[3]) > 0.02) && !(escuro ? false : cor.slice(0, 3).every(v => Number(v) >= 250))) return true;
+            return ['Top', 'Right', 'Bottom', 'Left'].some(l => parseFloat(e['border' + l + 'Width']) > 0 && e['border' + l + 'Style'] !== 'none');
+          };
+          const medir = () => {
+            x0 = Infinity; y0 = Infinity; x1 = -Infinity; y1 = -Infinity;
+            palco.querySelectorAll('*').forEach(el => {
+              const e = getComputedStyle(el);
+              if (e.display === 'none' || e.visibility === 'hidden' || Number(e.opacity) === 0 || !pintado(el)) return;
+              const c = el.getBoundingClientRect();
+              if (c.width < 2 || c.height < 2) return;
+              x0 = Math.min(x0, c.left); y0 = Math.min(y0, c.top); x1 = Math.max(x1, c.right); y1 = Math.max(y1, c.bottom);
+            });
+            x0 = Math.max(0, x0); y0 = Math.max(0, y0); x1 = Math.min(W, x1);
+            return x1 > x0 && y1 > y0;
+          };
+          if (escuro) palco.style.cssText = 'padding:32px;box-sizing:border-box';
+          let tem = medir();
+          // Faixa de largura total e baixa (barra de navegação, rodapé, barra lateral): o palco estreita para a ampliação
+          // ter o que ampliar. As consultas de mídia continuam vendo a janela inteira.
+          if (!cheio && tem && x1 - x0 >= W * 0.9 && y1 - y0 < H * 0.5) { palco.style.cssText += ';width:' + Math.round(W / MAXIMO) + 'px'; tem = medir(); }
           const alto = palco.getBoundingClientRect().height;
-          if (!cheio && alto > 0 && alto < 430) {
-            const z = Math.max(1, Math.min(1.5, 520 / alto));
-            palco.style.cssText = 'zoom:' + z + ';width:' + (100 / z) + '%';
-            document.body.style.cssText = 'margin:0;min-height:100vh;display:flex;flex-direction:column;justify-content:center' + (escuro ? ';background:#0f1c34;padding:32px;box-sizing:border-box' : '');
+          if (!cheio && tem) {
+            const largo = x1 - x0, altura = y1 - y0;
+            // Mostra a área útil inteira: amplia o que é pequeno e reduz o que passa do quadro, sempre centrado e com
+            // margem. Conteúdo muito mais alto que o quadro (lista longa) fica no tamanho natural, ancorado no topo.
+            const longo = altura > H * 1.9;
+            const cabe = Math.min((W - 2 * MARGEM) / largo, (H - 2 * MARGEM) / altura);
+            const z = longo ? Math.max(1, Math.min(MAXIMO, (W - 2 * MARGEM) / largo)) : Math.max(0.5, Math.min(MAXIMO, cabe));
+            if (!(longo && largo > W - 2 * MARGEM)) {
+              const tx = (W - largo * z) / 2 - x0 * z;
+              const ty = longo ? MARGEM - y0 * z : (H - altura * z) / 2 - y0 * z;
+              palco.style.cssText += ';transform-origin:0 0;transform:translate(' + tx + 'px,' + ty + 'px) scale(' + z + ')';
+            }
           }
           setTimeout(() => r({alto: Math.round(alto), texto: document.body.innerText.trim().length, cru: (document.body.innerText.match(/\[\[[^\]]+\]\]/g) || []).slice(0, 5)}), 700);
         }, 900));
-      }, [html, m.css || '', m.target === 'layouts' || /footer/.test(m.id), /^conn2flow-checkout|^presentations-slide-(closing|opening|three-points)$/.test(m.id)]);
+      }, [html, m.css || '', m.target === 'layouts', /^conn2flow-checkout|^presentations-slide-(closing|opening|three-points)$/.test(m.id)]);
       const arquivo = path.join(saida, m.language, m.id + '.png');
       fs.mkdirSync(path.dirname(arquivo), {recursive: true});
       await page.screenshot({path: arquivo, clip: {x: 0, y: 0, width: LARGURA, height: ALTURA}});

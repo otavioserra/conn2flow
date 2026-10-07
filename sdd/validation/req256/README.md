@@ -39,9 +39,9 @@ Precisa de um painel no ar com os modelos já sincronizados (ambiente de teste),
 - Blocos de estado vazio, erro ou desligado (`no-item`, `results-box`, `link-disabled-css`…) saem.
 - Marcadores `[[x]]` e `@[[x]]@` recebem valor pelo nome: título, resumo, data, preço, endereço, imagem (um desenho em gradiente), rótulo de menu, campo de formulário.
 - Em formulários, cada campo fica com um tipo só (texto, texto, seleção, área de texto).
-- Conteúdo baixo (menu, busca, aviso) é ampliado até 1,5 vez e centrado.
+- **Enquadramento**: o gerador mede a caixa do que está pintado (texto, imagem, campo, fundo, borda), amplia o que é pequeno (até 1,6 vez), reduz o que passa do quadro (até a metade) e centra com 40 px de margem, para a área útil aparecer inteira. Faixa de largura total e baixa (barra de navegação, rodapé) é renderizada num palco mais estreito antes de ampliar. Só conteúdo com mais de 1,9 vez a altura do quadro (lista longa) fica no tamanho natural, ancorado no topo. Layouts (página inteira) não são enquadrados.
 - Modelos feitos para fundo escuro (lista em `gerar-miniaturas.cjs`) ganham palco escuro.
-- Scripts do modelo não rodam: o que depende de script (carrossel, aviso de cookies) aparece no estado inicial, e o aviso de cookies é mostrado à força.
+- Scripts do modelo não rodam: o que depende de script (carrossel, aviso de cookies) aparece no estado inicial, e o aviso de cookies é mostrado à força, fora da posição fixa.
 
 ## Limites conhecidos
 

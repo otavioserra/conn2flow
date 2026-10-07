@@ -21,7 +21,7 @@
 |---|---|
 | **Modelos sem miniatura** | 93 por idioma no Lab da 3.0: 61 do core e 32 do site. Um deles (`galleries-estados`) não aparece na lista de modelos e ficou de fora. |
 | **Miniaturas geradas** | 184 (92 por idioma): 120 do core, 64 do site. |
-| **Formato** | WebP, 580 × 394 px (o dobro das 55 antigas, de 290 × 197, mesma proporção). Média de 8,7 KB; a maior tem 27 KB. |
+| **Formato** | WebP, 580 × 394 px (o dobro das 55 antigas, de 290 × 197, mesma proporção). A maior tem 21 KB. |
 | **Onde ficam** | `gestor/assets/templates/images/<idioma>/<id>.webp`, no core e no site. |
 | **Metadados** | `thumbnail` em cada modelo, no recurso que o define: 8 módulos e os dois `templates.json` no core; 6 módulos e os dois `templates.json` no site. |
 | **Teste de guarda** | `TemplatesMiniaturasReq256Test`: modelo listado no painel sem miniatura, com caminho fora do padrão, sem arquivo, que não seja WebP ou acima de 100 KB, falha. |
@@ -50,10 +50,18 @@ Três rodadas, olhando folhas de conferência por alvo:
 
 Depois da terceira, todas as famílias em pt-br foram vistas. **As folhas em inglês não foram abertas uma a uma**: usam o mesmo código, com os textos de exemplo em inglês.
 
+## Correção de enquadramento (mesmo dia, depois da conferência do Engenheiro Chefe)
+
+A primeira entrega cortava a área útil em parte dos modelos: nos menus e na barra lateral o conteúdo ficava colado à esquerda com um vazio à direita, e os dois formulários de checkout encostavam nas bordas e no topo. A causa era a ampliação por `zoom` com largura reduzida, que encolhia a área do conteúdo em vez de centrá-lo, e o palco escuro sem margem.
+
+O gerador passou a enquadrar: mede a caixa do conteúdo pintado, amplia o que é pequeno, **reduz o que passa do quadro** e centra com margem. As 184 miniaturas foram refeitas (102 arquivos do core mudaram), conferidas de novo em folhas de pt-br e numa amostra em inglês (menus, formulários, planos e destaques), e republicadas no Lab da 3.0; o Lab serve os arquivos novos (tamanho conferido em três deles) e o roteiro de navegador repetiu 16/16.
+
+Quem já abriu o painel pode ver a imagem antiga do cache do navegador: o endereço do arquivo é o mesmo.
+
 ## Limites
 
 - **O valor de exemplo vem do nome do marcador.** Alguns botões da loja saíram com um título no lugar do rótulo, e a página de produto repete "Frete grátis" em campos de variação.
-- **Menus e aviso de cookies** ocupam pouco da miniatura: são peças pequenas.
+- Peça alta e estreita (barra lateral vertical) fica pequena na miniatura, porque é reduzida para caber inteira; lista longa de produtos aparece só até onde o quadro alcança.
 - **O que depende de script** (carrossel, apresentação) aparece no estado inicial.
 - As 55 miniaturas antigas (alvo `paginas` e duas do `publisher`) não foram refeitas e continuam em 290 × 197.
 - Os módulos distribuídos do site (`gestor-distribuido/`) não foram alterados.
