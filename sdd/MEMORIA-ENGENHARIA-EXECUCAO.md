@@ -233,3 +233,11 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Chave repetida em JSON**: a segunda vence. Recurso que já tinha `"thumbnail": ""` precisa ter a linha vazia removida.
 - **Árvore de trabalho nova**: junções de `node_modules` e `vendor` com `cmd //c "mklink /J ..."`, cópia de `dev-environment/data/environment.json`, e o primeiro `project:update-all` recompila o CSS inteiro (mais de 10 minutos): rodar em segundo plano.
 - **Linha 3.0**: trabalho de lançamento vai em árvore própria a partir de `origin/3.0`, entregue em `3.0` e `main`.
+
+### REQ-257 / BATCH-266 — aba Modelos na inclusão e corte das miniaturas (2026-10-07)
+
+- **Aba Modelos do editor filtra por framework CSS.** Em tela sem campo de framework o valor só existe depois que um modelo é carregado; na inclusão o editor mandava `fomantic-ui` e não vinha nada. Framework vazio agora significa "não sei" e o servidor não filtra.
+- **Miniatura de modelo é 4:3** (580 × 435): o cartão usa `aspect-4/3` com `object-cover`. Conferir a miniatura já recortada na proporção do cartão, não o arquivo inteiro.
+- **Antes de dizer que a imagem está certa, descobrir onde e como ela é exibida** (proporção da caixa, `object-fit`): o arquivo estava certo e o cartão cortava.
+- **Botão "Selecionar Modelo" do editor responde a `mouseup`**, não a `click`: no roteiro, `dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0}))`.
+- **Não listar `git status` inteiro numa árvore nova**: fim de linha marca centenas de arquivos; usar `git diff --ignore-cr-at-eol --name-only`.

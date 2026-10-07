@@ -1729,6 +1729,9 @@ function html_editor_ajax_templates_load(){
 	$pagina = (int)($_REQUEST['params']['pagina'] ?? 1);
 	$limite = (int)($_REQUEST['params']['limite'] ?? 10);
 	$framework_css = ($_REQUEST['params']['framework_css'] ?? 'fomantic-ui');
+	// REQ-257: framework vazio é "ainda não sei" (tela sem campo de framework, antes de carregar um modelo):
+	// lista os modelos do alvo em qualquer framework.
+	$filtro_framework = trim((string)$framework_css) !== '' ? " AND framework_css = '" . banco_escape_field($framework_css) . "'" : '';
 	$alvo = ($_REQUEST['params']['alvo'] ?? 'paginas');
 	$alvos_modelos = ($_REQUEST['params']['alvos_modelos'] ?? $alvo);
 	$offset = ($pagina - 1) * $limite;
@@ -1742,9 +1745,9 @@ function html_editor_ajax_templates_load(){
 		$alvos_modelos_array = array_map('trim',$alvos_modelos_array);
 		$alvos_modelos_array = array_map(function($item){ return "'" . banco_escape_field($item) . "'"; }, $alvos_modelos_array);
 		$alvos_modelos_string = implode(',',$alvos_modelos_array);
-		$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target IN (" . $alvos_modelos_string . ")";
+		$where_templates = "WHERE status = 'A'" . $filtro_framework . " AND language = '" . banco_escape_field($idioma) . "' AND target IN (" . $alvos_modelos_string . ")";
 	} else {
-		$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'";
+		$where_templates = "WHERE status = 'A'" . $filtro_framework . " AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'";
 	}
 
 	// Busca textual opcional por nome (usada pelo Live Editor — BATCH-080). Retrocompatível:

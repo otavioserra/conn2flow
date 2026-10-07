@@ -57,16 +57,17 @@ final class TemplatesMiniaturasReq256Test extends TestCase
         self::assertGreaterThan(150, $conferidos);
     }
 
-    public function testMiniaturasNovasTemAProporcaoDasAntigas(): void
+    public function testMiniaturasNovasTemAProporcaoDoCartao(): void
     {
         if (!function_exists('getimagesize')) {
             self::markTestSkipped('sem a extensão de imagem');
         }
-        // Antigas: 290 x 197. Novas: o dobro, 580 x 394.
+        // O cartão de modelo mostra a imagem em 4:3, com recorte para preencher: a miniatura nasce em 4:3 (580 x 435)
+        // para nada sumir dos lados (REQ-257). As antigas, de 290 x 197, perdem um pouco das laterais.
         foreach (['pt-br/menus-horizontal-navbar', 'en/publisher-index-grid', 'pt-br/layout-landing-page', 'en/componente-hero-banner'] as $nome) {
             $medida = @getimagesize(CONN2FLOW_GESTOR_ROOT . '/assets/templates/images/' . $nome . '.webp');
             self::assertIsArray($medida, $nome);
-            self::assertSame([580, 394], [$medida[0], $medida[1]], $nome);
+            self::assertSame([580, 435], [$medida[0], $medida[1]], $nome);
         }
     }
 

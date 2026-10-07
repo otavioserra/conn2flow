@@ -1,7 +1,7 @@
 // REQ-256 — miniaturas dos modelos do cadastro de modelos.
 // Para cada modelo sem miniatura: preenche o HTML com dados de exemplo (repete o bloco de item, tira os blocos de
 // estado vazio, troca os marcadores por texto e imagem de amostra), renderiza no quadro de prévia do editor de modelos
-// (que já carrega o framework CSS certo) e fotografa a área de 1024 x 696 px. A conversão para WebP é do `montar.py`.
+// (que já carrega o framework CSS certo) e fotografa a área de 1024 x 768 px. A conversão para WebP é do `montar.py`.
 //
 // Entrada: MODELOS=<arquivo .jsonl com id, language, target, framework, html, css por linha>
 // Uso: C2F_BASE=<painel> C2F_PLAYWRIGHT=<pasta> C2F_COOKIES=<cookies do administrador> MODELOS=<jsonl> SAIDA=<pasta> [SO=id1,id2] node gerar-miniaturas.cjs
@@ -9,7 +9,9 @@ const fs = require('node:fs'), path = require('node:path');
 const {chromium} = require(process.env.C2F_PLAYWRIGHT || 'playwright');
 const base = process.env.C2F_BASE;
 const saida = process.env.SAIDA;
-const LARGURA = 1024, ALTURA = 696;
+// 4:3, a proporção da área de imagem do cartão de modelo no painel (`aspect-4/3` com recorte para preencher):
+// uma foto mais larga que isso perde as laterais no cartão.
+const LARGURA = 1024, ALTURA = 768;
 const ler = arquivo => fs.readFileSync(arquivo, 'utf8').split(/\r?\n/).filter(l => l.startsWith('#HttpOnly_') || (l && !l.startsWith('#'))).map(l => {
   const p = l.replace(/^#HttpOnly_/, '').split('\t');
   return {domain: p[0].replace(/^\./, ''), path: p[2], secure: p[3] === 'TRUE', httpOnly: l.startsWith('#HttpOnly_'), name: p[5], value: p[6]};
@@ -180,8 +182,9 @@ function amostra(html, lingua, alvo) {
             // margem. Conteúdo muito mais alto que o quadro (lista longa) fica no tamanho natural, ancorado no topo.
             const longo = altura > H * 1.9;
             const cabe = Math.min((W - 2 * MARGEM) / largo, (H - 2 * MARGEM) / altura);
-            const z = longo ? Math.max(1, Math.min(MAXIMO, (W - 2 * MARGEM) / largo)) : Math.max(0.5, Math.min(MAXIMO, cabe));
-            if (!(longo && largo > W - 2 * MARGEM)) {
+            // Na largura, tudo cabe com margem, inclusive a lista longa: cortar embaixo é aceito, cortar dos lados não.
+            const z = longo ? Math.max(0.5, Math.min(MAXIMO, (W - 2 * MARGEM) / largo)) : Math.max(0.5, Math.min(MAXIMO, cabe));
+            {
               const tx = (W - largo * z) / 2 - x0 * z;
               const ty = longo ? MARGEM - y0 * z : (H - altura * z) / 2 - y0 * z;
               palco.style.cssText += ';transform-origin:0 0;transform:translate(' + tx + 'px,' + ty + 'px) scale(' + z + ')';

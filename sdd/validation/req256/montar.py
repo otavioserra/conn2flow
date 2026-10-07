@@ -4,7 +4,7 @@ import json, os, sys
 from PIL import Image, ImageDraw
 
 fotos, saida = sys.argv[1], sys.argv[2]
-LARGURA, ALTURA = 580, 394  # o dobro das miniaturas antigas (290 x 197), mesma proporção
+LARGURA, ALTURA = 580, 435  # 4:3, a proporção do cartão de modelo no painel
 relatorio = json.load(open(os.path.join(fotos, 'relatorio.json'), encoding='utf-8'))
 feitas = 0
 for r in relatorio:
@@ -23,7 +23,7 @@ if len(sys.argv) > 3:
         grupos.setdefault((r['language'], r['target']), []).append(r)
     os.makedirs(sys.argv[3], exist_ok=True)
     for (lingua, alvo), itens in sorted(grupos.items()):
-        cols = 4; w, h = 290, 197; linhas = (len(itens) + cols - 1) // cols
+        cols = 4; w, h = 290, 218; linhas = (len(itens) + cols - 1) // cols
         folha = Image.new('RGB', (cols * (w + 10) + 10, linhas * (h + 28) + 10), '#334155')
         d = ImageDraw.Draw(folha)
         for i, r in enumerate(itens):

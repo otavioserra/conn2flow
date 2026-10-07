@@ -34,14 +34,33 @@ const MODELOS = ['menus-horizontal-navbar', 'publisher-index-grid', 'publisher-h
     const boas = fotos.filter(f => f.ok && /templates\/images\/[a-z-]+\/[a-z0-9-]+\.webp/.test(f.src || ''));
     const padrao = fotos.filter(f => /imagem-padrao/.test(f.src || ''));
     conferir(tela + ': ' + boas.length + ' modelos com miniatura carregada, nenhum com a imagem padrão', boas.length >= minimo && padrao.length === 0 && fotos.every(f => f.ok), {total: fotos.length, boas: boas.length, padrao: padrao.map(f => f.src), quebradas: fotos.filter(f => !f.ok).map(f => f.src)});
-    conferir(tela + ': proporção das miniaturas', boas.every(f => Math.abs(f.w / f.h - 290 / 197) < 0.02), boas.map(f => [f.w, f.h]).slice(0, 4));
+    conferir(tela + ': proporção das miniaturas', boas.every(f => Math.abs(f.w / f.h - 4 / 3) < 0.02), boas.map(f => [f.w, f.h]).slice(0, 4));
     if (tela.startsWith('admin-layouts')) await page.screenshot({path: path.join(saida, tela.split('/')[0] + '-modelos.jpg'), type: 'jpeg', quality: 60, fullPage: true});
+  }
+  // REQ-257: nas telas de adicionar dos módulos sem campo de framework a aba Modelos também lista os modelos do alvo.
+  for (const [tela, minimo] of [['forms/adicionar/', 5], ['menus/adicionar/', 6], ['publisher-index/adicionar/', 6], ['publisher-highlights/adicionar/', 6], ['pages-index/adicionar/', 6], ['galleries/adicionar/', 4], ['forms-search/adicionar/', 5]]) {
+    const r = await page.goto(base + '/' + tela, {waitUntil: 'networkidle'});
+    const tem = await page.evaluate(() => { const a = document.querySelector('a[data-tab="modelos"]'); if (a) a.click(); return !!a; });
+    await page.waitForTimeout(3500);
+    const cartoes = await page.evaluate(() => [...document.querySelectorAll('#modelos-cards .modelo-card')].map(c => { const i = c.querySelector('img'); return {id: c.getAttribute('data-modelo-id'), src: i ? i.getAttribute('src') : ''}; }));
+    const comFoto = cartoes.filter(c => /templates\/images\/[a-z-]+\/[a-z0-9-]+\.webp/.test(c.src));
+    conferir(tela + ': aba Modelos lista ' + cartoes.length + ' modelos na inclusão, todos com miniatura', r.status() === 200 && tem && cartoes.length >= minimo && comFoto.length === cartoes.length, {tem, total: cartoes.length, comFoto: comFoto.length});
+    if (tela === 'forms/adicionar/' && cartoes.length) {
+      // Escolher um modelo pela aba, na inclusão, leva HTML ao editor e informa o framework dele.
+      const lerEditor = () => { const cm = [...document.querySelectorAll('.CodeMirror')].map(e => e.CodeMirror).filter(Boolean)[0]; return typeof window.html_editor_get_html === 'function' ? window.html_editor_get_html() : (cm ? cm.getValue() : null); };
+      const antes = await page.evaluate(lerEditor);
+      // O botão responde a `mouseup`, não a `click`.
+      await page.evaluate(() => document.querySelector('#modelos-cards .modeloSelecionar').dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0})));
+      await page.waitForTimeout(2500);
+      const depois = {html: await page.evaluate(lerEditor), framework: await page.evaluate(() => gestor.html_editor.framework_css)};
+      conferir(tela + ': escolher um modelo pela aba aplica o HTML e informa o framework', !!depois.html && depois.html !== antes && depois.html.length > 200 && depois.framework === 'tailwindcss', {antes: (antes || '').length, depois: (depois.html || '').length, framework: depois.framework});
+    }
   }
   for (const id of MODELOS) {
     const r = await page.goto(base + '/admin-templates/editar/?id=' + encodeURIComponent(id), {waitUntil: 'networkidle'});
     await page.waitForTimeout(800);
     const foto = await page.evaluate(i => { const im = [...document.querySelectorAll('img')].find(x => (x.getAttribute('src') || '').includes('templates/images/') && (x.getAttribute('src') || '').includes('/' + i + '.webp')); return im ? {src: im.getAttribute('src'), ok: im.complete && im.naturalWidth > 0, w: im.naturalWidth, h: im.naturalHeight} : null; }, id);
-    conferir('cadastro de modelos, ' + id + ': miniatura mostrada na edição', r.status() === 200 && !!foto && foto.ok && foto.w === 580 && foto.h === 394, foto);
+    conferir('cadastro de modelos, ' + id + ': miniatura mostrada na edição', r.status() === 200 && !!foto && foto.ok && foto.w === 580 && foto.h === 435, foto);
     if (id === 'menus-horizontal-navbar' || id === 'subscriptions-plans-modern-dark') await page.screenshot({path: path.join(saida, 'cadastro-' + id + '.jpg'), type: 'jpeg', quality: 60});
   }
   await page.goto(base + '/admin-templates/', {waitUntil: 'networkidle'}); await page.waitForTimeout(2000);

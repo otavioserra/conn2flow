@@ -1,5 +1,18 @@
 # Validation Checklist
 
+## BATCH-266 — REQ-257 (linha 3.0)
+
+- [x] Aba Modelos do editor lista os modelos nas telas de adicionar dos módulos sem campo de framework (7 telas).
+- [x] Modelo escolhido pela aba aplica o HTML e registra o framework (formulários).
+- [x] Miniaturas em 4:3, a proporção do cartão; os cinco casos apontados inteiros na largura.
+- [x] PHPUnit 1.691 e Vitest 614 na `3.0`; navegador 24/24.
+- [ ] Aba Modelos na tela de clonar e nos módulos do site.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-266](../implementation/BATCH-266.md).
+
+---
+
 ## BATCH-265 — REQ-256 (linha 3.0)
 
 - [x] 184 miniaturas WebP (580 × 394, até 27 KB) para os modelos que não tinham, nos dois idiomas.

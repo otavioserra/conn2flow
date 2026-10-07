@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-257.md](req-257.md) (BATCH-266 `implemented-pending-homologation`, 2026-10-07, Core e site — linha `3.0`, correção de lançamento): aba Modelos do editor vazia nas telas de adicionar (o editor assumia Fomantic quando não sabia o framework) e miniaturas cortadas na horizontal (o cartão recorta em 4:3; as miniaturas passaram a nascer em 4:3).
   - [req-256.md](req-256.md) (BATCH-265 `implemented-pending-homologation`, 2026-10-07, Core e site — linha `3.0`, prioridade máxima para o lançamento): miniaturas WebP de todos os modelos do cadastro de modelos que não tinham (93 por idioma), geradas com o modelo renderizado e dados de exemplo; gerador versionado e teste de guarda.
   - [req-249.md](req-249.md) (BATCH-258 `implemented-pending-homologation`, 2026-10-06, Core, coordenada com a REQ-111 do site): Widgets do Dashboard — link, formulário e navegação por script sempre para fora do quadro, opção de a aba de widgets vir antes da de módulos (guardada nos layouts e nos perfis) e plano de evolução da lousa.
   - [req-248.md](req-248.md) (BATCH-257 `implemented-pending-homologation`, 2026-10-06, Core): Área de widgets com dois modos — grade (padrão, com widgets por linha) e lousa de posição livre, com botão de troca — mais janela cheia, opções em botão flutuante e Tailwind fixado em 4.3.3.

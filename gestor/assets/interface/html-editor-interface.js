@@ -241,6 +241,14 @@ $(document).ready(function () {
         return framework_css || framework_css_2 || framework_css_3 || 'fomantic-ui';
     }
 
+    // REQ-257: framework para filtrar a aba Modelos. Quando a tela não tem campo de framework e nenhum modelo
+    // foi carregado ainda (inclusão em formulários, menus, índices…), o framework é desconhecido: devolve vazio
+    // e o servidor lista os modelos do alvo em qualquer framework. Assumir Fomantic ali escondia todos.
+    function frameworkCSSModelos() {
+        if ($('#framework-css').length) return frameworkCSS();
+        return ('framework_css' in gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : '';
+    }
+
     function modelosCarregar(forcar = false) {
         if (modelos_carregando && !forcar) return;
 
@@ -255,7 +263,7 @@ $(document).ready(function () {
         if (modelosPrimeiraPagina) $('#modelos-cards').hide();
         $('#modelos-loading').show();
 
-        const framework_css = frameworkCSS();
+        const framework_css = frameworkCSSModelos();
 
         const ajax = Object.assign({}, ajaxDefault, { data: Object.assign({}, ajaxDefault.data) });
         ajax.timeout = 30000;
@@ -467,6 +475,9 @@ $(document).ready(function () {
         const tipo_modificacao = tipoModificationPage();
         const id_sessao = pageSessionID();
         const modelo = modelos[modelo_id];
+
+        // REQ-257: sem campo de framework na tela, quem diz o framework é o modelo escolhido (a prévia depende dele).
+        if (!$('#framework-css').length && modelo.framework_css) gestor.html_editor.framework_css = modelo.framework_css;
 
         var html_gerado = modelo.html ? modelo.html : '';
         var css_gerado = modelo.css ? modelo.css : '';

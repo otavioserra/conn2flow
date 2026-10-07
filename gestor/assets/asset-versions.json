@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "system": "43312406181c8386",
+    "system": "95d88f1048633009",
     "owners": {
         "configuracao": "f77e33f9ab493c29",
         "dashboard": "53cb122b5ed32235",
@@ -8,7 +8,7 @@
         "favicon": "8587a3f200e38cbe",
         "global": "fd93eac2ce29cf7f",
         "images": "60d97a722a21ccf9",
-        "interface": "3616aa1d4f1ad443",
+        "interface": "c2264722ea8cf678",
         "interface-v2": "a9a73a48a7084cab",
         "jQuery-File-Upload-10.32.0": "b4d1102d60e5702c",
         "jQuery-Mask-Plugin-v1.14.16": "7c1dba1bc4269bbe",
@@ -16,7 +16,7 @@
         "paypal": "cbfd3a1b46258e21",
         "stripe": "62ada1759544f5a7",
         "tailwindcss": "eb74aaabfae0b547",
-        "templates": "226004d21c890ef9",
+        "templates": "03026ff3565c5bdb",
         "widgets": "27bd1142f936916f"
     }
 }

@@ -20,7 +20,7 @@ Precisa de um painel no ar com os modelos já sincronizados (ambiente de teste),
 
    Rodar com `mariadb -N -r` e guardar a saída num arquivo `.jsonl`.
 
-2. **Fotografar** (1024 × 696 px por modelo):
+2. **Fotografar** (1024 × 768 px por modelo):
 
    ```bash
    C2F_BASE=https://<painel> C2F_PLAYWRIGHT=<pasta do playwright> C2F_COOKIES=<cookies do administrador> \
@@ -29,7 +29,7 @@ Precisa de um painel no ar com os modelos já sincronizados (ambiente de teste),
 
    `SO=id1,id2` (ou um alvo) refaz só alguns. No Git Bash, prefixe com `MSYS_NO_PATHCONV=1`.
 
-3. **Converter e conferir**: `python montar.py fotos webp folhas` grava as miniaturas (580 × 394, WebP, qualidade 82) e uma folha de conferência por alvo e idioma. **Abra as folhas.** O gerador não sabe se a imagem ficou boa.
+3. **Converter e conferir**: `python montar.py fotos webp folhas` grava as miniaturas (580 × 435, WebP, qualidade 82) e uma folha de conferência por alvo e idioma. **Abra as folhas.** O gerador não sabe se a imagem ficou boa.
 
 4. **Integrar**: `python integrar.py webp fotos/relatorio.json <raiz do repositório> core|site` copia para `gestor/assets/templates/images/<idioma>/` e declara `thumbnail` no recurso de cada modelo. Depois, `resources:sync` e o pipeline.
 
@@ -39,7 +39,7 @@ Precisa de um painel no ar com os modelos já sincronizados (ambiente de teste),
 - Blocos de estado vazio, erro ou desligado (`no-item`, `results-box`, `link-disabled-css`…) saem.
 - Marcadores `[[x]]` e `@[[x]]@` recebem valor pelo nome: título, resumo, data, preço, endereço, imagem (um desenho em gradiente), rótulo de menu, campo de formulário.
 - Em formulários, cada campo fica com um tipo só (texto, texto, seleção, área de texto).
-- **Enquadramento**: o gerador mede a caixa do que está pintado (texto, imagem, campo, fundo, borda), amplia o que é pequeno (até 1,6 vez), reduz o que passa do quadro (até a metade) e centra com 40 px de margem, para a área útil aparecer inteira. Faixa de largura total e baixa (barra de navegação, rodapé) é renderizada num palco mais estreito antes de ampliar. Só conteúdo com mais de 1,9 vez a altura do quadro (lista longa) fica no tamanho natural, ancorado no topo. Layouts (página inteira) não são enquadrados.
+- **Enquadramento**: o gerador mede a caixa do que está pintado (texto, imagem, campo, fundo, borda), amplia o que é pequeno (até 1,6 vez), reduz o que passa do quadro (até a metade) e centra com 40 px de margem, para a área útil aparecer inteira. Faixa de largura total e baixa (barra de navegação, rodapé) é renderizada num palco mais estreito antes de ampliar. Conteúdo com mais de 1,9 vez a altura do quadro (lista longa) é ajustado só na largura e fica ancorado no topo: cortar embaixo é aceito, cortar dos lados não. Layouts (página inteira) não são enquadrados.
 - Modelos feitos para fundo escuro (lista em `gerar-miniaturas.cjs`) ganham palco escuro.
 - Scripts do modelo não rodam: o que depende de script (carrossel, aviso de cookies) aparece no estado inicial, e o aviso de cookies é mostrado à força, fora da posição fixa.
 
@@ -52,3 +52,7 @@ Precisa de um painel no ar com os modelos já sincronizados (ambiente de teste),
 ## Recurso que já tinha `thumbnail` vazio
 
 `integrar.py` insere a linha de `thumbnail` depois do `id`. Se o recurso já trazia `"thumbnail": ""`, rode `python vazias.py <raiz do repositório>` em seguida: ele tira a linha vazia que sobrou no mesmo objeto (com as duas, a vazia vence).
+
+## Por que 4:3
+
+O cartão de modelo do painel mostra a imagem numa área 4:3 com recorte para preencher. Miniatura mais larga que isso perde as laterais no cartão; por isso a foto é 1024 × 768 e o arquivo 580 × 435.
