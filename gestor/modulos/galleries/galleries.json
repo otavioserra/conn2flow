@@ -48,6 +48,7 @@
                 {
                     "name": "Galeria - Grade (Grid)",
                     "id": "galleries-grid",
+                    "thumbnail": "templates/images/pt-br/galleries-grid.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -61,6 +62,7 @@
                 {
                     "name": "Galeria - Carrossel (Carousel)",
                     "id": "galleries-carousel",
+                    "thumbnail": "templates/images/pt-br/galleries-carousel.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.11",
@@ -74,6 +76,7 @@
                 {
                     "name": "Galeria - Mosaico (Masonry)",
                     "id": "galleries-masonry",
+                    "thumbnail": "templates/images/pt-br/galleries-masonry.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -87,6 +90,7 @@
                 {
                     "name": "Galeria - Slider",
                     "id": "galleries-slider",
+                    "thumbnail": "templates/images/pt-br/galleries-slider.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.11",
@@ -648,6 +652,7 @@
                 {
                     "name": "Gallery - Grid",
                     "id": "galleries-grid",
+                    "thumbnail": "templates/images/en/galleries-grid.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -661,6 +666,7 @@
                 {
                     "name": "Gallery - Carousel",
                     "id": "galleries-carousel",
+                    "thumbnail": "templates/images/en/galleries-carousel.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.11",
@@ -674,6 +680,7 @@
                 {
                     "name": "Gallery - Masonry",
                     "id": "galleries-masonry",
+                    "thumbnail": "templates/images/en/galleries-masonry.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -687,6 +694,7 @@
                 {
                     "name": "Gallery - Slider",
                     "id": "galleries-slider",
+                    "thumbnail": "templates/images/en/galleries-slider.webp",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
                     "version": "1.11",

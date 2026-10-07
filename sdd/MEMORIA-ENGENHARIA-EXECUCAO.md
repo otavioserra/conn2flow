@@ -294,3 +294,26 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Medição sem acoplar o core ao GA4**: o `analytics-manager` do site escuta o evento de página `c2f:analytics` (`detail.event`, `detail.data`) no gatilho "evento personalizado". O core só emite; quem envia ao GA4 é o módulo.
 - **Conferência de "não fala com terceiros"**: comparar com uma página sem o recurso e olhar o tipo do pedido (`resourceType`); o layout e o conteúdo dos widgets pedem imagem e fonte a outros servidores por conta própria.
 - **Arquivo de relatório para outra equipe** vai no repositório privado do site (`sdd/reviews/`), não no core, que é público.
+### REQ-256 / BATCH-265 — miniaturas dos modelos (2026-10-07)
+
+- **Modelo novo precisa de miniatura**: `thumbnail` no recurso (`templates/images/<idioma>/<id>.webp`) e o arquivo em `gestor/assets/templates/images/`. `TemplatesMiniaturasReq256Test` falha sem isso. Gerador e passo a passo em `sdd/validation/req256/README.md`.
+- **Prévia crua não serve de miniatura**: é preciso repetir o bloco de item, tirar os blocos de estado vazio e preencher os marcadores; depois **abrir as folhas de conferência**, porque o gerador não sabe se ficou bom.
+- **Enquadrar miniatura**: nada de `zoom` com largura reduzida (cola o conteúdo à esquerda). Medir a caixa do conteúdo pintado, escalar com `transform` e centrar com margem; reduzir quando passa do quadro. O Engenheiro Chefe quer a área útil inteira, mesmo menor.
+- **Chave repetida em JSON**: a segunda vence. Recurso que já tinha `"thumbnail": ""` precisa ter a linha vazia removida.
+- **Árvore de trabalho nova**: junções de `node_modules` e `vendor` com `cmd //c "mklink /J ..."`, cópia de `dev-environment/data/environment.json`, e o primeiro `project:update-all` recompila o CSS inteiro (mais de 10 minutos): rodar em segundo plano.
+- **Linha 3.0**: trabalho de lançamento vai em árvore própria a partir de `origin/3.0`, entregue em `3.0` e `main`.
+
+### REQ-257 / BATCH-266 — aba Modelos na inclusão e corte das miniaturas (2026-10-07)
+
+- **Aba Modelos do editor filtra por framework CSS.** Em tela sem campo de framework o valor só existe depois que um modelo é carregado; na inclusão o editor mandava `fomantic-ui` e não vinha nada. Framework vazio agora significa "não sei" e o servidor não filtra.
+- **Miniatura de modelo é 4:3** (580 × 435): o cartão usa `aspect-4/3` com `object-cover`. Conferir a miniatura já recortada na proporção do cartão, não o arquivo inteiro.
+- **Antes de dizer que a imagem está certa, descobrir onde e como ela é exibida** (proporção da caixa, `object-fit`): o arquivo estava certo e o cartão cortava.
+- **Botão "Selecionar Modelo" do editor responde a `mouseup`**, não a `click`: no roteiro, `dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0}))`.
+- **Não listar `git status` inteiro numa árvore nova**: fim de linha marca centenas de arquivos; usar `git diff --ignore-cr-at-eol --name-only`.
+
+### Integração da 3.1 na 3.0 (DEC-134, 2026-10-07)
+
+- **Unir duas linhas**: branch de integração na árvore da linha nova, `git merge --no-ff --no-commit origin/main`; índices do SDD se resolvem por união dos dois lados; dados gerados (`TemplatesData`, manifestos) se refazem com `resources:sync` e `assets:minify` depois do merge.
+- **Antes do merge**, descartar mudança só de fim de linha nos arquivos que o outro lado também mexe (`git checkout HEAD -- sdd`), senão o merge recusa.
+- **Modelo cujo conteúdo não é HTML** (arranjo de lousa em JSON) precisa de desenho próprio no gerador de miniaturas: `lousaAmostra()` em `sdd/validation/req256/gerar-miniaturas.cjs`.
+- **Validar a união nos dois Labs** antes de enviar: roteiros da linha nova na instalação dela e, na instalação de lançamento, tabelas criadas, telas novas respondendo e os roteiros que não dependem de dado preparado.

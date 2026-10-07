@@ -121,6 +121,7 @@
                 {
                     "name": "Barra de Busca Clássica",
                     "id": "forms-search-contato-basico",
+                    "thumbnail": "templates/images/pt-br/forms-search-contato-basico.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -134,6 +135,7 @@
                 {
                     "name": "Busca Minimalista",
                     "id": "forms-search-newsletter-newsletter",
+                    "thumbnail": "templates/images/pt-br/forms-search-newsletter-newsletter.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -147,6 +149,7 @@
                 {
                     "name": "Busca Hero",
                     "id": "forms-search-registro-usuario",
+                    "thumbnail": "templates/images/pt-br/forms-search-registro-usuario.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -160,6 +163,7 @@
                 {
                     "name": "Busca Compacta",
                     "id": "forms-search-pesquisa-satisfacao",
+                    "thumbnail": "templates/images/pt-br/forms-search-pesquisa-satisfacao.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -173,6 +177,7 @@
                 {
                     "name": "Busca em Alto Contraste",
                     "id": "forms-search-suporte-tecnico",
+                    "thumbnail": "templates/images/pt-br/forms-search-suporte-tecnico.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -842,6 +847,7 @@
                 {
                     "name": "Classic Search Bar",
                     "id": "forms-search-contato-basico",
+                    "thumbnail": "templates/images/en/forms-search-contato-basico.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -855,6 +861,7 @@
                 {
                     "name": "Minimal Search",
                     "id": "forms-search-newsletter-newsletter",
+                    "thumbnail": "templates/images/en/forms-search-newsletter-newsletter.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -868,6 +875,7 @@
                 {
                     "name": "Hero Search",
                     "id": "forms-search-registro-usuario",
+                    "thumbnail": "templates/images/en/forms-search-registro-usuario.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -881,6 +889,7 @@
                 {
                     "name": "Compact Search",
                     "id": "forms-search-pesquisa-satisfacao",
+                    "thumbnail": "templates/images/en/forms-search-pesquisa-satisfacao.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",
@@ -894,6 +903,7 @@
                 {
                     "name": "High Contrast Search",
                     "id": "forms-search-suporte-tecnico",
+                    "thumbnail": "templates/images/en/forms-search-suporte-tecnico.webp",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
                     "version": "1.6",

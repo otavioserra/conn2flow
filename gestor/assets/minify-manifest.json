@@ -85,9 +85,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "a9a26819499e79d5f468b74861272d79ce14c195",
-        "origem": 165049,
-        "minificado": 64296
+        "sha1": "1a8a7b9b57ebbdf34acfe47eaec366b9ebc9a258",
+        "origem": 165875,
+        "minificado": 64527
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",

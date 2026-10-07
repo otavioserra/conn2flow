@@ -36,6 +36,7 @@
                 {
                     "name": "Página de Lousa - Simples",
                     "id": "dashboard-pages-simples",
+                    "thumbnail": "templates/images/pt-br/dashboard-pages-simples.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {
@@ -48,6 +49,7 @@
                 {
                     "name": "Página de Lousa - Largura total",
                     "id": "dashboard-pages-largura-total",
+                    "thumbnail": "templates/images/pt-br/dashboard-pages-largura-total.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {
@@ -60,6 +62,7 @@
                 {
                     "name": "Página de Lousa - Campanha",
                     "id": "dashboard-pages-campanha",
+                    "thumbnail": "templates/images/pt-br/dashboard-pages-campanha.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {
@@ -72,6 +75,7 @@
                 {
                     "name": "Página de Lousa - Painel com navegação",
                     "id": "dashboard-pages-painel",
+                    "thumbnail": "templates/images/pt-br/dashboard-pages-painel.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {
@@ -552,6 +556,7 @@
                 {
                     "name": "Board Page - Simple",
                     "id": "dashboard-pages-simples",
+                    "thumbnail": "templates/images/en/dashboard-pages-simples.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {
@@ -564,6 +569,7 @@
                 {
                     "name": "Board Page - Full width",
                     "id": "dashboard-pages-largura-total",
+                    "thumbnail": "templates/images/en/dashboard-pages-largura-total.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {
@@ -576,6 +582,7 @@
                 {
                     "name": "Board Page - Campaign",
                     "id": "dashboard-pages-campanha",
+                    "thumbnail": "templates/images/en/dashboard-pages-campanha.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {
@@ -588,6 +595,7 @@
                 {
                     "name": "Board Page - Panel with navigation",
                     "id": "dashboard-pages-painel",
+                    "thumbnail": "templates/images/en/dashboard-pages-painel.webp",
                     "target": "dashboard-pages",
                     "version": "1.1",
                     "checksum": {

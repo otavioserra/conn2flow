@@ -328,3 +328,15 @@ Decisão do Engenheiro Chefe em 2026-10-07, depois do parecer técnico do execut
 - **A liberdade de atualizar qualquer arquivo do sistema é característica do produto** e não será retirada; a segurança vem por camadas em cima dela.
 - **Bibliotecas v2 existentes**: a branch `origin/3.0.x` (2026-08-07, 4 commits próprios, 527 atrás da `main`) tem `gestor/bibliotecas/banco-v2.php` (dialetos MySQL e PostgreSQL) e `interface-v2.php`. Nunca entraram no núcleo. São o ponto de partida a avaliar no item 5.
 - **Linhas**: `main` e `3.0` são a de release; melhorias vão na `3.1` e podem ser levadas à 3.0 depois, por decisão do Engenheiro Chefe.
+
+## DEC-134 - 2026-10-07 - accepted
+
+**O trabalho da linha 3.1 entra na 3.0: lousa, páginas de lousa e medição fazem parte do lançamento.**
+
+Decisão do Engenheiro Chefe em 2026-10-07: "tudo isso que você fez faz parte do 3.0… já passa para merge com 3.0 e depois merge com main… deixa o 3.1 para quando a gente for fazer uma mudança".
+
+- A branch `3.1` (REQ-250 a REQ-255, REQ-258 e REQ-259) foi unida à `main` (REQ-256 e REQ-257) e o resultado foi entregue em `3.0`, `main` e `3.1`, que voltam a apontar para o mesmo commit.
+- Os sete modelos criados na `3.1` (quatro de página de lousa, três de lousa) receberam miniatura, exigida pelo teste de guarda da REQ-256.
+- A instalação `v3.1-conn2flow.local` continua existindo, para a próxima mudança que precisar de linha separada.
+- A próxima frente é a de agentes de IA no `conn2flow-site`; as fases 6 e 7 da lousa (compartilhamento e desenho) ficam para depois dela. A fase 6 já tem definição: por perfil para quem está logado e link com código longo para comentar sem usuário.
+- Substitui o item de DEC-133 que mantinha as novidades fora da linha de lançamento.

@@ -71,6 +71,7 @@
                 {
                     "name": "Lousa - Boas-vindas",
                     "id": "dashboard-boards-boas-vindas",
+                    "thumbnail": "templates/images/pt-br/dashboard-boards-boas-vindas.webp",
                     "target": "dashboard-boards",
                     "version": "1.1",
                     "checksum": {
@@ -83,6 +84,7 @@
                 {
                     "name": "Lousa - Marketing",
                     "id": "dashboard-boards-marketing",
+                    "thumbnail": "templates/images/pt-br/dashboard-boards-marketing.webp",
                     "target": "dashboard-boards",
                     "version": "1.1",
                     "checksum": {
@@ -95,6 +97,7 @@
                 {
                     "name": "Lousa - Vitrine de conteúdo",
                     "id": "dashboard-boards-vitrine",
+                    "thumbnail": "templates/images/pt-br/dashboard-boards-vitrine.webp",
                     "target": "dashboard-boards",
                     "version": "1.1",
                     "checksum": {
@@ -1341,6 +1344,7 @@
                 {
                     "name": "Board - Welcome",
                     "id": "dashboard-boards-boas-vindas",
+                    "thumbnail": "templates/images/en/dashboard-boards-boas-vindas.webp",
                     "target": "dashboard-boards",
                     "version": "1.1",
                     "checksum": {
@@ -1353,6 +1357,7 @@
                 {
                     "name": "Board - Marketing",
                     "id": "dashboard-boards-marketing",
+                    "thumbnail": "templates/images/en/dashboard-boards-marketing.webp",
                     "target": "dashboard-boards",
                     "version": "1.1",
                     "checksum": {
@@ -1365,6 +1370,7 @@
                 {
                     "name": "Board - Content showcase",
                     "id": "dashboard-boards-vitrine",
+                    "thumbnail": "templates/images/en/dashboard-boards-vitrine.webp",
                     "target": "dashboard-boards",
                     "version": "1.1",
                     "checksum": {
