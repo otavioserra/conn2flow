@@ -90,6 +90,7 @@
                 {
                     "name": "Páginas Índice - Lista",
                     "id": "pages-index-lista",
+                    "thumbnail": "templates/images/pt-br/pages-index-lista.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -103,6 +104,7 @@
                 {
                     "name": "Páginas Índice - Grade de Cards",
                     "id": "pages-index-grid",
+                    "thumbnail": "templates/images/pt-br/pages-index-grid.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -116,6 +118,7 @@
                 {
                     "name": "Páginas Índice - Linha do Tempo",
                     "id": "pages-index-timeline",
+                    "thumbnail": "templates/images/pt-br/pages-index-timeline.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -129,6 +132,7 @@
                 {
                     "name": "Páginas Índice - Agenda",
                     "id": "pages-index-agenda",
+                    "thumbnail": "templates/images/pt-br/pages-index-agenda.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -142,6 +146,7 @@
                 {
                     "name": "Páginas Índice - Grade com Imagem Destaque",
                     "id": "pages-index-grid-imagem",
+                    "thumbnail": "templates/images/pt-br/pages-index-grid-imagem.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.4",
@@ -155,6 +160,7 @@
                 {
                     "name": "Páginas Índice - Lista com Imagem Destaque",
                     "id": "pages-index-lista-imagem",
+                    "thumbnail": "templates/images/pt-br/pages-index-lista-imagem.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.4",
@@ -694,6 +700,7 @@
                 {
                     "name": "Pages Index - List",
                     "id": "pages-index-lista",
+                    "thumbnail": "templates/images/en/pages-index-lista.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -707,6 +714,7 @@
                 {
                     "name": "Pages Index - Card Grid",
                     "id": "pages-index-grid",
+                    "thumbnail": "templates/images/en/pages-index-grid.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -720,6 +728,7 @@
                 {
                     "name": "Pages Index - Timeline",
                     "id": "pages-index-timeline",
+                    "thumbnail": "templates/images/en/pages-index-timeline.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -733,6 +742,7 @@
                 {
                     "name": "Pages Index - Agenda",
                     "id": "pages-index-agenda",
+                    "thumbnail": "templates/images/en/pages-index-agenda.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -746,6 +756,7 @@
                 {
                     "name": "Pages Index - Card Grid with Featured Image",
                     "id": "pages-index-grid-imagem",
+                    "thumbnail": "templates/images/en/pages-index-grid-imagem.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.4",
@@ -759,6 +770,7 @@
                 {
                     "name": "Pages Index - List with Featured Image",
                     "id": "pages-index-lista-imagem",
+                    "thumbnail": "templates/images/en/pages-index-lista-imagem.webp",
                     "target": "pages-index",
                     "framework_css": "tailwindcss",
                     "version": "1.4",

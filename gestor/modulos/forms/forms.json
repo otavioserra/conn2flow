@@ -151,6 +151,7 @@
                 {
                     "name": "Formulário de Contato Básico",
                     "id": "forms-contato-basico",
+                    "thumbnail": "templates/images/pt-br/forms-contato-basico.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -164,6 +165,7 @@
                 {
                     "name": "Inscrição na Newsletter",
                     "id": "forms-newsletter-newsletter",
+                    "thumbnail": "templates/images/pt-br/forms-newsletter-newsletter.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -177,6 +179,7 @@
                 {
                     "name": "Registro de Usuário",
                     "id": "forms-registro-usuario",
+                    "thumbnail": "templates/images/pt-br/forms-registro-usuario.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -190,6 +193,7 @@
                 {
                     "name": "Pesquisa de Satisfação",
                     "id": "forms-pesquisa-satisfacao",
+                    "thumbnail": "templates/images/pt-br/forms-pesquisa-satisfacao.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -203,6 +207,7 @@
                 {
                     "name": "Suporte Técnico",
                     "id": "forms-suporte-tecnico",
+                    "thumbnail": "templates/images/pt-br/forms-suporte-tecnico.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -917,6 +922,7 @@
                 {
                     "name": "Basic Contact Form",
                     "id": "forms-contato-basico",
+                    "thumbnail": "templates/images/en/forms-contato-basico.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -930,6 +936,7 @@
                 {
                     "name": "Newsletter Subscription",
                     "id": "forms-newsletter-newsletter",
+                    "thumbnail": "templates/images/en/forms-newsletter-newsletter.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -943,6 +950,7 @@
                 {
                     "name": "User Registration",
                     "id": "forms-registro-usuario",
+                    "thumbnail": "templates/images/en/forms-registro-usuario.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -956,6 +964,7 @@
                 {
                     "name": "Satisfaction Survey",
                     "id": "forms-pesquisa-satisfacao",
+                    "thumbnail": "templates/images/en/forms-pesquisa-satisfacao.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",
@@ -969,6 +978,7 @@
                 {
                     "name": "Technical Support",
                     "id": "forms-suporte-tecnico",
+                    "thumbnail": "templates/images/en/forms-suporte-tecnico.webp",
                     "target": "forms",
                     "framework_css": "tailwindcss",
                     "version": "1.5",

@@ -46,125 +46,125 @@
         "id": "cookie-consent",
         "language": "pt-br",
         "status": "A",
-        "versao": 12
+        "versao": 13
     },
     {
         "nome": "Cookie Consent",
         "id": "cookie-consent",
         "language": "en",
         "status": "A",
-        "versao": 12
+        "versao": 13
     },
     {
         "nome": "Formulários",
         "id": "forms",
         "language": "pt-br",
         "status": "A",
-        "versao": 5
+        "versao": 6
     },
     {
         "nome": "Forms",
         "id": "forms",
         "language": "en",
         "status": "A",
-        "versao": 5
+        "versao": 6
     },
     {
         "nome": "Formulário de Busca",
         "id": "forms-search",
         "language": "pt-br",
         "status": "A",
-        "versao": 14
+        "versao": 15
     },
     {
         "nome": "Search Form",
         "id": "forms-search",
         "language": "en",
         "status": "A",
-        "versao": 14
+        "versao": 15
     },
     {
         "nome": "Galerias",
         "id": "galleries",
         "language": "pt-br",
         "status": "A",
-        "versao": 18
+        "versao": 19
     },
     {
         "nome": "Galleries",
         "id": "galleries",
         "language": "en",
         "status": "A",
-        "versao": 18
+        "versao": 19
     },
     {
         "nome": "Menus",
         "id": "menus",
         "language": "pt-br",
         "status": "A",
-        "versao": 18
+        "versao": 19
     },
     {
         "nome": "Menus",
         "id": "menus",
         "language": "en",
         "status": "A",
-        "versao": 18
+        "versao": 19
     },
     {
         "nome": "Páginas Índice",
         "id": "pages-index",
         "language": "pt-br",
         "status": "A",
-        "versao": 7
+        "versao": 8
     },
     {
         "nome": "Pages Index",
         "id": "pages-index",
         "language": "en",
         "status": "A",
-        "versao": 7
+        "versao": 8
     },
     {
         "nome": "Publicador",
         "id": "publisher",
         "language": "pt-br",
         "status": "A",
-        "versao": 14
+        "versao": 15
     },
     {
         "nome": "Publisher",
         "id": "publisher",
         "language": "en",
         "status": "A",
-        "versao": 14
+        "versao": 15
     },
     {
         "nome": "Publicador Destaques",
         "id": "publisher-highlights",
         "language": "pt-br",
         "status": "A",
-        "versao": 21
+        "versao": 22
     },
     {
         "nome": "Publisher Highlights",
         "id": "publisher-highlights",
         "language": "en",
         "status": "A",
-        "versao": 21
+        "versao": 22
     },
     {
         "nome": "Publicador Índice",
         "id": "publisher-index",
         "language": "pt-br",
         "status": "A",
-        "versao": 17
+        "versao": 18
     },
     {
         "nome": "Publisher Index",
         "id": "publisher-index",
         "language": "en",
         "status": "A",
-        "versao": 18
+        "versao": 19
     }
 ]

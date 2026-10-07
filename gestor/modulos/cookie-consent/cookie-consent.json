@@ -49,6 +49,7 @@
                 {
                     "name": "Cookies - Cartão escuro",
                     "id": "cookie-consent-card",
+                    "thumbnail": "templates/images/pt-br/cookie-consent-card.webp",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
                     "version": "1.4",
@@ -62,6 +63,7 @@
                 {
                     "name": "Cookies - Cartão claro",
                     "id": "cookie-consent-card-light",
+                    "thumbnail": "templates/images/pt-br/cookie-consent-card-light.webp",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
                     "version": "1.4",
@@ -660,6 +662,7 @@
                 {
                     "name": "Cookies - Dark card",
                     "id": "cookie-consent-card",
+                    "thumbnail": "templates/images/en/cookie-consent-card.webp",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
                     "version": "1.4",
@@ -673,6 +676,7 @@
                 {
                     "name": "Cookies - Light card",
                     "id": "cookie-consent-card-light",
+                    "thumbnail": "templates/images/en/cookie-consent-card-light.webp",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
                     "version": "1.4",

@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "system": "e3060cb1b24204bc",
+    "system": "5406132146590f84",
     "owners": {
         "configuracao": "f77e33f9ab493c29",
         "dashboard": "53cb122b5ed32235",
@@ -16,7 +16,7 @@
         "paypal": "cbfd3a1b46258e21",
         "stripe": "62ada1759544f5a7",
         "tailwindcss": "eb74aaabfae0b547",
-        "templates": "4dd6d231504de973",
+        "templates": "aa5ed0bcb824718c",
         "widgets": "27bd1142f936916f"
     }
 }

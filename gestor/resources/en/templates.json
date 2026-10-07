@@ -730,9 +730,9 @@
     {
         "name": "Institutional Site",
         "id": "layout-site-institucional",
+        "thumbnail": "templates\/images\/en\/layout-site-institucional.webp",
         "target": "layouts",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "533ca344cddbe7f2ab240b81e5fd6388",
@@ -744,9 +744,9 @@
     {
         "name": "Blog with Sidebar",
         "id": "layout-blog-sidebar",
+        "thumbnail": "templates\/images\/en\/layout-blog-sidebar.webp",
         "target": "layouts",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "d0c6d163532e75107d4ecb5a871e669e",
@@ -758,9 +758,9 @@
     {
         "name": "Landing Page",
         "id": "layout-landing-page",
+        "thumbnail": "templates\/images\/en\/layout-landing-page.webp",
         "target": "layouts",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "8792f87ddc282ba0d82f7a67550f9dc3",
@@ -772,9 +772,9 @@
     {
         "name": "Dashboard",
         "id": "layout-dashboard",
+        "thumbnail": "templates\/images\/en\/layout-dashboard.webp",
         "target": "layouts",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "fae58404c4d81bf38a3ff8c73af47604",
@@ -786,9 +786,9 @@
     {
         "name": "Portfolio",
         "id": "layout-portfolio",
+        "thumbnail": "templates\/images\/en\/layout-portfolio.webp",
         "target": "layouts",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "1b4cc8bff9178bd4a21eafec987d8665",
@@ -800,9 +800,9 @@
     {
         "name": "Institutional Site",
         "id": "layout-site-institucional-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/layout-site-institucional-fomantic-ui.webp",
         "target": "layouts",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "a91a5ded959555ea1a1f02e827db3772",
@@ -814,9 +814,9 @@
     {
         "name": "Blog with Sidebar",
         "id": "layout-blog-sidebar-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/layout-blog-sidebar-fomantic-ui.webp",
         "target": "layouts",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "b30eece30543f970f6c7fa710a89d07b",
@@ -828,9 +828,9 @@
     {
         "name": "Landing Page",
         "id": "layout-landing-page-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/layout-landing-page-fomantic-ui.webp",
         "target": "layouts",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "ecdfe2d27d016cc34c9a8d1df904ba35",
@@ -842,9 +842,9 @@
     {
         "name": "Dashboard",
         "id": "layout-dashboard-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/layout-dashboard-fomantic-ui.webp",
         "target": "layouts",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "6ef9a80ea2996e58f5e6af410f3b88f9",
@@ -856,9 +856,9 @@
     {
         "name": "Portfolio",
         "id": "layout-portfolio-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/layout-portfolio-fomantic-ui.webp",
         "target": "layouts",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.4",
         "checksum": {
             "html": "9a560e2bb10dbbb98ef15af14bb357e0",
@@ -870,9 +870,9 @@
     {
         "name": "Navigation Header",
         "id": "componente-header-navegacao",
+        "thumbnail": "templates\/images\/en\/componente-header-navegacao.webp",
         "target": "componentes",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "5b3021a13b984241c31efe1931fcbf49",
@@ -884,9 +884,9 @@
     {
         "name": "Complete Footer",
         "id": "componente-footer-completo",
+        "thumbnail": "templates\/images\/en\/componente-footer-completo.webp",
         "target": "componentes",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "981ef794ed49f2c83c366823041f961d",
@@ -898,9 +898,9 @@
     {
         "name": "Product Card",
         "id": "componente-card-produto",
+        "thumbnail": "templates\/images\/en\/componente-card-produto.webp",
         "target": "componentes",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "b05bdc27235d367867b8cf8fba73ba0d",
@@ -912,9 +912,9 @@
     {
         "name": "Hero Banner",
         "id": "componente-hero-banner",
+        "thumbnail": "templates\/images\/en\/componente-hero-banner.webp",
         "target": "componentes",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "5c45558c965a202151095bb13a3b2abd",
@@ -926,9 +926,9 @@
     {
         "name": "Contact Form",
         "id": "componente-formulario-contato",
+        "thumbnail": "templates\/images\/en\/componente-formulario-contato.webp",
         "target": "componentes",
         "framework_css": "tailwindcss",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "3fb92b65f2e03aa589fe24b1e6c6c53e",
@@ -940,9 +940,9 @@
     {
         "name": "Navigation Header",
         "id": "componente-header-navegacao-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/componente-header-navegacao-fomantic-ui.webp",
         "target": "componentes",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "e646b37b6ec29c2f468c29f93d48cb86",
@@ -954,9 +954,9 @@
     {
         "name": "Complete Footer",
         "id": "componente-footer-completo-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/componente-footer-completo-fomantic-ui.webp",
         "target": "componentes",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "c79af9328b0219e1bb4f7cc03257b432",
@@ -968,9 +968,9 @@
     {
         "name": "Product Card",
         "id": "componente-card-produto-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/componente-card-produto-fomantic-ui.webp",
         "target": "componentes",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "402eb13ab7bc633824513b1906866c76",
@@ -982,9 +982,9 @@
     {
         "name": "Hero Banner",
         "id": "componente-hero-banner-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/componente-hero-banner-fomantic-ui.webp",
         "target": "componentes",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.3",
         "checksum": {
             "html": "92a983a02d8b37bc9aecfda4d5517261",
@@ -996,9 +996,9 @@
     {
         "name": "Contact Form",
         "id": "componente-formulario-contato-fomantic-ui",
+        "thumbnail": "templates\/images\/en\/componente-formulario-contato-fomantic-ui.webp",
         "target": "componentes",
         "framework_css": "fomantic-ui",
-        "thumbnail": "",
         "version": "1.2",
         "checksum": {
             "html": "de7c790af1c962237729c4d74aea4f3b",

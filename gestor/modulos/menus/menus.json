@@ -48,6 +48,7 @@
                 {
                     "name": "Menu - Horizontal (Navbar)",
                     "id": "menus-horizontal-navbar",
+                    "thumbnail": "templates/images/pt-br/menus-horizontal-navbar.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.16",
@@ -61,6 +62,7 @@
                 {
                     "name": "Menu - Vertical (Lateral)",
                     "id": "menus-vertical-sidebar",
+                    "thumbnail": "templates/images/pt-br/menus-vertical-sidebar.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",
@@ -74,6 +76,7 @@
                 {
                     "name": "Menu - Rodapé (Colunas)",
                     "id": "menus-footer-colunas",
+                    "thumbnail": "templates/images/pt-br/menus-footer-colunas.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",
@@ -87,6 +90,7 @@
                 {
                     "name": "Menu - Suspenso (Dropdown)",
                     "id": "menus-dropdown",
+                    "thumbnail": "templates/images/pt-br/menus-dropdown.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.12",
@@ -100,6 +104,7 @@
                 {
                     "name": "Menu - Trilha (Breadcrumb)",
                     "id": "menus-breadcrumb",
+                    "thumbnail": "templates/images/pt-br/menus-breadcrumb.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",
@@ -113,6 +118,7 @@
                 {
                     "name": "Menu - Mobile (Hambúrguer)",
                     "id": "menus-mobile-hamburguer",
+                    "thumbnail": "templates/images/pt-br/menus-mobile-hamburguer.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",
@@ -606,6 +612,7 @@
                 {
                     "name": "Menu - Horizontal (Navbar)",
                     "id": "menus-horizontal-navbar",
+                    "thumbnail": "templates/images/en/menus-horizontal-navbar.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.16",
@@ -619,6 +626,7 @@
                 {
                     "name": "Menu - Vertical (Sidebar)",
                     "id": "menus-vertical-sidebar",
+                    "thumbnail": "templates/images/en/menus-vertical-sidebar.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",
@@ -632,6 +640,7 @@
                 {
                     "name": "Menu - Footer (Columns)",
                     "id": "menus-footer-colunas",
+                    "thumbnail": "templates/images/en/menus-footer-colunas.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",
@@ -645,6 +654,7 @@
                 {
                     "name": "Menu - Dropdown",
                     "id": "menus-dropdown",
+                    "thumbnail": "templates/images/en/menus-dropdown.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.12",
@@ -658,6 +668,7 @@
                 {
                     "name": "Menu - Breadcrumb",
                     "id": "menus-breadcrumb",
+                    "thumbnail": "templates/images/en/menus-breadcrumb.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",
@@ -671,6 +682,7 @@
                 {
                     "name": "Menu - Mobile (Hamburger)",
                     "id": "menus-mobile-hamburguer",
+                    "thumbnail": "templates/images/en/menus-mobile-hamburguer.webp",
                     "target": "menus",
                     "framework_css": "tailwindcss",
                     "version": "1.10",

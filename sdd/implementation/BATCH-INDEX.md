@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-265 | implemented-pending-homologation | Miniaturas WebP dos modelos do cadastro de modelos, com gerador versionado e teste de guarda (REQ-256) | [BATCH-265.md](BATCH-265.md) | Linha 3.0, prioridade de lançamento. 184 miniaturas (120 do core, 64 do site). PHPUnit 1.688, Vitest 614. |
 | BATCH-258 | implemented-pending-homologation | Widgets do Dashboard: link, formulário e navegação por script para fora do quadro; aba de widgets em primeiro; plano da lousa (REQ-249 / Site REQ-111) | [BATCH-258.md](BATCH-258.md) | PHPUnit 1.685, Vitest 614, navegador 11/11. |
 | BATCH-257 | implemented-pending-homologation | Área de widgets com dois modos (grade e lousa de posição livre), widgets por linha, janela cheia, opções flutuantes e Tailwind 4.3.3 (REQ-248) | [BATCH-257.md](BATCH-257.md) | PHPUnit 1.684, Vitest 606, navegador 23/23. A grade continua padrão; a lousa é opcional. |
 | BATCH-255 | complete | Fase B: consolidação Core/Site, documentação bilíngue e higiene SDD (REQ-246 / Site REQ-110) | [BATCH-255.md](BATCH-255.md) | Recorte humano até 84deb54a; configurações 515c764c separadas para REQ-247. PHPUnit 1.672 e Vitest 573 sem falhas. Pipeline publicado; navegador 158/19/24 e documentação 36/36; 742 links HTTP sem falha. |

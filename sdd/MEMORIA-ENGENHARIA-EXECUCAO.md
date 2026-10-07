@@ -224,3 +224,11 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Relato de "ainda não funciona" depois de uma correção**: sondar o HTML real do caso (atributos do link, tipo do elemento, script que trata o clique) antes de mexer; aqui eram três causas diferentes.
 - **Roteiro que supõe um modo ou preferência do usuário do Lab** fixa o estado no começo e devolve no fim: o humano muda o próprio Dashboard entre uma execução e outra.
 - **Teste que compara arquivo-fonte com `\n`** falha em cópia de trabalho CRLF: normalizar a worktree inteira antes de culpar a mudança.
+
+### REQ-256 / BATCH-265 — miniaturas dos modelos (2026-10-07)
+
+- **Modelo novo precisa de miniatura**: `thumbnail` no recurso (`templates/images/<idioma>/<id>.webp`) e o arquivo em `gestor/assets/templates/images/`. `TemplatesMiniaturasReq256Test` falha sem isso. Gerador e passo a passo em `sdd/validation/req256/README.md`.
+- **Prévia crua não serve de miniatura**: é preciso repetir o bloco de item, tirar os blocos de estado vazio e preencher os marcadores; depois **abrir as folhas de conferência**, porque o gerador não sabe se ficou bom.
+- **Chave repetida em JSON**: a segunda vence. Recurso que já tinha `"thumbnail": ""` precisa ter a linha vazia removida.
+- **Árvore de trabalho nova**: junções de `node_modules` e `vendor` com `cmd //c "mklink /J ..."`, cópia de `dev-environment/data/environment.json`, e o primeiro `project:update-all` recompila o CSS inteiro (mais de 10 minutos): rodar em segundo plano.
+- **Linha 3.0**: trabalho de lançamento vai em árvore própria a partir de `origin/3.0`, entregue em `3.0` e `main`.

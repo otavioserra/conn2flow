@@ -48,6 +48,7 @@
                 {
                     "name": "Publicador Destaques - Notícias - Lista Simples",
                     "id": "publisher-highlights-noticias-lista-simples",
+                    "thumbnail": "templates/images/pt-br/publisher-highlights-noticias-lista-simples.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -61,6 +62,7 @@
                 {
                     "name": "Publicador Destaques - Notícias - Grid Cards",
                     "id": "publisher-highlights-noticias-grid-cards",
+                    "thumbnail": "templates/images/pt-br/publisher-highlights-noticias-grid-cards.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -74,6 +76,7 @@
                 {
                     "name": "Publicador Destaques - Artigos - Editorial",
                     "id": "publisher-highlights-artigos-editorial",
+                    "thumbnail": "templates/images/pt-br/publisher-highlights-artigos-editorial.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -87,6 +90,7 @@
                 {
                     "name": "Publicador Destaques - Lives - Vídeo em Destaque",
                     "id": "publisher-highlights-lives-video-destaque",
+                    "thumbnail": "templates/images/pt-br/publisher-highlights-lives-video-destaque.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -100,6 +104,7 @@
                 {
                     "name": "Publicador Destaques - Notas - Mosaico",
                     "id": "publisher-highlights-notas-mosaico",
+                    "thumbnail": "templates/images/pt-br/publisher-highlights-notas-mosaico.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -113,6 +118,7 @@
                 {
                     "name": "Publicador Destaques - Principal - Carrossel",
                     "id": "publisher-highlights-principal-carousel",
+                    "thumbnail": "templates/images/pt-br/publisher-highlights-principal-carousel.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -636,6 +642,7 @@
                 {
                     "name": "Publisher Highlights - News - Simple List",
                     "id": "publisher-highlights-noticias-lista-simples",
+                    "thumbnail": "templates/images/en/publisher-highlights-noticias-lista-simples.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -649,6 +656,7 @@
                 {
                     "name": "Publisher Highlights - News - Grid Cards",
                     "id": "publisher-highlights-noticias-grid-cards",
+                    "thumbnail": "templates/images/en/publisher-highlights-noticias-grid-cards.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -662,6 +670,7 @@
                 {
                     "name": "Publisher Highlights - Articles - Editorial",
                     "id": "publisher-highlights-artigos-editorial",
+                    "thumbnail": "templates/images/en/publisher-highlights-artigos-editorial.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -675,6 +684,7 @@
                 {
                     "name": "Publisher Highlights - Lives - Featured Video",
                     "id": "publisher-highlights-lives-video-destaque",
+                    "thumbnail": "templates/images/en/publisher-highlights-lives-video-destaque.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -688,6 +698,7 @@
                 {
                     "name": "Publisher Highlights - Notes - Mosaic",
                     "id": "publisher-highlights-notas-mosaico",
+                    "thumbnail": "templates/images/en/publisher-highlights-notas-mosaico.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
@@ -701,6 +712,7 @@
                 {
                     "name": "Publisher Highlights - Main - Carousel",
                     "id": "publisher-highlights-destaque-principal-carousel",
+                    "thumbnail": "templates/images/en/publisher-highlights-destaque-principal-carousel.webp",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "version": "1.7",
