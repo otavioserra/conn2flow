@@ -1,0 +1,9 @@
+/* Página de lousa, modelo de painel: barra com o nome e uma navegação, lousa na largura da janela e rodapé de texto. */
+.c2f-lousa-painel { padding: 0 16px 32px; }
+.c2f-lousa-painel-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin: 0 -16px 24px; padding: 14px 24px; border-bottom: 1px solid rgb(148 163 184 / 0.35); }
+.c2f-lousa-painel-nome { font-size: 1.15rem; font-weight: 700; }
+.c2f-lousa-painel-menu { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 0; padding: 0; list-style: none; }
+.c2f-lousa-painel-menu a { color: inherit; font-weight: 500; text-decoration: none; opacity: 0.8; }
+.c2f-lousa-painel-menu a:hover { opacity: 1; text-decoration: underline; }
+.c2f-lousa-painel-corpo { scroll-margin-top: 80px; }
+.c2f-lousa-painel-rodape { margin-top: 32px; padding-top: 16px; border-top: 1px solid rgb(148 163 184 / 0.35); font-size: 0.9rem; text-align: center; opacity: 0.75; }

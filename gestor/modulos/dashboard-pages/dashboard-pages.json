@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.0",
+    "versao": "1.2.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -17,6 +17,21 @@
     },
     "resources": {
         "pt-br": {
+            "ai_prompts_targets": [
+                {
+                    "id": "dashboard-pages",
+                    "name": "Páginas de Lousa"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "dashboard-pages",
+                    "name": "Páginas de Lousa",
+                    "target": "dashboard-pages",
+                    "default": true,
+                    "version": "1.0"
+                }
+            ],
             "templates": [
                 {
                     "name": "Página de Lousa - Simples",
@@ -40,6 +55,30 @@
                         "css": "2e79602c8bb8c9e04676daff38cd7c01",
                         "css_precompiled": "",
                         "combined": "0f708aa23de47aa8db75c54d217e0ba6"
+                    }
+                },
+                {
+                    "name": "Página de Lousa - Campanha",
+                    "id": "dashboard-pages-campanha",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "47927f6c830189aa56ffb001dc1f5062",
+                        "css": "8008bb2db953adbeba46a9c4b4eedab8",
+                        "css_precompiled": "",
+                        "combined": "539a272ab8f15f8835c2e26fe88cc076"
+                    }
+                },
+                {
+                    "name": "Página de Lousa - Painel com navegação",
+                    "id": "dashboard-pages-painel",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "8301da8debeb95e7c42d3fc4eef5ac0a",
+                        "css": "694df1129e3a4e7b6c99f27d17e40559",
+                        "css_precompiled": "",
+                        "combined": "b7c6bcbd2a5ad48e82e5d9a133e01c49"
                     }
                 }
             ],
@@ -494,6 +533,21 @@
             ]
         },
         "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "dashboard-pages",
+                    "name": "Board Pages"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "dashboard-pages",
+                    "name": "Board Pages",
+                    "target": "dashboard-pages",
+                    "default": true,
+                    "version": "1.0"
+                }
+            ],
             "templates": [
                 {
                     "name": "Board Page - Simple",
@@ -517,6 +571,30 @@
                         "css": "2e79602c8bb8c9e04676daff38cd7c01",
                         "css_precompiled": "",
                         "combined": "0f708aa23de47aa8db75c54d217e0ba6"
+                    }
+                },
+                {
+                    "name": "Board Page - Campaign",
+                    "id": "dashboard-pages-campanha",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "87eca0a0e1401b9b79664bc72e7bf835",
+                        "css": "8008bb2db953adbeba46a9c4b4eedab8",
+                        "css_precompiled": "",
+                        "combined": "a0acc5f079e45b31bed52674fc37ff5e"
+                    }
+                },
+                {
+                    "name": "Board Page - Panel with navigation",
+                    "id": "dashboard-pages-painel",
+                    "target": "dashboard-pages",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "46c4931d1132205d5d847d7e7ebfe94b",
+                        "css": "694df1129e3a4e7b6c99f27d17e40559",
+                        "css_precompiled": "",
+                        "combined": "dd252e169eff1941a0a6ef5a4a29d855"
                     }
                 }
             ],

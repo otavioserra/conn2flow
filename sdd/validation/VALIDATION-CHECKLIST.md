@@ -17,6 +17,18 @@ Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-su
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
 
+## BATCH-264 — REQ-255 (linha 3.1)
+
+- [x] Quatro modelos de página de lousa; os dois novos geram página no ar.
+- [x] Modo IA e alvo de IA do `dashboard-pages` no banco; aba Modelos do editor lista os quatro.
+- [x] PHPUnit 1.710 e Vitest 648; navegador 42/42 em `v3.1-conn2flow.local`.
+- [ ] Assistente IA com um servidor de IA configurado.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-264](../implementation/BATCH-264.md).
+
+---
+
 ## BATCH-263 — REQ-254 (linha 3.1)
 
 - [x] Editor HTML em adicionar, editar e clonar; modelo escolhido carrega no editor.

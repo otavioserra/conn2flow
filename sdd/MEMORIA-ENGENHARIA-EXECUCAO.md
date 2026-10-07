@@ -274,3 +274,10 @@ BATCH-181 a BATCH-214 (2026-09-25 a 2026-10-01: docs como código, deploy e migr
 - **Clonar** é a opção `clonar` com a mesma marca de gravação do adicionar (`adicionar-banco`): formulário preenchido pela origem e a mesma função de inserção.
 - **Carga assíncrona antes de salvar**: troca de modelo por AJAX seguida de envio grava o conteúdo antigo; segurar o `submit` enquanto houver carga pendente e reenviar ao terminar.
 - **Hash de senha do painel**: `password_hash` Argon2 puro, sem tempero por instalação; hash gerado em qualquer PHP com Argon2 vale no campo `usuarios.senha`.
+
+### REQ-255 / BATCH-264 — modelos e modo IA do `dashboard-pages` (2026-10-07)
+
+- **Módulo com editor precisa do pacote completo**: vários modelos (3 a 4), `ai_prompts_targets` e `ai_modes` (arquivo `resources/<idioma>/ai_modes/<id>/<id>.md`, com `target` e `default`) no JSON do módulo. A aba Modelos do editor filtra por `alvos_modelos` e pelo framework CSS.
+- **Aba do editor no roteiro**: `a[data-tab="modelos"]`; procurar pelo texto "Modelos" clica no item do menu lateral.
+- **Lab da 3.1 sem servidor de IA**: o Assistente IA só mostra o aviso; modo de IA não dá para exercitar ali.
+- **Alerta de vírus do Windows** aparece em comandos que rodam PHPUnit (scripts temporários executados) e Chromium sem tela; saída faltando pode ser bloqueio.

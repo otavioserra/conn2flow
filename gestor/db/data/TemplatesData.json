@@ -2250,6 +2250,36 @@
         "checksum": "{\"html\":\"3efce5bb276a4396b75d67a2367e359e\",\"css\":\"2e79602c8bb8c9e04676daff38cd7c01\",\"css_precompiled\":\"\",\"combined\":\"0f708aa23de47aa8db75c54d217e0ba6\"}"
     },
     {
+        "nome": "Página de Lousa - Campanha",
+        "id": "dashboard-pages-campanha",
+        "target": "dashboard-pages",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"c2f-lousa-campanha\">\n<header class=\"c2f-lousa-campanha-topo\">\n<span class=\"c2f-lousa-campanha-selo\">Novidade<\/span>\n<!-- lousa-titulo < --><h1 class=\"c2f-lousa-campanha-titulo\">[[lousa#titulo]]<\/h1><!-- lousa-titulo > -->\n<p class=\"c2f-lousa-campanha-sub\">Escreva aqui uma frase curta que explique o que a pessoa encontra nesta página.<\/p>\n<\/header>\n<div class=\"c2f-lousa-campanha-corpo\">\n[[lousa#widget]]\n<\/div>\n<footer class=\"c2f-lousa-campanha-chamada\">\n<div>\n<strong>Gostou do que viu?<\/strong>\n<p>Fale com a gente e receba uma proposta.<\/p>\n<\/div>\n<a class=\"c2f-lousa-campanha-botao\" href=\"[[pagina#url-raiz]]contato\/\">Entrar em contato<\/a>\n<\/footer>\n<\/section>\n",
+        "css": "\/* Página de lousa, modelo de campanha: faixa de abertura com rótulo, lousa e chamada final com botão. *\/\n.c2f-lousa-campanha { max-width: 1280px; margin: 0 auto; padding: 0 16px 48px; }\n.c2f-lousa-campanha-topo { padding: 48px 0 32px; text-align: center; }\n.c2f-lousa-campanha-selo { display: inline-block; margin-bottom: 16px; padding: 4px 14px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }\n.c2f-lousa-campanha-titulo { margin: 0; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; }\n.c2f-lousa-campanha-sub { max-width: 640px; margin: 16px auto 0; font-size: 1.1rem; line-height: 1.5; opacity: 0.8; }\n.c2f-lousa-campanha-corpo { padding: 8px 0 32px; }\n.c2f-lousa-campanha-chamada { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 28px; border-radius: 16px; background: #0f172a; color: #f8fafc; }\n.c2f-lousa-campanha-chamada strong { display: block; font-size: 1.25rem; }\n.c2f-lousa-campanha-chamada p { margin: 4px 0 0; opacity: 0.8; }\n.c2f-lousa-campanha-botao { display: inline-flex; align-items: center; padding: 12px 24px; border-radius: 999px; background: #0ea5e9; color: #fff; font-weight: 700; text-decoration: none; }\n.c2f-lousa-campanha-botao:hover { filter: brightness(1.08); }\n",
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"47927f6c830189aa56ffb001dc1f5062\",\"css\":\"8008bb2db953adbeba46a9c4b4eedab8\",\"css_precompiled\":\"\",\"combined\":\"539a272ab8f15f8835c2e26fe88cc076\"}"
+    },
+    {
+        "nome": "Página de Lousa - Painel com navegação",
+        "id": "dashboard-pages-painel",
+        "target": "dashboard-pages",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"c2f-lousa-painel\" id=\"inicio\">\n<nav class=\"c2f-lousa-painel-barra\" aria-label=\"Navegação da página\">\n<!-- lousa-titulo < --><strong class=\"c2f-lousa-painel-nome\">[[lousa#titulo]]<\/strong><!-- lousa-titulo > -->\n<ul class=\"c2f-lousa-painel-menu\">\n<li><a href=\"#inicio\">Início<\/a><\/li>\n<li><a href=\"#conteudo\">Conteúdo<\/a><\/li>\n<li><a href=\"[[pagina#url-raiz]]contato\/\">Contato<\/a><\/li>\n<\/ul>\n<\/nav>\n<div class=\"c2f-lousa-painel-corpo\" id=\"conteudo\">\n[[lousa#widget]]\n<\/div>\n<footer class=\"c2f-lousa-painel-rodape\">Texto do rodapé: direitos, endereço ou um aviso curto.<\/footer>\n<\/section>\n",
+        "css": "\/* Página de lousa, modelo de painel: barra com o nome e uma navegação, lousa na largura da janela e rodapé de texto. *\/\n.c2f-lousa-painel { padding: 0 16px 32px; }\n.c2f-lousa-painel-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin: 0 -16px 24px; padding: 14px 24px; border-bottom: 1px solid rgb(148 163 184 \/ 0.35); }\n.c2f-lousa-painel-nome { font-size: 1.15rem; font-weight: 700; }\n.c2f-lousa-painel-menu { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 0; padding: 0; list-style: none; }\n.c2f-lousa-painel-menu a { color: inherit; font-weight: 500; text-decoration: none; opacity: 0.8; }\n.c2f-lousa-painel-menu a:hover { opacity: 1; text-decoration: underline; }\n.c2f-lousa-painel-corpo { scroll-margin-top: 80px; }\n.c2f-lousa-painel-rodape { margin-top: 32px; padding-top: 16px; border-top: 1px solid rgb(148 163 184 \/ 0.35); font-size: 0.9rem; text-align: center; opacity: 0.75; }\n",
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"8301da8debeb95e7c42d3fc4eef5ac0a\",\"css\":\"694df1129e3a4e7b6c99f27d17e40559\",\"css_precompiled\":\"\",\"combined\":\"b7c6bcbd2a5ad48e82e5d9a133e01c49\"}"
+    },
+    {
         "nome": "Board Page - Simple",
         "id": "dashboard-pages-simples",
         "target": "dashboard-pages",
@@ -2278,6 +2308,36 @@
         "versao": 1,
         "file_version": "1.1",
         "checksum": "{\"html\":\"3efce5bb276a4396b75d67a2367e359e\",\"css\":\"2e79602c8bb8c9e04676daff38cd7c01\",\"css_precompiled\":\"\",\"combined\":\"0f708aa23de47aa8db75c54d217e0ba6\"}"
+    },
+    {
+        "nome": "Board Page - Campaign",
+        "id": "dashboard-pages-campanha",
+        "target": "dashboard-pages",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"c2f-lousa-campanha\">\n<header class=\"c2f-lousa-campanha-topo\">\n<span class=\"c2f-lousa-campanha-selo\">New<\/span>\n<!-- lousa-titulo < --><h1 class=\"c2f-lousa-campanha-titulo\">[[lousa#titulo]]<\/h1><!-- lousa-titulo > -->\n<p class=\"c2f-lousa-campanha-sub\">Write a short sentence here explaining what people will find on this page.<\/p>\n<\/header>\n<div class=\"c2f-lousa-campanha-corpo\">\n[[lousa#widget]]\n<\/div>\n<footer class=\"c2f-lousa-campanha-chamada\">\n<div>\n<strong>Liked what you saw?<\/strong>\n<p>Talk to us and get a proposal.<\/p>\n<\/div>\n<a class=\"c2f-lousa-campanha-botao\" href=\"[[pagina#url-raiz]]contato\/\">Get in touch<\/a>\n<\/footer>\n<\/section>\n",
+        "css": "\/* Página de lousa, modelo de campanha: faixa de abertura com rótulo, lousa e chamada final com botão. *\/\n.c2f-lousa-campanha { max-width: 1280px; margin: 0 auto; padding: 0 16px 48px; }\n.c2f-lousa-campanha-topo { padding: 48px 0 32px; text-align: center; }\n.c2f-lousa-campanha-selo { display: inline-block; margin-bottom: 16px; padding: 4px 14px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }\n.c2f-lousa-campanha-titulo { margin: 0; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; }\n.c2f-lousa-campanha-sub { max-width: 640px; margin: 16px auto 0; font-size: 1.1rem; line-height: 1.5; opacity: 0.8; }\n.c2f-lousa-campanha-corpo { padding: 8px 0 32px; }\n.c2f-lousa-campanha-chamada { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 28px; border-radius: 16px; background: #0f172a; color: #f8fafc; }\n.c2f-lousa-campanha-chamada strong { display: block; font-size: 1.25rem; }\n.c2f-lousa-campanha-chamada p { margin: 4px 0 0; opacity: 0.8; }\n.c2f-lousa-campanha-botao { display: inline-flex; align-items: center; padding: 12px 24px; border-radius: 999px; background: #0ea5e9; color: #fff; font-weight: 700; text-decoration: none; }\n.c2f-lousa-campanha-botao:hover { filter: brightness(1.08); }\n",
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"87eca0a0e1401b9b79664bc72e7bf835\",\"css\":\"8008bb2db953adbeba46a9c4b4eedab8\",\"css_precompiled\":\"\",\"combined\":\"a0acc5f079e45b31bed52674fc37ff5e\"}"
+    },
+    {
+        "nome": "Board Page - Panel with navigation",
+        "id": "dashboard-pages-painel",
+        "target": "dashboard-pages",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"c2f-lousa-painel\" id=\"inicio\">\n<nav class=\"c2f-lousa-painel-barra\" aria-label=\"Page navigation\">\n<!-- lousa-titulo < --><strong class=\"c2f-lousa-painel-nome\">[[lousa#titulo]]<\/strong><!-- lousa-titulo > -->\n<ul class=\"c2f-lousa-painel-menu\">\n<li><a href=\"#inicio\">Home<\/a><\/li>\n<li><a href=\"#conteudo\">Content<\/a><\/li>\n<li><a href=\"[[pagina#url-raiz]]contato\/\">Contact<\/a><\/li>\n<\/ul>\n<\/nav>\n<div class=\"c2f-lousa-painel-corpo\" id=\"conteudo\">\n[[lousa#widget]]\n<\/div>\n<footer class=\"c2f-lousa-painel-rodape\">Footer text: rights, address or a short notice.<\/footer>\n<\/section>\n",
+        "css": "\/* Página de lousa, modelo de painel: barra com o nome e uma navegação, lousa na largura da janela e rodapé de texto. *\/\n.c2f-lousa-painel { padding: 0 16px 32px; }\n.c2f-lousa-painel-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin: 0 -16px 24px; padding: 14px 24px; border-bottom: 1px solid rgb(148 163 184 \/ 0.35); }\n.c2f-lousa-painel-nome { font-size: 1.15rem; font-weight: 700; }\n.c2f-lousa-painel-menu { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 0; padding: 0; list-style: none; }\n.c2f-lousa-painel-menu a { color: inherit; font-weight: 500; text-decoration: none; opacity: 0.8; }\n.c2f-lousa-painel-menu a:hover { opacity: 1; text-decoration: underline; }\n.c2f-lousa-painel-corpo { scroll-margin-top: 80px; }\n.c2f-lousa-painel-rodape { margin-top: 32px; padding-top: 16px; border-top: 1px solid rgb(148 163 184 \/ 0.35); font-size: 0.9rem; text-align: center; opacity: 0.75; }\n",
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"46c4931d1132205d5d847d7e7ebfe94b\",\"css\":\"694df1129e3a4e7b6c99f27d17e40559\",\"css_precompiled\":\"\",\"combined\":\"dd252e169eff1941a0a6ef5a4a29d855\"}"
     },
     {
         "nome": "Formulário de Contato Básico",

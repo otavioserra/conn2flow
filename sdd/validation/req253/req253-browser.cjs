@@ -156,6 +156,28 @@ const LOUSA = 'roteiro-req-252-grade';
     v = await ver(NOVO);
     conferir('a página de origem continua igual', v.lousa && v.h1 === 'Oferta <b>de</b> outubro' && v.modo === 'lousa', v);
 
+    // ----- REQ-255: aba Modelos do editor e os dois modelos com estrutura em volta da lousa
+    await page.goto(base + '/dashboard-pages/editar/?id=' + encodeURIComponent(id), {waitUntil: 'networkidle'});
+    await page.click('a[data-tab="modelos"]'); await page.waitForTimeout(2500);
+    const abaModelos = await page.evaluate(() => (document.querySelector('div[data-tab="modelos"]') || {innerText: ''}).innerText);
+    conferir('a aba Modelos do editor lista os quatro modelos do módulo', ['Simples', 'Largura total', 'Campanha', 'Painel com navegação'].every(n => abaModelos.includes('Página de Lousa - ' + n)), abaModelos.replace(/\s+/g, ' ').slice(0, 400));
+    await foto(page, '7-aba-modelos', true);
+    await page.click('a[data-tab="visualizacao-pagina"]');
+    await marcar('show_title', true);
+    for (const [modelo, seletor] of [['dashboard-pages-campanha', '.c2f-lousa-campanha'], ['dashboard-pages-painel', '.c2f-lousa-painel']]) {
+      await escolher('template_id', modelo);
+      await enviar();
+      await ver(NOVO);
+      const m = await publico.evaluate(s => { const r = document.querySelector(s); if (!r) return null; const l = r.querySelector('[data-c2f-lousa]');
+        return {lousa: !!l, itens: l ? l.children.length : 0, titulo: (r.querySelector('h1, .c2f-lousa-painel-nome') || {}).textContent || null, links: [...r.querySelectorAll('a.c2f-lousa-campanha-botao, .c2f-lousa-painel-menu a')].map(a => a.getAttribute('href')),
+          selo: (r.querySelector('.c2f-lousa-campanha-selo') || {}).textContent || null, rodape: !!r.querySelector('.c2f-lousa-campanha-chamada, .c2f-lousa-painel-rodape'), cru: r.innerHTML.includes('[[') || r.innerHTML.includes('@[['), lateral: document.documentElement.scrollWidth <= innerWidth + 1}; }, seletor);
+      conferir('modelo ' + modelo + ' no ar: estrutura dele, título, lousa no lugar e links resolvidos', !!m && m.lousa && m.itens >= 1 && m.titulo === 'Oferta <b>de</b> outubro' && m.rodape && !m.cru && m.lateral && m.links.length >= 1 && m.links.every(h => /^(#|\/)/.test(h)) && m.links.some(h => h.endsWith('contato/')), m);
+      await foto(publico, modelo === 'dashboard-pages-campanha' ? '8-modelo-campanha' : '9-modelo-painel', true);
+    }
+    await publico.setViewportSize({width: 390, height: 800}); await publico.waitForTimeout(400);
+    conferir('modelo com navegação em 390 px sem rolagem lateral', await publico.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    await publico.setViewportSize({width: 1366, height: 900});
+
     // ----- Recusas
     await page.goto(base + '/dashboard-pages/adicionar/', {waitUntil: 'networkidle'});
     await page.fill('input[name="nome"]', NOME + ' repetida'); await page.fill('input[name="caminho"]', NOVO);

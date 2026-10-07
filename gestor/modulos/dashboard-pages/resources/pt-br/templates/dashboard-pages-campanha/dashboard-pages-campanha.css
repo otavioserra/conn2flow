@@ -1,0 +1,12 @@
+/* Página de lousa, modelo de campanha: faixa de abertura com rótulo, lousa e chamada final com botão. */
+.c2f-lousa-campanha { max-width: 1280px; margin: 0 auto; padding: 0 16px 48px; }
+.c2f-lousa-campanha-topo { padding: 48px 0 32px; text-align: center; }
+.c2f-lousa-campanha-selo { display: inline-block; margin-bottom: 16px; padding: 4px 14px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.c2f-lousa-campanha-titulo { margin: 0; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; }
+.c2f-lousa-campanha-sub { max-width: 640px; margin: 16px auto 0; font-size: 1.1rem; line-height: 1.5; opacity: 0.8; }
+.c2f-lousa-campanha-corpo { padding: 8px 0 32px; }
+.c2f-lousa-campanha-chamada { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 28px; border-radius: 16px; background: #0f172a; color: #f8fafc; }
+.c2f-lousa-campanha-chamada strong { display: block; font-size: 1.25rem; }
+.c2f-lousa-campanha-chamada p { margin: 4px 0 0; opacity: 0.8; }
+.c2f-lousa-campanha-botao { display: inline-flex; align-items: center; padding: 12px 24px; border-radius: 999px; background: #0ea5e9; color: #fff; font-weight: 700; text-decoration: none; }
+.c2f-lousa-campanha-botao:hover { filter: brightness(1.08); }

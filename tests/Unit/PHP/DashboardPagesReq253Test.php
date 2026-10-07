@@ -215,7 +215,15 @@ PHP;
             foreach (array_slice($r['pages'], 1) as $comEditor) {
                 self::assertContains('html-editor-tailwind', array_column($comEditor['tailwind_dependencies'], 'id'), $lang . ' ' . $comEditor['id']);
             }
-            self::assertSame(['dashboard-pages', 'dashboard-pages'], array_column($r['templates'], 'target'));
+            // REQ-255: quatro modelos e o modo IA do alvo.
+            self::assertSame(['dashboard-pages-simples', 'dashboard-pages-largura-total', 'dashboard-pages-campanha', 'dashboard-pages-painel'], array_column($r['templates'], 'id'));
+            self::assertSame(['dashboard-pages'], array_unique(array_column($r['templates'], 'target')));
+            self::assertSame([['id' => 'dashboard-pages', 'target' => 'dashboard-pages', 'default' => true]], array_map(static fn ($m) => ['id' => $m['id'], 'target' => $m['target'], 'default' => $m['default']], $r['ai_modes']));
+            self::assertSame(['dashboard-pages'], array_column($r['ai_prompts_targets'], 'id'));
+            $modo = (string) file_get_contents(self::MODULO . "resources/$lang/ai_modes/dashboard-pages/dashboard-pages.md");
+            foreach (['[[lousa#widget]]', '[[lousa#titulo]]', '<!-- lousa-titulo < -->', '<!-- lousa-titulo > -->', '[[pagina#url-raiz]]'] as $regra) {
+                self::assertStringContainsString($regra, $modo, "$lang $regra");
+            }
             $variaveis = array_column($r['variables'], 'id');
             foreach ($usadas as $id) {
                 self::assertContains($id, $variaveis, "$lang $id");
