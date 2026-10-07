@@ -1,7 +1,7 @@
 # BL-029 — Erro intermitente na suíte PHPUnit no Windows (suspeita: bloqueio do antivírus)
 
 - **Tipo**: Spike/Research (Reliability/Testing)
-- **Status**: ICEBOX
+- **Status**: RESOLVIDO (2026-10-07) — causa identificada no mesmo dia; não era o antivírus nem defeito do produto
 - **Severidade sugerida**: BAIXA
 - **Origem**: Executor, 2026-10-07, nas entregas da REQ-252 e da REQ-253 (linha 3.1); hipótese do Humano no mesmo dia.
 - **Componentes**: `tests/Unit/PHP/*` que rodam PHP num processo à parte (arquivo temporário + `exec`), ambiente Windows do desenvolvedor.
@@ -33,3 +33,15 @@ Isso é suposição: não há registro que ligue o aviso do Windows ao horário 
 ## Fora do escopo
 
 Mudar o antivírus da máquina do desenvolvedor sem ele.
+
+## Resultado (2026-10-07)
+
+O erro foi capturado na entrega da REQ-254: `CoreHelpersTest::testCriptografiaBasicaComChavesRsa`, com `error:07000072:configuration file routines::no such file` ao gerar a chave.
+
+**Causa**: o Executor roda a suíte no Git Bash com `OPENSSL_CONF` apontando para o `openssl.cnf` do PHP, e o Git Bash converte esse caminho para o formato do Windows ao chamar o PHP. Os roteiros de navegador exigem `MSYS_NO_PATHCONV=1`, que desliga essa conversão. Quando a suíte rodava no mesmo comando dos roteiros, o PHP recebia `/c/Users/...` e não achava o arquivo.
+
+**Conferência**: o mesmo teste, 3 execuções sem a variável (3 passam) e 3 com ela (3 falham). É determinístico.
+
+**Consequência**: a hipótese do antivírus não se confirmou para este erro. O aviso de vírus do Windows continua sem explicação e não foi investigado aqui. Nada a mudar no produto; o Executor deixou de exportar a variável no comando da suíte.
+
+Melhoria opcional, se um dia valer a pena: o teste (ou `autenticacao.php`) aceitar o caminho nos dois formatos, para a suíte não depender do terminal.
