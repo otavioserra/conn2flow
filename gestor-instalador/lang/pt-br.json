@@ -105,5 +105,6 @@
     "healthcheck_copy": "Copiar configuração",
     "healthcheck_copied": "Copiado!",
     "healthcheck_sample_file": "Exemplo completo salvo no servidor:",
-    "healthcheck_error": "Não foi possível executar a verificação de pré-requisitos."
+    "healthcheck_error": "Não foi possível executar a verificação de pré-requisitos.",
+    "public_access_failed": "Os arquivos foram instalados, mas a página inicial não respondeu com conteúdo. Confira a rota do domínio no proxy, o certificado, o Nginx e os logs do PHP antes de liberar o site."
 }

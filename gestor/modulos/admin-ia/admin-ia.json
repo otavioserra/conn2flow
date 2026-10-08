@@ -79,7 +79,7 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.20",
+                    "version": "1.21",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -105,10 +105,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c084f8a34db84df1a0aa020ad982dab1",
+                        "html": "f0da4b77f15ec5c6edbc68f939556317",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "c084f8a34db84df1a0aa020ad982dab1"
+                        "combined": "f0da4b77f15ec5c6edbc68f939556317"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -120,7 +120,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.25",
+                    "version": "1.26",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -146,10 +146,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "846ebb2f5d5bd282fea125b16e3b18ec",
+                        "html": "8785fa08a9feb2d6eb2a2b0c9e58205b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "846ebb2f5d5bd282fea125b16e3b18ec"
+                        "combined": "8785fa08a9feb2d6eb2a2b0c9e58205b"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -571,7 +571,7 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.21",
+                    "version": "1.22",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -597,10 +597,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c084f8a34db84df1a0aa020ad982dab1",
+                        "html": "f0da4b77f15ec5c6edbc68f939556317",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "c084f8a34db84df1a0aa020ad982dab1"
+                        "combined": "f0da4b77f15ec5c6edbc68f939556317"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -612,7 +612,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.24",
+                    "version": "1.25",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -638,10 +638,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "846ebb2f5d5bd282fea125b16e3b18ec",
+                        "html": "8785fa08a9feb2d6eb2a2b0c9e58205b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "846ebb2f5d5bd282fea125b16e3b18ec"
+                        "combined": "8785fa08a9feb2d6eb2a2b0c9e58205b"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -1002,5 +1002,5 @@
             ]
         }
     },
-    "asset_version": "48f3e113578aef11"
+    "asset_version": "67ec5369c9e8a9cb"
 }

@@ -105,5 +105,6 @@
     "healthcheck_copy": "Copy configuration",
     "healthcheck_copied": "Copied!",
     "healthcheck_sample_file": "Full example saved on the server:",
-    "healthcheck_error": "The prerequisite check could not be executed."
+    "healthcheck_error": "The prerequisite check could not be executed.",
+    "public_access_failed": "The files were installed, but the homepage did not return content. Check the domain route in the proxy, certificate, Nginx and PHP logs before making the site available."
 }

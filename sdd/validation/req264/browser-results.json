@@ -1,0 +1,114 @@
+[
+  {
+    "name": "1280: HTTP 200",
+    "ok": true
+  },
+  {
+    "name": "1280: template rendered",
+    "ok": true,
+    "detail": "Seu site está no ar.Agora é com você."
+  },
+  {
+    "name": "1280: login and dashboard routes",
+    "ok": true,
+    "detail": {
+      "login": "/signin/",
+      "dashboard": "/dashboard/"
+    }
+  },
+  {
+    "name": "1280: no unresolved variables",
+    "ok": true
+  },
+  {
+    "name": "1280: no horizontal overflow",
+    "ok": true,
+    "detail": 0
+  },
+  {
+    "name": "1280: navy background",
+    "ok": true,
+    "detail": "rgb(10, 20, 40)"
+  },
+  {
+    "name": "1280: supplied logo loaded",
+    "ok": true
+  },
+  {
+    "name": "1280: no browser errors",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "name": "1280: signin/ responds",
+    "ok": true,
+    "detail": {
+      "status": 200,
+      "path": "/signin/"
+    }
+  },
+  {
+    "name": "1280: dashboard/ responds",
+    "ok": true,
+    "detail": {
+      "status": 200,
+      "path": "/signin"
+    }
+  },
+  {
+    "name": "390: HTTP 200",
+    "ok": true
+  },
+  {
+    "name": "390: template rendered",
+    "ok": true,
+    "detail": "Seu site está no ar.Agora é com você."
+  },
+  {
+    "name": "390: login and dashboard routes",
+    "ok": true,
+    "detail": {
+      "login": "/signin/",
+      "dashboard": "/dashboard/"
+    }
+  },
+  {
+    "name": "390: no unresolved variables",
+    "ok": true
+  },
+  {
+    "name": "390: no horizontal overflow",
+    "ok": true,
+    "detail": 0
+  },
+  {
+    "name": "390: navy background",
+    "ok": true,
+    "detail": "rgb(10, 20, 40)"
+  },
+  {
+    "name": "390: supplied logo loaded",
+    "ok": true
+  },
+  {
+    "name": "390: no browser errors",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "name": "390: signin/ responds",
+    "ok": true,
+    "detail": {
+      "status": 200,
+      "path": "/signin/"
+    }
+  },
+  {
+    "name": "390: dashboard/ responds",
+    "ok": true,
+    "detail": {
+      "status": 200,
+      "path": "/signin"
+    }
+  }
+]

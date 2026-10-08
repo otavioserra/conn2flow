@@ -1593,6 +1593,96 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-status",
+        "valor": "Instalação pronta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-eyebrow",
+        "valor": "Bem-vindo ao seu novo espaço",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-title",
+        "valor": "Seu site está no ar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-title-accent",
+        "valor": "Agora é com você.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-lead",
+        "valor": "Tudo pronto para começar. Entre na sua conta para criar páginas, organizar conteúdos e dar a este espaço a sua identidade.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-login",
+        "valor": "Fazer login",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-dashboard",
+        "valor": "Abrir Dashboard",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-template-title",
+        "valor": "Esta é a sua página inicial de exemplo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-template-text",
+        "valor": "Este template acompanha a instalação do Conn2Flow. No painel, abra Páginas e edite a Página Raiz do Sistema para trocar este conteúdo pela sua própria página inicial.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "installation-home-footer",
+        "valor": "Um ponto de partida para suas ideias.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -3181,6 +3271,96 @@
         "modulo": null,
         "id": "topbar-dashboard",
         "valor": "Dashboard",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-status",
+        "valor": "Installation ready",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-eyebrow",
+        "valor": "Welcome to your new space",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-title",
+        "valor": "Your site is live.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-title-accent",
+        "valor": "Make it your own.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-lead",
+        "valor": "Everything is ready to begin. Sign in to create pages, organize content and give this space your own identity.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-login",
+        "valor": "Sign in",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-dashboard",
+        "valor": "Open Dashboard",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-template-title",
+        "valor": "This is your sample homepage",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-template-text",
+        "valor": "This template comes with your Conn2Flow installation. In the dashboard, open Pages and edit the System Root Page to replace this content with your own homepage.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "installation-home-footer",
+        "valor": "A starting point for your ideas.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
