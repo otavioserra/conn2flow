@@ -32,6 +32,7 @@
 | [BL-028](BL-028-atualizacao-segura-choques-backup-rollback.md) | Epic/Architecture | PROMOTED | Atualização segura: core canibalizável com choques registrados, exclusão de dados no ambiente, backup, rollback e trava de deploy | Promovido para req-197 a req-201 e req-245 (fases de infraestrutura avançada para Linha 3.1) | 2026-10-06 |
 | [BL-029](BL-029-phpunit-erro-intermitente-windows.md) | Spike/Reliability | RESOLVIDO | Erro intermitente na suíte PHPUnit no Windows (suspeita: bloqueio do antivírus) | Causa achada: comando de teste (`MSYS_NO_PATHCONV` com `OPENSSL_CONF`); nada a mudar no produto | 2026-10-07 |
 | [BL-030](BL-030-layouts-legados-email-impressao-iframe.md) | Architecture/Maintainability | ICEBOX | Aposentar ou marcar como legado os layouts de e-mail, impressão e iframe | Decidir entre esconder das listas, marcar legado ou remover | 2026-10-07 |
+| [BL-031](BL-031-eventos-gateways-ecommerce-unificado.md) | Architecture/Reliability | ICEBOX | Eventos duráveis dos gateways e unificação dos e-commerces de produtos e assinaturas | Aguardar nova requisição do humano; entrega atual preserva a estrutura existente | 2026-10-08 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 

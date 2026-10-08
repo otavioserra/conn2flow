@@ -17,6 +17,26 @@
 
 define('STRIPE_API_VERSION', '2024-06-20');
 
+/** IDs da mesma cobrança; nunca usa customer/subscription como identidade financeira. */
+function stripe_transacao_referencias($objeto){
+    $refs = [];
+    $adicionar = function ($valor) use (&$refs) {
+        if (is_array($valor)) $valor = $valor['id'] ?? '';
+        if (!is_string($valor) || !preg_match('/^(pi|ch|in)_[A-Za-z0-9]+$/', $valor, $m)) return;
+        $tipos = ['pi' => 'payment_intent', 'ch' => 'charge', 'in' => 'invoice'];
+        $refs[$valor] = ['type' => $tipos[$m[1]], 'value' => $valor];
+    };
+    $adicionar($objeto['id'] ?? '');
+    foreach (['payment_intent', 'latest_charge', 'charge', 'invoice'] as $campo) $adicionar($objeto[$campo] ?? '');
+    $adicionar($objeto['payment']['payment_intent'] ?? '');
+    $adicionar($objeto['payment']['charge'] ?? '');
+    foreach (($objeto['payments']['data'] ?? []) as $pagamento) {
+        $adicionar($pagamento['payment']['payment_intent'] ?? '');
+        $adicionar($pagamento['payment']['charge'] ?? '');
+    }
+    return array_values($refs);
+}
+
 function stripe_log_registro($logData = []){
     gestor_incluir_biblioteca('log');
     log_disco((is_array($logData) ? json_encode($logData, JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR) : (string)$logData), 'stripe');

@@ -134,6 +134,19 @@ function comunicacao_impressao($params = false){
  * 
  * @return bool|string True se enviado com sucesso, string com erro se falhar, false se email desativado.
  */
+/** Fallback corporativo antes de resolver imagens, preservando valores já personalizados. */
+function comunicacao_email_marca($html){
+	global $_GESTOR, $_CONFIG;
+	$nome = trim((string)($_GESTOR['modulo-config']['nome-site'] ?? ''));
+	if ($nome === '') $nome = trim((string)($_CONFIG['email']['sender']['fromName'] ?? ''));
+	if ($nome === '') $nome = 'Conn2Flow';
+	return str_replace(
+		['#brand_name#', '#brand_logo#', '#v1brand_logo#', '#logo_url#'],
+		[htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'), '@[[pagina#url-raiz]]@images/Logomarca200.png', '@[[pagina#url-raiz]]@images/Logomarca200.png', '@[[pagina#url-raiz]]@images/Logomarca200.png'],
+		(string)$html
+	);
+}
+
 function comunicacao_email($params = false){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -414,6 +427,11 @@ function comunicacao_email($params = false){
 				$message['body'] = $mensagem['htmlCompleto'];
 			}
 			
+			gestor_incluir_biblioteca('formulario');
+			$imagensMarca = formulario_email_processar_imagens($message['body']);
+			$message['body'] = $imagensMarca['html'];
+			$message['embeddedImgs'] = array_merge($message['embeddedImgs'] ?? [], $imagensMarca['imagens'] ?? []);
+
 			//Instantiation and passing `true` enables exceptions
 			$mail = new PHPMailer(true);
 

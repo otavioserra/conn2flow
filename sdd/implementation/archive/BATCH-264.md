@@ -1,6 +1,6 @@
 # BATCH-264 — Linha 3.1: mais modelos e modo IA nas "Páginas de Lousa"
 
-- **Requisição:** [REQ-255](../human-requests/req-255.md)
+- **Requisição:** [REQ-255](../../human-requests/archive/req-255.md)
 - **Status:** `implemented-pending-homologation`
 - **Linha:** `3.1` (branch `feat/req-255`, entregue na `3.1`). Não está na `main` nem na `3.0`.
 - **Data:** 2026-10-07

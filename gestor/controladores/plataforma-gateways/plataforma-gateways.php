@@ -389,7 +389,7 @@ function plataforma_gateways_stripe_webhook() {
             'data' => Array('event_type' => $data['type'] ?? 'unknown', 'module' => $modulo_id),
         ));
 
-        plataforma_gateways_disparar_hook('stripe', 'webhook', Array(
+        $resultadoWebhook = plataforma_gateways_disparar_hook('stripe', 'webhook', Array(
             'event_type'       => $data['type'] ?? 'unknown',
             'resource'         => $data['data']['object'] ?? null,
             'event_data'       => $data,
@@ -397,6 +397,8 @@ function plataforma_gateways_stripe_webhook() {
             'signature_header' => $signature,
             'raw_body'         => $payload,
         ), $modulo_id);
+
+        plataforma_gateways_stripe_confirmar_recebimento($resultadoWebhook);
 
         plataforma_gateways_resposta_sucesso(Array(
             'event_id' => $data['id'] ?? null,
@@ -426,11 +428,13 @@ function plataforma_gateways_stripe_webhook() {
         'message' => 'Webhook validado', 'data' => Array('event_type' => $evento['type'] ?? 'unknown'),
     ));
 
-    plataforma_gateways_disparar_hook('stripe', 'webhook', Array(
+    $resultadoWebhook = plataforma_gateways_disparar_hook('stripe', 'webhook', Array(
         'event_type' => $evento['type'] ?? 'unknown',
         'resource'   => $evento['data']['object'] ?? null,
         'event_data' => $evento,
     ));
+
+    plataforma_gateways_stripe_confirmar_recebimento($resultadoWebhook);
 
     plataforma_gateways_resposta_sucesso(Array(
         'event_id' => $evento['id'] ?? null,
@@ -839,6 +843,14 @@ function plataforma_gateways_carregar_hook($modulo_id, $plugin_id, $hook_name) {
  * @param string|null $modulo_id_alvo ID do módulo específico (null = broadcast)
  * @return array|null Resultado do processamento ou null
  */
+function plataforma_gateways_stripe_confirmar_recebimento($resultado){
+    if (!empty($resultado['processed'])) return;
+    $motivo = $resultado['reason'] ?? 'receiver-unavailable';
+    if (in_array($motivo, ['invalid-signature', 'missing-webhook-secret'], true)) plataforma_gateways_401('Invalid webhook signature');
+    // Evento sem assinatura local ainda precisa de reentrega para aplicar o estado.
+    plataforma_gateways_resposta_erro(503, 'Webhook processing incomplete');
+}
+
 function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $modulo_id_alvo = null) {
     global $_GESTOR;
     
@@ -894,6 +906,8 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $
                     'action' => $action,
                     'data' => $data,
                 ));
+
+                if ($gateway === 'stripe' && $action === 'webhook' && is_array($resultado_modulo)) $resultado = $resultado_modulo;
                 
                 // Se o módulo retornou um resultado com redirect_url, usar ele
                 if (isset($resultado_modulo['redirect_url'])) {
@@ -905,6 +919,7 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $
                     break;
                 }
             } catch (Exception $e) {
+                if ($gateway === 'stripe' && $action === 'webhook') $resultado = Array('processed' => false, 'reason' => 'receiver-error');
                 plataforma_gateways_log(Array(
                     'gateway' => $gateway,
                     'endpoint' => 'hook',

@@ -228,6 +228,9 @@ function formulario_incluir_js($params = false){
  */
 function formulario_email_processar_imagens($html) {
     global $_GESTOR;
+
+    gestor_incluir_biblioteca('comunicacao');
+    $html = comunicacao_email_marca($html);
     
     $imagens = [];
     $contador = 0;
@@ -244,7 +247,7 @@ function formulario_email_processar_imagens($html) {
         $caminhoOriginal = $matches[1];
         
         // Extrair o caminho relativo removendo @[[pagina#url-raiz]]@
-        $caminhoRelativo = str_replace('@[[pagina#url-raiz]]@', '', $caminhoOriginal);
+        $caminhoRelativo = explode('?', str_replace('@[[pagina#url-raiz]]@', '', $caminhoOriginal))[0];
         
         // Tentar encontrar o arquivo nos caminhos possíveis
         $caminhoAbsoluto = null;
@@ -264,7 +267,7 @@ function formulario_email_processar_imagens($html) {
         // Se encontrou o arquivo, adicionar ao array de imagens
         if($caminhoAbsoluto){
             // Gerar CID único
-            $cid = 'img-' . $contador;
+            $cid = 'img-' . bin2hex(random_bytes(8)) . '-' . $contador;
             
             // Adicionar ao array de imagens
             $imagens[] = [
@@ -277,7 +280,9 @@ function formulario_email_processar_imagens($html) {
             return 'src="cid:' . $cid . '"';
         } else {
             // Se não encontrou, manter o src original (não processar)
-            return $matches[0];
+            $base = (string)($_GESTOR['url-full-http'] ?? '');
+            if (!preg_match('#^https?://#i', $base)) return $matches[0];
+            return 'src="'.htmlspecialchars(rtrim($base, '/').'/'.ltrim($caminhoRelativo, '/'), ENT_QUOTES, 'UTF-8').'"';
         }
     }, $html);
     

@@ -21,12 +21,12 @@
         "path": "\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.8",
+        "version": "1.9",
         "checksum": {
-            "html": "6ffcb0649becfbb772c2726743e42895",
-            "css": "41ed539dd68a9ccd3d6a0787d7deb18c",
+            "html": "cc8b5ea70cdbb0aeeebaac0bfba424e3",
+            "css": "b080311393b3446c39e6dcc04ce46b98",
             "css_precompiled": "",
-            "combined": "56d36f55c2d291d41ddf8464ea414f7b"
+            "combined": "cd3340601210686eed66a08e2ba725aa"
         }
     },
     {

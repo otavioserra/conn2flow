@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-08",
+  "php": {"tests": 1763, "assertions": 20606, "failures": 0, "errors": 0, "deprecations": 4, "phpunit_deprecations": 4, "skipped": 5},
+  "javascript": {"files": 60, "tests": 664, "failures": 0},
+  "lab_project": "conn2flow-site-local",
+  "deployment": "project:update-all completed; maintenance disabled",
+  "resources_sync": {"exit_code": 0, "resources": 4341},
+  "related_site_evidence": "conn2flow-site/sdd/validation/req122",
+  "environment": "Windows PHP with Git OPENSSL_CONF; npm.cmd; legacy source regex requires LF",
+  "new_checkout_and_smtp": "not exercised; isolated replay and existing sandbox subscription used"
+}

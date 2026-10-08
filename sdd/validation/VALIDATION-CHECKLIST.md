@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-274 — REQ-265
+
+- [x] Trava/transação e aliases financeiros; marca e logo resolvidos; falhas de webhook recebem 401/503.
+- [x] Recursos sincronizados, 1.763 testes PHP e 664 JS aprovados; pipeline completo publicado no Lab.
+- [x] Logo com CID e arquivo absoluto existente; telas com duas cobranças e histórico recuperado.
+- [x] Nova arquitetura de eventos e unificação registradas em backlog, sem nova tabela nesta entrega.
+- [x] Evidências e limites no [BATCH-274](../implementation/BATCH-274.md); revisão e arquivos explícitos.
+- [ ] Homologação humana global.
+
+---
+
 ## BATCH-273 — REQ-264
 
 - [x] Requisitos implementados e revisados, inclusive adendos humanos.
@@ -143,7 +154,7 @@ Detalhes: [BATCH-267](../implementation/BATCH-267.md).
 - [ ] Assistente IA com um servidor de IA configurado.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-264](../implementation/BATCH-264.md).
+Detalhes: [BATCH-264](../implementation/archive/BATCH-264.md).
 
 ---
 
