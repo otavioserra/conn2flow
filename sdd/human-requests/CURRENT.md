@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-264.md](req-264.md) (BATCH-273 `ready-for-intake`, 2026-10-08, multi-repo — Opus 5.5 Flagship / Autônomo Monitorado): Apoio Core — Ajustes no Checkout Multi-Etapas, Variáveis de E-mail e Suporte a Tenants no Lab (Go-Live 3.0), coordenado com a REQ-121 do Site.
   - [req-263.md](req-263.md) (BATCH-272 `implemented-pending-homologation`, 2026-10-08, Core, nas três branches; testes em `https://conn2flow.local/` e `https://v3.1-conn2flow.local/`): índice de idioma + caminho em `paginas`. A busca da página pelo caminho, que roda em toda requisição, percorria todas as páginas do idioma carregando HTML e CSS; depois de cada publicação o site passava de 70 ms para 0,4 a 0,9 s. Com o índice: 1 linha examinada, zero leitura de disco, cerca de 60 ms.
   - [req-262.md](req-262.md) (BATCH-271 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.0`, nas três branches): pontos de extensão do uso de IA na camada de provedores — autorizar o pedido antes da chamada e pedido concluído com o consumo. Base da REQ-116 do site (créditos de IA por perfil).
   - [req-261.md](req-261.md) (BATCH-270 `implemented-pending-homologation`, 2026-10-07, Core — linha `3.0`, nas três branches): ponto de extensão geral das telas do painel (`interface` / `pagina`), para um módulo acrescentar um recurso a qualquer tela. Base da REQ-114 do site (IA nos campos de formulário).
