@@ -3,7 +3,7 @@
 - Projeto: conn2flow, `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`.
 - Branch: `feat/req-238`; autonomia: `autonomo_monitorado`.
 - Status: implemented-pending-homologation; validação técnica em 2026-10-05.
-- Escopo: [REQ-238](../human-requests/req-238.md), blocos A–D; Site coordenado no [BATCH-098](../../../conn2flow-site/sdd/implementation/BATCH-098.md).
+- Escopo: [REQ-238](../../human-requests/archive/req-238.md), blocos A–D; Site coordenado no [BATCH-098](BATCH-098.md).
 
 ## Live Todo List
 
@@ -47,9 +47,9 @@ O primeiro pipeline revelou manifestos/partes de sementes do Site sobrevivendo �
 | Pipeline Lab | project:update-all conn2flow-site-local --confirmar-remoto: saída 0, css:rebuild executado, manutenção desligada |
 | Conteúdo do Lab | 775 arquivos de código comparados, nenhuma diferença nem sobra após normalização bilateral CRLF/LF |
 
-Inventário: [req238-validation.json](../validation/req238-validation.json). Scripts reproduzíveis e screenshots estão em [validation](../validation/req238-browser.cjs) e [evidence-req238](../validation/evidence-req238/modules.json). Inspeção visual incluiu todas as capturas desktop/mobile e os estados reais de widgets, perfil e abas.
+Inventário: [req238-validation.json](../../validation/req238-validation.json). Scripts reproduzíveis e screenshots estão em [validation](../../validation/req238-browser.cjs) e [evidence-req238](../../validation/evidence-req238/modules.json). Inspeção visual incluiu todas as capturas desktop/mobile e os estados reais de widgets, perfil e abas.
 
-Avisos não bloqueantes: PHPUnit registra 4 depreciações, 3 depreciações PHPUnit e 4 testes pulados da suíte existente. O pipeline avisa sobre JS vazio de admin-categorias, páginas públicas sem bundle e ausência de ssh_public_path opcional. project:verify acusa 295 diferenças por comparar CRLF remoto com LF local sem normalizar ambos: [comparação complementar](../validation/req238-code-hashes.php) demonstra conteúdo idêntico nos 775 arquivos. O comando de produção não foi alterado para ampliar o escopo desta requisição.
+Avisos não bloqueantes: PHPUnit registra 4 depreciações, 3 depreciações PHPUnit e 4 testes pulados da suíte existente. O pipeline avisa sobre JS vazio de admin-categorias, páginas públicas sem bundle e ausência de ssh_public_path opcional. project:verify acusa 295 diferenças por comparar CRLF remoto com LF local sem normalizar ambos: [comparação complementar](../../validation/req238-code-hashes.php) demonstra conteúdo idêntico nos 775 arquivos. O comando de produção não foi alterado para ampliar o escopo desta requisição.
 
 ## Governança
 

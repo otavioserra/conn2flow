@@ -1,6 +1,6 @@
 # BATCH-245 — Integração Tailwind e Dashboard V3.1
 
-- Requisição: [req-236](../human-requests/archive/req-236.md).
+- Requisição: [req-236](../../human-requests/archive/req-236.md).
 - Status: in-review.
 - Repositório: `conn2flow`, `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`.
 - Branch de implementação: `feat/req-236`; integrações sequenciais realizadas em `main`.
@@ -38,9 +38,9 @@ Corrigidos metadados herdados com motivos de fontes/dependências ausentes e ref
 
 Pipeline oficial completo concluído no Lab, sequencialmente, com CSS reconstruído e manutenção desligada. A origem temporária do Site no `environment.json` ignorado foi restaurada após os comandos do Lab; o checkout original do Site e o stash do Core foram preservados.
 
-- Dashboard: **17/17**, incluindo capas reais 176/232px, tooltip, edição, resize por mouse, duas instâncias persistidas, documento isolado do widget e 390px. [Resultados](../validation/evidence-req236/dashboard.json).
+- Dashboard: **17/17**, incluindo capas reais 176/232px, tooltip, edição, resize por mouse, duas instâncias persistidas, documento isolado do widget e 390px. [Resultados](../../validation/evidence-req236/dashboard.json).
 - Site: **88/88**, 29 telas em desktop/390px, sem assets Fomantic ou erros de script. Cinco registros temporários e sua página associada foram criados por formulários com CSRF e removidos pelos controles oficiais; preferências do Dashboard restauradas.
-- SQL: **316 páginas administrativas, zero resíduos visuais**; páginas/layouts sem resíduos. [Auditoria completa agregada](../validation/req236-css-report.json) registra também **160 resíduos em componentes e dois em templates**, além de proveniência stale e classes sem regra do acervo. A auditoria global não está integralmente limpa.
+- SQL: **316 páginas administrativas, zero resíduos visuais**; páginas/layouts sem resíduos. [Auditoria completa agregada](../../validation/req236-css-report.json) registra também **160 resíduos em componentes e dois em templates**, além de proveniência stale e classes sem regra do acervo. A auditoria global não está integralmente limpa.
 
 Revisão findings-first corrigiu isolamento CSS/JS dos widgets com iframe, seletores do editor, fonte de ícones Fomantic, CSV de campos com espaços que omitia rótulos, lista legada do histórico e marcadores/rótulos não resolvidos em Apps Sociais. O roteiro verifica também texto visível não resolvido e seleciona explicitamente a aba antes de medir capas. Os 14 módulos de autoria REQ-100 presentes no checkout original foram preservados no worktree para evitar regressão do Lab; sua homologação funcional completa não faz parte deste lote.
 

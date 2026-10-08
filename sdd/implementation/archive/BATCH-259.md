@@ -1,6 +1,6 @@
 # BATCH-259 — Linha 3.1, fase 1 da lousa: objetos livres, esconder por largura, imagem de fundo e Google Fonts
 
-- **Requisição:** [REQ-250](../human-requests/req-250.md)
+- **Requisição:** [REQ-250](../../human-requests/archive/req-250.md)
 - **Status:** `implemented-pending-homologation`
 - **Linha:** `3.1` (branch `feat/req-250`, entregue na `3.1`). Não está na `main` nem na `3.0`.
 - **Data:** 2026-10-07

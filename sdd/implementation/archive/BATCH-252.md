@@ -3,7 +3,7 @@
 - Status: implemented-pending-homologation. Os 17 itens do core implementados, publicados no Lab e validados em 2026-10-06.
 - Projeto: conn2flow
 - Raiz: `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow` (execução na worktree `conn2flow-req243`, branch `feat/req-243`)
-- Requisição: [REQ-243](../human-requests/req-243.md). Coordenação: conn2flow-site, REQ-108 / [BATCH-102](../../../conn2flow-site/sdd/implementation/BATCH-102.md).
+- Requisição: [REQ-243](../../human-requests/archive/req-243.md). Coordenação: conn2flow-site, REQ-108 / [BATCH-102](../../../../conn2flow-site/sdd/implementation/archive/BATCH-102.md).
 - Autonomia: `autonomo_monitorado`. Commit e push na branch de trabalho; `main` não foi tocada.
 
 ## Live Todo List

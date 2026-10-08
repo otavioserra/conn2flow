@@ -3,7 +3,7 @@
 - Status: implemented-pending-homologation. Pilares 1 a 6, os dois adendos (`admin-atualizacoes` e unificação dos arquivos no `admin-arquivos`) e a terceira rodada de ajustes implementados, publicados no Lab e validados em 2026-10-05 e 06.
 - Projeto: conn2flow
 - Raiz: `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`
-- Requisição: [REQ-240](../human-requests/req-240.md), com dois adendos do Engenheiro Chefe (seções 6 e 7). Coordenação: conn2flow-site, REQ-106 / [BATCH-100](../../../conn2flow-site/sdd/implementation/BATCH-100.md).
+- Requisição: [REQ-240](../../human-requests/archive/req-240.md), com dois adendos do Engenheiro Chefe (seções 6 e 7). Coordenação: conn2flow-site, REQ-106 / [BATCH-100](../../../../conn2flow-site/sdd/implementation/archive/BATCH-100.md).
 - Autonomia: `autonomo_monitorado`, com commit, merge e push autorizados pelo Engenheiro Chefe em 2026-10-05.
 
 ## Consolidação da REQ-239 / BATCH-248
@@ -115,7 +115,7 @@ O `arquivos` do site guardava registros em banco, isolava cada usuário numa pas
 | Varredura de navegador, 2ª rodada | círculos 0, ícones não desenhados 0, selects 0, cabeçalhos 0, overflow 0 |
 | `admin-atualizacoes` com interação | botão desabilitado até escolher o modo, rótulo traduzido, abas alternando, nenhum marcador cru, 17 ícones desenhados, sem overflow a 390 px |
 
-Roteiros: [varredura](../validation/req240-browser.cjs), [resumo](../validation/req240-browser-summary.cjs), [sonda](../validation/req240-probe.cjs). Dados: [resultado](../validation/archive/req240-browser-results.json) e [capturas](../validation/evidence-req240/resumo-segunda-varredura.txt). A varredura descobre as rotas nos manifestos; 72 das 257 redirecionam por precisar de um registro (telas de edição sem `id`), e nas listagens o roteiro segue o primeiro link de edição.
+Roteiros: [varredura](../../validation/req240-browser.cjs), [resumo](../../validation/req240-browser-summary.cjs), [sonda](../../validation/req240-probe.cjs). Dados: [resultado](../../validation/archive/req240-browser-results.json) e [capturas](../../validation/evidence-req240/resumo-segunda-varredura.txt). A varredura descobre as rotas nos manifestos; 72 das 257 redirecionam por precisar de um registro (telas de edição sem `id`), e nas listagens o roteiro segue o primeiro link de edição.
 
 ## Incidente no Lab durante a validação (2026-10-05)
 

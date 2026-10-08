@@ -60,7 +60,7 @@ REQ-100 concluída no Site, relatório BATCH-094. A responsabilidade por ambos o
 - Integridade de todas as 70 capas e preservação dos arquivos públicos/portal verificados. Derivados de compilação foram produzidos pelo pipeline; não houve edição funcional de páginas públicas/portal.
 - `git diff --check`: saída 0 nos dois repositórios; avisos de conversão LF/CRLF não são falhas de whitespace.
 
-Inventário verificável: [req237-validation.json](../validation/req237-validation.json); screenshots e checks em [Dashboard](../validation/evidence-req237/dashboard.json) e no Site `sdd/validation/painel-tailwind/evidence-req100/req100-e2e.json`.
+Inventário verificável: [req237-validation.json](../../validation/req237-validation.json); screenshots e checks em [Dashboard](../../validation/evidence-req237/dashboard.json) e no Site `sdd/validation/painel-tailwind/evidence-req100/req100-e2e.json`.
 
 Revisão `review-current-batch`: bugs de dispatch AJAX, chave de rota numérica, histórico Fomantic e toggle após SVG corrigidos e revalidados. Sem findings bloqueantes restantes. Avisos pré-existentes de minificação vazia, recursos públicos sem bundle e JS extras registrados no inventário. Homologação humana permanece pendente.
 
@@ -68,4 +68,4 @@ Revisão `review-current-batch`: bugs de dispatch AJAX, chave de rota numérica,
 
 Commits de implementação: Core `3f77e621391606396b9f7a94a9b026f540ea5c70`, Site `ff695bcc0a6b45481c94067f0744fed53d5d8a51`, ambos em `feat/req-237-exec`. Stage listou 141 caminhos no Core e 298 no Site, incluindo derivados consistentes do pipeline e evidências; nenhum arquivo de ambiente/cookie. As árvores estão limpas após atualização do cache de arquivos sem diferença semântica de LF/CRLF.
 
-Preservados os commits do outro agente `a26dfce8` e `8e7cb1c9`: a implementação Core foi reaplicada sobre essa base, com mudanças apenas de documentação entre as bases. Stash do Site mantido. Hashes e bases em [req237-commits.json](../validation/req237-commits.json). Apenas o Lab recebeu atualização; revisão humana anterior à integração final permanece pendente.
+Preservados os commits do outro agente `a26dfce8` e `8e7cb1c9`: a implementação Core foi reaplicada sobre essa base, com mudanças apenas de documentação entre as bases. Stash do Site mantido. Hashes e bases em [req237-commits.json](../../validation/req237-commits.json). Apenas o Lab recebeu atualização; revisão humana anterior à integração final permanece pendente.

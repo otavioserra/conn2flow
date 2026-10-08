@@ -1,6 +1,6 @@
 # BATCH-256 — Área de widgets do Dashboard: permissões, layout por perfil, layouts salvos e ferramentas do card
 
-- **Requisição:** [REQ-247](../human-requests/req-247.md)
+- **Requisição:** [REQ-247](../../human-requests/archive/req-247.md)
 - **Status:** `implemented-pending-homologation` (integrado na `main` em 2026-10-06, a pedido do Engenheiro Chefe)
 - **Branch:** `feat/req-247`, nascida da `integ/widget-apresentacao` (REQ-243, REQ-245, REQ-244 e as configurações por widget). Entra na `main` depois da consolidação da REQ-246.
 - **Data:** 2026-10-06

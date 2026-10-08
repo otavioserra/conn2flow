@@ -1,6 +1,6 @@
 # BATCH-260 — Linha 3.1, fase 2 da lousa: lousa nomeada, duplicar e versões
 
-- **Requisição:** [REQ-251](../human-requests/req-251.md)
+- **Requisição:** [REQ-251](../../human-requests/archive/req-251.md)
 - **Status:** `implemented-pending-homologation`
 - **Linha:** `3.1` (branch `feat/req-251`, entregue na `3.1`). Não está na `main` nem na `3.0`.
 - **Data:** 2026-10-07

@@ -12,7 +12,8 @@ final class HtmlEditorModelosInclusaoReq257Test extends TestCase
     /** Roda `html_editor_ajax_templates_load()` com o banco simulado e devolve as cláusulas usadas. */
     private function consultar(array $params): array
     {
-        $fonte = (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/html-editor.php');
+        // O recorte da função procura a quebra de linha: no Windows o arquivo pode estar com CRLF.
+        $fonte = str_replace("\r\n", "\n", (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/html-editor.php'));
         $inicio = strpos($fonte, 'function html_editor_ajax_templates_load(){');
         self::assertNotFalse($inicio);
         $fim = strpos($fonte, "\n}\n", $inicio);

@@ -23,9 +23,9 @@ Teste PHP atualizado falha no código anterior por ausência de .search-icon do 
 
 O teste JS de hidratação também foi executado com `C2F_DASHBOARD_SOURCE` apontando à fonte anterior: falha em `flex-col`, como esperado. No código final ele verifica ainda a ordem base → tema → compilador → CSS do widget.
 
-Roteiro de navegador: [widgets-browser.cjs](../validation/req244/widgets-browser.cjs). Preferências restauradas no finally.
+Roteiro de navegador: [widgets-browser.cjs](../../validation/req244/widgets-browser.cjs). Preferências restauradas no finally.
 
-Resultado final em 2026-10-06: [29/29 verificações](../validation/req244/evidencias/resultado.json), oito slides com cores/fontes/gradientes iguais à referência em 1366 e 390 px, setas/pontos/tela cheia, resize e cinco widgets adicionais. [Piloto no Dashboard](../validation/req244/evidencias/dashboard-piloto.png) e [referência](../validation/req244/evidencias/referencia.png). Sem exceções JS ou console.error. Pipeline final com saída 0, fontes deste lote sem divergência de hash; `css:rebuild` sem erros. Registro de métricas em [checks.json](../validation/req244/evidencias/checks.json).
+Resultado final em 2026-10-06: [29/29 verificações](../../validation/req244/evidencias/resultado.json), oito slides com cores/fontes/gradientes iguais à referência em 1366 e 390 px, setas/pontos/tela cheia, resize e cinco widgets adicionais. [Piloto no Dashboard](../../validation/req244/evidencias/dashboard-piloto.png) e [referência](../../validation/req244/evidencias/referencia.png). Sem exceções JS ou console.error. Pipeline final com saída 0, fontes deste lote sem divergência de hash; `css:rebuild` sem erros. Registro de métricas em [checks.json](../../validation/req244/evidencias/checks.json).
 
 ## Implementação e revisão
 

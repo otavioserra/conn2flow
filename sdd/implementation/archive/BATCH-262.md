@@ -1,6 +1,6 @@
 # BATCH-262 — Linha 3.1, fase 3B da lousa: módulo "Páginas de Lousa" (`dashboard-pages`)
 
-- **Requisição:** [REQ-253](../human-requests/req-253.md)
+- **Requisição:** [REQ-253](../../human-requests/archive/req-253.md)
 - **Status:** `implemented-pending-homologation`
 - **Linha:** `3.1` (branch `feat/req-253`, entregue na `3.1`). Não está na `main` nem na `3.0`.
 - **Data:** 2026-10-07

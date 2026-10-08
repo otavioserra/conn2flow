@@ -16,6 +16,15 @@
 
 ## Tarefas recentes
 
+### REQ-263 / BATCH-272 — site lento depois de publicar: faltava índice no caminho de `paginas` (2026-10-08)
+
+- **Sintoma**: tudo em ~70 ms e, depois de uma publicação, toda página PHP em 0,4 a 0,9 s, nos dois ambientes do mesmo servidor de banco; arquivo estático normal.
+- **Causa**: `WHERE caminho=… AND language=…` em `gestor.php` só tinha o índice de `language`. O InnoDB examinava as ~1.000 páginas do idioma e, como a consulta pede `html` e os CSS, lia o conteúdo de todas (68 MB por visita). Rápido só enquanto isso cabia no `innodb_buffer_pool_size` (128 MB no ambiente de teste; a tabela tem 220 MB).
+- **Como achar**: comparar `Innodb_buffer_pool_reads` antes e depois de uma requisição (número fixo e alto por visita denuncia varredura); ligar o registro de consultas lentas em tabela por alguns segundos (`log_output=TABLE`, `long_query_time=0.02`) e devolver a configuração.
+- **Hipóteses erradas que custaram tempo**: ociosidade, WSL e opcache. O opcache se confere por dentro do pool com `cgi-fcgi` e um script fora da pasta do site.
+- **Regra**: consulta que roda em toda requisição e pede coluna de conteúdo precisa de índice que leve a uma linha. `caminho` é TEXT: índice com prefixo (`'limit' => ['caminho' => 191]` no Phinx).
+- **Teste que recorta código-fonte por `"\n}\n"`** quebra quando o arquivo está com CRLF (checkout com `autocrlf`): normalizar o fim de linha antes de recortar.
+
 ### Histórico anterior
 
 BATCH-168, BATCH-174, BATCH-175, BATCH-178 e BATCH-180 (2026-09-15 a 2026-09-25: CSRF em XHR e renovação silenciosa, controle de acessos, suíte no ambiente `lab`, roteador e widgets) foram podados em 2026-10-02 por limite de tamanho. O registro integral está nos relatórios desses lotes em `sdd/implementation/` (ou `archive/`) e na versão `97a6bc9e` deste arquivo.

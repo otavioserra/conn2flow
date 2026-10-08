@@ -1,6 +1,6 @@
 # BATCH-258 — Widgets do Dashboard: navegação para fora do quadro, aba de widgets em primeiro e plano da lousa
 
-- **Requisição:** [REQ-249](../human-requests/req-249.md), coordenada com a REQ-111 / BATCH-105 do site
+- **Requisição:** [REQ-249](../../human-requests/archive/req-249.md), coordenada com a REQ-111 / BATCH-105 do site
 - **Status:** `implemented-pending-homologation`
 - **Branch:** `feat/req-249`
 - **Data:** 2026-10-06

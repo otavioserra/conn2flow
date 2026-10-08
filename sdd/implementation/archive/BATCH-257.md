@@ -1,6 +1,6 @@
 # BATCH-257 — Área de widgets com dois modos (grade e lousa), janela cheia, opções flutuantes e Tailwind 4.3.3
 
-- **Requisição:** [REQ-248](../human-requests/req-248.md)
+- **Requisição:** [REQ-248](../../human-requests/archive/req-248.md)
 - **Status:** `implemented-pending-homologation`
 - **Branch:** `feat/req-248`, a partir da `main` com a REQ-247 integrada.
 - **Data:** 2026-10-06

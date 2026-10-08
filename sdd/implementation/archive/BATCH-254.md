@@ -3,7 +3,7 @@
 - Status: implemented-pending-review. Implementado, publicado no Lab e validado em 2026-10-06; aguarda revisão da chefia e homologação humana.
 - Projeto: conn2flow
 - Raiz: `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow` (execução na worktree `conn2flow-req243`, branch `feat/req-245`, criada sobre `feat/req-243`)
-- Requisição: [REQ-245](../human-requests/req-245.md), que absorve a [REQ-241](../human-requests/req-241.md) (BATCH-250).
+- Requisição: [REQ-245](../../human-requests/archive/req-245.md), que absorve a [REQ-241](../../human-requests/archive/req-241.md) (BATCH-250).
 - Autonomia: `autonomo_monitorado`. Commit e push na branch de trabalho; na `main` entrou só a reserva da requisição.
 
 ## Live Todo List

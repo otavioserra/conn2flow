@@ -3,7 +3,7 @@
 - Status: implemented-pending-homologation. Os quatro blocos implementados, publicados no Lab e validados em 2026-10-06.
 - Projeto: conn2flow
 - Raiz: `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow` (execução na worktree `conn2flow-req242`, branch `feat/req-242`)
-- Requisição: [REQ-242](../human-requests/req-242.md). Coordenação: conn2flow-site, REQ-107 / [BATCH-101](../../../conn2flow-site/sdd/implementation/BATCH-101.md).
+- Requisição: [REQ-242](../../human-requests/archive/req-242.md). Coordenação: conn2flow-site, REQ-107 / [BATCH-101](../../../../conn2flow-site/sdd/implementation/archive/BATCH-101.md).
 - Autonomia: `autonomo_monitorado`. Commit e push na branch de trabalho; `main` não foi tocada.
 
 ## Live Todo List

@@ -38,10 +38,23 @@ Detalhes: [BATCH-265](../implementation/BATCH-265.md).
 - [x] Arquivamento mantém dez lotes ativos na raiz; links órfãos reparados nos dois repositórios.
 - [x] Revisão final e push das duas main.
 
-Detalhes: [BATCH-255](../implementation/BATCH-255.md), [suítes](req246/tests-summary.json) e [inventário](req246/history-inventory.json).
+Detalhes: [BATCH-255](../implementation/archive/BATCH-255.md), [suítes](req246/tests-summary.json) e [inventário](req246/history-inventory.json).
 
 
 > Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
+
+## BATCH-272 — REQ-263
+
+- [x] A busca da página pelo caminho usa `idx_paginas_language_caminho` e examina 1 linha (antes, 1.061).
+- [x] Zero leitura de disco no banco por visita (antes, 4.356).
+- [x] Primeiro byte logo após publicar: de 414 a 548 ms para 59 a 62 ms, nos dois ambientes de teste.
+- [x] PHPUnit 1.757.
+- [ ] Medição em produção depois de publicar; conferir a memória do banco lá.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-272](../implementation/BATCH-272.md).
+
+---
 
 ## BATCH-271 — REQ-262 (linha 3.0)
 
@@ -147,7 +160,7 @@ Detalhes: [BATCH-263](../implementation/BATCH-263.md).
 - [ ] Trocar lousa, layout e acesso na edição; modelo novo criado no `admin-templates`.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-262](../implementation/BATCH-262.md).
+Detalhes: [BATCH-262](../implementation/archive/BATCH-262.md).
 
 ---
 
@@ -162,7 +175,7 @@ Detalhes: [BATCH-262](../implementation/BATCH-262.md).
 - [ ] Menu, galeria, formulário e índice de páginas dentro de uma lousa publicada.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-261](../implementation/BATCH-261.md).
+Detalhes: [BATCH-261](../implementation/archive/BATCH-261.md).
 
 ---
 
@@ -176,7 +189,7 @@ Detalhes: [BATCH-261](../implementation/BATCH-261.md).
 - [ ] Conferir com um segundo administrador real (a instalação só tem um).
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-260](../implementation/BATCH-260.md).
+Detalhes: [BATCH-260](../implementation/archive/BATCH-260.md).
 
 ---
 
@@ -190,7 +203,7 @@ Detalhes: [BATCH-260](../implementation/BATCH-260.md).
 - [ ] Escolher um arquivo real no gerenciador (a instalação nova não tem arquivo enviado).
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-259](../implementation/BATCH-259.md).
+Detalhes: [BATCH-259](../implementation/archive/BATCH-259.md).
 
 ## BATCH-258 — REQ-249
 
@@ -200,7 +213,7 @@ Detalhes: [BATCH-259](../implementation/BATCH-259.md).
 - [x] PHPUnit 1.685 e Vitest 614 sem falhas; site 56 e 13; pipeline do Lab com saída 0; navegador 11/11.
 - [ ] Homologação humana; decisão sobre a ordem do plano da lousa.
 
-Detalhes: [BATCH-258](../implementation/BATCH-258.md).
+Detalhes: [BATCH-258](../implementation/archive/BATCH-258.md).
 
 ## BATCH-257 — REQ-248
 
@@ -212,7 +225,7 @@ Detalhes: [BATCH-258](../implementation/BATCH-258.md).
 - [x] Tailwind 4.3.3 fixado; PHPUnit 1.684 e Vitest 606 sem falhas; pipeline do Lab com saída 0; navegador 23/23.
 - [ ] `npm ci` na árvore principal e homologação humana.
 
-Detalhes: [BATCH-257](../implementation/BATCH-257.md).
+Detalhes: [BATCH-257](../implementation/archive/BATCH-257.md).
 
 ## BATCH-256 — REQ-247
 
@@ -227,7 +240,7 @@ Detalhes: [BATCH-257](../implementation/BATCH-257.md).
 - [ ] Decidir a versão oficial do Tailwind (4.3.0 do `package-lock` ou 4.3.3) e atualizar a documentação do Dashboard.
 - [ ] Revisão da chefia e homologação humana.
 
-Detalhes: [BATCH-256](../implementation/BATCH-256.md).
+Detalhes: [BATCH-256](../implementation/archive/BATCH-256.md).
 
 ## BATCH-254 — REQ-245
 
@@ -240,7 +253,7 @@ Detalhes: [BATCH-256](../implementation/BATCH-256.md).
 - [ ] Atualização real disparada pela rotina, com sucesso e com volta automática, no tenant isolado.
 - [ ] Revisão da chefia e homologação humana.
 
-Detalhes: [BATCH-254](../implementation/BATCH-254.md) e [resultado do navegador](req245/evidencias/resultado.json).
+Detalhes: [BATCH-254](../implementation/archive/BATCH-254.md) e [resultado do navegador](req245/evidencias/resultado.json).
 
 ## BATCH-252 — REQ-243
 
@@ -256,7 +269,7 @@ Detalhes: [BATCH-254](../implementation/BATCH-254.md) e [resultado do navegador]
 - [x] Revisão da REQ-244 / REQ-109 sem achado bloqueante; mesclagem simulada com um conflito, em arquivo derivado.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-252](../implementation/BATCH-252.md) e [resultado do navegador](req243/evidencias/resultado.json).
+Detalhes: [BATCH-252](../implementation/archive/BATCH-252.md) e [resultado do navegador](req243/evidencias/resultado.json).
 ## BATCH-253 — REQ-244 / Site REQ-109
 
 - [x] Backend: colunas opcionais, template/autoria/head completos, tema e assets oficiais.
@@ -268,7 +281,7 @@ Detalhes: [BATCH-252](../implementation/BATCH-252.md) e [resultado do navegador]
 - [x] Consolidação em main pela Fase B (BATCH-255).
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-253](../implementation/BATCH-253.md), [resultado](req244/evidencias/resultado.json) e [métricas/limites](req244/evidencias/checks.json).
+Detalhes: [BATCH-253](../implementation/archive/BATCH-253.md), [resultado](req244/evidencias/resultado.json) e [métricas/limites](req244/evidencias/checks.json).
 
 ## BATCH-251 — REQ-242
 
@@ -283,7 +296,7 @@ Detalhes: [BATCH-253](../implementation/BATCH-253.md), [resultado](req244/eviden
 - [x] Memória de execução podada: 296 linhas / 37 KB para 157 linhas / 22 KB, seções antigas em `archive/`.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-251](../implementation/BATCH-251.md) e [resultado do navegador](req242/evidencias/resultado.json).
+Detalhes: [BATCH-251](../implementation/archive/BATCH-251.md) e [resultado do navegador](req242/evidencias/resultado.json).
 
 ## BATCH-249 — REQ-240
 
@@ -296,7 +309,7 @@ Detalhes: [BATCH-251](../implementation/BATCH-251.md) e [resultado do navegador]
 - [ ] API de arquivos no `admin-arquivos`.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-249](../implementation/BATCH-249.md) e [resultado da varredura](archive/req240-browser-results.json).
+Detalhes: [BATCH-249](../implementation/archive/BATCH-249.md) e [resultado da varredura](archive/req240-browser-results.json).
 
 ## BATCH-247 — REQ-238
 
@@ -308,7 +321,7 @@ Detalhes: [BATCH-249](../implementation/BATCH-249.md) e [resultado da varredura]
 - [x] Provas negativas, revisão, versões e evidências registradas.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-247](../implementation/BATCH-247.md) e [inventário](req238-validation.json).
+Detalhes: [BATCH-247](../implementation/archive/BATCH-247.md) e [inventário](req238-validation.json).
 
 ## BATCH-246 — req-237
 
@@ -320,7 +333,7 @@ Detalhes: [BATCH-247](../implementation/BATCH-247.md) e [inventário](req238-val
 - [x] Pipeline final saída 0 e manutenção desligada; screenshots desktop/390px e revisão sem bloqueantes.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-246](../implementation/BATCH-246.md) e [inventário](req237-validation.json).
+Detalhes: [BATCH-246](../implementation/archive/BATCH-246.md) e [inventário](req237-validation.json).
 
 
 ## BATCH-243 — Tabelas JSON particionadas (req-234)
@@ -351,7 +364,7 @@ Evidências, comandos e limites: [BATCH-243](../implementation/archive/BATCH-243
 - [x] Revisão findings-first, controles negativos de instâncias/ícones e diff sem erros de whitespace.
 - [ ] Revisão humana e consolidação final.
 
-Relatório: [BATCH-245](../implementation/BATCH-245.md). Runtime pt-br; contratos bilíngues; OAuth e operações externas reais não exercitados.
+Relatório: [BATCH-245](../implementation/archive/BATCH-245.md). Runtime pt-br; contratos bilíngues; OAuth e operações externas reais não exercitados.
 
 ## BATCH-248 / REQ-239 — refinamentos da auditoria humana
 
@@ -362,5 +375,5 @@ Relatório: [BATCH-245](../implementation/BATCH-245.md). Runtime pt-br; contrato
 - [x] Lab desktop/390px, submissões reais products/variações e herança Stripe autoritativa; dois produtos próprios removidos.
 - [x] Pipeline oficial sequencial concluído, manutenção desligada; 778 hashes normalizados sem diferenças/sobras.
 - [x] Cookie tabs com c2fc-abas-lista c2fc-anexa / c2fc-painel-aba em pt-br/en; recado do agente REQ-240/106 incorporado e trabalho paralelo preservado.
-- [x] Revisão técnica, PHP lint e diff-check aprovados; evidências e limites no [BATCH-248](../implementation/BATCH-248.md).
+- [x] Revisão técnica, PHP lint e diff-check aprovados; evidências e limites no [BATCH-248](../implementation/archive/BATCH-248.md).
 - [ ] Homologação humana e consolidação Git.

@@ -1,6 +1,6 @@
 # BATCH-261 — Linha 3.1, fase 3A da lousa: widget "Lousa" para páginas
 
-- **Requisição:** [REQ-252](../human-requests/req-252.md)
+- **Requisição:** [REQ-252](../../human-requests/archive/req-252.md)
 - **Status:** `implemented-pending-homologation`
 - **Linha:** `3.1` (branch `feat/req-252`, entregue na `3.1`). Não está na `main` nem na `3.0`.
 - **Data:** 2026-10-07
