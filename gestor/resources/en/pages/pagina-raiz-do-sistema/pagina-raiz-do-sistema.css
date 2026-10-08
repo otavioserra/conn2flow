@@ -1,0 +1,29 @@
+body { margin: 0; background: #0a1428; }
+.c2f-welcome { min-height: 100vh; padding: 0 28px; color: #f4f7ff; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: radial-gradient(ellipse at 50% 28%, rgba(29,170,198,.14), transparent 58%), linear-gradient(145deg, #0a1428, #192a46); }
+.c2f-welcome * { box-sizing: border-box; }
+.c2f-welcome a { color: inherit; text-decoration: none; }
+.c2f-welcome-header { max-width: 1080px; min-height: 88px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.c2f-welcome-brand { display: block; flex-shrink: 0; }
+.c2f-welcome-brand img { display: block; width: 150px; height: auto; border-radius: 8px; }
+.c2f-welcome-status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #c1d0df; }
+.c2f-welcome-status > span { width: 7px; height: 7px; border-radius: 50%; background: #53d9b0; box-shadow: 0 0 14px rgba(83,217,176,.35); }
+.c2f-welcome-hero { max-width: 760px; margin: auto; padding: 72px 0 56px; text-align: center; }
+.c2f-welcome-symbol { width: 76px; height: 76px; margin: 0 auto 24px; color: #54d0e5; }
+.c2f-welcome-symbol svg { width: 100%; height: 100%; }
+.c2f-welcome-eyebrow { color: #54d0e5; font-size: 12px; font-weight: 700; letter-spacing: 1.7px; text-transform: uppercase; margin: 0 0 18px; }
+.c2f-welcome h1 { font-size: clamp(36px, 6vw, 64px); line-height: 1.12; font-weight: 750; letter-spacing: -2px; margin: 0 0 24px; }
+.c2f-welcome h1 span { color: #54d0e5; }
+.c2f-welcome-lead { max-width: 540px; margin: 0 auto; font-size: 17px; line-height: 1.75; color: #c1d0df; }
+.c2f-welcome-actions { margin-top: 32px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.c2f-welcome-actions a { padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 650; transition: background .15s, border-color .15s; }
+.c2f-welcome-actions .c2f-welcome-primary { background: #1daac6; color: #081626; display: flex; align-items: center; justify-content: center; gap: 22px; }
+.c2f-welcome-primary:hover { background: #54d0e5; }
+.c2f-welcome-secondary { border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.03); }
+.c2f-welcome-secondary:hover { background: rgba(255,255,255,.08); border-color: #54d0e5; }
+.c2f-welcome a:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
+.c2f-welcome-note { max-width: 630px; margin: 0 auto 64px; padding: 24px; display: flex; align-items: flex-start; gap: 18px; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; background: rgba(255,255,255,.035); }
+.c2f-welcome-note-icon { color: #54d0e5; font-size: 22px; }
+.c2f-welcome-note h2 { font-size: 14px; line-height: 1.5; margin: 0 0 8px; font-weight: 650; }
+.c2f-welcome-note p { color: #a9bad0; font-size: 13px; line-height: 1.8; margin: 0; }
+.c2f-welcome-footer { max-width: 1080px; margin: auto; padding: 24px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-top: 1px solid rgba(255,255,255,.08); color: #91a4be; font-size: 12px; }
+@media (max-width: 480px) { .c2f-welcome { padding: 0 20px; } .c2f-welcome-header { min-height: 74px; } .c2f-welcome-hero { padding: 48px 0 40px; } .c2f-welcome h1 { letter-spacing: -1px; } .c2f-welcome-actions a { width: 100%; } .c2f-welcome-note { padding: 20px; margin-bottom: 40px; } }

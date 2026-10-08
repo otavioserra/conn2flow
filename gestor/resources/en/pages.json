@@ -17,16 +17,16 @@
     {
         "name": "System Root Page",
         "id": "pagina-raiz-do-sistema",
-        "layout": "layout-pagina-sem-permissao",
+        "layout": "layout-pagina-simples",
         "path": "\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.5",
+        "version": "1.8",
         "checksum": {
-            "html": "973224b40744bd096516207f4d0c3927",
-            "css": "",
+            "html": "cc8b5ea70cdbb0aeeebaac0bfba424e3",
+            "css": "b080311393b3446c39e6dcc04ce46b98",
             "css_precompiled": "",
-            "combined": "973224b40744bd096516207f4d0c3927"
+            "combined": "cd3340601210686eed66a08e2ba725aa"
         }
     },
     {

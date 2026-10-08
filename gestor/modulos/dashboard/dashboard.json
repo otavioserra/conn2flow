@@ -73,12 +73,12 @@
                     "id": "dashboard-boards-boas-vindas",
                     "thumbnail": "templates/images/pt-br/dashboard-boards-boas-vindas.webp",
                     "target": "dashboard-boards",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "b3b5a7837cecfdab5906bbdfe67c75b1",
+                        "html": "8e5013a22a33ba84d3f2b70405813c1f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b3b5a7837cecfdab5906bbdfe67c75b1"
+                        "combined": "8e5013a22a33ba84d3f2b70405813c1f"
                     }
                 },
                 {
@@ -86,12 +86,12 @@
                     "id": "dashboard-boards-marketing",
                     "thumbnail": "templates/images/pt-br/dashboard-boards-marketing.webp",
                     "target": "dashboard-boards",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "4b4f73be298809dccbb2e6d4506e05f4",
+                        "html": "437539a14ca99c821883bfc663e37c63",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4b4f73be298809dccbb2e6d4506e05f4"
+                        "combined": "437539a14ca99c821883bfc663e37c63"
                     }
                 },
                 {
@@ -99,12 +99,12 @@
                     "id": "dashboard-boards-vitrine",
                     "thumbnail": "templates/images/pt-br/dashboard-boards-vitrine.webp",
                     "target": "dashboard-boards",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "607b65bc623e9d2756a2763e6c3f30fa",
+                        "html": "fb4dfde4a88ec66d52fffc78a0979f73",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "607b65bc623e9d2756a2763e6c3f30fa"
+                        "combined": "fb4dfde4a88ec66d52fffc78a0979f73"
                     }
                 }
             ],
@@ -255,12 +255,12 @@
                 {
                     "name": "Lousa em Página",
                     "id": "dashboard-lousa-widget",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "60733f4440efb6279a742f3a7ef25ba2",
-                        "css": "e6918a0de2bd52e2a39103ce295b88c7",
+                        "html": "e7710f0ffff27d353cd7254dc63951ce",
+                        "css": "f6d388b62b1a8b73971e0206b499ce67",
                         "css_precompiled": "",
-                        "combined": "4ec477261fce4c9641a2541d7ccd46a5"
+                        "combined": "06e026d8d58a410adaa6528df6f2ff08"
                     }
                 },
                 {
@@ -337,12 +337,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.31",
+                    "version": "1.32",
                     "checksum": {
-                        "html": "0dead04c92cc633c77eef5d73e3e384f",
-                        "css": "bd7d8db6f1aab7d8f216ce78b0049733",
+                        "html": "d3d01265676d604448add1e36ab19f0b",
+                        "css": "aa0d500761c3d9c43c698c358bed4f6b",
                         "css_precompiled": "",
-                        "combined": "1ba3c52adb7d2d6bac9253ce5d5a45aa"
+                        "combined": "c338e15cb17687818e7bc1bcc2f2f823"
                     }
                 }
             ],
@@ -1346,12 +1346,12 @@
                     "id": "dashboard-boards-boas-vindas",
                     "thumbnail": "templates/images/en/dashboard-boards-boas-vindas.webp",
                     "target": "dashboard-boards",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "e331240c8e2595ed7c37506a99e1a1a2",
+                        "html": "18aac2de7236aaa5866c7a60a8db85a0",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e331240c8e2595ed7c37506a99e1a1a2"
+                        "combined": "18aac2de7236aaa5866c7a60a8db85a0"
                     }
                 },
                 {
@@ -1359,12 +1359,12 @@
                     "id": "dashboard-boards-marketing",
                     "thumbnail": "templates/images/en/dashboard-boards-marketing.webp",
                     "target": "dashboard-boards",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "557e16475200a71db270ff35a004cc73",
+                        "html": "ad95594f5c394aef54aca68229c5296c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "557e16475200a71db270ff35a004cc73"
+                        "combined": "ad95594f5c394aef54aca68229c5296c"
                     }
                 },
                 {
@@ -1372,12 +1372,12 @@
                     "id": "dashboard-boards-vitrine",
                     "thumbnail": "templates/images/en/dashboard-boards-vitrine.webp",
                     "target": "dashboard-boards",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "45598e5c6f0338fedfeedd4e8a1077f0",
+                        "html": "8d3eda56e1c2ed56caa144478b9e9ad4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "45598e5c6f0338fedfeedd4e8a1077f0"
+                        "combined": "8d3eda56e1c2ed56caa144478b9e9ad4"
                     }
                 }
             ],
@@ -1528,12 +1528,12 @@
                 {
                     "name": "Board on Page",
                     "id": "dashboard-lousa-widget",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "60733f4440efb6279a742f3a7ef25ba2",
-                        "css": "e6918a0de2bd52e2a39103ce295b88c7",
+                        "html": "e7710f0ffff27d353cd7254dc63951ce",
+                        "css": "f6d388b62b1a8b73971e0206b499ce67",
                         "css_precompiled": "",
-                        "combined": "4ec477261fce4c9641a2541d7ccd46a5"
+                        "combined": "06e026d8d58a410adaa6528df6f2ff08"
                     }
                 },
                 {
@@ -1610,12 +1610,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.31",
+                    "version": "1.32",
                     "checksum": {
-                        "html": "0dead04c92cc633c77eef5d73e3e384f",
-                        "css": "bd7d8db6f1aab7d8f216ce78b0049733",
+                        "html": "d3d01265676d604448add1e36ab19f0b",
+                        "css": "aa0d500761c3d9c43c698c358bed4f6b",
                         "css_precompiled": "",
-                        "combined": "1ba3c52adb7d2d6bac9253ce5d5a45aa"
+                        "combined": "c338e15cb17687818e7bc1bcc2f2f823"
                     }
                 }
             ],
@@ -2598,5 +2598,5 @@
             ]
         }
     },
-    "asset_version": "0a680a4b1f868d5e"
+    "asset_version": "a9e3f41bdaed83ff"
 }

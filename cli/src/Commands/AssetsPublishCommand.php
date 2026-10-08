@@ -51,6 +51,7 @@ final class AssetsPublishCommand implements CommandInterface
     ];
 
     private string $rootPath;
+    private ?string $projectGestorPath = null;
 
     public function __construct(string $rootPath)
     {
@@ -289,6 +290,8 @@ final class AssetsPublishCommand implements CommandInterface
             return false;
         }
 
+        // Assets from the project override the core just as the deploy overlay does.
+        $this->projectGestorPath = $resolvido['gestorPath'];
         $ssh = is_array($resolvido['ssh'] ?? null) ? $resolvido['ssh'] : null;
         if ($ssh === null) {
             return null;
@@ -335,6 +338,14 @@ final class AssetsPublishCommand implements CommandInterface
 
         $mkdir = $transport->buildEnsureDirectoryCommand($destino);
         $rsync = $transport->buildRsyncCommand($distPath, $destino, $input->hasOption('clean'));
+        if (PHP_OS_FAMILY === 'Windows') {
+            // Reuse the pipeline's paired cwRsync/OpenSSH and Cygwin path handling.
+            $script = $this->rootPath . '/ai-workspace/en/scripts/projects/publish-project-assets.sh';
+            $rsync = 'bash ' . escapeshellarg($script) . ' '
+                . escapeshellarg((new ProjectEnvironmentResolver($this->rootPath))->getEnvironmentJsonPath()) . ' '
+                . escapeshellarg((string)$input->getOption('project')) . ' '
+                . escapeshellarg($distPath) . ($input->hasOption('clean') ? ' --clean' : '');
+        }
 
         $output->writeln('');
         $output->writeln('  destino remoto: ' . $transport->target() . ':' . $destino);
@@ -472,52 +483,53 @@ final class AssetsPublishCommand implements CommandInterface
         $gestor = $this->rootPath . DIRECTORY_SEPARATOR . 'gestor';
         $fontes = [];
 
-        foreach (['assets', 'modulos'] as $raiz) {
-            $base = $gestor . DIRECTORY_SEPARATOR . $raiz;
-            if (!is_dir($base)) {
-                continue;
-            }
-
-            $iterador = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::SELF_FIRST
-            );
-
-            foreach ($iterador as $item) {
-                if (!$item->isFile() || $item->isLink()) {
+        foreach (array_unique(array_filter([$gestor, $this->projectGestorPath])) as $gestor) {
+            foreach (['assets', 'modulos'] as $raiz) {
+                $base = $gestor . DIRECTORY_SEPARATOR . $raiz;
+                if (!is_dir($base)) {
                     continue;
                 }
 
-                $nome = $item->getFilename();
-                if (in_array($nome, self::NAO_PUBLICAR, true)) {
-                    continue;
-                }
+                $iterador = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
+                    \RecursiveIteratorIterator::SELF_FIRST
+                );
 
-                $extensao = strtolower($item->getExtension());
-                if (!in_array($extensao, self::EXTENSOES, true)) {
-                    continue;
-                }
+                foreach ($iterador as $item) {
+                    if (!$item->isFile() || $item->isLink()) {
+                        continue;
+                    }
 
-                // `X.min.js` com `X.js` ao lado é DERIVADO, não asset independente: ele já será
-                // publicado como `X.js` por `preferirMinificado()`. Publicá-lo também sob nome
-                // próprio duplicaria o arquivo na pasta pública sem nenhuma URL que o peça.
-                // Terceiros que só distribuem o minificado (datatables, jQuery Mask) não têm par
-                // e continuam entrando normalmente.
-                if (substr($nome, -7) === '.min.js'
-                    && is_file(substr($item->getPathname(), 0, -7) . '.js')) {
-                    continue;
-                }
+                    $nome = $item->getFilename();
+                    if (in_array($nome, self::NAO_PUBLICAR, true)) {
+                        continue;
+                    }
 
-                $relativo = $raiz . '/' . str_replace('\\', '/', substr($item->getPathname(), strlen($base) + 1));
-                $url = recursos_dist_mapear_fonte($relativo);
-                if ($url === '') {
-                    continue;
-                }
+                    $extensao = strtolower($item->getExtension());
+                    if (!in_array($extensao, self::EXTENSOES, true)) {
+                        continue;
+                    }
 
-                $fontes[$url] = $item->getPathname();
+                    // `X.min.js` com `X.js` ao lado é DERIVADO, não asset independente: ele já será
+                    // publicado como `X.js` por `preferirMinificado()`. Publicá-lo também sob nome
+                    // próprio duplicaria o arquivo na pasta pública sem nenhuma URL que o peça.
+                    // Terceiros que só distribuem o minificado (datatables, jQuery Mask) não têm par
+                    // e continuam entrando normalmente.
+                    if (substr($nome, -7) === '.min.js'
+                        && is_file(substr($item->getPathname(), 0, -7) . '.js')) {
+                        continue;
+                    }
+
+                    $relativo = $raiz . '/' . str_replace('\\', '/', substr($item->getPathname(), strlen($base) + 1));
+                    $url = recursos_dist_mapear_fonte($relativo);
+                    if ($url === '') {
+                        continue;
+                    }
+
+                    $fontes[$url] = $item->getPathname();
+                }
             }
         }
-
         ksort($fontes);
 
         return $fontes;
@@ -583,11 +595,12 @@ final class AssetsPublishCommand implements CommandInterface
 
     private function relativoAoGestor(string $absoluto): string
     {
-        $gestor = $this->rootPath . DIRECTORY_SEPARATOR . 'gestor' . DIRECTORY_SEPARATOR;
         $absoluto = str_replace('\\', '/', $absoluto);
-        $gestor = str_replace('\\', '/', $gestor);
-
-        return strpos($absoluto, $gestor) === 0 ? substr($absoluto, strlen($gestor)) : $absoluto;
+        foreach (array_filter([$this->rootPath . '/gestor', $this->projectGestorPath]) as $gestor) {
+            $gestor = rtrim(str_replace('\\', '/', $gestor), '/') . '/';
+            if (strpos($absoluto, $gestor) === 0) return substr($absoluto, strlen($gestor));
+        }
+        return basename($absoluto);
     }
 
     private function garantirDiretorio(string $diretorio): bool

@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-273 — REQ-264
+
+- [x] Requisitos implementados e revisados, inclusive adendos humanos.
+- [x] Compilação oficial, suítes PHP/JavaScript completas e publicação no Lab.
+- [x] Navegador desktop/mobile, sem overflow/erros JS nos alvos.
+- [x] Evidências, avisos herdados e limites registrados; arquivos específicos no commit.
+- [ ] Homologação humana global.
+
+Detalhes: [BATCH-273](../implementation/BATCH-273.md).
+
+---
+
 ## BATCH-266 — REQ-257 (linha 3.0)
 
 - [x] Aba Modelos do editor lista os modelos nas telas de adicionar dos módulos sem campo de framework (7 telas).
@@ -145,7 +157,7 @@ Detalhes: [BATCH-264](../implementation/BATCH-264.md).
 - [ ] Abas Modelos e Assistente IA do editor com o alvo `dashboard-pages`; clique no seletor visual de modelo.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-263](../implementation/BATCH-263.md).
+Detalhes: [BATCH-263](../implementation/archive/BATCH-263.md).
 
 ---
 

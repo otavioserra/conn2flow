@@ -1,6 +1,6 @@
 # BATCH-263 — Linha 3.1: editor HTML e clonar no módulo "Páginas de Lousa"
 
-- **Requisição:** [REQ-254](../human-requests/req-254.md)
+- **Requisição:** [REQ-254](../../human-requests/archive/req-254.md)
 - **Status:** `implemented-pending-homologation`
 - **Linha:** `3.1` (branch `feat/req-254`, entregue na `3.1`). Não está na `main` nem na `3.0`.
 - **Data:** 2026-10-07

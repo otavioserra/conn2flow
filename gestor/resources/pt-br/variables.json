@@ -880,7 +880,7 @@
     },
     {
         "id": "topbar-signout",
-        "value": "Sair / Encerrar Sessão",
+        "value": "Sair \/ Encerrar Sessão",
         "type": "string"
     },
     {
@@ -926,6 +926,56 @@
     {
         "id": "topbar-dashboard",
         "value": "Painel inicial",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-status",
+        "value": "Instalação pronta",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-eyebrow",
+        "value": "Bem-vindo ao seu novo espaço",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-title",
+        "value": "Seu site está no ar.",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-title-accent",
+        "value": "Agora é com você.",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-lead",
+        "value": "Tudo pronto para começar. Entre na sua conta para criar páginas, organizar conteúdos e dar a este espaço a sua identidade.",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-login",
+        "value": "Fazer login",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-dashboard",
+        "value": "Abrir Dashboard",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-template-title",
+        "value": "Esta é a sua página inicial de exemplo",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-template-text",
+        "value": "Este template acompanha a instalação do Conn2Flow. No painel, abra Páginas e edite a Página Raiz do Sistema para trocar este conteúdo pela sua própria página inicial.",
+        "type": "string"
+    },
+    {
+        "id": "installation-home-footer",
+        "value": "Um ponto de partida para suas ideias.",
         "type": "string"
     }
 ]

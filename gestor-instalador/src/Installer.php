@@ -221,6 +221,11 @@ class Installer
         // 6. Public access (index.php + .htaccess com RewriteBase corrigido)
         $this->setupPublicAccess();
 
+        $publicAccess = $this->publicAccessReport();
+        if ($publicAccess['status'] === 'failed') {
+            $this->addWarning(__('public_access_failed'));
+        }
+
         // 7. Limpeza installer final
         $this->cleanupInstaller();
 
@@ -230,7 +235,8 @@ class Installer
         $resposta = [
             'status' => 'finished',
             'message' => __('progress_configuring'),
-            'redirect_url' => './instalacao-sucesso/'
+            'redirect_url' => './instalacao-sucesso/',
+            'public_access' => $publicAccess,
         ];
         if (!empty($this->avisos)) $resposta['warnings'] = $this->avisos;
 
@@ -1399,6 +1405,33 @@ body {
     public function getWarnings()
     {
         return $this->avisos;
+    }
+
+    /** Sonda CLI da página inicial; evita declarar funcional uma resposta 200 vazia. */
+    public function publicAccessReport($transport = null)
+    {
+        if (!InstallerGuard::isCli()) return ['status' => 'unavailable'];
+        $domain = trim((string) ($this->data['domain'] ?? ''));
+        if (!preg_match('/^[a-z0-9][a-z0-9.-]*$/i', $domain)) return ['status' => 'unavailable'];
+        $ssl = !empty($this->data['ssl_enabled']) && (string) $this->data['ssl_enabled'] !== '0';
+        $url = ($ssl ? 'https://' : 'http://') . $domain . ($this->normalizeUrlRaiz($this->data['url_raiz'] ?? '/') ?: '/');
+        if ($transport === null) {
+            if (!function_exists('curl_init')) return ['status' => 'unavailable'];
+            $transport = static function ($url) use ($domain) {
+                $ch = curl_init($url);
+                curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8,
+                    CURLOPT_CONNECTTIMEOUT => 3, CURLOPT_FOLLOWLOCATION => false,
+                    CURLOPT_SSL_VERIFYPEER => !str_ends_with(strtolower($domain), '.local'),
+                    CURLOPT_SSL_VERIFYHOST => str_ends_with(strtolower($domain), '.local') ? 0 : 2]);
+                $body = curl_exec($ch);
+                return ['http_status' => (int) curl_getinfo($ch, CURLINFO_HTTP_CODE), 'body' => $body];
+            };
+        }
+        $response = $transport($url);
+        $code = (int) ($response['http_status'] ?? 0);
+        $body = trim((string) ($response['body'] ?? ''));
+        $ok = ($code >= 200 && $code < 300 && $body !== '') || in_array($code, [301, 302, 303, 307, 308], true);
+        return ['status' => $ok ? 'ok' : 'failed', 'http_status' => $code, 'bytes' => strlen($body)];
     }
 
     /**

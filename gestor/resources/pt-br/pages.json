@@ -17,16 +17,16 @@
     {
         "name": "Página Raiz do Sistema",
         "id": "pagina-raiz-do-sistema",
-        "layout": "layout-pagina-sem-permissao",
+        "layout": "layout-pagina-simples",
         "path": "\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.4",
+        "version": "1.8",
         "checksum": {
-            "html": "d56e60c53f59564951210b0d2dc6d7c7",
-            "css": "",
+            "html": "6ffcb0649becfbb772c2726743e42895",
+            "css": "41ed539dd68a9ccd3d6a0787d7deb18c",
             "css_precompiled": "",
-            "combined": "d56e60c53f59564951210b0d2dc6d7c7"
+            "combined": "56d36f55c2d291d41ddf8464ea414f7b"
         }
     },
     {

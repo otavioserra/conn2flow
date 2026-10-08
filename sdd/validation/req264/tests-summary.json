@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-08",
+  "branch": "feat/req-264",
+  "php": {
+    "command": "composer test",
+    "tests": 1762,
+    "assertions": 20600,
+    "failures": 0,
+    "errors": 0
+  },
+  "javascript": {
+    "command": "npm run test",
+    "files": 60,
+    "tests": 664,
+    "failures": 0
+  },
+  "browser": {
+    "passed": 20,
+    "total": 20
+  },
+  "external_payment_created": false,
+  "smtp_mailbox_delivery_exercised": false
+}
