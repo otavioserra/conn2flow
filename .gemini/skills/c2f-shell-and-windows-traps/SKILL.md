@@ -399,3 +399,14 @@ Checkout com fim de linha CRLF lido pelo Linux faz falhar testes que executam sc
 > [!CAUTION]
 > NUNCA use `npx tailwindcss` ou `npx terser` em scripts automatizados de compilação ou rotinas repetitivas de build. Dependa estritamente das dependências locais em `node_modules/.bin/`.
 
+### 18. Junctions e git worktree remove (crítica)
+
+O BL-028 registra perda de vendor e node_modules em 2026-10-08: a remoção de worktrees no Windows atravessou Directory Junctions (mklink /J) e esvaziou destinos na árvore principal. Trate qualquer remoção como insegura até conferir os reparse points e suas referências.
+
+Antes de remover, confirme o caminho absoluto da worktree, que não é árvore principal nem origem do pipeline. Liste junctions com cmd /c "dir /AL <pasta>" (inspecione também nós internos, sem atravessar links). Confira referências de outras worktrees para dentro dela; se houver, preserve/reaponte primeiro. Desfaça cada junction individualmente com cmd /c "rmdir <pasta>\<atalho>" **sem /S**: isso remove apenas o atalho. Use caminhos literais previamente verificados e o CMD de ponta a ponta; nunca gere lista em PowerShell para executar exclusão por outro shell. Confirme que os links saíram, então execute git worktree remove. Nunca use --force para ultrapassar trabalho não integrado. Depois confira o conteúdo de vendor/node_modules nas árvores principais e nas worktrees restantes.
+
+Não crie junction para outra worktree temporária; quando necessária, a referência é para a árvore principal. Confira a rotina de seis passos em sdd-memory-gardening.
+
+### 19. iconv //TRANSLIT não portável no PHP Windows
+
+iconv('UTF-8', 'ASCII//TRANSLIT', $texto) pode substituir acentos por caracteres diferentes, interrogação ou retornar false conforme a plataforma. Para chaves/slugs que exigem determinismo, use tabela associativa explícita com strtr (inclua minúsculas/maiúsculas e o conjunto de caracteres aceito pelo produto), seguida de normalização controlada. Não converta falha em string vazia nem silencie warning. Exercite entrada acentuada em Windows e Linux, caracteres fora do mapa e repetibilidade; não aplique transliteração ao texto de apresentação. Preserve o comportamento de Unicode definido pelo contrato do recurso.

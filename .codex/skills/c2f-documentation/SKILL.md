@@ -98,3 +98,9 @@ verified_at: 5b4348ab       # git rev-parse --short HEAD do Core no momento da c
 - Editar páginas `docs*` pelo painel ou direto em `resources/` do projeto (o próximo build sobrescreve).
 - Publicar informação sensível (hosts, IPs, credenciais, caminhos de VPS, tokens). Na dúvida, `visibility: restricted`.
 - Deploy de produção pelo agente.
+
+## Como usar: termos literais da interface para RAG (BL-028)
+
+Cada tela documentada recebe uma seção padronizada "Como usar" ("How to use" no par inglês). Confira os rótulos reais em resources/ e os handlers atuais antes de escrever. Descreva entrada/rota e permissão, campos obrigatórios/opcionais com seus nomes literais, sequência de botões com seus nomes literais, resultado esperado e recuperação de erro. Mantenha o par de idiomas alinhado e use os termos exibidos naquele idioma.
+
+Não substitua nome visível por coluna SQL nem invente fluxo a partir de manual antigo. O assistente consulta essa seção via RAG: comportamento não documentado não pode ser prometido. Preserve referência técnica separadamente e confira o uso contra a tela real quando o fluxo mudar.

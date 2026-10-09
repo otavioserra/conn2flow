@@ -1,16 +1,16 @@
-# Agentes SDD — Configuração Multi-Agente OpenAI Codex & Antigravity
+# Agentes MDD — Configuração Multi-Agente OpenAI Codex & Antigravity
 
 ## 👥 Papéis de Agente Duplo
 
 ### 🏛️ Arquiteto (Macro-Orquestrador)
-- **Responsabilidade**: Traduzir necessidades humanas e briefings em especificações normativas (`sdd/SPEC.md`), registros de decisão (`sdd/decisions/`) e requisições formais (`sdd/human-requests/req-XXX.md`).
+- **Responsabilidade**: Traduzir necessidades humanas e briefings em especificações normativas (`memory/SPEC.md`), registros de decisão (`memory/decisions/`) e requisições formais (`memory/human-requests/req-XXX.md`).
 - **Ferramentas**: Antigravity / Gemini / GPT no modo planejamento.
 - **Regra**: Nunca realiza commits ou push de código diretamente no core ou módulos.
 
 ### ⚙️ Executor (Micro-Operador)
-- **Responsabilidade**: Implementar código, compilar recursos, rodar testes e registrar evidências no lote em `sdd/implementation/batch-YYY.md` e `sdd/validation/VALIDATION-CHECKLIST.md`.
+- **Responsabilidade**: Implementar código, compilar recursos, rodar testes e registrar evidências no lote em `memory/implementation/batch-YYY.md` e `memory/validation/VALIDATION-CHECKLIST.md`.
 - **Ferramentas**: OpenAI Codex / GPT no VS Code / Claude Code.
-- **Regra**: Lê o briefing em `sdd/human-requests/CURRENT.md` antes de iniciar qualquer alteração e atualiza a Live Todo List (`[ ]` ➔ `[x]`).
+- **Regra**: Lê o briefing em `memory/human-requests/CURRENT.md` antes de iniciar qualquer alteração e atualiza a Live Todo List (`[ ]` ➔ `[x]`).
 
 ### 👨‍💻 Humano-no-Loop (Você)
 - **Responsabilidade**: Direcionar o Arquiteto e revisar diffs de código antes da consolidação final.
@@ -21,8 +21,8 @@
 
 Todas as **39 skills** do framework estão disponíveis em `.claude/skills/` e `.gemini/skills/` (com espelhamento nos demais clientes) e seguem o padrão aberto de progressive disclosure (`SKILL.md`):
 
-### 1. Skills de Papéis da Tríade SDD (3 Skills):
-> Consulte [sdd/process/STARTER-PROMPTS.md](sdd/process/STARTER-PROMPTS.md) para modelos de abertura rápida de chat prontos para copiar e colar.
+### 1. Skills de Papéis da Tríade MDD (3 Skills):
+> Consulte [memory/process/STARTER-PROMPTS.md](memory/process/STARTER-PROMPTS.md) para modelos de abertura rápida de chat prontos para copiar e colar.
 - `c2f-architect-master`: Arquiteto Master / Engenheiro Chefe (governança macro, documentação viva, backlog e restrição de edição direta).
 - `c2f-executor-agent`: Micro-Executor Tático (Live Todo List `[ ]` ➔ `[x]`, compilação oficial e obediência a contratos).
 - `c2f-reviewer-agent`: Revisor Técnico / Auditor de Qualidade (inspeção findings-first de `git diff`, CSRF, `variables.json`).
@@ -58,7 +58,7 @@ Todas as **39 skills** do framework estão disponíveis em `.claude/skills/` e `
 - `c2f-quill-editor`
 - `c2f-assets-management`
 
-### 3. Skills de Governança e Workflow SDD (7 Skills):
+### 3. Skills de Governança e Workflow MDD (7 Skills):
 - `sdd-workflow`
 - `start-sdd-slice`
 - `continue-sdd-batch`
@@ -73,9 +73,9 @@ Todas as **39 skills** do framework estão disponíveis em `.claude/skills/` e `
 
 Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `"chefe"`, `"inicia"`, `"bora"`, `"executa"`, `"status"`):
 1. **Identificação Automática**: O agente assume imediatamente o contexto do repositório `conn2flow-ai-workspace` em `c:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-ai-workspace`.
-2. **Leitura Mandatória de `CURRENT.md`**: O agente abre `sdd/human-requests/CURRENT.md` para inspecionar o ponteiro da requisição ativa (`req-XXX.md`), o lote correspondente e o modo de autonomia (`supervisionado`, `autonomo_monitorado` ou `autonomo_headless`).
+2. **Leitura Mandatória de `CURRENT.md`**: O agente abre `memory/human-requests/CURRENT.md` para inspecionar o ponteiro da requisição ativa (`req-XXX.md`), o lote correspondente e o modo de autonomia (`supervisionado`, `autonomo_monitorado` ou `autonomo_headless`).
 3. **Ativação Automática por Papel**:
-   - **No Antigravity (Arquiteto Master / Engenheiro Chefe)**: Ativa `c2f-architect-master`, lê `sdd/MEMORIA-ENGENHARIA-CHEFIA.md`, verifica pendências e propõe o próximo plano estratégico ao usuário.
+   - **No Antigravity (Arquiteto Master / Engenheiro Chefe)**: Ativa `c2f-architect-master`, lê `memory/MEMORIA-ENGENHARIA-CHEFIA.md`, verifica pendências e propõe o próximo plano estratégico ao usuário.
    - **No VS Code / Claude Code / Codex (Executor Tático)**: Ativa `c2f-executor-agent`, renderiza de imediato a **Live Todo List (`[ ]` ➔ `[x]`)** a partir da requisição ativa e inicia a implementação do menor slice aprovado.
    - **No Revisor (Auditor de Qualidade)**: Ativa `c2f-reviewer-agent`, audita diffs e valida contratos de segurança/skills.
 4. **Integração MCP Automática**: Utiliza o MCP Hub (`conn2flow-hub`) para operações de CLI (`c2f_run_command`), despacho (`dispatch_task`) e recibos de conclusão (`report_completion`).

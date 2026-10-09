@@ -75,3 +75,13 @@ Página pública, notícia e README não são relatório de lote.
 - **Não remova o que o autor humano escreveu** sem dizer. Reclassifique, mantenha inteiro e liste no relatório o que foi mantido sem conferência.
 - **Conteúdo repetitivo sai de um gerador** com fonte versionada (`news/`, `site-pages/`), nunca de edição manual do arquivo gerado. O gerador tem `--check`.
 - **Endereço e data publicados não mudam** numa revisão: só título e corpo.
+
+## Scripts, banco_select e locks (BL-028 / MDD)
+
+Na matriz use memory/human-requests/CURRENT.md e memory/implementation/; leia a tríade raiz e index.md. Nos satélites ainda SDD, use sdd/. Esta seleção precede os exemplos históricos da skill.
+
+Script complexo com regex, barras invertidas ou aspas triplas é escrito em arquivo pela ferramenta de edição e depois executado; não use heredoc do Bash. Para espaço literal sensível em regex, prefira \x20; confira os bytes gravados quando a ferramenta puder normalizar espaços. Use UTF-8 e preserve finais de linha existentes.
+
+banco_select monta campos e depois explode por vírgula; coluna calculada é indexada pela expressão inteira, não pelo alias SQL. Evite expressão com vírgula nessa API e leia a chave real ou um auxiliar/posição compatível, conferindo a implementação de banco.php. Dublê de teste deve reproduzir esse comportamento, sem inventar chave de alias.
+
+Deploy local: adquira lock exclusivo já previsto no ambiente (falha = outra execução; aguarde, não apague lock alheio), atualize timestamps somente dos arquivos versionados alterados quando exigido pelo pipeline, rode project:update-all <projeto> uma vez por projeto, sequencialmente com logs, e libere apenas seu lock em finally. Projetos com origem comum são destinos distintos. Não use cópia manual nem rode pipelines paralelos; registre falhas sem ocultá-las.

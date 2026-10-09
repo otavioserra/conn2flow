@@ -1,8 +1,8 @@
-# Instruções do Copilot — Spec-Driven Development
+# Instruções do Copilot — Memory Driven Development (MDD)
 
-- Trate `sdd/README.md` e especificações numeradas como fonte normativa.
-- Leia `sdd/README.md`, `sdd/process/00-START-HERE.md`, `sdd/process/01-WORKFLOW.md`, `sdd/implementation/BATCH-INDEX.md`, o batch ativo e `sdd/validation/VALIDATION-CHECKLIST.md` antes de editar código.
-- Memórias de Engenharia: leia `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` e `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` no início da sessão.
+- Trate `memory/README.md` e especificações numeradas como fonte normativa.
+- Leia `memory/README.md`, `memory/process/00-START-HERE.md`, `memory/process/01-WORKFLOW.md`, `memory/implementation/BATCH-INDEX.md`, o batch ativo e `memory/validation/VALIDATION-CHECKLIST.md` antes de editar código.
+- Memórias de Engenharia: leia `memory/MEMORIA-ENGENHARIA-CHEFIA.md` e `memory/MEMORIA-ENGENHARIA-EXECUCAO.md` no início da sessão.
 
 ## Skills OBRIGATÓRIAS por Marco de Fluxo
 
@@ -14,8 +14,8 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 
 ## Intake Gate do backlog
 
-- `sdd/backlog/` é incubadora de rascunhos. É proibido implementar itens diretamente dali.
-- Um item só se torna executável após promoção humana para `sdd/human-requests/req-XXX.md` e associação a um batch.
+- `memory/backlog/` é incubadora de rascunhos. É proibido implementar itens diretamente dali.
+- Um item só se torna executável após promoção humana para `memory/human-requests/req-XXX.md` e associação a um batch.
 
 
 ## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
@@ -50,4 +50,4 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 1. **Proibição Absoluta de `git add -A` e `git commit -a`**:
    - O agente DEVE executar `git add <caminho-1> <caminho-2>` listando estritamente os arquivos tocados no seu lote aprovado, prevenindo que commits arrastem código concorrente ou arquivos de outros agentes.
 2. **Reserva e Releitura Atômica de Numeração de `req-XXX.md`**:
-   - O agente deve reler o diretório `sdd/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.
+   - O agente deve reler o diretório `memory/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.

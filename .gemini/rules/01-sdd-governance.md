@@ -1,8 +1,8 @@
-# Governança SDD e Regras Invioláveis de Operação
+# Governança MDD e Regras Invioláveis de Operação
 
 ## 1. Fonte da Verdade Normativa
-- Os arquivos numerados em `sdd/` (`SPEC.md`, `0X-*.md`) e os registros de decisão em `sdd/decisions/` são a fonte única e soberana da verdade.
-- `sdd/human-requests/` é a área de intake. Antes de alterar qualquer arquivo, consulte `sdd/human-requests/CURRENT.md` para validar a requisição e lote autorizados.
+- Os arquivos numerados em `memory/` (`SPEC.md`, `0X-*.md`) e os registros de decisão em `memory/decisions/` são a fonte única e soberana da verdade.
+- `memory/human-requests/` é a área de intake. Antes de alterar qualquer arquivo, consulte `memory/human-requests/CURRENT.md` para validar a requisição e lote autorizados.
 
 ## 2. Proibição Absoluta de `git add -A` e `git add .`
 - Commits devem SEMPRE listar caminhos específicos explicitamente (`git add <caminho1> <caminho2>`).

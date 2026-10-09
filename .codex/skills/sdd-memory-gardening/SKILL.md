@@ -4,7 +4,7 @@ description: "LEIA SOMENTE quando a memória de execução atingir o alerta de 5
 user-invocable: false
 ---
 
-# Memory Gardening SDD
+# Memory Gardening MDD (compatível com satélites SDD)
 
 > 🚫 PROIBIDO PODAR se a memória de execução estiver abaixo de 50 KB ou 200 linhas. Ignorar a skill no final da sessão caso o arquivo esteja saudável.
 
@@ -46,3 +46,16 @@ O comando falha (exit 1) enquanto houver link relativo órfão sob `sdd/`. Links
 8. Reescreva a memória visando cerca de 25 KB.
 9. Valide frontmatter, descoberta das skills e o diff Git recuperável.
 10. Registre tamanhos e evidências no checklist do batch.
+
+## MDD: faxina segura de worktrees em seis passos
+
+Esta seção é manutenção de worktrees, independente do gatilho de poda de memória. O nome da skill permanece compatível; memory/ é a raiz MDD da matriz e sdd/ continua nos satélites nesta onda. Não pode memória saudável para fechar lote.
+
+1. Inventarie com git worktree list --porcelain; confirme raízes absolutas, autores/datas, origens em environment.json e no pipeline. Exclua árvore principal e qualquer worktree usada como origem de projeto.
+2. Atualize refs com git fetch e confira commits fora de origin/main (git log origin/main..HEAD na worktree), alterações staged/unstaged com git diff --ignore-cr-at-eol e git diff --cached --ignore-cr-at-eol, além de git ls-files --others --exclude-standard. Os três requisitos são cumulativos: zero commits exclusivos, zero alteração real e zero arquivo não rastreado. Não use --force para contornar mudanças; liste trabalho pendente ao humano.
+3. No Windows, valide o alvo e inventarie junctions (cmd /c "dir /AL <pasta>") e referências recebidas de outras worktrees. Reaponte dependências antes da remoção; desfaça somente cada junction com cmd /c "rmdir <pasta>\<atalho>" sem /S, seguindo Armadilha 18. Não componha operações de exclusão entre shells.
+4. Confirme ausência dos links e execute git worktree remove no caminho literal autorizado. Se Git recusar por sujeira, preserve a árvore e reporte; não use --force, clean, reset nem exclusão recursiva manual.
+5. Confira vendor/node_modules das árvores principais e demais worktrees; só então apague branch local integrada com git branch -d (nunca -D) e rode git worktree prune.
+6. Registre árvores removidas/preservadas, motivos e integridade dos destinos. Atualize árvore principal com git merge --ff-only origin/main apenas se estiver limpa e a atualização estiver autorizada; divergência exige avaliação, nunca mescla automática de trabalho alheio.
+
+Na governança MDD, aplique o teto ativo de 50 KB da memory/02-policy.md antes de ampliar documento; preserve original e síntese. O CLI legado ai:archive-sdd só deve operar em sdd/ até suportar memory/ explicitamente: não o execute na matriz migrada presumindo compatibilidade.

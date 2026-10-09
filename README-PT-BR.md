@@ -18,7 +18,7 @@ Três coisas o separam de um CMS com um plugin de IA:
 
 - **Tudo é recurso.** Páginas, layouts, componentes, templates, variáveis, prompts e modos de IA vivem como arquivos no repositório, são compilados e sincronizados com o banco. O que um agente escreve pode ser revisado num diff antes de chegar à produção.
 - **Um contrato de automação só.** O CLI `c2f` (mais de 50 comandos) é o que o desenvolvedor roda à mão e o que o agente dispara. Os endpoints `/_api/` expõem as mesmas operações a clientes remotos, com tokens de acesso pessoais.
-- **A governança faz parte do produto.** O trabalho é especificado, executado e revisado por artefatos versionados em `sdd/`, com um catálogo de skills compartilhado por cinco ferramentas de agentes. A autonomia tem limites explícitos e auditáveis.
+- **A governança faz parte do produto.** O trabalho é especificado, executado e revisado por artefatos versionados em `memory/`, com um catálogo de skills compartilhado por cinco ferramentas de agentes. A autonomia tem limites explícitos e auditáveis.
 
 É esse último ponto que chamamos de **Agent Management System**: não um lugar para rodar agentes autônomos por rodar, e sim os controles que um CMS maduro já dá ao editor humano — identidade, permissão, escopo, validação e trilha de auditoria — estendidos ao trabalho assistido por IA.
 
@@ -27,7 +27,7 @@ Três coisas o separam de um CMS com um plugin de IA:
 | Área | O que você recebe |
 |---|---|
 | **Conteúdo** | Editor HTML visual com barra de edição ao vivo, páginas, layouts, componentes, templates, variáveis, menus, galerias, formulários, publicações com índices e busca, metadados de SEO, sitemap |
-| **Agentes e IA** | Biblioteca de IA com modos e prompts como recursos, assistente de IA no editor, catálogo de skills para Claude Code, Codex, Cursor, Gemini e GitHub Copilot, fluxo de Spec-Driven Development |
+| **Agentes e IA** | Biblioteca de IA com modos e prompts como recursos, assistente de IA no editor, catálogo de skills para Claude Code, Codex, Cursor, Gemini e GitHub Copilot, fluxo de Memory Driven Development (MDD) |
 | **API** | Endpoints `/_api/` de autenticação, OAuth, projetos, atualização do sistema e módulos, com tokens de acesso pessoais de escopo limitado e revogáveis |
 | **CLI** | `c2f`: recursos, CSS, assets, banco, projetos, deploy, atualização com rollback, documentação, Docker, inspeção de páginas |
 | **Entrega** | Pipeline de projeto, trava de deploy, manifesto por camada, snapshot, verificação de saúde e rollback automático, resolução de choques de arquivo no painel, na API e no CLI |
@@ -48,7 +48,7 @@ Três coisas o separam de um CMS com um plugin de IA:
           └─────── humano no circuito: aprova e redireciona ───┘
 ```
 
-- `sdd/` guarda as requisições, os lotes, as decisões e os registros de validação. É a fonte única do que foi pedido e do que foi provado.
+- `memory/` guarda as requisições, os lotes, as decisões e os registros de validação. É a fonte única do que foi pedido e do que foi provado.
 - `.claude/`, `.codex/`, `.cursor/`, `.gemini/` e `.github/` carregam as mesmas skills, então toda ferramenta de agente começa com o mesmo conhecimento do produto.
 - Três níveis de autonomia — supervisionado, monitorado e headless — definem até onde o agente vai antes de um humano olhar.
 - O agente alcança uma instalação em execução como um usuário: pelo CLI, ou pela API com um token que pode ser limitado e revogado.
@@ -107,7 +107,7 @@ A documentação é Markdown, versionada com o código, conferida contra ele e g
 | `gestor-instalador/` | O instalador web |
 | `cli/` | A linha de comando `c2f` |
 | `ai-workspace/` | Documentação em português e inglês, e scripts de automação |
-| `sdd/` | Requisições, lotes, decisões e registros de validação |
+| `memory/` | Requisições, lotes, decisões e registros de validação |
 | `dev-environment/` | A stack Docker de desenvolvimento |
 | `dev-plugins/` | Templates e ferramentas de plugins |
 | `tests/` | Suítes PHPUnit, Vitest e Playwright |
@@ -117,7 +117,7 @@ A documentação é Markdown, versionada com o código, conferida contra ele e g
 - **[conn2flow.com](https://conn2flow.com/)** — o site do projeto, feito com o próprio Conn2Flow. Veja a [visão geral da plataforma](https://conn2flow.com/plataforma/).
 - **[Conn2Flow Pro](https://conn2flow.com/pro/)** — hospedagem gerenciada e planos para quem quer a plataforma sem cuidar dos servidores.
 - **[Conn2Flow AI Workspace](https://github.com/otavioserra/conn2flow-ai-workspace)** — o framework que leva as skills e a governança a cada repositório construído sobre o núcleo.
-- **[Conn2Flow Dev Tools](https://marketplace.visualstudio.com/items?itemName=conn2flow.conn2flow-tools)** — a extensão do VS Code: um painel para escolher o escopo do SDD e o projeto alvo, rodar o pipeline, reconstruir o CSS, publicar lançamentos e ler diagnósticos, sem sair do editor. [Guia](ai-workspace/pt-br/docs/guides/dev-tools-vscode.md).
+- **[Conn2Flow Dev Tools](https://marketplace.visualstudio.com/items?itemName=conn2flow.conn2flow-tools)** — a extensão do VS Code: um painel para escolher o escopo do MDD e o projeto alvo, rodar o pipeline, reconstruir o CSS, publicar lançamentos e ler diagnósticos, sem sair do editor. [Guia](ai-workspace/pt-br/docs/guides/dev-tools-vscode.md).
 - **[Conn2Flow Nexus](https://github.com/otavioserra/conn2flow-nexus)** — um gateway de IA em desenvolvimento. É uma direção, não uma dependência: nada neste repositório exige o Nexus.
 
 ## Situação
@@ -135,6 +135,6 @@ Detalhes por versão em [Novidades](ai-workspace/pt-br/docs/whats-new/index.md).
 
 ## Contribuição e licença
 
-Bugs e propostas são bem-vindos nas [Issues do GitHub](https://github.com/otavioserra/conn2flow/issues). Antes de um pull request, leia como a [documentação](ai-workspace/pt-br/docs/guides/documentation.md) e o fluxo do `sdd/` são mantidos, para a mudança chegar com a evidência dela.
+Bugs e propostas são bem-vindos nas [Issues do GitHub](https://github.com/otavioserra/conn2flow/issues). Antes de um pull request, leia como a [documentação](ai-workspace/pt-br/docs/guides/documentation.md) e o fluxo do `memory/` são mantidos, para a mudança chegar com a evidência dela.
 
 Distribuído sob a [Licença MIT](LICENSE).

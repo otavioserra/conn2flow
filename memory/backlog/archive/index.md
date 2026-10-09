@@ -1,0 +1,19 @@
+# Index — backlog/archive
+
+Navegação hierárquica; leia o resumo antes do documento integral.
+
+| ID | Título | Resumo Executivo | Link Relativo | Status |
+| --- | --- | --- | --- | --- |
+| BL-001 | BL-001 — Instalador: verificação de integridade e TLS no download do gestor | Isso contrasta com o **updater do core**, que já faz o certo: `atualizacoes-sistema.php` baixa o `.sha256` e chama `verifyZipSha256($zip,$shaFile)` antes de aplicar (atualizacoes-s | [BL-001-instalador-integridade-download.md](BL-001-instalador-integridade-download.md) | IN-DISCUSSION |
+| BL-002 | BL-002 — Geração criptograficamente fraca de IDs de sessão e tokens | Identificadores sensíveis são gerados com `md5(uniqid(rand(), true))` / `md5(uniqid(mt_rand(), true))`: | [BL-002-rng-sessao-tokens.md](BL-002-rng-sessao-tokens.md) | IN-DISCUSSION |
+| BL-003 | BL-003 — Contenção de path traversal no servidor de arquivos estáticos | O caminho físico do arquivo servido é montado por concatenação direta do caminho da URL: | [BL-003-path-traversal-arquivo-estatico.md](BL-003-path-traversal-arquivo-estatico.md) | IN-DISCUSSION |
+| BL-004 | BL-004 — Proteção CSRF existe mas não é aplicada (código morto) | A biblioteca `seguranca.php` implementa `gestor_csrf_token()` e `gestor_csrf_validar()` corretamente (token de 32 bytes, `hash_equals`) (seguranca.php:105-128). Porém, uma busca po | [BL-004-csrf-nao-aplicado.md](BL-004-csrf-nao-aplicado.md) | IN-DISCUSSION |
+| BL-005 | BL-005 — Hardening da API pública: CORS wildcard e token via query string | 1. **CORS liberado para qualquer origem**: `header('Access-Control-Allow-Origin: *')` fixo no topo do controlador (api.php:14). Combinado com respostas autenticadas por Bearer, qua | [BL-005-api-cors-token-querystring.md](BL-005-api-cors-token-querystring.md) | IN-DISCUSSION |
+| BL-006 | BL-006 — Instalador: lock de execução, autenticação e resíduos pós-instalação | 1. **Sem autenticação e sem lock**: o `index.php` processa qualquer POST e executa a etapa pedida (`$installer->runStep($action)`) sem token/segredo (index.php:100-123). Enquanto o | [BL-006-instalador-lock-e-residuos.md](BL-006-instalador-lock-e-residuos.md) | IN-DISCUSSION |
+| BL-007 | BL-007 — Acesso a dados por concatenação de SQL e fallback de escape frágil | O caminho principal de acesso a dados monta SQL por **concatenação de string**: `banco_select_name($campos, $tabela, $extra)` recebe o `WHERE` como texto já montado (banco.php:524) | [BL-007-acesso-dados-prepared-statements.md](BL-007-acesso-dados-prepared-statements.md) | IN-DISCUSSION |
+| BL-008 | BL-008 — Hardening do OAuth2: validação de token e limite de sessões | 1. **`pubIDValidation` (HMAC) não é conferido na validação do access token**: `oauth2_validar_token()` valida a assinatura JWT e confere existência na tabela, mas **não** recomputa | [BL-008-oauth2-hardening.md](BL-008-oauth2-hardening.md) | IN-DISCUSSION |
+| BL-009 | BL-009 — Ausência de cabeçalhos de segurança HTTP | Busca em todo o `gestor/` por `Content-Security-Policy`, `X-Frame-Options`, `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy` e `Permissions-Policy` retorna  | [BL-009-cabecalhos-seguranca-http.md](BL-009-cabecalhos-seguranca-http.md) | IN-DISCUSSION |
+| BL-010 | BL-010 — Débito de migração (bibliotecas paralelas v1/v2) e código morto | Convivem versões paralelas de componentes centrais, sinal de migrações inacabadas: | [BL-010-debito-migracao-e-codigo-morto.md](BL-010-debito-migracao-e-codigo-morto.md) | IN-DISCUSSION |
+| compacted | compacted | Nó de navegação | [compacted](compacted/index.md) | archived |
+| original | original | Nó de navegação | [original](original/index.md) | archived |
+| README.md | Arquivo do Backlog | Mova para esta pasta itens promovidos, concluídos, rejeitados ou substituídos. Preserve o identificador original e atualize `../BACKLOG-INDEX.md` com o destino final ou a requisiçã | [README.md](README.md) | archived |

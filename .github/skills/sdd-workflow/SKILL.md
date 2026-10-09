@@ -165,3 +165,11 @@ Coordenação entre agentes é escrita na requisição do outro lote (um bloco "
 ## 🧾 Antes de afirmar que algo é pré-existente
 
 Falha de teste "que já existia" precisa de prova: rode o mesmo teste sem a sua mudança, ou aponte o lote em que a falha foi registrada. Sem isso, ela é sua até prova em contrário.
+
+## MDD, links externos e reserva via git ls-remote (BL-028)
+
+Na matriz conn2flow-ai-workspace, memory/ substitui sdd/; leia 00-baseline-architecture.md, 01-general-memory.md e 02-policy.md e navegue pelos index.md. Os nomes sdd-* das skills e os exemplos de satélites permanecem compatíveis. Não execute ai:archive-sdd sobre memory/ sem suporte explícito no CLI. A ferramenta histórica só arquiva requisições e lotes: o teto de dez decisões/validações exige verificação própria, não se presume pela saída do comando.
+
+CURRENT.md pode apontar para requisição externa: resolva o link contra a origem, identifique repositório/raiz e leia a aprovação lá. Não crie cópia fictícia local nem execute no repo incorreto. Reparadores só reescrevem caminhos internos; links que saem do repositório são classificados e preservados. Se ferramenta legada rejeitar o link externo, registre a incompatibilidade e não remova o ponteiro só para conseguir PASS.
+
+Antes de reservar número novo, consulte refs com git ls-remote --heads origin para todas as branches envolvidas, fetch das refs relevantes e confira a sequência incluindo arquivos arquivados. Código de saída de grep encadeado não prova reserva nem ausência remota. Crie o intake com caminhos explícitos, faça o push autorizado e confira novamente a ref exata via git ls-remote; em rejeição ou movimento concorrente, releia a sequência e resolva a colisão sem force push. ls-remote é verificação, não lock atômico por si só; o push condicionado à ref anterior e a conferência da reserva são a garantia. Nesta entrega REQ-067 já está reservada: não reserve novo número.

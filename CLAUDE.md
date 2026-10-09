@@ -1,10 +1,10 @@
-# Projeto Spec-Driven Development
+# Projeto Memory Driven Development (MDD)
 
-- Trate `sdd/README.md` e os sdd numerados como fonte normativa.
-- Antes de editar código ou sdd, leia `sdd/README.md`, `sdd/process/00-START-HERE.md`, `sdd/process/01-WORKFLOW.md`, `sdd/implementation/BATCH-INDEX.md`, o batch atual, `sdd/validation/VALIDATION-CHECKLIST.md` e `sdd/decisions/DECISION-LOG.md`.
-- Use `sdd/human-requests/` apenas como intake humano não normativo. Se a demanda vier como caminho de arquivo Markdown ou como a própria pasta, leia esse material primeiro e depois classifique a demanda no artefato SDD correto.
-- **Memórias de Engenharia**: No início de cada sessão, leia obrigatoriamente `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` e `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` para alinhar contexto antes de qualquer alteração.
-- **Manutenção da Memória de Execução**: Ao término de cada tarefa, atualize `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` com novos aprendizados, bugs resolvidos e particularidades do ambiente. Nunca modifique `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` sem instrução explícita do usuário humano.
+- Trate `memory/README.md` e os sdd numerados como fonte normativa.
+- Antes de editar código ou sdd, leia `memory/README.md`, `memory/process/00-START-HERE.md`, `memory/process/01-WORKFLOW.md`, `memory/implementation/BATCH-INDEX.md`, o batch atual, `memory/validation/VALIDATION-CHECKLIST.md` e `memory/decisions/DECISION-LOG.md`.
+- Use `memory/human-requests/` apenas como intake humano não normativo. Se a demanda vier como caminho de arquivo Markdown ou como a própria pasta, leia esse material primeiro e depois classifique a demanda no artefato MDD correto.
+- **Memórias de Engenharia**: No início de cada sessão, leia obrigatoriamente `memory/MEMORIA-ENGENHARIA-CHEFIA.md` e `memory/MEMORIA-ENGENHARIA-EXECUCAO.md` para alinhar contexto antes de qualquer alteração.
+- **Manutenção da Memória de Execução**: Ao término de cada tarefa, atualize `memory/MEMORIA-ENGENHARIA-EXECUCAO.md` com novos aprendizados, bugs resolvidos e particularidades do ambiente. Nunca modifique `memory/MEMORIA-ENGENHARIA-CHEFIA.md` sem instrução explícita do usuário humano.
 - Classifique a demanda cedo: change request, implementação de batch, review ou validação.
 - Não reescreva os sdd numerados para comentários pequenos de review.
 - Edite sdd numerados apenas quando requisito, contrato, critério de aceite ou decisão aprovada realmente mudar.
@@ -20,17 +20,17 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 
 ## Otimização de Contexto e Arquivamento
 
-- Mantenha `sdd/decisions/DECISION-LOG.md`, `sdd/implementation/BATCH-INDEX.md` e `sdd/validation/VALIDATION-CHECKLIST.md` com no máximo 10 itens correntes ou ativos.
-- Mantenha também `sdd/human-requests/` enxuto, preservando no máximo 10 requisições correntes ou recentes fora de `archive/`.
-- Mova históricos antigos para a subpasta `archive/` correspondente: `sdd/decisions/archive/`, `sdd/human-requests/archive/`, `sdd/implementation/archive/` ou `sdd/validation/archive/`.
+- Mantenha `memory/decisions/DECISION-LOG.md`, `memory/implementation/BATCH-INDEX.md` e `memory/validation/VALIDATION-CHECKLIST.md` com no máximo 10 itens correntes ou ativos.
+- Mantenha também `memory/human-requests/` enxuto, preservando no máximo 10 requisições correntes ou recentes fora de `archive/`.
+- Mova históricos antigos para a subpasta `archive/` correspondente: `memory/decisions/archive/`, `memory/human-requests/archive/`, `memory/implementation/archive/` ou `memory/validation/archive/`.
 - Nos arquivos principais, substitua o histórico arquivado por tabelas Markdown resumidas com 1 linha por item e link direto para o arquivo em `archive/`.
 - Ao carregar contexto inicial, priorize os arquivos principais e abra itens em `archive/` apenas quando o batch, a requisição ativa ou um link de rastreabilidade exigir.
 
 ## Intake Gate do backlog
 
-- `sdd/backlog/` é uma incubadora de rascunhos administrada pelo Usuário e pelo Arquiteto IA.
+- `memory/backlog/` é uma incubadora de rascunhos administrada pelo Usuário e pelo Arquiteto IA.
 - O Executor pode ler itens para contexto, mas é estritamente proibido de implementá-los, abrir batch de execução ou alterar código diretamente a partir deles.
-- Um item, inclusive `READY`, só se torna executável após promoção humana explícita para `sdd/human-requests/req-XXX.md`, atualização de `CURRENT.md` e associação a um batch.
+- Um item, inclusive `READY`, só se torna executável após promoção humana explícita para `memory/human-requests/req-XXX.md`, atualização de `CURRENT.md` e associação a um batch.
 
 
 ## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
@@ -65,4 +65,4 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 1. **Proibição Absoluta de `git add -A` e `git commit -a`**:
    - O agente DEVE executar `git add <caminho-1> <caminho-2>` listando estritamente os arquivos tocados no seu lote aprovado, prevenindo que commits arrastem código concorrente ou arquivos de outros agentes.
 2. **Reserva e Releitura Atômica de Numeração de `req-XXX.md`**:
-   - O agente deve reler o diretório `sdd/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.
+   - O agente deve reler o diretório `memory/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.

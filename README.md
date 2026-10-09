@@ -18,7 +18,7 @@ Three things make it different from a CMS with an AI plugin:
 
 - **Everything is a resource.** Pages, layouts, components, templates, variables, AI prompts and modes live as files in the repository, are compiled, and are synchronised to the database. What an agent writes is reviewable in a diff before it reaches production.
 - **One automation contract.** The `c2f` CLI (50+ commands) is what a developer runs by hand and what an agent dispatches. The `/_api/` endpoints expose the same operations to remote clients, behind personal access tokens.
-- **Governance is part of the product.** Work is specified, executed and reviewed through versioned artefacts in `sdd/`, with a catalogue of skills shared by five agent tools. Autonomy has explicit, auditable limits.
+- **Governance is part of the product.** Work is specified, executed and reviewed through versioned artefacts in `memory/`, with a catalogue of skills shared by five agent tools. Autonomy has explicit, auditable limits.
 
 That last point is what we call an **Agent Management System**: not a place to run autonomous agents for their own sake, but the controls a mature CMS already gives human editors — identity, permission, scope, validation and an audit trail — extended to AI-assisted work.
 
@@ -27,7 +27,7 @@ That last point is what we call an **Agent Management System**: not a place to r
 | Area | What you get |
 |---|---|
 | **Content** | Visual HTML editor with a live editing bar, pages, layouts, components, templates, variables, menus, galleries, forms, publications with searchable indexes, SEO metadata, sitemap |
-| **Agents and AI** | AI library with modes and prompts as resources, an AI assistant in the editor, skill catalogue for Claude Code, Codex, Cursor, Gemini and GitHub Copilot, Spec-Driven Development workflow |
+| **Agents and AI** | AI library with modes and prompts as resources, an AI assistant in the editor, skill catalogue for Claude Code, Codex, Cursor, Gemini and GitHub Copilot, Memory Driven Development (MDD) workflow |
 | **API** | `/_api/` endpoints for authentication, OAuth, projects, system updates and modules, with scoped, revocable personal access tokens |
 | **CLI** | `c2f`: resources, CSS, assets, database, projects, deploy, updates with rollback, documentation, Docker, page inspection |
 | **Delivery** | Project pipeline, deploy lock, per-layer manifest, snapshot, health check and automatic rollback, file-conflict resolution in the panel, the API and the CLI |
@@ -48,7 +48,7 @@ That last point is what we call an **Agent Management System**: not a place to r
           └──────── human in the loop: approves, redirects ────┘
 ```
 
-- `sdd/` holds the requests, batches, decisions and validation records. It is the single source of truth for what was asked and what was proven.
+- `memory/` holds the requests, batches, decisions and validation records. It is the single source of truth for what was asked and what was proven.
 - `.claude/`, `.codex/`, `.cursor/`, `.gemini/` and `.github/` carry the same skills, so every agent tool starts with the same knowledge of the product.
 - Three autonomy levels — supervised, monitored and headless — decide how far an agent goes before a human looks.
 - Agents reach a running installation the way a user does: through the CLI, or through the API with a token that can be scoped and revoked.
@@ -107,7 +107,7 @@ Full index: [ai-workspace/en/docs/](ai-workspace/en/docs/index.md).
 | `gestor-instalador/` | The web installer |
 | `cli/` | The `c2f` command line |
 | `ai-workspace/` | Documentation in English and Portuguese, and automation scripts |
-| `sdd/` | Requests, batches, decisions and validation records |
+| `memory/` | Requests, batches, decisions and validation records |
 | `dev-environment/` | The Docker development stack |
 | `dev-plugins/` | Plugin templates and tooling |
 | `tests/` | PHPUnit, Vitest and Playwright suites |
@@ -117,7 +117,7 @@ Full index: [ai-workspace/en/docs/](ai-workspace/en/docs/index.md).
 - **[conn2flow.com](https://conn2flow.com/)** — the project site, built on Conn2Flow itself. See the [platform overview](https://conn2flow.com/plataforma/).
 - **[Conn2Flow Pro](https://conn2flow.com/pro/)** — managed hosting and plans for those who want the platform without running the servers.
 - **[Conn2Flow AI Workspace](https://github.com/otavioserra/conn2flow-ai-workspace)** — the framework that carries the skills and the governance to every repository built on the core.
-- **[Conn2Flow Dev Tools](https://marketplace.visualstudio.com/items?itemName=conn2flow.conn2flow-tools)** — the VS Code extension: a panel to pick the SDD scope and the target project, run the pipeline, rebuild CSS, publish releases and read diagnostics, without leaving the editor. [Guide](ai-workspace/en/docs/guides/dev-tools-vscode.md).
+- **[Conn2Flow Dev Tools](https://marketplace.visualstudio.com/items?itemName=conn2flow.conn2flow-tools)** — the VS Code extension: a panel to pick the MDD scope and the target project, run the pipeline, rebuild CSS, publish releases and read diagnostics, without leaving the editor. [Guide](ai-workspace/en/docs/guides/dev-tools-vscode.md).
 - **[Conn2Flow Nexus](https://github.com/otavioserra/conn2flow-nexus)** — an AI gateway in development. It is a direction, not a dependency: nothing in this repository requires it.
 
 ## Status
@@ -135,6 +135,6 @@ Details per version in [What's new](ai-workspace/en/docs/whats-new/index.md).
 
 ## Contributing and license
 
-Bugs and proposals are welcome in [GitHub Issues](https://github.com/otavioserra/conn2flow/issues). Before a pull request, read how the [documentation](ai-workspace/en/docs/guides/documentation.md) and the `sdd/` workflow are kept, so the change arrives with its evidence.
+Bugs and proposals are welcome in [GitHub Issues](https://github.com/otavioserra/conn2flow/issues). Before a pull request, read how the [documentation](ai-workspace/en/docs/guides/documentation.md) and the `memory/` workflow are kept, so the change arrives with its evidence.
 
 Released under the [MIT License](LICENSE).

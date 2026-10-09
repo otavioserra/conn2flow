@@ -3,9 +3,9 @@
         "SessionStart": [
             {
                 "type": "command",
-                "windows": "powershell -NoProfile -ExecutionPolicy Bypass -File ./sdd/scripts/hooks/sdd-session-start.ps1",
-                "linux": "bash ./sdd/scripts/hooks/sdd-session-start.sh",
-                "osx": "bash ./sdd/scripts/hooks/sdd-session-start.sh",
+                "windows": "powershell -NoProfile -ExecutionPolicy Bypass -File ./memory/scripts/hooks/sdd-session-start.ps1",
+                "linux": "bash ./memory/scripts/hooks/sdd-session-start.sh",
+                "osx": "bash ./memory/scripts/hooks/sdd-session-start.sh",
                 "timeout": 5
             }
         ]

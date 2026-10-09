@@ -126,3 +126,8 @@ Para garantir imunidade ao cache volátil do NPM e evitar falhas de PATH no Wind
 - Todo pipeline ou script que invoca o compilador Tailwind ou minificador Terser deve referenciar diretamente os binários locais em `node_modules/.bin/tailwindcss.cmd` (Windows) ou `node_modules/.bin/tailwindcss` (Linux/macOS), sem intermediar chamadas via `npx`.
 - Ao migrar módulos administrativos de Fomantic-UI para Tailwind, consulte e aplique a skill canônica `c2f-tailwind-module-migration`, respeitando a ordem de bundles (`$_GESTOR['tailwind-page-bundle'] = true`), as variantes `-tailwind` em `interface_componente_variante()` e as classes utilitárias isoladas no HTML de recurso.
 
+## Hooks em telas de outros módulos (BL-028)
+
+Marcação injetada por hook em tela alheia usa folha própria e classes específicas do componente. Não injete bundle genérico de utilities depois do pacote da página: isso altera a cascata e pode inverter responsivas da hospedeira. Valide a tela anfitriã em desktop/mobile e a ordem real de folhas. CSS próprio continua sendo autoria em resources/, sincronizado pelo pipeline.
+
+Componente renderizado em contexto alheio pode não resolver @[[var]]@ do seu módulo. Nesse caso use marcador #x# substituído explicitamente no PHP com valor obtido no escopo correto via gestor_variaveis; escape conforme o destino (texto/atributo). Não coloque marcador em comentário: a troca pode consumir a primeira ocorrência. Confira que não sobraram marcadores na resposta e não aplique substituição indiscriminada a componentes cujo contrato já resolve variáveis.

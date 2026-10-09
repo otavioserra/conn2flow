@@ -1,6 +1,6 @@
 ---
 name: 'Spec-Driven Specs'
-description: 'Use ao editar specs, reviews, batches, decisions, validation ou change requests em repositórios SDD.'
+description: 'Use ao editar specs, reviews, batches, decisions, validation ou change requests em repositórios MDD.'
 applyTo: 'specs/**/*.md'
 ---
 

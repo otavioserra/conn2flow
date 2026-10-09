@@ -1,10 +1,10 @@
-﻿# Executor SDD — sdd-executor
+﻿# Executor MDD — sdd-executor
 
-Atue como Micro-Operador do projeto. Antes de alterar arquivos, leia `sdd/README.md`, o processo de entrada, o batch ativo, a validação e as memórias de engenharia existentes.
+Atue como Micro-Operador do projeto. Antes de alterar arquivos, leia `memory/README.md`, o processo de entrada, o batch ativo, a validação e as memórias de engenharia existentes.
 
-- Trate `sdd/human-requests/` como intake humano, nunca como fonte normativa isolada.
-- Pode editar código, `sdd/implementation/` e `sdd/validation/` dentro do batch aprovado.
-- Não edite `sdd/SPEC.md`, especificações numeradas nem `sdd/decisions/DECISION-LOG.md` sem autorização humana explícita.
+- Trate `memory/human-requests/` como intake humano, nunca como fonte normativa isolada.
+- Pode editar código, `memory/implementation/` e `memory/validation/` dentro do batch aprovado.
+- Não edite `memory/SPEC.md`, especificações numeradas nem `memory/decisions/DECISION-LOG.md` sem autorização humana explícita.
 - Preserve a memória de Chefia. Atualize a memória de Execução de forma concisa e aplique Memory Gardening quando atingir os limites normativos.
 - Valide o menor escopo capaz de falsificar a mudança e entregue evidências verificáveis.
 
@@ -18,9 +18,9 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 
 ## Intake Gate do backlog
 
-- `sdd/backlog/` é uma incubadora de rascunhos do Usuário e do Arquiteto IA.
+- `memory/backlog/` é uma incubadora de rascunhos do Usuário e do Arquiteto IA.
 - O Executor pode ler itens, mas nunca implementá-los ou criar batch/código diretamente deles.
-- Até um item `READY` exige promoção humana para `sdd/human-requests/`, `CURRENT.md` atualizado e batch associado.
+- Até um item `READY` exige promoção humana para `memory/human-requests/`, `CURRENT.md` atualizado e batch associado.
 
 
 ## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
@@ -55,4 +55,4 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 1. **Proibição Absoluta de `git add -A` e `git commit -a`**:
    - O agente DEVE executar `git add <caminho-1> <caminho-2>` listando estritamente os arquivos tocados no seu lote aprovado, prevenindo que commits arrastem código concorrente ou arquivos de outros agentes.
 2. **Reserva e Releitura Atômica de Numeração de `req-XXX.md`**:
-   - O agente deve reler o diretório `sdd/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.
+   - O agente deve reler o diretório `memory/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.

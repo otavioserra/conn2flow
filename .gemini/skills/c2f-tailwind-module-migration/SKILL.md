@@ -39,3 +39,11 @@ user-invocable: false
 - Validação mínima: teste PHP de contrato (variante x original, metadados, HTML sem `class="ui `), Vitest se mexer em JS, roteiro Playwright no Lab (sem asset do Fomantic no documento principal — `request.frame() === page.mainFrame()` —, salvar sem 403, 390 px sem rolagem, nenhum `.ui.modal` visível solto) e o mesmo módulo Fomantic de controle sem mudança.
 - Lab compartilhado: trave com `mkdir C:/Users/otavi/OneDrive/Documentos/GIT/.c2f-lab-lock` (falhou = outro agente usando; espere), faça `git merge origin/main` na sua branch antes do `project:update-all conn2flow-site-local` (rode 2 vezes quando mudar JS) e do roteiro, e libere com `rmdir` ao terminar.
 - Pendência humana vai para `conn2flow-site/sdd/PENDENCIAS-HUMANAS.md`, item do roteiro único da req-219.
+
+## Escopo main e inicialização tardia por hooks (BL-028)
+
+Leitura de campos/rótulos da tela fica restrita a main, pois o menu de busca também usa label. Não varra todos os labels do document para formar contexto de IA. Se não houver main, aguarde a montagem ou reporte ausência de contexto; não caia para o documento inteiro.
+
+Script incluído por hook pode executar antes de o editor/componentes serem criados. Faça tentativa inicial após DOM pronto e observe main com MutationObserver (childList/subtree); use debounce/intervalo limitado para novas tentativas, sem loop apertado. Inicialização deve ser idempotente, impedir handlers/botões duplicados e desconectar observador/timer quando não forem mais necessários ou ao desmontar tela. Valide com editor criado depois do hook e abertura repetida.
+
+A orientação histórica de duas publicações para JS não se aplica ao pipeline atual: com lock, atualize timestamps dos arquivos versionados alterados e rode project:update-all uma vez por projeto, sequencialmente. Dois projetos com a mesma origem precisam de uma rodada cada.
