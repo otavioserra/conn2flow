@@ -3,8 +3,8 @@
 - Trate `memory/README.md` e os sdd numerados como fonte normativa.
 - Antes de editar código ou sdd, leia `memory/README.md`, `memory/process/00-START-HERE.md`, `memory/process/01-WORKFLOW.md`, `memory/implementation/BATCH-INDEX.md`, o batch atual, `memory/validation/VALIDATION-CHECKLIST.md` e `memory/decisions/DECISION-LOG.md`.
 - Use `memory/human-requests/` apenas como intake humano não normativo. Se a demanda vier como caminho de arquivo Markdown ou como a própria pasta, leia esse material primeiro e depois classifique a demanda no artefato MDD correto.
-- **Memórias de Engenharia**: No início de cada sessão, leia obrigatoriamente `memory/MEMORIA-ENGENHARIA-CHEFIA.md` e `memory/MEMORIA-ENGENHARIA-EXECUCAO.md` para alinhar contexto antes de qualquer alteração.
-- **Manutenção da Memória de Execução**: Ao término de cada tarefa, atualize `memory/MEMORIA-ENGENHARIA-EXECUCAO.md` com novos aprendizados, bugs resolvidos e particularidades do ambiente. Nunca modifique `memory/MEMORIA-ENGENHARIA-CHEFIA.md` sem instrução explícita do usuário humano.
+- **Memórias de Engenharia**: No início de cada sessão, leia obrigatoriamente `memory/03-memory-engineering-chief.md` e `memory/04-memory-engineering-execution.md` para alinhar contexto antes de qualquer alteração.
+- **Manutenção da Memória de Execução**: Ao término de cada tarefa, atualize `memory/04-memory-engineering-execution.md` com novos aprendizados, bugs resolvidos e particularidades do ambiente. Nunca modifique `memory/03-memory-engineering-chief.md` sem instrução explícita do usuário humano.
 - Classifique a demanda cedo: change request, implementação de batch, review ou validação.
 - Não reescreva os sdd numerados para comentários pequenos de review.
 - Edite sdd numerados apenas quando requisito, contrato, critério de aceite ou decisão aprovada realmente mudar.

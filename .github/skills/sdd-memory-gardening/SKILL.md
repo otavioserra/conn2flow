@@ -9,7 +9,7 @@ user-invocable: false
 > 🚫 PROIBIDO PODAR se a memória de execução estiver abaixo de 50 KB ou 200 linhas. Ignorar a skill no final da sessão caso o arquivo esteja saudável.
 
 # ⚡ Gatilho Obrigatório
-- **TRIGGER**: Quando `MEMORIA-ENGENHARIA-EXECUCAO.md` atingir 50 KB ou 200 linhas (alerta preventivo). A poda torna-se obrigatória ao atingir 75 KB ou 300 linhas.
+- **TRIGGER**: Quando `04-memory-engineering-execution.md` atingir 50 KB ou 200 linhas (alerta preventivo). A poda torna-se obrigatória ao atingir 75 KB ou 300 linhas.
 - **SKIP APENAS SE**: O arquivo estiver abaixo de 50 KB e 200 linhas. Encerramento de sessão ou conclusão de batch, isoladamente, nunca acionam esta skill.
 - **CONSEQUÊNCIA DE IGNORAR**: Degradação cognitiva do agente por excesso de contexto (prompt bloat), aumento de custos de inferência e esquecimento de diretrizes críticas.
 
@@ -49,7 +49,7 @@ O comando falha (exit 1) enquanto houver link relativo órfão sob `sdd/`. Links
 
 ## MDD: faxina segura de worktrees em seis passos
 
-Esta seção é manutenção de worktrees, independente do gatilho de poda de memória. O nome da skill permanece compatível; memory/ é a raiz MDD da matriz e sdd/ continua nos satélites nesta onda. Não pode memória saudável para fechar lote.
+Esta seção é manutenção de worktrees, independente do gatilho de poda de memória. O nome da skill permanece compatível; memory/ é a raiz MDD da matriz e dos satélites; sdd/ permanece compatível para projetos legados. Não pode memória saudável para fechar lote.
 
 1. Inventarie com git worktree list --porcelain; confirme raízes absolutas, autores/datas, origens em environment.json e no pipeline. Exclua árvore principal e qualquer worktree usada como origem de projeto.
 2. Atualize refs com git fetch e confira commits fora de origin/main (git log origin/main..HEAD na worktree), alterações staged/unstaged com git diff --ignore-cr-at-eol e git diff --cached --ignore-cr-at-eol, além de git ls-files --others --exclude-standard. Os três requisitos são cumulativos: zero commits exclusivos, zero alteração real e zero arquivo não rastreado. Não use --force para contornar mudanças; liste trabalho pendente ao humano.
@@ -59,3 +59,8 @@ Esta seção é manutenção de worktrees, independente do gatilho de poda de me
 6. Registre árvores removidas/preservadas, motivos e integridade dos destinos. Atualize árvore principal com git merge --ff-only origin/main apenas se estiver limpa e a atualização estiver autorizada; divergência exige avaliação, nunca mescla automática de trabalho alheio.
 
 Na governança MDD, aplique o teto ativo de 50 KB da memory/02-policy.md antes de ampliar documento; preserve original e síntese. O CLI legado ai:archive-sdd só deve operar em sdd/ até suportar memory/ explicitamente: não o execute na matriz migrada presumindo compatibilidade.
+
+
+## REQ-071: canonical engineering memories
+
+MDD repositories use memory/03-memory-engineering-chief.md and memory/04-memory-engineering-execution.md. A preventive 50 KiB ceiling triggers maintenance planning; 75 KiB is a critical alert. Archive pruned execution history under memory/raw/archive/, preserving full originals and traceable summaries before reducing the active file to about 25 KiB and 20–25 recent records. Keep unresolved items, update index.md and repair links. Use raw/active/ for temporary shareable observations. Do not prune as part of a filename migration. Legacy SDD projects retain their directory; new boilerplates use the numbered filenames.

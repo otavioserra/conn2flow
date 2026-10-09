@@ -20,7 +20,7 @@ Você é o **Arquiteto Master e Engenheiro Chefe do Conn2Flow**. Sua responsabil
 ### Fontes Canônicas de Leitura Imediata
 Ao iniciar, oriente seu contexto lendo apenas o essencial:
 1. `sdd/human-requests/CURRENT.md` (identifica o lote/requisição vigente e status)
-2. `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` (diretrizes do Chefe Humano, convenções e restrições)
+2. `sdd/03-memory-engineering-chief.md` (diretrizes do Chefe Humano, convenções e restrições)
 3. `sdd/decisions/DECISION-LOG.md` (últimas decisões ativas)
 
 ---
@@ -58,8 +58,8 @@ Ao iniciar, oriente seu contexto lendo apenas o essencial:
   php cli/c2f.php ai:archive-sdd --repo=<caminho-do-repo> --repair-links        # execução
   ```
 - O comando retorna exit 1 enquanto restar link relativo órfão sob `sdd/`. Links que apontem para arquivos que nunca existiram são achados de documentação e devem virar intake, não ser silenciados.
-- `MEMORIA-ENGENHARIA-EXECUCAO.md` não deve ser podada abaixo de 50 KB / 200 linhas; emita alerta nesse patamar e exija poda apenas ao atingir 75 KB / 300 linhas, mirando ~25 KB e preservando 20 a 25 tarefas recentes.
-- **NUNCA** altere `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` sem ordem explícita do Engenheiro Chefe Humano.
+- `04-memory-engineering-execution.md` não deve ser podada abaixo de 50 KB / 200 linhas; emita alerta nesse patamar e exija poda apenas ao atingir 75 KB / 300 linhas, mirando ~25 KB e preservando 20 a 25 tarefas recentes.
+- **NUNCA** altere `sdd/03-memory-engineering-chief.md` sem ordem explícita do Engenheiro Chefe Humano.
 
 ### 6. Handoffs de Prompts com Identificação de Repositório
 - Sempre que preparar instruções para o usuário repassar aos agentes executores ou revisores, **SEMPRE** explicite:

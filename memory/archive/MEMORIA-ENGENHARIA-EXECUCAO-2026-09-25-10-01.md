@@ -1,6 +1,6 @@
 # Memória de Engenharia — Execução (arquivo: 2026-09-25 a 2026-10-01)
 
-> Seções movidas na íntegra de `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` na poda de 2026-10-06 (BATCH-251), por limite de 300 linhas.
+> Seções movidas na íntegra de `sdd/04-memory-engineering-execution.md` na poda de 2026-10-06 (BATCH-251), por limite de 300 linhas.
 
 ### 2026-10-01 — BATCH-214 (req-206): deploy de projeto depois da req-202/203
 
