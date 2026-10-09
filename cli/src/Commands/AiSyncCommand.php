@@ -30,6 +30,7 @@ final class AiSyncCommand implements CommandInterface
         'c2f-interface-v2-architecture',
         'c2f-javascript-ajax',
         'c2f-json-resources-sync',
+        'c2f-mdd-indexing-and-handoffs',
         'c2f-modelo-templates',
         'c2f-module-crud-scaffolding',
         'c2f-module-visual-assets',

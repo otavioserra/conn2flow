@@ -66,3 +66,10 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
    - O agente DEVE executar `git add <caminho-1> <caminho-2>` listando estritamente os arquivos tocados no seu lote aprovado, prevenindo que commits arrastem código concorrente ou arquivos de outros agentes.
 2. **Reserva e Releitura Atômica de Numeração de `req-XXX.md`**:
    - O agente deve reler o diretório `memory/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.
+
+
+## Trava Tripla MDD — REQ-072 / ARCH-015
+
+Leia `c2f-mdd-indexing-and-handoffs` antes de criar metadados, regenerar índices ou transferir o lote. Novos artefatos usam YAML frontmatter; `memory:index/set/get` no core e `mdd index/meta set/meta get` no Client mantêm o índice derivado. A fonte canônica contém **45 skills** (3 papéis, 34 de core e 8 de governança).
+
+Handoffs incluem projeto, raiz absoluta, REQ, BATCH, escopo, evidências, pendências, topologia e autonomia. `solo`: auto-revisão; `dupla`: retorno ao Macro-Arquiteto; `triade`: recibo e Revisor Independente com ficha em memory/human-reviews/. `supervisionado`: aguardar input humano em cada transição; `autonomo_monitorado`: Live Todo e acionamento autorizado; `autonomo_headless`: despacho/recibos persistentes. Somente humano assina homologação. Detalhes em memory/02-policy.md; dez fichas ativas, arquivos duais compacted/original.

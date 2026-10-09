@@ -17,9 +17,9 @@
 
 ---
 
-## 📦 Configuração de Skills (39 Skills Oficiais)
+## 📦 Configuração de Skills (45 Skills Oficiais)
 
-Todas as **39 skills** do framework estão disponíveis em `.claude/skills/` e `.gemini/skills/` (com espelhamento nos demais clientes) e seguem o padrão aberto de progressive disclosure (`SKILL.md`):
+Todas as **45 skills** do framework estão disponíveis em `.claude/skills/` e `.gemini/skills/` (com espelhamento nos demais clientes) e seguem o padrão aberto de progressive disclosure (`SKILL.md`):
 
 ### 1. Skills de Papéis da Tríade MDD (3 Skills):
 > Consulte [memory/process/STARTER-PROMPTS.md](memory/process/STARTER-PROMPTS.md) para modelos de abertura rápida de chat prontos para copiar e colar.
@@ -27,7 +27,12 @@ Todas as **39 skills** do framework estão disponíveis em `.claude/skills/` e `
 - `c2f-executor-agent`: Micro-Executor Tático (Live Todo List `[ ]` ➔ `[x]`, compilação oficial e obediência a contratos).
 - `c2f-reviewer-agent`: Revisor Técnico / Auditor de Qualidade (inspeção findings-first de `git diff`, CSRF, `variables.json`).
 
-### 2. Skills Core do Framework (29 Skills):
+### 2. Skills Core do Framework (34 Skills):
+- `c2f-ai-features`
+- `c2f-database-testing`
+- `c2f-documentation`
+- `c2f-gd-image-safety`
+- `c2f-module-visual-assets`
 - `c2f-agent-visual-inspection`
 - `c2f-database-operations`
 - `c2f-dev-scripts`
@@ -58,7 +63,8 @@ Todas as **39 skills** do framework estão disponíveis em `.claude/skills/` e `
 - `c2f-quill-editor`
 - `c2f-assets-management`
 
-### 3. Skills de Governança e Workflow MDD (7 Skills):
+### 3. Skills de Governança e Workflow MDD (8 Skills):
+- `c2f-mdd-indexing-and-handoffs`
 - `sdd-workflow`
 - `start-sdd-slice`
 - `continue-sdd-batch`
@@ -94,3 +100,10 @@ Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `
 8. **Boost Mode (`/boost`)**: Utilize `/boost` no prompt para tarefas que exigem raciocínio analítico profundo, planejamento multi-etapa, múltiplas perspectivas e validação cruzada rigorosa.
 9. **Configuração por Projeto em `.gemini/config.json`**: O arquivo `.gemini/config.json` é o ponto canônico de configuração por projeto no Antigravity v2.16+. O diretório legado `.agents/` foi descontinuado — todas as configurações, MCP servers e discovery vivem exclusivamente em `.gemini/`.
 
+
+
+## Trava Tripla MDD — REQ-072 / ARCH-015
+
+Leia `c2f-mdd-indexing-and-handoffs` antes de criar metadados, regenerar índices ou transferir o lote. Novos artefatos usam YAML frontmatter; `memory:index/set/get` no core e `mdd index/meta set/meta get` no Client mantêm o índice derivado. A fonte canônica contém **45 skills** (3 papéis, 34 de core e 8 de governança).
+
+Handoffs incluem projeto, raiz absoluta, REQ, BATCH, escopo, evidências, pendências, topologia e autonomia. `solo`: auto-revisão; `dupla`: retorno ao Macro-Arquiteto; `triade`: recibo e Revisor Independente com ficha em memory/human-reviews/. `supervisionado`: aguardar input humano em cada transição; `autonomo_monitorado`: Live Todo e acionamento autorizado; `autonomo_headless`: despacho/recibos persistentes. Somente humano assina homologação. Detalhes em memory/02-policy.md; dez fichas ativas, arquivos duais compacted/original.

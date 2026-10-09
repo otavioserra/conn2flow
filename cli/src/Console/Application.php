@@ -26,6 +26,9 @@ use Conn2Flow\Cli\Commands\DockerTruncateLogsCommand;
 use Conn2Flow\Cli\Commands\EnvSetCommand;
 use Conn2Flow\Cli\Commands\EnvStatusCommand;
 use Conn2Flow\Cli\Commands\HelpCommand;
+use Conn2Flow\Cli\Commands\MemoryIndexCommand;
+use Conn2Flow\Cli\Commands\MemorySetCommand;
+use Conn2Flow\Cli\Commands\MemoryGetCommand;
 use Conn2Flow\Cli\Commands\InstallerBuildCommand;
 use Conn2Flow\Cli\Commands\InstallerNewCommand;
 use Conn2Flow\Cli\Commands\InstallerReleaseCommand;
@@ -83,6 +86,9 @@ final class Application
     {
         // General / Help
         $this->register(new HelpCommand($this));
+        $this->register(new MemoryIndexCommand($this->rootPath));
+        $this->register(new MemorySetCommand($this->rootPath));
+        $this->register(new MemoryGetCommand($this->rootPath));
 
         // Resources & DB
         $this->register(new ResourcesSyncCommand($this->rootPath));
