@@ -1,4 +1,4 @@
-# Memória de Engenharia — Chefia
+# Engineering Memory - Chief
 
 > **Propósito**: Este diário de bordo é reservado ao registro de diretrizes, decisões de design, preferências e restrições técnicas estabelecidas pelo **Engenheiro Chefe Humano** durante o desenvolvimento do projeto Conn2Flow. Ele serve como canal de persistência de contexto e memória de pair programming entre chats.
 

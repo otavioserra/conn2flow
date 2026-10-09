@@ -702,7 +702,7 @@ O gate documental passou a acusar `README:installer-version`. **Não é regress�
 - Tag `instalador-v2.1.0` publicada no repositório.
 - `README.md` (155/159/163) e `README-PT-BR.md` (160/164/168) ainda apontam downloads para `instalador-v2.0.0`.
 
-Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execução** da release do instalador (a preparação do formulário não é afetada). Como a mudança altera URLs de download voltadas ao usuário final e a curadoria dos READMEs é do Arquiteto (`MEMORIA-ENGENHARIA-CHEFIA.md` §1), **nenhum README foi alterado**. Decisão pendente do Humano-no-Loop.
+Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execução** da release do instalador (a preparação do formulário não é afetada). Como a mudança altera URLs de download voltadas ao usuário final e a curadoria dos READMEs é do Arquiteto (`03-memory-engineering-chief.md` §1), **nenhum README foi alterado**. Decisão pendente do Humano-no-Loop.
 
 ## BATCH-155 - req-153 / REQ-034 (transporte SSH e bootstrap CLI por host)
 

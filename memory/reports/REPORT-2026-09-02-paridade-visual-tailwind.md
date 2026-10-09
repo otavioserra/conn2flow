@@ -291,7 +291,7 @@ derivados (`.min.js`, `Data.json`, sidecars), prontos para revisão.
 
 ## 9. O que a sessão ensinou
 
-Registrado em [MEMORIA-ENGENHARIA-EXECUCAO.md](../MEMORIA-ENGENHARIA-EXECUCAO.md):
+Registrado em [04-memory-engineering-execution.md](../04-memory-engineering-execution.md):
 
 - **Uma folha sem camada vence qualquer coisa em `@layer`**, independentemente da ordem. Quando dois
   ambientes divergem, compare o `<head>` que cada um monta antes de procurar no conteúdo.

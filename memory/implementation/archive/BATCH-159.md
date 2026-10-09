@@ -32,7 +32,7 @@ dos arquivos-fonte de autoria e a criação de `gestor.zip` a partir dos arquivo
 - `sdd/implementation/BATCH-INDEX.md`
 - `sdd/implementation/BATCH-159.md`
 - `sdd/validation/VALIDATION-CHECKLIST.md`
-- `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md`
+- `sdd/04-memory-engineering-execution.md`
 
 ## 4. Implementação e evidências
 

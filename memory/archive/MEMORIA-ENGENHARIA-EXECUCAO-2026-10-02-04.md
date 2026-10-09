@@ -1,6 +1,6 @@
 # Memória de Engenharia — Execução (arquivo de 2026-10-02 a 2026-10-04)
 
-> Seções movidas na íntegra de `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` na poda de 2026-10-07 (REQ-260 / BATCH-269).
+> Seções movidas na íntegra de `sdd/04-memory-engineering-execution.md` na poda de 2026-10-07 (REQ-260 / BATCH-269).
 
 ### 2026-10-02 — BATCH-222 (req-214): menus do painel, consentimento e execução no cliente
 

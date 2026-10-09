@@ -17,8 +17,8 @@ Navegação hierárquica; leia o resumo antes do documento integral.
 | handoffs | handoffs | Nó de navegação | [handoffs](handoffs/index.md) | indexed |
 | human-requests | human-requests | Nó de navegação | [human-requests](human-requests/index.md) | indexed |
 | implementation | implementation | Nó de navegação | [implementation](implementation/index.md) | indexed |
-| MEMORIA-ENGENHARIA-CHEFIA.md | Memória de Engenharia — Chefia |   - Editores CodeMirror adicionados em abas ou containers extras (como a aba "Código do Widget") devem herdar a mesma identidade do Editor HTML principal. | [MEMORIA-ENGENHARIA-CHEFIA.md](MEMORIA-ENGENHARIA-CHEFIA.md) | indexed |
-| MEMORIA-ENGENHARIA-EXECUCAO.md | Memória de Engenharia — Execução |   `OPENSSL_CONF=<dir do php>\extras\ssl\openssl.cnf` antes do `composer test` dá verde; o `lab` | [MEMORIA-ENGENHARIA-EXECUCAO.md](MEMORIA-ENGENHARIA-EXECUCAO.md) | indexed |
+| 03-memory-engineering-chief.md | Memória de Engenharia — Chefia |   - Editores CodeMirror adicionados em abas ou containers extras (como a aba "Código do Widget") devem herdar a mesma identidade do Editor HTML principal. | [03-memory-engineering-chief.md](03-memory-engineering-chief.md) | indexed |
+| 04-memory-engineering-execution.md | Memória de Engenharia — Execução |   `OPENSSL_CONF=<dir do php>\extras\ssl\openssl.cnf` antes do `composer test` dá verde; o `lab` | [04-memory-engineering-execution.md](04-memory-engineering-execution.md) | indexed |
 | process | process | Nó de navegação | [process](process/index.md) | indexed |
 | raw | raw | Nó de navegação | [raw](raw/index.md) | indexed |
 | README.md | README.md | ﻿# Conn2Flow Spec-Driven Development | [README.md](README.md) | indexed |

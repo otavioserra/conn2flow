@@ -20,4 +20,4 @@
 
 ## 6. Gestão de Memórias de Engenharia
 - Respeite os tetos canônicos de memória: poda proibida abaixo de 50 KB / 200 linhas, alerta nesse patamar, teto mandatório em 75 KB / 300 linhas e alvo pós-poda de ~25 KB com 20 a 25 tarefas recentes.
-- Nunca modifique `MEMORIA-ENGENHARIA-CHEFIA.md` sem autorização expressa do usuário humano.
+- Nunca modifique `03-memory-engineering-chief.md` sem autorização expressa do usuário humano.

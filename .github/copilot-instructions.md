@@ -2,7 +2,7 @@
 
 - Trate `memory/README.md` e especificações numeradas como fonte normativa.
 - Leia `memory/README.md`, `memory/process/00-START-HERE.md`, `memory/process/01-WORKFLOW.md`, `memory/implementation/BATCH-INDEX.md`, o batch ativo e `memory/validation/VALIDATION-CHECKLIST.md` antes de editar código.
-- Memórias de Engenharia: leia `memory/MEMORIA-ENGENHARIA-CHEFIA.md` e `memory/MEMORIA-ENGENHARIA-EXECUCAO.md` no início da sessão.
+- Memórias de Engenharia: leia `memory/03-memory-engineering-chief.md` e `memory/04-memory-engineering-execution.md` no início da sessão.
 
 ## Skills OBRIGATÓRIAS por Marco de Fluxo
 

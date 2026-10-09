@@ -112,7 +112,7 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
 
 ## 🧠 Camadas Canônicas de Memória
 
-1. **Memória do Repositório (`sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` — Git Compartilhado)**:
+1. **Memória do Repositório (`sdd/04-memory-engineering-execution.md` — Git Compartilhado)**:
    - Fatos técnicos objetivos do software: bugs resolvidos no core, hacks temporários de build/banco, particularidades de compilação CSS/Tailwind, comandos CLI descobertos e lições aprendidas. Visível a todos os agentes e desenvolvedores.
 2. **Memória Privada da Ferramenta de IA (Local)**:
    - Preferências subjetivas de interação do operador (estilo de resposta, atalhos de prompt, idioma preferido).
