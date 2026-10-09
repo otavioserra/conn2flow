@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-266.md](req-266.md) (BATCH-275 `ready-for-intake`, 2026-10-09, Core — Arquiteto Master / Autônomo Monitorado): Compatibilização MDD e Suporte Dual `memory/` e `sdd/`: Testes Automatizados, CLI e Governança de Skills.
   - [req-265.md](req-265.md) (BATCH-274 `ready-for-intake`, 2026-10-08, multi-repo — Opus 5.5 Flagship / Autônomo Monitorado): Apoio Core — Deduplicação de Transações Gateway, Resolução de `#brand_name#` e Histórico de Webhooks, coordenado com a REQ-122 do Site.
   - [req-264.md](req-264.md) (BATCH-273 `implemented-pending-homologation`, 2026-10-08, multi-repo — branch `feat/req-264` `7e174e77`): Apoio Core — Ajustes no Checkout Multi-Etapas, Variáveis de E-mail e Suporte a Tenants no Lab (Go-Live 3.0), coordenado com a REQ-121 do Site.
   - [req-263.md](req-263.md) (BATCH-272 `implemented-pending-homologation`, 2026-10-08, Core, nas três branches; testes em `https://conn2flow.local/` e `https://v3.1-conn2flow.local/`): índice de idioma + caminho em `paginas`. A busca da página pelo caminho, que roda em toda requisição, percorria todas as páginas do idioma carregando HTML e CSS; depois de cada publicação o site passava de 70 ms para 0,4 a 0,9 s. Com o índice: 1 linha examinada, zero leitura de disco, cerca de 60 ms.

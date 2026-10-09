@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-275 | ready-for-intake | Compatibilização MDD e Suporte Dual memory/ e sdd/ (REQ-266) | [BATCH-275.md](BATCH-275.md) | Desbloqueio da suíte PHPUnit, suporte dual no CLI e conformidade de skills. |
 | BATCH-274 | implemented-pending-homologation | Deduplicação financeira, marca/logo de e-mails e confirmação de webhooks (REQ-265) | [BATCH-274.md](BATCH-274.md) | Suítes completas e Lab validados com Site BATCH-116; eventos unificados em backlog. |
 | BATCH-273 | implemented-pending-homologation | Instalação funcional e página inicial padrão, logo e assets do projeto (REQ-264) | [BATCH-273.md](BATCH-273.md) | Suítes completas e Lab validados; detalhes no relatório. |
 | BATCH-259 | implemented-pending-homologation | Linha 3.1, fase 1 da lousa: objetos livres, esconder por largura, imagem de fundo e Google Fonts (REQ-250) | [BATCH-259.md](archive/BATCH-259.md) | Só na branch `3.1`. PHPUnit 1.691, Vitest 623, navegador 23/23 em `v3.1-conn2flow.local`. |
