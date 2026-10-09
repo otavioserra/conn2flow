@@ -5,6 +5,11 @@ description: "Implemente e revise recursos de IA no Conn2Flow Pro: provedores un
 
 # Recursos de IA no Conn2Flow Pro
 
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Implementar ou revisar recursos de IA em módulos do Conn2Flow Pro.
+- **SKIP APENAS SE**: A tarefa não integra nem altera recursos de IA do produto.
+- **CONSEQUÊNCIA DE IGNORAR**: Cobrança duplicada, exposição de dados sensíveis e renderização insegura de respostas.
+
 Origem: BL-028, REQ-067 / BATCH-069 (2026-10-09). Antes de implementar, confira a biblioteca `conn2flow/gestor/bibliotecas/ia-provedores.php`, os hooks e os recursos do módulo real. Exemplos vivos: `conn2flow-site/gestor/modulos/ai-assistant/`, `ai-agents/` e `ai-writer/`. Nomes de caminhos partem das respectivas raízes; não confunda a matriz com o core.
 
 ## Oito pilares

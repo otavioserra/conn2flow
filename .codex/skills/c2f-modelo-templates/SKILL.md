@@ -6,7 +6,7 @@ user-invocable: false
 
 # ManipulaÃ§Ã£o de Modelos e CÃ©lulas (`modelo.php`)
 
-# âš¡ Gatilho ObrigatÃ³rio
+# ⚡ Gatilho Obrigatório
 - **TRIGGER**: Manipular estruturas de repetiÃ§Ã£o, cÃ©lulas condicionais ou troca de marcadores em templates HTML via biblioteca `modelo.php`.
 - **SKIP APENAS SE**: RenderizaÃ§Ã£o direta de dados sem uso do motor de templates do Gestor.
 - **CONSEQUÃŠNCIA DE IGNORAR**: `modelo_tag_val()` devolvendo vazio e apagando seÃ§Ãµes da tela sem erro explÃ­cito, marcadores crus `#[id]#` expostos ao usuÃ¡rio final ou duplicaÃ§Ã£o de blocos.

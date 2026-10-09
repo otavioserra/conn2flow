@@ -73,7 +73,10 @@ final class TemplatesMiniaturasReq256Test extends TestCase
 
     public function testGeradorVersionado(): void
     {
-        $pasta = dirname(CONN2FLOW_GESTOR_ROOT) . '/sdd/validation/req256/';
+        $pasta = dirname(CONN2FLOW_GESTOR_ROOT) . '/memory/validation/req256/';
+        if (!is_dir($pasta)) {
+            $pasta = dirname(CONN2FLOW_GESTOR_ROOT) . '/sdd/validation/req256/';
+        }
         foreach (['gerar-miniaturas.cjs', 'montar.py', 'integrar.py', 'README.md'] as $arquivo) {
             self::assertFileExists($pasta . $arquivo);
         }

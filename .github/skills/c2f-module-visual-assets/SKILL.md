@@ -6,6 +6,11 @@ user-invocable: true
 
 # 🎨 Geração de Assets Visuais e Capas de Módulos (Design System V3.0)
 
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar módulos ou gerar capas, ilustrações e miniaturas de módulos do Conn2Flow ou Conn2Flow Site.
+- **SKIP APENAS SE**: A tarefa não cria módulos nem gera assets visuais.
+- **CONSEQUÊNCIA DE IGNORAR**: Capas e miniaturas inconsistentes com o design system e recortes que ocultam o objeto principal.
+
 Esta skill define o padrão oficial para concepção e geração de capas conceituais, ilustrações 3D e thumbnails para qualquer módulo do ecossistema Conn2Flow (Core e Site), garantindo que novos módulos preservem a mesma sofisticação e unidade estética.
 
 ---

@@ -12,6 +12,8 @@ final class AiSyncCommand implements CommandInterface
 {
     private const REQUIRED_SKILLS = [
         'c2f-agent-visual-inspection',
+        'c2f-ai-features',
+        'c2f-architect-master',
         'c2f-database-operations',
         'c2f-database-testing',
         'c2f-dev-scripts',
@@ -19,6 +21,7 @@ final class AiSyncCommand implements CommandInterface
         'c2f-documentation',
         'c2f-documentation-governance',
         'c2f-environment-configuration',
+        'c2f-executor-agent',
         'c2f-gd-image-safety',
         'c2f-gestor-functions',
         'c2f-global-variables',
@@ -29,16 +32,20 @@ final class AiSyncCommand implements CommandInterface
         'c2f-json-resources-sync',
         'c2f-modelo-templates',
         'c2f-module-crud-scaffolding',
+        'c2f-module-visual-assets',
         'c2f-multilingual-system',
         'c2f-mysql-utf8-emoji-encoding',
+        'c2f-payment-gateways',
         'c2f-plugin-architecture',
         'c2f-preview-modals-system',
         'c2f-project-pipeline-and-tasks',
         'c2f-projects-system',
         'c2f-resources-system',
+        'c2f-reviewer-agent',
         'c2f-shell-and-windows-traps',
         'c2f-system-tasks',
         'c2f-tailwind-css-architecture',
+        'c2f-tailwind-module-migration',
         'c2f-variables-system',
         'c2f-widget-development',
         'continue-sdd-batch',
@@ -64,7 +71,7 @@ final class AiSyncCommand implements CommandInterface
 
     public function getDescription(): string
     {
-        return 'Synchronize and validate all 37 AI skills, rules and agent instructions across AI kits.';
+        return 'Synchronize and validate all ' . count(self::REQUIRED_SKILLS) . ' AI skills, rules and agent instructions across AI kits.';
     }
 
     public function getAliases(): array
@@ -75,7 +82,7 @@ final class AiSyncCommand implements CommandInterface
     public function getHelp(): string
     {
         return "Usage: c2f ai:sync [options]\n\n" .
-               "Verifies the integrity and contracts of the 37 Core and SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
+               'Verifies the integrity and contracts of the ' . count(self::REQUIRED_SKILLS) . " Core and MDD/SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
                "Options:\n" .
                "  --verbose     Display details of each verified skill contract.";
     }
@@ -83,7 +90,7 @@ final class AiSyncCommand implements CommandInterface
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->title('Conn2Flow — AI Skills & Kits Synchronization');
-        $output->info('Validating 37 Skills and Contract blocks across active kits...');
+        $output->info('Validating ' . count(self::REQUIRED_SKILLS) . ' Skills and Contract blocks across active kits...');
 
         $skillDirs = [
             '.claude/skills' => $this->rootPath . '/.claude/skills',
@@ -140,7 +147,7 @@ final class AiSyncCommand implements CommandInterface
                 sprintf('%d/%d', $requiredSkillsInKit, count(self::REQUIRED_SKILLS)),
                 (string)$withContract,
                 $withContract === $skillsInKit && $requiredSkillsInKit === count(self::REQUIRED_SKILLS)
-                    ? '✔ Verified'
+                    ? '✔ Complete'
                     : '⚠ Incomplete'
             ];
         }
@@ -159,7 +166,7 @@ final class AiSyncCommand implements CommandInterface
             return 1;
         }
 
-        $output->success("All 37 skills verified successfully across all active AI toolkits!");
+        $output->success('All ' . count(self::REQUIRED_SKILLS) . ' skills verified successfully across all active AI toolkits!');
         return 0;
     }
 }

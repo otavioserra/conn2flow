@@ -26,19 +26,22 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
 
     public function getAliases(): array
     {
-        return ['ai:gardening', 'sdd:prune'];
+        return ['ai:gardening', 'sdd:prune', 'memory:prune'];
     }
 
     public function getHelp(): string
     {
         return "Usage: c2f ai:prune-memories\n\n" .
-               "Validates sdd/MEMORIA-ENGENHARIA-EXECUCAO.md with a 50KB / 200-line warning, a 75KB / 300-line mandatory pruning ceiling, and a ~25KB post-pruning target.";
+               "Validates memory/MEMORIA-ENGENHARIA-EXECUCAO.md (fallback: sdd/) with a 50KB / 200-line warning, a 75KB / 300-line mandatory pruning ceiling, and a ~25KB post-pruning target.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->title('Conn2Flow — SDD Memory Gardening');
-        $memFile = $this->rootPath . '/sdd/MEMORIA-ENGENHARIA-EXECUCAO.md';
+        $memFile = $this->rootPath . '/memory/MEMORIA-ENGENHARIA-EXECUCAO.md';
+        if (!is_file($memFile)) {
+            $memFile = $this->rootPath . '/sdd/MEMORIA-ENGENHARIA-EXECUCAO.md';
+        }
 
         if (!file_exists($memFile)) {
             $output->warning("Memory file not found at: {$memFile}");

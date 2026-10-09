@@ -37,11 +37,11 @@ final class AiArchiveSddCommand implements CommandInterface
      */
     private const TARGET_FOLDERS = [
         [
-            'dir' => 'sdd/human-requests',
+            'dir' => 'human-requests',
             'protected' => ['CURRENT.md', 'README.md', 'INDEX.md'],
         ],
         [
-            'dir' => 'sdd/implementation',
+            'dir' => 'implementation',
             'protected' => ['BATCH-INDEX.md', 'README.md', 'INDEX.md', 'CURRENT.md'],
         ],
     ];
@@ -90,16 +90,16 @@ final class AiArchiveSddCommand implements CommandInterface
 
     public function getAliases(): array
     {
-        return ['sdd:archive', 'ai:archive'];
+        return ['sdd:archive', 'ai:archive', 'ai:archive-memory', 'memory:archive'];
     }
 
     public function getHelp(): string
     {
         return "Usage: c2f ai:archive-sdd [options]\n\n" .
-               "Keeps only the most recent sequenced files in sdd/human-requests/ and sdd/implementation/.\n" .
+               "Keeps only the most recent sequenced files in memory/human-requests/ and memory/implementation/ (fallback: sdd/).\n" .
                "Older files are moved to the matching archive/ subfolder and every markdown link that\n" .
                "referenced them (in BATCH-INDEX.md, VALIDATION-CHECKLIST.md, DECISION-LOG.md, CURRENT.md\n" .
-               "and any other .md under sdd/) is rewritten to the new path.\n\n" .
+               "and any other .md under the selected memory/ or sdd/ tree) is rewritten to the new path.\n\n" .
                "Options:\n" .
                "  --repo=PATH       Repository root to process (default: the current Core repository).\n" .
                "  --keep=N          How many sequenced files stay in each folder root (default: 10).\n" .
@@ -119,9 +119,10 @@ final class AiArchiveSddCommand implements CommandInterface
             return 1;
         }
 
-        $sddPath = $repoPath . '/sdd';
+        $memoryDir = is_dir($repoPath . '/memory') ? 'memory' : 'sdd';
+        $sddPath = $repoPath . '/' . $memoryDir;
         if (!is_dir($sddPath)) {
-            $output->error("No sdd/ folder found at: {$repoPath}");
+            $output->error("No memory/ or sdd/ folder found at: {$repoPath}");
             return 1;
         }
 
@@ -144,6 +145,7 @@ final class AiArchiveSddCommand implements CommandInterface
         $planRows = [];
 
         foreach (self::TARGET_FOLDERS as $target) {
+            $target['dir'] = $memoryDir . '/' . $target['dir'];
             $folder = $repoPath . '/' . $target['dir'];
             if (!is_dir($folder)) {
                 $planRows[] = [$target['dir'], '-', '-', '-', 'not present'];
@@ -857,13 +859,13 @@ final class AiArchiveSddCommand implements CommandInterface
     private function reportBrokenLinks(OutputInterface $output, array $orphans): void
     {
         if (empty($orphans)) {
-            $output->success('Link integrity gate: no orphaned relative markdown links under sdd/.');
+            $output->success('Link integrity gate: no orphaned relative markdown links under the selected memory/ or sdd/ tree.');
             return;
         }
 
         $output->section('Broken relative links detected');
         $output->table(['Markdown file', 'Target'], array_slice($orphans, 0, 40));
-        $output->error(sprintf('%d broken relative link(s) found under sdd/.', count($orphans)));
+        $output->error(sprintf('%d broken relative link(s) found under the selected memory/ or sdd/ tree.', count($orphans)));
     }
 
     // ------------------------------------------------------------------

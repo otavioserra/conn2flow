@@ -1,5 +1,19 @@
 # Validation Checklist
 
+## BATCH-275 — REQ-266
+
+- [x] Testes REQ-225/256 e SddSource priorizam memory/ com fallback sdd/; corpus real continua filtrado.
+- [x] CLI seleciona a árvore do --repo e conserva aliases antigos; ai:archive-memory, memory:archive e memory:prune executados.
+- [x] Arquivamento real com reparo de links em fixtures memory/, sdd/ e ambas; dry-run Core e boilerplate legado com exit 0.
+- [x] Três contratos corrigidos na fonte canônica e propagados oficialmente aos cinco kits; ai:sync exige 44/44 e mostra ✔ Complete.
+- [x] PHPUnit completo: 1.768 testes/20.735 asserções, exit 0; 4 skips e depreciações registrados. Teste adicional do catálogo: 5 testes/58 asserções no foco final.
+- [x] Vitest: 60 arquivos/664 testes, exit 0; mensagens do Happy DOM registradas no lote.
+- [x] Memória encontrada (38.451 bytes/252 linhas), exit 0 com alerta preventivo; README atualizado e git diff --check limpo.
+- [x] Revisão própria e limites no [BATCH-275](../implementation/BATCH-275.md), incluindo a checagem adicional de links do Site e a fonte canônica local na matriz.
+- [ ] Homologação humana global.
+
+---
+
 ## BATCH-274 — REQ-265
 
 - [x] Trava/transação e aliases financeiros; marca e logo resolvidos; falhas de webhook recebem 401/503.

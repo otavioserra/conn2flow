@@ -14,7 +14,8 @@ final class SddSource
     /** @return array{docs: array<string, array{meta: array<string, mixed>, body: string}>, warnings: list<string>} */
     public function collect(string $coreRoot): array
     {
-        $root = rtrim(str_replace('\\', '/', $coreRoot), '/') . '/sdd';
+        $coreRoot = rtrim(str_replace('\\', '/', $coreRoot), '/');
+        $root = $coreRoot . (is_dir($coreRoot . '/memory') ? '/memory' : '/sdd');
         $docs = [];
         $warnings = [];
         if (!is_dir($root)) {

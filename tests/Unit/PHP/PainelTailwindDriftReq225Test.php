@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-require_once dirname(__DIR__, 3) . '/sdd/validation/req225-inventory.php';
+$inventory = dirname(__DIR__, 3) . '/memory/validation/req225-inventory.php';
+require_once is_file($inventory) ? $inventory : dirname(__DIR__, 3) . '/sdd/validation/req225-inventory.php';
 
 final class PainelTailwindDriftReq225Test extends TestCase
 {

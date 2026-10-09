@@ -46,6 +46,21 @@ final class DocsSddReq184Test extends TestCase
         self::assertSame(1, $result['docs']['sdd/process/01-WORKFLOW.md']['meta']['order']);
     }
 
+    public function testMemoryTemPrioridadeSemMudarOsIdentificadoresPublicos(): void
+    {
+        mkdir($this->root . '/memory/process', 0777, true);
+        file_put_contents($this->root . '/memory/README.md', "# MDD\n\nMemória pública.\n");
+        file_put_contents($this->root . '/memory/process/01-WORKFLOW.md', "# Fluxo MDD\n\nFluxo público.\n");
+        file_put_contents($this->root . '/memory/MEMORIA-ENGENHARIA-EXECUCAO.md', '# Privado');
+        file_put_contents($this->root . '/sdd/README.md', "# Legado\n\nFonte antiga.\n");
+
+        $result = (new SddSource())->collect($this->root);
+        self::assertSame(['sdd/README.md', 'sdd/process/01-WORKFLOW.md'], array_keys($result['docs']));
+        self::assertSame('MDD', $result['docs']['sdd/README.md']['meta']['title']);
+        self::assertSame('sdd', $result['docs']['sdd/README.md']['meta']['section']);
+        self::assertSame([], $result['warnings']);
+    }
+
     public function testFiltroRedigeDadosEExcluiCredenciais(): void
     {
         $source = new SddSource();
