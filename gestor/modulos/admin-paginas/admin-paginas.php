@@ -629,7 +629,7 @@ function admin_paginas_editar(){
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
-		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
+		$sem_permissao = gestor_pagina_sem_permissao($retorno_bd['sem_permissao'] ?? null); // req-268: '0' é restrita.
 		// req-110: metadados de compartilhamento social.
 		$imagem_destaque = (isset($retorno_bd['imagem_destaque']) ? $retorno_bd['imagem_destaque'] : '');
 		$og_titulo = (isset($retorno_bd['og_titulo']) ? $retorno_bd['og_titulo'] : '');
@@ -1074,7 +1074,7 @@ function admin_paginas_clonar(){
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
-		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
+		$sem_permissao = gestor_pagina_sem_permissao($retorno_bd['sem_permissao'] ?? null); // req-268: '0' é restrita.
 		// req-110: metadados de compartilhamento social.
 		$imagem_destaque = (isset($retorno_bd['imagem_destaque']) ? $retorno_bd['imagem_destaque'] : '');
 		$og_titulo = (isset($retorno_bd['og_titulo']) ? $retorno_bd['og_titulo'] : '');

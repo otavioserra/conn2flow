@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-277 — REQ-268
+
+- [x] Causa reproduzida: `existe('0')` verdadeiro abria páginas com `sem_permissao = 0`.
+- [x] `gestor_pagina_sem_permissao()` no roteador e na leitura do `admin-paginas` e do `publisher-pages`; só as duas páginas de investidor tinham `0` no Lab.
+- [x] `GestorPaginaSemPermissaoTest` + `GestorRoteadorErroTerminalTest`: 29 testes OK; Vitest 664 OK.
+- [x] PHPUnit completo: 1.776 testes; 4 falhas anteriores e alheias registradas no [BATCH-277](../implementation/BATCH-277.md).
+- [x] Lab: visitante 302 para login, administrador 200; editor de páginas com a caixa certa (evidências no BATCH-118 do site).
+- [ ] Arquivos de `contents/` de página restrita continuam públicos (decisão humana).
+- [ ] Homologação humana.
+
+---
+
 ## BATCH-275 — REQ-266
 
 - [x] Testes REQ-225/256 e SddSource priorizam memory/ com fallback sdd/; corpus real continua filtrado.

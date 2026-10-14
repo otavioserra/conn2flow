@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### REQ-268 / BATCH-277 — `sem_permissao = 0` abria a página (2026-10-14)
+
+- **`existe('0')` é verdadeiro.** Coluna numérica lida do banco chega como texto: `existe()`/`isset()` não servem para flag 0/1. Para `paginas.sem_permissao`, usar `gestor_pagina_sem_permissao()` (só `1` abre). O sitemap já usava `empty()`.
+- **Página sem módulo aceita qualquer logado**, inclusive cliente da loja. Exigência de perfil fica no módulo que renderiza (ex.: `gestor_permissao_modulo(false, 'presentations')`).
+- **Arquivos de `contents/` saem pelo `arquivo-estatico` antes da sessão**: página restrita não protege as imagens dela.
+- **Deploy concorrente**: a trava de projeto faz o segundo `project:update-all` esperar ("Aguardando a trava…", com PID e máquina). Depois, conferir por hash: a worktree do outro agente, criada mais tarde, deixa no destino arquivos de data mais nova que as minhas edições (`touch` + `project:sync-core`).
+
 ### REQ-263 / BATCH-272 — site lento depois de publicar: faltava índice no caminho de `paginas` (2026-10-08)
 
 - **Sintoma**: tudo em ~70 ms e, depois de uma publicação, toda página PHP em 0,4 a 0,9 s, nos dois ambientes do mesmo servidor de banco; arquivo estático normal.

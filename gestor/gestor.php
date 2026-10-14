@@ -2952,7 +2952,7 @@ function gestor_roteador(){
 		}
 
 		// ==== Verificar se a página tem permissão, se houver e o usuário não estiver logado, deve redirecionar para a página de login e finalizar a requisição.
-		if(!existe($paginas[0]['sem_permissao'])){
+		if(!gestor_pagina_sem_permissao($paginas[0]['sem_permissao'] ?? null)){
 			// req-109: crawler sem sessão numa página protegida recebe só o <head> com OpenGraph.
 			// Redirecioná-lo para /signin/ faz o preview do link exibir a tela de login; devolver o
 			// conteúdo seria vazamento. O corpo sai vazio e o visitante humano continua no fluxo normal.
