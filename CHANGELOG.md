@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.1] - 2026-10-14
+
+### Fixed
+- Deploy through the API: the maintenance screen (`req-210`) answered 503 to the post-deploy health check (`req-198`), so every project deploy was rolled back. Maintenance is now turned off before the check (`REQ-272`).
+- Database sync: JSON booleans in seeds (`"sem_permissao": false`) are written as 0/1; PDO sent `false` as an empty string and strict MariaDB/MySQL rejected new rows (`REQ-272`).
+
 ## [3.0.0] - 2026-10-14
 
 Major release: the admin panel moves to Tailwind CSS, the Dashboard gains a widget area and the board, and system updates become safe, automatic and reversible.

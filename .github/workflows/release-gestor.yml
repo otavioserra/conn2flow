@@ -219,7 +219,7 @@ jobs:
 
             Versão principal: o painel administrativo passa para Tailwind CSS, o Dashboard ganha a área de widgets e a lousa, e a atualização do sistema fica segura, automática e reversível. Lista completa no [CHANGELOG](https://github.com/otavioserra/conn2flow/blob/main/CHANGELOG-PT-BR.md).
 
-            ### 🎯 Novidades Principais desta Versão (v3.0.0):
+            ### 🎯 Destaques da linha 3.0 (correções de cada versão no CHANGELOG):
             - ✅ **Painel em Tailwind CSS v4**: todos os módulos administrativos migrados do Fomantic-UI, com biblioteca de controles, listagem nova e design system harmonizado.
             - ✅ **Dashboard**: grade de módulos com capas, área de widgets com layout por perfil e layouts salvos, modos grade e lousa livre.
             - ✅ **Lousa**: objetos livres, lousas nomeadas com versões, widget "Lousa" em qualquer página, módulo "Páginas de Lousa" com modelos e modo IA.

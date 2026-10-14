@@ -5,6 +5,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.1] - 2026-10-14
+
+### Fixed
+- Deploy pela API: a tela de manutenção (`req-210`) respondia 503 à verificação pós-deploy (`req-198`), e todo deploy de projeto era desfeito. A manutenção agora é desligada antes da verificação (`REQ-272`).
+- Sincronização do banco: booleanos das sementes (`"sem_permissao": false`) gravados como 0/1; o PDO enviava `false` como texto vazio e o MariaDB/MySQL em modo estrito recusava registros novos (`REQ-272`).
+
 ## [3.0.0] - 2026-10-14
 
 Versão principal: o painel administrativo passa para Tailwind CSS, o Dashboard ganha a área de widgets e a lousa, e a atualização do sistema fica segura, automática e reversível.
