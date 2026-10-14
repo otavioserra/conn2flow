@@ -12,8 +12,13 @@ final class ModuloDistribuidoRotinaReq215Test extends TestCase
 {
     private string $modulos;
 
+    private $origemAntes;
+
     protected function setUp(): void
     {
+        // A confirmação de origem (req-217, ligada no config.php) tem teste próprio; aqui o outro lado é de mentira.
+        $this->origemAntes = $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] ?? null;
+        $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] = false;
         $this->modulos = sys_get_temp_dir() . '/c2f-req215-' . bin2hex(random_bytes(6)) . '/';
         mkdir($this->modulos . 'orders', 0777, true);
         file_put_contents($this->modulos . 'orders/orders.json', json_encode([
@@ -46,6 +51,8 @@ PHP);
         @rmdir($this->modulos . 'orders');
         @rmdir($this->modulos);
         unset($GLOBALS['_BANCO']['distribuido'], $GLOBALS['_GESTOR']['distributed-routine']);
+        if ($this->origemAntes === null) unset($GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem']);
+        else $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] = $this->origemAntes;
     }
 
     public function testOnlyDeclaredRoutinesResolve(): void

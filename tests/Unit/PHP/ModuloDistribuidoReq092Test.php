@@ -7,6 +7,21 @@ require_once CONN2FLOW_GESTOR_ROOT . '/bibliotecas/modulo-distribuido.php';
 
 final class ModuloDistribuidoReq092Test extends TestCase
 {
+    private $origemAntes;
+
+    protected function setUp(): void
+    {
+        // A confirmação de origem (req-217, ligada no config.php) tem teste próprio; aqui o transporte é de mentira.
+        $this->origemAntes = $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] ?? null;
+        $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] = false;
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->origemAntes === null) unset($GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem']);
+        else $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] = $this->origemAntes;
+    }
+
     private function pdo(): PDO
     {
         $pdo = new PDO('sqlite::memory:');

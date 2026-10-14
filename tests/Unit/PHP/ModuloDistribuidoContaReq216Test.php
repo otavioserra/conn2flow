@@ -19,6 +19,8 @@ final class ModuloDistribuidoContaReq216Test extends TestCase
         $_CONFIG['modulo-distribuido']['app-id'] = 'req216-app';
         $_CONFIG['modulo-distribuido']['secret'] = 'segredo-216';
         $_CONFIG['modulo-distribuido']['central-url'] = 'https://central.example';
+        // A confirmação de origem (req-217, ligada no config.php) tem teste próprio; aqui o Central é de mentira.
+        $_CONFIG['modulo-distribuido']['confirmacao-origem'] = false;
         unset($_CONFIG['modulo-distribuido']['modules'], $_CONFIG['modulo-distribuido']['tables'], $_CONFIG['modulo-distribuido']['account-provider']);
     }
 

@@ -49,13 +49,13 @@ final class AiSyncCommand implements CommandInterface
         'c2f-tailwind-module-migration',
         'c2f-variables-system',
         'c2f-widget-development',
-        'continue-sdd-batch',
+        'continue-mdd-batch',
         'project-validation',
         'raise-spec-change',
         'review-current-batch',
-        'sdd-memory-gardening',
-        'sdd-workflow',
-        'start-sdd-slice',
+        'mdd-memory-gardening',
+        'mdd-workflow',
+        'start-mdd-slice',
     ];
 
     private string $rootPath;

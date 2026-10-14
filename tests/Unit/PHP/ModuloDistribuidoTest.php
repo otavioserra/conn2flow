@@ -22,11 +22,15 @@ require_once CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'bibliotecas' . DIREC
 final class ModuloDistribuidoTest extends TestCase
 {
     private $variaveisAntes;
+    private $origemAntes;
 
     protected function setUp(): void
     {
         global $_GESTOR;
         $this->variaveisAntes = $_GESTOR['variaveis'] ?? null;
+        // A confirmação de origem (req-217, ligada no config.php) tem teste próprio; aqui o transporte é de mentira.
+        $this->origemAntes = $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] ?? null;
+        $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] = false;
         $_GESTOR['variaveis']['_global_'] = $this->fixtureTextos('pt-br');
     }
 
@@ -46,6 +50,8 @@ final class ModuloDistribuidoTest extends TestCase
         banco_distribuido_finalizar();
         global $_BANCO;
         unset($_BANCO['distribuido-insert-id'], $_BANCO['distribuido-affected-rows']);
+        if ($this->origemAntes === null) unset($GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem']);
+        else $GLOBALS['_CONFIG']['modulo-distribuido']['confirmacao-origem'] = $this->origemAntes;
     }
 
     // ============================ Escopo do manifesto
