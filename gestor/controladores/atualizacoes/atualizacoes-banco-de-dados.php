@@ -481,6 +481,18 @@ function maxAllowedPacket(PDO $pdo): int {
 }
 
 /**
+ * Booleanos do JSON (`"sem_permissao": false`) viram 0/1 antes de ir ao banco.
+ * O PDO envia `false` como string vazia, e coluna inteira em modo estrito recusa ''
+ * (1366 Incorrect integer value) — só aparecia no INSERT de registro novo (REQ-272).
+ */
+function paramsBanco(array $params): array {
+    foreach ($params as $k => $v) {
+        if (is_bool($v)) $params[$k] = (int)$v;
+    }
+    return $params;
+}
+
+/**
  * Insere registros em lote (multi-row), dividindo em chunks que respeitam o $threshold
  * (70% do max_allowed_packet — threshold-based batching). Agrupa por assinatura de colunas
  * (multi-row exige colunas idênticas). Em erro de lote (ex.: chave duplicada), faz fallback
@@ -517,7 +529,7 @@ function inserirEmLote(PDO $pdo, string $tabela, array $linhas, int $threshold, 
             }
             $sql = "INSERT INTO `$tabela` ($colSql) VALUES " . implode(',', $placeholders);
             try {
-                $pdo->prepare($sql)->execute($params);
+                $pdo->prepare($sql)->execute(paramsBanco($params));
                 $cnt['inserted'] += count($buffer);
             } catch (PDOException $e) {
                 // Fallback individual (isola duplicatas e erros pontuais)
@@ -525,7 +537,7 @@ function inserirEmLote(PDO $pdo, string $tabela, array $linhas, int $threshold, 
                     $ph = []; $p = [];
                     foreach ($cols as $c) { $ph[] = ':' . $c; $p[':' . $c] = $r[$c]; }
                     $sql1 = "INSERT INTO `$tabela` ($colSql) VALUES (" . implode(',', $ph) . ")";
-                    try { $pdo->prepare($sql1)->execute($p); $cnt['inserted']++; }
+                    try { $pdo->prepare($sql1)->execute(paramsBanco($p)); $cnt['inserted']++; }
                     catch (PDOException $e2) {
                         $msgErr = $e2->getMessage();
                         if (stripos($msgErr, 'Duplicate entry') !== false || stripos($msgErr, 'UNIQUE constraint') !== false) {
@@ -756,7 +768,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     $diff['project'] = $project;
                 }
                 if ($simulate) { log_unificado("SIMULATE_UPDATE $tabela pk=$pkVal campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
-                else { $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff))); $sql="UPDATE `$tabela` SET $sets WHERE `$pkDeclarada`=:pk"; $stmt=$pdo->prepare($sql); $params=$diff; $params['pk']=$pkVal; $stmt->execute($params);}            
+                else { $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff))); $sql="UPDATE `$tabela` SET $sets WHERE `$pkDeclarada`=:pk"; $stmt=$pdo->prepare($sql); $params=$diff; $params['pk']=$pkVal; $stmt->execute(paramsBanco($params));}            
                 if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_unificado(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$pkVal,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE_DB']); }
                 $updated++; } else { $same++; }
         }
@@ -924,7 +936,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                         $whereSql = $conds ? ('WHERE ' . implode(' AND ', $conds)) : 'WHERE 1=0';
                     }
                     $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));
-                    $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute($params);
+                    $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute(paramsBanco($params));
                 }
                 if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_unificado(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$k,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE_DB']); }
                 $updated++;
@@ -1023,7 +1035,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                             $whereSql = $conds ? ('WHERE ' . implode(' AND ', $conds)) : 'WHERE 1=0';
                         }
                         $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));
-                        $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute($params);
+                        $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute(paramsBanco($params));
                     }
                     if ($logDiffs) { $pairs=[]; foreach ($diff as $c=>$v){ $pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(count($pairs)>=10){$pairs[]='...';break;} } log_unificado("FALLBACK_UPDATE_NAT tabela=$tabela chave=$fallbackKey campos=".implode(', ',$pairs), $GLOBALS['LOG_FILE_DB']); }
                     $updated++;
