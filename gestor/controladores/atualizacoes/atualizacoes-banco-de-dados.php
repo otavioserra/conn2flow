@@ -303,6 +303,19 @@ function schemaMetadata(bool $recarregar = false): array {
     } else {
         log_unificado('SCHEMA_METADATA_AUSENTE ' . $file . ' (usando fallback heurístico)', $GLOBALS['LOG_FILE_DB'] ?? 'atualizacoes-bd');
     }
+    // REQ-272: na atualização do sistema o `schema-metadata.json` é o do core, mas os `*Data.json` do
+    // projeto continuam em `db/data/`. Sem o contrato deles, a tabela do projeto não tinha chave natural,
+    // cada linha parecia nova e o INSERT batia em chave duplicada. O core tem precedência; o projeto
+    // (`project-schema-metadata.json`, na raiz do gestor) só preenche as tabelas que o core não descreve.
+    $raiz = $GLOBALS['BASE_PATH_DB'] ?? (dirname(rtrim((string)$DB_DATA_DIR, '/\\'), 2) . DIRECTORY_SEPARATOR);
+    $arquivoProjeto = rtrim((string)$raiz, '/\\') . DIRECTORY_SEPARATOR . 'project-schema-metadata.json';
+    if (is_file($arquivoProjeto)) {
+        $p = json_decode((string)file_get_contents($arquivoProjeto), true);
+        $tabelasProjeto = is_array($p['tables'] ?? null) ? $p['tables'] : (is_array($p['tabelas'] ?? null) ? $p['tabelas'] : []);
+        foreach ($tabelasProjeto as $nome => $def) {
+            if (is_string($nome) && is_array($def) && !isset($meta['tables'][$nome])) $meta['tables'][$nome] = $def;
+        }
+    }
     return $meta;
 }
 

@@ -44,6 +44,45 @@ final class AtualizacaoBancoBooleanosReq272Test extends TestCase
         }
     }
 
+    /**
+     * Na atualização do sistema o `schema-metadata.json` é o do core, mas os `*Data.json` do projeto
+     * continuam em `db/data/`: sem o contrato do projeto, `publisher` ficava sem chave natural e o
+     * INSERT batia em chave duplicada (transformamp.local, 3.0.0 ➔ 3.0.1).
+     */
+    public function testContratoDoProjetoCompletaOCoreSemSobrescrever(): void
+    {
+        $raiz = sys_get_temp_dir() . '/c2f-req272-' . bin2hex(random_bytes(4)) . '/';
+        mkdir($raiz . 'db/data', 0777, true);
+        file_put_contents($raiz . 'db/data/schema-metadata.json', json_encode(['tables' => [
+            'paginas' => ['strategy' => 'natural_key', 'natural_key_columns' => ['language', 'modulo', 'id']],
+        ]]));
+        file_put_contents($raiz . 'project-schema-metadata.json', json_encode(['tabelas' => [
+            'publisher' => ['strategy' => 'natural_key', 'natural_key_columns' => ['language', 'id']],
+            'paginas' => ['strategy' => 'pk', 'natural_key_columns' => []],
+        ]]));
+        $antes = [$GLOBALS['DB_DATA_DIR'] ?? null, $GLOBALS['BASE_PATH_DB'] ?? null];
+        try {
+            $GLOBALS['DB_DATA_DIR'] = $raiz . 'db/data/';
+            $GLOBALS['BASE_PATH_DB'] = $raiz;
+            $meta = schemaMetadata(true);
+            self::assertSame(['language', 'id'], $meta['tables']['publisher']['natural_key_columns']);
+            self::assertSame('natural_key', $meta['tables']['paginas']['strategy'], 'o core tem precedência');
+        } finally {
+            [$GLOBALS['DB_DATA_DIR'], $GLOBALS['BASE_PATH_DB']] = $antes;
+            schemaMetadata(true);
+            array_map('unlink', [$raiz . 'db/data/schema-metadata.json', $raiz . 'project-schema-metadata.json']);
+            rmdir($raiz . 'db/data'); rmdir($raiz . 'db'); rmdir($raiz);
+        }
+    }
+
+    /** A atualização do sistema não pode terminar "success" quando a rotina do banco devolveu 1. */
+    public function testAtualizacaoDoSistemaConfereORetornoDoBanco(): void
+    {
+        $fonte = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/controladores/atualizacoes/atualizacoes-sistema.php');
+        self::assertStringContainsString('$rcBanco = require $script;', $fonte);
+        self::assertStringContainsString("if (\$rcBanco === 1) throw new DatabaseUpdateException(", $fonte);
+    }
+
     public function testInsercaoEmLoteGravaFalseComoZero(): void
     {
         if (!in_array('sqlite', PDO::getAvailableDrivers(), true)) {

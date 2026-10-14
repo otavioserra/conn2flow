@@ -730,7 +730,10 @@ function executarAtualizacaoBanco(array $opts): void {
         logAtualizacao('Banco: incluindo script inline (sem processo externo)');
         $erroInline = null;
         try {
-            require $script;
+            // O script incluído devolve o código de `main()`: 1 quando a rotina falhou. Antes o retorno era
+            // ignorado e a atualização terminava "success" com o banco sem as sementes novas (REQ-272).
+            $rcBanco = require $script;
+            if ($rcBanco === 1) throw new DatabaseUpdateException('Sincronização do banco falhou; veja as linhas [BANCO] do log.');
             logAtualizacao('Banco: concluído inline');
         } catch (Throwable $e) {
             $erroInline = $e;
