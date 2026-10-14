@@ -13,9 +13,9 @@
 ## Skills OBRIGATÓRIAS por Marco de Fluxo
 
 Consulte as skills correspondentes em `.codex/skills/` ANTES de editar código ou fechar lotes:
-- **Início de Tarefa**: `start-sdd-slice` (nova demanda), `continue-sdd-batch` (retomar batch), `sdd-workflow` (alinhar fluxo).
+- **Início de Tarefa**: `start-mdd-slice` (nova demanda), `continue-mdd-batch` (retomar batch), `mdd-workflow` (alinhar fluxo).
 - **Durante a Edição**: invoque as Core Skills (`c2f-*`) relevantes para a stack tocada (banco, variáveis, recursos, layout, etc.).
-- **Fechamento e Validação**: `project-validation` (estratégia de testes), `review-current-batch` (review findings-first), `sdd-memory-gardening` (podar memórias).
+- **Fechamento e Validação**: `project-validation` (estratégia de testes), `review-current-batch` (review findings-first), `mdd-memory-gardening` (podar memórias).
 - **Mudança Normativa**: `raise-spec-change` (se houver alteração de contrato/requisito).
 
 ## Otimização de Contexto e Arquivamento

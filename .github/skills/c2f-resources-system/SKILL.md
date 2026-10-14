@@ -20,6 +20,16 @@ user-invocable: false
 
 ## 1. Arquitetura de Recursos (Edição Física -> Compilação -> Banco)
 
+### Proporcionalidade de recompilação — REQ-075 / Core REQ-269
+
+Classifique o diff antes de compilar:
+
+- **Categoria A:** backend PHP/APIs/migrations/regras de negócio sem alteração de HTML, classes Tailwind, CSS ou fontes/configuração de compilação. Não recompile Tailwind. Se sincronização local for necessária, use `./c2f project:update-all <id> --skip-css` ou `./c2f manager:update-all --skip-css`. Mudanças exclusivamente de Core/banco admitem `./c2f project:sync-core <id> --skip-css` seguido de `./c2f project:sync-db <id> --core-resources`.
+- **Categoria B:** documentação, skills, testes unitários e memória MDD. Execute apenas os testes/checks locais pertinentes; nenhum pipeline de deploy no Lab.
+- **Categoria C:** telas/templates HTML/componentes/classes/CSS autoral/fontes de compilação. Execute o pipeline completo sem `--skip-css`; mudanças mistas com impacto visual também são C.
+
+Ignorar CSS não significa ignorar dados: recursos alterados ainda precisam gerar seus `*Data.json` e chegar ao banco pelo pipeline. A flag dispensa Tailwind e CSS derivado, preservando as demais etapas. A via cirúrgica de Core/banco não compila recursos do projeto. Mantenha version bump e invalidação de cache para scripts/estilos alterados. Não faça build completo em A nem deploy em B; não prometa duração <45 segundos sem medir no ambiente real.
+
 * **Fonte (Source)**: Desenvolvedores criam/editam arquivos físicos em `resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
 * **Recursos de Módulo**: `modulos/<modulo-id>/resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
 * **Natural Key**: O nome da pasta do recurso (`<id>`) é a chave primária natural no Banco de Dados.
@@ -119,3 +129,5 @@ Os `field_types` suportados são:
 * `json` — Dados JSON inline no metadado
 
 A compilação gera `[PascalCase]Data.json` (ex: `MinhaTabelaData.json`) automaticamente.
+
+Nota de autoria: na via cirúrgica Core/banco, --core-resources preserva o dono das sementes do Core. Dados e recursos próprios do projeto exigem sua sincronização específica; não use essa flag para transferir autoria.

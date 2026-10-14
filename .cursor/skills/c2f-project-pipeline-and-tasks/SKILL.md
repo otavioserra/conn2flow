@@ -15,6 +15,14 @@ user-invocable: false
 
 ## ⛔ Regra #1: Pipeline ≠ Cópia de Arquivo
 
+### Regra de Proporcionalidade de Build — REQ-075 / Core REQ-269
+
+- **Categoria A — backend sem HTML/classes/CSS/fontes de compilação alterados:** use `./c2f project:update-all <id> --skip-css` ou `./c2f manager:update-all --skip-css` quando houver sincronização local necessária. Para mudanças exclusivamente de Core/banco: `./c2f project:sync-core <id> --skip-css` e depois `./c2f project:sync-db <id> --core-resources`, sequencialmente. Build completo de Tailwind é proibido nesta categoria.
+- **Categoria B — documentação, skills, testes unitários e memória MDD:** apenas checks/testes locais; proibido executar pipeline de deploy no Lab.
+- **Categoria C — telas, templates HTML, componentes, classes Tailwind, CSS ou configuração/fontes de compilação:** pipeline completo sem `--skip-css`; CSS derivado precisa corresponder ao HTML publicado. Mudanças mistas com impacto de CSS pertencem a C.
+
+`--skip-css` já existe no Core: o pipeline de projeto repassa a flag nas etapas 2/8 e 4/8 e pula CSS derivado em 7/8; o sistema pula Tailwind em 2/6 e CSS derivado em 5/6. Dados/metadados, arquivos, banco, JS e publicação continuam nas demais etapas. A via cirúrgica não substitui compilação/sincronização de recursos de autoria do projeto. Não faça `resources:sync` completo separado para contornar a economia de A. A flag não muda permissões, ambiente alvo, locks ou verificação de conteúdo. A meta de <45 segundos é dependente do ambiente e exige medição; neste lote de governança não se faz deploy para demonstrá-la.
+
 > [!CAUTION]
 > É **estritamente proibido** sincronizar alterações entre o Core e projetos usando cópia manual de arquivos (`cp`, `copy`, `Copy-Item`, `xcopy`). Isso resulta em:
 > - `*Data.json` não recompilados (recursos desatualizados no banco)
@@ -23,31 +31,27 @@ user-invocable: false
 > - Arquivos de espelho (`dev-environment/data/sites/...`) inconsistentes
 > - **Estado híbrido pós-deploy** (HTML novo servido com CSS desatualizado em cache)
 
-### Pipeline Mandatório para o Sistema (Core / 4 etapas):
+### Pipeline Completo para o Sistema (Categoria C / 6 etapas):
 ```bash
 ./c2f manager:update-all
 ```
-**Sequência Canônica de 4 Etapas**:
-1. **Core**: Sincronização do núcleo do sistema.
-2. **Resources**: Compilação de recursos e metadados (`c2f resources:sync`).
-3. **Files**: Atualização de arquivos físicos e permissões.
-4. **Database & CSS Rebuild**: Upsert no Banco SQL + Migrações Phinx + **Reconstrução Final de CSS (`c2f css:rebuild`)**.
+**Sequência conferida em ManagerUpdateAllCommand.php**:
+1. Minificação de JavaScript de autoria.
+2. Resources: compilação de recursos e metadados (`c2f resources:sync`).
+3. Files: sincronização de arquivos com o ambiente de teste.
+4. Database: upsert e migrations.
+5. CSS Rebuild: reconstrução do CSS derivado (dispensada em A com `--skip-css`).
+6. Publicação de assets em `dist/`.
 
-### Pipeline Mandatório para Projetos (8 etapas; ver Regra #8):
+### Pipeline Completo para Projetos (Categoria C / 8 etapas; ver Regra #8):
 ```bash
 ./c2f project:update-all <projectID>
 ```
-**Sequência resumida** (a lista completa de 8 etapas está na Regra #8):
-1. **Core**: Atualização dos componentes base do Core.
-2. **Database (Pré)**: Validação e preparação do estado inicial do banco.
-3. **Resources**: Compilação de recursos (`c2f resources:sync`).
-4. **Files**: Sincronização do espelho de arquivos do projeto.
-5. **Database (Pós)**: Upsert no Banco SQL + Migrações Phinx pendentes.
-6. **CSS Rebuild**: Reconstrução final do CSS derivado a partir do HTML real no banco (`c2f css:rebuild`).
+Consulte a sequência completa e atual de oito etapas na Regra #8; a Categoria A aplica `--skip-css` nas etapas pertinentes, sem alterar as demais.
 
 > [!IMPORTANT]
 > **Prevenção do Estado Híbrido Pós-Deploy**:
-> O `css:rebuild` no encerramento de ambos os pipelines é a etapa mandatória que recalcula o CSS derivado (`css_precompiled` e `css_compiled`) a partir do HTML real no banco de dados. Isso **impede o estado híbrido** (CSS antigo/stale em cache vs novo HTML entregue) de retornar após cada deploy.
+> Na Categoria C, `css:rebuild` recalcula o CSS derivado (`css_precompiled` e `css_compiled`) a partir do HTML real no banco. Na Categoria A, sem alteração das fontes de CSS, `--skip-css` dispensa esta etapa; não force um rebuild separado. Isso preserva a correspondência entre HTML e CSS sem build desnecessário.
 
 ---
 
@@ -96,9 +100,9 @@ As tarefas definidas em `.vscode/tasks.json` são atalhos visuais para os comand
 | VS Code Task | Comando CLI Equivalente | Descrição |
 |---|---|---|
 | 🗃️ Projects - Sync Core → ID | `c2f project:sync-core <id>` | Sincroniza o Core para o espelho do projeto |
-| 🗃️ Projects - Update All → ID | `c2f project:update-all <id>` | Pipeline de 8 etapas: Core → DB → Resources → Files → DB → CSS Rebuild → JS → dist |
+| 🗃️ Projects - Update All → ID | `c2f project:update-all <id>` | 8 etapas: JS → Core → DB → Resources → Files → DB → CSS Rebuild → dist; Categoria A usa --skip-css |
 | 🚀 Projects - Deploy Project → ID | `c2f project:deploy <id>` | Deploy do projeto para o servidor de destino |
-| 📦 Manager - Update All | `c2f manager:update-all` | Pipeline de 4 etapas: Core → Resources → Files → DB + CSS Rebuild |
+| 📦 Manager - Update All | `c2f manager:update-all` | 6 etapas: JS → Resources → Files → DB → CSS Rebuild → dist; Categoria A usa --skip-css |
 | 🎨 Tailwind - Sync Resources | `c2f resources:sync` | Compila recursos e gera `*Data.json` |
 | 🧪 Manager - Run Tests | `c2f test:run` | Executa suite de testes automatizados |
 | 🗄️ DB - Run Migrations | `c2f db:migrate` | Aplica migrações Phinx pendentes |
@@ -176,15 +180,15 @@ ssh usuario@host "tail -50 /path/to/conn2flow-gestor/logs/php-error.log"
 
 ## 🧭 Regra #8: O pipeline de projeto tem 8 etapas (correção da contagem)
 
-A Regra #1 descreve seis etapas; o `c2f project:update-all <id>` executa **oito**. Use esta lista ao ler o log:
+A sequência de `ProjectUpdateAllCommand.php` tem **oito** etapas. Use esta lista ao ler o log:
 
-1. Sincronizando Core
-2. Atualizando Banco de Dados (dados do core)
-3. Sincronizando Recursos (compilação do projeto: Tailwind por recurso e `*Data.json`)
-4. Sincronizando Arquivos
-5. Validação Final do Banco (dados do projeto)
-6. Regenerando CSS derivado
-7. Minificando JavaScript de autoria
+1. Minificando JavaScript de autoria
+2. Sincronizando Core
+3. Atualizando Banco de Dados (dados do core)
+4. Sincronizando Recursos (compilação do projeto: Tailwind por recurso e `*Data.json`)
+5. Sincronizando Arquivos
+6. Validação Final do Banco (dados do projeto)
+7. Regenerando CSS derivado
 8. Publicando assets estáticos em `dist/`
 
 Para rodar só a compilação do projeto: `c2f project:sync-resources <id>`.
@@ -225,3 +229,5 @@ O pipeline por SSH não tem trava. Dois agentes publicando no mesmo ambiente ger
 - **Retirada por dono**: o que o dono deixa de entregar recebe `status='D'` (ou é apagado, se a tabela não tem `status`). O que volta a ser entregue é reativado pelo manifesto de retirados. Uma entrega com fonte incompleta desativa registros de verdade: nunca publique a partir de fonte pela metade.
 - **Compilação de projeto usa as sementes do projeto.** Tabela declarada pelo core sem semente no projeto é pulada (`DYNAMIC_SKIP_PROJETO_SEM_SEMENTE`).
 - O pipeline de projeto roda **sem backup** das tabelas. Antes de validar regra de dados num ambiente, fotografe as tabelas envolvidas (uma consulta de leitura salva em arquivo) e compare depois.
+
+Nota de autoria: na via cirúrgica Core/banco, --core-resources preserva o dono das sementes do Core. Dados e recursos próprios do projeto exigem sua sincronização específica; não use essa flag para transferir autoria.

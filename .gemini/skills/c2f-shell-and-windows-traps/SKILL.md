@@ -405,7 +405,7 @@ O BL-028 registra perda de vendor e node_modules em 2026-10-08: a remoção de w
 
 Antes de remover, confirme o caminho absoluto da worktree, que não é árvore principal nem origem do pipeline. Liste junctions com cmd /c "dir /AL <pasta>" (inspecione também nós internos, sem atravessar links). Confira referências de outras worktrees para dentro dela; se houver, preserve/reaponte primeiro. Desfaça cada junction individualmente com cmd /c "rmdir <pasta>\<atalho>" **sem /S**: isso remove apenas o atalho. Use caminhos literais previamente verificados e o CMD de ponta a ponta; nunca gere lista em PowerShell para executar exclusão por outro shell. Confirme que os links saíram, então execute git worktree remove. Nunca use --force para ultrapassar trabalho não integrado. Depois confira o conteúdo de vendor/node_modules nas árvores principais e nas worktrees restantes.
 
-Não crie junction para outra worktree temporária; quando necessária, a referência é para a árvore principal. Confira a rotina de seis passos em sdd-memory-gardening.
+Não crie junction para outra worktree temporária; quando necessária, a referência é para a árvore principal. Confira a rotina de seis passos em mdd-memory-gardening.
 
 ### 19. iconv //TRANSLIT não portável no PHP Windows
 

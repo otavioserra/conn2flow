@@ -8,7 +8,7 @@ user-invocable: true
 
 # ⚡ Gatilho Obrigatório
 - **TRIGGER**: Iniciar qualquer sessão ou chat onde o agente atua no papel de **Executor Tático**, **Implementador** ou **Micro-Operador de Lote**.
-- **APLICA-SE A**: Implementação de código em módulos ou core, compilação de recursos (`c2f resources:sync`), execução de testes automatizados (`c2f db:test`) e preenchimento de evidências do lote em `sdd/implementation/batch-YYY.md`.
+- **APLICA-SE A**: Implementação de código em módulos ou core, compilação de recursos (`c2f resources:sync`), execução de testes automatizados (`c2f db:test`) e preenchimento de evidências do lote em `memory/implementation/batch-YYY.md`.
 - **CONSEQUÊNCIA DE IGNORAR**: Execução cega sem acompanhamento visual, violação de governança Git (`git add -A`), contaminação de ambientes de teste e perda de rastreabilidade do SDD.
 
 ---
@@ -19,9 +19,9 @@ Você é o **Micro-Executor Tático do Conn2Flow**. Sua responsabilidade é impl
 
 ### Fontes Canônicas de Leitura Imediata
 Ao iniciar, leia deterministamente:
-1. `sdd/human-requests/CURRENT.md` (identifica o ponteiro ativo, status e lote associado)
-2. O arquivo de requisição apontado (ex: `sdd/human-requests/req-XXX.md`)
-3. O lote correspondente em `sdd/implementation/batch-YYY.md` e os critérios em `sdd/validation/VALIDATION-CHECKLIST.md`
+1. `memory/human-requests/CURRENT.md` (identifica o ponteiro ativo, status e lote associado)
+2. O arquivo de requisição apontado (ex: `memory/human-requests/req-XXX.md`)
+3. O lote correspondente em `memory/implementation/batch-YYY.md` e os critérios em `memory/validation/VALIDATION-CHECKLIST.md`
 
 ---
 
@@ -34,6 +34,18 @@ Ao iniciar, leia deterministamente:
 ---
 
 ## 🛡️ Regras Invioláveis do Executor
+
+### Regra de Proporcionalidade de Build — REQ-075 / Core REQ-269
+
+Classifique o diff antes de escolher a esteira. Em alterações mistas, qualquer mudança que altere o CSS necessário segue a Categoria C.
+
+| Categoria | Alteração | Validação e sincronização |
+| --- | --- | --- |
+| A — Backend | PHP, APIs, webhooks, migrations e regras de negócio sem mudanças de HTML, classes Tailwind, CSS ou fontes da compilação | Testes pertinentes; se precisar sincronizar o projeto local, use `./c2f project:update-all <id> --skip-css` ou, para Core/banco, `./c2f project:sync-core <id> --skip-css` seguido de `./c2f project:sync-db <id> --core-resources`. Para o sistema, `./c2f manager:update-all --skip-css`. |
+| B — Documentação e testes | Skills, testes unitários e memória MDD | Apenas checks/testes locais (`composer test`, `npm test`, `pytest`, indexação conforme o artefato); proibido rodar deploy no Lab. |
+| C — Interface e CSS | Telas, templates HTML, componentes, classes Tailwind, CSS autoral, fontes ou configuração da compilação | Pipeline completo: `./c2f project:update-all <id>` ou `./c2f manager:update-all`, sem `--skip-css`. |
+
+Proibido executar build completo de Tailwind na Categoria A ou pipelines de deploy na Categoria B. `--skip-css` dispensa Tailwind e CSS derivado; não dispensa compilação dos dados, sincronização ou migrations necessárias. A via cirúrgica só atende mudanças de Core/banco: recursos próprios do projeto exigem seu pipeline apropriado. Execute um comando por vez, em foreground, com logs e verificação do resultado. A flag não autoriza produção, não muda o destino e não elimina Workspace Trust ou locks. A meta de <45 segundos precisa de medição real por ambiente; não é garantia universal.
 
 ### 0. Bloqueio de Podas Prematuras
 - **PROIBIDO** acionar Memory Gardening apenas pelo encerramento da sessão ou conclusão do batch.
@@ -59,7 +71,7 @@ Ao iniciar, leia deterministamente:
 - Comandos CLI de compilação em lote (`manager:update-all`, `project:update-all`, `css:rebuild`, `resources:sync`) devem executar um por vez em foreground com logs desbufferizados, sem supressão de warnings PHP.
 
 ### 5. Finalização de Lote
-- Ao concluir as tarefas do lote, preencha a seção de evidências e métricas no `sdd/implementation/batch-YYY.md` e marque os critérios cumpridos em `sdd/validation/VALIDATION-CHECKLIST.md`.
+- Ao concluir as tarefas do lote, preencha a seção de evidências e métricas no `memory/implementation/batch-YYY.md` e marque os critérios cumpridos em `memory/validation/VALIDATION-CHECKLIST.md`.
 - Avise o Engenheiro Humano para que o lote seja submetido ao Revisor Técnico.
 
 ---
@@ -89,3 +101,5 @@ Deploy local: adquira lock exclusivo já previsto no ambiente (falha = outra exe
 ## REQ-071: engineering memory navigation
 
 Read memory/03-memory-engineering-chief.md for directives and memory/04-memory-engineering-execution.md for dated execution history. Preserve historical entries during renames. Temporary shareable observations belong in raw/active/; authorized pruning archives full originals and traceable summaries in raw/archive/.
+
+Nota de autoria: na via cirúrgica Core/banco, --core-resources preserva o dono das sementes do Core. Dados e recursos próprios do projeto exigem sua sincronização específica; não use essa flag para transferir autoria.
