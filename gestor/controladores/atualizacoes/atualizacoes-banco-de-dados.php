@@ -56,6 +56,9 @@ require_once $BASE_PATH_DB . 'bibliotecas/lang.php';
 require_once $BASE_PATH_DB . 'bibliotecas/log.php';
 require_once $BASE_PATH_DB . 'bibliotecas/banco.php';
 require_once $BASE_PATH_DB . 'bibliotecas/gestor.php';
+// Direto, e não só pelo gestor.php: na atualização pelo painel o processo já carregou o gestor.php da
+// versão anterior, o require_once acima é pulado e db_data_list_tables() não existiria (REQ-272).
+require_once $BASE_PATH_DB . 'bibliotecas/db-data.php';
 require_once $BASE_PATH_DB . 'bibliotecas/hooks.php';
 require_once $BASE_PATH_DB . 'controladores/atualizacoes/atualizacoes-hooks.php';
 if (is_file($BASE_PATH_DB . 'controladores/atualizacoes/atualizacoes-recursos-retirada.php')) require_once $BASE_PATH_DB . 'controladores/atualizacoes/atualizacoes-recursos-retirada.php'; // req-199 / BATCH-207

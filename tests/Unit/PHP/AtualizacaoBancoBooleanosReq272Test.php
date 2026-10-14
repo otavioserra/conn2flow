@@ -31,6 +31,19 @@ final class AtualizacaoBancoBooleanosReq272Test extends TestCase
         );
     }
 
+    /**
+     * Na atualização pelo painel o processo já carregou o `gestor.php` da versão anterior: o sincronizador
+     * novo precisa carregar o `db-data.php` ele mesmo (a 3.0.0 vinda da 2.10.x parava em
+     * "Call to undefined function db_data_list_tables()" e o banco não recebia as sementes).
+     */
+    public function testSincronizadoresCarregamODbDataDiretamente(): void
+    {
+        foreach (['controladores/atualizacoes/atualizacoes-banco-de-dados.php', 'controladores/plugins/atualizacao-plugin-banco-de-dados.php'] as $arquivo) {
+            $fonte = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/' . $arquivo);
+            self::assertStringContainsString("require_once \$BASE_PATH_DB . 'bibliotecas/db-data.php';", $fonte, $arquivo);
+        }
+    }
+
     public function testInsercaoEmLoteGravaFalseComoZero(): void
     {
         if (!in_array('sqlite', PDO::getAvailableDrivers(), true)) {

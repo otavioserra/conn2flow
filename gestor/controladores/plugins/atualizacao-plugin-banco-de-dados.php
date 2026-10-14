@@ -54,8 +54,10 @@ require_once $BASE_PATH_DB . 'bibliotecas/lang.php';
 require_once $BASE_PATH_DB . 'bibliotecas/log.php';
 require_once $BASE_PATH_DB . 'bibliotecas/banco.php';
 require_once $BASE_PATH_DB . 'bibliotecas/gestor.php';
+// Direto: o processo pode já ter o gestor.php de uma versão anterior carregado (REQ-272).
+require_once $BASE_PATH_DB . 'bibliotecas/db-data.php';
 
-// Gestor 
+// Gestor
 global $_GESTOR;
 if (!isset($_GESTOR)) $_GESTOR = [];
 $_GESTOR['logs-path'] = $BASE_PATH_DB . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
