@@ -1,7 +1,7 @@
 ---
 id: "BATCH-281"
 title: "REQ-272: release 3.0.0 e projeto de implantação do pré-lançamento"
-status: "in-progress"
+status: "implemented-pending-homologation"
 date: "2026-10-14"
 author: "executor"
 target_repo: "conn2flow"
@@ -14,7 +14,7 @@ summary_medium: "1ª tentativa do CI falhou: chave primária anulável em distri
 - Projeto: `conn2flow` — `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`
 - Requisição: [REQ-272](../human-requests/req-272.md); site coordenado: REQ-127 / BATCH-121
 - Topologia e autonomia: `dupla`; produção e GitHub com autorização expressa do Humano em 2026-10-14
-- Status: `in-progress`
+- Status: `implemented-pending-homologation`
 
 ## Live Todo
 
@@ -24,7 +24,10 @@ summary_medium: "1ª tentativa do CI falhou: chave primária anulável em distri
 - [x] CI da 1ª tentativa falhou em "Run Phinx migrations" (ver Achados); correção `9dcdc10d`.
 - [x] Notas da release no workflow trocadas da 2.10.13 para a 3.0.0 (`853fc7d0`).
 - [x] Tag refeita no commit corrigido, por decisão do Humano.
-- [ ] CI da 2ª tentativa e release publicada com `gestor.zip` e checksum.
+- [x] 2ª tentativa: migrações OK, PHPUnit com 14 falhas (Achado 4); corrigido em `b2e484c6`.
+- [x] 3ª tentativa: CI verde; release `gestor-v3.0.0` publicada em 14/10 18:49 UTC como Latest, com `gestor.zip` (18,8 MB) e `gestor.zip.sha256` (tag em `b2e484c6`).
+- [x] Reserva de versão do site (`site-pages/releases.json`) em 3.0.0 (site BATCH-121).
+- [x] Sincronizador de banco grava booleanos como 0/1 (Achado 5, `1670880c`), fora do pacote 3.0.0.
 - [x] Projeto `conn2flow-site-temp` no `environment.json` (não versionado; cópia anterior no scratchpad da sessão).
 
 ## Achados
@@ -32,8 +35,10 @@ summary_medium: "1ª tentativa do CI falhou: chave primária anulável em distri
 1. **Migração recusada no MySQL 8.** `20261002143002_create_distributed_exchanges_table.php` declarava a chave primária `id` sem `'null' => false`; esta versão do Phinx cria a coluna anulável. O MariaDB (Lab e produção) força NOT NULL em silêncio; o `mysql:8.0` do CI recusa (`1171 All parts of a PRIMARY KEY must be NOT NULL`). Nenhuma outra migração tem o padrão. Validação: as 106 migrações do core rodaram do zero num banco vazio no `lab` (62 tabelas, `id` NOT NULL); banco de teste apagado depois.
 2. **Notas fixas no workflow.** O corpo da release em `.github/workflows/release-gestor.yml` era texto fixo da 2.10.13; a 3.0.0 sairia com as novidades erradas.
 3. **`conn2flow.com` sem cron.** Nenhuma tarefa agendada aponta para o usuário `conn2flow` no servidor de produção (nem HestiaCP nem crontab do sistema). Afeta rotinas como renovação e lembretes; tratar antes da migração final (REQ-127).
+4. **Testes que só falham no modo do CI.** O CI roda com `CONN2FLOW_TEST_BOOTSTRAP_CONFIG=1` (carrega o `config.php` real), que liga `confirmacao-origem` (req-217): 13 testes dos módulos distribuídos usavam Central de mentira e passaram a ser recusados. Cada classe agora desliga a conferência no próprio `setUp` (a Req217 continua testando-a). A 14ª falha era o `ai:sync` com os nomes `sdd-*` antigos (REQ-076 do ai-workspace): os quatro nomes foram trocados no `AiSyncCommand`. Reproduzido e validado no `lab` com o `.env` e o banco do CI: 1.788 testes, 0 falhas, nos dois modos; Vitest 664; E2E 3 pulados.
+5. **Booleano do JSON vira string vazia no PDO.** `"sem_permissao": false` (duas páginas do site) chegava como `''` no INSERT de página nova e o MariaDB estrito recusava (1366); a 2ª execução do pipeline do `temp` parou na etapa 6/8 com rollback. `paramsBanco()` em `atualizacoes-banco-de-dados.php` converte booleanos nos cinco pontos de gravação; teste `AtualizacaoBancoBooleanosReq272Test`. As sementes do core não têm `false`, por isso o pacote 3.0.0 não é afetado.
+6. **Trava de deploy órfã.** A execução interrompida com o fim da sessão deixou `../.c2f-deploy-locks/deploy-189b3e7a0bb03feb.lock` (PID 43740, já morto, venceria em 3 h); removida à mão depois de conferir que o processo não existia.
 
 ## Pendências
 
-- Publicação da release (CI em andamento).
 - Página "Novidades" (`ai-workspace/*/docs/whats-new/`) sem a 3.0.0.
