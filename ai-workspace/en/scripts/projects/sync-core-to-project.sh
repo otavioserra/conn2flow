@@ -28,10 +28,13 @@ CORE_SOURCE="$PROJECT_ROOT/gestor"
 . "$SCRIPT_DIR/../lib/project-transport.sh"
 
 PROJECT_TARGET_OVERRIDE=""
+# req-269: skips the incremental Tailwind compilation of the Core resources.
+RESOURCE_ARGS=()
 
 usage() {
-  echo "Usage: $0 --project <PROJECT_ID>"
+  echo "Usage: $0 --project <PROJECT_ID> [--skip-css]"
   echo "  --project, -p    Project identifier"
+  echo "  --skip-css       Skip Tailwind compilation of the Core resources"
   echo "  --help, -h       Show this help"
 }
 
@@ -40,6 +43,10 @@ while [[ $# -gt 0 ]]; do
     --project|-p)
       PROJECT_TARGET_OVERRIDE="$2"
       shift 2
+      ;;
+    --skip-css)
+      RESOURCE_ARGS+=("--skip-css")
+      shift
       ;;
     --help|-h)
       usage
@@ -111,9 +118,9 @@ fi
 TAILWIND_CLI=$(jq -r '.devEnvironment["tailwindcss/cli"] // empty' "$ENV_FILE" 2>/dev/null)
 RESOURCE_SCRIPT="$PROJECT_ROOT/gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
 if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
-  TAILWINDCSS_COMMAND="$TAILWIND_CLI" php "$RESOURCE_SCRIPT"
+  TAILWINDCSS_COMMAND="$TAILWIND_CLI" php "$RESOURCE_SCRIPT" "${RESOURCE_ARGS[@]}"
 else
-  php "$RESOURCE_SCRIPT"
+  php "$RESOURCE_SCRIPT" "${RESOURCE_ARGS[@]}"
 fi
 
 CMD=(

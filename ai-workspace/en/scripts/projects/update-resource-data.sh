@@ -44,18 +44,25 @@ PHP_SCRIPT="$PROJECT_ROOT/gestor/controladores/agents/arquitetura/atualizacao-da
 
 # Argument parsing
 PROJECT_TARGET_OVERRIDE=""
+# req-269: forwarded to the PHP compiler, which then skips the Tailwind compilation step.
+RESOURCE_ARGS=()
 while [[ $# -gt 0 ]]; do
     case $1 in
         --project|-p)
             PROJECT_TARGET_OVERRIDE="$2"
             shift 2
             ;;
+        --skip-css)
+            RESOURCE_ARGS+=("--skip-css")
+            shift
+            ;;
         --help|-h)
-            echo "Usage: $0 [--project|-p PROJECT_ID]"
+            echo "Usage: $0 [--project|-p PROJECT_ID] [--skip-css]"
             echo ""
             echo "Options:"
             echo "  --project, -p PROJECT_ID    Project identifier for update (optional)"
             echo "                              If not provided, uses the value of devEnvironment.projectTarget from environment.json"
+            echo "  --skip-css                  Skip Tailwind CSS compilation (existing precompiled CSS is kept)"
             echo "  --help, -h                  Shows this help"
             exit 0
             ;;
@@ -130,12 +137,12 @@ TAILWIND_CLI=$(jq -r ".devProjects.\"$PROJECT_TARGET\".\"tailwindcss/cli\"" "$EN
 
 # Execute PHP script with project path
 log "Executing resource update for the project..."
-log "Command: php \"$PHP_SCRIPT\" --project-path=\"$PROJECT_PATH\""
+log "Command: php \"$PHP_SCRIPT\" --project-path=\"$PROJECT_PATH\" ${RESOURCE_ARGS[*]}"
 
 if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
-    TAILWINDCSS_COMMAND="$TAILWIND_CLI" php "$PHP_SCRIPT" --project-path="$PROJECT_PATH"
+    TAILWINDCSS_COMMAND="$TAILWIND_CLI" php "$PHP_SCRIPT" --project-path="$PROJECT_PATH" "${RESOURCE_ARGS[@]}"
 else
-    php "$PHP_SCRIPT" --project-path="$PROJECT_PATH"
+    php "$PHP_SCRIPT" --project-path="$PROJECT_PATH" "${RESOURCE_ARGS[@]}"
 fi
 
 if [ $? -eq 0 ]; then

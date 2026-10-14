@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### REQ-269 / BATCH-278 — `--skip-css` nos pipelines (2026-10-14)
+
+- `project:update-all <id> --skip-css` pula Tailwind (etapas 2 e 4) e `css:rebuild` (7). Só para mudança de backend, banco ou teste.
+- **Medir antes de otimizar**: com cache quente o pipeline completo do site leva ~40 s; deploy de 10 min vem de muitos arquivos divergentes no destino (outras árvores), não do Tailwind.
+- `manager:update-all` mira o Docker local (`dev-environment/data/sites/localhost`); sem `docker` no host, as etapas 3 e 4 falham com ou sem flag.
+- `sed` com `\\r\\n` dentro de string PHP insere quebra real: editar PHP com a ferramenta de edição.
+
 ### REQ-268 / BATCH-277 — `sem_permissao = 0` abria a página (2026-10-14)
 
 - **`existe('0')` é verdadeiro.** Coluna numérica lida do banco chega como texto: `existe()`/`isset()` não servem para flag 0/1. Para `paginas.sem_permissao`, usar `gestor_pagina_sem_permissao()` (só `1` abre). O sitemap já usava `empty()`.

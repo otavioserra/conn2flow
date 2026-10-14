@@ -30,12 +30,20 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>] [--no-maintenance] [--no-verify]\n\n"
+        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>] [--no-maintenance] [--no-verify] [--skip-css]\n\n"
             . "Executes the full 8-stage synchronization pipeline. A deploy_mode=ssh project marked "
             . "local=true receives remote confirmation automatically; production remains explicit.\n"
             . "req-197: checks migrations first (db:check-migrations) and runs under a deploy lock per target "
             . "(SSH host+path or local folder, in GIT/.c2f-deploy-locks/). A second pipeline waits for the lock (default 30 min); --no-wait fails at once.\n"
-            . "req-213: ends with project:verify, which lists target files that differ from the source or exist only at the target.";
+            . "req-213: ends with project:verify, which lists target files that differ from the source or exist only at the target.\n"
+            . "req-269: --skip-css skips the Tailwind compilation (stages 2 and 4) and the derived CSS rebuild (stage 7). "
+            . "For backend, database or test changes only: a change to HTML or CSS needs the full pipeline.";
+    }
+
+    /** req-269: a etapa 7/8 (`css:rebuild`) é pulada? Função pura. */
+    public static function skipsCssRebuild(InputInterface $input): bool
+    {
+        return $input->hasOption('skip-css');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -269,24 +277,12 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         // condicionada: sem Tailwind CLI ou sem a coluna de procedência, apenas avisa e segue.
         $output->section("7/8 Regenerando CSS derivado ({$project})");
 
-        // O projeto chega a este comando como ARGUMENTO (`c2f project:update-all transformamp-local`),
-        // mas o `css:rebuild` o lê como OPÇÃO (`--project=`). Repassar o mesmo `$input` fazia a etapa
-        // cair no default — o ambiente de teste do SISTEMA — e regenerar a base errada: o pipeline
-        // do projeto reportava sucesso sem ter tocado no CSS do projeto. Aqui o id é declarado.
-        $argv = ['css:rebuild', '--project=' . $project];
-        if ($confirmarRemoto) {
-            $argv[] = '--confirmar-remoto';
-        }
-
-        $cssCmd = new CssRebuildCommand($this->rootPath);
-        $code = $cssCmd->execute(new Input($argv), $output);
-        if ($code !== 0) {
-            $output->warning(
-                'A regeneração do CSS não completou. As demais etapas foram aplicadas, mas recursos '
-                . 'editados online podem estar servindo CSS que não corresponde ao HTML. '
-                . "Rode 'c2f css:audit --project={$project}' para ver o que ficou stale."
-            );
-            // Não aborta: as etapas essenciais já foram aplicadas e o aviso acima é o sinal.
+        // req-269: com --skip-css as etapas 2 e 4 não compilaram Tailwind (a flag segue no `$input`
+        // repassado a elas), e regenerar o derivado aqui seria a mesma espera que a flag evita.
+        if (self::skipsCssRebuild($input)) {
+            $output->info('Etapa 7/8 ignorada por --skip-css.');
+        } else {
+            $this->rebuildCss($project, $confirmarRemoto, $output);
         }
 
         // 8. Publicação dos assets em `public_html/dist/` (req-028).
@@ -323,5 +319,28 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
         $output->success("Full update pipeline for project '{$project}' completed successfully!");
         return 0;
+    }
+
+    private function rebuildCss(string $project, bool $confirmarRemoto, OutputInterface $output): void
+    {
+        // O projeto chega a este comando como ARGUMENTO (`c2f project:update-all transformamp-local`),
+        // mas o `css:rebuild` o lê como OPÇÃO (`--project=`). Repassar o mesmo `$input` fazia a etapa
+        // cair no default — o ambiente de teste do SISTEMA — e regenerar a base errada: o pipeline
+        // do projeto reportava sucesso sem ter tocado no CSS do projeto. Aqui o id é declarado.
+        $argv = ['css:rebuild', '--project=' . $project];
+        if ($confirmarRemoto) {
+            $argv[] = '--confirmar-remoto';
+        }
+
+        $cssCmd = new CssRebuildCommand($this->rootPath);
+        $code = $cssCmd->execute(new Input($argv), $output);
+        if ($code !== 0) {
+            $output->warning(
+                'A regeneração do CSS não completou. As demais etapas foram aplicadas, mas recursos '
+                . 'editados online podem estar servindo CSS que não corresponde ao HTML. '
+                . "Rode 'c2f css:audit --project={$project}' para ver o que ficou stale."
+            );
+            // Não aborta: as etapas essenciais já foram aplicadas e o aviso acima é o sinal.
+        }
     }
 }
