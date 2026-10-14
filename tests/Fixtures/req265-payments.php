@@ -1,5 +1,6 @@
 <?php
-function gestor_incluir_biblioteca($n) {}
+// Só 'stripe' é carregada de verdade: é dela que sai pagamentos_com_trava (REQ-271).
+function gestor_incluir_biblioteca($n) { if ($n === 'stripe') require_once dirname(__DIR__, 2).'/gestor/bibliotecas/stripe.php'; }
 function gestor_asset_version($n) { return '1'; }
 function banco_escape_field($v) { return str_replace("'", "''", (string)$v); }
 function banco_query($sql) { $GLOBALS['queries'][] = $sql; return str_contains($sql,'GET_LOCK') ? ['acquired' => $GLOBALS['lock']] : true; }
@@ -9,8 +10,9 @@ function plataforma_gateways_resposta_erro($c, $m) { throw new RuntimeException(
 function check265($ok, $m) { if (!$ok) throw new RuntimeException($m); }
 $root = dirname(__DIR__, 2);
 $_GESTOR = ['bibliotecas-path' => $root.'/gestor/bibliotecas/'];
-require_once $root.'/gestor/bibliotecas/stripe.php';
-require_once $root.'/gestor/bibliotecas/pagamentos.php';
+gestor_incluir_biblioteca('stripe');
+check265(function_exists('pagamentos_com_trava'), 'Payment lock not provided by stripe library');
+check265(!file_exists($root.'/gestor/bibliotecas/pagamentos.php'), 'Orphan pagamentos.php library still present');
 require_once $root.'/gestor/bibliotecas/comunicacao.php';
 require_once $root.'/gestor/bibliotecas/formulario.php';
 $GLOBALS['lock'] = 1;

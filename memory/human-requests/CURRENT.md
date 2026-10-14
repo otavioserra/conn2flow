@@ -1,7 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-271.md](req-271.md) (BATCH-280 `ready-for-intake`, 2026-10-14, multi-repo — Arquiteto Master / Autônomo Monitorado): Apoio Core — Mover pagamentos_com_trava para stripe.php e Excluir pagamentos.php, coordenado com a REQ-126 do Site.
+  - [req-272.md](req-272.md) (BATCH-281 `ready-for-intake`, 2026-10-14, multi-repo — supervisionado em produção): Release 3.0.0 e ambiente de pré-lançamento em `temp.conn2flow.com`, coordenado com a REQ-127 do Site.
+  - [req-271.md](req-271.md) (BATCH-280 `complete`, 2026-10-14, multi-repo — Arquiteto Master / Autônomo Monitorado): Apoio Core — Mover pagamentos_com_trava para stripe.php e Excluir pagamentos.php, coordenado com a REQ-126 do Site.
   - [req-270.md](req-270.md) (BATCH-279 `implemented-pending-homologation`, 2026-10-14, multi-repo — Arquiteto Master / Autônomo Monitorado): Apoio Core — Preparação e Suporte à Limpeza do Lab e Homologação Final da Versão 3.0.0, coordenado com a REQ-125 do Site.
   - [req-269.md](req-269.md) (BATCH-278 `merged-to-main`, 2026-10-14, Core): Pipeline Ágil — Suporte a `--skip-css` em `project:update-all` e Otimização Seletiva de Compilação Tailwind.
   - [req-267.md](req-267.md) (BATCH-276 `ready-for-intake`, 2026-10-14, multi-repo — GPT-6.1 SOL / Geração Visual): Apoio Core — Assets Isométricos de Capa para Dashboard Pages e Interface, coordenado com a REQ-123 do Site.

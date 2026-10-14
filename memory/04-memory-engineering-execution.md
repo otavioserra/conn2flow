@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### REQ-271 / BATCH-280 — trava de pagamentos no `stripe.php` (2026-10-14)
+
+- **Biblioteca nova precisa de entrada no mapa de `config.php`**: `gestor_incluir_biblioteca('x')` sem a chave volta calada e o fatal só aparece na chamada. Função de pagamento vai em `stripe.php`.
+- O site também carrega bibliotecas do core por caminho em fixtures (`tests/fixtures/req122-payments.php`): remover arquivo do core exige procurar `bibliotecas/<nome>.php` no site.
+- O rsync do pipeline não apaga arquivo removido: a conferência por hash lista `SOBRA`, que precisa ser apagada no destino.
+- Escrita remota no Lab: usar o alias `ssh lab` (mesma máquina, `sudo` liberado). `ssh otavio@lab.conn2flow.local` com `sudo` foi barrado pelo classificador.
+
 ### REQ-269 / BATCH-278 — `--skip-css` nos pipelines (2026-10-14)
 
 - `project:update-all <id> --skip-css` pula Tailwind (etapas 2 e 4) e `css:rebuild` (7). Só para mudança de backend, banco ou teste.

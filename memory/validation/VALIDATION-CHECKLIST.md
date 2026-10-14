@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-280 — REQ-271
+
+- [x] `pagamentos_com_trava()` em `gestor/bibliotecas/stripe.php`; `gestor/bibliotecas/pagamentos.php` removido com `git rm`.
+- [x] Fixture REQ-265 carrega `gestor_incluir_biblioteca('stripe')`; `PaymentsReq265Test` OK.
+- [x] PHPUnit completo no `lab`: 1.788 testes, 1 falha anterior e alheia (`MemoryDualReq266Test`, 41/45 skills).
+- [x] Lab: `project:update-all conn2flow-site-local --skip-css` saída 0; `stripe.php` publicado define a função; sem novo fatal no `php-error.log`.
+- [x] Sobra remota `bibliotecas/pagamentos.php` removida e `public_html/dist` em `755 admin:www-data` (via `ssh lab`).
+- [x] Homologação assinada em 14/10/2026 pelo agente, por instrução expressa do Humano.
+
+---
+
 ## BATCH-278 — REQ-269
 
 - [x] `project:update-all <id> --skip-css`: saída 0 em 36 s no Lab, etapas 2, 4 e 7 puladas com aviso.

@@ -16,6 +16,7 @@
 | BATCH-276 | Capas isométricas de Páginas de Lousa e Interface | Duas capas WebP e manifestos entregues; Lab 3.0/3.1 validado em 19/19 verificações por ambiente. | [source](<BATCH-276.md>) | implemented-pending-homologation |
 | BATCH-277 | REQ-268: página com sem_permissao = 0 passa a exigir login | Roteador e telas de edição tratavam sem_permissao = 0 como página pública; agora só 1 abre a página. | [source](<BATCH-277.md>) | implemented-pending-homologation |
 | BATCH-278 | REQ-269: --skip-css nos pipelines project:update-all e manager:update-all | --skip-css pula a compilação Tailwind e o css:rebuild nos dois pipelines; Lab em 36 s com a flag. | [source](<BATCH-278.md>) | implemented-pending-homologation |
+| BATCH-280 | REQ-271: pagamentos_com_trava dentro do stripe.php e exclusão do pagamentos.php | Trava transacional movida para stripe.php; pagamentos.php removido; fixtures do core e do site carregam stripe. | [source](<BATCH-280.md>) | complete |
 
 ## Directories
 

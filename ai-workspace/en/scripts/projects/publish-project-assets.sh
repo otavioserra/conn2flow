@@ -12,6 +12,7 @@ case "$public_path" in
 esac
 project_transport_check
 project_transport_ensure_remote_path "${public_path%/}/dist"
-options=(-az)
+# dist/ is served straight by the web server user: never inherit the source's 750 (REQ-126).
+options=(-az --chmod=D755,F644)
 if [ "${4:-}" = '--clean' ]; then options+=(--delete); fi
 project_transport_run_rsync rsync "${options[@]}" "${PT_RSYNC_OPTS[@]}" "${3%/}/" "$PT_SSH_TARGET:${public_path%/}/dist/"
