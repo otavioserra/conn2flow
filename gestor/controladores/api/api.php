@@ -422,6 +422,9 @@ function api_project_update() {
 
         // req-198 / BATCH-204: verificação depois da entrega; falhou, os arquivos voltam do snapshot.
         $saude = null;
+        // A tela de manutenção (req-210) responde 503 a qualquer visitante, inclusive à verificação:
+        // com ela ligada, toda entrega por API falhava e era desfeita. Sai antes de verificar (REQ-272).
+        manutencao_desligar($manutencao_base);
         if (!api_post_bool('no_health')) {
             $saude = instalacao_saude_verificar($project_path, $saude_offset, '', api_project_saude_opcoes());
             if (!$saude['ok'] && !api_post_bool('no_rollback')) {

@@ -161,6 +161,10 @@ final class ManutencaoReq210Test extends TestCase
         $api = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/controladores/api/api.php');
         self::assertStringContainsString('manutencao_ligar($manutencao_base', $api);
         self::assertStringContainsString('manutencao_desligar($manutencao_base)', $api);
+        // REQ-272: a verificação pós-deploy roda com a manutenção já desligada (senão ela só vê o 503).
+        $desliga = strpos($api, "manutencao_desligar(\$manutencao_base);\n        if (!api_post_bool('no_health'))");
+        self::assertNotFalse($desliga, 'manutenção precisa sair antes da verificação de saúde');
+        self::assertLessThan(strpos($api, '$saude = instalacao_saude_verificar('), $desliga);
 
         $pipeline = (string)file_get_contents(dirname(CONN2FLOW_GESTOR_ROOT) . '/cli/src/Commands/ProjectUpdateAllCommand.php');
         self::assertStringContainsString("\$this->maintenance((string)\$project, true, \$output)", $pipeline);
