@@ -1,11 +1,12 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "requests": [
     "req-227",
     "site/req-102",
-    "req-237"
+    "req-237",
+    "req-267"
   ],
-  "date": "2026-10-05",
+  "date": "2026-10-14",
   "generator": "built-in image_gen",
   "max_bytes_exclusive": 120000,
   "assets": [
@@ -357,6 +358,26 @@
       "quality": 90,
       "sha256": "c9aa84487b3b39e31755bff2a3f7f97fdde9627841f565f1dedbed630a868d85",
       "request": "req-237"
+    },
+    {
+      "id": "dashboard-pages",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/dashboard-pages.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 97790,
+      "quality": 90,
+      "sha256": "e37fc480f59733ed5fd7d140eb0438e7445b7028af510ebc3c20a92b8e3a71a2"
+    },
+    {
+      "id": "interface",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/interface.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 79824,
+      "quality": 90,
+      "sha256": "f3e7814a3d73fb14cfa93dace4975b3b4748f5605addf639c2d8a0146d21bab2"
     }
   ],
   "request_byte_limits": {

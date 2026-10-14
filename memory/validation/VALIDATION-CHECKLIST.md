@@ -414,3 +414,14 @@ Relatório: [BATCH-245](../implementation/archive/BATCH-245.md). Runtime pt-br; 
 - [x] Cookie tabs com c2fc-abas-lista c2fc-anexa / c2fc-painel-aba em pt-br/en; recado do agente REQ-240/106 incorporado e trabalho paralelo preservado.
 - [x] Revisão técnica, PHP lint e diff-check aprovados; evidências e limites no [BATCH-248](../implementation/archive/BATCH-248.md).
 - [ ] Homologação humana e consolidação Git.
+
+
+## BATCH-276 / REQ-267 — capas isométricas
+
+- [x] WebP 1024x1024, 60.000–100.000 bytes; SHA-256 e bytes conferidos nos dois manifestos.
+- [x] Compilação resources:sync e pipelines oficiais: saída 0.
+- [x] HTTP/hash dos oito assets e seis cards autenticados sem fallback; 19/19 por ambiente; desktop/mobile sem overflow ou erro de console.
+- [x] Distinção registrada: arquivos-api/interface não têm cards neste perfil, mas suas capas são servidas corretamente.
+- [ ] Homologação humana.
+
+Relatório: [BATCH-276](../implementation/BATCH-276.md). Evidências coordenadas no Core: memory/validation/req267-delivery.json.

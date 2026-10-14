@@ -1,0 +1,290 @@
+{
+  "url": "https://v3.1-conn2flow.local",
+  "checks": [
+    {
+      "name": "HTTP and SHA256 ai-agents",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 97882
+      }
+    },
+    {
+      "name": "HTTP and SHA256 ai-assistant",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 78010
+      }
+    },
+    {
+      "name": "HTTP and SHA256 ai-images",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 92554
+      }
+    },
+    {
+      "name": "HTTP and SHA256 ai-admin",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 84210
+      }
+    },
+    {
+      "name": "HTTP and SHA256 ai-fields",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 86038
+      }
+    },
+    {
+      "name": "HTTP and SHA256 arquivos-api",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 91306
+      }
+    },
+    {
+      "name": "HTTP and SHA256 dashboard-pages",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 97790
+      }
+    },
+    {
+      "name": "HTTP and SHA256 interface",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "bytes": 79824
+      }
+    },
+    {
+      "name": "Authenticated Dashboard",
+      "ok": true
+    },
+    {
+      "name": "Dashboard card ai-agents",
+      "ok": true,
+      "data": {
+        "hasCover": true,
+        "loaded": true,
+        "src": "/modulos/covers/ai-agents.webp?v=1791976870",
+        "naturalWidth": 1024,
+        "naturalHeight": 1024
+      }
+    },
+    {
+      "name": "Dashboard card ai-assistant",
+      "ok": true,
+      "data": {
+        "hasCover": true,
+        "loaded": true,
+        "src": "/modulos/covers/ai-assistant.webp?v=1791976872",
+        "naturalWidth": 1024,
+        "naturalHeight": 1024
+      }
+    },
+    {
+      "name": "Dashboard card ai-images",
+      "ok": true,
+      "data": {
+        "hasCover": true,
+        "loaded": true,
+        "src": "/modulos/covers/ai-images.webp?v=1791976875",
+        "naturalWidth": 1024,
+        "naturalHeight": 1024
+      }
+    },
+    {
+      "name": "Dashboard card ai-admin",
+      "ok": true,
+      "data": {
+        "hasCover": true,
+        "loaded": true,
+        "src": "/modulos/covers/ai-admin.webp?v=1791976878",
+        "naturalWidth": 1024,
+        "naturalHeight": 1024
+      }
+    },
+    {
+      "name": "Dashboard card ai-fields",
+      "ok": true,
+      "data": {
+        "hasCover": true,
+        "loaded": true,
+        "src": "/modulos/covers/ai-fields.webp?v=1791976880",
+        "naturalWidth": 1024,
+        "naturalHeight": 1024
+      }
+    },
+    {
+      "name": "Dashboard card dashboard-pages",
+      "ok": true,
+      "data": {
+        "hasCover": true,
+        "loaded": true,
+        "src": "/modulos/covers/dashboard-pages.webp?v=1791977044",
+        "naturalWidth": 1024,
+        "naturalHeight": 1024
+      }
+    },
+    {
+      "name": "New module cards present",
+      "ok": true,
+      "data": [
+        {
+          "id": "ai-agents",
+          "present": true,
+          "hasCover": true,
+          "loaded": true,
+          "src": "/modulos/covers/ai-agents.webp?v=1791976870",
+          "naturalWidth": 1024,
+          "naturalHeight": 1024
+        },
+        {
+          "id": "ai-assistant",
+          "present": true,
+          "hasCover": true,
+          "loaded": true,
+          "src": "/modulos/covers/ai-assistant.webp?v=1791976872",
+          "naturalWidth": 1024,
+          "naturalHeight": 1024
+        },
+        {
+          "id": "ai-images",
+          "present": true,
+          "hasCover": true,
+          "loaded": true,
+          "src": "/modulos/covers/ai-images.webp?v=1791976875",
+          "naturalWidth": 1024,
+          "naturalHeight": 1024
+        },
+        {
+          "id": "ai-admin",
+          "present": true,
+          "hasCover": true,
+          "loaded": true,
+          "src": "/modulos/covers/ai-admin.webp?v=1791976878",
+          "naturalWidth": 1024,
+          "naturalHeight": 1024
+        },
+        {
+          "id": "ai-fields",
+          "present": true,
+          "hasCover": true,
+          "loaded": true,
+          "src": "/modulos/covers/ai-fields.webp?v=1791976880",
+          "naturalWidth": 1024,
+          "naturalHeight": 1024
+        },
+        {
+          "id": "arquivos-api",
+          "present": false,
+          "reason": "Module not listed for this profile/version"
+        },
+        {
+          "id": "dashboard-pages",
+          "present": true,
+          "hasCover": true,
+          "loaded": true,
+          "src": "/modulos/covers/dashboard-pages.webp?v=1791977044",
+          "naturalWidth": 1024,
+          "naturalHeight": 1024
+        },
+        {
+          "id": "interface",
+          "present": false,
+          "reason": "Module not listed for this profile/version"
+        }
+      ]
+    },
+    {
+      "name": "No horizontal overflow 1440",
+      "ok": true
+    },
+    {
+      "name": "No horizontal overflow 390",
+      "ok": true
+    },
+    {
+      "name": "No browser errors",
+      "ok": true,
+      "data": []
+    }
+  ],
+  "cards": [
+    {
+      "id": "ai-agents",
+      "present": true,
+      "hasCover": true,
+      "loaded": true,
+      "src": "/modulos/covers/ai-agents.webp?v=1791976870",
+      "naturalWidth": 1024,
+      "naturalHeight": 1024
+    },
+    {
+      "id": "ai-assistant",
+      "present": true,
+      "hasCover": true,
+      "loaded": true,
+      "src": "/modulos/covers/ai-assistant.webp?v=1791976872",
+      "naturalWidth": 1024,
+      "naturalHeight": 1024
+    },
+    {
+      "id": "ai-images",
+      "present": true,
+      "hasCover": true,
+      "loaded": true,
+      "src": "/modulos/covers/ai-images.webp?v=1791976875",
+      "naturalWidth": 1024,
+      "naturalHeight": 1024
+    },
+    {
+      "id": "ai-admin",
+      "present": true,
+      "hasCover": true,
+      "loaded": true,
+      "src": "/modulos/covers/ai-admin.webp?v=1791976878",
+      "naturalWidth": 1024,
+      "naturalHeight": 1024
+    },
+    {
+      "id": "ai-fields",
+      "present": true,
+      "hasCover": true,
+      "loaded": true,
+      "src": "/modulos/covers/ai-fields.webp?v=1791976880",
+      "naturalWidth": 1024,
+      "naturalHeight": 1024
+    },
+    {
+      "id": "arquivos-api",
+      "present": false,
+      "reason": "Module not listed for this profile/version"
+    },
+    {
+      "id": "dashboard-pages",
+      "present": true,
+      "hasCover": true,
+      "loaded": true,
+      "src": "/modulos/covers/dashboard-pages.webp?v=1791977044",
+      "naturalWidth": 1024,
+      "naturalHeight": 1024
+    },
+    {
+      "id": "interface",
+      "present": false,
+      "reason": "Module not listed for this profile/version"
+    }
+  ],
+  "errors": [],
+  "summary": "19/19"
+}

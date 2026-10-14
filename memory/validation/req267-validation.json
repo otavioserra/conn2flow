@@ -1,0 +1,97 @@
+﻿{
+  "result": "pass",
+  "repositories": [
+    {
+      "root": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow",
+      "all_covers_verified": 35,
+      "new_covers": [
+        {
+          "id": "dashboard-pages",
+          "repository": "conn2flow",
+          "path": "gestor/assets/modulos/covers/dashboard-pages.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 97790,
+          "quality": 90,
+          "sha256": "e37fc480f59733ed5fd7d140eb0438e7445b7028af510ebc3c20a92b8e3a71a2"
+        },
+        {
+          "id": "interface",
+          "repository": "conn2flow",
+          "path": "gestor/assets/modulos/covers/interface.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 79824,
+          "quality": 90,
+          "sha256": "f3e7814a3d73fb14cfa93dace4975b3b4748f5605addf639c2d8a0146d21bab2"
+        }
+      ]
+    },
+    {
+      "root": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow-site",
+      "all_covers_verified": 42,
+      "new_covers": [
+        {
+          "id": "ai-agents",
+          "repository": "conn2flow-site",
+          "path": "gestor/assets/modulos/covers/ai-agents.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 97882,
+          "quality": 82,
+          "sha256": "e5dd2ba8b8879db9a60d127ffd00476eb2bed0718e4ebe03955b65d2a2bf82cd"
+        },
+        {
+          "id": "ai-assistant",
+          "repository": "conn2flow-site",
+          "path": "gestor/assets/modulos/covers/ai-assistant.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 78010,
+          "quality": 90,
+          "sha256": "c34930640e91df24ae03e30ad3a6ad85619a42c064bf98b2c031b06c44e7f9db"
+        },
+        {
+          "id": "ai-images",
+          "repository": "conn2flow-site",
+          "path": "gestor/assets/modulos/covers/ai-images.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 92554,
+          "quality": 90,
+          "sha256": "6059d0b006648911777a5c8832e22bb7d2218785399eb39eb3b3ea51f9801fc9"
+        },
+        {
+          "id": "ai-admin",
+          "repository": "conn2flow-site",
+          "path": "gestor/assets/modulos/covers/ai-admin.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 84210,
+          "quality": 90,
+          "sha256": "cc652e5629d0b48b245f433f5c510519a7a1a4514161ba5b9b3f0773980c1b9b"
+        },
+        {
+          "id": "ai-fields",
+          "repository": "conn2flow-site",
+          "path": "gestor/assets/modulos/covers/ai-fields.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 86038,
+          "quality": 90,
+          "sha256": "d69fca562c852265cc20ebf7dc20c13ad280506de6fc804b8b45771e73b31e8e"
+        },
+        {
+          "id": "arquivos-api",
+          "repository": "conn2flow-site",
+          "path": "gestor/assets/modulos/covers/arquivos-api.webp",
+          "width": 1024,
+          "height": 1024,
+          "bytes": 91306,
+          "quality": 90,
+          "sha256": "0a98677982050f0f79aab9705bcb49895426a316d9a8552d45c8ec899c8fba62"
+        }
+      ]
+    }
+  ]
+}
