@@ -1,6 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-267.md](req-267.md) (BATCH-276 `ready-for-intake`, 2026-10-14, multi-repo — GPT-6.1 SOL / Geração Visual): Apoio Core — Assets Isométricos de Capa para Dashboard Pages e Interface, coordenado com a REQ-123 do Site.
+  - [req-268.md](req-268.md) (BATCH-277 `ready-for-intake`, 2026-10-14, multi-repo — Opus 5.5 Flagship / Autônomo Monitorado): Apoio Core — Suporte a Apresentações com Acesso Restrito e Compilação de Notícias, coordenado com a REQ-124 do Site.
   - [req-266.md](req-266.md) (BATCH-275 `ready-for-intake`, 2026-10-09, Core — Arquiteto Master / Autônomo Monitorado): Compatibilização MDD e Suporte Dual `memory/` e `sdd/`: Testes Automatizados, CLI e Governança de Skills.
   - [req-265.md](req-265.md) (BATCH-274 `ready-for-intake`, 2026-10-08, multi-repo — Opus 5.5 Flagship / Autônomo Monitorado): Apoio Core — Deduplicação de Transações Gateway, Resolução de `#brand_name#` e Histórico de Webhooks, coordenado com a REQ-122 do Site.
   - [req-264.md](req-264.md) (BATCH-273 `implemented-pending-homologation`, 2026-10-08, multi-repo — branch `feat/req-264` `7e174e77`): Apoio Core — Ajustes no Checkout Multi-Etapas, Variáveis de E-mail e Suporte a Tenants no Lab (Go-Live 3.0), coordenado com a REQ-121 do Site.
