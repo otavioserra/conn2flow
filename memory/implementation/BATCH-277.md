@@ -57,5 +57,5 @@ Página sem módulo continua aceitando qualquer usuário logado. A exigência de
 
 ## Limites
 
-- Os arquivos que a apresentação usa (`/presentation/investor-mdd/*.png`, `*.webp`, fontes) são entregues pelo controlador `arquivo-estatico` antes da sessão e continuam abertos a quem souber o endereço. Inclui `investment-growth-chart.webp`. Proteger arquivos de `contents/` exige mudança no caminho de estáticos do core, fora do escopo aprovado; proposta registrada para o Engenheiro Chefe no BATCH-118.
+- Os arquivos que a apresentação usa (`/presentation/investor-mdd/*.png`, `*.webp`, fontes) são entregues pelo controlador `arquivo-estatico` antes da sessão e continuam abertos a quem souber o endereço. O Engenheiro Chefe conferiu em 2026-10-14 que essas imagens não têm dado confidencial: os valores estão só no HTML do deck, protegido. Fica como observação técnica: página restrita não protege arquivos de `contents/`.
 - Produção não foi tocada.
