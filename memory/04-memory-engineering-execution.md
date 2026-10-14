@@ -16,6 +16,14 @@
 
 ## Tarefas recentes
 
+### REQ-272 / BATCH-281 — releases 3.0.0, 3.0.1 e 3.0.2 (2026-10-14)
+
+- **Antes de lançar, rodar a suíte no modo do CI**: `.env` em `gestor/autenticacoes/localhost/` + banco vazio no `lab`, `phinx migrate` e `CONN2FLOW_TEST_BOOTSTRAP_CONFIG=1 CONN2FLOW_RUN_DB_TESTS=1`. O CI usa `mysql:8.0` (mais estrito que o MariaDB) e carrega o `config.php` real.
+- Release falho sem pacote publicado: apagar e recriar a tag (decisão do Humano). Publicado: nova versão de correção. O workflow mantém só a última release de cada série.
+- **Atualização pelo painel roda num processo que já carregou o código antigo**: biblioteca nova precisa de `require_once` direto no script novo; função nova de arquivo já carregado não existe.
+- Atualização do sistema deixa os `*Data.json` do projeto em `db/data/` com o contrato do core; o projeto completa o contrato via `project-schema-metadata.json`.
+- Ensaio real: `c2f update:core <projeto> --tag=... --wait` (no Lab, `api_resolve_ip: 127.0.0.1` no projeto para aceitar o certificado local) e depois `project:deploy`.
+
 ### REQ-271 / BATCH-280 — trava de pagamentos no `stripe.php` (2026-10-14)
 
 - **Biblioteca nova precisa de entrada no mapa de `config.php`**: `gestor_incluir_biblioteca('x')` sem a chave volta calada e o fatal só aparece na chamada. Função de pagamento vai em `stripe.php`.
