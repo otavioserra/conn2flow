@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.2] - 2026-10-14
+
+### Fixed
+- System update with project tables: the database sync completes its contract from `project-schema-metadata.json`; project tables such as `publisher` were treated as new and failed with a duplicate key (`REQ-272`).
+- System update: a failed database sync now fails the update instead of ending as success with the previous seeds (`REQ-272`).
+
 ## [3.0.1] - 2026-10-14
 
 ### Fixed

@@ -3,7 +3,7 @@
 **Plataforma PHP open source para construir e operar produtos digitais com IA — e um Agent Management System (AMS) para os agentes que ajudam nesse trabalho.**
 
 [![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/vers%C3%A3o-v3.0.1-1daac6.svg)](CHANGELOG-PT-BR.md)
+[![Versão](https://img.shields.io/badge/vers%C3%A3o-v3.0.2-1daac6.svg)](CHANGELOG-PT-BR.md)
 [![PHP](https://img.shields.io/badge/PHP-8.1%2B-777bb4.svg)](ai-workspace/pt-br/docs/guides/installation.md)
 
 [🇺🇸 English](README.md) · 🇧🇷 Português · [Site](https://conn2flow.com/) · [Plataforma](https://conn2flow.com/plataforma/) · [Conn2Flow Pro](https://conn2flow.com/pro/)
@@ -122,7 +122,7 @@ A documentação é Markdown, versionada com o código, conferida contra ele e g
 
 ## Situação
 
-Versão atual: **v3.0.1**. Trabalho recente, na ordem em que chegou:
+Versão atual: **v3.0.2**. Trabalho recente, na ordem em que chegou:
 
 - Painel administrativo refeito em Tailwind CSS v4, módulo a módulo
 - Área de widgets do Dashboard e a lousa livre, com páginas de lousa e modelos prontos

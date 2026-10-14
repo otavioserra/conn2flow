@@ -5,6 +5,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.2] - 2026-10-14
+
+### Fixed
+- Atualização do sistema com tabelas de projeto: o sincronizador completa o contrato com o `project-schema-metadata.json`; tabelas do projeto como `publisher` eram tratadas como novas e falhavam com chave duplicada (`REQ-272`).
+- Atualização do sistema: falha na sincronização do banco agora falha a atualização, em vez de terminar como sucesso com as sementes antigas (`REQ-272`).
+
 ## [3.0.1] - 2026-10-14
 
 ### Fixed
