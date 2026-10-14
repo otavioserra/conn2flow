@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 - Deploy through the API: the maintenance screen (`req-210`) answered 503 to the post-deploy health check (`req-198`), so every project deploy was rolled back. Maintenance is now turned off before the check (`REQ-272`).
+- System update through the panel from 2.10.x: the database sync now loads `db-data.php` itself; the old process had `gestor.php` loaded, the seeds never synced and the panel kept the previous version's layouts (`REQ-272`).
 - Database sync: JSON booleans in seeds (`"sem_permissao": false`) are written as 0/1; PDO sent `false` as an empty string and strict MariaDB/MySQL rejected new rows (`REQ-272`).
 
 ## [3.0.0] - 2026-10-14

@@ -9,6 +9,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ### Fixed
 - Deploy pela API: a tela de manutenção (`req-210`) respondia 503 à verificação pós-deploy (`req-198`), e todo deploy de projeto era desfeito. A manutenção agora é desligada antes da verificação (`REQ-272`).
+- Atualização do sistema pelo painel vinda da 2.10.x: o sincronizador do banco carrega o `db-data.php` por conta própria; o processo antigo já tinha o `gestor.php` carregado, as sementes não eram sincronizadas e o painel ficava com os layouts da versão anterior (`REQ-272`).
 - Sincronização do banco: booleanos das sementes (`"sem_permissao": false`) gravados como 0/1; o PDO enviava `false` como texto vazio e o MariaDB/MySQL em modo estrito recusava registros novos (`REQ-272`).
 
 ## [3.0.0] - 2026-10-14
