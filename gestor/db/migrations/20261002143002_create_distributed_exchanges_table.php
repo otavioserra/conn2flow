@@ -8,7 +8,8 @@ final class CreateDistributedExchangesTable extends AbstractMigration
     public function change(): void
     {
         $this->table('distributed_exchanges', ['id' => false, 'primary_key' => ['id']])
-            ->addColumn('id', 'string', ['limit' => 64])
+            // MySQL 8 rejects a nullable primary key column (MariaDB silently forces NOT NULL).
+            ->addColumn('id', 'string', ['limit' => 64, 'null' => false])
             ->addColumn('kind', 'string', ['limit' => 32])
             ->addColumn('payload', 'text')
             ->addColumn('expires_at', 'biginteger')
