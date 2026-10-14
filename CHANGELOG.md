@@ -5,7 +5,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-## [2.10.13] - 2026-09-25
+## [3.0.0] - 2026-10-14
+
+Major release: the admin panel moves to Tailwind CSS, the Dashboard gains a widget area and the board, and system updates become safe, automatic and reversible.
+
+### Added
+- Admin panel: every administrative module migrated from Fomantic-UI to Tailwind CSS v4, with a shared control library, native dialogs replaced, Tailwind listing (multi-column sort), create/edit/view screens and a harmonized design system (`req-190`, `req-219` to `req-224`, `req-238` to `req-243`).
+- Dashboard: module grid in three sizes with isometric covers, widget area with per-profile layouts, saved layouts, permissions and per-widget settings, grid and free-board modes, full window and floating options (`req-226`, `req-227`, `req-236`, `REQ-247`, `REQ-248`).
+- Board: free objects (text, shape, image, icon, button), hide per screen width, background image and Google Fonts; named system boards with duplicate and versions; "Board" widget for any page; "Board Pages" module (`dashboard-pages`) with HTML editor, templates and AI mode; ready-made board templates; `c2f:analytics` measurement (`REQ-250` to `REQ-255`, `REQ-258`, `REQ-259`, `DEC-134`).
+- Updates: layered manifest, deploy lock, full backup, snapshot, health check and automatic rollback; per-file clash resolution in the panel, API and CLI (`c2f update:conflicts`, `update:resolve`, `update:rollback`); system update through the API in the background (`c2f update:core`); automatic updates with Manual and Automatic tabs (`req-197` to `req-201`, `req-245`).
+- Core: home page and layout per user profile (1:N, multi-layout compilation); system tables authored in `resources/` with language-free seeds; `GestorState` with controlled `gestor_get/set/has`; partitioned seed tables with validated manifests (`req-196`, `req-202` to `req-204`, `req-229`, `req-234`).
+- AI: provider layer for Gemini, Claude, OpenAI and compatible APIs (text and image, key in header) and extension points to authorize AI requests and report usage (`req-260`, `req-262`).
+- Extensibility: general extension point for panel screens (`interface` / `pagina`) (`req-261`).
+- Modules: `presentations` (slide decks) and `cookie-consent` (notice and preferences, consent read on the server) (`req-208`, `req-209`, `req-214`).
+- Distributed modules: standard login, secure handshake and bridge, local catalog, account state through the channel, origin confirmation and session key (`REQ-092`, `req-213` to `req-218`).
+- Payments (Stripe): coupon on subscription creation, one-off items on the first invoice and optional installments on the PaymentIntent (`req-192`, `req-193`, `req-195`).
+- Templates: WebP thumbnails for every template in the templates registry (`req-256`).
+- Documentation: documentation contract, `c2f docs:audit`, `docs:extract` and `docs:build` publishing the core Markdown as system resources, library reference with filter and index (`req-176` to `req-179`, `req-184` to `req-186`, `req-207`).
+- CLI: `--skip-css` in `project:update-all` and `manager:update-all`; hash verification of the deployed code; `db:check-migrations` (`REQ-269`, `req-213`, `req-197`).
+
+### Changed
+- Performance: language + path index on `paginas`; page lookup reads one row instead of every page of the language (`req-263`).
+
+### Fixed
+- Security: listing without SQL injection and delete/status protected by CSRF token; page with `sem_permissao = 0` now requires login (`req-189`, `REQ-268`).
+- Payments: Stripe reconciliation serialized per gateway, email brand resolved; the payment lock moved into `stripe.php` (the orphan `pagamentos.php` library broke the checkout) (`REQ-265`, `REQ-271`).
+- Pipeline: `dist/` published with readable permissions (755/644); failed `Data.json` writes stop the build; core ownership preserved during project database updates (`REQ-271`, `req-206`).
+- Dashboard widgets: links, forms and navigation leave the frame; style parity in the widget iframe (`REQ-244`, `REQ-249`).
+- Sitemap: cart, checkout and checkout outcomes out of the index (`req-191`).
+ - 2026-09-25
 
 ### Added
 - Security & Core: Silent CSRF token renewal (`renovarCsrf()`) and transparent retry queue across `fetch`, `jQuery.ajax`, and `XMLHttpRequest` in `global.js` (`BATCH-180` / `req-175`).

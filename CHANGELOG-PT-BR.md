@@ -5,6 +5,35 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.0] - 2026-10-14
+
+Versão principal: o painel administrativo passa para Tailwind CSS, o Dashboard ganha a área de widgets e a lousa, e a atualização do sistema fica segura, automática e reversível.
+
+### Added
+- Painel: todos os módulos administrativos migrados do Fomantic-UI para Tailwind CSS v4, com biblioteca de controles, diálogos no lugar dos nativos, listagem Tailwind (ordenação por várias colunas), telas de inclusão, edição e visualização e design system harmonizado (`req-190`, `req-219` a `req-224`, `req-238` a `req-243`).
+- Dashboard: grade de módulos em três tamanhos com capas isométricas, área de widgets com layout por perfil, layouts salvos, permissões e configuração por widget, modos grade e lousa livre, janela cheia e opções flutuantes (`req-226`, `req-227`, `req-236`, `REQ-247`, `REQ-248`).
+- Lousa: objetos livres (texto, forma, imagem, ícone, botão), esconder por largura de tela, imagem de fundo e Google Fonts; lousas nomeadas do sistema com duplicar e versões; widget "Lousa" para qualquer página; módulo "Páginas de Lousa" (`dashboard-pages`) com editor HTML, modelos e modo IA; modelos de lousa prontos; medição pelo evento `c2f:analytics` (`REQ-250` a `REQ-255`, `REQ-258`, `REQ-259`, `DEC-134`).
+- Atualizações: manifesto por camada, trava de deploy, backup total, snapshot, verificação de saúde e volta automática; resolução de choques por arquivo no painel, na API e no CLI (`c2f update:conflicts`, `update:resolve`, `update:rollback`); atualização do sistema pela API em segundo plano (`c2f update:core`); atualização automática com abas Manual e Automático (`req-197` a `req-201`, `req-245`).
+- Core: página inicial e layout por perfil de usuário (1:N, compilação multi-layout); tabelas de sistema com autoria em `resources/` e sementes sem idioma; `GestorState` com `gestor_get/set/has` controlados; tabelas de semente particionadas com manifesto validado (`req-196`, `req-202` a `req-204`, `req-229`, `req-234`).
+- IA: camada de provedores para Gemini, Claude, OpenAI e compatíveis (texto e imagem, chave no cabeçalho) e pontos de extensão para autorizar o pedido de IA e registrar o consumo (`req-260`, `req-262`).
+- Extensibilidade: ponto de extensão geral das telas do painel (`interface` / `pagina`) (`req-261`).
+- Módulos: `presentations` (apresentações em slides) e `cookie-consent` (aviso e preferências, consentimento lido no servidor) (`req-208`, `req-209`, `req-214`).
+- Módulos distribuídos: login padrão, handshake seguro e ponte, catálogo local, estado da conta pelo canal, confirmação de origem e chave de sessão (`REQ-092`, `req-213` a `req-218`).
+- Pagamentos (Stripe): cupom na criação da assinatura, itens avulsos na primeira fatura e parcelamento opcional no PaymentIntent (`req-192`, `req-193`, `req-195`).
+- Modelos: miniaturas WebP de todos os modelos do cadastro de modelos (`req-256`).
+- Documentação: contrato de documentação, `c2f docs:audit`, `docs:extract` e `docs:build` publicando o Markdown do core como recursos do sistema, referência das bibliotecas com filtro e índice (`req-176` a `req-179`, `req-184` a `req-186`, `req-207`).
+- CLI: `--skip-css` em `project:update-all` e `manager:update-all`; conferência por hash do código publicado; `db:check-migrations` (`REQ-269`, `req-213`, `req-197`).
+
+### Changed
+- Desempenho: índice de idioma + caminho em `paginas`; a busca da página lê uma linha, não todas as páginas do idioma (`req-263`).
+
+### Fixed
+- Segurança: listagem sem SQL injection e excluir/status com token CSRF; página com `sem_permissao = 0` passa a exigir login (`req-189`, `REQ-268`).
+- Pagamentos: reconciliação do Stripe serializada por gateway e marca resolvida nos e-mails; a trava de pagamentos foi para o `stripe.php` (a biblioteca avulsa `pagamentos.php` derrubava o checkout) (`REQ-265`, `REQ-271`).
+- Pipeline: `dist/` publicado com permissões de leitura (755/644); falha ao gravar `Data.json` interrompe a compilação; dono do core preservado na atualização do banco do projeto (`REQ-271`, `req-206`).
+- Widgets do Dashboard: links, formulários e navegação saem do quadro; paridade de estilo no iframe do widget (`REQ-244`, `REQ-249`).
+- Sitemap: carrinho, checkout e desfechos do checkout fora do índice (`req-191`).
+
 ## [2.10.13] - 2026-09-25
 
 ### Added

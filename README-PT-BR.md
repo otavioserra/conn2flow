@@ -3,7 +3,7 @@
 **Plataforma PHP open source para construir e operar produtos digitais com IA — e um Agent Management System (AMS) para os agentes que ajudam nesse trabalho.**
 
 [![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/vers%C3%A3o-v2.10.13-1daac6.svg)](CHANGELOG-PT-BR.md)
+[![Versão](https://img.shields.io/badge/vers%C3%A3o-v3.0.0-1daac6.svg)](CHANGELOG-PT-BR.md)
 [![PHP](https://img.shields.io/badge/PHP-8.1%2B-777bb4.svg)](ai-workspace/pt-br/docs/guides/installation.md)
 
 [🇺🇸 English](README.md) · 🇧🇷 Português · [Site](https://conn2flow.com/) · [Plataforma](https://conn2flow.com/plataforma/) · [Conn2Flow Pro](https://conn2flow.com/pro/)
@@ -122,14 +122,14 @@ A documentação é Markdown, versionada com o código, conferida contra ele e g
 
 ## Situação
 
-Versão atual: **v2.10.13**. Trabalho recente, na ordem em que chegou:
+Versão atual: **v3.0.0**. Trabalho recente, na ordem em que chegou:
 
-- Atualização do sistema pela API, em segundo plano, com estado e rollback
+- Painel administrativo refeito em Tailwind CSS v4, módulo a módulo
+- Área de widgets do Dashboard e a lousa livre, com páginas de lousa e modelos prontos
+- Atualização do sistema segura e automática: trava de deploy, snapshot, verificação de saúde, rollback automático
 - Resolução de choques de arquivo, uma decisão por arquivo, no painel, na API e no CLI
-- Atualização segura: trava de deploy, snapshot, verificação de saúde, rollback automático
+- Camada de provedores de IA para Gemini, Claude, OpenAI e compatíveis
 - Página inicial e layout por perfil de usuário
-- Documentação reescrita a partir do código, com comandos de auditoria e de geração
-- Renovação silenciosa do token CSRF
 
 Detalhes por versão em [Novidades](ai-workspace/pt-br/docs/whats-new/index.md).
 

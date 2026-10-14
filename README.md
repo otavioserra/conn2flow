@@ -3,7 +3,7 @@
 **An open-source PHP platform for building and operating digital products with AI — and an Agent Management System (AMS) for the agents that help you do it.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/release-v2.10.13-1daac6.svg)](CHANGELOG.md)
+[![Release](https://img.shields.io/badge/release-v3.0.0-1daac6.svg)](CHANGELOG.md)
 [![PHP](https://img.shields.io/badge/PHP-8.1%2B-777bb4.svg)](ai-workspace/en/docs/guides/installation.md)
 
 🇺🇸 English · [🇧🇷 Português](README-PT-BR.md) · [Website](https://conn2flow.com/) · [Platform](https://conn2flow.com/plataforma/) · [Conn2Flow Pro](https://conn2flow.com/pro/)
@@ -122,14 +122,14 @@ Full index: [ai-workspace/en/docs/](ai-workspace/en/docs/index.md).
 
 ## Status
 
-Current release: **v2.10.13**. Recent work, in the order it landed:
+Current release: **v3.0.0**. Recent work, in the order it landed:
 
-- System update through the API, in the background, with status and rollback
+- Admin panel rebuilt in Tailwind CSS v4, module by module
+- Dashboard widget area and the free board, with board pages and ready-made templates
+- Safe and automatic system updates: deploy lock, snapshot, health check, automatic rollback
 - File-conflict resolution, one decision per file, in the panel, the API and the CLI
-- Safe update: deploy lock, snapshot, health check, automatic rollback
+- AI provider layer for Gemini, Claude, OpenAI and compatible APIs
 - Home page and layout per user profile
-- Documentation rewritten from the code, with audit and build commands
-- Silent CSRF token renewal
 
 Details per version in [What's new](ai-workspace/en/docs/whats-new/index.md).
 
