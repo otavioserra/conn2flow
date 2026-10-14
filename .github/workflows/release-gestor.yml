@@ -217,21 +217,16 @@ jobs:
           body: |
             ## 🚀 Conn2Flow Gestor Release ${{ steps.tag.outputs.TAG_NAME }}
 
-            Esta versão traz importantes avanços em performance, governança de CI/CD, atualizações de infraestrutura de workflows e resiliência visual no editor.
+            Versão principal: o painel administrativo passa para Tailwind CSS, o Dashboard ganha a área de widgets e a lousa, e a atualização do sistema fica segura, automática e reversível. Lista completa no [CHANGELOG](https://github.com/otavioserra/conn2flow/blob/main/CHANGELOG-PT-BR.md).
 
-            ### 🎯 Novidades Principais desta Versão (v2.10.13):
-            - ✅ **Renovação Silenciosa de CSRF e Retry Transparente (`global.js`)**: Gerenciador nativo de renovação de token CSRF (`renovarCsrf()`) com fila de retry sob `window.fetch`, `window.jQuery.ajax` e `XMLHttpRequest`. Requisições mutáveis falhas por token expirado são automaticamente repetidas sem interrupção para o usuário (`BATCH-180` / `req-175`).
-            - ✅ **Detecção Proativa em Abas Inativas (`visibilitychange`)**: Validação de token em segundo plano ao retornar o foco à aba após período de inatividade, preservando formulários preenchidos sem redirecionamentos abruptos (`BATCH-180` / `req-175`).
-            - ✅ **Endpoint Seguro de Token CSRF no Core**: Nova rota padronizada `_gestor-csrf-token` no roteador do gestor com marcação de erro `CSRF_INVALID_OR_EXPIRED`, isenção defensiva de CSRF e controle determinístico de expiração de sessão (`BATCH-180` / `req-175`).
-            - ✅ **Suporte Nativo ao Cloudflare Turnstile**: Integração nativa no core (`admin-environment`, módulo `auth` e widget `forms`) para proteção moderna contra bots sem atrito de UX (`BATCH-176`).
-            - ✅ **Sincronização Automática de Hooks no Deploy**: A tabela `hooks` é sincronizada automaticamente com o banco do projeto durante deploys via `c2f project:update-all` e comando dedicado `c2f project:sync-hooks` (`BATCH-179`).
-
-            ### 🌟 Destaques Consolidados das Versões Recentes:
-            - **Proteção CSRF XHR & Site Restrito**: Injeção automática de header `X-CSRF-Token` em chamadas `same-origin` e redirecionamento para `/acessar-sistema` sob `site_restrito = true`.
-            - **Blindagem no Transporte SSH / Rsync**: Prevenção de conversão de caminhos MSYS, pareamento cwRsync/Cygwin com flag `-T` e encapsulamento atômico com `sudo -u`.
-            - **Admin Cron Desacoplado**: Rotinas agendadas e manuais sob sessões CLI (`setsid`), prevenindo erro `502 Bad Gateway` ao reiniciar serviços do sistema.
-            - **Stack CI/CD 100% em Node 24**: Workflows de release rodando integralmente com `checkout@v5`, `setup-node@v5`, `cache@v5` e `action-gh-release@v3`.
-            - **Live Editor e Site Toolbar (Editbar)**: Edição in-place com mapeamento reativo ao DOM vivo e cópia persistente entre páginas.
+            ### 🎯 Novidades Principais desta Versão (v3.0.0):
+            - ✅ **Painel em Tailwind CSS v4**: todos os módulos administrativos migrados do Fomantic-UI, com biblioteca de controles, listagem nova e design system harmonizado.
+            - ✅ **Dashboard**: grade de módulos com capas, área de widgets com layout por perfil e layouts salvos, modos grade e lousa livre.
+            - ✅ **Lousa**: objetos livres, lousas nomeadas com versões, widget "Lousa" em qualquer página, módulo "Páginas de Lousa" com modelos e modo IA.
+            - ✅ **Atualização segura e automática**: trava de deploy, snapshot, verificação de saúde e volta automática; choques resolvidos por arquivo no painel, na API e no CLI; atualização pela API em segundo plano.
+            - ✅ **IA**: camada de provedores para Gemini, Claude, OpenAI e compatíveis, com pontos de extensão para autorizar e medir o uso.
+            - ✅ **Pagamentos (Stripe)**: cupom, itens avulsos na primeira fatura, parcelamento opcional e reconciliação serializada.
+            - ✅ **Core**: página inicial e layout por perfil, tabelas de sistema com autoria em `resources/`, índice de idioma + caminho em `paginas`.
 
             ### 📦 Conteúdo da Release:
             - Sistema gestor completo otimizado
