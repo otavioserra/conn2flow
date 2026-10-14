@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-269.md](req-269.md) (BATCH-278 `ready-for-intake`, 2026-10-14, Core — Arquiteto Master / Autônomo Monitorado): Pipeline Ágil — Suporte a `--skip-css` em `project:update-all` e Otimização Seletiva de Compilação Tailwind.
   - [req-267.md](req-267.md) (BATCH-276 `ready-for-intake`, 2026-10-14, multi-repo — GPT-6.1 SOL / Geração Visual): Apoio Core — Assets Isométricos de Capa para Dashboard Pages e Interface, coordenado com a REQ-123 do Site.
   - [req-268.md](req-268.md) (BATCH-277 `ready-for-intake`, 2026-10-14, multi-repo — Opus 5.5 Flagship / Autônomo Monitorado): Apoio Core — Suporte a Apresentações com Acesso Restrito e Compilação de Notícias, coordenado com a REQ-124 do Site.
   - [req-266.md](req-266.md) (BATCH-275 `ready-for-intake`, 2026-10-09, Core — Arquiteto Master / Autônomo Monitorado): Compatibilização MDD e Suporte Dual `memory/` e `sdd/`: Testes Automatizados, CLI e Governança de Skills.

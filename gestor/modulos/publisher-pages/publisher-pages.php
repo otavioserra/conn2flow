@@ -1228,7 +1228,7 @@ function publisher_pages_editar(){
 		$meta_descricao = (isset($retorno_bd['meta_descricao']) ? $retorno_bd['meta_descricao'] : '');
 		$meta_keywords = (isset($retorno_bd['meta_keywords']) ? $retorno_bd['meta_keywords'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
-		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
+		$sem_permissao = gestor_pagina_sem_permissao($retorno_bd['sem_permissao'] ?? null); // req-268: '0' é restrita.
 
 		// ===== Page ID
 
@@ -1971,7 +1971,7 @@ function publisher_pages_clonar(){
 		$meta_descricao = (isset($retorno_bd['meta_descricao']) ? $retorno_bd['meta_descricao'] : '');
 		$meta_keywords = (isset($retorno_bd['meta_keywords']) ? $retorno_bd['meta_keywords'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
-		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
+		$sem_permissao = gestor_pagina_sem_permissao($retorno_bd['sem_permissao'] ?? null); // req-268: '0' é restrita.
 
 		// ===== Page ID
 

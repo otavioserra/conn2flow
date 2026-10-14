@@ -27,7 +27,9 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f manager:update-all\n\nExecutes sequential update of resources, files, and database.";
+        return "Usage: c2f manager:update-all [--skip-css]\n\nExecutes sequential update of resources, files, and database.\n"
+            . "req-269: --skip-css skips the Tailwind compilation (stage 2) and the derived CSS rebuild (stage 5). "
+            . "For backend, database or test changes only: a change to HTML or CSS needs the full pipeline.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -84,8 +86,14 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
         // outra. Regenerar aqui fecha o ciclo no mesmo comando, em vez de depender de alguém
         // lembrar de rodar depois.
         $output->section('5/6 Regenerando CSS derivado');
-        $cssCmd = new CssRebuildCommand($this->rootPath);
-        $code = $cssCmd->execute($input, $output);
+        // req-269: a etapa 2 recebeu o mesmo `$input` e já não compilou Tailwind com --skip-css.
+        $code = 0;
+        if (ProjectUpdateAllCommand::skipsCssRebuild($input)) {
+            $output->info('Etapa 5/6 ignorada por --skip-css.');
+        } else {
+            $cssCmd = new CssRebuildCommand($this->rootPath);
+            $code = $cssCmd->execute($input, $output);
+        }
         if ($code !== 0) {
             $output->warning(
                 'A regeneração do CSS não completou. As demais etapas foram aplicadas, mas recursos '

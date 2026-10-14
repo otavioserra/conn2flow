@@ -103,10 +103,10 @@ final class MemoryDualReq266Test extends TestCase
         self::assertSame(str_repeat("old\n", 300), file_get_contents($legacy));
     }
 
-    public function testSyncRequiresAll44SkillsAcrossTheFiveKits(): void
+    public function testSyncRequiresAll45SkillsAcrossTheFiveKits(): void
     {
         $names = array_map('basename', glob(CONN2FLOW_ROOT . '/.gemini/skills/*', GLOB_ONLYDIR) ?: []);
-        self::assertCount(44, $names);
+        self::assertCount(45, $names);
         foreach (['.claude', '.cursor', '.gemini', '.github', '.codex'] as $kit) {
             foreach ($names as $name) {
                 $folder = $this->root . '/' . $kit . '/skills/' . $name;
@@ -119,7 +119,7 @@ final class MemoryDualReq266Test extends TestCase
         $output->expects(self::once())->method('table')->willReturnCallback(static function (array $headers, array $rows): void {
             self::assertCount(5, $rows);
             foreach ($rows as $row) {
-                self::assertSame(['44', '44/44', '44', '✔ Complete'], array_slice($row, 1));
+                self::assertSame(['45', '45/45', '45', '✔ Complete'], array_slice($row, 1));
             }
         });
         $command = new AiSyncCommand($this->root);

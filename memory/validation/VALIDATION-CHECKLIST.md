@@ -1,5 +1,27 @@
 # Validation Checklist
 
+## BATCH-278 — REQ-269
+
+- [x] `project:update-all <id> --skip-css`: saída 0 em 36 s no Lab, etapas 2, 4 e 7 puladas com aviso.
+- [x] Sem a flag: pipeline completo (Tailwind e `css:rebuild`) em 40 s, saída 0.
+- [x] `manager:update-all --skip-css` aceita a flag; falha nas etapas 3 e 4 por falta de Docker no host, igual sem a flag.
+- [x] `PipelineSkipCssReq269Test` 6/6; `composer test` 1.788 testes saída 0; Vitest 664; `git diff --check` limpo.
+- [ ] Homologação humana.
+
+---
+
+## BATCH-277 — REQ-268
+
+- [x] Causa reproduzida: `existe('0')` verdadeiro abria páginas com `sem_permissao = 0`.
+- [x] `gestor_pagina_sem_permissao()` no roteador e na leitura do `admin-paginas` e do `publisher-pages`; só as duas páginas de investidor tinham `0` no Lab.
+- [x] `GestorPaginaSemPermissaoTest` + `GestorRoteadorErroTerminalTest`: 29 testes OK; Vitest 664 OK.
+- [x] PHPUnit completo: 1.776 testes; 4 falhas anteriores e alheias registradas no [BATCH-277](../implementation/BATCH-277.md).
+- [x] Lab: visitante 302 para login, administrador 200; editor de páginas com a caixa certa (evidências no BATCH-118 do site).
+- [x] Arquivos de `contents/` de página restrita seguem abertos; no caso das apresentações de investidor, sem dado confidencial (conferido pelo Engenheiro Chefe).
+- [ ] Homologação humana.
+
+---
+
 ## BATCH-275 — REQ-266
 
 - [x] Testes REQ-225/256 e SddSource priorizam memory/ com fallback sdd/; corpus real continua filtrado.

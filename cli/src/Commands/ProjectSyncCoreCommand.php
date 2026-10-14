@@ -26,7 +26,8 @@ final class ProjectSyncCoreCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:sync-core <projectID>\n\nRuns sync-core-to-project.sh --project <projectID>";
+        return "Usage: c2f project:sync-core <projectID> [--skip-css]\n\nRuns sync-core-to-project.sh --project <projectID> [--skip-css]\n"
+            . "  --skip-css  Skip the Tailwind compilation of the Core resources before the copy (req-269).";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -45,6 +46,6 @@ final class ProjectSyncCoreCommand extends BaseProcessCommand
             return 1;
         }
 
-        return $this->runShell("bash " . escapeshellarg($script) . " --project " . escapeshellarg($project), $output);
+        return $this->runShell("bash " . escapeshellarg($script) . ' ' . ProjectSyncResourcesCommand::scriptArguments((string)$project, $input->hasOption('skip-css')), $output);
     }
 }

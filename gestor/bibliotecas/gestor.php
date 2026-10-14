@@ -1190,6 +1190,24 @@ function gestor_roteador_pagina_status_http($caminho = ''){
 }
 
 /**
+ * req-268: a página é pública (`paginas.sem_permissao`)? Função PURA.
+ *
+ * Só `1` abre a página. O banco devolve a coluna como texto, e `existe('0')` é verdadeiro: com o
+ * teste antigo, `"without_permission": false` gravado como `0` deixava a página aberta a qualquer
+ * visitante. `NULL`, vazio e `0` exigem login — o mesmo critério do sitemap (`sitemap.php`).
+ *
+ * @param mixed $valor Valor da coluna `sem_permissao`.
+ * @return bool true quando a página dispensa login.
+ */
+function gestor_pagina_sem_permissao($valor){
+	if(is_bool($valor)) return $valor;
+	if(is_int($valor)) return $valor === 1;
+	if(!is_string($valor)) return false;
+
+	return trim($valor) === '1';
+}
+
+/**
  * Registra um redirecionamento 301 de um caminho liberado por uma página (F10 do review 2026-08-15).
  *
  * Antes daqui, `admin-paginas` e `publisher-pages` traziam o mesmo bloco duplicado, com dedup por

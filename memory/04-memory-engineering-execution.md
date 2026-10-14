@@ -16,6 +16,20 @@
 
 ## Tarefas recentes
 
+### REQ-269 / BATCH-278 — `--skip-css` nos pipelines (2026-10-14)
+
+- `project:update-all <id> --skip-css` pula Tailwind (etapas 2 e 4) e `css:rebuild` (7). Só para mudança de backend, banco ou teste.
+- **Medir antes de otimizar**: com cache quente o pipeline completo do site leva ~40 s; deploy de 10 min vem de muitos arquivos divergentes no destino (outras árvores), não do Tailwind.
+- `manager:update-all` mira o Docker local (`dev-environment/data/sites/localhost`); sem `docker` no host, as etapas 3 e 4 falham com ou sem flag.
+- `sed` com `\\r\\n` dentro de string PHP insere quebra real: editar PHP com a ferramenta de edição.
+
+### REQ-268 / BATCH-277 — `sem_permissao = 0` abria a página (2026-10-14)
+
+- **`existe('0')` é verdadeiro.** Coluna numérica lida do banco chega como texto: `existe()`/`isset()` não servem para flag 0/1. Para `paginas.sem_permissao`, usar `gestor_pagina_sem_permissao()` (só `1` abre). O sitemap já usava `empty()`.
+- **Página sem módulo aceita qualquer logado**, inclusive cliente da loja. Exigência de perfil fica no módulo que renderiza (ex.: `gestor_permissao_modulo(false, 'presentations')`).
+- **Arquivos de `contents/` saem pelo `arquivo-estatico` antes da sessão**: página restrita não protege as imagens dela.
+- **Deploy concorrente**: a trava de projeto faz o segundo `project:update-all` esperar ("Aguardando a trava…", com PID e máquina). Depois, conferir por hash: a worktree do outro agente, criada mais tarde, deixa no destino arquivos de data mais nova que as minhas edições (`touch` + `project:sync-core`).
+
 ### REQ-263 / BATCH-272 — site lento depois de publicar: faltava índice no caminho de `paginas` (2026-10-08)
 
 - **Sintoma**: tudo em ~70 ms e, depois de uma publicação, toda página PHP em 0,4 a 0,9 s, nos dois ambientes do mesmo servidor de banco; arquivo estático normal.

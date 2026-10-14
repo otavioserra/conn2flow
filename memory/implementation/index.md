@@ -14,6 +14,8 @@
 | BATCH-274 | BATCH-274 — Pagamentos, marca dos e-mails e confirmação de webhooks | `pagamentos_com_trava` protege a reconciliação financeira na mesma conexão, com `GET_LOCK`, transação, commit/rollbac... | [source](<BATCH-274.md>) | implemented-pending-homologation |
 | BATCH-275 | BATCH-275 — REQ-266: compatibilidade memory/ e sdd/ | Preferência por memory/ e fallback sdd/. SddSource conserva chaves públicas sdd/ e seção sdd para preservar o contrat... | [source](<BATCH-275.md>) | implemented-pending-homologation |
 | BATCH-276 | Capas isométricas de Páginas de Lousa e Interface | Duas capas WebP e manifestos entregues; Lab 3.0/3.1 validado em 19/19 verificações por ambiente. | [source](<BATCH-276.md>) | implemented-pending-homologation |
+| BATCH-277 | REQ-268: página com sem_permissao = 0 passa a exigir login | Roteador e telas de edição tratavam sem_permissao = 0 como página pública; agora só 1 abre a página. | [source](<BATCH-277.md>) | implemented-pending-homologation |
+| BATCH-278 | REQ-269: --skip-css nos pipelines project:update-all e manager:update-all | --skip-css pula a compilação Tailwind e o css:rebuild nos dois pipelines; Lab em 36 s com a flag. | [source](<BATCH-278.md>) | implemented-pending-homologation |
 
 ## Directories
 
