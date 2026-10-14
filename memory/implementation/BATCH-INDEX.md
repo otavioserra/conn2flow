@@ -13,6 +13,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-278 | ready-for-intake | Pipeline Ágil: Suporte a `--skip-css` em `project:update-all` (REQ-269) | [BATCH-278.md](BATCH-278.md) | Pass-through de flag no CLI e omissão de etapas de Tailwind em builds de backend. |
+| BATCH-276 | ready-for-intake | Assets Isométricos de Capa para Dashboard Pages e Interface (REQ-267) | [BATCH-276.md](BATCH-276.md) | Geração de capas 3D e manifest.json no Core. |
 | BATCH-277 | implemented-pending-homologation | Página com `sem_permissao = 0` passa a exigir login: roteador, `admin-paginas` e `publisher-pages` (REQ-268 / Site REQ-124) | [BATCH-277.md](BATCH-277.md) | Teste novo 29/29 com o do roteador; Vitest 664; PHPUnit completo com 4 falhas anteriores ao lote (CRLF no `stripe.php`, contagem de 44 skills). Lab conferido pelo BATCH-118 do site. |
 | BATCH-275 | implemented-pending-homologation | Compatibilização MDD e Suporte Dual memory/ e sdd/ (REQ-266) | [BATCH-275.md](BATCH-275.md) | PHPUnit completo e Vitest aprovados; 44/44 skills em cinco kits; aliases e fallback validados. |
 | BATCH-274 | implemented-pending-homologation | Deduplicação financeira, marca/logo de e-mails e confirmação de webhooks (REQ-265) | [BATCH-274.md](BATCH-274.md) | Suítes completas e Lab validados com Site BATCH-116; eventos unificados em backlog. |
