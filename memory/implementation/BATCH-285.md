@@ -56,6 +56,8 @@ Os handlers agora são assíncronos e aguardam a confirmação padrão. O cancel
 
 Projeto **conn2flow**, raiz **C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow**. REQ-276 / BATCH-285; topologia solo; autonomo_monitorado na correção. Branch `feat/req-276`, criada da main em `2eeb6234`. Evidências neste lote e no teste `tests/Unit/JS/PageVisibilityConfirmationReq276.test.js`.
 
-Integrar a branch de correção na árvore usada pelo release e executar os gates completos antes de publicar. Esta entrega não cria/move tags nem publica release; o humano encaminhará ao outro agente. A tag `gestor-v3.0.4` continua no commit antigo, portanto reexecutar somente o run antigo não incorpora a correção. Decisão sobre recriar tag/versão pertence ao trabalho de release. A última release publicada consultada era `gestor-v3.0.3`.
+Integrar a branch de correção na árvore usada pelo release e executar os gates completos antes de publicar. O humano encaminhará ao outro agente. A última release publicada consultada era `gestor-v3.0.3`.
+
+Complemento autorizado em 2026-10-15: humano solicitou liberar a tag. Confirmado `release not found` para `gestor-v3.0.4`; tag remota e local excluídas com sucesso. Objeto anterior: `03691509dbdbd279721f9e0ad212166b2855d252`; commit anterior: `2eeb6234536fdd12e7716e97b08db6bc5598f6e4`. Ausência comprovada por `git ls-remote --tags origin refs/tags/gestor-v3.0.4` (sem resultado) e `git show-ref --verify --quiet refs/tags/gestor-v3.0.4` (não encontrada). Nenhuma nova tag, publicação ou alteração em config.php realizada. Recriação fica para o agente de release.
 
 Pendências: homologação humana e publicação pelo agente de release. Nenhum despacho automático para outro agente foi realizado.
