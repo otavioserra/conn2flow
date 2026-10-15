@@ -195,15 +195,31 @@ $(document).ready(function () {
                 startButton.prop('disabled', true);
                 ajax(adv).done(resp => {
                     setLoading(false);
-                    if (resp.status !== 'ok') { log('Erro start: ' + (resp.erro || '')); return; }
+                    if (resp.status !== 'ok') {
+                        log('Erro start: ' + (resp.erro || ''));
+                        startButton.prop('disabled', false);
+                        // req-277: trava da própria atualização pelo painel que ficou para trás: oferece liberar e tentar de novo.
+                        if (resp.data && resp.data.unlockable) oferecerLiberarTrava();
+                        return;
+                    }
                     const data = resp.data;
-                    if (data.error) { log('Erro start: ' + data.error); return; }
+                    if (data.error) { log('Erro start: ' + data.error); startButton.prop('disabled', false); return; }
                     currentSid = data.sid; currentExecId = data.exec_id || null; currentModo = modo;
                     $('#atualizacoes-cancel-btn').removeClass('hidden'); setProgress(10);
                     $('#atualizacoes-mode-label').text(rotuloModo(currentModo) + ' (' + (root[0].dataset.labelRunning || 'iniciado') + ')');
                     log('Sessão criada: ' + data.sid + ' exec_id=' + (currentExecId || '?') + ' tag=' + data.release_tag + ' modo=' + currentModo);
                     next(data.next);
                 }).fail(() => { setLoading(false); log('Falha comunicação start'); $('#atualizacoes-start-btn').prop('disabled', false); });
+            }
+            function oferecerLiberarTrava() {
+                window.c2fControles.dialogo.confirmar(root[0].dataset.msgUnlockConfirm, { perigo: true }).then(function (confirmado) {
+                    if (!confirmado) return;
+                    ajax({ acao: 'unlock' }).done(resp => {
+                        if (resp.status !== 'ok') { log('Erro ao liberar a trava: ' + (resp.erro || '')); return; }
+                        log('Trava liberada' + (resp.data && resp.data.released ? ': ' + resp.data.released : '') + '. Tentando de novo.');
+                        iniciar();
+                    }).fail(() => log('Falha comunicação ao liberar a trava'));
+                }).catch(function () {});
             }
             if (adv.wipe) {
                 startButton.prop('disabled', true);

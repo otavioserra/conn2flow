@@ -27,10 +27,31 @@ function deploy_lock_read(string $arquivo): ?array {
     return is_array($dados) ? $dados : null;
 }
 
-/** A trava está vencida? (sem validade legível conta como vencida) */
+/** A trava está vencida? (sem validade legível conta como vencida; dono morto também — req-277) */
 function deploy_lock_expired(?array $trava, ?int $agora = null): bool {
     if (!$trava) return true;
-    return (int)($trava['expires_at'] ?? 0) <= ($agora ?? time());
+    if ((int)($trava['expires_at'] ?? 0) <= ($agora ?? time())) return true;
+    return deploy_lock_orphan($trava);
+}
+
+/**
+ * req-277: o processo dono morreu? Só decide no mesmo servidor e em Linux (`/proc`): em outra máquina
+ * ou sem `/proc` (Windows, macOS) não há como saber, e a trava segue até vencer.
+ *
+ * Na atualização pelo painel o PID é o do worker do PHP-FPM, que sobrevive a um erro fatal — esse caso
+ * é coberto pela liberação no desligamento da etapa (`atualizacoes_web_trava_no_fatal`), não por aqui.
+ *
+ * @param array       $trava   Conteúdo da trava.
+ * @param string|null $host    Servidor atual (padrão: `gethostname()`).
+ * @param string      $proc    Raiz do procfs (teste).
+ */
+function deploy_lock_orphan(array $trava, ?string $host = null, string $proc = '/proc'): bool {
+    $pid = (int)($trava['pid'] ?? 0);
+    $dono = (string)($trava['host'] ?? '');
+    $host = $host ?? (function_exists('gethostname') ? (string)gethostname() : '');
+    if ($pid <= 0 || $dono === '' || $dono !== $host) return false;
+    if (!is_dir($proc . '/self')) return false;
+    return !is_dir($proc . '/' . $pid);
 }
 
 /**
@@ -84,6 +105,33 @@ function deploy_lock_release(string $arquivo, string $token): bool {
     $atual = deploy_lock_read($arquivo);
     if (!$atual || !hash_equals((string)($atual['token'] ?? ''), $token)) return false;
     return @unlink($arquivo);
+}
+
+/**
+ * req-277: libera à força uma trava de um dono específico (botão "Liberar trava" da atualização pelo
+ * painel). Recusa trava de outro dono — pipeline e API seguem intocáveis — e trava já trocada.
+ *
+ * @param string $arquivo Caminho da trava.
+ * @param string $owner   Dono exigido (ex.: 'update-system').
+ * @param string $detail  Detalhe exigido (ex.: 'web').
+ * @return array ['ok' => bool, 'released' => array|null, 'error' => 'none'|'owner'|'io'|null]
+ */
+function deploy_lock_force_release(string $arquivo, string $owner, string $detail): array {
+    $atual = deploy_lock_read($arquivo);
+    if (!$atual) return ['ok' => true, 'released' => null, 'error' => 'none'];
+    if ((string)($atual['owner'] ?? '') !== $owner || (string)($atual['detail'] ?? '') !== $detail) {
+        return ['ok' => false, 'released' => $atual, 'error' => 'owner'];
+    }
+    // Rename atômico: se outra requisição trocou a trava nesse meio-tempo, a conferida não é a removida.
+    $lixo = $arquivo . '.force-' . bin2hex(random_bytes(4));
+    if (!@rename($arquivo, $lixo)) return ['ok' => false, 'released' => $atual, 'error' => 'io'];
+    $removida = deploy_lock_read($lixo);
+    if (!$removida || !hash_equals((string)($atual['token'] ?? ''), (string)($removida['token'] ?? ''))) {
+        @rename($lixo, $arquivo);
+        return ['ok' => false, 'released' => $removida, 'error' => 'owner'];
+    }
+    @unlink($lixo);
+    return ['ok' => true, 'released' => $atual, 'error' => null];
 }
 
 /** Estende a validade (execuções longas). */
