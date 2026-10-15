@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.7] - 2026-10-15
+
+### Fixed
+- Atualizador pelo painel: prevenção de queda da conexão de banco em servidores com `wait_timeout` curto (`REQ-279`). A sessão PDO de atualização e a conexão do gestor durante as etapas web agora elevam seu `wait_timeout` de sessão para pelo menos 8 horas (exclusivo da sessão, sem alterar configuração global), prevenindo erros `2006 MySQL server has gone away` durante leituras extensas de JSON após as migrações.
+
 ## [3.0.6] - 2026-10-15
 
 ### Fixed

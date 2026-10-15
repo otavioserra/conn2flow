@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.7] - 2026-10-15
+
+### Fixed
+- Panel updates: prevent database connection timeouts on servers with short `wait_timeout` (`REQ-279`). The database update session and the web updater now raise their session-level `wait_timeout` to at least 8 hours (session-only, never touching global configuration), preventing `2006 MySQL server has gone away` errors during prolonged JSON reads following migrations.
+
 ## [3.0.6] - 2026-10-15
 
 ### Fixed
