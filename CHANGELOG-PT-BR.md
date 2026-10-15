@@ -5,6 +5,18 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.3] - 2026-10-15
+
+### Added
+- Formulários: novo tipo de campo "Domínio" (`domain`) com validação FQDN (RFC 1035/1123) no cliente e servidor, mensagens de validação internacionalizadas e suporte resiliente a contêineres de erro em formulários Tailwind (`REQ-273`, `REQ-130`).
+
+### Changed
+- Formulários: `formulario.js` desacoplado de utilitários visuais; manipula exclusivamente classes semânticas de estado (`has-error`, `c2fc-campo-invalido`, `c2fc-campo-msg-erro`, `c2fc-contador-excedido`, `c2fc-form-msg-erro`), com estilização transferida para o componente `form-ui.css` (`REQ-131`).
+
+### Fixed
+- Dashboard: negação de acesso na rota `dashboard/` exibe a tela de acesso negado (403) em vez de causar loop infinito de redirecionamento quando o perfil não tem permissão ao painel (`REQ-131`).
+- Instalador: garante a vinculação do perfil `administradores` para administradores criados sem perfil atribuído na instalação (`REQ-131`).
+
 ## [3.0.2] - 2026-10-14
 
 ### Fixed

@@ -5,6 +5,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.3] - 2026-10-15
+
+### Added
+- Forms: new "Domain" (`domain`) field type with FQDN validation (RFC 1035/1123) on client and server, internationalized validation messages, and resilient field error UI support (`REQ-273`, `REQ-130`).
+
+### Changed
+- Forms: `formulario.js` decoupled from visual utility classes; now applies only semantic state classes (`has-error`, `c2fc-campo-invalido`, `c2fc-campo-msg-erro`, `c2fc-contador-excedido`, `c2fc-form-msg-erro`) with styling managed cleanly in `form-ui.css` (`REQ-131`).
+
+### Fixed
+- Dashboard: access denial on `dashboard/` renders the panel access denied screen (403) instead of triggering an infinite redirect loop when the user profile lacks dashboard permission (`REQ-131`).
+- Installer: assigns the `administradores` profile to initial admin accounts created without an assigned profile (`REQ-131`).
+
 ## [3.0.2] - 2026-10-14
 
 ### Fixed
