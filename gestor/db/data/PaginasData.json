@@ -370,7 +370,7 @@
         "publisher_id": null,
         "status": "A",
         "versao": 7,
-        "file_version": "1.5",
+        "file_version": "1.7",
         "checksum": "{\"html\":\"9b845f8a9c71a3c40e2622e345d5ea0f\",\"css\":\"\",\"css_precompiled\":\"1a2edf96f1ed4ed644b88960ac346f6e\",\"combined\":\"c868c88cf9f0bdff94adfc5acb0df433\"}"
     },
     {
@@ -392,7 +392,7 @@
         "publisher_id": null,
         "status": "A",
         "versao": 7,
-        "file_version": "1.5",
+        "file_version": "1.7",
         "checksum": "{\"html\":\"1f9a9b1b130cd56422f25910415fa78c\",\"css\":\"\",\"css_precompiled\":\"078e4984e4e5ddace1ac5e142cc36225\",\"combined\":\"a6a72141671caf9667e4f72b8d8c617e\"}"
     },
     {
@@ -414,7 +414,7 @@
         "publisher_id": null,
         "status": "A",
         "versao": 7,
-        "file_version": "1.5",
+        "file_version": "1.7",
         "checksum": "{\"html\":\"9b845f8a9c71a3c40e2622e345d5ea0f\",\"css\":\"\",\"css_precompiled\":\"0b82fb6ae596cc3334ba860f47edaf12\",\"combined\":\"f585aa07600f59353c4a6d41fb2c36d7\"}"
     },
     {
@@ -436,7 +436,7 @@
         "publisher_id": null,
         "status": "A",
         "versao": 7,
-        "file_version": "1.5",
+        "file_version": "1.7",
         "checksum": "{\"html\":\"1f9a9b1b130cd56422f25910415fa78c\",\"css\":\"\",\"css_precompiled\":\"b896a74c4d0c454e9da42a4c1908f3b5\",\"combined\":\"6db4031569134a8b36a79d672bb227af\"}"
     },
     {
