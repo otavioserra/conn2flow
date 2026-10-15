@@ -28,7 +28,9 @@ REQ-277; BATCH-286; topologia dupla; autonomo_monitorado; branch `feat/req-277` 
 | `AtualizadorHotfixReq277Test` + `DeployLockTest` + `AtualizacoesSistemaTravaBackupTest` | 17 testes OK. O de erro fatal roda um PHP à parte que pega a trava, registra a liberação e estoura 32 MB: processo morre com "Allowed memory size" e a trava some |
 | Pipeline `project:update-all conn2flow-site-local --skip-css` (da worktree) | saída 0 |
 | E2E [req277-unlock-e2e.sh](../validation/req277-unlock-e2e.sh) | 8/8: tela com a mensagem; trava do painel → `start` recusa com `unlockable:true`, `unlock` remove; trava do pipeline → `unlockable:false`, `unlock` recusa e a trava fica |
-| PHPUnit completo | ver commit: a primeira rodada na worktree falhou em 28 testes alheios por fim de linha CRLF do checkout (os mesmos passam na árvore principal com LF) |
+| PHPUnit completo (`ssh lab`, worktree com checkout LF) | 1.845 testes, 0 falhas. A primeira rodada deu 28 falhas alheias só por fim de linha CRLF do checkout da worktree |
+| Vitest completo | 63 arquivos, 700 testes OK |
+| `assets:minify` oficial | `admin-atualizacoes.min.js` e manifesto regenerados; `admin-categorias.js` segue com a FALHA já registrada no BATCH-285 |
 
 ## Observações
 
