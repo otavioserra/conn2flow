@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.7",
+    "versao": "1.2.8",
     "bibliotecas": [
         "interface",
         "html",
@@ -210,6 +210,18 @@
                         "css_precompiled": "",
                         "combined": "70ba85d3a06eadd4c58d9f024872994b"
                     }
+                },
+                {
+                    "name": "Visibilidade da Página Tailwind",
+                    "id": "page-visibility-tailwind",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "8da9d129750ca2854e7ac3cc345e32db",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "8da9d129750ca2854e7ac3cc345e32db"
+                    }
                 }
             ],
             "pages": [
@@ -276,12 +288,12 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.33",
+                    "version": "1.34",
                     "checksum": {
-                        "html": "c8af51ddbc3c6447ffb30c3914db544d",
+                        "html": "87a3a4c05dd4ab1bb2cfc13c7ea43f51",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "d555c009253c789c46f11e3ddcb61b6d"
+                        "combined": "87651962107785b22d57428ab2cd53cd"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/editar/",
@@ -398,12 +410,12 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.31",
+                    "version": "1.32",
                     "checksum": {
-                        "html": "fe900172aa886cf8f61cfe66a6b360ba",
+                        "html": "01a706a148e17f6a98974df8029a289d",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "a4dd81d40cd8497adc52a6153d6426f6"
+                        "combined": "3fc9d9d4cfba2ba76bd7d63fcedfc2c2"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/adicionar/",
@@ -520,12 +532,12 @@
                 {
                     "name": "Admin Páginas - Clonar",
                     "id": "admin-paginas-clonar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "049b011c7e37927e0f8bfa5e79fe190c",
+                        "html": "d84b234596754843671952ff171634f7",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "5a8fb043f83e43759a7ba28e1a9a6bfc"
+                        "combined": "08bbe791591c5f0cdc4bd2147b6a25eb"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/clonar/",
@@ -805,6 +817,56 @@
                     "id": "lista-tipo-label",
                     "value": "Tipo",
                     "type": "string"
+                },
+                {
+                    "id": "visibility-title",
+                    "value": "Visibilidade",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-public-label",
+                    "value": "Visível publicamente",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-public-help",
+                    "value": "Desligado, a página só abre pelo link direto privado abaixo, mesmo sendo de acesso público. Quem administra páginas continua vendo.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-link-label",
+                    "value": "Link direto privado",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-link-help",
+                    "value": "Funciona com a página visível ou não. Gerar um novo link invalida o anterior.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-link-pending",
+                    "value": "O link é gerado ao salvar a página.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-copy-label",
+                    "value": "Copiar",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-copied",
+                    "value": "Link copiado.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-regenerate-label",
+                    "value": "Gerar novo link",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-regenerate-confirm",
+                    "value": "Gerar um novo link? O link atual deixa de funcionar assim que a página for salva.",
+                    "type": "string"
                 }
             ]
         },
@@ -968,12 +1030,12 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.28",
+                    "version": "1.29",
                     "checksum": {
-                        "html": "038311e7d65853da5589770947d52a4f",
+                        "html": "bec13cb5f539d2c35b64ae5d8e52e52b",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "9f6510e9dbfdb17d32545a5bc7b4b21b"
+                        "combined": "8bfc6e4e8079e1e4e7489732c01c8a2b"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/editar/",
@@ -1090,12 +1152,12 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.29",
+                    "version": "1.30",
                     "checksum": {
-                        "html": "58c5efbd052fd18a7e09bc13b3f4175b",
+                        "html": "a827d29edf85f5bbea3f845926fde178",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "b3e46fc8b7c7974af0a58b6fa3bbed42"
+                        "combined": "fd578f1e97d35043458328ada54cd249"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/adicionar/",
@@ -1212,12 +1274,12 @@
                 {
                     "name": "Admin Pages - Clone",
                     "id": "admin-paginas-clonar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "26b6756d8f7f9cbf2ee2f14454bc20cc",
+                        "html": "d814f48954e822a7517f8d397b01d476",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "ce2f47e485a5993ff586cd04502a2f27"
+                        "combined": "4456fe2f8280c44ab42cf085a9b7d10d"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/clonar/",
@@ -1401,6 +1463,18 @@
                         "css_precompiled": "",
                         "combined": "75e7c97d98702f0e92594d5295d62a12"
                     }
+                },
+                {
+                    "name": "Page Visibility Tailwind",
+                    "id": "page-visibility-tailwind",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "8da9d129750ca2854e7ac3cc345e32db",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "8da9d129750ca2854e7ac3cc345e32db"
+                    }
                 }
             ],
             "variables": [
@@ -1568,9 +1642,59 @@
                     "id": "lista-tipo-label",
                     "value": "Type",
                     "type": "string"
+                },
+                {
+                    "id": "visibility-title",
+                    "value": "Visibility",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-public-label",
+                    "value": "Publicly visible",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-public-help",
+                    "value": "When off, the page only opens through the private direct link below, even if it has public access. Page administrators still see it.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-link-label",
+                    "value": "Private direct link",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-link-help",
+                    "value": "Works whether the page is visible or not. Generating a new link invalidates the previous one.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-link-pending",
+                    "value": "The link is generated when the page is saved.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-copy-label",
+                    "value": "Copy",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-copied",
+                    "value": "Link copied.",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-regenerate-label",
+                    "value": "Generate new link",
+                    "type": "string"
+                },
+                {
+                    "id": "visibility-regenerate-confirm",
+                    "value": "Generate a new link? The current link stops working as soon as the page is saved.",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "65a460b67d240fc0"
+    "asset_version": "1da8a649070a8655"
 }

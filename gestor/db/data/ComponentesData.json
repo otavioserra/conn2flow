@@ -2408,6 +2408,20 @@
         "checksum": "{\"html\":\"70ba85d3a06eadd4c58d9f024872994b\",\"css\":\"\",\"css_precompiled\":\"6cd85efd4b1f4654a35570ecb923cca2\",\"combined\":\"f02004e0cf32d40d1bb449de52a7f1eb\"}"
     },
     {
+        "nome": "Visibilidade da Página Tailwind",
+        "id": "page-visibility-tailwind",
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "html": "<!-- req-275: linha \"Visibilidade\" (admin-paginas e publisher-pages). `visivel`, `regenerar_hash_privado` e os ids page-visibility-* são o contrato do JS do módulo. -->\n<h4 class=\"border-b border-slate-200 pb-2 text-base font-semibold text-slate-900\">#visibility-title#<\/h4>\n<div class=\"page-visibility grid grid-cols-1 gap-4 md:grid-cols-2\">\n    <div class=\"c2fc-campo\">\n        <label class=\"c2fc-chave\">\n            <input type=\"checkbox\" name=\"visivel\" value=\"1\" #visibility-checked#>\n            <span class=\"c2fc-chave-trilho\" aria-hidden=\"true\"><\/span>\n            <span class=\"c2fc-chave-rotulo\">#visibility-public-label#<\/span>\n        <\/label>\n        <p class=\"c2fc-campo-ajuda\">#visibility-public-help#<\/p>\n    <\/div>\n    <div class=\"c2fc-campo min-w-0\">\n        <label class=\"c2fc-campo-rotulo\" for=\"page-visibility-link\">#visibility-link-label#<\/label>\n        <div class=\"flex min-w-0 gap-2\">\n            <input type=\"text\" id=\"page-visibility-link\" class=\"c2fc-campo-entrada min-w-0 flex-1 bg-slate-50\" value=\"#visibility-link#\" placeholder=\"#visibility-link-pending#\" readonly>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto\" id=\"page-visibility-copy\" data-copied=\"#visibility-copied#\"><i data-lucide=\"copy\" class=\"size-4\"><\/i> #visibility-copy-label#<\/button>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto c2fc-botao-icone\" id=\"page-visibility-regenerate\" aria-label=\"#visibility-regenerate-label#\" title=\"#visibility-regenerate-label#\" data-confirm=\"#visibility-regenerate-confirm#\"><i data-lucide=\"refresh-cw\" class=\"size-4\"><\/i><\/button>\n        <\/div>\n        <input type=\"hidden\" name=\"regenerar_hash_privado\" value=\"\">\n        <p class=\"c2fc-campo-ajuda\">#visibility-link-help#<\/p>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"8da9d129750ca2854e7ac3cc345e32db\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"8da9d129750ca2854e7ac3cc345e32db\"}"
+    },
+    {
         "nome": "Page or System List",
         "id": "lista-pagina-ou-sistema",
         "language": "en",
@@ -2490,6 +2504,20 @@
         "versao": 8,
         "file_version": "1.6",
         "checksum": "{\"html\":\"75e7c97d98702f0e92594d5295d62a12\",\"css\":\"\",\"css_precompiled\":\"9b53f7faf58b1f337e4d6444ddb110fa\",\"combined\":\"25e9667fb7ea5801b8352c655ed02054\"}"
+    },
+    {
+        "nome": "Page Visibility Tailwind",
+        "id": "page-visibility-tailwind",
+        "language": "en",
+        "modulo": "admin-paginas",
+        "html": "<!-- req-275: linha \"Visibilidade\" (admin-paginas e publisher-pages). `visivel`, `regenerar_hash_privado` e os ids page-visibility-* são o contrato do JS do módulo. -->\n<h4 class=\"border-b border-slate-200 pb-2 text-base font-semibold text-slate-900\">#visibility-title#<\/h4>\n<div class=\"page-visibility grid grid-cols-1 gap-4 md:grid-cols-2\">\n    <div class=\"c2fc-campo\">\n        <label class=\"c2fc-chave\">\n            <input type=\"checkbox\" name=\"visivel\" value=\"1\" #visibility-checked#>\n            <span class=\"c2fc-chave-trilho\" aria-hidden=\"true\"><\/span>\n            <span class=\"c2fc-chave-rotulo\">#visibility-public-label#<\/span>\n        <\/label>\n        <p class=\"c2fc-campo-ajuda\">#visibility-public-help#<\/p>\n    <\/div>\n    <div class=\"c2fc-campo min-w-0\">\n        <label class=\"c2fc-campo-rotulo\" for=\"page-visibility-link\">#visibility-link-label#<\/label>\n        <div class=\"flex min-w-0 gap-2\">\n            <input type=\"text\" id=\"page-visibility-link\" class=\"c2fc-campo-entrada min-w-0 flex-1 bg-slate-50\" value=\"#visibility-link#\" placeholder=\"#visibility-link-pending#\" readonly>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto\" id=\"page-visibility-copy\" data-copied=\"#visibility-copied#\"><i data-lucide=\"copy\" class=\"size-4\"><\/i> #visibility-copy-label#<\/button>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto c2fc-botao-icone\" id=\"page-visibility-regenerate\" aria-label=\"#visibility-regenerate-label#\" title=\"#visibility-regenerate-label#\" data-confirm=\"#visibility-regenerate-confirm#\"><i data-lucide=\"refresh-cw\" class=\"size-4\"><\/i><\/button>\n        <\/div>\n        <input type=\"hidden\" name=\"regenerar_hash_privado\" value=\"\">\n        <p class=\"c2fc-campo-ajuda\">#visibility-link-help#<\/p>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"8da9d129750ca2854e7ac3cc345e32db\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"8da9d129750ca2854e7ac3cc345e32db\"}"
     },
     {
         "nome": "Plugins - Exec",
@@ -3234,6 +3262,20 @@
         "checksum": "{\"html\":\"260ad9cf2c1a4b0e983aad51cc8e2753\",\"css\":\"\",\"css_precompiled\":\"432b83616d315b760128c70d805b3a85\",\"combined\":\"2851d6c56dc01831f3d0d2b66ac902d6\"}"
     },
     {
+        "nome": "Visibilidade da Página Tailwind",
+        "id": "page-visibility-tailwind",
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "html": "<!-- req-275: linha \"Visibilidade\" (admin-paginas e publisher-pages). `visivel`, `regenerar_hash_privado` e os ids page-visibility-* são o contrato do JS do módulo. -->\n<h4 class=\"border-b border-slate-200 pb-2 text-base font-semibold text-slate-900\">#visibility-title#<\/h4>\n<div class=\"page-visibility grid grid-cols-1 gap-4 md:grid-cols-2\">\n    <div class=\"c2fc-campo\">\n        <label class=\"c2fc-chave\">\n            <input type=\"checkbox\" name=\"visivel\" value=\"1\" #visibility-checked#>\n            <span class=\"c2fc-chave-trilho\" aria-hidden=\"true\"><\/span>\n            <span class=\"c2fc-chave-rotulo\">#visibility-public-label#<\/span>\n        <\/label>\n        <p class=\"c2fc-campo-ajuda\">#visibility-public-help#<\/p>\n    <\/div>\n    <div class=\"c2fc-campo min-w-0\">\n        <label class=\"c2fc-campo-rotulo\" for=\"page-visibility-link\">#visibility-link-label#<\/label>\n        <div class=\"flex min-w-0 gap-2\">\n            <input type=\"text\" id=\"page-visibility-link\" class=\"c2fc-campo-entrada min-w-0 flex-1 bg-slate-50\" value=\"#visibility-link#\" placeholder=\"#visibility-link-pending#\" readonly>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto\" id=\"page-visibility-copy\" data-copied=\"#visibility-copied#\"><i data-lucide=\"copy\" class=\"size-4\"><\/i> #visibility-copy-label#<\/button>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto c2fc-botao-icone\" id=\"page-visibility-regenerate\" aria-label=\"#visibility-regenerate-label#\" title=\"#visibility-regenerate-label#\" data-confirm=\"#visibility-regenerate-confirm#\"><i data-lucide=\"refresh-cw\" class=\"size-4\"><\/i><\/button>\n        <\/div>\n        <input type=\"hidden\" name=\"regenerar_hash_privado\" value=\"\">\n        <p class=\"c2fc-campo-ajuda\">#visibility-link-help#<\/p>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"8da9d129750ca2854e7ac3cc345e32db\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"8da9d129750ca2854e7ac3cc345e32db\"}"
+    },
+    {
         "nome": "Publisher Fields",
         "id": "publisher-fields",
         "language": "en",
@@ -3330,6 +3372,20 @@
         "versao": 6,
         "file_version": "1.5",
         "checksum": "{\"html\":\"5a00a6b68da2aec513a03df776e335d1\",\"css\":\"\",\"css_precompiled\":\"f7db8b503e9503c2d630598d43e08f87\",\"combined\":\"4dd5ad84e87f1b5232eec42fe2ffeca4\"}"
+    },
+    {
+        "nome": "Page Visibility Tailwind",
+        "id": "page-visibility-tailwind",
+        "language": "en",
+        "modulo": "publisher-pages",
+        "html": "<!-- req-275: linha \"Visibilidade\" (admin-paginas e publisher-pages). `visivel`, `regenerar_hash_privado` e os ids page-visibility-* são o contrato do JS do módulo. -->\n<h4 class=\"border-b border-slate-200 pb-2 text-base font-semibold text-slate-900\">#visibility-title#<\/h4>\n<div class=\"page-visibility grid grid-cols-1 gap-4 md:grid-cols-2\">\n    <div class=\"c2fc-campo\">\n        <label class=\"c2fc-chave\">\n            <input type=\"checkbox\" name=\"visivel\" value=\"1\" #visibility-checked#>\n            <span class=\"c2fc-chave-trilho\" aria-hidden=\"true\"><\/span>\n            <span class=\"c2fc-chave-rotulo\">#visibility-public-label#<\/span>\n        <\/label>\n        <p class=\"c2fc-campo-ajuda\">#visibility-public-help#<\/p>\n    <\/div>\n    <div class=\"c2fc-campo min-w-0\">\n        <label class=\"c2fc-campo-rotulo\" for=\"page-visibility-link\">#visibility-link-label#<\/label>\n        <div class=\"flex min-w-0 gap-2\">\n            <input type=\"text\" id=\"page-visibility-link\" class=\"c2fc-campo-entrada min-w-0 flex-1 bg-slate-50\" value=\"#visibility-link#\" placeholder=\"#visibility-link-pending#\" readonly>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto\" id=\"page-visibility-copy\" data-copied=\"#visibility-copied#\"><i data-lucide=\"copy\" class=\"size-4\"><\/i> #visibility-copy-label#<\/button>\n            <button type=\"button\" class=\"c2fc-botao c2fc-botao-compacto c2fc-botao-icone\" id=\"page-visibility-regenerate\" aria-label=\"#visibility-regenerate-label#\" title=\"#visibility-regenerate-label#\" data-confirm=\"#visibility-regenerate-confirm#\"><i data-lucide=\"refresh-cw\" class=\"size-4\"><\/i><\/button>\n        <\/div>\n        <input type=\"hidden\" name=\"regenerar_hash_privado\" value=\"\">\n        <p class=\"c2fc-campo-ajuda\">#visibility-link-help#<\/p>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"8da9d129750ca2854e7ac3cc345e32db\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"8da9d129750ca2854e7ac3cc345e32db\"}"
     },
     {
         "nome": "Busca da página inicial",

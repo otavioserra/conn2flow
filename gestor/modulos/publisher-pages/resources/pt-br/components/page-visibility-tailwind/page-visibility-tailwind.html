@@ -1,0 +1,22 @@
+<!-- req-275: linha "Visibilidade" (admin-paginas e publisher-pages). `visivel`, `regenerar_hash_privado` e os ids page-visibility-* são o contrato do JS do módulo. -->
+<h4 class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">#visibility-title#</h4>
+<div class="page-visibility grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-chave">
+            <input type="checkbox" name="visivel" value="1" #visibility-checked#>
+            <span class="c2fc-chave-trilho" aria-hidden="true"></span>
+            <span class="c2fc-chave-rotulo">#visibility-public-label#</span>
+        </label>
+        <p class="c2fc-campo-ajuda">#visibility-public-help#</p>
+    </div>
+    <div class="c2fc-campo min-w-0">
+        <label class="c2fc-campo-rotulo" for="page-visibility-link">#visibility-link-label#</label>
+        <div class="flex min-w-0 gap-2">
+            <input type="text" id="page-visibility-link" class="c2fc-campo-entrada min-w-0 flex-1 bg-slate-50" value="#visibility-link#" placeholder="#visibility-link-pending#" readonly>
+            <button type="button" class="c2fc-botao c2fc-botao-compacto" id="page-visibility-copy" data-copied="#visibility-copied#"><i data-lucide="copy" class="size-4"></i> #visibility-copy-label#</button>
+            <button type="button" class="c2fc-botao c2fc-botao-compacto c2fc-botao-icone" id="page-visibility-regenerate" aria-label="#visibility-regenerate-label#" title="#visibility-regenerate-label#" data-confirm="#visibility-regenerate-confirm#"><i data-lucide="refresh-cw" class="size-4"></i></button>
+        </div>
+        <input type="hidden" name="regenerar_hash_privado" value="">
+        <p class="c2fc-campo-ajuda">#visibility-link-help#</p>
+    </div>
+</div>

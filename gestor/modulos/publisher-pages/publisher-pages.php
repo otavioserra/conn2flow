@@ -5,6 +5,7 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'publisher-pages';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/publisher-pages.json'), true);
 gestor_incluir_biblioteca('paginas-layouts-perfis');
+gestor_incluir_biblioteca('paginas-visibilidade');
 
 // Datas de agendamento (BATCH-075/Meta 5) usam formato.php (formato_data_hora_br_para_datetime).
 gestor_incluir_biblioteca('formato');
@@ -361,6 +362,8 @@ function publisher_pages_adicionar(){
 		if(gestor_acesso('permissao-pagina')){
 			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		}
+		// req-275: visibilidade e link direto privado (independente do "sem permissão").
+		foreach(paginas_visibilidade_campos_adicionar($_REQUEST) as $__visCampo){ $campos[] = $__visCampo; }
 		
 		// ===== Campos comuns
 		
@@ -445,6 +448,7 @@ function publisher_pages_adicionar(){
 	if(!gestor_acesso('permissao-pagina')){
 		$cel_nome = 'permissao-pagina'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	}	
+	$_GESTOR['pagina'] = paginas_visibilidade_formulario($_GESTOR['pagina'], null, $_GESTOR['modulo-id']); // req-275
 	
 	// Incluir o Componente Editor HTML na página
 
@@ -804,6 +808,8 @@ function publisher_pages_editar(){
 		'meta_descricao',
 		'meta_keywords',
 	);
+	// req-275: visibilidade e link direto privado.
+	if(paginas_visibilidade_habilitada()) array_push($camposBanco, 'visivel', 'hash_privado');
 	
 	$camposBancoPadrao = Array(
 		$modulo['tabela']['status'],
@@ -975,6 +981,8 @@ function publisher_pages_editar(){
 		if(gestor_acesso('permissao-pagina')){
 			$campo_nome = "sem_permissao"; $request_name = $campo_nome; $alteracoes_name = 'permission'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? '1' : NULL)){$editar['dados'][] = $campo_nome."=" . (isset($_REQUEST[$request_name]) ? '1' : 'NULL'); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => (isset($_REQUEST[$request_name]) ? '1' : '0'));}
 		}
+		// req-275: visibilidade e link direto privado (independente do "sem permissão").
+		foreach(paginas_visibilidade_campos_editar($_REQUEST, banco_select_campos_antes('visivel'), banco_select_campos_antes('hash_privado')) as $__visSet){ $editar['dados'][] = $__visSet; }
 		
 		$campo_nome = "html"; $request_name = 'htmlWithValues'; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "css"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
@@ -1448,6 +1456,7 @@ function publisher_pages_editar(){
 		
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#raiz#',($raiz ? 'checked' : ''));
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#sem_permissao#',($sem_permissao ? 'checked' : ''));
+		$_GESTOR['pagina'] = paginas_visibilidade_formulario($_GESTOR['pagina'], $retorno_bd, $_GESTOR['modulo-id']); // req-275
 
 		$variaveisTrocarDepois['pagina-css'] = $css;
 		$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled;
@@ -1696,6 +1705,8 @@ function publisher_pages_clonar(){
 		'meta_descricao',
 		'meta_keywords',
 	);
+	// req-275: visibilidade e link direto privado.
+	if(paginas_visibilidade_habilitada()) array_push($camposBanco, 'visivel', 'hash_privado');
 	
 	$camposBancoPadrao = Array(
 		$modulo['tabela']['status'],
@@ -1855,6 +1866,8 @@ function publisher_pages_clonar(){
 		if(gestor_acesso('permissao-pagina')){
 			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		}
+		// req-275: visibilidade e link direto privado (independente do "sem permissão").
+		foreach(paginas_visibilidade_campos_adicionar($_REQUEST) as $__visCampo){ $campos[] = $__visCampo; }
 		
 		// ===== Campos comuns
 		
@@ -2167,6 +2180,7 @@ function publisher_pages_clonar(){
 		
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#raiz#',($raiz ? 'checked' : ''));
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#sem_permissao#',($sem_permissao ? 'checked' : ''));
+		$_GESTOR['pagina'] = paginas_visibilidade_formulario($_GESTOR['pagina'], Array('visivel' => $retorno_bd['visivel'] ?? null), $_GESTOR['modulo-id']); // req-275
 
 		$variaveisTrocarDepois['pagina-css'] = $css;
 		$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled;

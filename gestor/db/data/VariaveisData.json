@@ -14121,6 +14121,96 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-title",
+        "valor": "Visibilidade",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-public-label",
+        "valor": "Visível publicamente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-public-help",
+        "valor": "Desligado, a página só abre pelo link direto privado abaixo, mesmo sendo de acesso público. Quem administra páginas continua vendo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-link-label",
+        "valor": "Link direto privado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-link-help",
+        "valor": "Funciona com a página visível ou não. Gerar um novo link invalida o anterior.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-link-pending",
+        "valor": "O link é gerado ao salvar a página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-copy-label",
+        "valor": "Copiar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-copied",
+        "valor": "Link copiado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-regenerate-label",
+        "valor": "Gerar novo link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "visibility-regenerate-confirm",
+        "valor": "Gerar um novo link? O link atual deixa de funcionar assim que a página for salva.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-paginas",
         "id": "profile-mapping-toggle",
@@ -14413,6 +14503,96 @@
         "modulo": "admin-paginas",
         "id": "lista-tipo-label",
         "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-title",
+        "valor": "Visibility",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-public-label",
+        "valor": "Publicly visible",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-public-help",
+        "valor": "When off, the page only opens through the private direct link below, even if it has public access. Page administrators still see it.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-link-label",
+        "valor": "Private direct link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-link-help",
+        "valor": "Works whether the page is visible or not. Generating a new link invalidates the previous one.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-link-pending",
+        "valor": "The link is generated when the page is saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-copy-label",
+        "valor": "Copy",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-copied",
+        "valor": "Link copied.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-regenerate-label",
+        "valor": "Generate new link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "visibility-regenerate-confirm",
+        "valor": "Generate a new link? The current link stops working as soon as the page is saved.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -29664,6 +29844,96 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-title",
+        "valor": "Visibilidade",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-public-label",
+        "valor": "Visível publicamente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-public-help",
+        "valor": "Desligado, a página só abre pelo link direto privado abaixo, mesmo sendo de acesso público. Quem administra páginas continua vendo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-link-label",
+        "valor": "Link direto privado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-link-help",
+        "valor": "Funciona com a página visível ou não. Gerar um novo link invalida o anterior.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-link-pending",
+        "valor": "O link é gerado ao salvar a página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-copy-label",
+        "valor": "Copiar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-copied",
+        "valor": "Link copiado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-regenerate-label",
+        "valor": "Gerar novo link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "visibility-regenerate-confirm",
+        "valor": "Gerar um novo link? O link atual deixa de funcionar assim que a página for salva.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "publisher-pages",
         "id": "profile-mapping-toggle",
@@ -30181,6 +30451,96 @@
         "modulo": "publisher-pages",
         "id": "form-move-error-connection",
         "valor": "Connection error while moving the publication.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-title",
+        "valor": "Visibility",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-public-label",
+        "valor": "Publicly visible",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-public-help",
+        "valor": "When off, the page only opens through the private direct link below, even if it has public access. Page administrators still see it.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-link-label",
+        "valor": "Private direct link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-link-help",
+        "valor": "Works whether the page is visible or not. Generating a new link invalidates the previous one.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-link-pending",
+        "valor": "The link is generated when the page is saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-copy-label",
+        "valor": "Copy",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-copied",
+        "valor": "Link copied.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-regenerate-label",
+        "valor": "Generate new link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "visibility-regenerate-confirm",
+        "valor": "Generate a new link? The current link stops working as soon as the page is saved.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

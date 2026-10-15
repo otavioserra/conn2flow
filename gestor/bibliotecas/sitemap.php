@@ -50,6 +50,9 @@ function sitemap_pagina_elegivel($pagina, $agora = null){
 	// o que exige login não pode ser indexado.
 	if(empty($pagina['sem_permissao'])) return false;
 
+	// req-275: página não visível publicamente só abre pelo link privado; não entra no sitemap.
+	if(array_key_exists('visivel', $pagina) && !gestor_pagina_visivel($pagina['visivel'])) return false;
+
 	// req-112: o tipo deixou de ser critério. Antes só `tipo='pagina'` entrava, o que deixava de fora
 	// telas públicas legítimas como `/signin/`, `/signup/` e `/forgot-password/`, gravadas como
 	// `tipo='sistema'`. Como o painel administrativo inteiro exige permissão, a regra de permissão
@@ -530,6 +533,7 @@ function sitemap_gerar_completo(){
 		// req-112: `tipo` saiu do filtro — telas públicas de sistema (`/signin/`, `/signup/`,
 		// `/forgot-password/`) também entram. A triagem fina fica em `sitemap_pagina_elegivel()`.
 		"WHERE status='A' AND sem_permissao=1"
+		.gestor_paginas_sql_visiveis() // req-275: não visível fica fora do sitemap.
 		." ORDER BY caminho ASC"
 	);
 
@@ -629,6 +633,13 @@ function sitemap_sincronizar_por_id($id, $remover = false, $caminhoAntigo = null
 
 	// Registro sumiu (exclusão definitiva): sem os dados não há como montar a URL — regenera tudo.
 	if(!$paginas) return sitemap_gerar_completo();
+
+	// req-275: página que deixou de ser visível sai do sitemap como uma que deixou de ser pública.
+	if(gestor_paginas_sql_visiveis() !== ''){
+		$visibilidade = banco_select(Array('unico' => true, 'tabela' => 'paginas', 'campos' => Array('visivel'),
+			'extra' => "WHERE id='".banco_escape_field($id)."' AND language='".($_GESTOR['linguagem-codigo'] ?? '')."'"));
+		if($visibilidade) $paginas[0]['visivel'] = $visibilidade['visivel'];
+	}
 
 	return sitemap_sincronizar_pagina($paginas[0], $remover, $caminhoAntigo);
 }

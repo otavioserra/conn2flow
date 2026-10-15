@@ -359,6 +359,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'ftp' => Array('ftp.php'),
 	'pagina' => Array('pagina.php'),
 	'paginas-layouts-perfis' => Array('paginas-layouts-perfis.php'),
+	'paginas-visibilidade' => Array('paginas-visibilidade.php'), // req-275
 	'formato' => Array('formato.php'),
 	'configuracao' => Array('configuracao.php'),
 	'host' => Array('host.php'),

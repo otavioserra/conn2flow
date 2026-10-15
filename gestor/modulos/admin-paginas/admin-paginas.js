@@ -232,3 +232,42 @@ $(document).ready(function () {
 			});
 	}
 });
+
+// req-275: linha "Visibilidade" — copiar o link direto privado e gerar um novo (gravado pelo salvamento
+// normal do formulário, com o token dele).
+$(document).ready(function () {
+	var $link = $('#page-visibility-link');
+	if (!$link.length) return;
+
+	if (!$link.val()) $('#page-visibility-copy, #page-visibility-regenerate').hide();
+
+	$(document).on('click', '#page-visibility-copy', function (e) {
+		e.preventDefault();
+		var $botao = $(this);
+		var valor = $link.val() || '';
+		if (!valor) return;
+
+		var avisar = function () {
+			var original = $botao.attr('data-original-html') || $botao.html();
+			$botao.attr('data-original-html', original).text($botao.attr('data-copied') || '');
+			setTimeout(function () { $botao.html(original); }, 1500);
+		};
+
+		if (navigator.clipboard && window.isSecureContext) {
+			navigator.clipboard.writeText(valor).then(avisar);
+		} else {
+			$link.trigger('select');
+			document.execCommand('copy');
+			avisar();
+		}
+	});
+
+	$(document).on('click', '#page-visibility-regenerate', function (e) {
+		e.preventDefault();
+		if (!window.confirm($(this).attr('data-confirm') || '')) return;
+		$('input[name="regenerar_hash_privado"]').val('1');
+		var form = $(this).closest('form')[0];
+		if (!form) return;
+		if (form.requestSubmit) { form.requestSubmit(); } else { $(form).trigger('submit'); }
+	});
+});

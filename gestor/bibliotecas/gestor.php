@@ -1339,6 +1339,104 @@ function gestor_pagina_sem_permissao($valor){
 	return trim($valor) === '1';
 }
 
+/** req-275: nome da variável de sessão com as páginas liberadas pelo link direto privado. */
+const GESTOR_PAGINAS_LIBERADAS_SESSAO = 'paginas-liberadas-link-privado';
+
+/**
+ * req-275: a página é visível publicamente (`paginas.visivel`)? Função PURA.
+ *
+ * Ao contrário do `sem_permissao`, o padrão é visível: só `0` esconde. Assim `NULL` (instalação antes da
+ * migração) e vazio mantêm o comportamento antigo.
+ *
+ * @param mixed $valor Valor da coluna `visivel`.
+ * @return bool
+ */
+function gestor_pagina_visivel($valor){
+	if(is_bool($valor)) return $valor;
+	if(is_int($valor)) return $valor !== 0;
+	if(!is_string($valor)) return true;
+
+	return trim($valor) !== '0';
+}
+
+/**
+ * req-275: cláusula das listagens públicas (sitemap, índices) que deixa de fora as páginas não visíveis.
+ *
+ * Vazia enquanto a coluna não existe (instalação antes da migração), para a listagem não quebrar.
+ *
+ * @param string $alias Alias da tabela `paginas` na consulta (`p`), ou vazio.
+ * @return string Trecho começando por " AND ", ou ''.
+ */
+function gestor_paginas_sql_visiveis($alias = ''){
+	static $existe = null;
+	if($existe === null){
+		gestor_incluir_biblioteca('banco');
+		$existe = function_exists('banco_campo_existe') && banco_campo_existe('visivel', 'paginas');
+	}
+	if(!$existe) return '';
+
+	$coluna = ($alias !== '' ? $alias.'.' : '').'visivel';
+
+	return " AND (".$coluna." IS NULL OR ".$coluna."<>0)";
+}
+
+/** req-275: hash novo do link direto privado (32 hex). */
+function gestor_pagina_hash_gerar(){
+	return bin2hex(random_bytes(16));
+}
+
+/** req-275: o valor tem o formato de um hash de link privado? Função PURA. */
+function gestor_pagina_hash_valido($hash){
+	return is_string($hash) && preg_match('/^[a-f0-9]{32}$/', $hash) === 1;
+}
+
+/**
+ * req-275: link absoluto da página com o acesso privado (`?acesso=<hash>`). Função PURA.
+ *
+ * @param string $urlFull URL do site com barra final (`$_GESTOR['url-full']`).
+ * @param string $caminho Caminho da página (`paginas.caminho`).
+ * @param string $hash `paginas.hash_privado`.
+ * @param string $prefixoIdioma Prefixo do idioma (`en/`), vazio no idioma padrão.
+ * @return string '' sem hash válido.
+ */
+function gestor_pagina_link_privado($urlFull, $caminho, $hash, $prefixoIdioma = ''){
+	if(!gestor_pagina_hash_valido($hash)) return '';
+
+	$caminho = trim((string)$caminho, '/');
+	$base = rtrim((string)$urlFull, '/').'/'.trim((string)$prefixoIdioma, '/');
+	$base = rtrim($base, '/').'/';
+
+	return $base.($caminho !== '' ? $caminho.'/' : '').'?acesso='.$hash;
+}
+
+/**
+ * req-275: decide se uma página não visível abre para esta requisição. Função PURA.
+ *
+ * Abre quando o `?acesso=` confere com o hash (e então a página entra na sessão), quando a página já foi
+ * liberada nesta sessão, ou para quem administra páginas.
+ *
+ * @param array $pagina Linha de `paginas` com `visivel`, `hash_privado` e `id`.
+ * @param mixed $acesso Valor de `?acesso=`.
+ * @param array $liberadas Ids liberados na sessão.
+ * @param bool $gerencia Usuário logado com acesso a `admin-paginas` ou `publisher-pages`.
+ * @return array ['permitido' => bool, 'liberar' => bool]
+ */
+function gestor_pagina_acesso_privado($pagina, $acesso, $liberadas, $gerencia){
+	if(gestor_pagina_visivel($pagina['visivel'] ?? null)) return Array('permitido' => true, 'liberar' => false);
+
+	$hash = (string)($pagina['hash_privado'] ?? '');
+	if(gestor_pagina_hash_valido($hash) && is_string($acesso) && hash_equals($hash, strtolower(trim($acesso)))){
+		return Array('permitido' => true, 'liberar' => true);
+	}
+
+	$id = (string)($pagina['id'] ?? '');
+	if($id !== '' && is_array($liberadas) && in_array($id, array_map('strval', $liberadas), true)){
+		return Array('permitido' => true, 'liberar' => false);
+	}
+
+	return Array('permitido' => (bool)$gerencia, 'liberar' => false);
+}
+
 /**
  * REQ-131 (site): a requisição é o painel (`dashboard`), destino de toda recusa de módulo? Função PURA.
  *

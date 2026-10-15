@@ -413,7 +413,8 @@ function pages_index_widget_where_base(){
 	return "WHERE status='A'"
 		." AND language='".$language."'"
 		." AND tipo='pagina'"
-		." AND sem_permissao=1";
+		." AND sem_permissao=1"
+		.gestor_paginas_sql_visiveis(); // req-275
 }
 
 /**

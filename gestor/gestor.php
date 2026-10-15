@@ -2618,6 +2618,54 @@ function gestor_site_toolbar_backup_aplicar(&$paginas){
 }
 
 /**
+ * Visibilidade da página encontrada pelo roteador (req-275).
+ *
+ * Com `paginas.visivel = 0`, a página só segue com o `?acesso=` correto (que a libera na sessão), já
+ * liberada nesta sessão, ou para usuário logado com acesso a `admin-paginas` ou `publisher-pages`. Senão a
+ * página some (`unset`) e o roteador responde 404. Página servida assim leva `noindex`.
+ *
+ * @param array|null $paginas Resultado da busca do roteador (por referência).
+ * @return void
+ */
+function gestor_roteador_pagina_visibilidade(&$paginas){
+	$idPagina = (string)($paginas[0]['id_paginas'] ?? '');
+	if($idPagina === '') return;
+
+	$visibilidade = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array('visivel', 'hash_privado'),
+		'extra' => "WHERE id_paginas='".banco_escape_field($idPagina)."'",
+	));
+	if(!$visibilidade || gestor_pagina_visivel($visibilidade['visivel'] ?? null)) return;
+
+	$pagina = Array(
+		'visivel' => $visibilidade['visivel'],
+		'hash_privado' => $visibilidade['hash_privado'] ?? '',
+		'id' => $paginas[0]['id'] ?? '',
+	);
+	$liberadas = gestor_sessao_variavel(GESTOR_PAGINAS_LIBERADAS_SESSAO);
+	$liberadas = is_array($liberadas) ? $liberadas : Array();
+
+	$decisao = gestor_pagina_acesso_privado($pagina, $_GET['acesso'] ?? null, $liberadas, false);
+	if(!$decisao['permitido'] && gestor_permissao_token()){
+		$decisao = gestor_pagina_acesso_privado($pagina, null, Array(), gestor_acesso(false, 'admin-paginas') || gestor_acesso(false, 'publisher-pages'));
+	}
+
+	if(!$decisao['permitido']){
+		$paginas = null;
+		return;
+	}
+
+	if($decisao['liberar'] && $pagina['id'] !== '' && !in_array((string)$pagina['id'], $liberadas, true)){
+		$liberadas[] = (string)$pagina['id'];
+		gestor_sessao_variavel(GESTOR_PAGINAS_LIBERADAS_SESSAO, $liberadas);
+	}
+
+	if(!headers_sent()) header('X-Robots-Tag: noindex, nofollow');
+}
+
+/**
  * Porteiro do Acesso Restrito ao Site (req-163 / BATCH-168).
  *
  * Com `SITE_RESTRICTED_ACCESS` ligado, toda rota não isenta exige sessão válida e, se houver lista
@@ -2884,6 +2932,7 @@ function gestor_roteador(){
 	// silencioso: o comportamento divergia entre os dois ambientes sem nada acusar.
 
 	$campos[] = 'id';
+	$campos[] = 'id_paginas';
 
 	// ===== Buscar no banco de dados o alvo da requisição
 	
@@ -2932,6 +2981,14 @@ function gestor_roteador(){
 	if (isset($paginas) && function_exists('modulo_distribuido_execucao_ativa')
 		&& !modulo_distribuido_execucao_ativa($paginas[0]['modulo'] ?? '', $paginas[0]['plugin'] ?? null)) {
 		unset($paginas);
+	}
+
+	// ===== req-275: página não visível publicamente só abre pelo link direto privado (`?acesso=<hash>`),
+	//       já liberada nesta sessão, ou para quem administra páginas. Senão, 404 — não revela que existe.
+	//       Consulta à parte pela chave: durante uma atualização, antes da migração criar as colunas, ela
+	//       falha sozinha (página segue visível) em vez de derrubar a busca principal.
+	if(isset($paginas)){
+		gestor_roteador_pagina_visibilidade($paginas);
 	}
 
 	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.

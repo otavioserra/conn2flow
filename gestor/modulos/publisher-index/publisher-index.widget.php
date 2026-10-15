@@ -480,6 +480,7 @@ function publisher_index_widget_contar_publicacoes($params){
 	$where =
 		"WHERE p.publisher_id='".banco_escape_field($publisher_id)."'"
 		." AND p.status='A'"
+		.gestor_paginas_sql_visiveis('p') // req-275
 		." AND p.language='".banco_escape_field($language)."'";
 	$where .= publisher_index_widget_clausula_busca($params['busca'] ?? '');
 
@@ -528,6 +529,7 @@ function publisher_index_widget_buscar_publicacoes($params){
 	$where =
 		"WHERE p.publisher_id='".banco_escape_field($publisher_id)."'"
 		." AND p.status='A'"
+		.gestor_paginas_sql_visiveis('p') // req-275
 		." AND p.language='".banco_escape_field($language)."'";
 
 	$where .= publisher_index_widget_clausula_busca($busca);
@@ -692,6 +694,7 @@ function publisher_index_widget_lista_manual($params){
 	$where =
 		"WHERE p.publisher_id='".banco_escape_field($publisher_id)."'"
 		." AND p.status='A'"
+		.gestor_paginas_sql_visiveis('p') // req-275
 		." AND p.language='".banco_escape_field($language)."'"
 		." AND p.id IN (".implode(',', $ids_escapados).")";
 
