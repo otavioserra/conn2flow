@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.4] - 2026-10-15
+
+### Added
+- Acesso Restrito ao Site: passe de navegador confiável para navegação anônima (`REQ-274`). Permite que administradores autorizem o navegador atual diretamente em `admin-environment` para navegar pelas páginas públicas como visitante deslogado mesmo com `SITE_RESTRICTED_ACCESS` ativo para o público geral. Conta com cookie HttpOnly assinado com HMAC-SHA256, prazo de validade configurável, revogação do navegador atual e revogação global imediata por rotação de salt no `.env`.
+
 ## [3.0.3] - 2026-10-15
 
 ### Added

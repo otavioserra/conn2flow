@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.4] - 2026-10-15
+
+### Added
+- Restricted site access: trusted browser pass for anonymous browsing (`REQ-274`). Administrators can authorize the current browser from `admin-environment` to navigate the public site as an anonymous visitor while `SITE_RESTRICTED_ACCESS` remains active for the general public. Includes HMAC-SHA256 signed HttpOnly cookie, custom validity window, single-browser revocation, and instant global revocation via `.env` salt rotation.
+
 ## [3.0.3] - 2026-10-15
 
 ### Added
