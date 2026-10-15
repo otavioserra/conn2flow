@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.5] - 2026-10-15
+
+### Fixed
+- Panel updates: prevent orphan locks and memory exhaustion during in-panel system updates (`REQ-277`). Registers shutdown handlers across web update steps (`start`, `deploy`, `db`) to ensure `deploy.lock` is released gracefully upon fatal errors, raises request `memory_limit` to at least 1 GB, detects stale lock owner processes on Linux (`/proc`), and adds an in-panel action to safely release panel update locks and retry.
+
 ## [3.0.4] - 2026-10-15
 
 ### Added

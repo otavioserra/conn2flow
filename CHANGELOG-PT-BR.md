@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.5] - 2026-10-15
+
+### Fixed
+- Atualizador pelo painel: prevenção de trava órfã e exaustão de memória na sincronização do sistema (`REQ-277`). Registra manipuladores de encerramento nas etapas web (`start`, `deploy`, `db`) para liberar o `deploy.lock` automaticamente em caso de erro fatal, eleva o `memory_limit` para pelo menos 1 GB durante as etapas pesadas, detecta processos donos mortos no Linux (`/proc`), e adiciona opção na interface para destravar o painel e tentar novamente com segurança.
+
 ## [3.0.4] - 2026-10-15
 
 ### Added
