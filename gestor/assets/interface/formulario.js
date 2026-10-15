@@ -159,6 +159,11 @@ $(document).ready(function () {
 				data.fields.forEach(function (field) {
 					var input = form.find('[name="' + field.name + '"]');
 					if (input.length) {
+						if (field.type === 'domain') {
+							input.on('input change', function () {
+								validateField($(this), field, data.prompts, data.framework, data);
+							});
+						}
 						// apply maxlength (schema override or defaults: text/email=254, textarea=10000)
 						var defaultMaxLength = field.max_length ? parseInt(field.max_length, 10) : (['text', 'email'].indexOf(field.type) !== -1 ? 254 : (field.type === 'textarea' ? 10000 : null));
 						var existingMaxLength = input.attr('maxlength');
@@ -311,8 +316,16 @@ $(document).ready(function () {
 				return out;
 			}
 
+			function normalizeDomain(value) {
+				return value.trim().replace(/^https?:\/\//i, '').replace(/\/+$/, '').trim().toLowerCase();
+			}
+
 			function validateField(input, field, prompts, framework, data) {
 				var value = input.val().trim();
+				if (field.type === 'domain') {
+					value = normalizeDomain(input.val());
+					if (input.val() !== value) input.val(value);
+				}
 				var isValid = true;
 				var errorMsg = '';
 				var emptyPromptTpl = (prompts && typeof prompts.empty === 'string') ? prompts.empty : 'Campo #label# e obrigatorio.';
@@ -352,6 +365,12 @@ $(document).ready(function () {
 						} else if (limits.max !== null && value > limits.max) {
 							isValid = false;
 							errorMsg = fillPrompt(pickPrompt(prompts, 'maxDate', 'O campo #label# deve ter data até #max#.'), field, { max: limits.max });
+						}
+					} else if (field.type === 'domain') {
+						var domainRegex = /^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
+						if (value.length > 253 || !domainRegex.test(value)) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'domain', ''), field, null);
 						}
 					} else if (field.type === 'url') {
 						if (!/^[a-z][a-z0-9+.-]*:\/\/.+/i.test(value)) {

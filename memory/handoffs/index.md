@@ -1,9 +1,11 @@
 # Index — handoffs
 
-Transferência de execução
-
-| ID | Título | Resumo Executivo | Link Relativo | Status |
+| ID | Title | Executive summary | Relative link | Status |
 | --- | --- | --- | --- | --- |
-| archive | archive | Nó de navegação | [archive](archive/index.md) | indexed |
-| CURRENT-HANDOFF.md | 🤝 Handoff do Agente Executor — req-145.md | <!-- Cole aqui o log da execução do terminal --> | [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) | Em |
-| BATCH-206 | Handoff — BATCH-206: choques das entregas na extensão do VS Code (req-199) | A extensão lista os choques das entregas de um projeto, abre o diff lado a lado no editor nativo, deixa escolher a decisão (sobrescrever, manter, mesclar) e envia — **tudo pelo CLI | [HANDOFF-BATCH-206-extensao-choques.md](HANDOFF-BATCH-206-extensao-choques.md) | indexed |
+| CURRENT-HANDOFF | 🤝 Handoff do Agente Executor — req-145.md |  | [source](<CURRENT-HANDOFF.md>) | Em Andamento |
+| HANDOFF-BATCH-206-EXTENSAO-CHOQUES | Handoff — BATCH-206: choques das entregas na extensão do VS Code (req-199) | A extensão lista os choques das entregas de um projeto, abre o diff lado a lado no editor nativo, deixa escolher a de... | [source](<HANDOFF-BATCH-206-extensao-choques.md>) | indexed |
+| HANDOFF-REQ-273-BATCH-282 | Campo domain implementado; falta validação no ambiente publicado | Código, suítes, publicação SSH e editor aprovados; persistência/AJAX real ainda não exercitados. | [source](<REQ-273-BATCH-282.md>) | pending-runtime-validation |
+
+## Directories
+
+- [archive](<archive/index.md>)

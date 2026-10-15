@@ -244,7 +244,7 @@ function forms_widget_render_field($template, $field) {
 	$required = forms_widget_bool($field['required'] ?? false) ? 'required' : '';
 
 	// Tipos nativos que reaproveitam o bloco de input simples (type-input).
-	$inputType = ($type === 'textarea' || $type === 'select' || $type === 'radio' || $type === 'checkbox') ? 'text' : (string)$type;
+	$inputType = in_array($type, ['textarea', 'select', 'radio', 'checkbox', 'domain'], true) ? 'text' : (string)$type;
 
 	// Valor padrão do campo (constante para hidden; vazio para os demais).
 	$value = ($type === 'hidden') ? forms_widget_hidden_default($field['options'] ?? []) : '';
@@ -288,7 +288,9 @@ function forms_widget_render_field($template, $field) {
 	}
 
 	// ===== Tratamentos específicos por tipo.
-	if ($type === 'hidden') {
+	if ($type === 'domain') {
+		$html = forms_widget_inject_tag_attrs($html, 'input', ' autocapitalize="none" spellcheck="false" autocomplete="off"');
+	} elseif ($type === 'hidden') {
 		$html = forms_widget_inject_value_if_absent($html, $value);
 		$html = forms_widget_extract_input($html);
 	} elseif ($type === 'password') {

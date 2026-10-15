@@ -588,12 +588,12 @@
         "name": "Form UI",
         "id": "form-ui",
         "framework_css": "tailwindcss",
-        "version": "1.18",
+        "version": "1.19",
         "checksum": {
-            "html": "e22c3639b1143c9c813c6ca70bc6eca8",
+            "html": "2f0e45eecfbfcf0b6d65a730d9713c50",
             "css": "",
             "css_precompiled": "",
-            "combined": "e22c3639b1143c9c813c6ca70bc6eca8"
+            "combined": "2f0e45eecfbfcf0b6d65a730d9713c50"
         }
     },
     {

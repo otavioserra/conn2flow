@@ -113,6 +113,7 @@ $(document).ready(function () {
         var $row = $(this).closest('tr');
         var $options = $row.find('.forms-field-options');
         var val = fieldTypeValue($(this));
+        $row.find('.forms-field-placeholder').attr('placeholder', domainPlaceholder(val));
         if (typeUsesOptions(val)) {
             $options.attr('placeholder', optionsPlaceholder(val)).show();
         } else {
@@ -227,6 +228,8 @@ $(document).ready(function () {
             row.querySelector('.forms-field-' + key).value = field[key] || (key === 'type' ? 'text' : '');
         });
         var options = row.querySelector('.forms-field-options');
+        var placeholderInput = row.querySelector('.forms-field-placeholder');
+        placeholderInput.placeholder = field.type === 'domain' ? (placeholderInput.dataset.domainPlaceholder || '') : '';
         options.value = Array.isArray(field.options) ? field.options.join('\n') : (field.options || '');
         options.placeholder = optionsPlaceholder(field.type || 'text');
         options.style.display = typeUsesOptions(field.type || 'text') ? '' : 'none';
@@ -496,6 +499,12 @@ $(document).ready(function () {
     // e diretivas de limite (text/textarea: min/max de caracteres; number: min/max/step; date: min/max).
     function typeUsesOptions(type) {
         return ['select', 'radio', 'checkbox', 'hidden', 'text', 'textarea', 'number', 'date'].indexOf(type) !== -1;
+    }
+
+    function domainPlaceholder(type) {
+        if (type !== 'domain') return '';
+        var template = document.querySelector('#field-row-template');
+        return template.content.querySelector('.forms-field-placeholder').dataset.domainPlaceholder || '';
     }
 
     function optionsPlaceholder(type) {
