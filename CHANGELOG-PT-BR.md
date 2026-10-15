@@ -8,6 +8,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [3.0.4] - 2026-10-15
 
 ### Added
+- Visibilidade de páginas e links diretos privados (`REQ-275`): `admin-paginas` e `publisher-pages` agora oferecem controle de visibilidade pública (padrão) ou acesso exclusivo via link direto privado (`?acesso=<hash>`). Páginas não visíveis são omitidas do sitemap e widgets de índice, respondem 404 para visitantes comuns, liberam a navegação na sessão com o link válido e para administradores, e contam com regeneração de link em um clique.
 - Acesso Restrito ao Site: passe de navegador confiável para navegação anônima (`REQ-274`). Permite que administradores autorizem o navegador atual diretamente em `admin-environment` para navegar pelas páginas públicas como visitante deslogado mesmo com `SITE_RESTRICTED_ACCESS` ativo para o público geral. Conta com cookie HttpOnly assinado com HMAC-SHA256, prazo de validade configurável, revogação do navegador atual e revogação global imediata por rotação de salt no `.env`.
 
 ## [3.0.3] - 2026-10-15

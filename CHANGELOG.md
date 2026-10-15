@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [3.0.4] - 2026-10-15
 
 ### Added
+- Pages visibility and private direct links (`REQ-275`): `admin-paginas` and `publisher-pages` now support setting pages as publicly visible (default) or accessible only via private direct link (`?acesso=<hash>`). Non-visible pages are hidden from sitemaps and index widgets, return 404 to unauthorized visitors, remain accessible in authorized sessions and to panel administrators, and support single-click link regeneration.
 - Restricted site access: trusted browser pass for anonymous browsing (`REQ-274`). Administrators can authorize the current browser from `admin-environment` to navigate the public site as an anonymous visitor while `SITE_RESTRICTED_ACCESS` remains active for the general public. Includes HMAC-SHA256 signed HttpOnly cookie, custom validity window, single-browser revocation, and instant global revocation via `.env` salt rotation.
 
 ## [3.0.3] - 2026-10-15
