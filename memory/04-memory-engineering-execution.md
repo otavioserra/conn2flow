@@ -121,3 +121,9 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **`paginas.visivel` (padrão 1) + `hash_privado`**: o roteador lê os dois numa consulta à parte pela chave (`gestor_roteador_pagina_visibilidade()`), não na busca principal — durante uma atualização, antes da migração, coluna nova na busca principal derrubaria todas as páginas (o `banco_query` só devolve `false` e loga).
 - **Página escondida = página inexistente**: sem `?acesso=`, o roteador segue o caminho do 404 (aqui é 302 para `/404`). Teste E2E deve comparar com uma rota que não existe, não com o código 404.
 - **Formulários de páginas**: `#page-visibility#` entre a linha Tipo/Permissão e o Agendamento, componente `page-visibility-tailwind` em cada módulo, biblioteca `paginas-visibilidade.php`. Script PHP de inserção em lote: `unset` no array percorrido por `foreach` não pula o item (o `foreach` itera a cópia).
+
+### REQ-277 / BATCH-286 — hotfix do atualizador pelo painel (2026-10-15)
+
+- **Erro fatal não passa por `catch` nem `finally`**: a etapa web que morre (ex.: memória de 128 MB do PHP-FPM na sincronização de dados) deixava `temp/deploy.lock` preso por 2 h. A liberação vai num `register_shutdown_function` que olha `error_get_last()`. O PID da trava web é o do worker do FPM, que sobrevive ao fatal: checar PID não resolve sozinho.
+- **Worktree no Windows nasce com CRLF** (`core.autocrlf=true`): testes de contrato com `"\n"` falham em massa (28 na primeira rodada). Antes da suíte: `git ls-files -z | xargs -0 rm -f && git -c core.autocrlf=false checkout -- .` — sem mudar o `autocrlf` do repositório, que é compartilhado.
+- **Número de lote**: conferir `memory/implementation/` antes de criar `BATCH-NNN.md`; o agente do release tinha usado o BATCH-285 na mesma tarde e o `Write` sobrescreveu (restaurado do HEAD).
