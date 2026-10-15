@@ -445,6 +445,10 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-access-checked#', $dados['site_restricted_access'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-profiles#', htmlspecialchars($dados['site_restricted_profiles'], ENT_QUOTES, 'UTF-8'));
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-profiles-badges#', $dados['site-restricted-profiles-badges']);
+    // req-274: estado do passe deste navegador.
+    $passe = gestor_site_acesso_restrito_bypass_atual();
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-bypass-state#', $passe ? 'ativo' : 'inativo');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-bypass-status#', htmlspecialchars(admin_environment_bypass_estado_texto($passe), ENT_QUOTES, 'UTF-8'));
 
     // Usuário / reCAPTCHA
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active#', $dados['usuario_recaptcha_active']);
@@ -870,6 +874,102 @@ function admin_environment_ajax_rotacionar_jwt(){
     }
 }
 
+// ==== Passe de navegador confiável (req-274)
+
+/**
+ * Texto do estado do passe deste navegador, no idioma do painel.
+ *
+ * @param array|false $passe Saída de `gestor_site_acesso_restrito_bypass_validar()`.
+ * @return string
+ */
+function admin_environment_bypass_estado_texto($passe){
+    global $_GESTOR;
+
+    if(!$passe){
+        return (string)gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'site-restricted-bypass-inactive'));
+    }
+
+    $formato = ($_GESTOR['linguagem-codigo'] ?? 'pt-br') === 'pt-br' ? 'd/m/Y H:i' : 'Y-m-d H:i';
+
+    return str_replace('#data#', date($formato, (int)$passe['expira']),
+        (string)gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'site-restricted-bypass-active')));
+}
+
+/** Grava (ou apaga, com `$expira` no passado) o cookie do passe. */
+function admin_environment_bypass_cookie($valor, $expira){
+    gestor_cookie_emitir(gestor_site_acesso_restrito_bypass_cookie_nome(), $valor, [
+        'expires' => $expira,
+        'path' => '/',
+        'secure' => gestor_cookie_is_secure(),
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+}
+
+function admin_environment_ajax_navegador_autorizar(){
+    global $_GESTOR;
+    global $_CONFIG;
+
+    $passe = gestor_site_acesso_restrito_bypass_gerar((int)($_CONFIG['site-restricted-bypass-days'] ?? 30));
+
+    if(!$passe){
+        $_GESTOR['ajax-json'] = [
+            'status' => 'error',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'site-restricted-bypass-no-secret')),
+        ];
+        return;
+    }
+
+    admin_environment_bypass_cookie($passe['token'], $passe['expira']);
+
+    $_GESTOR['ajax-json'] = [
+        'status' => 'success',
+        'state' => 'ativo',
+        'state_text' => admin_environment_bypass_estado_texto($passe),
+        'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'site-restricted-bypass-authorized')),
+    ];
+}
+
+function admin_environment_ajax_navegador_revogar(){
+    global $_GESTOR;
+
+    admin_environment_bypass_cookie('', time() - 3600);
+
+    $_GESTOR['ajax-json'] = [
+        'status' => 'success',
+        'state' => 'inativo',
+        'state_text' => admin_environment_bypass_estado_texto(false),
+        'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'site-restricted-bypass-revoked')),
+    ];
+}
+
+/** Novo salt no .env: todo passe emitido antes deixa de valer, em qualquer navegador. */
+function admin_environment_ajax_navegador_revogar_todos(){
+    global $_GESTOR;
+    global $_CONFIG;
+
+    $salt = bin2hex(random_bytes(16));
+
+    if(!admin_environment_env_write(['SITE_RESTRICTED_BYPASS_SALT' => $salt])){
+        $_GESTOR['ajax-json'] = [
+            'status' => 'error',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'save-error')),
+        ];
+        return;
+    }
+
+    $_ENV['SITE_RESTRICTED_BYPASS_SALT'] = $salt;
+    $_CONFIG['site-restricted-bypass-salt'] = $salt;
+    admin_environment_bypass_cookie('', time() - 3600);
+
+    $_GESTOR['ajax-json'] = [
+        'status' => 'success',
+        'state' => 'inativo',
+        'state_text' => admin_environment_bypass_estado_texto(false),
+        'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'site-restricted-bypass-revoked-all')),
+    ];
+}
+
 // ==== Start
 
 function admin_environment_start(){
@@ -890,6 +990,9 @@ function admin_environment_start(){
             case 'testar-email': admin_environment_ajax_testar_email(); break;
             case 'testar-paypal': admin_environment_ajax_testar_paypal(); break;
             case 'rotacionar-jwt': admin_environment_ajax_rotacionar_jwt(); break;
+            case 'navegador-autorizar': admin_environment_ajax_navegador_autorizar(); break;
+            case 'navegador-revogar': admin_environment_ajax_navegador_revogar(); break;
+            case 'navegador-revogar-todos': admin_environment_ajax_navegador_revogar_todos(); break;
         }
 
         interface_ajax_finalizar();

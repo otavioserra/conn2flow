@@ -746,6 +746,62 @@ $(document).ready(function () {
         });
     });
 
+    // req-274: passe de navegador confiável do site restrito (autorizar, revogar este, revogar todos).
+    function navegadorPasse(opcao, $btn) {
+        $btn.addClass('loading');
+
+        $.ajax({
+            type: 'POST',
+            url: window.location.href,
+            data: {
+                ajax: 'sim',
+                ajaxOpcao: opcao
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                $('#gestor-listener').trigger('carregar_abrir');
+            },
+            success: function (dados) {
+                $btn.removeClass('loading');
+
+                if (dados.status === 'success') {
+                    $('#site-restricted-bypass').attr('data-state', dados.state);
+                    $('#site-restricted-bypass-status').text(dados.state_text);
+                    showMessage('success', dados.message);
+                } else {
+                    showMessage('error', dados.message);
+                }
+
+                $('#gestor-listener').trigger('carregar_fechar');
+            },
+            error: function (txt) {
+                $btn.removeClass('loading');
+
+                if (txt.status === 401) {
+                    window.open(gestor.raiz + (txt.responseJSON && txt.responseJSON.redirect ? txt.responseJSON.redirect : 'signin/'), '_self');
+                    return;
+                }
+
+                console.log('ERROR AJAX - ' + opcao + ' - Dados:');
+                console.log(txt);
+                $('#gestor-listener').trigger('carregar_fechar');
+            }
+        });
+    }
+
+    $('#btn-navegador-autorizar').click(function () {
+        navegadorPasse('navegador-autorizar', $(this));
+    });
+
+    $('#btn-navegador-revogar').click(function () {
+        navegadorPasse('navegador-revogar', $(this));
+    });
+
+    $('#btn-navegador-revogar-todos').click(function () {
+        if (!window.confirm($('#site-restricted-bypass').attr('data-confirm-revoke-all'))) return;
+        navegadorPasse('navegador-revogar-todos', $(this));
+    });
+
     // Função para mostrar mensagens
     function showMessage(type, message) {
         var $message = $('#status-message');

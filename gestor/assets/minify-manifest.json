@@ -165,9 +165,9 @@
         "minificado": 10402
     },
     "gestor/modulos/admin-environment/admin-environment.js": {
-        "sha1": "6b650c01489ea3a17d161190842a3aa0546551dd",
-        "origem": 35167,
-        "minificado": 18174
+        "sha1": "3029004583e712f8ca91f7d360e22f7a35d42cdd",
+        "origem": 37193,
+        "minificado": 19254
     },
     "gestor/modulos/admin-ia/admin-ia.js": {
         "sha1": "64673bbc8b54801a575f60ff649af7186ba8c440",

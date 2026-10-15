@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.4",
+    "versao": "1.0.5",
     "bibliotecas": [
         "interface",
         "html"
@@ -17,7 +17,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.36",
+                    "version": "1.38",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -43,10 +43,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "7d6a395d1bf13c04a08a3149c30130b9",
+                        "html": "4227f9e09e711629dae5a9cb0c157caa",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "2156c0f896b37ea78366e1c8a187c578"
+                        "combined": "dc472bf59f044a26d44daab00dce9099"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -297,6 +297,81 @@
                     "id": "site-restricted-lockout",
                     "value": "Not saved: restricted access would lock you out. Add your own user profile to the authorized profiles, or leave the list empty.",
                     "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-title",
+                    "value": "Trusted browser (anonymous access)",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-text",
+                    "value": "Authorize this browser to browse the site signed out, as a visitor, while restricted access stays on for everyone else. The pass is a signed cookie in this browser only and does not grant access to the panel.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-active",
+                    "value": "This browser is authorized until #data#.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-inactive",
+                    "value": "This browser is not authorized.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-authorize",
+                    "value": "Authorize this browser",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoke",
+                    "value": "Revoke this browser",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoke-all",
+                    "value": "Revoke all browsers",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoke-all-confirm",
+                    "value": "Revoke the pass of every authorized browser, including on other devices?",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-authorized",
+                    "value": "Browser authorized. After signing out, you keep browsing the site as a visitor.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoked",
+                    "value": "This browser's pass was revoked.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoked-all",
+                    "value": "All passes were revoked.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-no-secret",
+                    "value": "Could not authorize: the USUARIO_HASH_PASSWORD variable is missing from the server .env.",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-bypass-authorize",
+                    "value": "Stores a signed pass in this browser to browse the site signed out",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-bypass-revoke",
+                    "value": "Deletes the pass of this browser only",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-bypass-revoke-all",
+                    "value": "Invalidates the passes of every browser, on any device",
+                    "type": "string"
                 }
             ]
         },
@@ -311,7 +386,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.38",
+                    "version": "1.40",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -337,10 +412,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "93c333f3a0062315b5a1da686d65ffca",
+                        "html": "02005c45a781c05ef6b312f0571a42cc",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "cc6c5b5bd8ffc3adc68440fb53036a78"
+                        "combined": "f08f486b671ac3ec84594261c80392da"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -591,9 +666,84 @@
                     "id": "site-restricted-lockout",
                     "value": "Não salvo: o acesso restrito bloquearia você mesmo. Inclua o seu próprio perfil de usuário entre os autorizados, ou deixe a lista vazia.",
                     "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-title",
+                    "value": "Navegador confiável (acesso anônimo)",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-text",
+                    "value": "Autorize este navegador para navegar no site deslogado, como um visitante, enquanto o acesso restrito continua ativo para todos os outros. O passe fica num cookie assinado só deste navegador e não dá acesso ao painel.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-active",
+                    "value": "Este navegador está autorizado até #data#.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-inactive",
+                    "value": "Este navegador não está autorizado.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-authorize",
+                    "value": "Autorizar este navegador",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoke",
+                    "value": "Revogar este navegador",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoke-all",
+                    "value": "Revogar todos os navegadores",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoke-all-confirm",
+                    "value": "Revogar o passe de todos os navegadores autorizados, inclusive em outros dispositivos?",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-authorized",
+                    "value": "Navegador autorizado. Ao sair do sistema, você continua navegando no site como visitante.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoked",
+                    "value": "Passe deste navegador revogado.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-revoked-all",
+                    "value": "Todos os passes foram revogados.",
+                    "type": "string"
+                },
+                {
+                    "id": "site-restricted-bypass-no-secret",
+                    "value": "Não foi possível autorizar: falta a variável USUARIO_HASH_PASSWORD no .env do servidor.",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-bypass-authorize",
+                    "value": "Grava um passe assinado neste navegador para navegar no site deslogado",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-bypass-revoke",
+                    "value": "Apaga o passe só deste navegador",
+                    "type": "string"
+                },
+                {
+                    "id": "tip-bypass-revoke-all",
+                    "value": "Invalida os passes de todos os navegadores, em qualquer dispositivo",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "935caa86972fb1b8"
+    "asset_version": "d66fcf8314c0d46a"
 }

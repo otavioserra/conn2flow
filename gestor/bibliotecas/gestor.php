@@ -1164,6 +1164,138 @@ function gestor_site_acesso_restrito_perfil_autorizado($perfilId, $perfisAutoriz
 }
 
 /**
+ * Nome do cookie do passe de navegador confiável do site restrito (req-274).
+ *
+ * Leva o mesmo sufixo por host dos demais cookies do gestor (`$_CONFIG['cookie-restricted-bypass']`),
+ * para dois sites no mesmo domínio-pai não lerem o passe um do outro.
+ *
+ * @return string
+ */
+function gestor_site_acesso_restrito_bypass_cookie_nome(){
+	global $_CONFIG;
+
+	$nome = is_array($_CONFIG ?? null) ? (string)($_CONFIG['cookie-restricted-bypass'] ?? '') : '';
+
+	return $nome !== '' ? $nome : '_C2F_RESTRICTED_BYPASS';
+}
+
+/**
+ * Chave HMAC do passe (req-274): derivada do `USUARIO_HASH_PASSWORD`, que só existe no servidor.
+ *
+ * Sem segredo não há passe: devolve '' e quem chama recusa emitir e validar — um HMAC com chave
+ * vazia seria forjável por qualquer um.
+ *
+ * @return string
+ */
+function gestor_site_acesso_restrito_bypass_segredo(){
+	global $_CONFIG;
+
+	$segredo = (is_array($_CONFIG ?? null) && isset($_CONFIG['usuario-hash-password']))
+		? (string)$_CONFIG['usuario-hash-password']
+		: (string)($_ENV['USUARIO_HASH_PASSWORD'] ?? getenv('USUARIO_HASH_PASSWORD'));
+
+	return $segredo === '' ? '' : hash('sha256', 'c2f-restricted-bypass|'.$segredo);
+}
+
+/**
+ * Salt corrente dos passes (`SITE_RESTRICTED_BYPASS_SALT`, req-274). Trocar o salt invalida todos os
+ * passes já emitidos ("revogar todos os navegadores").
+ *
+ * @return string
+ */
+function gestor_site_acesso_restrito_bypass_salt(){
+	global $_CONFIG;
+
+	if(is_array($_CONFIG ?? null) && array_key_exists('site-restricted-bypass-salt', $_CONFIG)){
+		return (string)$_CONFIG['site-restricted-bypass-salt'];
+	}
+
+	return (string)($_ENV['SITE_RESTRICTED_BYPASS_SALT'] ?? getenv('SITE_RESTRICTED_BYPASS_SALT'));
+}
+
+/**
+ * Emite o passe de navegador confiável (req-274).
+ *
+ * O passe não identifica ninguém: só deixa o navegador passar pelo porteiro do site restrito como
+ * visitante anônimo. Formato `base64url(v1|criado|expira|nonce).hmac`, assinado com o salt corrente.
+ *
+ * Função PURA quando recebe `$agora` e `$segredo`.
+ *
+ * @param int $validadeDias Dias de validade (1 a 365).
+ * @param string|null $salt Salt corrente; null lê a configuração.
+ * @param int|null $agora Timestamp de referência.
+ * @param string|null $segredo Chave HMAC; null lê a configuração.
+ * @return array|false ['token' => string, 'criado' => int, 'expira' => int] ou false sem segredo.
+ */
+function gestor_site_acesso_restrito_bypass_gerar($validadeDias = 30, $salt = null, $agora = null, $segredo = null){
+	$segredo = $segredo ?? gestor_site_acesso_restrito_bypass_segredo();
+	if(!is_string($segredo) || $segredo === '') return false;
+
+	$salt = (string)($salt ?? gestor_site_acesso_restrito_bypass_salt());
+	$agora = (int)($agora ?? time());
+	$dias = max(1, min(365, (int)$validadeDias));
+	$expira = $agora + $dias * 86400;
+
+	$payload = 'v1|'.$agora.'|'.$expira.'|'.bin2hex(random_bytes(8));
+	$assinatura = hash_hmac('sha256', $payload.'|'.$salt, $segredo);
+
+	return Array(
+		'token' => rtrim(strtr(base64_encode($payload), '+/', '-_'), '=').'.'.$assinatura,
+		'criado' => $agora,
+		'expira' => $expira,
+	);
+}
+
+/**
+ * Valida o passe de navegador confiável (req-274): assinatura, salt corrente e validade.
+ *
+ * Função PURA quando recebe `$agora` e `$segredo`.
+ *
+ * @param mixed $token Valor do cookie.
+ * @param string|null $salt Salt corrente; null lê a configuração.
+ * @param int|null $agora Timestamp de referência.
+ * @param string|null $segredo Chave HMAC; null lê a configuração.
+ * @return array|false ['criado' => int, 'expira' => int] ou false.
+ */
+function gestor_site_acesso_restrito_bypass_validar($token, $salt = null, $agora = null, $segredo = null){
+	if(!is_string($token) || strlen($token) > 512) return false;
+
+	$segredo = $segredo ?? gestor_site_acesso_restrito_bypass_segredo();
+	if(!is_string($segredo) || $segredo === '') return false;
+
+	$partes = explode('.', $token);
+	if(count($partes) !== 2 || !preg_match('/^[a-f0-9]{64}$/', $partes[1])) return false;
+
+	$payload = base64_decode(strtr($partes[0], '-_', '+/'), true);
+	if(!is_string($payload)) return false;
+
+	$salt = (string)($salt ?? gestor_site_acesso_restrito_bypass_salt());
+	if(!hash_equals(hash_hmac('sha256', $payload.'|'.$salt, $segredo), $partes[1])) return false;
+
+	$campos = explode('|', $payload);
+	if(count($campos) !== 4 || $campos[0] !== 'v1' || !ctype_digit($campos[1]) || !ctype_digit($campos[2])) return false;
+
+	$agora = (int)($agora ?? time());
+	$criado = (int)$campos[1];
+	$expira = (int)$campos[2];
+	if($expira <= $agora || $criado > $agora + 300) return false;
+
+	return Array('criado' => $criado, 'expira' => $expira);
+}
+
+/**
+ * Passe válido do navegador que fez a requisição (req-274).
+ *
+ * @return array|false Saída de `gestor_site_acesso_restrito_bypass_validar()`.
+ */
+function gestor_site_acesso_restrito_bypass_atual(){
+	$nome = gestor_site_acesso_restrito_bypass_cookie_nome();
+	if(!isset($_COOKIE[$nome])) return false;
+
+	return gestor_site_acesso_restrito_bypass_validar($_COOKIE[$nome]);
+}
+
+/**
  * Detecta o fallback terminal da rota de erro para impedir redirecionamento 404 -> 404.
  *
  * A pagina de erro normalmente e um recurso do banco. Se esse recurso ainda nao foi

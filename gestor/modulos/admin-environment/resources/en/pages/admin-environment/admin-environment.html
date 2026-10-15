@@ -103,6 +103,28 @@
                         </div>
                     </div>
 
+                    <!-- ===== Trusted browser for the restricted site (req-274) ===== -->
+                    <div class="space-y-2 rounded border border-slate-200 bg-slate-50 p-3" id="site-restricted-bypass"
+                        data-state="#site-restricted-bypass-state#"
+                        data-confirm-revoke-all="@[[site-restricted-bypass-revoke-all-confirm]]@">
+                        <label class="flex items-center gap-2 text-sm font-medium text-slate-700">
+                            <i data-lucide="shield-check" class="size-4 shrink-0"></i>
+                            @[[site-restricted-bypass-title]]@</label>
+                        <p class="text-xs text-slate-600">@[[site-restricted-bypass-text]]@</p>
+                        <p class="text-sm font-medium text-slate-800" id="site-restricted-bypass-status">#site-restricted-bypass-status#</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" class="c2fc-botao c2fc-botao-primario" id="btn-navegador-autorizar" data-c2f-dica="@[[tip-bypass-authorize]]@" data-c2f-dica-pos="top left">
+                                <i data-lucide="badge-check" class="size-4 shrink-0"></i>
+                                @[[site-restricted-bypass-authorize]]@</button>
+                            <button type="button" class="c2fc-botao" id="btn-navegador-revogar" data-c2f-dica="@[[tip-bypass-revoke]]@" data-c2f-dica-pos="top left">
+                                <i data-lucide="x-circle" class="size-4 shrink-0"></i>
+                                @[[site-restricted-bypass-revoke]]@</button>
+                            <button type="button" class="c2fc-botao c2fc-botao-perigo-suave" id="btn-navegador-revogar-todos" data-c2f-dica="@[[tip-bypass-revoke-all]]@" data-c2f-dica-pos="top left">
+                                <i data-lucide="shield-off" class="size-4 shrink-0"></i>
+                                @[[site-restricted-bypass-revoke-all]]@</button>
+                        </div>
+                    </div>
+
                     <!-- ===== Bots and Crawlers (req-111) ===== -->
                     <h4
                         class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">

@@ -2642,6 +2642,10 @@ function gestor_roteador_acesso_restrito(){
 	if(gestor_site_acesso_restrito_rota_isenta($caminho)) return;
 
 	if(!gestor_permissao_token()){
+		// req-274: navegador com passe confiável segue como visitante anônimo (sem usuário nem perfil);
+		// o `noindex` acima continua valendo.
+		if(gestor_site_acesso_restrito_bypass_atual()) return;
+
 		gestor_sessao_variavel("redirecionar-local", $caminho);
 
 		if(!empty($_GESTOR['ajax'])){

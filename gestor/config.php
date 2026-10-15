@@ -162,6 +162,7 @@ $_CONFIG = [
     'cookie-authprofile'                => ($_ENV['COOKIE_AUTHPROFILE'] ?? '_C2FCP') . $cookieHostSuffix,
     'cookie-verify'                     => ($_ENV['COOKIE_VERIFY'] ?? '_C2FCVID') . $cookieHostSuffix,
     'cookie-language'                   => ($_ENV['LANGUAGE_COOKIE'] ?? '_C2FCL') . $cookieHostSuffix,
+    'cookie-restricted-bypass'          => ($_ENV['COOKIE_RESTRICTED_BYPASS'] ?? '_C2F_RESTRICTED_BYPASS') . $cookieHostSuffix,
     'cookie-lifetime'                   => (int)($_ENV['COOKIE_LIFETIME'] ?? 1296000),
     'cookie-renewtime'                  => (int)($_ENV['COOKIE_RENEWTIME'] ?? 86400),
     'cookie-secure'                     => filter_var($_ENV['COOKIE_SECURE'] ?? false, FILTER_VALIDATE_BOOLEAN),
@@ -206,6 +207,10 @@ $_CONFIG = [
     // é a lista de `id_usuarios_perfis` autorizados; vazia, qualquer usuário logado entra.
     'site-restricted-access'            => filter_var($_ENV['SITE_RESTRICTED_ACCESS'] ?? false, FILTER_VALIDATE_BOOLEAN),
     'site-restricted-profiles'          => $_ENV['SITE_RESTRICTED_PROFILES'] ?? '',
+    // req-274: passe de navegador confiável (acesso anônimo com o site restrito). Trocar o salt revoga
+    // todos os passes; a validade é em dias.
+    'site-restricted-bypass-salt'       => $_ENV['SITE_RESTRICTED_BYPASS_SALT'] ?? '',
+    'site-restricted-bypass-days'       => (int)($_ENV['SITE_RESTRICTED_BYPASS_DAYS'] ?? 30),
 
     // Configurações do PayPal
     'paypal'  => [
