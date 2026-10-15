@@ -1,5 +1,19 @@
 # Validation Checklist
 
+## BATCH-285 — REQ-276
+
+- [x] Falha do teste existente reproduzida antes da mudança.
+- [x] Dois módulos usam confirmação padrão assíncrona; mensagem traduzida e salvamento normal preservados.
+- [x] Cancelar não altera campo nem envia; confirmar envia uma vez, com token, também no fallback.
+- [x] Vitest dirigido 23/23; completo 700/700 em 63 arquivos.
+- [x] Versões dos módulos incrementadas; dois minificados e manifesto gerados oficialmente; sintaxe aprovada.
+- [x] Auto-revisão e handoff com escopo e limites em [BATCH-285](../implementation/BATCH-285.md).
+- [ ] Homologação humana.
+
+Publicação pelo próximo agente. Aviso global de minificação em admin-categorias, fora do diff, registrado no lote.
+
+---
+
 ## BATCH-282 — REQ-273
 
 - [x] Tipo domain nos seis editores, variáveis pt-br/en e placeholder traduzido.

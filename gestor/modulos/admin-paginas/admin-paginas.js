@@ -262,9 +262,9 @@ $(document).ready(function () {
 		}
 	});
 
-	$(document).on('click', '#page-visibility-regenerate', function (e) {
+	$(document).on('click', '#page-visibility-regenerate', async function (e) {
 		e.preventDefault();
-		if (!window.confirm($(this).attr('data-confirm') || '')) return;
+		if (!await window.c2fControles.dialogo.confirmar($(this).attr('data-confirm') || '')) return;
 		$('input[name="regenerar_hash_privado"]').val('1');
 		var form = $(this).closest('form')[0];
 		if (!form) return;
