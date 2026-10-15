@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.6] - 2026-10-15
+
+### Fixed
+- Atualizador pelo painel: entrega garantida dos arquivos do próprio atualizador mesmo com manifesto desatualizado (`REQ-278`). Ao aplicar atualizações pelo painel, os arquivos vitais do atualizador do core (`controladores/atualizacoes/`, `modulos/admin-atualizacoes/`, `deploy-lock`, `db-data`, `instalacao-*`, `atualizacoes-*`) agora são sempre entregues e atualizados quando a nova versão diferir, impedindo a execução de rotinas antigas nas etapas subsequentes e preservando a cópia anterior no snapshot de entrega.
+
 ## [3.0.5] - 2026-10-15
 
 ### Fixed

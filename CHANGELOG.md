@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.6] - 2026-10-15
+
+### Fixed
+- Panel updates: guarantee delivery of core updater files even when manifests are stale (`REQ-278`). When applying updates, the core updater's own files (`controladores/atualizacoes/`, `modulos/admin-atualizacoes/`, `deploy-lock`, `db-data`, `instalacao-*`, `atualizacoes-*`) are now unconditionally delivered whenever the incoming version differs, preventing outdated updater code from executing during subsequent steps while preserving previous copies in the delivery snapshot.
+
 ## [3.0.5] - 2026-10-15
 
 ### Fixed
