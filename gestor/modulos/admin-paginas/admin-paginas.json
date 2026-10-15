@@ -215,12 +215,12 @@
                     "name": "Visibilidade da Página Tailwind",
                     "id": "page-visibility-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "8da9d129750ca2854e7ac3cc345e32db",
+                        "html": "09ae0eb9a9c07ffc85185f302b58ebdb",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "8da9d129750ca2854e7ac3cc345e32db"
+                        "combined": "09ae0eb9a9c07ffc85185f302b58ebdb"
                     }
                 }
             ],
@@ -288,12 +288,12 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.34",
+                    "version": "1.35",
                     "checksum": {
-                        "html": "87a3a4c05dd4ab1bb2cfc13c7ea43f51",
+                        "html": "15b588b8a6411953d473ba108f3d75a0",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "87651962107785b22d57428ab2cd53cd"
+                        "combined": "52b43c88695ef01c1fd476fdead85311"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/editar/",
@@ -410,12 +410,12 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.32",
+                    "version": "1.33",
                     "checksum": {
-                        "html": "01a706a148e17f6a98974df8029a289d",
+                        "html": "27dc41539f4c5d3711389ecac90206c0",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "3fc9d9d4cfba2ba76bd7d63fcedfc2c2"
+                        "combined": "cd54814f2811358b43d229b332bbec27"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/adicionar/",
@@ -532,12 +532,12 @@
                 {
                     "name": "Admin Páginas - Clonar",
                     "id": "admin-paginas-clonar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "d84b234596754843671952ff171634f7",
+                        "html": "8a86e3dd08cc32e5bc13a2cbe93f1ce4",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "08bbe791591c5f0cdc4bd2147b6a25eb"
+                        "combined": "08ca708aaee1d2ff2833338ee3fa701c"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/clonar/",
@@ -1030,12 +1030,12 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.29",
+                    "version": "1.30",
                     "checksum": {
-                        "html": "bec13cb5f539d2c35b64ae5d8e52e52b",
+                        "html": "4cbf7dc24db9186587ced6a00f671d00",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "8bfc6e4e8079e1e4e7489732c01c8a2b"
+                        "combined": "0c76fd0258b8a1ab6f8d3ca40988b761"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/editar/",
@@ -1152,12 +1152,12 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.30",
+                    "version": "1.31",
                     "checksum": {
-                        "html": "a827d29edf85f5bbea3f845926fde178",
+                        "html": "36952129d48c3025500e17c4bd972771",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "fd578f1e97d35043458328ada54cd249"
+                        "combined": "2635a0227c6e5c29b878779872da31b6"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/adicionar/",
@@ -1274,12 +1274,12 @@
                 {
                     "name": "Admin Pages - Clone",
                     "id": "admin-paginas-clonar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "d814f48954e822a7517f8d397b01d476",
+                        "html": "c3e3ef6ccc329589fd42bcf0fb60b548",
                         "css": "229da3850028443c57c26cc9638f4fb9",
                         "css_precompiled": "",
-                        "combined": "4456fe2f8280c44ab42cf085a9b7d10d"
+                        "combined": "46c10cee02736f9ca39053c3bd57e563"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "admin-paginas/clonar/",
@@ -1468,12 +1468,12 @@
                     "name": "Page Visibility Tailwind",
                     "id": "page-visibility-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "8da9d129750ca2854e7ac3cc345e32db",
+                        "html": "09ae0eb9a9c07ffc85185f302b58ebdb",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "8da9d129750ca2854e7ac3cc345e32db"
+                        "combined": "09ae0eb9a9c07ffc85185f302b58ebdb"
                     }
                 }
             ],
@@ -1696,5 +1696,5 @@
             ]
         }
     },
-    "asset_version": "1da8a649070a8655"
+    "asset_version": "76b7a48ba3dfea83"
 }
