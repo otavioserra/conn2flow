@@ -581,6 +581,8 @@ function aplicarManifestoCore(string $realRoot, string $basePath): ?array {
     }
     $r = instalacao_aplicar($basePath, $realRoot, 'core', $plano, $versao, 'preparar');
     logAtualizacao(sprintf('Manifesto do core (%s): %d a escrever, %d preservado(s), %d retirado(s)%s', $versao, $r['escritos'], $r['preservados'], $r['retirados'], $plano['primeira'] ? ' — primeira entrega, linha de base gravada' : ''));
+    // req-278: arquivos do atualizador escritos mesmo parecendo editados (cópia anterior no snapshot).
+    if(!empty($plano['forcados'])) logAtualizacao('Atualizador do core escrito por cima de versão local ('.count($plano['forcados']).'): '.implode(', ', array_slice($plano['forcados'], 0, 10)).(count($plano['forcados']) > 10 ? ', …' : ''), 'WARNING');
     foreach($r['choques'] as $c) logAtualizacao('Choque ('.$c['motivo'].($c['camada_dona'] ? ', dono '.$c['camada_dona'] : '').'): '.$c['caminho'].($c['copia'] ? ' — versão nova em '.$c['copia'] : ''), 'WARNING');
     instalacao_choques_registrar($basePath, 'update-system', 'core', $versao, isset($CONTEXT['exec_id']) ? (string)$CONTEXT['exec_id'] : null, $r['choques']);
     $CONTEXT['installation'] = ['versao' => $versao, 'primeira' => $plano['primeira'], 'escritos' => $r['escritos'], 'preservados' => $r['preservados'], 'retirados' => $r['retirados'], 'choques' => count($r['choques'])];

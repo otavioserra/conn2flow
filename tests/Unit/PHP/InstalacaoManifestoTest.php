@@ -319,4 +319,55 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertSame('(arquivo binário)', instalacao_diff("a\0b", 'c'));
         $this->assertSame('(arquivo grande demais para o diff)', instalacao_diff(str_repeat('x', INSTALACAO_DIFF_MAX_BYTES + 1), 'y'));
     }
+
+    // ===== req-278: o atualizador do core sempre chega
+
+    public function testAtualizadorDoCoreChegaMesmoComManifestoDesatualizado(): void
+    {
+        $u = 'controladores/atualizacoes/atualizacoes-sistema.php';
+        $this->entregar('core', [$u => 'atualizador-3.0.3', 'modulos/x/x.php' => 'x-3.0.3'], 'v3.0.3');
+        // Deploy por SSH da 3.0.4: o disco muda, o manifesto do core continua na 3.0.3.
+        file_put_contents($this->base . $u, 'atualizador-3.0.4');
+        file_put_contents($this->base . 'modulos/x/x.php', 'x-3.0.4');
+
+        [$plano, $r] = $this->entregar('core', [$u => 'atualizador-3.0.5', 'modulos/x/x.php' => 'x-3.0.5'], 'v3.0.5');
+        $this->assertSame('atualizador-3.0.5', $this->ler($u), 'o atualizador novo chega');
+        $this->assertSame([$u], $plano['forcados']);
+        $this->assertArrayNotHasKey($u, $plano['preservar']);
+        $this->assertSame('editado', $plano['preservar']['modulos/x/x.php']['motivo'], 'o resto continua protegido');
+        $this->assertSame('x-3.0.4', $this->ler('modulos/x/x.php'));
+        $this->assertSame(1, $r['preservados']);
+    }
+
+    public function testAtualizadorReentregueComDiscoDiferenteNaoFicaParado(): void
+    {
+        $u = 'bibliotecas/deploy-lock.php';
+        $this->entregar('core', [$u => 'trava-1'], 'v1');
+        file_put_contents($this->base . $u, 'trava-local');
+        // Mesmo conteúdo da entrega anterior e disco diferente: fora do atualizador isso é "nada a decidir".
+        [$plano] = $this->entregar('core', [$u => 'trava-1'], 'v1');
+        $this->assertSame('trava-1', $this->ler($u));
+        $this->assertSame([$u], $plano['escrever']);
+    }
+
+    public function testAtualizadorSobrepostoPeloProjetoContinuaDoProjeto(): void
+    {
+        $u = 'modulos/admin-atualizacoes/admin-atualizacoes.php';
+        $this->entregar('core', [$u => 'core-1'], 'v1');
+        $this->entregar('projeto', [$u => 'projeto'], 'p1', false);
+        [$plano] = $this->entregar('core', [$u => 'core-2'], 'v2');
+        $this->assertSame('sobreposto', $plano['preservar'][$u]['motivo']);
+        $this->assertSame('projeto', $this->ler($u));
+    }
+
+    public function testRegraDoAtualizadorSoValeParaOCore(): void
+    {
+        $this->assertTrue(instalacao_core_sempre_escrever('core', 'controladores/atualizacoes/atualizacoes-banco-de-dados.php'));
+        $this->assertTrue(instalacao_core_sempre_escrever('core', 'bibliotecas/instalacao-manifesto.php'));
+        $this->assertTrue(instalacao_core_sempre_escrever('core', 'bibliotecas\\db-data.php'));
+        $this->assertFalse(instalacao_core_sempre_escrever('core', 'bibliotecas/gestor.php'));
+        $this->assertFalse(instalacao_core_sempre_escrever('core', 'modulos/admin-paginas/admin-paginas.php'));
+        $this->assertFalse(instalacao_core_sempre_escrever('projeto', 'controladores/atualizacoes/atualizacoes-sistema.php'));
+        $this->assertFalse(instalacao_core_sempre_escrever('plugin:x', 'bibliotecas/deploy-lock.php'));
+    }
 }

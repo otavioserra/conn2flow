@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-278.md](req-278.md) (BATCH-287 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-278`, Core — vai na 3.0.6): atualizador do core sempre entregue, mesmo com manifesto desatualizado.
   - [req-277.md](req-277.md) (BATCH-286 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-277`, Core — hotfix para a 3.0.5): atualizador pelo painel com trava órfã depois de erro fatal e memória da sincronização de dados.
   - [req-276.md](req-276.md) (BATCH-285 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-276`, Core): Confirmação do link privado corrigida nos dois módulos; Vitest 700/700; handoff no BATCH-285 para release pelo próximo agente.
   - [req-275.md](req-275.md) (BATCH-284 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-275`, Core — Autônomo Monitorado, vai na 3.0.4): Visibilidade e link direto privado nas páginas (`admin-paginas` e `publisher-pages`), "sem permissão" marcado por padrão.

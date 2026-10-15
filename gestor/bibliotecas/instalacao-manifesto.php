@@ -29,6 +29,32 @@ const INSTALACAO_PASTAS_FORA = ['contents', 'logs', 'backups', 'temp', 'autentic
 /** Diff guardado no choque: até este tamanho por lado. */
 const INSTALACAO_DIFF_MAX_BYTES = 262144;
 
+/**
+ * req-278: arquivos do próprio atualizador. Na camada `core` eles são SEMPRE escritos quando a versão nova
+ * é outra, mesmo que o disco pareça editado — senão um manifesto desatualizado (deploy por SSH, que não
+ * grava o manifesto do core) segura o atualizador antigo e a correção dele nunca chega (temp.conn2flow.com,
+ * 15/10: a 3.0.5 preservou o próprio `atualizacoes-sistema.php`). O snapshot da entrega guarda o anterior.
+ * Sobreposição por camada superior (projeto, plugin) continua respeitada.
+ */
+const INSTALACAO_CORE_SEMPRE_ESCREVER = [
+    'controladores/atualizacoes/',
+    'modulos/admin-atualizacoes/',
+    'bibliotecas/deploy-lock.php',
+    'bibliotecas/db-data.php',
+    'bibliotecas/instalacao-',
+    'bibliotecas/atualizacoes-',
+];
+
+/** req-278: o arquivo do core é do atualizador (sempre escrito)? Função PURA. */
+function instalacao_core_sempre_escrever(string $camada, string $rel): bool {
+    if ($camada !== 'core') return false;
+    $rel = str_replace('\\', '/', $rel);
+    foreach (INSTALACAO_CORE_SEMPRE_ESCREVER as $prefixo) {
+        if ($rel === $prefixo || strpos($rel, $prefixo) === 0) return true;
+    }
+    return false;
+}
+
 function instalacao_caminho_base(string $base): string { return rtrim($base, '/\\') . DIRECTORY_SEPARATOR; }
 
 function instalacao_manifesto_arquivo(string $base, string $camada): string {
@@ -216,16 +242,22 @@ function instalacao_planejar(string $base, string $camada, array $pacote, bool $
     };
 
     $plano = ['primeira' => $anterior === null, 'escrever' => [], 'preservar' => [], 'retirar' => [], 'restaurar' => [],
-        'originais' => [], 'retirar_choque' => [], 'manifesto' => []];
+        'originais' => [], 'retirar_choque' => [], 'manifesto' => [], 'forcados' => []];
 
     foreach ($pacote as $rel => $hNovo) {
         if (instalacao_fora($rel)) continue;
         $hDisco = instalacao_hash_disco($base, $rel);
+        $sup = $dono($superiores, $rel);
+        // req-278: atualizador do core sempre chega (exceto se uma camada superior o sobrepõe).
+        if ($sup === null && $hDisco !== $hNovo && instalacao_core_sempre_escrever($camada, $rel)) {
+            $plano['escrever'][] = $rel;
+            if ($anterior !== null && $hDisco !== null && ($anterior[$rel] ?? null) !== $hDisco) $plano['forcados'][] = $rel;
+            continue;
+        }
         // req-199: a camada entrega o mesmo conteúdo da entrega anterior e o disco é outro (sobreposto ou
         // editado): não há nada novo a decidir. Fica como está, sem choque (antes virava choque a cada entrega,
         // e voltava depois de uma mescla).
         if ($anterior !== null && $hDisco !== null && $hDisco !== $hNovo && ($anterior[$rel] ?? null) === $hNovo) continue;
-        $sup = $dono($superiores, $rel);
         if ($sup !== null && $hDisco !== null && $hDisco !== $hNovo) {
             $plano['preservar'][$rel] = ['motivo' => 'sobreposto', 'camada_dona' => $sup, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo] + $regra($rel, $hDisco);
             continue;
