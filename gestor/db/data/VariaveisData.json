@@ -812,6 +812,24 @@
     {
         "language": "pt-br",
         "modulo": null,
+        "id": "panel-access-denied-title",
+        "valor": "Acesso ao painel recusado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "panel-access-denied-text",
+        "valor": "O seu perfil de usuário não tem permissão para abrir o painel deste site. Entre com outra conta ou fale com o administrador.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
         "id": "html-editor-publisher-or-btn",
         "valor": "ou",
         "tipo": "string",
@@ -2488,6 +2506,24 @@
         "modulo": null,
         "id": "site-restricted-denied-signout",
         "valor": "Sign out and use another account",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "panel-access-denied-title",
+        "valor": "Dashboard access denied",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "panel-access-denied-text",
+        "valor": "Your user profile is not allowed to open this site's dashboard. Sign in with another account or contact the administrator.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

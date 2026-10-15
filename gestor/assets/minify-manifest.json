@@ -75,9 +75,9 @@
         "minificado": 2320
     },
     "gestor/assets/interface/formulario.js": {
-        "sha1": "fb749b74fff37c45eb1f19c60e7720df11b12d3b",
-        "origem": 31095,
-        "minificado": 14410
+        "sha1": "897c73ac949da01e4e9b033243c9123dde153d88",
+        "origem": 31157,
+        "minificado": 14441
     },
     "gestor/assets/interface/html-editor-helper.js": {
         "sha1": "fbae2a94586a9c2676c1bf0fc7534e6a10669cca",

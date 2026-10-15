@@ -1,0 +1,29 @@
+/* REQ-131 (site): estados semânticos que o formulario.js aplica (sem utilitárias do Tailwind no JS).
+   Projetos que substituem o `form-ui` trazem a própria versão destas regras. */
+.has-error .c2fc-campo-entrada,
+.has-error input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.has-error select,
+.has-error textarea,
+input.c2fc-campo-invalido,
+select.c2fc-campo-invalido,
+textarea.c2fc-campo-invalido,
+input.error {
+    border-color: #ef4444 !important;
+}
+.c2fc-campo-msg-erro,
+.error-msg {
+    color: #ef4444 !important;
+    font-size: 0.8125rem;
+    margin-top: 0.25rem;
+    display: block;
+    line-height: 1.25;
+}
+.char-counter.c2fc-contador-excedido {
+    color: #dc2626;
+}
+.c2fc-form-msg-erro {
+    margin: 0 0 1rem 0;
+}
+.c2fc-form-msg-erro-recaptcha {
+    margin-bottom: 1em;
+}

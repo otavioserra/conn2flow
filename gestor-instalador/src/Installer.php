@@ -1388,6 +1388,12 @@ body {
             }
             $stmt = $pdo->prepare($sql);
             $stmt->execute($params);
+
+            // REQ-131 (site): desde a REQ-202 a semente de usuários não traz perfil. Sem ele o
+            // administrador não abre módulo algum e o /dashboard/ redirecionava para si mesmo.
+            $pdo->exec("UPDATE usuarios SET id_usuarios_perfis = (SELECT id_usuarios_perfis FROM usuarios_perfis".
+                " WHERE id = 'administradores' ORDER BY id_usuarios_perfis LIMIT 1)".
+                " WHERE id_usuarios = 1 AND (id_usuarios_perfis IS NULL OR id_usuarios_perfis = 0)");
             $this->log('✅ Usuário administrador garantido/atualizado.');
         } catch (Exception $e) {
             $this->log('⚠️  Falha ao garantir usuário administrador: ' . $e->getMessage(), 'WARNING');

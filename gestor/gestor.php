@@ -2074,7 +2074,18 @@ function gestor_permissao(){
 		}
 	} */
 	
-	if(!gestor_permissao_modulo()){
+	// REQ-131 (site): a recusa manda para `dashboard/`. Se a recusa é do próprio painel, o 302 volta para
+	// cá e o navegador entra em laço; nesse caso a resposta é 403 em tela própria, com saída por `signout/`.
+	$rota_painel = gestor_permissao_rota_painel($_GESTOR['modulo'] ?? '', $_GESTOR['caminho-total'] ?? '');
+
+	if(!gestor_permissao_modulo(!$rota_painel)){
+		if($rota_painel){
+			gestor_roteador_acesso_restrito_negado(Array(
+				'titulo' => 'panel-access-denied-title',
+				'texto' => 'panel-access-denied-text',
+			));
+		}
+
 		if($_GESTOR['ajax']){
 			gestor_roteador_erro(Array(
 				'codigo' => 401,
@@ -2662,16 +2673,19 @@ function gestor_roteador_acesso_restrito(){
  * login devolvê-lo ao painel, que o recusaria de novo — laço. A saída oferecida é o `signout/`,
  * para entrar com outra conta.
  *
+ * Também serve à recusa do próprio painel (REQ-131 do site), com outros textos.
+ *
+ * @param array|false $params `titulo` e `texto`: ids das variáveis (padrão: as do site restrito).
  * @return void Encerra a requisição.
  */
-function gestor_roteador_acesso_restrito_negado(){
+function gestor_roteador_acesso_restrito_negado($params = false){
 	global $_GESTOR;
 
 	http_response_code(403);
 	if(!headers_sent()) header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
-	$titulo = gestor_variaveis(Array('id' => 'site-restricted-denied-title'));
-	$texto = gestor_variaveis(Array('id' => 'site-restricted-denied-text'));
+	$titulo = gestor_variaveis(Array('id' => $params['titulo'] ?? 'site-restricted-denied-title'));
+	$texto = gestor_variaveis(Array('id' => $params['texto'] ?? 'site-restricted-denied-text'));
 	$sair = gestor_variaveis(Array('id' => 'site-restricted-denied-signout'));
 
 	if(!empty($_GESTOR['ajax'])){

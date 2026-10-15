@@ -220,8 +220,11 @@ $(document).ready(function () {
 					if (!$input.length) return;
 					var showing = $input.attr('type') === 'password';
 					$input.attr('type', showing ? 'text' : 'password');
-					$toggle.find('.forms-password-icon-eye').css('display', showing ? 'none' : '');
-					$toggle.find('.forms-password-icon-eye-slash').css('display', showing ? '' : 'none');
+					// `hidden` em vez de estilo inline; o `display:none` que os modelos trazem no ícone é removido.
+					$toggle.find('.forms-password-icon-eye, .forms-password-icon-eye-slash').each(function () {
+						this.style.removeProperty('display');
+						this.toggleAttribute('hidden', $(this).hasClass('forms-password-icon-eye') ? showing : !showing);
+					});
 				});
 
 				// Capturar botão clicado
@@ -395,30 +398,23 @@ $(document).ready(function () {
 				// formulários Tailwind (sem `.field`) a mensagem era anexada a nada.
 				var fieldContainer = input.closest('.field, .conn2flow-form-field');
 				if (!fieldContainer.length) fieldContainer = input.parent();
-				fieldContainer.find('.error-msg').remove(); // Remove erro anterior
+				fieldContainer.find('.error-msg').remove(); // Remove erro anterior (toda mensagem leva as duas classes)
 
+				// REQ-131 (site): só classes semânticas de estado. O visual delas vem do componente
+				// `form-ui` (form-ui.css), que cada projeto pode substituir.
 				if (!isValid) {
 					var errorElementKey = (framework === 'fomantic-ui') ? 'errorElementFomantic' : 'errorElementTailwind';
-					var errorElementTpl = getUiComponent(data, errorElementKey, '<small class="error-msg" style="color:#dc2626;display:block;margin-top:6px;">#message#</small>');
-					var errorElement = errorElementTpl.replace('#message#', errorMsg);
-					var errorElementObj = $(errorElement);
-					errorElementObj.addClass('error-msg');
-					// Ajuste classes conforme framework
-					if (framework === 'fomantic-ui') {
-						input.addClass('error').removeClass('success');
-					} else if (framework === 'tailwindcss') {
-						input.addClass('border-red-500').removeClass('border-green-500');
-					}
+					var errorElementTpl = getUiComponent(data, errorElementKey, '<small class="c2fc-campo-msg-erro error-msg">#message#</small>');
+					var errorElementObj = $(errorElementTpl.replace('#message#', errorMsg));
+					errorElementObj.addClass('c2fc-campo-msg-erro error-msg');
+					fieldContainer.addClass('has-error');
+					input.addClass('c2fc-campo-invalido').removeClass('success valid');
+					if (framework === 'fomantic-ui') input.addClass('error');
 					fieldContainer.append(errorElementObj);
 				} else {
-					// Sucesso: remova erros e adicione classe positiva
-					input.removeClass('error').addClass('success');
-					input.parent().find('.error-msg').remove();
-					if (framework === 'fomantic-ui') {
-						input.addClass('valid');
-					} else if (framework === 'tailwindcss') {
-						input.addClass('border-green-500').removeClass('border-red-500');
-					}
+					fieldContainer.removeClass('has-error');
+					input.removeClass('c2fc-campo-invalido error').addClass('success');
+					if (framework === 'fomantic-ui') input.addClass('valid');
 				}
 			}
 
@@ -449,11 +445,7 @@ $(document).ready(function () {
 				var counter = getCharCounter($input);
 				if (counter.length) {
 					counter.text(length + ' / ' + maxLength);
-					if (length > maxLength) {
-						counter.css('color', '#dc2626');
-					} else {
-						counter.css('color', '');
-					}
+					counter.toggleClass('c2fc-contador-excedido', length > maxLength);
 				}
 			}
 
@@ -520,7 +512,7 @@ $(document).ready(function () {
 				var serverTimestamp = (typeof data.serverTimestamp === 'number' && !isNaN(data.serverTimestamp)) ? data.serverTimestamp : 0;
 				const currentTimestamp = serverTimestamp > 0 ? (serverTimestamp + (Date.now() / 1000 - serverTimestamp)) : (Date.now() / 1000);
 				form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
-				form.append('<input type="text" name="honeypot" style="display:none;" value="">');
+				form.append('<input type="text" name="honeypot" value="" hidden tabindex="-1" autocomplete="off" aria-hidden="true">');
 
 				// Sempre tentar v3 primeiro (se ativo e com site key valida)
 				if (isRecaptchaV3Configured(data)) {
@@ -689,13 +681,13 @@ $(document).ready(function () {
 			function showError(message, data, clickedButton = null, form, isRecaptchaV2 = false) {
 				clearError(data, form);
 				var errorMessageKey = (data.framework === 'fomantic-ui') ? 'errorMessageFomantic' : 'errorMessageTailwind';
-				var errorMessageTpl = getUiComponent(data, errorMessageKey, '<div class="component-error-message-tailwind" style="margin:0 0 1rem 0;color:#b91c1c;">#message#</div>');
+				var errorMessageTpl = getUiComponent(data, errorMessageKey, '<div class="component-error-message-tailwind c2fc-form-msg-erro">#message#</div>');
 				var errorMessage = errorMessageTpl.replace('#message#', message);
-				var errorDiv = $(errorMessage);
+				var errorDiv = $(errorMessage).addClass('c2fc-form-msg-erro');
 
-				// Ajustar estilo do formulário para acomodar o reCAPTCHAv2, se necessário
+				// Espaço para o reCAPTCHA v2 (o visual da classe vem do `form-ui`).
 				if (isRecaptchaV2) {
-					errorDiv.css('margin-bottom', '1em');
+					errorDiv.addClass('c2fc-form-msg-erro-recaptcha');
 				}
 
 				if (clickedButton && clickedButton.length) {

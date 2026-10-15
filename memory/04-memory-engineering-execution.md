@@ -284,3 +284,8 @@ BATCH-216 a BATCH-229 (2026-10-02 a 2026-10-04: módulo `cookie-consent`, prévi
 
 - **`input.closest('.field') || input.parent()` nunca usa o pai**: objeto jQuery vazio é truthy. Em formulário Tailwind sem `.field`, a mensagem de erro sumia. Agora: `closest('.field, .conn2flow-form-field')`, com reserva no pai.
 - **Prompt novo no `form-ui` do core não chega a projeto com `form-ui` próprio** (o conn2flow-site tem um): o fallback do JS precisa ser legível, e o idioma vem de `gestor.language` (o `<html lang>` do site sai vazio).
+
+### REQ-131 do site / BATCH-125 — estado semântico no `formulario.js` e painel sem laço (2026-10-15)
+
+- **Semente de usuários sem perfil desde a REQ-202**: instalação nova criava o admin com `id_usuarios_perfis` nulo, e o `/dashboard/` redirecionava para si mesmo. `ensureAdminUser()` agora atribui `administradores`; `gestor_permissao()` responde 403 (tela do site restrito com textos `panel-access-denied-*`) quando a recusa é do próprio painel.
+- **`formulario.js` só aplica classes de estado** (`has-error`, `c2fc-campo-invalido`, `c2fc-campo-msg-erro`, `c2fc-contador-excedido`, `c2fc-form-msg-erro`); o visual fica no `form-ui.css`. Teste em `tests/Unit/JS/forms.semantic-state.test.js` carrega o jQuery vendorizado; o `happy-dom` erra `.find()` com seletor de vírgula.

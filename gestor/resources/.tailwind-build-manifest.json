@@ -40,15 +40,15 @@
             "built_at": "2026-10-08T18:30:38+00:00"
         },
         "global||en|components|form-ui": {
-            "fingerprint": "3dd02e7c2544191f167277098e15f9c42906581e5c5cbb4e2be341909d2f88f7",
-            "output_hash": "42a9dc86381886acd49cad8b1595d2876916ffc04e18bb69bd775ccb52358548",
+            "fingerprint": "a5977110261df89ae365ce9c79346d32fa25857bb57124fd02f6c7350e2ea4c6",
+            "output_hash": "8433014a6ec7f56ae07a20af0a6fa9cb40a527b6e04ed4115da044c988fc14ee",
             "output": "resources//en/components/form-ui/form-ui.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
                 "resources//en/components/form-ui/form-ui.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-15T11:03:18+00:00"
+            "built_at": "2026-10-15T13:10:45+00:00"
         },
         "global||en|components|forms-prepared-email": {
             "fingerprint": "949242dd95df7baf298af47b146e39cccd6bf98033350d3ae5f4786ee1f64fb5",
@@ -829,15 +829,15 @@
             "built_at": "2026-10-08T18:30:53+00:00"
         },
         "global||pt-br|components|form-ui": {
-            "fingerprint": "6f45b9b7b7a3c700c93229a31be1ee4e2ced5b483f9f7bc766bcfe94fbdb0c9b",
-            "output_hash": "42a9dc86381886acd49cad8b1595d2876916ffc04e18bb69bd775ccb52358548",
+            "fingerprint": "2166d164ad0c36476f92ec678f7d4a06c872d53e822f3fbdd4e5e6e64c0f3bb1",
+            "output_hash": "8433014a6ec7f56ae07a20af0a6fa9cb40a527b6e04ed4115da044c988fc14ee",
             "output": "resources//pt-br/components/form-ui/form-ui.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
                 "resources//pt-br/components/form-ui/form-ui.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-15T11:03:18+00:00"
+            "built_at": "2026-10-15T13:10:45+00:00"
         },
         "global||pt-br|components|forms-prepared-email": {
             "fingerprint": "ddaee4a7526262e9aa13a79b479353d590dd772e55a0a1f7df37f326328ebad6",

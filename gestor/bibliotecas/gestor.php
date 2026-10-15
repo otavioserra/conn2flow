@@ -1208,6 +1208,21 @@ function gestor_pagina_sem_permissao($valor){
 }
 
 /**
+ * REQ-131 (site): a requisição é o painel (`dashboard`), destino de toda recusa de módulo? Função PURA.
+ *
+ * `gestor_permissao()` usa isto para não redirecionar o painel para ele mesmo (laço de 302).
+ *
+ * @param mixed $modulo Módulo da rota atual.
+ * @param mixed $caminho Caminho da requisição.
+ * @return bool
+ */
+function gestor_permissao_rota_painel($modulo, $caminho){
+	if(is_string($modulo) && $modulo === 'dashboard') return true;
+
+	return is_string($caminho) && trim($caminho, '/') === 'dashboard';
+}
+
+/**
  * Registra um redirecionamento 301 de um caminho liberado por uma página (F10 do review 2026-08-15).
  *
  * Antes daqui, `admin-paginas` e `publisher-pages` traziam o mesmo bloco duplicado, com dedup por

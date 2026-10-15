@@ -486,6 +486,16 @@
         "type": "string"
     },
     {
+        "id": "panel-access-denied-title",
+        "value": "Dashboard access denied",
+        "type": "string"
+    },
+    {
+        "id": "panel-access-denied-text",
+        "value": "Your user profile is not allowed to open this site's dashboard. Sign in with another account or contact the administrator.",
+        "type": "string"
+    },
+    {
         "id": "html-editor-publisher-or-btn",
         "value": "or",
         "type": "string"
