@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-279.md](req-279.md) (BATCH-288 `ready-for-intake`, 2026-10-15, Core): Ordenação cronológica decrescente dos logs recentes no módulo `admin-atualizacoes`.
+  - [req-280.md](req-280.md) (BATCH-289 `ready-for-intake`, 2026-10-15, Core): Ordenação cronológica decrescente dos logs recentes no módulo `admin-atualizacoes`.
   - [req-278.md](req-278.md) (BATCH-287 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-278`, Core — vai na 3.0.6): atualizador do core sempre entregue, mesmo com manifesto desatualizado.
   - [req-277.md](req-277.md) (BATCH-286 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-277`, Core — hotfix para a 3.0.5): atualizador pelo painel com trava órfã depois de erro fatal e memória da sincronização de dados.
   - [req-276.md](req-276.md) (BATCH-285 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-276`, Core): Confirmação do link privado corrigida nos dois módulos; Vitest 700/700; handoff no BATCH-285 para release pelo próximo agente.
