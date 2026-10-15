@@ -5,36 +5,6 @@
 Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram movidas para **[decisions-001-030.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-001-030.md)**, `DEC-031` a `DEC-040` para **[decisions-031-040.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md)**, `DEC-041` a `DEC-050` para **[decisions-041-050.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-041-050.md)**, `DEC-051` a `DEC-060` para **[decisions-051-060.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-051-060.md)**, `DEC-061` a `DEC-070` para **[decisions-061-070.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-061-070.md)**, `DEC-071` a `DEC-080` para **[decisions-071-080.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-071-080.md)**, `DEC-081` a `DEC-090` para **[decisions-081-090.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-081-090.md)** e `DEC-091` a `DEC-095` para **[decisions-091-095.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-091-095.md)**.
 | ID | Data | Status | Título Resumido |
 | --- | --- | --- | --- |
-| DEC-001 | 2026-05-25 | accepted | Adotar SDD repo-wide no `conn2flow` |
-| DEC-002 | 2026-05-25 | accepted | Suportar Claude Code e GitHub Copilot |
-| DEC-003 | 2026-05-25 | accepted | 00-baseline-architecture.md como referência primária |
-| DEC-004 | 2026-05-25 | accepted | sdd/human-requests/ como intake não normativo |
-| DEC-005 | 2026-05-25 | accepted | Definir Plano 1 de sincronização de projetos |
-| DEC-006 | 2026-05-25 | accepted | Adotar fallbacks estruturados no sync de projetos |
-| DEC-007 | 2026-05-25 | accepted | Arquitetura baseada em schema contract JSON |
-| DEC-008 | 2026-05-25 | accepted | Padronizar idioma para coluna 'language' |
-| DEC-009 | 2026-05-25 | accepted | Loteamento dinâmico para max_allowed_packet |
-| DEC-010 | 2026-05-25 | accepted | Usar data-hooks.php para pipeline local/global |
-| DEC-011 | 2026-05-25 | accepted | Deleção controlada via chave no descritor de módulo |
-| DEC-012 | 2026-05-25 | accepted | Padronizar logs com log_disco() em log.php |
-| DEC-013 | 2026-05-25 | accepted | Widgets Envelopados com marcação de comentário HTML |
-| DEC-014 | 2026-05-25 | accepted | Seleção manual baseada em IDs textuais/slugs |
-| DEC-015 | 2026-05-25 | accepted | Persistência de templates HTML/CSS apenas no banco |
-| DEC-016 | 2026-05-25 | accepted | publisher-highlights estruturado análogo ao publisher |
-| DEC-017 | 2026-05-26 | accepted | Extensão de order_by no fields_schema do Highlights |
-| DEC-018 | 2026-05-26 | accepted | Curadoria manual de destaques via Fomantic Dropdown |
-| DEC-019 | 2026-05-28 | accepted | Componentização no PublisherHighlightsCustomDropdown |
-| DEC-020 | 2026-05-28 | accepted | Ciclo de vida isolado do dropdown manual |
-| DEC-021 | 2026-06-04 | accepted | Substituir dropdown por Autocomplete + Sortable.js |
-| DEC-022 | 2026-06-04 | accepted | Módulo Menus desacoplado e templates próprios |
-| DEC-023 | 2026-06-04 | accepted | Hierarquia multi-nível de menus e DnD bidimensional |
-| DEC-024 | 2026-06-05 | accepted | Aba de Variáveis no Menus, simulação e hover CSS |
-| DEC-025 | 2026-06-05 | accepted | Tipo de Item Publicador no menus e correções |
-| DEC-026 | 2026-06-05 | accepted | Criação do Módulo de Galerias de Imagens |
-| DEC-027 | 2026-06-05 | accepted | Contrato de Target em Link-Custom e [[item#target]] |
-| DEC-028 | 2026-06-05 | accepted | Bloco item-separator em templates de Menus |
-| DEC-029 | 2026-06-05 | accepted | Controles de exibição e resolução de imagem em Galerias |
-| DEC-030 | 2026-06-05 | accepted | Comportamento dinâmico em JS público dos widgets |
 | DEC-031 | 2026-06-05 | accepted | Alvo/Variáveis Globais/Modos de IA do módulo Galerias → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md) |
 | DEC-032 | 2026-06-08 | accepted | Compilação Tailwind CSS CLI no core e pipeline de release → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md) |
 | DEC-033 | 2026-06-08 | accepted | Estrutura de testes Unit/Integration/E2E na raiz → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md) |
@@ -117,11 +87,6 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-112 | 2026-08-17 | accepted | Resolução de conflitos de display em layouts Tailwind e filtro fino de theme (BATCH-118).  → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-096-113.md) |
 | DEC-113 | 2026-08-18 | accepted | Arquitetura híbrida de layouts Tailwind e coexistência de componentes de interface (BATCH-119).  → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-096-113.md) |
 | DEC-114 | 2026-08-19 | accepted | Migração estruturada de telas públicas de identidade para Tailwind puro (BATCH-121).  → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-096-113.md) |
-| DEC-115 | 2026-08-20 | accepted | Customização de rótulos e ordenação de módulos administrativos em modulos-grupos (BATCH-125). |
-| DEC-116 | 2026-08-21 | accepted | Atualização Global da Documentação, Readmes, Changelogs e Workflows de Release (Gestor v2.9.39 e Instalador v1.5.6) (BATCH-127). |
-| DEC-117 | 2026-08-21 | accepted | Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Projetos, Alternância de Botões de Menu e Saneamento do Lucide (BATCH-127). |
-| DEC-118 | 2026-08-24 | accepted | Extrator semântico de tokens do Tailwind para o Assistente de IA no Editor HTML (BATCH-129). |
-| DEC-119 | 2026-08-28 | accepted | Correspondência por nome sanitizado no controlador estático e desempate de colisão sem espaço (BATCH-143). |
 | DEC-120 | 2026-08-29 | accepted | Aparência de estado resolvida por CADEIA DE RECURSOS no galleries, com o CSS acompanhando as classes (BATCH-147). |
 | DEC-121 | 2026-08-29 | accepted | A tela `variables` não oferece ações sobre a tabela `modulos`; tipo de campo passa a ser `editor-texto` (BATCH-147). |
 | DEC-122 | 2026-08-29 | accepted | Assets de terceiros versionados em `gestor/assets/vendor/`, com verificação de certificado inegociável no download (BATCH-146). |
@@ -137,50 +102,6 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 
 
 > `DEC-116` a `DEC-122` arquivadas em [decisions-114-122.md](archive/decisions-114-122.md).
-
-## DEC-123 - 2026-08-29 - accepted
-
-**Uma biblioteca local inclui também o que ela própria pede (BATCH-148).**
-
-O BATCH-146 migrou o CSS do Fomantic para o disco e os ícones do layout administrativo sumiram. O
-`semantic.min.css` pede as fontes por caminho RELATIVO a ele próprio; servido do CDN isso resolvia
-contra o domínio do CDN, servido do disco passou a resolver contra `vendor/fomantic-ui/2.9.4/` — onde
-os arquivos não existiam.
-
-**Decisões:**
-
-1. **O registro ganha a chave `arquivos`**: dependências que a biblioteca pede sozinha (fontes,
-   sprites) e que NÃO viram tag. Migrar apenas o que aparece em `<link>`/`<script>` deixa a metade
-   invisível para trás, e a falha é visível para o usuário e silenciosa para o servidor.
-
-2. **A régua é "tudo que ela pede está local"**, não "os arquivos que eu listei estão local". Foram
-   22 arquivos no caso do Fomantic — e o Lato veio junto, eliminando mais uma busca externa.
-
-## DEC-124 - 2026-08-29 - accepted
-
-**Fontes hospedadas pelo próprio projeto, com filtro de subset (BATCH-148).**
-
-Um `<link>` para `fonts.googleapis.com` faz o navegador de cada visitante entregar ao Google IP,
-`Referer` e `User-Agent` antes de qualquer consentimento. Precedente: Landgericht München I, 2022
-(Az. 3 O 17493/20). Licença não é obstáculo: OFL e Apache 2.0 permitem hospedar.
-
-**Decisões:**
-
-1. **O comando descobre as URLs nos recursos em vez de exigir uma lista**: acrescentar uma família ao
-   layout e rodar o comando basta, e a declaração não pode divergir do que os layouts realmente pedem.
-
-2. **User-Agent moderno é requisito, não detalhe**: o Google decide o formato por ele. Sem um
-   moderno, devolve `ttf` — várias vezes maior, sem a compressão que justifica o formato web.
-
-3. **Filtra subsets, preserva `unicode-range`**: das 78 faces devolvidas, 50 eram cirílico, grego e
-   vietnamita. Mas o `unicode-range` das 28 restantes é preservado — é ele que faz o navegador baixar
-   só o subset necessário. Removê-lo transformaria a economia em desperdício de banda do visitante.
-
-4. **Escreve na FONTE do projeto, não no espelho**: `resolve()` prefere `path_tests`, mas o pipeline
-   lê e o deploy publica `path`. Gravar no espelho faria o trabalho sumir no próximo sync, sem erro.
-
-5. **O `@import` era o pior caso**: no CSS de destaques, além de vazar dados, ele BLOQUEAVA a
-   renderização até a resposta do Google chegar.
 
 ## DEC-125 - 2026-08-29 - accepted
 
@@ -340,3 +261,7 @@ Decisão do Engenheiro Chefe em 2026-10-07: "tudo isso que você fez faz parte d
 - A instalação `v3.1-conn2flow.local` continua existindo, para a próxima mudança que precisar de linha separada.
 - A próxima frente é a de agentes de IA no `conn2flow-site`; as fases 6 e 7 da lousa (compartilhamento e desenho) ficam para depois dela. A fase 6 já tem definição: por perfil para quem está logado e link com código longo para comentar sem usuário.
 - Substitui o item de DEC-133 que mantinha as novidades fora da linha de lançamento.
+
+[Archived history](<archive/compacted/DECISION-LOG-1aee91bdfe67.md>)
+
+[Archived history](<archive/compacted/DECISION-LOG-ddf6e879c579.md>)

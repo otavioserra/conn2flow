@@ -5,7 +5,7 @@
 - Data: 2026-10-09
 - Status: `implemented-pending-homologation`
 - Branch: `feat/req-266`
-- Requisição: [REQ-266](../human-requests/req-266.md)
+- Requisição: [REQ-266](../human-requests/archive/original/req-266.md)
 - Modo: `autonomo_monitorado`
 
 ## Live Todo

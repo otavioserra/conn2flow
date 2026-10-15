@@ -1,0 +1,493 @@
+# Validation Checklist
+
+## BATCH-285 — REQ-276
+
+- [x] Falha do teste existente reproduzida antes da mudança.
+- [x] Dois módulos usam confirmação padrão assíncrona; mensagem traduzida e salvamento normal preservados.
+- [x] Cancelar não altera campo nem envia; confirmar envia uma vez, com token, também no fallback.
+- [x] Vitest dirigido 23/23; completo 700/700 em 63 arquivos.
+- [x] Versões dos módulos incrementadas; dois minificados e manifesto gerados oficialmente; sintaxe aprovada.
+- [x] Auto-revisão e handoff com escopo e limites em [BATCH-285](../implementation/BATCH-285.md).
+- [ ] Homologação humana.
+
+Publicação pelo próximo agente. Aviso global de minificação em admin-categorias, fora do diff, registrado no lote.
+
+---
+
+## BATCH-282 — REQ-273
+
+- [x] Tipo domain nos seis editores, variáveis pt-br/en e placeholder traduzido.
+- [x] Widget renderiza text, autocapitalize=none, spellcheck=false e autocomplete=off.
+- [x] Sanitização no input/change e submit; FQDN e limites de 63/253 caracteres.
+- [x] PHP normaliza $_POST antes da validação/persistência e rejeita valores não escalares.
+- [x] Prompts e mensagens de erro traduzidos; teste do campo restaurado no DOM.
+- [x] PHPUnit completo via test:run: 1.795 testes, zero falhas, 5 skips e depreciações registradas.
+- [x] Vitest completo: 686 aprovados; lint e diff sem erros.
+- [x] Compilação oficial dos oito recursos e minificados dos dois scripts alterados.
+- [x] Publicação no destino correto: project:update-all conn2flow-site-local saída 0; SQL, CSS e dist atualizados.
+- [x] URL editar/form-pro-acceleration, adicionar e clonar com HTTP 200 e opção Domínio; widget preview com os atributos corretos; desktop/mobile sem overflow e zero pageerror.
+- [ ] Persistência via UI e submissão AJAX real no ambiente publicado.
+- [ ] Homologação humana.
+
+Evidências e limitações: [BATCH-282](../implementation/BATCH-282.md).
+
+---
+
+## BATCH-280 — REQ-271
+
+- [x] `pagamentos_com_trava()` em `gestor/bibliotecas/stripe.php`; `gestor/bibliotecas/pagamentos.php` removido com `git rm`.
+- [x] Fixture REQ-265 carrega `gestor_incluir_biblioteca('stripe')`; `PaymentsReq265Test` OK.
+- [x] PHPUnit completo no `lab`: 1.788 testes, 1 falha anterior e alheia (`MemoryDualReq266Test`, 41/45 skills).
+- [x] Lab: `project:update-all conn2flow-site-local --skip-css` saída 0; `stripe.php` publicado define a função; sem novo fatal no `php-error.log`.
+- [x] Sobra remota `bibliotecas/pagamentos.php` removida e `public_html/dist` em `755 admin:www-data` (via `ssh lab`).
+- [x] Homologação assinada em 14/10/2026 pelo agente, por instrução expressa do Humano.
+
+---
+
+## BATCH-278 — REQ-269
+
+- [x] `project:update-all <id> --skip-css`: saída 0 em 36 s no Lab, etapas 2, 4 e 7 puladas com aviso.
+- [x] Sem a flag: pipeline completo (Tailwind e `css:rebuild`) em 40 s, saída 0.
+- [x] `manager:update-all --skip-css` aceita a flag; falha nas etapas 3 e 4 por falta de Docker no host, igual sem a flag.
+- [x] `PipelineSkipCssReq269Test` 6/6; `composer test` 1.788 testes saída 0; Vitest 664; `git diff --check` limpo.
+- [ ] Homologação humana.
+
+---
+
+## BATCH-277 — REQ-268
+
+- [x] Causa reproduzida: `existe('0')` verdadeiro abria páginas com `sem_permissao = 0`.
+- [x] `gestor_pagina_sem_permissao()` no roteador e na leitura do `admin-paginas` e do `publisher-pages`; só as duas páginas de investidor tinham `0` no Lab.
+- [x] `GestorPaginaSemPermissaoTest` + `GestorRoteadorErroTerminalTest`: 29 testes OK; Vitest 664 OK.
+- [x] PHPUnit completo: 1.776 testes; 4 falhas anteriores e alheias registradas no [BATCH-277](../implementation/BATCH-277.md).
+- [x] Lab: visitante 302 para login, administrador 200; editor de páginas com a caixa certa (evidências no BATCH-118 do site).
+- [x] Arquivos de `contents/` de página restrita seguem abertos; no caso das apresentações de investidor, sem dado confidencial (conferido pelo Engenheiro Chefe).
+- [ ] Homologação humana.
+
+---
+
+## BATCH-275 — REQ-266
+
+- [x] Testes REQ-225/256 e SddSource priorizam memory/ com fallback sdd/; corpus real continua filtrado.
+- [x] CLI seleciona a árvore do --repo e conserva aliases antigos; ai:archive-memory, memory:archive e memory:prune executados.
+- [x] Arquivamento real com reparo de links em fixtures memory/, sdd/ e ambas; dry-run Core e boilerplate legado com exit 0.
+- [x] Três contratos corrigidos na fonte canônica e propagados oficialmente aos cinco kits; ai:sync exige 44/44 e mostra ✔ Complete.
+- [x] PHPUnit completo: 1.768 testes/20.735 asserções, exit 0; 4 skips e depreciações registrados. Teste adicional do catálogo: 5 testes/58 asserções no foco final.
+- [x] Vitest: 60 arquivos/664 testes, exit 0; mensagens do Happy DOM registradas no lote.
+- [x] Memória encontrada (38.451 bytes/252 linhas), exit 0 com alerta preventivo; README atualizado e git diff --check limpo.
+- [x] Revisão própria e limites no [BATCH-275](../implementation/BATCH-275.md), incluindo a checagem adicional de links do Site e a fonte canônica local na matriz.
+- [ ] Homologação humana global.
+
+---
+
+## BATCH-274 — REQ-265
+
+- [x] Trava/transação e aliases financeiros; marca e logo resolvidos; falhas de webhook recebem 401/503.
+- [x] Recursos sincronizados, 1.763 testes PHP e 664 JS aprovados; pipeline completo publicado no Lab.
+- [x] Logo com CID e arquivo absoluto existente; telas com duas cobranças e histórico recuperado.
+- [x] Nova arquitetura de eventos e unificação registradas em backlog, sem nova tabela nesta entrega.
+- [x] Evidências e limites no [BATCH-274](../implementation/BATCH-274.md); revisão e arquivos explícitos.
+- [ ] Homologação humana global.
+
+---
+
+## BATCH-273 — REQ-264
+
+- [x] Requisitos implementados e revisados, inclusive adendos humanos.
+- [x] Compilação oficial, suítes PHP/JavaScript completas e publicação no Lab.
+- [x] Navegador desktop/mobile, sem overflow/erros JS nos alvos.
+- [x] Evidências, avisos herdados e limites registrados; arquivos específicos no commit.
+- [ ] Homologação humana global.
+
+Detalhes: [BATCH-273](../implementation/BATCH-273.md).
+
+---
+
+## BATCH-266 — REQ-257 (linha 3.0)
+
+- [x] Aba Modelos do editor lista os modelos nas telas de adicionar dos módulos sem campo de framework (7 telas).
+- [x] Modelo escolhido pela aba aplica o HTML e registra o framework (formulários).
+- [x] Miniaturas em 4:3, a proporção do cartão; os cinco casos apontados inteiros na largura.
+- [x] PHPUnit 1.691 e Vitest 614 na `3.0`; navegador 24/24.
+- [ ] Aba Modelos na tela de clonar e nos módulos do site.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-266](../implementation/BATCH-266.md).
+
+---
+
+## BATCH-265 — REQ-256 (linha 3.0)
+
+- [x] 184 miniaturas WebP (580 × 394, até 27 KB) para os modelos que não tinham, nos dois idiomas.
+- [x] `thumbnail` declarado em cada modelo; teste de guarda falha para modelo novo sem miniatura.
+- [x] Conferência visual das famílias em pt-br, em três rodadas.
+- [x] PHPUnit 1.688 e Vitest 614 na `3.0`.
+- [ ] Folhas em inglês conferidas uma a uma.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-265](../implementation/BATCH-265.md).
+
+---
+
+## BATCH-255 — REQ-246 / Site REQ-110
+
+- [x] Main atualizada e branches integradas, incluindo a correção posterior da apresentação (84deb54a).
+- [x] PHPUnit completo: 1.672 testes, 17.532 asserções, zero falhas/erros; quatro skips e deprecações registrados.
+- [x] Vitest completo: 49 arquivos, 573 testes aprovados no recorte até 84deb54a.
+- [x] Histórico de 36 requisições levantado; extração das bibliotecas e documentação bilíngue atualizadas a partir do código.
+- [x] Auditoria final, build idempotente e links HTTP da documentação.
+- [x] Pipeline completo do Lab e comparação SQL antes/depois.
+- [x] Navegador: regressão REQ-243 (158), REQ-245 (19), apresentação (24) e documentação desktop/mobile.
+- [x] Arquivamento mantém dez lotes ativos na raiz; links órfãos reparados nos dois repositórios.
+- [x] Revisão final e push das duas main.
+
+Detalhes: [BATCH-255](../implementation/archive/BATCH-255.md), [suítes](req246/tests-summary.json) e [inventário](req246/history-inventory.json).
+
+
+> Lotes anteriores arquivados em [validation-176-239.md](archive/validation-176-239.md).
+
+## BATCH-272 — REQ-263
+
+- [x] A busca da página pelo caminho usa `idx_paginas_language_caminho` e examina 1 linha (antes, 1.061).
+- [x] Zero leitura de disco no banco por visita (antes, 4.356).
+- [x] Primeiro byte logo após publicar: de 414 a 548 ms para 59 a 62 ms, nos dois ambientes de teste.
+- [x] PHPUnit 1.757.
+- [ ] Medição em produção depois de publicar; conferir a memória do banco lá.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-272](../implementation/BATCH-272.md).
+
+---
+
+## BATCH-271 — REQ-262 (linha 3.0)
+
+- [x] Sem ninguém registrado, tudo funciona como antes (roteiro da REQ-260, 24/24).
+- [x] Recusa no ponto de autorização impede o pedido ao provedor e devolve a mensagem.
+- [x] O ponto de conclusão recebe o consumo em sucesso e em falha.
+- [x] Erro dentro de quem se registrou não derruba o pedido.
+- [x] Teste automatizado e documentação nos dois idiomas; PHPUnit 1.755.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-271](../implementation/BATCH-271.md).
+
+---
+
+## BATCH-270 — REQ-261 (linha 3.0)
+
+- [x] `interface` / `pagina` disparado em toda tela montada pela interface, fora de envio de formulário, com módulo e opção.
+- [x] Sem ninguém registrado, a tela sai igual.
+- [x] Teste automatizado e documentação nos dois idiomas.
+- [x] Camada de provedores solta a conexão com o banco antes da espera: oito pedidos, oito registros.
+- [x] PHPUnit 1.750; roteiros do site e da REQ-260 nos dois ambientes de teste.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-270](../implementation/BATCH-270.md).
+
+---
+
+## BATCH-269 — REQ-260 (linha 3.0)
+
+- [x] Cadastrar e editar servidor dos quatro tipos, com endereço base e modelos.
+- [x] Testar conexão vale para o tipo do servidor e registra o resultado no histórico.
+- [x] O pedido do editor continua respondendo com o servidor Gemini existente.
+- [x] A chave não aparece em endereço nem em mensagem de erro.
+- [x] Pedido e leitura de resposta de cada provedor cobertos por teste, sem rede.
+- [x] PHPUnit 1.746 e Vitest 664; navegador 24/24 em `v3.1-conn2flow.local`.
+- [ ] Pedido real a Claude, OpenAI e a um serviço compatível (falta chave).
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-269](../implementation/BATCH-269.md).
+
+---
+
+## BATCH-268 — REQ-259 (linha 3.1)
+
+- [x] Lousa publicada emite visita, item visto (uma vez) e clique, no contrato do módulo de análise.
+- [x] Identificadores da lousa e dos itens na marcação.
+- [x] Sem chamada a terceiros nem escrita na camada de dados pela lousa.
+- [x] PHPUnit 1.716 e Vitest 660; navegador 8/8 em `v3.1-conn2flow.local`.
+- [ ] Funil no `analytics-manager` com gatilho de evento personalizado e chegada no GA4.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-268](../implementation/BATCH-268.md).
+
+---
+
+## BATCH-267 — REQ-258 (linha 3.1)
+
+- [x] Três modelos de lousa por idioma no cadastro de modelos; modo e alvo de IA no banco.
+- [x] Lousa criada pelo modelo no Dashboard; widgets ligados a registro; aviso dos que ficaram de fora.
+- [x] Conteúdo inválido, modelo de outro alvo e usuário sem a operação recusados.
+- [x] PHPUnit 1.716 e Vitest 654; navegador 13/13 em `v3.1-conn2flow.local`.
+- [ ] Editar um modelo de lousa no `admin-templates`; Assistente IA com servidor de IA.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-267](../implementation/BATCH-267.md).
+
+---
+
+## BATCH-264 — REQ-255 (linha 3.1)
+
+- [x] Quatro modelos de página de lousa; os dois novos geram página no ar.
+- [x] Modo IA e alvo de IA do `dashboard-pages` no banco; aba Modelos do editor lista os quatro.
+- [x] PHPUnit 1.710 e Vitest 648; navegador 42/42 em `v3.1-conn2flow.local`.
+- [ ] Assistente IA com um servidor de IA configurado.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-264](../implementation/archive/BATCH-264.md).
+
+---
+
+## BATCH-263 — REQ-254 (linha 3.1)
+
+- [x] Editor HTML em adicionar, editar e clonar; modelo escolhido carrega no editor.
+- [x] HTML e estilo escritos no editor aparecem na página e voltam ao editor; controles continuam valendo.
+- [x] Clonar cria outra página sem alterar a origem.
+- [x] Salvar durante a carga do modelo espera a carga.
+- [x] PHPUnit 1.710 e Vitest 648; navegador 38/38 em `v3.1-conn2flow.local`.
+- [ ] Abas Modelos e Assistente IA do editor com o alvo `dashboard-pages`; clique no seletor visual de modelo.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-263](../implementation/archive/BATCH-263.md).
+
+---
+
+## BATCH-262 — REQ-253 (linha 3.1)
+
+- [x] Módulo "Páginas de Lousa" no menu; listar, adicionar e editar.
+- [x] Página criada pelo formulário abre no endereço informado, com modelo e controles aplicados.
+- [x] Endereço repetido e lousa inexistente recusados; ação de status ou exclusão sem token não tem efeito.
+- [x] Desativar, reativar e excluir valem para a página; usuário sem o módulo não acessa.
+- [x] PHPUnit 1.709 e Vitest 646; navegador 28/28 em `v3.1-conn2flow.local`.
+- [x] Erro "intermitente" da suíte PHP identificado no BATCH-263: era do comando de teste (`MSYS_NO_PATHCONV=1` com `OPENSSL_CONF`), não do produto.
+- [ ] Trocar lousa, layout e acesso na edição; modelo novo criado no `admin-templates`.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-262](../implementation/archive/BATCH-262.md).
+
+---
+
+## BATCH-261 — REQ-252 (linha 3.1)
+
+- [x] Widget "Lousa" no cadastro; lousas do sistema como registros.
+- [x] Página pública mostra widgets e objetos da lousa sem iframe, em grade e em lousa.
+- [x] Texto do autor escapado; destino e imagem recusados não chegam à página.
+- [x] Conteúdo de posição fixa de um widget fica dentro da caixa do item.
+- [x] PHPUnit 1.702 e Vitest 641 sem falhas; navegador 26/26 em `v3.1-conn2flow.local`; 390 px sem rolagem lateral.
+- [ ] Incluir o widget numa página pelo editor (as páginas de teste foram criadas no banco).
+- [ ] Menu, galeria, formulário e índice de páginas dentro de uma lousa publicada.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-261](../implementation/archive/BATCH-261.md).
+
+---
+
+## BATCH-260 — REQ-251 (linha 3.1)
+
+- [x] Lousa do sistema criada com o layout atual, aberta no layout próprio e gravada por cima.
+- [x] Cada gravação guarda a versão anterior; restaurar devolve o conteúdo e guarda a que estava.
+- [x] Duplicar gera lousa independente; excluir tira da lista.
+- [x] As sete ações recusadas pelo servidor para quem não tem `widgets-administrar`.
+- [x] PHPUnit 1.697 e Vitest 631 sem falhas; navegador 18/18 em `v3.1-conn2flow.local`; 390 px sem rolagem lateral.
+- [ ] Conferir com um segundo administrador real (a instalação só tem um).
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-260](../implementation/archive/BATCH-260.md).
+
+---
+
+## BATCH-259 — REQ-250 (linha 3.1)
+
+- [x] Objetos livres (texto, forma, imagem, ícone, botão) criados, configurados, duplicados e persistidos.
+- [x] Entradas inseguras descartadas no cliente e no servidor (imagem, destino, ícone, fonte).
+- [x] Esconder por largura nos limiares de 640, 1024 e 1280 px, liberando o lugar na lousa.
+- [x] Imagem de fundo com opacidade e preenchimento; fonte do Google no texto e no título.
+- [x] PHPUnit 1.691 e Vitest 623 sem falhas; navegador 23/23 em `v3.1-conn2flow.local`; 390 px sem rolagem lateral.
+- [ ] Escolher um arquivo real no gerenciador (a instalação nova não tem arquivo enviado).
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-259](../implementation/archive/BATCH-259.md).
+
+## BATCH-258 — REQ-249
+
+- [x] Link com `target` próprio, formulário e botão de carrinho da loja levam a página de fora; âncora interna fica dentro.
+- [x] Isolamento do widget sem `allow-same-origin`.
+- [x] Aba de widgets em primeiro: menu, persistência, layout salvo e layout por perfil.
+- [x] PHPUnit 1.685 e Vitest 614 sem falhas; site 56 e 13; pipeline do Lab com saída 0; navegador 11/11.
+- [ ] Homologação humana; decisão sobre a ordem do plano da lousa.
+
+Detalhes: [BATCH-258](../implementation/archive/BATCH-258.md).
+
+## BATCH-257 — REQ-248
+
+- [x] Grade preservada como padrão; widgets por linha (1, 2, 3, 4, 6).
+- [x] Lousa: colunas pela largura, posição livre com vão, colisão empurra para baixo, 20 px entre vizinhos.
+- [x] Troca de modo mantém a proporção; modo e posições persistem e acompanham layout salvo e publicado.
+- [x] Janela cheia cobre o navegador e sai com `Esc`; opções em botão flutuante com menu que fica aberto.
+- [x] Lousa estreita e 390 px sem sobreposição nem rolagem lateral.
+- [x] Tailwind 4.3.3 fixado; PHPUnit 1.684 e Vitest 606 sem falhas; pipeline do Lab com saída 0; navegador 23/23.
+- [ ] `npm ci` na árvore principal e homologação humana.
+
+Detalhes: [BATCH-257](../implementation/archive/BATCH-257.md).
+
+## BATCH-256 — REQ-247
+
+- [x] Operações `widgets-administrar` e `widgets-visualizar` declaradas nos dois idiomas; `administradores` recebe a de administrar.
+- [x] Servidor recusa gravar, publicar, listar perfis, abrir catálogo e renderizar conforme a operação (11 testes PHP).
+- [x] Usuário sem operação: aba ausente. Usuário só com visualizar: layout do perfil, sem controles (navegador, fases `sem` e `ver`).
+- [x] Administrador: publicar por perfil e para todos, alternar próprio e padrão, copiar o padrão, layouts salvos.
+- [x] Duplicar, atalho de edição, larguras de 2 a 12, todos os cabeçalhos, tela cheia.
+- [x] `resources:sync`, PHPUnit 1.683 e Vitest 588 sem falhas; pipeline do Lab com saída 0; navegador 43/43; 390 px sem rolagem lateral.
+- [x] Integrado na `main` com a mesclagem revertida pela Fase B reaplicada; suítes e cinco roteiros de navegador repetidos sobre a integração.
+- [ ] Concessão da operação pela tela de perfis, por um humano.
+- [ ] Decidir a versão oficial do Tailwind (4.3.0 do `package-lock` ou 4.3.3) e atualizar a documentação do Dashboard.
+- [ ] Revisão da chefia e homologação humana.
+
+Detalhes: [BATCH-256](../implementation/archive/BATCH-256.md).
+
+## BATCH-254 — REQ-245
+
+- [x] Decisão do ciclo, versões, vencimento por período, configuração e salvaguardas: 15 testes de unidade (`AtualizacaoAutomaticaReq245Test`).
+- [x] Opções proibidas não chegam ao atualizador, nem com o arquivo de configuração adulterado.
+- [x] Tarefa `admin-atualizacoes-automatica` declarada pelo módulo; aparece no `admin-cron` e acompanha o interruptor.
+- [x] Abas Manual e Automático; modo manual funcionando; textos nos dois idiomas; 390 px sem rolagem lateral.
+- [x] `resources:sync`, PHPUnit 1.670 e Vitest 569 sem falhas; pipeline do Lab com saída 0; navegador 19/19 e regressão da REQ-243 140/140.
+- [x] Rotina pela engine no Lab: desligada, fora da hora e na hora (consulta e decide "já atualizado").
+- [ ] Atualização real disparada pela rotina, com sucesso e com volta automática, no tenant isolado.
+- [ ] Revisão da chefia e homologação humana.
+
+Detalhes: [BATCH-254](../implementation/archive/BATCH-254.md) e [resultado do navegador](req245/evidencias/resultado.json).
+
+## BATCH-252 — REQ-243
+
+- [x] Select: `mousedown`, `mouseup` e `click` da opção não chegam ao elemento de trás; o controle acompanha `select.value` escrito por script e selects inseridos depois da carga.
+- [x] Editor: palco do editor visual com `calc(100vh - 220px)`, cartões de modelos de até 240 px, alerta com `<b>` interpretado e marcação fora da lista como texto.
+- [x] Histórico sem rolagem horizontal; `admin-arquivos` com dicas e botões na mesma altura; `adicionar-filho` com classes oficiais.
+- [x] `cookie-consent` e `menus` com mensagens em linha e rádios na horizontal; seletor de arquivos com bandeja e "Concluir seleção"; alça da galeria sólida.
+- [x] Família publisher: mapeamento em 3 colunas com cabeçalho, copiar compacto, selects do painel; `publisher-pages` no padrão do `admin-paginas`.
+- [x] `publisher-pages/editar`: HTML e valores de campo escapados; as cinco abas do editor (inclusive SEO) mostram só o próprio painel, também depois de recarregar.
+- [x] `variables` sem tag crua e sem contorno nos ícones; `admin-cron` e `admin-environment` com selects, botões e dicas.
+- [x] `resources:sync` (511 recursos), Vitest 569 e PHPUnit 1.655 sem falhas; `RefinamentosReq243Test` e `req243-refinamentos.test.js` novos.
+- [x] Pipeline do Lab com saída 0 (6 rodadas), conferência por hash sem diferenças e navegador 140/140 em 1366 e 390 px.
+- [x] Revisão da REQ-244 / REQ-109 sem achado bloqueante; mesclagem simulada com um conflito, em arquivo derivado.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-252](../implementation/archive/BATCH-252.md) e [resultado do navegador](req243/evidencias/resultado.json).
+## BATCH-253 — REQ-244 / Site REQ-109
+
+- [x] Backend: colunas opcionais, template/autoria/head completos, tema e assets oficiais.
+- [x] Frontend: base/tema → folhas parciais do widget → compilador completo, origem opaca e geometria sem padding/overflow.
+- [x] Apresentações: template e altura embedded; consentimento compatível com o sandbox.
+- [x] Compilação oficial: Core 511 / Site 1176 recursos; pipeline final e css:rebuild com saída 0.
+- [x] Vitest: Core 553 / Site 13; PHPUnit: Core 1629 / Site 31, sem falhas/erros (skips/deprecações registrados).
+- [x] Navegador 29/29: oito slides, desktop/mobile, setas/pontos/tela cheia, resize, catálogo e restauração das preferências.
+- [x] Consolidação em main pela Fase B (BATCH-255).
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-253](../implementation/archive/BATCH-253.md), [resultado](req244/evidencias/resultado.json) e [métricas/limites](req244/evidencias/checks.json).
+
+## BATCH-251 — REQ-242
+
+- [x] `forms-search` e `forms`: abas sem fundo, copiar numa linha, select de tipo flutuante sem rolagem no container, dicas.
+- [x] `forms-submissions`: dicas nas abas, JSON em CodeMirror somente leitura e select de status padronizado.
+- [x] Dashboard: abas simétricas, capa ou ícone em 66 cards, menu de opções, tela cheia do widget, malha de 20 px, altura de 120 a 960 px.
+- [x] TopBar e sidebar: favoritos à direita e tipografia igual em 18 módulos medidos.
+- [x] `cursor: pointer` em rótulos de checkbox e rádio.
+- [x] `galleries` e seletor: ajuda em linha, grade de controles, título de seleção múltipla e bandeja de miniaturas com remoção.
+- [x] `resources:sync` (511 recursos), Vitest 551 e PHPUnit 1.629 sem falhas; `RefinamentosReq242Test` e `req242-refinamentos.test.js` novos.
+- [x] Pipeline do Lab com saída 0 (três rodadas depois de uma com código 23, causa registrada) e navegador 112/112 em 1366 e 390 px.
+- [x] Memória de execução podada: 296 linhas / 37 KB para 157 linhas / 22 KB, seções antigas em `archive/`.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-251](../implementation/archive/BATCH-251.md) e [resultado do navegador](req242/evidencias/resultado.json).
+
+## BATCH-249 — REQ-240
+
+- [x] Pilares 1 a 6: ícones, abas, cartões, selects e alertas, tabelas e 390 px.
+- [x] Adendo 1: `admin-atualizacoes` redesenhado, com as opções da req-201 na tela.
+- [x] Core PHP 1.613 e JS 541; Site PHP 13 e JS 13, sem falhas.
+- [x] Pipeline do Lab com saída 0 (oito rodadas) e 257 telas varridas em 1366 e 390 px.
+- [x] Guardas novas: `IconesLucideReq240Test` (core) e `HarmonizacaoReq106Test` (site), com prova negativa.
+- [x] Adendo 2: `admin-arquivos` como único módulo de arquivos; isolamento do usuário restrito provado no Lab; modo iframe corrigido.
+- [ ] API de arquivos no `admin-arquivos`.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-249](../implementation/archive/BATCH-249.md) e [resultado da varredura](archive/req240-browser-results.json).
+
+## BATCH-247 — REQ-238
+
+- [x] CA-A/B: perfil, atalhos e sidebar uniformes nos 22 módulos.
+- [x] CA-C1–C7: badges, resize, blueprint, seletor, isolamento, switch e docs privadas.
+- [x] CA-D1–D3: cards, títulos, abas funcionais e 38 telas desktop/390px.
+- [x] Core JS 537/PHP 1.597; Site JS 13/PHP 7 sem falhas; 261 checks de navegador.
+- [x] Pipeline Lab saída 0, manutenção desligada; 775 arquivos com conteúdo idêntico.
+- [x] Provas negativas, revisão, versões e evidências registradas.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-247](../implementation/archive/BATCH-247.md) e [inventário](req238-validation.json).
+
+## BATCH-246 — req-237
+
+- [x] Bases Core/Site preservadas e compilação oficial sequencial no Lab.
+- [x] 19 novas capas Core e 14 Site, 1024×1024, menos de 100.000 bytes; 70 assets conferidos.
+- [x] Dashboard pt-br/en: alturas M/G, topo -20px, links de capa/SVG, arrasto isolado e preferências restauradas.
+- [x] Site REQ-100 concluída, 98/98 checks; cinco fixtures removidas.
+- [x] Core JS 532 e PHP 1.594 sem falhas; Site JS 13 e PHP 7 aprovados.
+- [x] Pipeline final saída 0 e manutenção desligada; screenshots desktop/390px e revisão sem bloqueantes.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-246](../implementation/archive/BATCH-246.md) e [inventário](req237-validation.json).
+
+
+## BATCH-243 — Tabelas JSON particionadas (req-234)
+
+- [x] Biblioteca `db-data.php` com as quatro funções requeridas e carregamento pelo bootstrap/entradas CLI.
+- [x] Round-trip estrito com registros completos, Unicode, floats e limite padrão real de 80 MiB.
+- [x] Ausência, corrupção de um byte/hash e manifesto inválido abortam com `RuntimeException`; manifesto inválido não recorre a monolítico antigo.
+- [x] Crescimento, redução de partes e retorno a monolítico/array vazio limpam arquivos obsoletos.
+- [x] Falha ao gravar a segunda parte temporária preserva a tabela publicada e limpa os temporários já gravados.
+- [x] Comparação SQL recebe todas as partes; nenhuma retirada falsa; parte ausente aborta antes de mudanças SQL. SQLite em memória com adaptação apenas de descoberta de colunas MySQL.
+- [x] Compilador escreve partes, relê versão/checksum e publica `partitioned`/`total_parts`; sincronizador de plugins também compara o conjunto completo.
+- [x] Exportação reversa → ZIP → extração → recuperação de HTML/metadados preserva todos os registros.
+- [x] Checksums detectam mudanças além da primeira parte e ignoram alterações do timestamp de geração.
+- [x] PHPUnit focado aprovado; `php -l` e `git diff --check` limpos.
+- [x] Suíte geral comparada com checkout limpo de `3e2ad2e9`: mesmos 3 erros de Stripe e 2 falhas de CRLF.
+
+Evidências, comandos e limites: [BATCH-243](../implementation/archive/BATCH-243.md). Banco principal e arquivos de outros lotes preservados; validação com fixtures temporárias, sem deploy de instalação.
+
+## BATCH-245 / REQ-236 — integração homologada no Lab
+
+- [x] Integrações Core REQ-223/233/224 sequenciais e preservação do stash/checkouts anteriores.
+- [x] Dashboard V3.1: título/abas/Opções, tooltip, capa única M/G, edição, resize e seleção tipo/registro persistida.
+- [x] Core Vitest 529/529; PHPUnit 1.594 testes / 15.795 assertions sem falhas/erros, quatro skipped e deprecações registradas.
+- [x] Site Vitest 9/9; PHPUnit cinco testes / 462 assertions.
+- [x] Navegador Site 88/88 e Dashboard 17/17; 390px; seis fixtures removidas e preferências restauradas.
+- [x] Pipeline oficial completo sequencial, manutenção desligada; configuração local temporária restaurada.
+- [x] Inventário 386 páginas/idiomas sem violações; SQL 316 páginas administrativas sem resíduos visuais. Resíduos globais de componentes/templates e stale documentados.
+- [x] Revisão findings-first, controles negativos de instâncias/ícones e diff sem erros de whitespace.
+- [ ] Revisão humana e consolidação final.
+
+Relatório: [BATCH-245](../implementation/archive/BATCH-245.md). Runtime pt-br; contratos bilíngues; OAuth e operações externas reais não exercitados.
+
+## BATCH-248 / REQ-239 — refinamentos da auditoria humana
+
+- [x] Dashboard P/G, editor de páginas, família Publisher e módulos administrativos refinados.
+- [x] Interface: máscara monetária e imagem URL/admin-arquivos; cache Tailwind normaliza HTML/CSS/JS para LF, incluindo saída e entrada central.
+- [x] Core Vitest 541; PHPUnit 1.599 testes / 15.872 asserções, sem falhas (5 skips, 4 deprecações PHP e 3 PHPUnit).
+- [x] Site Vitest 13; PHPUnit 10 testes / 1.386 asserções; controles negativos cache/promoção reproduzidos.
+- [x] Lab desktop/390px, submissões reais products/variações e herança Stripe autoritativa; dois produtos próprios removidos.
+- [x] Pipeline oficial sequencial concluído, manutenção desligada; 778 hashes normalizados sem diferenças/sobras.
+- [x] Cookie tabs com c2fc-abas-lista c2fc-anexa / c2fc-painel-aba em pt-br/en; recado do agente REQ-240/106 incorporado e trabalho paralelo preservado.
+- [x] Revisão técnica, PHP lint e diff-check aprovados; evidências e limites no [BATCH-248](../implementation/archive/BATCH-248.md).
+- [ ] Homologação humana e consolidação Git.
+
+
+## BATCH-276 / REQ-267 — capas isométricas
+
+- [x] WebP 1024x1024, 60.000–100.000 bytes; SHA-256 e bytes conferidos nos dois manifestos.
+- [x] Compilação resources:sync e pipelines oficiais: saída 0.
+- [x] HTTP/hash dos oito assets e seis cards autenticados sem fallback; 19/19 por ambiente; desktop/mobile sem overflow ou erro de console.
+- [x] Distinção registrada: arquivos-api/interface não têm cards neste perfil, mas suas capas são servidas corretamente.
+- [ ] Homologação humana.
+
+Relatório: [BATCH-276](../implementation/BATCH-276.md). Evidências coordenadas no Core: memory/validation/req267-delivery.json.

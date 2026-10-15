@@ -1,8 +1,9 @@
 # Index — raw
 
-Artefatos intermediários
-
-| ID | Título | Resumo Executivo | Link Relativo | Status |
+| ID | Title | Executive summary | Relative link | Status |
 | --- | --- | --- | --- | --- |
-| active | active | Nó de navegação | [active](active/index.md) | indexed |
-| archive | archive | Nó de navegação | [archive](archive/index.md) | indexed |
+
+## Directories
+
+- [active](<active/index.md>)
+- [archive](<archive/index.md>)

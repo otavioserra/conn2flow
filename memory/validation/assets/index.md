@@ -1,7 +1,8 @@
-# Index — validation/assets
+# Index — assets
 
-Navegação hierárquica; leia o resumo antes do documento integral.
-
-| ID | Título | Resumo Executivo | Link Relativo | Status |
+| ID | Title | Executive summary | Relative link | Status |
 | --- | --- | --- | --- | --- |
-| req220 | req220 | Nó de navegação | [req220](req220/index.md) | indexed |
+
+## Directories
+
+- [req220](<req220/index.md>)
