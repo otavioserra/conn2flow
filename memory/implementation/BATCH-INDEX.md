@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-284 | implemented-pending-homologation | Visibilidade e link direto privado nas páginas (admin-paginas e publisher-pages); sem permissão marcado ao adicionar (REQ-275) | [BATCH-284.md](BATCH-284.md) | PHPUnit 1.838 (15 novos), E2E 12/12, navegador 9/9, gravação 3/3 no Lab. |
 | BATCH-283 | implemented-pending-homologation | Passe de navegador confiável: navegar deslogado com o site restrito ligado; autorizar, revogar este e revogar todos no admin-environment (REQ-274) | [BATCH-283.md](BATCH-283.md) | PHPUnit 1.823 (19 novos), E2E no Lab 19/19; pipeline --skip-css saída 0. |
 | BATCH-282 | implemented-pending-runtime-validation | Campo domain no editor, widget e validação client/server (REQ-273) | [BATCH-282.md](BATCH-282.md) | PHPUnit 1.795 sem falhas (5 skips), Vitest 686 aprovados; pipeline SSH conn2flow-site-local saída 0, editor e widget preview conferidos no navegador. Persistência/AJAX real pendentes. |
 | BATCH-280 | complete | `pagamentos_com_trava` movida para `stripe.php` e `pagamentos.php` removido (REQ-271 / Site REQ-126) | [BATCH-280.md](BATCH-280.md) | Fixture REQ-265 OK; PHPUnit 1.788 com 1 falha alheia (45 skills). Lab `--skip-css` saída 0, sem novo fatal. `dist` em 755 `admin:www-data` e sobra remota removida. |

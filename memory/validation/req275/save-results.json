@@ -1,0 +1,16 @@
+[
+  {
+    "passo": "desligar visível",
+    "visivel": "0",
+    "hashMantido": true
+  },
+  {
+    "passo": "gerar novo link",
+    "hashTrocado": true,
+    "visivel": "0"
+  },
+  {
+    "passo": "religar visível",
+    "visivel": "1"
+  }
+]
