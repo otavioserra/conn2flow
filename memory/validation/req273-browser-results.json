@@ -1,0 +1,43 @@
+{
+  "project": "conn2flow-site-local",
+  "date": "2026-10-15T11:23:18.431Z",
+  "results": [
+    {
+      "route": "editar/?id=form-pro-acceleration",
+      "status": 200,
+      "option": "Domínio"
+    },
+    {
+      "route": "adicionar/",
+      "status": 200,
+      "option": "Domínio"
+    },
+    {
+      "route": "clonar/?id=form-pro-acceleration",
+      "status": 200,
+      "option": "Domínio"
+    },
+    {
+      "check": "domain selection serialized to fields_schema",
+      "ok": true
+    },
+    {
+      "check": "widget preview renders domain attributes",
+      "ok": true
+    },
+    {
+      "width": 1280,
+      "overflow": 0
+    },
+    {
+      "width": 390,
+      "overflow": 0
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "temp/req273-browser/forms-1280.png",
+    "temp/req273-browser/forms-390.png"
+  ],
+  "savedChanges": false
+}

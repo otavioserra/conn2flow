@@ -13,7 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
-| BATCH-282 | implemented-pending-runtime-validation | Campo domain no editor, widget e validação client/server (REQ-273) | [BATCH-282.md](BATCH-282.md) | PHPUnit 1.795 sem falhas (5 skips), Vitest 686 aprovados; recursos compilados. Sincronização SQL e tela pendentes: Docker ausente. |
+| BATCH-282 | implemented-pending-runtime-validation | Campo domain no editor, widget e validação client/server (REQ-273) | [BATCH-282.md](BATCH-282.md) | PHPUnit 1.795 sem falhas (5 skips), Vitest 686 aprovados; pipeline SSH conn2flow-site-local saída 0, editor e widget preview conferidos no navegador. Persistência/AJAX real pendentes. |
 | BATCH-280 | complete | `pagamentos_com_trava` movida para `stripe.php` e `pagamentos.php` removido (REQ-271 / Site REQ-126) | [BATCH-280.md](BATCH-280.md) | Fixture REQ-265 OK; PHPUnit 1.788 com 1 falha alheia (45 skills). Lab `--skip-css` saída 0, sem novo fatal. `dist` em 755 `admin:www-data` e sobra remota removida. |
 | BATCH-278 | ready-for-intake | Pipeline Ágil: Suporte a `--skip-css` em `project:update-all` (REQ-269) | [BATCH-278.md](BATCH-278.md) | Pass-through de flag no CLI e omissão de etapas de Tailwind em builds de backend. |
 | BATCH-276 | ready-for-intake | Assets Isométricos de Capa para Dashboard Pages e Interface (REQ-267) | [BATCH-276.md](BATCH-276.md) | Geração de capas 3D e manifest.json no Core. |

@@ -10,7 +10,8 @@
 - [x] PHPUnit completo via test:run: 1.795 testes, zero falhas, 5 skips e depreciações registradas.
 - [x] Vitest completo: 686 aprovados; lint e diff sem erros.
 - [x] Compilação oficial dos oito recursos e minificados dos dois scripts alterados.
-- [ ] manager:update-all integral, SQL, CSS derivado e publicação: Docker ausente no host.
+- [x] Publicação no destino correto: project:update-all conn2flow-site-local saída 0; SQL, CSS e dist atualizados.
+- [x] URL editar/form-pro-acceleration, adicionar e clonar com HTTP 200 e opção Domínio; widget preview com os atributos corretos; desktop/mobile sem overflow e zero pageerror.
 - [ ] Persistência via UI e submissão AJAX real no ambiente publicado.
 - [ ] Homologação humana.
 

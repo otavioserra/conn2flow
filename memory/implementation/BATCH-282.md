@@ -17,7 +17,8 @@ REQ-273; BATCH-282; topologia dupla; autonomo_monitorado; branch feat/req-273.
 - [x] Sanitização imediata e validação FQDN no cliente.
 - [x] Mensagens pt-br/en e normalização/validação PHP.
 - [x] Compilação, testes, auto-revisão e evidências.
-- [ ] Sincronização SQL e conferência da página publicada (Docker ausente).
+- [x] Sincronização SQL e conferência da página publicada via conn2flow-site-local (SSH).
+- [ ] Persistência via UI e submissão AJAX real; homologação humana.
 
 Escopo: somente Core, sem alterações no conn2flow-site. Alteração inicial em
 gestor/db/data/schema-metadata.json preservada e excluída do commit deste lote.
@@ -81,15 +82,42 @@ uma falha de minificação de admin-categorias, sem diagnóstico detalhado pelo 
 O arquivo não foi modificado neste lote; sua minificação direta pelo terser local
 e node --check passaram. Os dois scripts deste lote foram minificados pelo pipeline.
 
+## Publicação corrigida após indicação do projeto pelo humano
+
+O destino correto é conn2flow-site-local, local=true, deploy_mode=ssh, em
+https://conn2flow.local/. O uso anterior de manager:update-all apontou para o
+espelho Docker genérico; essa limitação não impedia publicar no projeto correto.
+
+`php cli/c2f.php project:update-all conn2flow-site-local` concluiu com saída 0
+em 2026-10-15, por volta de 08:21 de São Paulo. A trava canônica coordenou a
+execução; o destino estava ocioso desde 07:59 antes da publicação.
+SQL do Core: paginas +2 ~7 =265; variaveis +4 ~0 =3444.
+CSS: 7 analisados, 2 regenerados, zero erros. Assets: 2 publicados, 609 atuais,
+zero falhas. Conferência final: 822 arquivos de código iguais à origem.
+
+Uma primeira tentativa desta rodada falhou por MSYS_NO_PATHCONV global impedir
+o jq nativo de resolver /c/.../environment.json; removida a variável global,
+o helper canônico aplicou a proteção somente ao rsync e o pipeline passou.
+Não houve alteração de configuração versionada nem cópia manual.
+
+Validação repetível: `node memory/validation/req273-browser.cjs`, após
+`php cli/c2f.php auth:cookie --project=conn2flow-site-local`.
+Resultado: [req273-browser-results.json](../validation/req273-browser-results.json).
+Editar (form-pro-acceleration), adicionar e clonar: HTTP 200 e opção Domínio.
+Seleção domain serializada no fields_schema oculto; widget preview renderizou
+type=text, autocapitalize=none, spellcheck=false e autocomplete=off.
+Desktop 1280 e mobile 390 sem overflow horizontal; zero pageerror.
+Capturas inspecionadas visualmente; caminhos no JSON. O script descarta as
+alterações ao recarregar e não envia o formulário para gravação.
+
 ## Limites e próximo passo
 
-Get-Command docker e command -v docker não localizaram Docker neste host.
-O destino devEnvironment exige conn2flow-app em /var/www/sites/localhost/conn2flow-gestor/.
-As etapas de banco, CSS derivado e publicação dist não foram concluídas.
-Não foi exercitada a tela HTTP, persistência por UI nem submissão AJAX real;
+Publicação SQL, CSS, assets e tela HTTP agora conferidos no projeto correto.
+Ainda não foi exercitada persistência por UI nem submissão AJAX real;
 os testes PHP cobrem funções de domínio, widget, traduções e seis templates;
 os testes JS exercitam validateField e restauração do campo no DOM.
-Assim, não se declara o DoD integral nem homologação humana.
+Assim, não se declara o DoD integral nem homologação humana. Ausência de Docker
+deixou de ser pendência para esse destino SSH.
 
 Handoff ao Macro-Arquiteto: [REQ-273-BATCH-282](../handoffs/REQ-273-BATCH-282.md).
 MCP Hub de despacho/recibos indisponível nesta sessão; entrega persistida em arquivo.
