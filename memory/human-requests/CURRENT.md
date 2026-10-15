@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-273.md](req-273.md) (BATCH-282 `ready-for-intake`, 2026-10-15, Core — Arquiteto Master / Autônomo Monitorado): Novo Tipo de Campo "Domínio" (`domain`) no Módulo Forms e Biblioteca de Formulários (sanitização, FQDN RFC 1035/1123 e suporte no widget).
   - [req-272.md](req-272.md) (BATCH-281 `ready-for-intake`, 2026-10-14, multi-repo — supervisionado em produção): Release 3.0.0 e ambiente de pré-lançamento em `temp.conn2flow.com`, coordenado com a REQ-127 do Site.
   - [req-271.md](req-271.md) (BATCH-280 `complete`, 2026-10-14, multi-repo — Arquiteto Master / Autônomo Monitorado): Apoio Core — Mover pagamentos_com_trava para stripe.php e Excluir pagamentos.php, coordenado com a REQ-126 do Site.
   - [req-270.md](req-270.md) (BATCH-279 `implemented-pending-homologation`, 2026-10-14, multi-repo — Arquiteto Master / Autônomo Monitorado): Apoio Core — Preparação e Suporte à Limpeza do Lab e Homologação Final da Versão 3.0.0, coordenado com a REQ-125 do Site.
