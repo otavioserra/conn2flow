@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-276.md](req-276.md) (BATCH-285 `in-progress`, 2026-10-15, branch `feat/req-276`, Core): Corrigir confirmação de regeneração do link privado que bloqueou o Vitest no release 3.0.4; release delegado pelo humano a outro agente.
   - [req-275.md](req-275.md) (BATCH-284 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-275`, Core — Autônomo Monitorado, vai na 3.0.4): Visibilidade e link direto privado nas páginas (`admin-paginas` e `publisher-pages`), "sem permissão" marcado por padrão.
   - [req-274.md](req-274.md) (BATCH-283 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-274`, Core — Arquiteto Master / Autônomo Monitorado): Autorização de Navegador Confiável para Acesso Anônimo no Site com Acesso Restrito Ativo (`admin-environment` e `gestor.php`).
   - [req-273.md](req-273.md) (BATCH-282 `complete`, 2026-10-15, Core — Arquiteto Master / Autônomo Monitorado): Novo Tipo de Campo "Domínio" (`domain`) no Módulo Forms e Biblioteca de Formulários (sanitização, FQDN RFC 1035/1123 e suporte no widget).
