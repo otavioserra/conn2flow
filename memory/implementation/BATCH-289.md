@@ -1,0 +1,33 @@
+---
+id: "BATCH-289"
+title: "Trava da atualização pelo painel: dono morto sob open_basedir e etapa com erro (REQ-280)"
+status: "implemented-pending-homologation"
+date: "2026-10-15"
+author: "executor"
+target_repo: "conn2flow"
+---
+
+# req-280: trava da atualização pelo painel (dois casos que sobraram)
+
+## Ocorrência (15/10, 17:05, temp.conn2flow.com)
+
+A atualização para a 3.0.7 recusou: "Outro deploy está em execução … (PID 1386087), desde 16:44:44". Era a
+sessão das 16:44 (3.0.6), cuja etapa de banco devolveu **erro comum** (`wait_timeout`, req-279): a tela
+parou sem `finalize` nem `cancel` e a trava ficou. A regra de dono morto da req-277 não agiu: o PHP-FPM do
+HestiaCP roda com `open_basedir` e não enxerga o `/proc`, então a biblioteca não decidia. Trava removida à mão.
+
+## Correção
+
+1. `deploy_lock_orphan()`: consulta `posix_kill(pid, 0)` antes do `/proc`; só ESRCH (3) conta como morto;
+   sem `posix` ou sem permissão, cai no `/proc` e, se não houver, não decide (como antes).
+2. `admin-atualizacoes.js`: erro ou falha de comunicação nas etapas `deploy` e `db` cancela a sessão
+   (o `cancel` libera a trava) e o cancelamento zera a sessão da tela, liberando "Iniciar".
+
+## Aceite
+
+- [x] Dono morto reconhecido sem `/proc` (teste com sinal simulado e sinal real `posix` no Lab).
+- [x] Etapa com erro cancela a sessão (contrato do JS).
+- [x] PHPUnit 1.857 e Vitest 700, sem falhas.
+- [ ] Release 3.0.8 e homologação no `temp`.
+
+Branch `feat/req-280` (da tag `gestor-v3.0.7`), worktree `conn2flow-req277`. Testes: `AtualizadorHotfixReq277Test` (sinal) e `AtualizadorEtapaComErroReq280Test`. `admin-atualizacoes` 1.0.6 → 1.0.7, minificado pelo `assets:minify` oficial. Sem deploy pelo executor.

@@ -45,13 +45,34 @@ function deploy_lock_expired(?array $trava, ?int $agora = null): bool {
  * @param string|null $host    Servidor atual (padrão: `gethostname()`).
  * @param string      $proc    Raiz do procfs (teste).
  */
-function deploy_lock_orphan(array $trava, ?string $host = null, string $proc = '/proc'): bool {
+function deploy_lock_orphan(array $trava, ?string $host = null, string $proc = '/proc', ?callable $sinal = null): bool {
     $pid = (int)($trava['pid'] ?? 0);
     $dono = (string)($trava['host'] ?? '');
     $host = $host ?? (function_exists('gethostname') ? (string)gethostname() : '');
     if ($pid <= 0 || $dono === '' || $dono !== $host) return false;
-    if (!is_dir($proc . '/self')) return false;
-    return !is_dir($proc . '/' . $pid);
+    // req-280: no HestiaCP o PHP-FPM roda com `open_basedir` e não enxerga o `/proc` (temp.conn2flow.com,
+    // 15/10): a trava de um processo morto esperava as 2 h. `kill(pid, 0)` não depende do `/proc`; o
+    // worker dono é do mesmo usuário, então "não existe" (ESRCH) é a única resposta que conta como morto.
+    $sinal = $sinal ?? deploy_lock_sinal_padrao();
+    if ($sinal !== null) {
+        $resposta = $sinal($pid);
+        if ($resposta !== null) return $resposta === 'morto';
+    }
+    if (!@is_dir($proc . '/self')) return false;
+    return !@is_dir($proc . '/' . $pid);
+}
+
+/**
+ * req-280: consulta "o processo existe?" pela extensão `posix`. Devolve 'vivo', 'morto' ou null quando
+ * não dá para saber (sem `posix`, ou sem permissão para sinalizar o processo — ele existe, mas é de outro
+ * usuário, então não conta como morto).
+ */
+function deploy_lock_sinal_padrao(): ?callable {
+    if (!function_exists('posix_kill') || !function_exists('posix_get_last_error')) return null;
+    return function (int $pid): ?string {
+        if (@posix_kill($pid, 0)) return 'vivo';
+        return posix_get_last_error() === 3 ? 'morto' : null; // 3 = ESRCH (processo inexistente)
+    };
 }
 
 /**

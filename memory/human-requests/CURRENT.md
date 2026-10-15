@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-280.md](req-280.md) (BATCH-289 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-280`, Core — vai na 3.0.8): trava da atualização pelo painel — dono morto sob open_basedir e etapa com erro.
   - [req-280.md](req-280.md) (BATCH-289 `ready-for-intake`, 2026-10-15, Core): Ordenação cronológica decrescente dos logs recentes no módulo `admin-atualizacoes`.
   - [req-279.md](req-279.md) (BATCH-288 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-279`, Core — vai na 3.0.7): sessão de banco da atualização não cai com wait_timeout curto.
   - [req-278.md](req-278.md) (BATCH-287 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-278`, Core — vai na 3.0.6): atualizador do core sempre entregue, mesmo com manifesto desatualizado.

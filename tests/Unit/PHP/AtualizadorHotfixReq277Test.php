@@ -42,11 +42,34 @@ final class AtualizadorHotfixReq277Test extends TestCase
         mkdir($proc . '/self', 0777, true);
         mkdir($proc . '/111', 0777, true);
 
-        self::assertTrue(deploy_lock_orphan(['pid' => 222, 'host' => 'srv'], 'srv', $proc), 'PID 222 não existe');
-        self::assertFalse(deploy_lock_orphan(['pid' => 111, 'host' => 'srv'], 'srv', $proc), 'PID 111 vivo');
-        self::assertFalse(deploy_lock_orphan(['pid' => 222, 'host' => 'outro'], 'srv', $proc), 'outro servidor: não dá para saber');
-        self::assertFalse(deploy_lock_orphan(['pid' => 0, 'host' => 'srv'], 'srv', $proc));
-        self::assertFalse(deploy_lock_orphan(['pid' => 222, 'host' => 'srv'], 'srv', $this->dir . '/sem-proc'), 'sem /proc (Windows): não decide');
+        $semPosix = static fn(int $pid): ?string => null;
+        self::assertTrue(deploy_lock_orphan(['pid' => 222, 'host' => 'srv'], 'srv', $proc, $semPosix), 'PID 222 não existe');
+        self::assertFalse(deploy_lock_orphan(['pid' => 111, 'host' => 'srv'], 'srv', $proc, $semPosix), 'PID 111 vivo');
+        self::assertFalse(deploy_lock_orphan(['pid' => 222, 'host' => 'outro'], 'srv', $proc, $semPosix), 'outro servidor: não dá para saber');
+        self::assertFalse(deploy_lock_orphan(['pid' => 0, 'host' => 'srv'], 'srv', $proc, $semPosix));
+        self::assertFalse(deploy_lock_orphan(['pid' => 222, 'host' => 'srv'], 'srv', $this->dir . '/sem-proc', $semPosix), 'sem /proc (Windows): não decide');
+    }
+
+    // req-280: PHP-FPM com open_basedir não enxerga o /proc; o sinal decide.
+    public function testSinalDecideSemOProc(): void
+    {
+        $semProc = $this->dir . '/sem-proc';
+        $resposta = static fn(?string $r) => static fn(int $pid): ?string => $r;
+
+        self::assertTrue(deploy_lock_orphan(['pid' => 222, 'host' => 'srv'], 'srv', $semProc, $resposta('morto')), 'ESRCH: dono morto');
+        self::assertFalse(deploy_lock_orphan(['pid' => 222, 'host' => 'srv'], 'srv', $semProc, $resposta('vivo')));
+        self::assertFalse(deploy_lock_orphan(['pid' => 222, 'host' => 'srv'], 'srv', $semProc, $resposta(null)), 'sem permissão: não decide');
+        self::assertFalse(deploy_lock_orphan(['pid' => 222, 'host' => 'outro'], 'srv', $semProc, $resposta('morto')), 'outro servidor nunca');
+    }
+
+    public function testSinalPadraoReconheceProcessoVivoEMorto(): void
+    {
+        $sinal = deploy_lock_sinal_padrao();
+        if ($sinal === null) self::markTestSkipped('sem a extensão posix');
+
+        self::assertSame('vivo', $sinal(getmypid()));
+        $morto = 4194303; // acima do pid_max usual do Linux
+        if (@posix_kill($morto, 0) === false && posix_get_last_error() === 3) self::assertSame('morto', $sinal($morto));
     }
 
     public function testTravaDeDonoMortoEhAssumida(): void
