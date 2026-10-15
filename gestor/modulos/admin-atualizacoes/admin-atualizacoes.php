@@ -384,6 +384,9 @@ function admin_atualizacoes_ajax_update(){
             case 'cancel':
                 $resp = admin_atualizacoes_call_system(['action'=>'cancel','sid'=>$sid]);
                 break;
+            case 'unlock': // req-277: libera a trava órfã da atualização pelo painel.
+                $resp = admin_atualizacoes_call_system(['action'=>'unlock']);
+                break;
             default:
                 $resp = ['error'=>'Ação AJAX desconhecida'];
         }

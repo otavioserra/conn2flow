@@ -1282,8 +1282,15 @@ function webStart(array $req): array {
     if(!empty($req['dry_run']) || !atualizacoes_trava_carregar()) return webStartExecutar($req);
     $arquivo = atualizacoes_trava_arquivo();
     $r = deploy_lock_acquire($arquivo, ['owner' => 'update-system', 'detail' => 'web']);
-    if(!$r['ok']) return ['error' => 'Outro deploy está em execução neste ambiente: '.deploy_lock_describe($r['holder'] ?? null), 'locked' => true];
+    if(!$r['ok']){
+        $dono = $r['holder'] ?? null;
+        // req-277: trava da própria atualização pelo painel pode ser liberada pela tela ("Liberar trava").
+        $liberavel = is_array($dono) && ($dono['owner'] ?? '') === 'update-system' && ($dono['detail'] ?? '') === 'web';
+        return ['error' => 'Outro deploy está em execução neste ambiente: '.deploy_lock_describe($dono), 'locked' => true, 'unlockable' => $liberavel];
+    }
     if(!empty($r['stale'])) logAtualizacao('WebStart: trava vencida assumida: '.deploy_lock_describe($r['stale']), 'WARNING');
+    // req-277: erro fatal no próprio start (antes de a sessão guardar o token) não deixa a trava presa.
+    atualizacoes_web_trava_no_fatal('', $arquivo, $r['token']);
     try { $res = webStartExecutar($req); }
     catch(Throwable $e){ deploy_lock_release($arquivo, $r['token']); throw $e; }
     if(!empty($res['error']) || empty($res['sid'])){ deploy_lock_release($arquivo, $r['token']); return $res; }
@@ -1291,6 +1298,82 @@ function webStart(array $req): array {
     if($st){ $st['lock_token'] = $r['token']; saveWebState($res['sid'], $st); }
     return $res;
 }
+/**
+ * req-277: etapas pesadas da atualização pelo painel. A sincronização de dados de um site grande passa
+ * dos 128 MB do PHP-FPM (temp.conn2flow.com, 15/10: fatal em db-data.php); sobe só nesta requisição.
+ */
+function atualizacoes_web_recursos(): void {
+    $atual = atualizacoes_bytes_ini((string)ini_get('memory_limit'));
+    if($atual !== -1 && $atual < 1024 * 1024 * 1024) @ini_set('memory_limit', '1024M');
+    @set_time_limit(0);
+    @ignore_user_abort(true);
+}
+
+/** `memory_limit` em bytes (-1 = sem limite). Função PURA. */
+function atualizacoes_bytes_ini(string $valor): int {
+    $valor = trim($valor);
+    if($valor === '' || $valor === '-1') return -1;
+    $numero = (int)$valor;
+    switch(strtolower(substr($valor, -1))){
+        case 'g': return $numero * 1024 * 1024 * 1024;
+        case 'm': return $numero * 1024 * 1024;
+        case 'k': return $numero * 1024;
+    }
+    return $numero;
+}
+
+/** Erro fatal (o que não passa por catch nem por finally)? Função PURA. */
+function atualizacoes_erro_fatal(?array $erro): bool {
+    return is_array($erro) && in_array((int)($erro['type'] ?? 0), [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR], true);
+}
+
+/**
+ * req-277: se a etapa morrer por erro fatal (falta de memória, por exemplo), marca a sessão como falha,
+ * fecha a execução e libera a trava — senão a próxima tentativa fica "Outro deploy está em execução" até
+ * a trava vencer (2 h). Com `$sid` usa o token guardado na sessão; no `start`, o token direto.
+ */
+function atualizacoes_web_trava_no_fatal(string $sid, string $arquivo = '', string $token = ''): void {
+    register_shutdown_function(function() use ($sid, $arquivo, $token){
+        $erro = error_get_last();
+        if(!atualizacoes_erro_fatal($erro)) return;
+        $mensagem = 'Erro fatal: '.($erro['message'] ?? '?').' em '.basename((string)($erro['file'] ?? '')).':'.($erro['line'] ?? '?');
+        try {
+            if($sid !== ''){
+                $st = loadWebState($sid);
+                if($st && empty($st['finished'])){
+                    $st['errors'][] = $mensagem;
+                    $st['finished'] = true;
+                    $st['failed'] = true;
+                    saveWebState($sid, $st);
+                    if(!empty($st['exec_id']) && function_exists('persist_final_execucao')){
+                        persist_final_execucao((int)$st['exec_id'], $GLOBALS['CONTEXT'] ?? [], 1, $mensagem);
+                    }
+                }
+                webLiberarTrava($sid);
+            } elseif($arquivo !== '' && $token !== ''){
+                deploy_lock_release($arquivo, $token);
+            }
+            logAtualizacao('Etapa web interrompida; trava liberada. '.$mensagem, 'ERROR');
+        } catch(Throwable $e){ /* desligamento: nada a fazer além de tentar */ }
+    });
+}
+
+/**
+ * req-277: botão "Liberar trava" da tela. Só a trava da atualização pelo painel (`update-system`/`web`);
+ * pipeline e API seguem com a trava deles. A sessão dona, se ainda existir, é marcada como cancelada.
+ */
+function webLiberarTravaOrfa(): array {
+    if(!atualizacoes_trava_carregar()) return ['error' => 'Trava indisponível'];
+    $r = deploy_lock_force_release(atualizacoes_trava_arquivo(), 'update-system', 'web');
+    if(!$r['ok']){
+        return ['error' => $r['error'] === 'owner'
+            ? 'A trava é de outro processo e não pode ser liberada por aqui: '.deploy_lock_describe($r['released'])
+            : 'Não foi possível liberar a trava.'];
+    }
+    if(!empty($r['released'])) logAtualizacao('Trava da atualização pelo painel liberada manualmente: '.deploy_lock_describe($r['released']), 'WARNING');
+    return ['unlocked' => !empty($r['released']), 'released' => $r['released'] ? deploy_lock_describe($r['released']) : null];
+}
+
 /** Libera a trava guardada na sessão web (fim ou cancelamento). */
 function webLiberarTrava(string $sid): void {
     $st = loadWebState($sid);
@@ -1603,9 +1686,10 @@ if(PHP_SAPI!=='cli') {
         if($expected && ($_REQUEST['token'] ?? '') !== $expected){ jsonResponse(['error'=>'Token inválido']); return; }
         try {
             switch($action){
-                case 'start': jsonResponse(webStart($_REQUEST)); break;
-                case 'deploy': jsonResponse(webDeployFiles($_REQUEST['sid']??'')); break;
-                case 'db': jsonResponse(webDatabase($_REQUEST['sid']??'')); break;
+                case 'start': atualizacoes_web_recursos(); jsonResponse(webStart($_REQUEST)); break;
+                case 'deploy': atualizacoes_web_recursos(); atualizacoes_web_trava_no_fatal((string)($_REQUEST['sid']??'')); jsonResponse(webDeployFiles($_REQUEST['sid']??'')); break;
+                case 'db': atualizacoes_web_recursos(); atualizacoes_web_trava_no_fatal((string)($_REQUEST['sid']??'')); jsonResponse(webDatabase($_REQUEST['sid']??'')); break;
+                case 'unlock': jsonResponse(webLiberarTravaOrfa()); break;
                 case 'finalize': $r = webFinalize($_REQUEST['sid']??''); webLiberarTrava($_REQUEST['sid']??''); jsonResponse($r); break;
                 case 'status': jsonResponse(webStatus($_REQUEST['sid']??'')); break;
                 case 'cancel': $r = webCancel($_REQUEST['sid']??''); webLiberarTrava($_REQUEST['sid']??''); jsonResponse($r); break;

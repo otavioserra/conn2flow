@@ -6984,6 +6984,15 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-unlock-confirm",
+        "valor": "A atualização anterior pelo painel ficou travada (a etapa foi interrompida sem liberar a trava). Liberar a trava e tentar de novo agora?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-title",
@@ -8707,6 +8716,15 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-opt-wipe-help",
         "valor": "Removes everything except the protected folders before copying the new version. Your own files outside the package are lost.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-unlock-confirm",
+        "valor": "The previous panel update got stuck (a step stopped without releasing the lock). Release the lock and try again now?",
         "tipo": "string",
         "grupo": null,
         "descricao": null

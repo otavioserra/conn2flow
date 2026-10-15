@@ -75,8 +75,8 @@
         "minificado": 2320
     },
     "gestor/assets/interface/formulario.js": {
-        "sha1": "897c73ac949da01e4e9b033243c9123dde153d88",
-        "origem": 31157,
+        "sha1": "ffc48cce820d57861de22fe952f804e8f5dedbec",
+        "origem": 30446,
         "minificado": 14441
     },
     "gestor/assets/interface/html-editor-helper.js": {
@@ -85,8 +85,8 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "0a9af58cc5e1f786859c6f8394ac265c3400d05e",
-        "origem": 169467,
+        "sha1": "1a8a7b9b57ebbdf34acfe47eaec366b9ebc9a258",
+        "origem": 165875,
         "minificado": 64527
     },
     "gestor/assets/interface/html-editor-modules.js": {
@@ -150,9 +150,9 @@
         "minificado": 30292
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
-        "sha1": "d24b5d7e21e61c4ea2f15ddf3f788e9a5110e242",
-        "origem": 19130,
-        "minificado": 10067
+        "sha1": "f1caf95194370d857bcd89ffedd8fb098bd063ee",
+        "origem": 20234,
+        "minificado": 10517
     },
     "gestor/modulos/admin-componentes/admin-componentes.js": {
         "sha1": "8c3e0fdd7e1c17c1d0648aa36dcd11ea14e5d588",
@@ -165,13 +165,13 @@
         "minificado": 10402
     },
     "gestor/modulos/admin-environment/admin-environment.js": {
-        "sha1": "f217cc97a12175f21b6e3bd33832c7632d17d74e",
-        "origem": 38012,
+        "sha1": "3029004583e712f8ca91f7d360e22f7a35d42cdd",
+        "origem": 37193,
         "minificado": 19254
     },
     "gestor/modulos/admin-ia/admin-ia.js": {
-        "sha1": "64673bbc8b54801a575f60ff649af7186ba8c440",
-        "origem": 27653,
+        "sha1": "54eb974fe733fed3c7b9244e3e4c29d162fe1684",
+        "origem": 26963,
         "minificado": 13411
     },
     "gestor/modulos/admin-layouts/admin-layouts.js": {
@@ -185,8 +185,8 @@
         "minificado": 501
     },
     "gestor/modulos/admin-paginas/admin-paginas.js": {
-        "sha1": "5fbd64c6a94e0f6835e16b819f44c345fe6cf4d4",
-        "origem": 9433,
+        "sha1": "335981d313c347a661c3d98b0c0ae3d327e0ce8c",
+        "origem": 9160,
         "minificado": 5245
     },
     "gestor/modulos/admin-plugins/admin-plugins.js": {
@@ -220,8 +220,8 @@
         "minificado": 5773
     },
     "gestor/modulos/dashboard-pages/dashboard-pages.js": {
-        "sha1": "d151df7616a5e5aeee85d480077b637791e034c7",
-        "origem": 3831,
+        "sha1": "519ed589e6370f1a3ab38f7f79f58d366a960c23",
+        "origem": 3760,
         "minificado": 2020
     },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
@@ -230,8 +230,8 @@
         "minificado": 5440
     },
     "gestor/modulos/dashboard/dashboard.js": {
-        "sha1": "0a563e41a405d188d7c3a27656293f5b9efb50f2",
-        "origem": 97250,
+        "sha1": "b6ae3db629984216a36d86868eddbe70f873d811",
+        "origem": 95470,
         "minificado": 52463
     },
     "gestor/modulos/dashboard/dashboard.toolbar.js": {
@@ -240,8 +240,8 @@
         "minificado": 45434
     },
     "gestor/modulos/dashboard/dashboard.widget.js": {
-        "sha1": "be079b44ee4cbdc82d112331292251d37bbb0e6f",
-        "origem": 7406,
+        "sha1": "bbfa3b5b1fab5fac8c30ebe2d0910f675ea8ed45",
+        "origem": 7260,
         "minificado": 3710
     },
     "gestor/modulos/forms-search/forms-search.js": {
@@ -260,8 +260,8 @@
         "minificado": 3199
     },
     "gestor/modulos/forms/forms.js": {
-        "sha1": "b20b18f614447dd9e9cd651905116b6842119e4e",
-        "origem": 23680,
+        "sha1": "bf8835d846c59fe2bc60d8e37e9a443e9031b9b3",
+        "origem": 23124,
         "minificado": 13055
     },
     "gestor/modulos/forms/forms.widget.js": {
@@ -335,8 +335,8 @@
         "minificado": 1868
     },
     "gestor/modulos/publisher-pages/publisher-pages.js": {
-        "sha1": "38706c8decdeb269bdb770299aa987ec90ced77b",
-        "origem": 20768,
+        "sha1": "4b2241552109d8dfa201f9cc6461c7b3c2da81b7",
+        "origem": 20104,
         "minificado": 11016
     },
     "gestor/modulos/publisher/publisher.js": {
