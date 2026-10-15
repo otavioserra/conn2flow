@@ -289,3 +289,9 @@ BATCH-216 a BATCH-229 (2026-10-02 a 2026-10-04: módulo `cookie-consent`, prévi
 
 - **Semente de usuários sem perfil desde a REQ-202**: instalação nova criava o admin com `id_usuarios_perfis` nulo, e o `/dashboard/` redirecionava para si mesmo. `ensureAdminUser()` agora atribui `administradores`; `gestor_permissao()` responde 403 (tela do site restrito com textos `panel-access-denied-*`) quando a recusa é do próprio painel.
 - **`formulario.js` só aplica classes de estado** (`has-error`, `c2fc-campo-invalido`, `c2fc-campo-msg-erro`, `c2fc-contador-excedido`, `c2fc-form-msg-erro`); o visual fica no `form-ui.css`. Teste em `tests/Unit/JS/forms.semantic-state.test.js` carrega o jQuery vendorizado; o `happy-dom` erra `.find()` com seletor de vírgula.
+
+### REQ-274 / BATCH-283 — passe de navegador confiável no site restrito (2026-10-15)
+
+- **Passe = cookie HMAC, não sessão**: `gestor_site_acesso_restrito_bypass_*()` na biblioteca `gestor`; chave derivada do `USUARIO_HASH_PASSWORD` (sem ele, não há passe) e salt `SITE_RESTRICTED_BYPASS_SALT` (trocar = revogar todos). O porteiro só o consulta para quem está sem sessão.
+- **Botão novo no `admin-environment` precisa de `data-c2f-dica="@[[var]]@"`** com variável existente nos dois idiomas, senão o `RefinamentosReq243Test` falha.
+- **E2E com `curl` no Git Bash**: `MSYS_NO_PATHCONV=1` faz o `curl.exe` não achar cookie em `/tmp`; usar `cygpath -m`. AJAX do painel pede `X-CSRF-Token` (meta `csrf-token`) e um só arquivo de cookies (`-b`/`-c`), porque o GET renova a sessão.
