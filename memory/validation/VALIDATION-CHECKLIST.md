@@ -1,5 +1,23 @@
 # Validation Checklist
 
+## BATCH-282 — REQ-273
+
+- [x] Tipo domain nos seis editores, variáveis pt-br/en e placeholder traduzido.
+- [x] Widget renderiza text, autocapitalize=none, spellcheck=false e autocomplete=off.
+- [x] Sanitização no input/change e submit; FQDN e limites de 63/253 caracteres.
+- [x] PHP normaliza $_POST antes da validação/persistência e rejeita valores não escalares.
+- [x] Prompts e mensagens de erro traduzidos; teste do campo restaurado no DOM.
+- [x] PHPUnit completo via test:run: 1.795 testes, zero falhas, 5 skips e depreciações registradas.
+- [x] Vitest completo: 686 aprovados; lint e diff sem erros.
+- [x] Compilação oficial dos oito recursos e minificados dos dois scripts alterados.
+- [ ] manager:update-all integral, SQL, CSS derivado e publicação: Docker ausente no host.
+- [ ] Persistência via UI e submissão AJAX real no ambiente publicado.
+- [ ] Homologação humana.
+
+Evidências e limitações: [BATCH-282](../implementation/BATCH-282.md).
+
+---
+
 ## BATCH-280 — REQ-271
 
 - [x] `pagamentos_com_trava()` em `gestor/bibliotecas/stripe.php`; `gestor/bibliotecas/pagamentos.php` removido com `git rm`.

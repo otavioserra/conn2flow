@@ -29,7 +29,7 @@ final class DbTestCommand implements CommandInterface
 
     public function getAliases(): array
     {
-        return ['test:db', 'test:unit'];
+        return ['test:db', 'test:unit', 'test:run'];
     }
 
     public function getHelp(): string

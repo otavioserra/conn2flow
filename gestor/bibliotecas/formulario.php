@@ -15,8 +15,19 @@ global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-formulario']							=	Array(
-	'versao' => gestor_asset_version('interface', '1.4.0'),
+	'versao' => gestor_asset_version('interface', '1.4.5'),
 );
+
+/** Normaliza somente protocolos HTTP(S), barras finais e caixa de um domínio escalar. */
+function formulario_domain_normalizar($value){
+	if(!is_string($value)) return null;
+	return strtolower(trim(preg_replace('/\/+$/', '', preg_replace('/^https?:\/\//i', '', trim($value)))));
+}
+
+function formulario_domain_valido($value){
+	return is_string($value) && strlen($value) <= 253
+		&& preg_match('/^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/iD', $value) === 1;
+}
 
 /**
  * Extrai diretivas de limite (min/max/step) das linhas do campo "Opções" de um campo de formulário.
@@ -351,6 +362,7 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
 			$form_ui_prompts['minDate'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-min-date < -->', '<!-- prompt-min-date > -->');
 			$form_ui_prompts['maxDate'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-max-date < -->', '<!-- prompt-max-date > -->');
 			$form_ui_prompts['url'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-url < -->', '<!-- prompt-url > -->');
+			$form_ui_prompts['domain'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-domain < -->', '<!-- prompt-domain > -->');
 		}
 
 		// Processar valores individuais dos ui-texts
@@ -592,6 +604,7 @@ function formulario_processador($params = false){
 		$form_ui_ajax_messages['maxLength'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-max-length < -->', '<!-- ajax-message-max-length > -->');
 		$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-invalid-email < -->', '<!-- ajax-message-invalid-email > -->');
 		$form_ui_ajax_messages['invalidUrl'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-invalid-url < -->', '<!-- ajax-message-invalid-url > -->');
+		$form_ui_ajax_messages['invalidDomain'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-invalid-domain < -->', '<!-- ajax-message-invalid-domain > -->');
 		$form_ui_ajax_messages['minValue'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-min-value < -->', '<!-- ajax-message-min-value > -->');
 		$form_ui_ajax_messages['maxValue'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-max-value < -->', '<!-- ajax-message-max-value > -->');
 		$form_ui_ajax_messages['minDate'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-min-date < -->', '<!-- ajax-message-min-date > -->');
@@ -743,6 +756,21 @@ function formulario_processador($params = false){
         if(isset($schema['email']) && is_array($schema['email'])){
             $emailData = $schema['email'];
         }
+        // Normalizar antes da obrigatoriedade e de qualquer persistência/hook.
+        foreach($schema['fields'] as $field){
+            if(($field['type'] ?? '') !== 'domain') continue;
+            $domainValue = formulario_domain_normalizar($_POST[$field['name']] ?? '');
+            if($domainValue === null || ($domainValue !== '' && !formulario_domain_valido($domainValue))){
+                formulario_acesso_falha(['tipo' => $formId, 'origem' => 'validacao', 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                $_GESTOR['ajax-json'] = Array(
+                    'status' => 'error',
+                    'message' => modelo_var_troca($form_ui_ajax_messages['invalidDomain'], '#fieldLabel#', ($field['label'] ?? $field['name'])),
+                );
+                return false;
+            }
+            $_POST[$field['name']] = $domainValue;
+        }
+
         if(isset($schema['field_name']) && isset($_POST[$schema['field_name']])){
             $fieldNameValue = $_POST[$schema['field_name']];
 			$fieldNameValueFlag = true;

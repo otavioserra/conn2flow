@@ -19658,6 +19658,24 @@
     {
         "language": "pt-br",
         "modulo": "forms",
+        "id": "field-type-domain",
+        "valor": "Domínio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-placeholder-domain",
+        "valor": "exemplo.com.br",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
         "id": "field-type-url",
         "valor": "URL",
         "tipo": "string",
@@ -19822,6 +19840,24 @@
         "modulo": "forms",
         "id": "field-type-date",
         "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-domain",
+        "valor": "Domain",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-placeholder-domain",
+        "valor": "example.com",
         "tipo": "string",
         "grupo": null,
         "descricao": null

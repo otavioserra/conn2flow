@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.4",
+    "versao": "1.1.5",
     "bibliotecas": [
         "interface",
         "html",
@@ -348,12 +348,12 @@
                     "path": "forms/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.18",
+                    "version": "1.19",
                     "checksum": {
-                        "html": "12c466d5f923bbc862090e1b29c8e110",
+                        "html": "62acf8f648373370f978d20c4dba650b",
                         "css": "2bab8fae8edd7ed380a506c0beb750e1",
                         "css_precompiled": "",
-                        "combined": "3d07a42dec757482ffea132888c86bb3"
+                        "combined": "7e688b83778e32b2ec01418d48ea9023"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -464,12 +464,12 @@
                     "path": "forms/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "fc20dc49e3681060813a9c1d5b9e2f7a",
+                        "html": "f8d3164444cc0cc69fcfc76ab5d05527",
                         "css": "2bab8fae8edd7ed380a506c0beb750e1",
                         "css_precompiled": "",
-                        "combined": "3438fb9040cb1827bd8ed6d0fac710fc"
+                        "combined": "5e6661644b9c0fb9c0b3d72586aa1521"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -580,12 +580,12 @@
                     "path": "forms/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "eed946e1b82ea72dae697962e129e5dc",
+                        "html": "24950a176ff631e927ab13a3c3b39186",
                         "css": "2bab8fae8edd7ed380a506c0beb750e1",
                         "css_precompiled": "",
-                        "combined": "8e3ce9e078936b89dfcd49eef62aef20"
+                        "combined": "06416f8b098c20513459f73c30737fc6"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -764,6 +764,16 @@
                 {
                     "id": "field-type-date",
                     "value": "Data",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-domain",
+                    "value": "Domínio",
+                    "type": "string"
+                },
+                {
+                    "id": "field-placeholder-domain",
+                    "value": "exemplo.com.br",
                     "type": "string"
                 },
                 {
@@ -1119,12 +1129,12 @@
                     "path": "forms/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.20",
+                    "version": "1.21",
                     "checksum": {
-                        "html": "dd7d204e70235b25347cab8168abe300",
+                        "html": "c1a12e3921f187f57fadd7de2c7f462b",
                         "css": "2bab8fae8edd7ed380a506c0beb750e1",
                         "css_precompiled": "",
-                        "combined": "a45785c6cd427eb17dad0ae22aa97572"
+                        "combined": "eb765253f0d4c920e702d734f84917a2"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1235,12 +1245,12 @@
                     "path": "forms/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.18",
+                    "version": "1.19",
                     "checksum": {
-                        "html": "9be29f3bd656f309000dd8da4eea82c0",
+                        "html": "7a08c0b305812d25ed8d33bf10ea6875",
                         "css": "2bab8fae8edd7ed380a506c0beb750e1",
                         "css_precompiled": "",
-                        "combined": "2b2c17351f78e4b4d5ab2cb1c61c9495"
+                        "combined": "a89b82da56ced29930fe06beeef6f24f"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1351,12 +1361,12 @@
                     "path": "forms/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "7bbef6f2721124e988788766c3f492b6",
+                        "html": "f43df32be28499c3e0e2c047b9bf8699",
                         "css": "2bab8fae8edd7ed380a506c0beb750e1",
                         "css_precompiled": "",
-                        "combined": "13e6757e49c2df450ae51906def7da4a"
+                        "combined": "53f79093cb9eef71663579f420c04bb0"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1538,6 +1548,16 @@
                     "type": "string"
                 },
                 {
+                    "id": "field-type-domain",
+                    "value": "Domain",
+                    "type": "string"
+                },
+                {
+                    "id": "field-placeholder-domain",
+                    "value": "example.com",
+                    "type": "string"
+                },
+                {
                     "id": "field-type-url",
                     "value": "URL",
                     "type": "string"
@@ -1575,5 +1595,5 @@
             ]
         }
     },
-    "asset_version": "0f98c4ed6101df21"
+    "asset_version": "41668e5eed1fee2d"
 }
