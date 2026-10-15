@@ -75,9 +75,9 @@
         "minificado": 2320
     },
     "gestor/assets/interface/formulario.js": {
-        "sha1": "4274cca41bd977507bf570d66077a786b854b748",
-        "origem": 29654,
-        "minificado": 14114
+        "sha1": "fb749b74fff37c45eb1f19c60e7720df11b12d3b",
+        "origem": 31095,
+        "minificado": 14410
     },
     "gestor/assets/interface/html-editor-helper.js": {
         "sha1": "fbae2a94586a9c2676c1bf0fc7534e6a10669cca",
@@ -260,8 +260,8 @@
         "minificado": 3199
     },
     "gestor/modulos/forms/forms.js": {
-        "sha1": "bf8835d846c59fe2bc60d8e37e9a443e9031b9b3",
-        "origem": 23124,
+        "sha1": "b20b18f614447dd9e9cd651905116b6842119e4e",
+        "origem": 23680,
         "minificado": 13055
     },
     "gestor/modulos/forms/forms.widget.js": {

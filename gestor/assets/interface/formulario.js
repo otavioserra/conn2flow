@@ -160,7 +160,7 @@ $(document).ready(function () {
 					var input = form.find('[name="' + field.name + '"]');
 					if (input.length) {
 						if (field.type === 'domain') {
-							input.on('input change', function () {
+							input.on('input change blur', function () {
 								validateField($(this), field, data.prompts, data.framework, data);
 							});
 						}
@@ -370,7 +370,13 @@ $(document).ready(function () {
 						var domainRegex = /^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
 						if (value.length > 253 || !domainRegex.test(value)) {
 							isValid = false;
-							errorMsg = fillPrompt(pickPrompt(prompts, 'domain', ''), field, null);
+							// REQ-130 (site): `prompt-domain` só existe no banco depois do manager:update-all;
+							// sem ele o erro saía vazio e o campo era barrado sem explicação.
+							var lang = String((typeof gestor !== 'undefined' && gestor.language) || document.documentElement.lang || '').toLowerCase();
+							var domainFallback = (lang.indexOf('en') === 0)
+								? 'The #label# field requires a valid domain (e.g. yourdomain.com).'
+								: 'O campo #label# precisa de um domínio válido (ex: seudominio.com.br).';
+							errorMsg = fillPrompt(pickPrompt(prompts, 'domain', domainFallback), field, null);
 						}
 					} else if (field.type === 'url') {
 						if (!/^[a-z][a-z0-9+.-]*:\/\/.+/i.test(value)) {
@@ -385,7 +391,10 @@ $(document).ready(function () {
 			}
 
 			function updateFieldUI(input, isValid, errorMsg, framework, data) {
-				var fieldContainer = input.closest('.field') || input.parent(); // Assume estrutura com .field (Fomantic) ou div pai
+				// Objeto jQuery vazio é truthy: `closest('.field') || parent()` nunca caía no pai, e nos
+				// formulários Tailwind (sem `.field`) a mensagem era anexada a nada.
+				var fieldContainer = input.closest('.field, .conn2flow-form-field');
+				if (!fieldContainer.length) fieldContainer = input.parent();
 				fieldContainer.find('.error-msg').remove(); // Remove erro anterior
 
 				if (!isValid) {

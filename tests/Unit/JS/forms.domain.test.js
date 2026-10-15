@@ -40,7 +40,23 @@ describe('REQ-273 domain', () => {
     expect(run([63, 63, 63, 61].map(n => 'a'.repeat(n)).join('.')).result).toBe(true);
   });
   it('wires validation to real-time input events', () => {
-    expect(source).toMatch(/field\.type === 'domain'[\s\S]*?input\.on\('input change',[\s\S]*?validateField\(/);
+    expect(source).toMatch(/field\.type === 'domain'[\s\S]*?input\.on\('input change blur',[\s\S]*?validateField\(/);
+  });
+  // REQ-130 (site): sem `prompt-domain` no banco, a mensagem não pode sair vazia.
+  it.each([['pt-br', 'O campo Host precisa de um domínio válido (ex: seudominio.com.br).'],
+    ['en', 'The Host field requires a valid domain (e.g. yourdomain.com).']])('falls back to a readable %s message', (language, expected) => {
+    globalThis.gestor = { language };
+    try {
+      const input = { value: 'foo..com', val(next) { if (arguments.length) this.value = next; return this.value; } };
+      expect(validate(input, { type: 'domain', name: 'host', label: 'Host', required: true }, {}, 'tailwindcss', {})).toBe(false);
+      expect(input.message).toBe(expected);
+    } finally { delete globalThis.gestor; }
+  });
+  it('finds the error container without a Fomantic .field ancestor', () => {
+    const ui = source.slice(source.indexOf('function updateFieldUI('), source.indexOf('function getCharCounter('));
+    expect(ui).toMatch(/closest\('\.field, \.conn2flow-form-field'\)/);
+    expect(ui).toMatch(/if \(!fieldContainer\.length\) fieldContainer = input\.parent\(\);/);
+    expect(ui).not.toMatch(/=\s*input\.closest\('\.field'\)\s*\|\|/);
   });
   it('restores domain selection and placeholder without losing custom text', () => {
     document.body.innerHTML = readFileSync('gestor/modulos/forms/resources/pt-br/pages/forms-editar/forms-editar.html', 'utf8');

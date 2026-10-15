@@ -279,3 +279,8 @@ BATCH-216 a BATCH-229 (2026-10-02 a 2026-10-04: módulo `cookie-consent`, prévi
 - **Cota, crédito, auditoria e medição de IA se ligam em `ia-provedores` / `pedido.autorizar` (filtro) e `pedido.concluido` (ação)**; não se altera quem chama a camada. Quem chama informa `recurso` e `referencia` no pedido.
 - **`banco_select()` devolve coluna calculada pela expressão inteira** (`SUM(x) AS total` é a chave) e separa colunas por vírgula: expressão com vírgula parte a coluna em duas. Defeito achado no módulo de créditos do site.
 - **Teste sem rede da camada de provedores**: servidor do tipo compatível apontando para `http://127.0.0.1:9/v1` dá falha de comunicação imediata e exercita o caminho de erro sem sair da máquina.
+
+### REQ-130 do site / BATCH-124 — mensagem de domínio no `formulario.js` (2026-10-15)
+
+- **`input.closest('.field') || input.parent()` nunca usa o pai**: objeto jQuery vazio é truthy. Em formulário Tailwind sem `.field`, a mensagem de erro sumia. Agora: `closest('.field, .conn2flow-form-field')`, com reserva no pai.
+- **Prompt novo no `form-ui` do core não chega a projeto com `form-ui` próprio** (o conn2flow-site tem um): o fallback do JS precisa ser legível, e o idioma vem de `gestor.language` (o `<html lang>` do site sai vazio).
