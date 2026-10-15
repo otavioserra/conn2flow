@@ -1,0 +1,30 @@
+---
+id: "BATCH-288"
+title: "wait_timeout da sessão de banco da atualização (REQ-279)"
+status: "implemented-pending-homologation"
+date: "2026-10-15"
+author: "executor"
+target_repo: "conn2flow"
+---
+
+# req-279: wait_timeout da sessão de banco da atualização
+
+## Ocorrência (15/10, 16:44, temp.conn2flow.com, 3.0.6)
+
+A 3.0.6 entrou inteira (29 arquivos, sem preservados) e a memória não estourou, mas a etapa de banco falhou:
+`[BANCO] WARN lendo manager_updates: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away`
+e a transação foi desfeita. O MariaDB de produção tem `wait_timeout = 10`; a sincronização abre a conexão,
+roda as migrações e passa ~11 s lendo os JSON do site sem falar com o banco.
+
+## Correção
+
+- `conexaoBanco()` (`atualizacoes-banco-de-dados.php`): `SET SESSION wait_timeout = GREATEST(@@SESSION.wait_timeout, 28800)` logo depois de conectar (só a sessão; nunca o global; sem permissão, segue).
+- `atualizacoes_web_recursos()`: o mesmo na conexão do gestor durante as etapas web.
+
+## Aceite
+
+- [x] Conferido no MariaDB 11.8 do Lab: com o ajuste a sessão sobrevive a 4 s parada com `wait_timeout = 2`; sem ele, erro 2006.
+- [x] PHPUnit completo (1.852, 0 falhas).
+- [ ] Release 3.0.7 e atualização do `temp` pelo painel até 100%.
+
+Branch `feat/req-279` (da tag `gestor-v3.0.6`), worktree `conn2flow-req277`. Teste: `tests/Unit/PHP/AtualizadorWaitTimeoutReq279Test.php`. Sem deploy pelo executor.
