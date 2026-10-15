@@ -38,6 +38,9 @@
 
 declare(strict_types=1);
 
+/** req-279: `wait_timeout` mínimo (s) da sessão de banco da atualização. */
+if (!defined('ATUALIZACOES_DB_WAIT_TIMEOUT')) define('ATUALIZACOES_DB_WAIT_TIMEOUT', 28800);
+
 const DB_SYNC_POLICY_VERSION = '2-css-precompiled-pipeline-owned';
 const DB_SYNC_POLICY_TABLES = ['paginas', 'layouts', 'componentes', 'templates'];
 
@@ -129,6 +132,11 @@ function db(): PDO {
     $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     // Força charset para todas operações
     $pdo->exec("SET NAMES utf8mb4");
+    // req-279: a sincronização passa segundos sem falar com o banco enquanto lê os JSON grandes; com o
+    // `wait_timeout` curto do servidor (10 s no MariaDB de produção) a conexão caía no meio ("MySQL server
+    // has gone away"). Vale só para esta sessão; nunca reduz o valor do servidor.
+    try { $pdo->exec("SET SESSION wait_timeout = GREATEST(@@SESSION.wait_timeout, ".ATUALIZACOES_DB_WAIT_TIMEOUT.")"); }
+    catch (Throwable $e) { /* sem permissão para mudar a sessão: segue com o valor do servidor */ }
     return $pdo;
 }
 

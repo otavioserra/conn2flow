@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-288 | implemented-pending-homologation | Sessão de banco da atualização com wait_timeout longo (MariaDB de produção a 10 s derrubava a sincronização) (REQ-279) | [BATCH-288.md](BATCH-288.md) | PHPUnit 1.852; reprodução e correção no MariaDB 11.8 do Lab. |
 | BATCH-287 | implemented-pending-homologation | Atualizador do core sempre entregue mesmo com manifesto desatualizado (a 3.0.5 preservou o próprio atualizador no temp) (REQ-278) | [BATCH-287.md](BATCH-287.md) | PHPUnit 1.849, 4 novos. |
 | BATCH-286 | implemented-pending-homologation | Hotfix do atualizador pelo painel: erro fatal libera a trava, 1 GB nas etapas pesadas, dono morto libera, painel oferece liberar e tentar de novo (REQ-277) | [BATCH-286.md](BATCH-286.md) | PHPUnit 17 (fatal real em processo à parte), E2E 8/8 no Lab. |
 | BATCH-285 | implemented-pending-homologation | Correção dos diálogos de regeneração de link privado que bloquearam o release 3.0.4 (REQ-276) | [BATCH-285.md](BATCH-285.md) | Vitest 700/700; seis cenários novos, versões e minificados atualizados. Release pelo próximo agente. |

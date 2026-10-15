@@ -1309,6 +1309,11 @@ function atualizacoes_web_recursos(): void {
     if($atual !== -1 && $atual < 1024 * 1024 * 1024) @ini_set('memory_limit', '1024M');
     @set_time_limit(0);
     @ignore_user_abort(true);
+    // req-279: a conexão do gestor fica parada enquanto a etapa trabalha e é usada no fim (execução,
+    // choques). Com `wait_timeout` curto no servidor ela caía antes disso.
+    if(function_exists('banco_query') && !empty($GLOBALS['_BANCO']['conexao'])){
+        @banco_query('SET SESSION wait_timeout = GREATEST(@@SESSION.wait_timeout, '.(defined('ATUALIZACOES_DB_WAIT_TIMEOUT') ? ATUALIZACOES_DB_WAIT_TIMEOUT : 28800).')');
+    }
 }
 
 /** `memory_limit` em bytes (-1 = sem limite). Função PURA. */
