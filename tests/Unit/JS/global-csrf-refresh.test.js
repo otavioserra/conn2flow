@@ -151,7 +151,7 @@ function carregar({ rede, token = 'tok-velho', pai = null } = {}) {
   return { windowFake, documentFake, meta, campo, assign, fetchImpl, relogio, XhrClasse, chamadasRota, chamadasApp };
 }
 
-const esperar = (ms = 5) => new Promise((r) => setTimeout(r, ms));
+const esperar = (ms = 50) => new Promise((r) => setTimeout(r, ms));
 const tokenEnviado = (init) => new Headers(init.headers || {}).get('X-CSRF-Token');
 
 describe('global.js - silent refresh em fetch', () => {
@@ -452,9 +452,8 @@ describe('global.js - silent refresh em XMLHttpRequest (e $.ajax, que delega ao 
     expect(xhr.onload).not.toHaveBeenCalled();
     expect(ouvinteComum).not.toHaveBeenCalled();
 
-    await esperar();
+    await vi.waitFor(() => expect(xhr.aberturas).toHaveLength(2));
 
-    expect(xhr.aberturas).toHaveLength(2);
     const reenvio = xhr.envios[1];
     expect(reenvio.corpo).toBe('nome=a&_csrf_token=tok-novo');
     expect(reenvio.cabecalhos).toContainEqual(['Content-Type', 'application/x-www-form-urlencoded']);
@@ -474,9 +473,8 @@ describe('global.js - silent refresh em XMLHttpRequest (e $.ajax, que delega ao 
     xhr.open('POST', '/site/x/');
     xhr.send();
     xhr.responder(403, { error: 403, status: 'error' });
-    await esperar();
+    await vi.waitFor(() => expect(xhr.onload).toHaveBeenCalledOnce());
 
-    expect(xhr.onload).toHaveBeenCalledOnce();
     expect(ctx.chamadasRota()).toHaveLength(0);
     expect(xhr.aberturas).toHaveLength(1);
   });
@@ -490,9 +488,8 @@ describe('global.js - silent refresh em XMLHttpRequest (e $.ajax, que delega ao 
     xhr.responder(403, {}, { 'X-Gestor-Csrf-Error': 'CSRF_INVALID_OR_EXPIRED' });
     expect(xhr.onload).not.toHaveBeenCalled();
 
-    await esperar();
+    await vi.waitFor(() => expect(xhr.onload).toHaveBeenCalledOnce());
 
-    expect(xhr.onload).toHaveBeenCalledOnce();
     expect(xhr.status).toBe(403);
     expect(xhr.aberturas).toHaveLength(1);
   });
@@ -504,11 +501,10 @@ describe('global.js - silent refresh em XMLHttpRequest (e $.ajax, que delega ao 
     xhr.open('POST', '/site/x/');
     xhr.send();
     xhr.responder(403, { code: 'CSRF_INVALID_OR_EXPIRED' });
-    await esperar();
+    await vi.waitFor(() => expect(xhr.aberturas).toHaveLength(2));
     xhr.responder(403, { code: 'CSRF_INVALID_OR_EXPIRED' });
-    await esperar();
+    await vi.waitFor(() => expect(xhr.onload).toHaveBeenCalledOnce());
 
-    expect(xhr.onload).toHaveBeenCalledOnce();
     expect(xhr.aberturas).toHaveLength(2);
     expect(ctx.chamadasRota()).toHaveLength(1);
   });
@@ -520,9 +516,8 @@ describe('global.js - silent refresh em XMLHttpRequest (e $.ajax, que delega ao 
     xhr.open('POST', '/site/x/', false);
     xhr.send();
     xhr.responder(403, { code: 'CSRF_INVALID_OR_EXPIRED' });
-    await esperar();
+    await vi.waitFor(() => expect(xhr.onload).toHaveBeenCalledOnce());
 
-    expect(xhr.onload).toHaveBeenCalledOnce();
     expect(ctx.chamadasRota()).toHaveLength(0);
   });
 });
