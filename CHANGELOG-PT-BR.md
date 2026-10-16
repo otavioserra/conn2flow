@@ -5,6 +5,13 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.8] - 2026-10-16
+
+### Fixed
+- Deploy: o transporte rsync via SSH agora garante a gravação dos arquivos com o usuário e grupo de destino (`--chown`) mesmo em conexões autenticadas como root (`REQ-281`).
+- Atualizador pelo painel: liberação do `deploy.lock` sempre que uma etapa web do atualizador retornar erro, não apenas em erros fatais do PHP (`REQ-280`).
+- Atualizador pelo painel: detecção de processos donos mortos da trava via `posix_kill($pid, 0)` quando `/proc` for inacessível sob restrições de `open_basedir` do PHP (`REQ-280`).
+
 ## [3.0.7] - 2026-10-15
 
 ### Fixed

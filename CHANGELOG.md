@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.8] - 2026-10-16
+
+### Fixed
+- Deploy: SSH rsync transport now ensures files are written with the target site's owner and group (`--chown`) even when connecting as root (`REQ-281`).
+- Panel updates: release `deploy.lock` whenever an in-panel update step encounters any error, not only fatal PHP errors (`REQ-280`).
+- Panel updates: detect stale lock owner processes via `posix_kill($pid, 0)` when `/proc` is inaccessible due to PHP `open_basedir` restrictions (`REQ-280`).
+
 ## [3.0.7] - 2026-10-15
 
 ### Fixed
