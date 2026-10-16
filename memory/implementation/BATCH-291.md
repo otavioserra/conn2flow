@@ -1,7 +1,7 @@
 ---
 id: "BATCH-291"
 title: "Estabilização do teste assíncrono de XHR no global-csrf-refresh (REQ-282)"
-status: "implemented-pending-homologation"
+status: "complete"
 date: "2026-10-16"
 author: "architect"
 target_repo: "conn2flow"

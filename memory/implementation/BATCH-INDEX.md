@@ -13,9 +13,9 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
-| BATCH-291 | implemented-pending-homologation | Estabilização do teste assíncrono de XHR no global-csrf-refresh (REQ-282) | [BATCH-291.md](BATCH-291.md) | Vitest 700/700; vi.waitFor determinístico. |
-| BATCH-290 | implemented-pending-homologation | Deploy SSH grava com o dono do destino também entrando como root (BL-033) (REQ-281) | [BATCH-290.md](BATCH-290.md) | PHPUnit 1.860; 3 testes com bash real. |
-| BATCH-289 | implemented-pending-homologation | Trava da atualização pelo painel: dono morto via posix (open_basedir esconde o /proc) e etapa com erro cancela a sessão (REQ-280) | [BATCH-289.md](BATCH-289.md) | PHPUnit 1.857, Vitest 700. |
+| BATCH-291 | complete | Estabilização do teste assíncrono de XHR no global-csrf-refresh (REQ-282) | [BATCH-291.md](BATCH-291.md) | Vitest 700/700; vi.waitFor determinístico; CI release 3.0.8 verde. |
+| BATCH-290 | complete | Deploy SSH grava com o dono do destino também entrando como root (BL-033) (REQ-281) | [BATCH-290.md](BATCH-290.md) | PHPUnit 1.860; 3 testes com bash real; release 3.0.8 homologado. |
+| BATCH-289 | complete | Trava da atualização pelo painel: dono morto via posix (open_basedir esconde o /proc) e etapa com erro cancela a sessão (REQ-280) | [BATCH-289.md](BATCH-289.md) | PHPUnit 1.857, Vitest 700; release 3.0.8 homologado. |
 | BATCH-288 | implemented-pending-homologation | Sessão de banco da atualização com wait_timeout longo (MariaDB de produção a 10 s derrubava a sincronização) (REQ-279) | [BATCH-288.md](BATCH-288.md) | PHPUnit 1.852; reprodução e correção no MariaDB 11.8 do Lab. |
 | BATCH-287 | implemented-pending-homologation | Atualizador do core sempre entregue mesmo com manifesto desatualizado (a 3.0.5 preservou o próprio atualizador no temp) (REQ-278) | [BATCH-287.md](BATCH-287.md) | PHPUnit 1.849, 4 novos. |
 | BATCH-286 | implemented-pending-homologation | Hotfix do atualizador pelo painel: erro fatal libera a trava, 1 GB nas etapas pesadas, dono morto libera, painel oferece liberar e tentar de novo (REQ-277) | [BATCH-286.md](BATCH-286.md) | PHPUnit 17 (fatal real em processo à parte), E2E 8/8 no Lab. |

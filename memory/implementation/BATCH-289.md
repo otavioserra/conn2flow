@@ -1,7 +1,7 @@
 ---
 id: "BATCH-289"
 title: "Trava da atualização pelo painel: dono morto sob open_basedir e etapa com erro (REQ-280)"
-status: "implemented-pending-homologation"
+status: "complete"
 date: "2026-10-15"
 author: "executor"
 target_repo: "conn2flow"

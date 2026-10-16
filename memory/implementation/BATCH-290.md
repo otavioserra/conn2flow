@@ -1,7 +1,7 @@
 ---
 id: "BATCH-290"
 title: "Deploy SSH com o dono do destino entrando como root (REQ-281)"
-status: "implemented-pending-homologation"
+status: "complete"
 date: "2026-10-16"
 author: "executor"
 target_repo: "conn2flow"
