@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-281.md](req-281.md) (BATCH-290 `implemented-pending-homologation`, 2026-10-16, branch `feat/req-281`, Core — vai na 3.0.8 com a req-280): deploy SSH grava com o dono do destino também como root (BL-033).
   - [req-280.md](req-280.md) (BATCH-289 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-280`, Core — vai na 3.0.8): trava da atualização pelo painel — dono morto sob open_basedir e etapa com erro.
   - [req-280.md](req-280.md) (BATCH-289 `ready-for-intake`, 2026-10-15, Core): Ordenação cronológica decrescente dos logs recentes no módulo `admin-atualizacoes`.
   - [req-279.md](req-279.md) (BATCH-288 `implemented-pending-homologation`, 2026-10-15, branch `feat/req-279`, Core — vai na 3.0.7): sessão de banco da atualização não cai com wait_timeout curto.
