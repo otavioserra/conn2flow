@@ -320,6 +320,25 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertSame('(arquivo grande demais para o diff)', instalacao_diff(str_repeat('x', INSTALACAO_DIFF_MAX_BYTES + 1), 'y'));
     }
 
+    /** req-284: arquivo acima do limite não é lido para o diff (seed de 83 MB derrubava a API com 500). */
+    public function testDiffDeArquivoGrandeNaoCarregaOConteudo(): void
+    {
+        $grande = $this->raiz . 'grande.json';
+        $pequeno = $this->raiz . 'pequeno.json';
+        $fh = fopen($grande, 'wb');
+        for ($i = 0; $i < 8; $i++) fwrite($fh, str_repeat('x', 1024 * 1024));
+        fclose($fh);
+        file_put_contents($pequeno, "a\nb\n");
+
+        memory_reset_peak_usage();
+        $antes = memory_get_peak_usage();
+        $this->assertSame('(arquivo grande demais para o diff)', instalacao_diff_arquivos($grande, $pequeno, 'grande.json'));
+        $this->assertLessThan(1024 * 1024, memory_get_peak_usage() - $antes, 'O arquivo de 8 MB não pode ser carregado.');
+
+        file_put_contents($grande, "a\nc\n");
+        $this->assertStringContainsString('@2 + b', (string)instalacao_diff_arquivos($grande, $pequeno, 'x'));
+    }
+
     // ===== req-278: o atualizador do core sempre chega
 
     public function testAtualizadorDoCoreChegaMesmoComManifestoDesatualizado(): void
