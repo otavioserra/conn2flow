@@ -7,7 +7,7 @@
 - [x] Envelope `status`, `message`, `data`, `timestamp`; códigos 200, 201, 400, 401, 403, 404, 405 e 409 exercitados.
 - [x] `ApiCrudReq283Test` 13/13; PHPUnit completo 1.873 sem falhas (rodada intermitente registrada no lote).
 - [x] Lab: `project:sync-core conn2flow-site-local --skip-css` saída 0, hashes conferidos; E2E HTTP 22/22; PATs revogados.
-- [ ] Revisão independente (tríade).
+- [x] Revisão independente (tríade): [REV-001](../human-reviews/rev-001.md), **RECOMMEND-REVISION** em 2026-10-19. F1–F4 abertos: acesso base ao módulo, falhas de persistência, corrida de versão e mensagens sem i18n. Testes dirigidos 13/13; reproduções isoladas anexas à ficha.
 - [ ] Homologação humana.
 
 Relatório: [BATCH-292](../implementation/BATCH-292.md).

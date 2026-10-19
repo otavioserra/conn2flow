@@ -262,17 +262,19 @@ Decisão do Engenheiro Chefe em 2026-10-07: "tudo isso que você fez faz parte d
 - A próxima frente é a de agentes de IA no `conn2flow-site`; as fases 6 e 7 da lousa (compartilhamento e desenho) ficam para depois dela. A fase 6 já tem definição: por perfil para quem está logado e link com código longo para comentar sem usuário.
 - Substitui o item de DEC-133 que mantinha as novidades fora da linha de lançamento.
 
-## DEC-135 - 2026-10-19 - proposed
+## DEC-135 - 2026-10-19 - accepted
 
 **CRUD da API é opt-in por módulo, com colunas listadas no manifesto (REQ-283 / BATCH-292).**
 
-Proposta do Executor durante a Fase 1; aguarda aceite do Arquiteto e do Humano.
+Aceita pelo Arquiteto Master em 2026-10-19 após revisão independente (REV-001):
 
 - O motor `gestor/bibliotecas/api-crud.php` só atende módulos com `api.crud` no `{modulo}.json`. Ter `tabela` é necessário, não suficiente: expor qualquer módulo pela tabela levaria colunas como `usuarios.senha` para a API.
 - `api.crud.campos` lista as colunas graváveis; `leitura` (padrão: ids, campos e metadados) as devolvidas. Id, status, versão, datas, `language` e a coluna do autor são mantidos pelo motor e recusados no corpo.
 - O hook `api` do módulo continua com prioridade; o motor é o fallback de `api_handle_modulo()` quando o hook não responde.
-- RBAC: `gestor_acesso(operacao, modulo, usuario)` com o vocabulário do painel (`listar`, `visualizar`, `adicionar`, `editar`, `excluir`, `status`, `clonar`); operação não cadastrada vale o acesso ao módulo, como no painel. Escopo do token: leitura aceita `read`, `write` ou `mobile`; escrita exige `write` ou `mobile`.
-- O id alfanumérico não muda na edição pela API (o painel o regenera ao trocar o nome); concorrência por `versao` no corpo ou `If-Match`, com 409.
+- RBAC: O acesso base ao módulo em `usuarios_perfis_modulos` é pré-requisito mandatório antes de qualquer consulta de operação; não é permitido herdar acesso a operações de módulos desvinculados do perfil. Escopo do token: leitura aceita `read`, `write` ou `mobile`; escrita exige `write` ou `mobile`.
+- Persistência e Concorrência: A confirmação de escrita e emissão de código 200/201/204 exige validação explícita de linhas afetadas e resultado positivo do driver de banco; concorrência otimista via `versao` ou `If-Match` devolve 409 imediato se afetar 0 linhas por desatualização.
+- Internacionalização: Mensagens públicas expostas pela API devem usar `gestor_variaveis` (pt-br/en).
+- O id alfanumérico não muda na edição pela API (o painel o regenera ao trocar o nome).
 - As Fases 2 a 4 passam a ser "declarar `api.crud` e os hooks de ciclo de vida" em cada módulo.
 
 [Archived history](<archive/compacted/DECISION-LOG-1aee91bdfe67.md>)

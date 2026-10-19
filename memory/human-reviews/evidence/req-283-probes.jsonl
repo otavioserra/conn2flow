@@ -1,0 +1,8 @@
+{"probe":"RBAC real sem vinculo ao modulo, com permissao editar","module_links":0,"get_code":403,"patch_code":200,"stored_name":"Alterado sem acesso ao modulo"}
+{"probe":"Concorrencia apos snapshot","expected_version":2,"returned_non_null":true,"returned_name":"Outro escritor","stored_name":"Outro escritor"}
+{"probe":"Update zero linhas sem versao","code":200,"returned_name":"Outro escritor"}
+{"warnings":[]}
+{"probe":"Falha de escrita retorna false como no banco_query mysqli","create_code":201,"create_returned_id":"base","update_code":200,"delete_code":200,"stored":{"id":"base","nome":"Outro escritor","status":"A"}}
+{"probe":"Handler real com hook sucesso","response":{"data":{"legacy":true},"message":"Legado","code":202},"loaded":[]}
+{"probe":"Handler real com hook null","response":{"data":{"id_categorias":1,"id":"base","nome":"Outro escritor","plugin":null,"id_modulos":null,"id_categorias_pai":null,"id_usuarios":7,"status":"A","versao":3,"data_criacao":"2026-10-19 14:54:43","data_modificacao":"2026-10-19 14:54:43"},"message":"OK","code":200},"loaded":["api-crud"]}
+{"probe":"Handler real com hook erro","response":{"message":"Negado pelo hook","code":403},"loaded":[]}
