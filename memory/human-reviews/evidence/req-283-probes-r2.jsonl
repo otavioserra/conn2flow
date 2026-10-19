@@ -1,0 +1,7 @@
+{"probe":"F1 RBAC real sem vinculo ao modulo, com permissao editar","module_links":0,"get_code":403,"patch_code":403,"patch_message":"Perfil sem acesso ao módulo admin-categorias.","stored_name":"Base"}
+{"probe":"F3 Concorrencia apos snapshot (primitiva)","expected_version":1,"code":409,"detalhes":{"versao_atual":2},"stored_name":"Outro escritor"}
+{"probe":"F3 Concorrencia apos pre-teste (rota PATCH)","code":409,"message":"Conflito de versão: o registro foi alterado por outra operação.","detalhes":{"versao_atual":3}}
+{"probe":"Update zero linhas sem versao","code":409,"message":"O registro foi alterado ou removido por outra operação."}
+{"probe":"F2 Falha de escrita retorna false como no banco_query mysqli","create_code":500,"create_has_data":false,"update_code":500,"delete_code":500,"status_code":500,"message":"Não foi possível gravar o registro. Tente novamente.","stored":{"n":1,"id":"base","nome":"Terceiro","status":"A"}}
+{"probe":"F4 Mensagem por variavel pt-br\/en","pt-br":"Registro não encontrado: nao-existe","en":"Record not found: nao-existe"}
+{"warnings":[],"server_log_lines":4}

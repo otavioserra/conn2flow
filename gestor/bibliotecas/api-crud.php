@@ -42,6 +42,21 @@ const API_CRUD_POR_PAGINA_MAXIMO = 100;
 const API_CRUD_EVENTOS = ['before_create', 'after_create', 'before_update', 'after_update', 'before_delete', 'after_delete'];
 
 /**
+ * Texto público da API no idioma corrente (variáveis globais `api-crud-*` de
+ * `gestor/resources/{idioma}/variables.json`), com os marcadores `#nome#` trocados.
+ *
+ * Variável ausente (banco ainda não atualizado) devolve o próprio id, nunca texto fixo.
+ */
+function api_crud_msg(string $id, array $troca = []): string {
+    $texto = (string)gestor_variaveis(['id' => $id]);
+    if ($texto === '') $texto = $id;
+    foreach ($troca as $marcador => $valor) {
+        $texto = str_replace('#' . $marcador . '#', (string)$valor, $texto);
+    }
+    return $texto;
+}
+
+/**
  * Monta a resposta de erro no contrato do hook `api`.
  */
 function api_crud_erro(int $code, string $mensagem, $detalhes = null): array {
@@ -244,14 +259,14 @@ function api_crud_validar_corpo(array $cfg, array $corpo, bool $exigir_obrigator
 
     $desconhecidos = array_values(array_diff(array_keys($corpo), $cfg['campos']));
     if ($desconhecidos) {
-        return api_crud_erro(400, 'Campos não permitidos: ' . implode(', ', $desconhecidos), ['permitidos' => $cfg['campos']]);
+        return api_crud_erro(400, api_crud_msg('api-crud-campos-nao-permitidos', ['campos' => implode(', ', $desconhecidos)]), ['permitidos' => $cfg['campos']]);
     }
 
     $dados = [];
     foreach ($corpo as $campo => $valor) {
         if (is_bool($valor)) $valor = $valor ? '1' : '0';
         if ($valor !== null && !is_scalar($valor)) {
-            return api_crud_erro(400, 'Valor inválido no campo ' . $campo . ': use texto, número, booleano ou null.');
+            return api_crud_erro(400, api_crud_msg('api-crud-valor-invalido', ['campo' => $campo]));
         }
         $dados[$campo] = $valor === null ? null : (string)$valor;
     }
@@ -261,12 +276,12 @@ function api_crud_validar_corpo(array $cfg, array $corpo, bool $exigir_obrigator
         foreach ($cfg['obrigatorios'] as $campo) {
             if (!isset($dados[$campo]) || trim($dados[$campo]) === '') $faltando[] = $campo;
         }
-        if ($faltando) return api_crud_erro(400, 'Campos obrigatórios ausentes: ' . implode(', ', $faltando), ['obrigatorios' => $cfg['obrigatorios']]);
+        if ($faltando) return api_crud_erro(400, api_crud_msg('api-crud-obrigatorios-ausentes', ['campos' => implode(', ', $faltando)]), ['obrigatorios' => $cfg['obrigatorios']]);
     }
 
     foreach ($cfg['obrigatorios'] as $campo) {
         if (array_key_exists($campo, $dados) && ($dados[$campo] === null || trim($dados[$campo]) === '')) {
-            return api_crud_erro(400, 'Campo obrigatório vazio: ' . $campo);
+            return api_crud_erro(400, api_crud_msg('api-crud-obrigatorio-vazio', ['campo' => $campo]));
         }
     }
 
@@ -296,6 +311,13 @@ function api_crud_ciclo(array $cfg, string $evento, array $contexto): ?array {
 }
 
 /**
+ * Converte o erro devolvido por um hook before_* no contrato do hook `api`.
+ */
+function api_crud_recusa(array $retorno): array {
+    return api_crud_erro((int)($retorno['code'] ?? 400), (string)($retorno['mensagem'] ?? api_crud_msg('api-crud-operacao-recusada')), $retorno['detalhes'] ?? null);
+}
+
+/**
  * Aplica o retorno de um hook before_*: erro aborta, `dados` substitui (filtrado).
  *
  * @return array ['dados' => array] ou erro no contrato do hook.
@@ -303,7 +325,7 @@ function api_crud_ciclo(array $cfg, string $evento, array $contexto): ?array {
 function api_crud_aplicar_before(array $cfg, ?array $retorno, array $dados): array {
     if ($retorno === null) return ['dados' => $dados];
     if (!empty($retorno['erro'])) {
-        return api_crud_erro((int)($retorno['code'] ?? 400), (string)($retorno['mensagem'] ?? 'Operação recusada pelo módulo'), $retorno['detalhes'] ?? null);
+        return api_crud_recusa($retorno);
     }
     if (isset($retorno['dados']) && is_array($retorno['dados'])) {
         $dados = array_intersect_key($retorno['dados'], array_flip($cfg['campos']));
@@ -321,21 +343,21 @@ function api_crud_listar(array $cfg, array $parametros): array {
     $pagina = max(1, (int)($parametros['page'] ?? 1));
     $por_pagina = (int)($parametros['per_page'] ?? API_CRUD_POR_PAGINA_PADRAO);
     if ($por_pagina < 1 || $por_pagina > API_CRUD_POR_PAGINA_MAXIMO) {
-        return api_crud_erro(400, 'per_page deve estar entre 1 e ' . API_CRUD_POR_PAGINA_MAXIMO . '.');
+        return api_crud_erro(400, api_crud_msg('api-crud-per-page-invalido', ['maximo' => API_CRUD_POR_PAGINA_MAXIMO]));
     }
 
     $ordem_campo = (string)($parametros['sort'] ?? $t['id_numerico']);
     if (!in_array($ordem_campo, $cfg['leitura'], true)) {
-        return api_crud_erro(400, 'sort inválido: ' . $ordem_campo, ['permitidos' => $cfg['leitura']]);
+        return api_crud_erro(400, api_crud_msg('api-crud-sort-invalido', ['campo' => $ordem_campo]), ['permitidos' => $cfg['leitura']]);
     }
     $ordem = strtolower((string)($parametros['order'] ?? 'asc'));
-    if (!in_array($ordem, ['asc', 'desc'], true)) return api_crud_erro(400, 'order deve ser asc ou desc.');
+    if (!in_array($ordem, ['asc', 'desc'], true)) return api_crud_erro(400, api_crud_msg('api-crud-order-invalido'));
 
     $where = "WHERE " . $t['status'] . "!='D'" . api_crud_where_idioma($cfg, $idioma);
 
     if (isset($parametros['status']) && $parametros['status'] !== '') {
         $status = strtoupper((string)$parametros['status']);
-        if (!in_array($status, ['A', 'I'], true)) return api_crud_erro(400, 'status deve ser A ou I.');
+        if (!in_array($status, ['A', 'I'], true)) return api_crud_erro(400, api_crud_msg('api-crud-status-invalido'));
         $where .= " AND " . $t['status'] . "='" . $status . "'";
     }
 
@@ -395,10 +417,16 @@ function api_crud_inserir(array $cfg, array $dados, array $usuario, string $idio
     $campos[] = [$t['data_criacao'], 'NOW()', true];
     $campos[] = [$t['data_modificacao'], 'NOW()', true];
 
-    banco_insert_name($campos, $t['nome']);
+    // A inserção só vale comprovada: query aceita e uma linha gravada. Sem isso o último id do
+    // driver pode ser de uma inserção anterior e o motor devolveria outro registro.
+    if (banco_insert_name($campos, $t['nome']) === false || banco_linhas_afetadas() === 0) {
+        error_log('api-crud [' . $cfg['modulo'] . ']: falha no INSERT em ' . $t['nome'] . '.');
+        return null;
+    }
 
     $id_numerico = banco_last_id();
-    if ($id_numerico) return api_crud_reler($cfg, $id_numerico);
+    $linha = $id_numerico ? api_crud_reler($cfg, $id_numerico) : null;
+    if ($linha && (string)$linha[$t['id']] === (string)$id) return $linha;
 
     return api_crud_buscar($cfg, $id, $idioma);
 }
@@ -414,10 +442,10 @@ function api_crud_criar(array $cfg, array $corpo, array $usuario, string $idioma
     if (!empty($antes['erro'])) return $antes;
 
     $registro = api_crud_inserir($cfg, $antes['dados'], $usuario, $idioma);
-    if (!$registro) return api_crud_erro(500, 'Falha ao gravar o registro.');
+    if (!$registro) return api_crud_erro(500, api_crud_msg('api-crud-falha-gravacao'));
 
     api_crud_ciclo($cfg, 'after_create', ['registro' => $registro, 'usuario' => $usuario]);
-    return api_crud_ok($registro, 'Registro criado', 201);
+    return api_crud_ok($registro, api_crud_msg('api-crud-registro-criado'), 201);
 }
 
 /**
@@ -438,27 +466,44 @@ function api_crud_versao_esperada(array $cfg, array $corpo, ?string $if_match) {
  * @param array    $sets     Colunas => valor (null grava NULL).
  * @param int|null $esperada Versão exigida; null dispensa a checagem.
  *
- * @return array|null Linha atualizada, ou null em conflito de versão.
+ * O resultado é decidido pelo próprio UPDATE condicional, não por uma releitura: falha da query
+ * é erro de servidor (500); zero linhas afetadas é conflito (409) — versão vencida por outra
+ * escrita ou registro removido. Sem contador de linhas (modo distribuído), a versão relida decide.
+ *
+ * @return array ['registro' => linha atualizada] ou erro no contrato do hook.
  */
-function api_crud_gravar(array $cfg, array $registro, array $sets, ?int $esperada): ?array {
+function api_crud_gravar(array $cfg, array $registro, array $sets, ?int $esperada): array {
     $t = $cfg['tabela'];
 
     $partes = [];
     foreach ($sets as $campo => $valor) {
         $partes[] = $campo . "=" . ($valor === null ? 'NULL' : "'" . banco_escape_field($valor) . "'");
     }
+    // A versão sempre muda, então a linha encontrada sempre conta como afetada no MySQL.
     $partes[] = $t['versao'] . "=" . $t['versao'] . "+1";
     $partes[] = $t['data_modificacao'] . "=NOW()";
 
     $where = "WHERE " . $t['id_numerico'] . "='" . (int)$registro[$t['id_numerico']] . "'";
     if ($esperada !== null) $where .= " AND " . $t['versao'] . "='" . $esperada . "'";
 
-    banco_update(implode(',', $partes), $t['nome'], $where);
+    if (banco_update(implode(',', $partes), $t['nome'], $where) === false) {
+        error_log('api-crud [' . $cfg['modulo'] . ']: falha no UPDATE em ' . $t['nome'] . '.');
+        return api_crud_erro(500, api_crud_msg('api-crud-falha-gravacao'));
+    }
+    $afetadas = banco_linhas_afetadas();
 
     $depois = api_crud_reler($cfg, $registro[$t['id_numerico']]);
-    if ($esperada !== null && (!$depois || (int)$depois[$t['versao']] !== $esperada + 1)) return null;
+    $perdeu = $afetadas === 0 || !$depois
+        || ($afetadas === null && $esperada !== null && (int)$depois[$t['versao']] !== $esperada + 1);
 
-    return $depois;
+    if ($perdeu) {
+        if ($esperada !== null) {
+            return api_crud_erro(409, api_crud_msg('api-crud-conflito-versao'), $depois ? ['versao_atual' => (int)$depois[$t['versao']]] : null);
+        }
+        return api_crud_erro(409, api_crud_msg('api-crud-conflito-registro'));
+    }
+
+    return ['registro' => $depois];
 }
 
 /**
@@ -468,23 +513,23 @@ function api_crud_atualizar(array $cfg, array $registro, array $corpo, array $us
     $t = $cfg['tabela'];
 
     $esperada = api_crud_versao_esperada($cfg, $corpo, $if_match);
-    if ($esperada === false) return api_crud_erro(400, 'Versão inválida: informe um número inteiro.');
+    if ($esperada === false) return api_crud_erro(400, api_crud_msg('api-crud-versao-invalida'));
     if ($esperada !== null && (int)$registro[$t['versao']] !== $esperada) {
-        return api_crud_erro(409, 'Conflito de versão: o registro foi alterado por outra operação.', ['versao_atual' => (int)$registro[$t['versao']]]);
+        return api_crud_erro(409, api_crud_msg('api-crud-conflito-versao'), ['versao_atual' => (int)$registro[$t['versao']]]);
     }
 
     $validacao = api_crud_validar_corpo($cfg, $corpo, $total);
     if (!empty($validacao['erro'])) return $validacao;
-    if (!$validacao['dados']) return api_crud_erro(400, 'Nenhum campo para atualizar.', ['permitidos' => $cfg['campos']]);
+    if (!$validacao['dados']) return api_crud_erro(400, api_crud_msg('api-crud-nenhum-campo'), ['permitidos' => $cfg['campos']]);
 
     $antes = api_crud_aplicar_before($cfg, api_crud_ciclo($cfg, 'before_update', ['dados' => $validacao['dados'], 'registro' => $registro, 'usuario' => $usuario]), $validacao['dados']);
     if (!empty($antes['erro'])) return $antes;
 
-    $depois = api_crud_gravar($cfg, $registro, $antes['dados'], $esperada);
-    if (!$depois) return api_crud_erro(409, 'Conflito de versão: o registro foi alterado por outra operação.');
+    $gravacao = api_crud_gravar($cfg, $registro, $antes['dados'], $esperada);
+    if (!empty($gravacao['erro'])) return $gravacao;
 
-    api_crud_ciclo($cfg, 'after_update', ['registro' => $depois, 'anterior' => $registro, 'usuario' => $usuario]);
-    return api_crud_ok($depois, 'Registro atualizado');
+    api_crud_ciclo($cfg, 'after_update', ['registro' => $gravacao['registro'], 'anterior' => $registro, 'usuario' => $usuario]);
+    return api_crud_ok($gravacao['registro'], api_crud_msg('api-crud-registro-atualizado'));
 }
 
 /**
@@ -494,14 +539,17 @@ function api_crud_excluir(array $cfg, array $registro, array $usuario): array {
     $t = $cfg['tabela'];
 
     $antes = api_crud_ciclo($cfg, 'before_delete', ['registro' => $registro, 'usuario' => $usuario]);
-    if ($antes !== null && !empty($antes['erro'])) {
-        return api_crud_erro((int)($antes['code'] ?? 400), (string)($antes['mensagem'] ?? 'Operação recusada pelo módulo'), $antes['detalhes'] ?? null);
-    }
+    if ($antes !== null && !empty($antes['erro'])) return api_crud_recusa($antes);
 
     if ($cfg['exclusao'] === 'definitiva') {
-        banco_delete($t['nome'], "WHERE " . $t['id_numerico'] . "='" . (int)$registro[$t['id_numerico']] . "'");
+        if (banco_delete($t['nome'], "WHERE " . $t['id_numerico'] . "='" . (int)$registro[$t['id_numerico']] . "'") === false) {
+            error_log('api-crud [' . $cfg['modulo'] . ']: falha no DELETE em ' . $t['nome'] . '.');
+            return api_crud_erro(500, api_crud_msg('api-crud-falha-gravacao'));
+        }
+        if (banco_linhas_afetadas() === 0) return api_crud_erro(409, api_crud_msg('api-crud-conflito-registro'));
     } else {
-        api_crud_gravar($cfg, $registro, [$t['status'] => 'D'], null);
+        $gravacao = api_crud_gravar($cfg, $registro, [$t['status'] => 'D'], null);
+        if (!empty($gravacao['erro'])) return $gravacao;
     }
 
     api_crud_ciclo($cfg, 'after_delete', ['registro' => $registro, 'usuario' => $usuario, 'exclusao' => $cfg['exclusao']]);
@@ -509,7 +557,7 @@ function api_crud_excluir(array $cfg, array $registro, array $usuario): array {
         $t['id'] => $registro[$t['id']],
         $t['id_numerico'] => $registro[$t['id_numerico']],
         'exclusao' => $cfg['exclusao'],
-    ], 'Registro excluído');
+    ], api_crud_msg('api-crud-registro-excluido'));
 }
 
 /**
@@ -520,16 +568,16 @@ function api_crud_status(array $cfg, array $registro, array $corpo, array $usuar
 
     $atual = (string)$registro[$t['status']];
     $novo = isset($corpo['status']) ? strtoupper((string)$corpo['status']) : ($atual === 'A' ? 'I' : 'A');
-    if (!in_array($novo, ['A', 'I'], true)) return api_crud_erro(400, 'status deve ser A ou I.');
+    if (!in_array($novo, ['A', 'I'], true)) return api_crud_erro(400, api_crud_msg('api-crud-status-invalido'));
 
     $antes = api_crud_ciclo($cfg, 'before_update', ['dados' => [$t['status'] => $novo], 'registro' => $registro, 'usuario' => $usuario]);
-    if ($antes !== null && !empty($antes['erro'])) {
-        return api_crud_erro((int)($antes['code'] ?? 400), (string)($antes['mensagem'] ?? 'Operação recusada pelo módulo'), $antes['detalhes'] ?? null);
-    }
+    if ($antes !== null && !empty($antes['erro'])) return api_crud_recusa($antes);
 
-    $depois = api_crud_gravar($cfg, $registro, [$t['status'] => $novo], null);
-    api_crud_ciclo($cfg, 'after_update', ['registro' => $depois, 'anterior' => $registro, 'usuario' => $usuario]);
-    return api_crud_ok($depois, 'Status atualizado');
+    $gravacao = api_crud_gravar($cfg, $registro, [$t['status'] => $novo], null);
+    if (!empty($gravacao['erro'])) return $gravacao;
+
+    api_crud_ciclo($cfg, 'after_update', ['registro' => $gravacao['registro'], 'anterior' => $registro, 'usuario' => $usuario]);
+    return api_crud_ok($gravacao['registro'], api_crud_msg('api-crud-status-atualizado'));
 }
 
 /**
@@ -557,10 +605,10 @@ function api_crud_clonar(array $cfg, array $registro, array $corpo, array $usuar
     if (!empty($antes['erro'])) return $antes;
 
     $novo = api_crud_inserir($cfg, $antes['dados'], $usuario, $idioma);
-    if (!$novo) return api_crud_erro(500, 'Falha ao gravar o clone.');
+    if (!$novo) return api_crud_erro(500, api_crud_msg('api-crud-falha-gravacao'));
 
     api_crud_ciclo($cfg, 'after_create', ['registro' => $novo, 'origem' => $registro, 'usuario' => $usuario]);
-    return api_crud_ok($novo, 'Registro clonado', 201);
+    return api_crud_ok($novo, api_crud_msg('api-crud-registro-clonado'), 201);
 }
 
 /**
@@ -585,7 +633,7 @@ function api_crud_despachar(string $modulo_id, string $acao, string $metodo, arr
     $ref = $segmentos[0] ?? null;
     $sub = $segmentos[1] ?? null;
     if (count($segmentos) > 2 || ($sub !== null && !in_array($sub, ['status', 'clone'], true))) {
-        return api_crud_erro(404, 'Rota não encontrada: ' . $acao);
+        return api_crud_erro(404, api_crud_msg('api-crud-rota-nao-encontrada', ['rota' => $acao]));
     }
 
     // Operação no vocabulário do painel: sem operação cadastrada, vale o acesso ao módulo.
@@ -597,15 +645,21 @@ function api_crud_despachar(string $modulo_id, string $acao, string $metodo, arr
         $operacoes = ['POST' => $sub === 'status' ? 'status' : 'clonar'];
     }
     if (!isset($operacoes[$metodo])) {
-        return api_crud_erro(405, 'Método não permitido. Use: ' . implode(', ', array_keys($operacoes)) . '.');
+        return api_crud_erro(405, api_crud_msg('api-crud-metodo-nao-permitido', ['metodos' => implode(', ', array_keys($operacoes))]));
     }
     $operacao = $operacoes[$metodo];
 
     if (!api_crud_escopo_permite($usuario, $metodo !== 'GET')) {
-        return api_crud_erro(403, 'Escopo do token insuficiente para esta operação.', ['necessario' => $metodo === 'GET' ? 'read' : 'write']);
+        return api_crud_erro(403, api_crud_msg('api-crud-escopo-insuficiente'), ['necessario' => $metodo === 'GET' ? 'read' : 'write']);
+    }
+    // O acesso base ao módulo (usuarios_perfis_modulos) é exigido à parte: gestor_acesso() com
+    // operação cadastrada aceita a permissão da operação mesmo sem o vínculo do perfil ao módulo,
+    // e uma permissão residual não pode sobreviver à retirada do acesso ao módulo.
+    if (!gestor_acesso(false, $modulo_id, $usuario)) {
+        return api_crud_erro(403, api_crud_msg('api-crud-perfil-sem-modulo', ['modulo' => $modulo_id]));
     }
     if (!gestor_acesso($operacao, $modulo_id, $usuario)) {
-        return api_crud_erro(403, 'Perfil sem permissão para ' . $operacao . ' no módulo ' . $modulo_id . '.');
+        return api_crud_erro(403, api_crud_msg('api-crud-perfil-sem-permissao', ['operacao' => $operacao, 'modulo' => $modulo_id]));
     }
 
     $idioma = api_crud_idioma($parametros + $corpo);
@@ -615,7 +669,7 @@ function api_crud_despachar(string $modulo_id, string $acao, string $metodo, arr
     }
 
     $registro = api_crud_buscar($cfg, $ref, $idioma);
-    if (!$registro) return api_crud_erro(404, 'Registro não encontrado: ' . $ref);
+    if (!$registro) return api_crud_erro(404, api_crud_msg('api-crud-registro-nao-encontrado', ['ref' => $ref]));
 
     switch ($operacao) {
         case 'visualizar': return api_crud_ok($registro);

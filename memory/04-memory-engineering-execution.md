@@ -24,6 +24,10 @@
 - **`banco_identificador` faz `strtolower` antes de tirar acento**: "Épsilon" vira `Epsilon` no id (legado do painel).
 - **PAT temporário para E2E no Lab**: `php -r` em `conn2flow-gestor` com `$_SERVER["SERVER_NAME"]="conn2flow.local"`, `require "config.php"` e `usuario_api_token_gerar(1, nome, ["read","write"], 1)`; ao fim, `usuario_api_token_revogar(id, 1)`. Pasta do site só com `sudo` (`ssh lab "sudo -u admin bash -c '...'"`).
 - **Publicar só o core no Lab** quando a árvore do site tem lote de outro agente: `./c2f project:sync-core conn2flow-site-local --skip-css` (mudança só de PHP, sem banco/CSS).
+- **Rodada 2 (REV-001)**: `gestor_acesso($op, ...)` com operação cadastrada aceita a permissão da operação **sem** vínculo em `usuarios_perfis_modulos`; quem precisa do acesso base chama antes `gestor_acesso(false, $modulo, $usuario)`.
+- **Escrita comprovada**: `banco_insert_name/update/delete` agora devolvem o resultado de `banco_query` (`false` em erro). Decidir sucesso/conflito por esse retorno e `banco_linhas_afetadas()` (0 = perdeu o UPDATE condicional → 409), nunca por releitura; `banco_last_id()` pode ser de inserção anterior quando o INSERT falha.
+- **Mensagens de biblioteca do core**: variáveis globais (sem `modulo`) em `gestor/resources/{lang}/variables.json`, marcadores `#nome#`; compilar com `php cli/c2f.php resources:sync --only=variaveis --skip-css --no-assets --no-origin-update` (gera só o `VariaveisData.json`; desfazer o carimbo em `schema-metadata.json`; o erro de `dist/` sem `PUBLIC_PATH` é esperado).
+- **Arnês com `error_log`**: em CLI o log cai no stdout e quebra o JSON do cenário; o arnês redireciona para arquivo (`logs()`). Para ver fatal de script que usa o arnês: `php -d display_errors=stderr`.
 
 ### REQ-272 / BATCH-281 — releases 3.0.0, 3.0.1 e 3.0.2 (2026-10-14)
 

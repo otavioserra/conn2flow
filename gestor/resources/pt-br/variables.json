@@ -987,5 +987,135 @@
         "id": "installation-home-footer",
         "value": "Um ponto de partida para suas ideias.",
         "type": "string"
+    },
+    {
+        "id": "api-crud-corpo-invalido",
+        "value": "O corpo da requisição deve ser um objeto JSON.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-campos-nao-permitidos",
+        "value": "Campos não permitidos: #campos#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-valor-invalido",
+        "value": "Valor inválido no campo #campo#: use texto, número, booleano ou null.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-obrigatorios-ausentes",
+        "value": "Campos obrigatórios ausentes: #campos#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-obrigatorio-vazio",
+        "value": "Campo obrigatório vazio: #campo#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-operacao-recusada",
+        "value": "Operação recusada pelo módulo.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-per-page-invalido",
+        "value": "per_page deve estar entre 1 e #maximo#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-sort-invalido",
+        "value": "sort inválido: #campo#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-order-invalido",
+        "value": "order deve ser asc ou desc.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-status-invalido",
+        "value": "status deve ser A ou I.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-falha-gravacao",
+        "value": "Não foi possível gravar o registro. Tente novamente.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-criado",
+        "value": "Registro criado.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-atualizado",
+        "value": "Registro atualizado.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-excluido",
+        "value": "Registro excluído.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-status-atualizado",
+        "value": "Status atualizado.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-clonado",
+        "value": "Registro clonado.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-versao-invalida",
+        "value": "Versão inválida: informe um número inteiro.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-conflito-versao",
+        "value": "Conflito de versão: o registro foi alterado por outra operação.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-conflito-registro",
+        "value": "O registro foi alterado ou removido por outra operação.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-nenhum-campo",
+        "value": "Nenhum campo para atualizar.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-rota-nao-encontrada",
+        "value": "Rota não encontrada: #rota#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-metodo-nao-permitido",
+        "value": "Método não permitido. Use: #metodos#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-escopo-insuficiente",
+        "value": "Escopo do token insuficiente para esta operação.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-perfil-sem-modulo",
+        "value": "Perfil sem acesso ao módulo #modulo#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-perfil-sem-permissao",
+        "value": "Perfil sem permissão para #operacao# no módulo #modulo#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-nao-encontrado",
+        "value": "Registro não encontrado: #ref#",
+        "type": "string"
     }
 ]

@@ -1492,7 +1492,7 @@ function api_handle_modulo($modulo_id, $action) {
 
     $corpo = api_get_request_body();
     if (!is_array($corpo)) {
-        api_response_error('O corpo da requisição deve ser um objeto JSON', 400);
+        api_response_error(gestor_variaveis(['id' => 'api-crud-corpo-invalido']) ?: 'api-crud-corpo-invalido', 400);
     }
 
     $data = array_merge(

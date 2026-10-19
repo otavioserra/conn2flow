@@ -757,8 +757,8 @@ function banco_select_campos_antes($campo){
  * @param string $campos Lista de campos e valores no formato "campo='valor'".
  * @param string $tabela Nome da tabela.
  * @param string $extra Condições extras (WHERE, etc.).
- * 
- * @return void
+ *
+ * @return mixed Resultado de banco_query(): false em falha.
  */
 function banco_update($campos,$tabela,$extra){
 	// Monta SQL UPDATE
@@ -766,9 +766,9 @@ function banco_update($campos,$tabela,$extra){
 		$sql = "UPDATE " . $tabela . " SET " . $campos . " " . $extra;
 	else
 		$sql = "UPDATE " . $tabela . " SET " . $campos;
-	
-	// Executa a query
-	$res = banco_query($sql);
+
+	// Executa a query; false indica falha (REQ-283: quem precisa comprovar a escrita confere).
+	return banco_query($sql);
 }
 
 /**
@@ -905,8 +905,8 @@ function banco_insert($campos,$tabela){
  *
  * @param array $dados Array de arrays [nome, valor, sem_aspas_simples].
  * @param string $tabela Nome da tabela.
- * 
- * @return void
+ *
+ * @return mixed Resultado de banco_query(): false em falha.
  */
 function banco_insert_name($dados,$tabela){
 	$nomes = '';
@@ -932,7 +932,7 @@ function banco_insert_name($dados,$tabela){
 	
 	// Executa INSERT
 	$sql = "INSERT INTO " . $tabela . " (" . $nomes . ") VALUES (" . $campos . ")";
-	$res = banco_query($sql);
+	return banco_query($sql);
 }
 
 /**
@@ -1173,12 +1173,12 @@ function banco_last_id(){
  *
  * @param string $tabela Nome da tabela.
  * @param string $extra Condições WHERE e outras cláusulas.
- * 
- * @return void
+ *
+ * @return mixed Resultado de banco_query(): false em falha.
  */
 function banco_delete($tabela,$extra){
 	$sql = "DELETE FROM " . $tabela . " " . $extra;
-	$res = banco_query($sql);
+	return banco_query($sql);
 }
 
 /**

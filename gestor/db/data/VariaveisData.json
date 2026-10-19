@@ -1701,6 +1701,240 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-corpo-invalido",
+        "valor": "O corpo da requisição deve ser um objeto JSON.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-campos-nao-permitidos",
+        "valor": "Campos não permitidos: #campos#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-valor-invalido",
+        "valor": "Valor inválido no campo #campo#: use texto, número, booleano ou null.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-obrigatorios-ausentes",
+        "valor": "Campos obrigatórios ausentes: #campos#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-obrigatorio-vazio",
+        "valor": "Campo obrigatório vazio: #campo#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-operacao-recusada",
+        "valor": "Operação recusada pelo módulo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-per-page-invalido",
+        "valor": "per_page deve estar entre 1 e #maximo#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-sort-invalido",
+        "valor": "sort inválido: #campo#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-order-invalido",
+        "valor": "order deve ser asc ou desc.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-status-invalido",
+        "valor": "status deve ser A ou I.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-falha-gravacao",
+        "valor": "Não foi possível gravar o registro. Tente novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-registro-criado",
+        "valor": "Registro criado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-registro-atualizado",
+        "valor": "Registro atualizado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-registro-excluido",
+        "valor": "Registro excluído.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-status-atualizado",
+        "valor": "Status atualizado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-registro-clonado",
+        "valor": "Registro clonado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-versao-invalida",
+        "valor": "Versão inválida: informe um número inteiro.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-conflito-versao",
+        "valor": "Conflito de versão: o registro foi alterado por outra operação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-conflito-registro",
+        "valor": "O registro foi alterado ou removido por outra operação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-nenhum-campo",
+        "valor": "Nenhum campo para atualizar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-rota-nao-encontrada",
+        "valor": "Rota não encontrada: #rota#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-metodo-nao-permitido",
+        "valor": "Método não permitido. Use: #metodos#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-escopo-insuficiente",
+        "valor": "Escopo do token insuficiente para esta operação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-perfil-sem-modulo",
+        "valor": "Perfil sem acesso ao módulo #modulo#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-perfil-sem-permissao",
+        "valor": "Perfil sem permissão para #operacao# no módulo #modulo#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "api-crud-registro-nao-encontrado",
+        "valor": "Registro não encontrado: #ref#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -3397,6 +3631,240 @@
         "modulo": null,
         "id": "installation-home-footer",
         "valor": "A starting point for your ideas.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-corpo-invalido",
+        "valor": "The request body must be a JSON object.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-campos-nao-permitidos",
+        "valor": "Fields not allowed: #campos#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-valor-invalido",
+        "valor": "Invalid value in field #campo#: use text, number, boolean or null.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-obrigatorios-ausentes",
+        "valor": "Missing required fields: #campos#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-obrigatorio-vazio",
+        "valor": "Required field is empty: #campo#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-operacao-recusada",
+        "valor": "Operation refused by the module.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-per-page-invalido",
+        "valor": "per_page must be between 1 and #maximo#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-sort-invalido",
+        "valor": "Invalid sort: #campo#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-order-invalido",
+        "valor": "order must be asc or desc.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-status-invalido",
+        "valor": "status must be A or I.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-falha-gravacao",
+        "valor": "The record could not be saved. Please try again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-registro-criado",
+        "valor": "Record created.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-registro-atualizado",
+        "valor": "Record updated.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-registro-excluido",
+        "valor": "Record deleted.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-status-atualizado",
+        "valor": "Status updated.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-registro-clonado",
+        "valor": "Record cloned.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-versao-invalida",
+        "valor": "Invalid version: provide an integer.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-conflito-versao",
+        "valor": "Version conflict: the record was changed by another operation.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-conflito-registro",
+        "valor": "The record was changed or removed by another operation.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-nenhum-campo",
+        "valor": "No fields to update.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-rota-nao-encontrada",
+        "valor": "Route not found: #rota#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-metodo-nao-permitido",
+        "valor": "Method not allowed. Use: #metodos#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-escopo-insuficiente",
+        "valor": "Token scope is insufficient for this operation.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-perfil-sem-modulo",
+        "valor": "Profile has no access to module #modulo#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-perfil-sem-permissao",
+        "valor": "Profile is not allowed to #operacao# in module #modulo#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "api-crud-registro-nao-encontrado",
+        "valor": "Record not found: #ref#",
         "tipo": "string",
         "grupo": null,
         "descricao": null

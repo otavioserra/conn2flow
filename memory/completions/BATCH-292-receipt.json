@@ -9,33 +9,39 @@
   "topologia": "triade",
   "autonomia": "autonomo_monitorado",
   "status": "ready-for-review",
-  "escopo": "Fase 1 da REQ-283: motor canônico de CRUD da API (gestor/bibliotecas/api-crud.php), fallback em api_handle_modulo, RBAC por perfil e escopo do token, admin-categorias habilitado via api.crud.",
+  "rodada": 2,
+  "revisao_anterior": "memory/human-reviews/rev-001.md (RECOMMEND-REVISION, F1–F4)",
+  "escopo": "Rodada 2 da Fase 1 da REQ-283: correção dos findings F1 (acesso base ao módulo), F2 (persistência comprovada, 500 sem after_*), F3 (409 pelo UPDATE condicional e linhas afetadas) e F4 (mensagens por variáveis pt-br/en) da REV-001.",
   "arquivos": [
     "gestor/bibliotecas/api-crud.php",
+    "gestor/bibliotecas/banco.php",
     "gestor/controladores/api/api.php",
-    "gestor/config.php",
-    "gestor/modulos/admin-categorias/admin-categorias.json",
+    "gestor/resources/pt-br/variables.json",
+    "gestor/resources/en/variables.json",
+    "gestor/db/data/VariaveisData.json",
     "tests/Unit/PHP/ApiCrudReq283Test.php",
     "tests/Fixtures/ApiCrudHarness.php",
+    "memory/human-reviews/evidence/req-283-probes-r2.php",
+    "memory/human-reviews/evidence/req-283-probes-r2.jsonl",
     "memory/implementation/BATCH-292.md",
-    "memory/implementation/BATCH-INDEX.md",
     "memory/validation/VALIDATION-CHECKLIST.md",
-    "memory/decisions/DECISION-LOG.md",
     "memory/04-memory-engineering-execution.md",
     "memory/completions/BATCH-292-receipt.json"
   ],
   "evidencias": {
-    "phpunit_dirigido": "ApiCrudReq283Test: 13 testes, 146 asserções, 0 falhas",
-    "phpunit_completo": "1.873 testes, 0 falhas, 9 skips (OPENSSL_CONF exportado); uma rodada anterior teve falha intermitente em AtualizacoesManifestoIntegracaoTest, que passou isolada e na rodada seguinte",
-    "publicacao_lab": "./c2f project:sync-core conn2flow-site-local --skip-css, saída 0, SHA-256 conferidos no destino",
-    "e2e_http": "22/22 em https://conn2flow.local/_api/admin-categorias/ com PATs temporários, revogados ao fim",
-    "relatorio": "memory/implementation/BATCH-292.md"
+    "phpunit_dirigido": "ApiCrudReq283Test: 20 testes, 311 asserções, 0 falhas, zero avisos do PHP",
+    "phpunit_completo": "1.880 testes, 0 falhas, 9 skips, 4 deprecations pré-existentes de testes do instalador (OPENSSL_CONF exportado, PHP 8.5.8 Windows)",
+    "sondas_originais": "memory/human-reviews/evidence/req-283-probes.php aborta com 'Review reproduction changed: RBAC' (defeito não reproduz mais)",
+    "sondas_r2": "memory/human-reviews/evidence/req-283-probes-r2.php, saída 0; resultado em req-283-probes-r2.jsonl",
+    "variaveis": "c2f resources:sync --only=variaveis: VariaveisData.json +52 entradas (26 x pt-br/en), sem outras alterações",
+    "relatorio": "memory/implementation/BATCH-292.md (seção Rodada 2)"
   },
   "pendencias": [
-    "Aceite da DEC-135 (CRUD opt-in por api.crud) pelo Arquiteto e pelo Humano",
-    "Compactação dos tetos de 10 itens (DECISION-LOG, VALIDATION-CHECKLIST, raízes de implementation e human-requests) com mdd compact, indisponível neste ambiente",
+    "Publicação da rodada 2 no Lab com pipeline que leve as variáveis ao banco e repetição do E2E HTTP (inclusive perfil restrito real)",
+    "G3 (semântica do PUT) e G4 (corpo JSON em lista) da REV-001, fora do escopo F1–F4",
+    "Compactação dos tetos de 10 itens com mdd compact, indisponível neste ambiente",
     "Fases 2 a 5 (BATCH-293 a BATCH-296)"
   ],
-  "proxima_acao": "Revisor Independente audita o lote e cria memory/human-reviews/rev-XXX.md com parecer; homologação somente pelo Humano.",
-  "despacho": "Sem MCP Hub nesta sessão: o prompt do Revisor foi entregue ao Humano no chat para repasse."
+  "proxima_acao": "Revisor Independente audita a rodada 2 (F1–F4) e emite nova ficha em memory/human-reviews/; homologação somente pelo Humano.",
+  "despacho": "Sem MCP Hub nesta sessão: o prompt do Revisor é entregue ao Humano no chat para repasse. Rodada 2 commitada e enviada em feat/req-283 (sem deploy)."
 }

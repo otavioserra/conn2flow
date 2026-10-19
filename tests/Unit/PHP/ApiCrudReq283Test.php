@@ -69,16 +69,17 @@ PHP);
     }
 
     /** @param list<string> $negados */
-    private function rodar(string $codigo, array $negados = []): array
+    private function rodar(string $codigo, array $negados = [], bool $acessoReal = false): array
     {
         $script = "<?php\nrequire " . var_export(CONN2FLOW_ROOT . '/tests/Fixtures/ApiCrudHarness.php', true) . ";\n"
             . $codigo
-            . "\necho json_encode(['saida' => \$saida ?? null, 'avisos' => \$GLOBALS['avisos'], 'acessos' => \$GLOBALS['acessos'], 'ciclo' => \$GLOBALS['ciclo'] ?? [], 'sqls' => \$GLOBALS['sqls']]);";
+            . "\necho json_encode(['saida' => \$saida ?? null, 'avisos' => \$GLOBALS['avisos'], 'acessos' => \$GLOBALS['acessos'], 'ciclo' => \$GLOBALS['ciclo'] ?? [], 'sqls' => \$GLOBALS['sqls'], 'erros_sql' => \$GLOBALS['erros_sql'], 'logs' => logs()]);";
         $arquivo = tempnam(sys_get_temp_dir(), 'req283-');
         try {
             file_put_contents($arquivo, $script);
             putenv('API_CRUD_PLUGINS=' . self::$plugins);
             putenv('API_CRUD_NEGADOS=' . json_encode($negados));
+            putenv('API_CRUD_ACESSO_REAL=' . ($acessoReal ? '1' : ''));
             exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($arquivo) . ' 2>&1', $linhas, $status);
             self::assertSame(0, $status, implode("\n", $linhas));
             $r = json_decode(implode("\n", $linhas), true, 512, JSON_THROW_ON_ERROR);
@@ -87,6 +88,7 @@ PHP);
         } finally {
             putenv('API_CRUD_PLUGINS');
             putenv('API_CRUD_NEGADOS');
+            putenv('API_CRUD_ACESSO_REAL');
             unlink($arquivo);
         }
     }
@@ -128,7 +130,8 @@ PHP);
         self::assertNotEmpty($a['dados']['data_criacao']);
         self::assertSame('noticias-gerais-1', $b['dados']['id']);
         self::assertSame('noticias-gerais', $banco['id']);
-        self::assertSame([['adicionar', 'admin-categorias', 3], ['adicionar', 'admin-categorias', 3]], $r['acessos']);
+        // Acesso base ao módulo e depois a operação, em cada requisição (F1 da REV-001).
+        self::assertSame([[false, 'admin-categorias', 3], ['adicionar', 'admin-categorias', 3], [false, 'admin-categorias', 3], ['adicionar', 'admin-categorias', 3]], $r['acessos']);
     }
 
     public function testCriarValidaObrigatoriosCamposDesconhecidosEValores(): void
@@ -360,6 +363,223 @@ PHP);
         self::assertSame('definitiva', $excluido['dados']['exclusao']);
         self::assertSame(0, (int)$restantes['n']);
         self::assertSame(['before_create', 'after_create:primeiro', 'before_create', 'before_create', 'after_create:travado', 'before_delete', 'before_delete', 'after_delete:definitiva'], $r['ciclo']);
+    }
+
+    /** REV-001 F1: permissão residual de operação não substitui o vínculo do perfil ao módulo (gestor_acesso real). */
+    public function testRbacRealExigeVinculoDoPerfilAoModulo(): void
+    {
+        $r = $this->rodar(<<<'PHP'
+$pdo = $GLOBALS['pdo'];
+$pdo->exec("INSERT INTO usuarios_perfis VALUES (3, 'restrito');
+INSERT INTO modulos_operacoes VALUES ('editar-categorias', 'editar', 'pt-br', 'admin-categorias', 'A');
+INSERT INTO modulos_operacoes VALUES ('excluir-categorias', 'excluir', 'pt-br', 'admin-categorias', 'A');
+INSERT INTO usuarios_perfis_modulos_operacoes (operacao, perfil) VALUES ('editar-categorias', 'restrito');");
+$cfg = api_crud_config('admin-categorias');
+api_crud_inserir($cfg, ['nome' => 'Base'], $USUARIO, 'pt-br');
+$semVinculo = [
+    req('GET', 'base'),
+    req('PATCH', 'base', [], ['nome' => 'Alterado sem acesso ao modulo']),
+    req('POST', 'base/status'),
+    linha("SELECT nome, status, versao FROM categorias WHERE id='base'"),
+];
+$pdo->exec("INSERT INTO usuarios_perfis_modulos (modulo, perfil) VALUES ('admin-categorias', 'restrito')");
+$comVinculo = [
+    req('PATCH', 'base', [], ['nome' => 'Alterado com acesso']),
+    req('DELETE', 'base'),
+    req('POST', 'base/status'),
+    req('GET', 'base'),
+];
+$saida = [$semVinculo, $comVinculo];
+PHP, [], true);
+        [[$get, $patch, $status, $banco], [$patchOk, $deleteSemOperacao, $statusNaoCadastrado, $getOk]] = $r['saida'];
+
+        self::assertSame(403, $get['code']);
+        self::assertSame(403, $patch['code'], 'Permissão residual de editar sem vínculo ao módulo');
+        self::assertStringContainsString('admin-categorias', $patch['mensagem']);
+        self::assertSame(403, $status['code']);
+        self::assertSame(['nome' => 'Base', 'status' => 'A', 'versao' => 1], $banco);
+        self::assertSame(200, $patchOk['code']);
+        self::assertSame('Alterado com acesso', $patchOk['dados']['nome']);
+        self::assertSame(403, $deleteSemOperacao['code'], 'Operação cadastrada sem permissão do perfil');
+        self::assertStringContainsString('excluir', $deleteSemOperacao['mensagem']);
+        self::assertSame(200, $statusNaoCadastrado['code'], 'Operação não cadastrada: vale o acesso ao módulo');
+        self::assertSame(200, $getOk['code']);
+    }
+
+    /** REV-001 F2: escrita recusada pelo driver vira 500, sem hooks after_* e sem devolver outro registro. */
+    public function testFalhaDePersistenciaResponde500SemHooksAfter(): void
+    {
+        $r = $this->rodar(<<<'PHP'
+$m = 'itens-teste';
+req('POST', '', [], ['nome' => 'Base']);
+req('POST', '', ['language' => 'en'], ['titulo' => 'fixo'], null, null, $m);
+$GLOBALS['ciclo'] = [];
+$GLOBALS['falhar_escritas'] = true;
+$saida = [
+    req('POST', '', [], ['nome' => 'Novo que falha']),
+    req('PATCH', 'base', [], ['nome' => 'Update que falha']),
+    req('PUT', 'base', [], ['nome' => 'Put que falha', 'versao' => 1]),
+    req('DELETE', 'base'),
+    req('POST', 'base/status'),
+    req('POST', 'base/clone'),
+    req('POST', '', ['language' => 'en'], ['titulo' => 'outro'], null, null, $m),
+    req('DELETE', 'fixo', ['language' => 'en'], [], null, null, $m),
+];
+$GLOBALS['falhar_escritas'] = false;
+$saida[] = linha("SELECT COUNT(*) AS n, MAX(nome) AS nome, MAX(status) AS status, MAX(versao) AS versao FROM categorias");
+$saida[] = linha("SELECT COUNT(*) AS n FROM itens_teste");
+PHP);
+        $s = $r['saida'];
+        foreach (range(0, 7) as $i) {
+            self::assertTrue($s[$i]['erro'] ?? false, "cenário $i");
+            self::assertSame(500, $s[$i]['code'], "cenário $i");
+            self::assertSame('Não foi possível gravar o registro. Tente novamente.', $s[$i]['mensagem'], "cenário $i");
+            self::assertArrayNotHasKey('dados', $s[$i], "cenário $i");
+        }
+        self::assertSame(['n' => 1, 'nome' => 'Base', 'status' => 'A', 'versao' => 1], $s[8]);
+        self::assertSame(1, (int)$s[9]['n']);
+        // before_* rodam; nenhum after_* depois da falha.
+        self::assertSame(['before_create', 'before_delete'], $r['ciclo']);
+        // Detalhe técnico fica no log do servidor, não na resposta.
+        self::assertNotEmpty($r['logs']);
+        foreach (range(0, 7) as $i) self::assertStringNotContainsString('categorias', $s[$i]['mensagem']);
+    }
+
+    /** REV-001 F2: INSERT que não grava linha não pode devolver o registro do último id do driver. */
+    public function testInsercaoSemLinhaGravadaNaoDevolveRegistroAnterior(): void
+    {
+        $r = $this->rodar(<<<'PHP'
+req('POST', '', [], ['nome' => 'Base']);
+$GLOBALS['pdo']->exec("CREATE TRIGGER ignora_insert BEFORE INSERT ON categorias BEGIN SELECT RAISE(IGNORE); END");
+$saida = [req('POST', '', [], ['nome' => 'Fantasma']), linha("SELECT COUNT(*) AS n FROM categorias")];
+PHP);
+        [$criado, $banco] = $r['saida'];
+        self::assertSame(500, $criado['code']);
+        self::assertArrayNotHasKey('dados', $criado);
+        self::assertSame(1, (int)$banco['n']);
+    }
+
+    /** REV-001 F3: o UPDATE condicional decide; perder a disputa depois do pré-teste é 409. */
+    public function testConcorrenciaDepoisDoPreTesteResponde409(): void
+    {
+        $r = $this->rodar(<<<'PHP'
+req('POST', '', [], ['nome' => 'Base']);
+$cfg = api_crud_config('admin-categorias');
+$outro = function () { $GLOBALS['pdo']->exec("UPDATE categorias SET nome='Outro escritor', versao=versao+1 WHERE id='base'"); };
+
+// Pela rota: a versão 1 confere no pré-teste; outro escritor grava antes do UPDATE condicional.
+$GLOBALS['antes_da_escrita'] = $outro;
+$GLOBALS['ciclo'] = [];
+$rota = req('PATCH', 'base', [], ['nome' => 'Minha escrita', 'versao' => 1]);
+$depoisRota = linha("SELECT nome, versao FROM categorias WHERE id='base'");
+
+// Primitiva, como na sonda da revisão: snapshot v2, outro escritor grava v3.
+$snapshot = api_crud_buscar($cfg, 'base', 'pt-br');
+$outro();
+$primitiva = api_crud_gravar($cfg, $snapshot, ['nome' => 'Minha escrita'], (int)$snapshot['versao']);
+
+// Sem versão: UPDATE que afeta zero linhas (registro removido/ignorado) também é conflito.
+$GLOBALS['pdo']->exec("CREATE TRIGGER ignora_update BEFORE UPDATE ON categorias BEGIN SELECT RAISE(IGNORE); END");
+$semVersao = req('PATCH', 'base', [], ['nome' => 'Nao persistiu']);
+$exclusao = req('DELETE', 'base');
+$GLOBALS['pdo']->exec("DROP TRIGGER ignora_update");
+
+// Falha SQL é distinta de conflito: 500.
+$GLOBALS['pdo']->exec("CREATE TRIGGER aborta_update BEFORE UPDATE ON categorias BEGIN SELECT RAISE(ABORT, 'falha'); END");
+$falha = req('PATCH', 'base', [], ['nome' => 'Falha SQL']);
+$GLOBALS['pdo']->exec("DROP TRIGGER aborta_update");
+
+$saida = [$rota, $depoisRota, $primitiva, $semVersao, $exclusao, $falha, linha("SELECT nome, status, versao FROM categorias WHERE id='base'")];
+PHP);
+        [$rota, $depoisRota, $primitiva, $semVersao, $exclusao, $falha, $banco] = $r['saida'];
+
+        self::assertSame(409, $rota['code']);
+        self::assertSame('Conflito de versão: o registro foi alterado por outra operação.', $rota['mensagem']);
+        self::assertSame(2, $rota['detalhes']['versao_atual']);
+        self::assertSame(['nome' => 'Outro escritor', 'versao' => 2], $depoisRota);
+        self::assertTrue($primitiva['erro']);
+        self::assertSame(409, $primitiva['code']);
+        self::assertSame(3, $primitiva['detalhes']['versao_atual']);
+        self::assertSame(409, $semVersao['code']);
+        self::assertSame(409, $exclusao['code']);
+        self::assertSame(500, $falha['code']);
+        self::assertSame(['nome' => 'Outro escritor', 'status' => 'A', 'versao' => 3], $banco);
+    }
+
+    /** REV-001 F3: exclusão definitiva que não apaga linha (outro removeu antes) é 409, sem after_delete. */
+    public function testExclusaoDefinitivaConcorrenteResponde409(): void
+    {
+        $r = $this->rodar(<<<'PHP'
+$m = 'itens-teste';
+req('POST', '', ['language' => 'en'], ['titulo' => 'alvo'], null, null, $m);
+$GLOBALS['ciclo'] = [];
+$GLOBALS['antes_da_escrita'] = function () { $GLOBALS['pdo']->exec("DELETE FROM itens_teste WHERE id='alvo'"); };
+$saida = req('DELETE', 'alvo', ['language' => 'en'], [], null, null, $m);
+PHP);
+        self::assertSame(409, $r['saida']['code']);
+        self::assertSame(['before_delete'], $r['ciclo']);
+    }
+
+    /** REV-001 F4: mensagens públicas vêm das variáveis pt-br/en. */
+    public function testMensagensDaApiVemDasVariaveisPtBrEEn(): void
+    {
+        $r = $this->rodar(<<<'PHP'
+req('POST', '', [], ['nome' => 'Base']);
+$lote = function () {
+    return [
+        req('POST', '', [], ['nome' => 'X', 'senha' => 'abc'])['mensagem'],
+        req('GET', 'nao-existe')['mensagem'],
+        req('PATCH', 'base', [], ['nome' => 'Y', 'versao' => 99])['mensagem'],
+        req('DELETE', '')['mensagem'],
+        req('POST', '', [], ['nome' => 'Z'], ['id_usuarios' => 1, 'id_usuarios_perfis' => 3, 'scope' => 'read'])['mensagem'],
+        req('POST', '', [], ['nome' => 'Criado ' . $GLOBALS['_GESTOR']['linguagem-codigo']])['mensagem'],
+    ];
+};
+$pt = $lote();
+$GLOBALS['_GESTOR']['linguagem-codigo'] = 'en';
+$en = $lote();
+$saida = [$pt, $en];
+PHP);
+        [$pt, $en] = $r['saida'];
+        self::assertSame([
+            'Campos não permitidos: senha',
+            'Registro não encontrado: nao-existe',
+            'Conflito de versão: o registro foi alterado por outra operação.',
+            'Método não permitido. Use: GET, POST.',
+            'Escopo do token insuficiente para esta operação.',
+            'Registro criado.',
+        ], $pt);
+        self::assertSame([
+            'Fields not allowed: senha',
+            'Record not found: nao-existe',
+            'Version conflict: the record was changed by another operation.',
+            'Method not allowed. Use: GET, POST.',
+            'Token scope is insufficient for this operation.',
+            'Record created.',
+        ], $en);
+    }
+
+    /** REV-001 F4: todo id de mensagem usado no motor e no controlador está cadastrado nos dois idiomas. */
+    public function testIdsDeMensagemCadastradosEmPtBrEEn(): void
+    {
+        $fonte = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/api-crud.php')
+            . (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/controladores/api/api.php');
+        preg_match_all("/'(api-crud-[a-z0-9-]+)'/", $fonte, $m);
+        $usados = array_values(array_unique($m[1]));
+        self::assertGreaterThanOrEqual(25, count($usados));
+
+        foreach (['pt-br', 'en'] as $idioma) {
+            $variaveis = json_decode((string)file_get_contents(CONN2FLOW_GESTOR_ROOT . "/resources/$idioma/variables.json"), true);
+            $globais = [];
+            foreach ($variaveis as $v) if (empty($v['modulo'])) $globais[$v['id']] = $v['value'];
+            foreach ($usados as $id) {
+                self::assertNotSame('', $globais[$id] ?? '', "$id ausente em $idioma");
+                // Marcadores iguais nos dois idiomas, para a troca do motor funcionar em ambos.
+                preg_match_all('/#[a-z]+#/', $globais[$id], $marcadores);
+                $porIdioma[$id][$idioma] = $marcadores[0];
+            }
+        }
+        foreach ($porIdioma as $id => $marcadores) self::assertSame($marcadores['pt-br'], $marcadores['en'], $id);
     }
 
     public function testControladorUsaOMotorDepoisDoHookDoModulo(): void

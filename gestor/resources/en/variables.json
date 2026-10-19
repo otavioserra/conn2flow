@@ -987,5 +987,135 @@
         "id": "installation-home-footer",
         "value": "A starting point for your ideas.",
         "type": "string"
+    },
+    {
+        "id": "api-crud-corpo-invalido",
+        "value": "The request body must be a JSON object.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-campos-nao-permitidos",
+        "value": "Fields not allowed: #campos#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-valor-invalido",
+        "value": "Invalid value in field #campo#: use text, number, boolean or null.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-obrigatorios-ausentes",
+        "value": "Missing required fields: #campos#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-obrigatorio-vazio",
+        "value": "Required field is empty: #campo#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-operacao-recusada",
+        "value": "Operation refused by the module.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-per-page-invalido",
+        "value": "per_page must be between 1 and #maximo#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-sort-invalido",
+        "value": "Invalid sort: #campo#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-order-invalido",
+        "value": "order must be asc or desc.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-status-invalido",
+        "value": "status must be A or I.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-falha-gravacao",
+        "value": "The record could not be saved. Please try again.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-criado",
+        "value": "Record created.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-atualizado",
+        "value": "Record updated.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-excluido",
+        "value": "Record deleted.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-status-atualizado",
+        "value": "Status updated.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-clonado",
+        "value": "Record cloned.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-versao-invalida",
+        "value": "Invalid version: provide an integer.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-conflito-versao",
+        "value": "Version conflict: the record was changed by another operation.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-conflito-registro",
+        "value": "The record was changed or removed by another operation.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-nenhum-campo",
+        "value": "No fields to update.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-rota-nao-encontrada",
+        "value": "Route not found: #rota#",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-metodo-nao-permitido",
+        "value": "Method not allowed. Use: #metodos#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-escopo-insuficiente",
+        "value": "Token scope is insufficient for this operation.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-perfil-sem-modulo",
+        "value": "Profile has no access to module #modulo#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-perfil-sem-permissao",
+        "value": "Profile is not allowed to #operacao# in module #modulo#.",
+        "type": "string"
+    },
+    {
+        "id": "api-crud-registro-nao-encontrado",
+        "value": "Record not found: #ref#",
+        "type": "string"
     }
 ]
