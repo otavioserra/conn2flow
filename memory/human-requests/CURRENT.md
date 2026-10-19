@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-283.md](req-283.md) (BATCH-292 `ready-for-intake`, 2026-10-19, Core — Arquiteto Master / Tríade): Exposição de CRUD via API RESTful para os módulos básicos do Core.
   - [req-282.md](req-282.md) (BATCH-291 `complete`, 2026-10-16, Core — publicado na 3.0.8): estabilização determinística de temporização assíncrona do teste de CSRF em XHR (Vitest).
   - [req-281.md](req-281.md) (BATCH-290 `complete`, 2026-10-16, branch `feat/req-281`, Core — publicado na 3.0.8): deploy SSH grava com o dono do destino também como root (BL-033).
   - [req-280.md](req-280.md) (BATCH-289 `complete`, 2026-10-15, branch `feat/req-280`, Core — publicado na 3.0.8): trava da atualização pelo painel — dono morto sob open_basedir e etapa com erro.
