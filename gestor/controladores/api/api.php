@@ -25,8 +25,8 @@ function api_cors_configurar() {
 }
 
 $corsPermitido = api_cors_configurar();
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, If-Match');
 header('Content-Type: application/json; charset=UTF-8');
 
 // ===== Resposta para preflight OPTIONS
@@ -1488,14 +1488,34 @@ function api_handle_modulo($modulo_id, $action) {
     }
 
     // Requer autenticação
-    api_authenticate(true);
+    $usuario = api_authenticate(true);
+
+    $corpo = api_get_request_body();
+    if (!is_array($corpo)) {
+        api_response_error('O corpo da requisição deve ser um objeto JSON', 400);
+    }
 
     $data = array_merge(
         $_GET ?? [],
-        api_get_request_body()
+        $corpo
     );
 
     $resultado = api_disparar_hook($action ?? '', $data, $modulo_id);
+
+    // REQ-283: sem hook 'api' que responda, o motor canônico atende os módulos que habilitam
+    // o CRUD no manifesto (api.crud). O hook do módulo continua tendo a primeira palavra.
+    if ($resultado === null) {
+        gestor_incluir_biblioteca('api-crud');
+        $resultado = api_crud_despachar(
+            $modulo_id,
+            (string)($action ?? ''),
+            (string)($_SERVER['REQUEST_METHOD'] ?? 'GET'),
+            $_GET ?? [],
+            $corpo,
+            $usuario,
+            isset($_SERVER['HTTP_IF_MATCH']) ? (string)$_SERVER['HTTP_IF_MATCH'] : null
+        );
+    }
 
     if ($resultado === null) {
         api_response_error('Módulo não encontrado ou sem suporte ao hook API: ' . $modulo_id, 404);

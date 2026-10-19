@@ -16,6 +16,15 @@
 
 ## Tarefas recentes
 
+### REQ-283 / BATCH-292 — motor de CRUD da API (2026-10-19)
+
+- **CRUD pela API é opt-in**: `api.crud` no `{modulo}.json` com `campos` (graváveis), `obrigatorios`, `id_origem`, `busca` e, se preciso, `leitura`, `campo_usuario`, `idioma`, `exclusao`, `hooks`. Habilitar um módulo nas fases seguintes = declarar isso; nunca listar coluna sensível. O hook `api` do módulo tem prioridade; o motor é o fallback de `api_handle_modulo()`.
+- **Motor sem saída**: `api_crud_despachar()` devolve o contrato do hook (`code`/`mensagem`/`dados` ou `erro`), o que permite testar sem `exit`.
+- **Teste de código que usa `banco_*`**: o arnês `tests/Fixtures/ApiCrudHarness.php` simula só a E/S (query, linhas, escape, último id) sobre SQLite e extrai do `banco.php` as funções reais de montar SQL. Ordenação com acento difere entre SQLite e MySQL: não compare ordem de texto acentuado.
+- **`banco_identificador` faz `strtolower` antes de tirar acento**: "Épsilon" vira `Epsilon` no id (legado do painel).
+- **PAT temporário para E2E no Lab**: `php -r` em `conn2flow-gestor` com `$_SERVER["SERVER_NAME"]="conn2flow.local"`, `require "config.php"` e `usuario_api_token_gerar(1, nome, ["read","write"], 1)`; ao fim, `usuario_api_token_revogar(id, 1)`. Pasta do site só com `sudo` (`ssh lab "sudo -u admin bash -c '...'"`).
+- **Publicar só o core no Lab** quando a árvore do site tem lote de outro agente: `./c2f project:sync-core conn2flow-site-local --skip-css` (mudança só de PHP, sem banco/CSS).
+
 ### REQ-272 / BATCH-281 — releases 3.0.0, 3.0.1 e 3.0.2 (2026-10-14)
 
 - **Antes de lançar, rodar a suíte no modo do CI**: `.env` em `gestor/autenticacoes/localhost/` + banco vazio no `lab`, `phinx migrate` e `CONN2FLOW_TEST_BOOTSTRAP_CONFIG=1 CONN2FLOW_RUN_DB_TESTS=1`. O CI usa `mysql:8.0` (mais estrito que o MariaDB) e carrega o `config.php` real.

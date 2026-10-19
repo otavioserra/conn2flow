@@ -391,6 +391,8 @@ $_GESTOR['bibliotecas-dados'] = Array(
     // req-032: executor e vocabulário das rotinas automáticas, compartilhados entre a engine
     // gestor/cron.php e o módulo administrativo admin-cron.
     'cron' => Array('cron.php'),
+    // req-283: motor canônico de CRUD da API para os módulos com api.crud no manifesto.
+    'api-crud' => Array('api-crud.php'),
 );
 
 // Bibliotecas principais do sistema

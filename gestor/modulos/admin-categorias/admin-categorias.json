@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.1",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html"
@@ -20,6 +20,26 @@
             "insert_only": false
         },
         "deletar": []
+    },
+    "api": {
+        "crud": {
+            "campos": [
+                "nome",
+                "plugin",
+                "id_modulos",
+                "id_categorias_pai"
+            ],
+            "obrigatorios": [
+                "nome"
+            ],
+            "id_origem": "nome",
+            "busca": [
+                "nome",
+                "id"
+            ],
+            "campo_usuario": "id_usuarios",
+            "exclusao": "logica"
+        }
     },
     "resources": {
         "pt-br": {

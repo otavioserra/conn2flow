@@ -1,5 +1,19 @@
 # Validation Checklist
 
+## BATCH-292 — REQ-283 (Fase 1)
+
+- [x] Motor responde às sete rotas para módulo com `api.crud`; sem `api.crud` ou inativo, 404 como antes.
+- [x] PAT e OAuth pelo `api_authenticate`; escopo (read/write/mobile) e RBAC `gestor_acesso` em todas as rotas.
+- [x] Envelope `status`, `message`, `data`, `timestamp`; códigos 200, 201, 400, 401, 403, 404, 405 e 409 exercitados.
+- [x] `ApiCrudReq283Test` 13/13; PHPUnit completo 1.873 sem falhas (rodada intermitente registrada no lote).
+- [x] Lab: `project:sync-core conn2flow-site-local --skip-css` saída 0, hashes conferidos; E2E HTTP 22/22; PATs revogados.
+- [ ] Revisão independente (tríade).
+- [ ] Homologação humana.
+
+Relatório: [BATCH-292](../implementation/BATCH-292.md).
+
+---
+
 ## BATCH-285 — REQ-276
 
 - [x] Falha do teste existente reproduzida antes da mudança.

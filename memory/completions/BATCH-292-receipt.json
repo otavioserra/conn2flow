@@ -1,0 +1,41 @@
+{
+  "batch": "BATCH-292",
+  "req": "REQ-283",
+  "projeto": "conn2flow",
+  "raiz": "C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow",
+  "branch": "feat/req-283",
+  "date": "2026-10-19",
+  "author": "executor",
+  "topologia": "triade",
+  "autonomia": "autonomo_monitorado",
+  "status": "ready-for-review",
+  "escopo": "Fase 1 da REQ-283: motor canônico de CRUD da API (gestor/bibliotecas/api-crud.php), fallback em api_handle_modulo, RBAC por perfil e escopo do token, admin-categorias habilitado via api.crud.",
+  "arquivos": [
+    "gestor/bibliotecas/api-crud.php",
+    "gestor/controladores/api/api.php",
+    "gestor/config.php",
+    "gestor/modulos/admin-categorias/admin-categorias.json",
+    "tests/Unit/PHP/ApiCrudReq283Test.php",
+    "tests/Fixtures/ApiCrudHarness.php",
+    "memory/implementation/BATCH-292.md",
+    "memory/implementation/BATCH-INDEX.md",
+    "memory/validation/VALIDATION-CHECKLIST.md",
+    "memory/decisions/DECISION-LOG.md",
+    "memory/04-memory-engineering-execution.md",
+    "memory/completions/BATCH-292-receipt.json"
+  ],
+  "evidencias": {
+    "phpunit_dirigido": "ApiCrudReq283Test: 13 testes, 146 asserções, 0 falhas",
+    "phpunit_completo": "1.873 testes, 0 falhas, 9 skips (OPENSSL_CONF exportado); uma rodada anterior teve falha intermitente em AtualizacoesManifestoIntegracaoTest, que passou isolada e na rodada seguinte",
+    "publicacao_lab": "./c2f project:sync-core conn2flow-site-local --skip-css, saída 0, SHA-256 conferidos no destino",
+    "e2e_http": "22/22 em https://conn2flow.local/_api/admin-categorias/ com PATs temporários, revogados ao fim",
+    "relatorio": "memory/implementation/BATCH-292.md"
+  },
+  "pendencias": [
+    "Aceite da DEC-135 (CRUD opt-in por api.crud) pelo Arquiteto e pelo Humano",
+    "Compactação dos tetos de 10 itens (DECISION-LOG, VALIDATION-CHECKLIST, raízes de implementation e human-requests) com mdd compact, indisponível neste ambiente",
+    "Fases 2 a 5 (BATCH-293 a BATCH-296)"
+  ],
+  "proxima_acao": "Revisor Independente audita o lote e cria memory/human-reviews/rev-XXX.md com parecer; homologação somente pelo Humano.",
+  "despacho": "Sem MCP Hub nesta sessão: o prompt do Revisor foi entregue ao Humano no chat para repasse."
+}

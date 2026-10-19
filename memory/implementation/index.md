@@ -12,6 +12,13 @@
 | BATCH-283 | Passe de navegador confiável para acesso anônimo no site restrito | Cookie assinado (HMAC) deixa um navegador autorizado navegar deslogado com SITE_RESTRICTED_ACCESS ligado; autorizar, revogar este e revogar todos no admin-environment. | [source](<BATCH-283.md>) | implemented-pending-homologation |
 | BATCH-284 | Visibilidade e link direto privado nas páginas (admin-paginas e publisher-pages) | Linha Visibilidade entre Tipo e Agendamento: visível publicamente (padrão) e link direto privado com Copiar e Gerar novo link; sem permissão marcado ao adicionar. | [source](<BATCH-284.md>) | implemented-pending-homologation |
 | BATCH-285 | Confirmação padrão no link privado: correção do bloqueio do release 3.0.4 | Diálogo assíncrono nos dois editores de páginas; Vitest completo com 700 testes aprovados. | [source](<BATCH-285.md>) | implemented-pending-homologation |
+| BATCH-286 | Hotfix do atualizador pelo painel: trava órfã e memória da sincronização | Erro fatal numa etapa web libera a trava; etapas pesadas com 1 GB de memória; dono morto no mesmo servidor libera a trava; painel oferece liberar e tentar de novo. | [source](<BATCH-286.md>) | implemented-pending-homologation |
+| BATCH-287 | Atualizador do core sempre entregue, mesmo com manifesto desatualizado | Arquivos do atualizador (camada core) são sempre escritos quando mudam; manifesto desatualizado não segura mais o hotfix do atualizador. | [source](<BATCH-287.md>) | implemented-pending-homologation |
+| BATCH-288 | wait_timeout da sessão de banco da atualização (REQ-279) | A 3.0.6 entrou inteira (29 arquivos, sem preservados) e a memória não estourou, mas a etapa de banco falhou: `&#91;BANCO&#93;... | [source](<BATCH-288.md>) | implemented-pending-homologation |
+| BATCH-289 | Trava da atualização pelo painel: dono morto sob open_basedir e etapa com erro (REQ-280) | A atualização para a 3.0.7 recusou: "Outro deploy está em execução … (PID 1386087), desde 16:44:44". Era a sessão das... | [source](<BATCH-289.md>) | complete |
+| BATCH-290 | Deploy SSH com o dono do destino entrando como root (REQ-281) | Durante o deploy SSH do `temp.conn2flow.com` o site deu **500** (`require_once(gestor.php): Permission denied`) e o c... | [source](<BATCH-290.md>) | complete |
+| BATCH-291 | Estabilização do teste assíncrono de XHR no global-csrf-refresh (REQ-282) |  | [source](<BATCH-291.md>) | complete |
+| BATCH-292 | Motor canônico de CRUD da API e RBAC — Fase 1 (REQ-283) | Motor api-crud.php, fallback no api.php, RBAC por perfil e escopo, admin-categorias habilitado. | [source](<BATCH-292.md>) | ready-for-review |
 
 ## Directories
 
