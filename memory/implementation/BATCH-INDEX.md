@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-293 | implemented-pending-homologation | Cache do Tailwind por recurso portável entre pastas/terminais, Data.json em LF, diff de choque sem estouro e skills com project:deploy (REQ-284) | [BATCH-293.md](BATCH-293.md) | conn2flow-site de outra pasta do core: 1207 recompilados (528 s) → 0 (7 s), Data.json idênticos; PHPUnit verde nas suítes tocadas. |
 | BATCH-292 | ready-for-intake | Exposição de CRUD via API RESTful para os módulos básicos do Core: Fase 1 Motor Canônico e RBAC (REQ-283) | [req-283.md](../human-requests/req-283.md) | Motor api-crud.php, roteador api.php e suíte de testes. |
 | BATCH-291 | complete | Estabilização do teste assíncrono de XHR no global-csrf-refresh (REQ-282) | [BATCH-291.md](BATCH-291.md) | Vitest 700/700; vi.waitFor determinístico; CI release 3.0.8 verde. |
 | BATCH-290 | complete | Deploy SSH grava com o dono do destino também entrando como root (BL-033) (REQ-281) | [BATCH-290.md](BATCH-290.md) | PHPUnit 1.860; 3 testes com bash real; release 3.0.8 homologado. |

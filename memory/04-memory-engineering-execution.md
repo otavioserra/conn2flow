@@ -127,3 +127,12 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **Erro fatal não passa por `catch` nem `finally`**: a etapa web que morre (ex.: memória de 128 MB do PHP-FPM na sincronização de dados) deixava `temp/deploy.lock` preso por 2 h. A liberação vai num `register_shutdown_function` que olha `error_get_last()`. O PID da trava web é o do worker do FPM, que sobrevive ao fatal: checar PID não resolve sozinho.
 - **Worktree no Windows nasce com CRLF** (`core.autocrlf=true`): testes de contrato com `"\n"` falham em massa (28 na primeira rodada). Antes da suíte: `git ls-files -z | xargs -0 rm -f && git -c core.autocrlf=false checkout -- .` — sem mudar o `autocrlf` do repositório, que é compartilhado.
 - **Número de lote**: conferir `memory/implementation/` antes de criar `BATCH-NNN.md`; o agente do release tinha usado o BATCH-285 na mesma tarde e o `Write` sobrescreveu (restaurado do HEAD).
+
+### REQ-284 / BATCH-293 — recompilação inútil do Tailwind e checksums que oscilavam (2026-10-19)
+
+- **`project:update-all` é a exceção da exceção** (Engenheiro Chefe): só com core e projeto mudando juntos. Liga manutenção (503) no destino até o fim; interrompido, deixa `temp/maintenance.json` por 30 min. Mudança só de projeto: `project:deploy`.
+- **`sync-files` + `sync-db` de projeto avulsos trancam o admin**: core e projeto entregam `db/data` com os mesmos nomes; o rsync do projeto sobrescreve as sementes de perfis do core no destino e a retirada por dono desativa `administradores` e apaga a permissão `dashboard`.
+- **Cache do Tailwind dependia do caminho absoluto** (modais de sistema do core entram em toda página): worktree ou `c:\` x `C:\` recompilava tudo. Agora a fonte entra como `gestor:`/`core:` + relativo.
+- **CRLF/LF nos Data.json**: o Tailwind grava LF, o git devolve CRLF no checkout; o compilador lia cru e o checksum oscilava. `readFileIfExists()` normaliza texto.
+- **`bash` no PowerShell é o do WSL** (`WindowsApps\bash.exe`): roda outro PHP e outros caminhos. Para medir no Windows, chamar `php cli/c2f.php` direto.
+- **Busca de classe por substring engana** (`bg-blue-900` casa em `bg-blue-900/20`): conferir com fronteira de token.
