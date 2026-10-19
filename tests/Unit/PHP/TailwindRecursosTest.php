@@ -210,6 +210,103 @@ final class TailwindRecursosTest extends TestCase
         self::assertStringContainsString('@source "../layout.html";', $input);
     }
 
+    /**
+     * req-284: o mesmo projeto, com o core em outra pasta (worktree) ou com outra caixa na letra do
+     * drive, precisa dar o mesmo fingerprint. Antes, a chave era o caminho absoluto e o cache caía todo.
+     */
+    public function testFingerprintIndependeDaPastaDoCoreEDaCaixaDoDrive(): void
+    {
+        $oldRoot = $GLOBALS['GESTOR_DIR'] ?? null;
+        $oldSystem = $GLOBALS['SYSTEM_PATH'] ?? null;
+        try {
+            $fingerprints = [];
+            foreach (['core-principal', 'core-worktree'] as $pastaCore) {
+                $base = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'c2f-req284-' . bin2hex(random_bytes(4));
+                $projeto = $base . DIRECTORY_SEPARATOR . 'site' . DIRECTORY_SEPARATOR;
+                $core = $base . DIRECTORY_SEPARATOR . $pastaCore . DIRECTORY_SEPARATOR;
+                $arquivos = [
+                    $projeto . 'resources/pt-br/pages/home/home.html' => '<main class="p-4"></main>',
+                    $core . 'gestor/resources/pt-br/components/modal/modal.html' => '<div class="shadow-xl"></div>',
+                ];
+                foreach ($arquivos as $arquivo => $conteudo) {
+                    $arquivo = str_replace('/', DIRECTORY_SEPARATOR, $arquivo);
+                    $this->criarArquivo($arquivo, $conteudo, $base);
+                }
+                $resource = [
+                    'html' => realpath(str_replace('/', DIRECTORY_SEPARATOR, $projeto . 'resources/pt-br/pages/home/home.html')),
+                    'sources' => [realpath(str_replace('/', DIRECTORY_SEPARATOR, $core . 'gestor/resources/pt-br/components/modal/modal.html'))],
+                    'layout' => false,
+                    'safelist' => [],
+                ];
+                $GLOBALS['GESTOR_DIR'] = $projeto;
+                $GLOBALS['SYSTEM_PATH'] = $core;
+                $fingerprints[] = tailwind_recursos_fingerprint($resource, 'central', '4.3.3');
+                self::assertSame('core:resources/pt-br/components/modal/modal.html', tailwind_recursos_chave_fonte($resource['sources'][0]));
+                self::assertSame('gestor:resources/pt-br/pages/home/home.html', tailwind_recursos_chave_fonte($resource['html']));
+
+                if (DIRECTORY_SEPARATOR === '\\' && preg_match('/^[A-Za-z]:/', $projeto)) {
+                    // Terminal do VS Code entrega `c:\`, o PowerShell entrega `C:\`.
+                    $trocarCaixa = fn(string $p): string => (ctype_upper($p[0]) ? strtolower($p[0]) : strtoupper($p[0])) . substr($p, 1);
+                    $GLOBALS['GESTOR_DIR'] = $trocarCaixa($projeto);
+                    $GLOBALS['SYSTEM_PATH'] = $trocarCaixa($core);
+                    $outraCaixa = ['html' => $trocarCaixa($resource['html']), 'sources' => [$trocarCaixa($resource['sources'][0])]] + $resource;
+                    self::assertSame(end($fingerprints), tailwind_recursos_fingerprint($outraCaixa, 'central', '4.3.3'));
+                }
+            }
+            self::assertSame($fingerprints[0], $fingerprints[1]);
+
+            // Conteúdo diferente continua invalidando.
+            file_put_contents($resource['sources'][0], '<div class="shadow-sm"></div>');
+            self::assertNotSame($fingerprints[1], tailwind_recursos_fingerprint($resource, 'central', '4.3.3'));
+        } finally {
+            $GLOBALS['GESTOR_DIR'] = $oldRoot;
+            $GLOBALS['SYSTEM_PATH'] = $oldSystem;
+        }
+    }
+
+    /** req-284: layout e bundle mantêm a detecção automática, sem ler seeds nem saídas do build. */
+    public function testInputCompletoExcluiSeedsDaDeteccaoAutomatica(): void
+    {
+        $oldRoot = $GLOBALS['GESTOR_DIR'] ?? null;
+        $base = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'c2f-req284-' . bin2hex(random_bytes(4));
+        try {
+            $raiz = $base . DIRECTORY_SEPARATOR;
+            foreach (['db/data/x.json', 'logs/x.log', 'modulos/m/m.php'] as $arquivo) {
+                $this->criarArquivo($raiz . str_replace('/', DIRECTORY_SEPARATOR, $arquivo), 'x', $base);
+            }
+            $GLOBALS['GESTOR_DIR'] = $raiz;
+            $tempDir = $raiz . '.tailwind-build' . DIRECTORY_SEPARATOR . 'inputs';
+            $layout = ['layout' => true, 'html' => $raiz . 'layout.html', 'sources' => [], 'safelist' => []];
+
+            $input = tailwind_recursos_input_temporario($layout, $raiz . 'input.css', $tempDir);
+            self::assertStringContainsString('@source not "../../db/data";', $input);
+            self::assertStringContainsString('@source not "../../logs";', $input);
+            self::assertStringNotContainsString('modulos', $input, 'PHP/JS de módulo seguem na detecção automática.');
+            self::assertStringNotContainsString('@source not "../../backups";', $input, 'Pasta inexistente não vira diretiva.');
+
+            $isolado = ['layout' => false, 'html' => $raiz . 'page.html', 'sources' => [], 'safelist' => []];
+            self::assertStringNotContainsString('@source not', tailwind_recursos_input_temporario($isolado, $raiz . 'input.css', $tempDir));
+        } finally {
+            $GLOBALS['GESTOR_DIR'] = $oldRoot;
+        }
+    }
+
+    /** Cria o arquivo e registra arquivos e pastas para o tearDown, de dentro para fora até `$base`. */
+    private function criarArquivo(string $arquivo, string $conteudo, string $base): void
+    {
+        $pastas = [];
+        for ($dir = dirname($arquivo); strlen($dir) >= strlen($base); $dir = dirname($dir)) {
+            if (!is_dir($dir)) $pastas[] = $dir;
+            if ($dir === $base) break;
+        }
+        foreach (array_reverse($pastas) as $dir) {
+            mkdir($dir);
+            $this->temporaryDirectories[] = $dir;
+        }
+        file_put_contents($arquivo, $conteudo);
+        $this->temporaryFiles[] = $arquivo;
+    }
+
     public function testRecusaFonteDinamicaSemJustificativaAuditavel(): void
     {
         $this->expectException(RuntimeException::class);

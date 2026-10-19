@@ -9,7 +9,17 @@ declare(strict_types=1);
  * processos nem depende de Node/Tailwind.
  */
 
-const TAILWIND_RECURSOS_MANIFEST_VERSION = 1;
+// req-284: 2 = fontes no fingerprint por raiz + caminho relativo (o 1 usava o caminho absoluto).
+const TAILWIND_RECURSOS_MANIFEST_VERSION = 2;
+
+/**
+ * Pastas que a detecção automática do Tailwind não deve ler nos layouts e bundles (req-284).
+ *
+ * Nenhuma é fonte de autoria: `db/data` guarda os seeds compilados (126 MB no conn2flow-site, com o
+ * HTML ANTERIOR à compilação em curso, que vazava classes mortas para o CSS), `logs`/`backups`/`temp`
+ * são do runtime e `.tailwind-build` é do próprio compilador. PHP e JS de módulos continuam lidos.
+ */
+const TAILWIND_RECURSOS_FORA_DA_DETECCAO = ['db/data', 'logs', 'backups', 'temp', '.tailwind-build', 'node_modules', 'vendor'];
 
 // Leitura do mapa de layout por perfil e do marcador de layouts cobertos: as mesmas funções do runtime.
 if (!function_exists('gestor_layouts_perfis_mapa')) {
@@ -30,6 +40,30 @@ function tailwind_recursos_path_dentro(string $path, string $root): bool
         $root = strtolower($root);
     }
     return $path === $root || str_starts_with($path, $root . '/');
+}
+
+/**
+ * Chave estável de uma fonte no fingerprint (req-284).
+ *
+ * O caminho absoluto mudava com a pasta do checkout (worktree, outro clone) e com a caixa da letra do
+ * drive (`c:\` no terminal do VS Code, `C:\` no PowerShell), e cada mudança derrubava o cache inteiro.
+ * A chave é a raiz a que a fonte pertence mais o caminho relativo a ela: `gestor:` para a raiz em
+ * compilação (o projeto, ou o próprio core no modo sistema) e `core:` para fontes do core usadas por
+ * um projeto, como os modais de sistema. Fora das duas raízes, fica o caminho normalizado.
+ */
+function tailwind_recursos_chave_fonte(string $path): string
+{
+    $raizes = [];
+    if (!empty($GLOBALS['GESTOR_DIR'])) $raizes['gestor'] = (string)$GLOBALS['GESTOR_DIR'];
+    if (!empty($GLOBALS['SYSTEM_PATH'])) $raizes['core'] = $GLOBALS['SYSTEM_PATH'] . 'gestor';
+
+    $normalizado = tailwind_recursos_normalizar_path($path);
+    foreach ($raizes as $rotulo => $raiz) {
+        if (!tailwind_recursos_path_dentro($path, $raiz)) continue;
+        $tamanho = strlen(rtrim(tailwind_recursos_normalizar_path($raiz), '/'));
+        return $rotulo . ':' . ltrim(substr($normalizado, $tamanho), '/');
+    }
+    return $normalizado;
 }
 
 function tailwind_recursos_relativo(string $fromDir, string $target): string
@@ -643,9 +677,20 @@ function tailwind_recursos_input_temporario(array $resource, string $centralInpu
     $central = tailwind_recursos_css_string(tailwind_recursos_relativo($tempDir, $centralInput));
     // Layouts e bundles canônicos precisam carregar theme/base/preflight. Recursos
     // isolados importam apenas utilities porque recebem essas camadas do layout.
-    $lines = ($resource['layout'] || !empty($resource['bundle']) || !empty($resource['layouts_cobertos']))
+    $completo = $resource['layout'] || !empty($resource['bundle']) || !empty($resource['layouts_cobertos']);
+    $lines = $completo
         ? ['@import "' . $central . '";']
         : ['@reference "' . $central . '";', '@import "tailwindcss/utilities.css" layer(utilities) source(none);'];
+
+    // req-284: o input completo mantém a detecção automática (layouts dependem das classes de PHP/JS
+    // dos módulos), mas sem ler seeds, logs e saídas do próprio build.
+    if ($completo && !empty($GLOBALS['GESTOR_DIR'])) {
+        foreach (TAILWIND_RECURSOS_FORA_DA_DETECCAO as $pasta) {
+            $alvo = rtrim((string)$GLOBALS['GESTOR_DIR'], '/\\') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $pasta);
+            if (!is_dir($alvo)) continue;
+            $lines[] = '@source not "' . tailwind_recursos_css_string(tailwind_recursos_relativo($tempDir, $alvo)) . '";';
+        }
+    }
 
     foreach (array_merge([$resource['html']], $resource['sources']) as $source) {
         $relative = tailwind_recursos_css_string(tailwind_recursos_relativo($tempDir, $source));
@@ -672,8 +717,9 @@ function tailwind_recursos_fingerprint(array $resource, string $centralHash, str
 {
     $sourceHashes = [];
     foreach (array_merge([$resource['html']], $resource['sources']) as $source) {
-        $sourceHashes[tailwind_recursos_normalizar_path($source)] = tailwind_recursos_hash_arquivo($source);
+        $sourceHashes[tailwind_recursos_chave_fonte($source)] = tailwind_recursos_hash_arquivo($source);
     }
+    ksort($sourceHashes, SORT_STRING);
     $entradas = [
         'manifest_version' => TAILWIND_RECURSOS_MANIFEST_VERSION,
         'central' => $centralHash,
