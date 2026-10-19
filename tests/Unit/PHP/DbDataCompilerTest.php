@@ -50,4 +50,35 @@ final class DbDataCompilerTest extends TestCase {
             rmdir($dir);
         }
     }
+
+    /**
+     * req-284: o mesmo conteúdo com `\r\n` (checkout com autocrlf) ou `\n` (saída do Tailwind) dá o
+     * mesmo texto e o mesmo checksum; arquivo binário é lido sem alteração.
+     */
+    public function testLeituraDeRecursoNormalizaQuebraDeLinhaSoEmTexto(): void {
+        define('SDD_NO_AUTORUN', true);
+        require_once CONN2FLOW_GESTOR_ROOT . '/controladores/agents/arquitetura/atualizacao-dados-recursos.php';
+        $dir = sys_get_temp_dir() . '/c2f-eol-' . bin2hex(random_bytes(8));
+        mkdir($dir);
+        try {
+            $conteudo = "<div class=\"p-4\">\n  texto\n</div>\n";
+            foreach (['html', 'css', 'md'] as $ext) {
+                file_put_contents("$dir/lf.$ext", $conteudo);
+                file_put_contents("$dir/crlf.$ext", str_replace("\n", "\r\n", $conteudo));
+                self::assertSame(readFileIfExists("$dir/lf.$ext"), readFileIfExists("$dir/crlf.$ext"));
+            }
+            self::assertSame(
+                buildChecksum(readFileIfExists("$dir/lf.html"), readFileIfExists("$dir/lf.css")),
+                buildChecksum(readFileIfExists("$dir/crlf.html"), readFileIfExists("$dir/crlf.css"))
+            );
+
+            $binario = "\x89PNG\r\n\x1a\n\0\r\n";
+            file_put_contents("$dir/img.png", $binario);
+            self::assertSame($binario, readFileIfExists("$dir/img.png"));
+            self::assertNull(readFileIfExists("$dir/inexistente.html"));
+        } finally {
+            foreach (glob("$dir/*") as $f) unlink($f);
+            rmdir($dir);
+        }
+    }
 }

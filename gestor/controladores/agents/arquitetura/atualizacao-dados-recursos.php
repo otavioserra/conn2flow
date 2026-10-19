@@ -238,9 +238,20 @@ function jsonWriteTentativas(): int {
 
 /**
  * Retorna conteúdo do arquivo se existir.
+ *
+ * req-284: arquivos de texto entram com quebra de linha `\n`. O mesmo recurso chegava com `\r\n` ou
+ * `\n` conforme o checkout (git com `autocrlf`) ou a origem (o Tailwind grava LF; o git devolve CRLF
+ * no checkout), e cada troca mudava o checksum e a versão no `*Data.json` sem mudança de conteúdo,
+ * forçando atualização no banco a cada compilação feita de outra pasta ou terminal.
  */
 function readFileIfExists(string $path): ?string {
-    return file_exists($path) ? stripUtf8Bom(file_get_contents($path)) : null;
+    if (!file_exists($path)) return null;
+    $conteudo = stripUtf8Bom(file_get_contents($path));
+    $texto = ['html', 'css', 'js', 'md', 'json', 'txt', 'svg', 'xml'];
+    if (in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), $texto, true)) {
+        $conteudo = str_replace(["\r\n", "\r"], "\n", $conteudo);
+    }
+    return $conteudo;
 }
 
 /**
