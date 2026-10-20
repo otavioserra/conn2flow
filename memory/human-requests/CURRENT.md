@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-285.md](req-285.md) (BATCH-294 `ready-for-intake`, 2026-10-20, Core — Arquiteto Master / Dupla): Falha na etapa de finalizacao (finalize) do atualizador do sistema pelo painel (`admin-atualizacoes`) apos deploy e banco bem-sucedidos.
   - [req-284.md](req-284.md) (BATCH-293 `implemented-pending-homologation`, 2026-10-19, branch `feat/req-284`, Core — Autônomo Monitorado): cache do Tailwind por recurso que não sobrevivia a worktree/caixa do drive, seeds lidos pela detecção automática, troca CRLF/LF nos Data.json e diff de choque com estouro de memória; skills passam a mandar `project:deploy` para mudança só de projeto. Origem: REQ-141/REQ-142 do conn2flow-site.
   - [req-283.md](req-283.md) (BATCH-292 `ready-for-intake`, 2026-10-19, Core — Arquiteto Master / Tríade): Exposição de CRUD via API RESTful para os módulos básicos do Core.
   - [req-282.md](req-282.md) (BATCH-291 `complete`, 2026-10-16, Core — publicado na 3.0.8): estabilização determinística de temporização assíncrona do teste de CSRF em XHR (Vitest).
