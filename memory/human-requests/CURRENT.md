@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-286.md](req-286.md) (sem batch, `ready-for-intake`, 2026-10-20, Core — Dupla / Supervisionado): choques do atualizador sem falsos positivos — artefatos de sistema (`vendor/`, `*.precompiled.css`, `db/data/`…) sempre escritos pela camada dona, divergência nunca escondida pela regra da req-199, decisão em lote na tela, diff em utf8mb4. Origem: REQ-285 no Lab.
   - [req-285.md](req-285.md) (BATCH-294 `implemented-pending-homologation`, 2026-10-20, branch `feat/req-285`, Core — Dupla): o `Falha finalize` era 404 — a etapa de banco leu os `db/data` do projeto como do core e a retirada automática desativou/apagou 4.637 registros do core. Etapa lê o que o core entregou; nada sai sem confirmação (DEC-136); Lab reparado. Falta release e nova atualização pelo painel.
   - [req-284.md](req-284.md) (BATCH-293 `implemented-pending-homologation`, 2026-10-19, branch `feat/req-284`, Core — Autônomo Monitorado): cache do Tailwind por recurso que não sobrevivia a worktree/caixa do drive, seeds lidos pela detecção automática, troca CRLF/LF nos Data.json e diff de choque com estouro de memória; skills passam a mandar `project:deploy` para mudança só de projeto. Origem: REQ-141/REQ-142 do conn2flow-site.
   - [req-283.md](req-283.md) (BATCH-292 `ready-for-intake`, 2026-10-19, Core — Arquiteto Master / Tríade): Exposição de CRUD via API RESTful para os módulos básicos do Core.
