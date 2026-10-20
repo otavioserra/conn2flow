@@ -1681,8 +1681,8 @@
             "built_at": "2026-10-20T15:10:39+00:00"
         },
         "module|admin-atualizacoes|en|pages|admin-atualizacoes": {
-            "fingerprint": "60775baa1a15e06a332cd05b45bc47dd4e4deb9a2c643afb4cc10ca02798f987",
-            "output_hash": "0e50a8a9a732789f42cd08cbf2010b05d9e5f78fe410090767a0fe7afb19136f",
+            "fingerprint": "8e1024c249c302cbcacb4e5339be88ab0b16e7f252c7a9248b839c3375ef6ade",
+            "output_hash": "7126faa23eaffcfbb22bf3caf37ff6cee2b015a5590adbae85f758fe93c8d040",
             "output": "modulos/admin-atualizacoes/resources/en/pages/admin-atualizacoes/admin-atualizacoes.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1697,11 +1697,11 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T16:02:34+00:00"
+            "built_at": "2026-10-20T18:25:03+00:00"
         },
         "module|admin-atualizacoes|en|pages|admin-atualizacoes-detalhe": {
-            "fingerprint": "961ebe1fd0a121d56b9cb282419daad00ac0e8b4b7380705f929b6ee1c26bcc2",
-            "output_hash": "91ec0ce5f8053409da0047e47ea4d285f55f315f0b022e6b67f29adc86f94892",
+            "fingerprint": "a990284c7cfd023bbbd740cc6333a9d943b80ae13590e4949f1347ed29eaac75",
+            "output_hash": "b1d1b856360db37f1f389dd20bd7f19697949a8d0cf74235a7ac8140eae27e31",
             "output": "modulos/admin-atualizacoes/resources/en/pages/admin-atualizacoes-detalhe/admin-atualizacoes-detalhe.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1716,7 +1716,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T16:02:34+00:00"
+            "built_at": "2026-10-20T18:25:03+00:00"
         },
         "module|admin-atualizacoes|pt-br|components|atualizacoes-detalhe-comp-tailwind": {
             "fingerprint": "6cf181da431c917ed5f160a89f9b6436628d50397842ed9fa3d1789e7ea15672",
@@ -1741,8 +1741,8 @@
             "built_at": "2026-10-20T15:10:39+00:00"
         },
         "module|admin-atualizacoes|pt-br|pages|admin-atualizacoes": {
-            "fingerprint": "f09a17a6caad20f004e325e3f9e5afed9fec5d59f33f2261b549ca5f4d3bcd02",
-            "output_hash": "a575cf63fb2477df0cfda7f65a82d9a43b1f158842342c9d4a19c3df6eb420e5",
+            "fingerprint": "574b72b7c47f3e2d8132d1a73282249dabf675e048b9f316700286aa8a376d28",
+            "output_hash": "946609553bdaef1bd49291e61fd3aa55aa9c0e28134f50b06515b33766c89740",
             "output": "modulos/admin-atualizacoes/resources/pt-br/pages/admin-atualizacoes/admin-atualizacoes.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1757,11 +1757,11 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T16:02:35+00:00"
+            "built_at": "2026-10-20T18:25:04+00:00"
         },
         "module|admin-atualizacoes|pt-br|pages|admin-atualizacoes-detalhe": {
-            "fingerprint": "2e683abd96629cdbafbe36880136f8c23bc9645ffb5c094cdce3063274409b57",
-            "output_hash": "81f1695cb72fd158cc4c2e6703f498dfed66c14c58b5506c2a55a6d6d9f26dac",
+            "fingerprint": "0ed49e800de4144a349049d618e3b517cd97b17ade68488e5cd23cf52345f0aa",
+            "output_hash": "e92cc935db9e63461b41814a25c3ce4b509253f3d8b0c4df8b5e8efd8b18bf1a",
             "output": "modulos/admin-atualizacoes/resources/pt-br/pages/admin-atualizacoes-detalhe/admin-atualizacoes-detalhe.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1776,7 +1776,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T16:02:35+00:00"
+            "built_at": "2026-10-20T18:25:04+00:00"
         },
         "module|admin-categorias|en|pages|admin-categorias": {
             "fingerprint": "d4bccba8bf406373bed2294b967a493727ee539652890d252ca08e3b630873df",

@@ -6194,6 +6194,168 @@
     {
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-superado",
+        "valor": "Superado (o disco já tem a versão entregue)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-automatico",
+        "valor": "Mantido automaticamente (artefato da camada de cima)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-filter-pending",
+        "valor": "Pendentes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-filter-all",
+        "valor": "Todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-total",
+        "valor": "choque(s)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-pagination",
+        "valor": "Páginas dos choques",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-page",
+        "valor": "Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-page-prev",
+        "valor": "Anterior",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-page-next",
+        "valor": "Próxima",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-title",
+        "valor": "Decidir em lote",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-all",
+        "valor": "Todos os pendentes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-keep",
+        "valor": "Manter todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-overwrite",
+        "valor": "Sobrescrever todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-help",
+        "valor": "Vale para cada choque pendente da entrega escolhida, com a mesma regra da decisão individual. O que não aceita a decisão (por exemplo, sobrescrever um arquivo de que o projeto é dono) continua pendente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-confirm-keep",
+        "valor": "Manter a versão do servidor em todos os choques pendentes desta seleção?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-confirm-overwrite",
+        "valor": "Sobrescrever com a versão entregue em todos os choques pendentes desta seleção? Retiradas aceitas removem o arquivo ou desativam o registro.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-ok",
+        "valor": "Decididos: #resolvidos#. Continuam pendentes: #pulados#. Falhas: #falhas#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-no-content-retirada",
+        "valor": "Retirada não tem versão nova nem diferença para mostrar: a camada deixou de entregar este arquivo. O arquivo continua no servidor até você decidir.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
         "id": "updates-clash-copy",
         "valor": "Versão nova guardada em",
         "tipo": "string",
@@ -7942,6 +8104,168 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-clash-pending",
         "valor": "Pending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-superado",
+        "valor": "Superseded (the server already has the delivered version)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-automatico",
+        "valor": "Kept automatically (upper layer artifact)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-filter-pending",
+        "valor": "Pending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-filter-all",
+        "valor": "All",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-total",
+        "valor": "clash(es)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-pagination",
+        "valor": "Clash pages",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-page",
+        "valor": "Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-page-prev",
+        "valor": "Previous",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-page-next",
+        "valor": "Next",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-title",
+        "valor": "Decide in bulk",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-all",
+        "valor": "All pending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-keep",
+        "valor": "Keep all",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-overwrite",
+        "valor": "Overwrite all",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-help",
+        "valor": "Applies to each pending clash of the chosen delivery, with the same rule as a single decision. Whatever does not accept the decision (for example, overwriting a file owned by the project) stays pending.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-confirm-keep",
+        "valor": "Keep the server version in every pending clash of this selection?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-confirm-overwrite",
+        "valor": "Overwrite with the delivered version in every pending clash of this selection? Accepted removals delete the file or deactivate the record.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-bulk-ok",
+        "valor": "Decided: #resolvidos#. Still pending: #pulados#. Failures: #falhas#.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-no-content-retirada",
+        "valor": "A removal has no new version or difference to show: the layer stopped delivering this file. The file stays on the server until you decide.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
