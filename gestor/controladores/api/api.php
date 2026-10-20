@@ -381,6 +381,10 @@ function api_project_update() {
         // REQ-285: a etapa de arquivos também precisa de folga (planos, diffs e choques de centenas de arquivos);
         // com os 128 MB do PHP-FPM o registro dos choques estourava depois de o manifesto já estar gravado.
         api_memoria_minima('1024M');
+        // REQ-286 r2: a conexão do gestor fica parada durante dump e sincronização e é usada no fim (hooks,
+        // choques). Com o `wait_timeout` de 10 s do MariaDB de produção ela caía ("MySQL server has gone away"
+        // nos deploys de 20/10). Mesmo ajuste que a req-279 fez nas etapas web do atualizador.
+        if (function_exists('banco_query')) @banco_query('SET SESSION wait_timeout = GREATEST(@@SESSION.wait_timeout, 28800)');
 
         // Usar a raiz do sistema como destino
         $project_path = $_GESTOR['ROOT_PATH'];

@@ -57,3 +57,28 @@ summary_short: "Artefatos de sistema (vendor, db/data, *.precompiled.css, *.min.
 - Release e atualização pelo painel; no Lab e na produção, conferir a aba de choques (pendentes, lote, paginação).
 - Produção: o próximo deploy do projeto vai gravar os 10 arquivos de dados escondidos. O Lab roda com esses mesmos arquivos do projeto; mesmo assim, conferir o painel depois do deploy.
 - REQ-287 (etapas visíveis no deploy) registrada.
+
+## Rodada 2 — produção na 3.0.12 (2026-10-20)
+
+Relato do Engenheiro Chefe: 115 choques pendentes; filtro e páginas da lista recarregavam a tela inteira e voltavam ao topo, sem a aba de choques.
+
+**Achados na produção (só leitura):**
+- **O `admin-atualizacoes.min.js` servido era o de antes da REQ-285.** O painel usa o `.min.js` fora do ambiente de desenvolvimento, o pipeline da release não roda `assets:minify` e ninguém regenerava o derivado. A decisão em lote, a reabertura da aba e o "HTTP" nas falhas de etapa nunca chegaram ao navegador.
+- **`admin-categorias.min.js` com código removido:** a fonte foi esvaziada na req-223 (saída do Fomantic); o minificador "falhava" com fonte vazia e o `.min.js` antigo (com `.dropdown()`/`.popup()` do Fomantic) seguia sendo servido.
+- O `--verificar` acusava 12 desatualizados no Windows: o hash era do conteúdo cru (CRLF). Só os dois acima estavam velhos de fato.
+- **"MySQL server has gone away"** nos dois deploys do projeto (14h45 e 15h32): a conexão do gestor ficava parada durante dump e sincronização e o MariaDB de produção tem `wait_timeout` de 10 s. Hooks ficaram completos (125), mas gravações depois da etapa de banco podiam falhar.
+- Pendentes: 104 propostas de retirada de registro (`db:prompts_ia`, `db:modos_ia`, `db:alvos_ia`…), 7 "sobreposto" e 3 "editado" anteriores à 3.0.12, 1 retirada antiga. A 3.0.12 já resolveu 28 superados e 9 automáticos.
+- Versão 3.0.12, módulos/perfis íntegros, formulário de contato corrigido (REQ-144 do site, teste do Engenheiro Chefe).
+
+| Arquivo | O quê |
+| --- | --- |
+| `cli/src/Commands/AssetsMinifyCommand.php` | Hash sem diferença de CRLF; fonte vazia gera derivado vazio. |
+| `gestor/modulos/admin-atualizacoes/admin-atualizacoes.js` (+ `.min.js`) | Aba de choques sem recarregar: filtro, páginas e lote trocam só o conteúdo do painel (selo de pendentes junto); entrada direta com `?choques=` abre a aba. Módulo 1.0.10. |
+| `gestor/modulos/admin-categorias/admin-categorias.min.js`, `gestor/assets/minify-manifest.json` | Derivados regenerados (manifesto com hash normalizado). |
+| `gestor/controladores/api/api.php` | `SET SESSION wait_timeout = GREATEST(..., 28800)` no deploy de projeto. |
+| `tests/Unit/PHP/MinifyDerivadosReq286Test.php` | Reprova `.min.js` desatualizado no `composer test` (o CI da release roda antes de empacotar). |
+| `tests/Unit/PHP/InstalacaoManifestoTest.php` | String do hash com quebra de linha literal (quebrava no checkout CRLF) trocada por `\n`. |
+
+**Evidências:** `assets:minify --verificar` 0 desatualizados; PHPUnit 1.907 (só as 2 falhas de ambiente); Vitest 700/700.
+
+**Depois da próxima release:** na produção, "Decidir em lote" → "Todos os pendentes" → "Manter todos" resolve os 115 (os "sobreposto" aceitam manter; nada é removido).

@@ -9,7 +9,9 @@
 - [x] Tela: pendentes por padrão, paginação, lote com confirmação, aviso de retirada; variáveis pt-br/en.
 - [x] utf8mb4 na tabela de choques; INSERT que falha fica pendente e vai para o log.
 - [x] PHPUnit 1.905 (2 falhas de ambiente), Vitest 700/700; simulação no Lab e na produção (só leitura).
-- [ ] Release e conferência da aba de choques no Lab e na produção.
+- [x] Release 3.0.12 aplicada na produção (Engenheiro Chefe); formulário de contato ok.
+- [x] Rodada 2: `.min.js` em dia com trava no `composer test`; aba de choques sem recarregar; `wait_timeout` no deploy pela API.
+- [ ] Próxima release: aba de choques navegando sem recarregar e lote resolvendo os 115 pendentes da produção.
 - [ ] Homologação humana.
 
 Relatório: [BATCH-295](../implementation/BATCH-295.md).

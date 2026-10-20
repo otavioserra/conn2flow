@@ -76,7 +76,7 @@
     },
     "gestor/assets/interface/formulario.js": {
         "sha1": "ffc48cce820d57861de22fe952f804e8f5dedbec",
-        "origem": 30446,
+        "origem": 31157,
         "minificado": 14441
     },
     "gestor/assets/interface/html-editor-helper.js": {
@@ -86,7 +86,7 @@
     },
     "gestor/assets/interface/html-editor-interface.js": {
         "sha1": "1a8a7b9b57ebbdf34acfe47eaec366b9ebc9a258",
-        "origem": 165875,
+        "origem": 169467,
         "minificado": 64527
     },
     "gestor/assets/interface/html-editor-modules.js": {
@@ -150,9 +150,14 @@
         "minificado": 30292
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
-        "sha1": "1816c89689fb3270f4392f9b2afc117485d416ac",
-        "origem": 20313,
-        "minificado": 10557
+        "sha1": "2c18b850c2564e1819d7fbab777241b22fe96de5",
+        "origem": 25705,
+        "minificado": 13474
+    },
+    "gestor/modulos/admin-categorias/admin-categorias.js": {
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "origem": 0,
+        "minificado": 0
     },
     "gestor/modulos/admin-componentes/admin-componentes.js": {
         "sha1": "8c3e0fdd7e1c17c1d0648aa36dcd11ea14e5d588",
@@ -166,12 +171,12 @@
     },
     "gestor/modulos/admin-environment/admin-environment.js": {
         "sha1": "3029004583e712f8ca91f7d360e22f7a35d42cdd",
-        "origem": 37193,
+        "origem": 38012,
         "minificado": 19254
     },
     "gestor/modulos/admin-ia/admin-ia.js": {
         "sha1": "54eb974fe733fed3c7b9244e3e4c29d162fe1684",
-        "origem": 26963,
+        "origem": 27653,
         "minificado": 13411
     },
     "gestor/modulos/admin-layouts/admin-layouts.js": {
@@ -186,7 +191,7 @@
     },
     "gestor/modulos/admin-paginas/admin-paginas.js": {
         "sha1": "335981d313c347a661c3d98b0c0ae3d327e0ce8c",
-        "origem": 9160,
+        "origem": 9433,
         "minificado": 5245
     },
     "gestor/modulos/admin-plugins/admin-plugins.js": {
@@ -221,7 +226,7 @@
     },
     "gestor/modulos/dashboard-pages/dashboard-pages.js": {
         "sha1": "519ed589e6370f1a3ab38f7f79f58d366a960c23",
-        "origem": 3760,
+        "origem": 3831,
         "minificado": 2020
     },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
@@ -231,7 +236,7 @@
     },
     "gestor/modulos/dashboard/dashboard.js": {
         "sha1": "b6ae3db629984216a36d86868eddbe70f873d811",
-        "origem": 95470,
+        "origem": 97250,
         "minificado": 52463
     },
     "gestor/modulos/dashboard/dashboard.toolbar.js": {
@@ -241,7 +246,7 @@
     },
     "gestor/modulos/dashboard/dashboard.widget.js": {
         "sha1": "bbfa3b5b1fab5fac8c30ebe2d0910f675ea8ed45",
-        "origem": 7260,
+        "origem": 7406,
         "minificado": 3710
     },
     "gestor/modulos/forms-search/forms-search.js": {
@@ -261,7 +266,7 @@
     },
     "gestor/modulos/forms/forms.js": {
         "sha1": "bf8835d846c59fe2bc60d8e37e9a443e9031b9b3",
-        "origem": 23124,
+        "origem": 23680,
         "minificado": 13055
     },
     "gestor/modulos/forms/forms.widget.js": {
@@ -336,7 +341,7 @@
     },
     "gestor/modulos/publisher-pages/publisher-pages.js": {
         "sha1": "4b2241552109d8dfa201f9cc6461c7b3c2da81b7",
-        "origem": 20104,
+        "origem": 20768,
         "minificado": 11016
     },
     "gestor/modulos/publisher/publisher.js": {

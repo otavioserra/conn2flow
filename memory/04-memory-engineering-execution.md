@@ -170,3 +170,6 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **`require_once` de caminho diferente redeclara funções**: o atualizador pode ter carregado `instalacao-manifesto.php` do staging; bibliotecas que dependem dele usam `if (!function_exists(...))`.
 - **INSERT via `banco_insert_name` que falha devolve false**: devolver `true` fixo no callback de pendentes apagava o choque em silêncio.
 - **Simular o motor com dados reais é barato**: `instalacao_planejar($G, $camada, $manifesto['arquivos'], true)` mostra o que a próxima entrega igual faria, sem pacote.
+- **Painel serve `.min.js` fora do desenvolvimento e a release não minifica**: mudar JS exige `php cli/c2f.php assets:minify` e commitar o `.min.js` com o `minify-manifest.json`. O `MinifyDerivadosReq286Test` reprova derivado desatualizado. Fonte vazia gera derivado vazio.
+- **Deploy pela API e MariaDB com `wait_timeout` de 10 s**: a conexão do gestor caía no meio ("gone away"); o deploy agora sobe o `wait_timeout` da sessão como as etapas web do atualizador.
+- **String com quebra de linha literal em teste PHP** muda de hash no checkout CRLF: usar `"\n"` sempre.

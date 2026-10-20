@@ -47,43 +47,71 @@ $(document).ready(function () {
         });
     })();
 
-    // REQ-286: filtro e páginas dos choques recarregam a tela com `?choques=`; reabre a aba de choques.
-    (function choquesAbaPelaUrl() {
-        if (!/[?&]choques=/.test(window.location.search)) return;
+    // REQ-286 r2: aba de choques sem recarregar a página. Filtro, páginas e decisão em lote trocam só o conteúdo da
+    // aba (busca a mesma URL e substitui o painel): a aba continua aberta e a tela não volta para o topo.
+    (function choques() {
         const painel = document.querySelector('[data-c2f-painel="choques"]');
-        const grupo = painel && painel.closest('[data-c2f-abas]');
-        if (!grupo || !window.c2fControles) return;
-        const abas = window.c2fControles.de(grupo) || window.c2fControles.criar('abas', grupo);
-        if (abas) abas.definir('choques', true);
-        grupo.scrollIntoView({ block: 'start' });
-    })();
-
-    // REQ-286: decisão em lote dos choques (uma entrega ou todos os pendentes), com confirmação do operador.
-    (function choquesLote() {
-        const box = $('[data-choques-lote]');
-        if (!box.length) return;
-        const url = gestor.raiz + String(gestor.moduloCaminho).replace(/\/+$/, '') + '/';
-        const msg = box.find('[data-choques-lote-msg]')[0];
-        function mostrar(ok, texto) {
-            if (!msg) return;
-            msg.textContent = texto;
-            msg.classList.remove('hidden', 'border-emerald-300', 'bg-emerald-50', 'text-emerald-900', 'border-rose-300', 'bg-rose-50', 'text-rose-900');
-            msg.classList.add(ok ? 'border-emerald-300' : 'border-rose-300', ok ? 'bg-emerald-50' : 'bg-rose-50', ok ? 'text-emerald-900' : 'text-rose-900');
+        if (!painel) return;
+        const grupo = painel.closest('[data-c2f-abas]');
+        const urlModulo = gestor.raiz + String(gestor.moduloCaminho).replace(/\/+$/, '') + '/';
+        function abrirAba() {
+            if (!grupo || !window.c2fControles) return;
+            const abas = window.c2fControles.de(grupo) || window.c2fControles.criar('abas', grupo);
+            if (abas) abas.definir('choques', true);
         }
-        box.on('click', '[data-choques-lote-acao]', function () {
+        function carregar(href) {
+            painel.setAttribute('aria-busy', 'true');
+            painel.style.opacity = '0.6';
+            return fetch(href, { credentials: 'same-origin', headers: { 'X-Requested-With': 'fetch' } })
+                .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+                .then(function (html) {
+                    const doc = new DOMParser().parseFromString(html, 'text/html');
+                    const novo = doc.querySelector('[data-c2f-painel="choques"]');
+                    if (!novo) throw new Error('sem painel');
+                    painel.innerHTML = novo.innerHTML;
+                    // O selo de pendentes no título da aba acompanha.
+                    const botao = grupo && grupo.querySelector('[data-c2f-aba="choques"]');
+                    const botaoNovo = doc.querySelector('[data-c2f-aba="choques"]');
+                    if (botao && botaoNovo) botao.innerHTML = botaoNovo.innerHTML;
+                    if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+                    if (window.history && window.history.replaceState) window.history.replaceState(null, '', href);
+                })
+                .catch(function () { window.location.href = href; })
+                .finally(function () { painel.removeAttribute('aria-busy'); painel.style.opacity = ''; });
+        }
+        // Entrada direta com `?choques=` (link compartilhado, recarregar): abre a aba e rola até ela.
+        if (/[?&]choques=/.test(window.location.search)) {
+            abrirAba();
+            if (grupo) grupo.scrollIntoView({ block: 'start' });
+        }
+        $(painel).on('click', '[data-choques-filtro] a, [data-choques-paginacao] a', function (ev) {
+            ev.preventDefault();
+            carregar(this.getAttribute('href'));
+        });
+        // Decisão em lote (uma entrega ou todos os pendentes), sempre com confirmação do operador (DEC-136).
+        $(painel).on('click', '[data-choques-lote-acao]', function () {
+            const box = $(this).closest('[data-choques-lote]');
+            const msg = box.find('[data-choques-lote-msg]')[0];
+            function mostrar(ok, texto) {
+                if (!msg) return;
+                msg.textContent = texto;
+                msg.classList.remove('hidden', 'border-emerald-300', 'bg-emerald-50', 'text-emerald-900', 'border-rose-300', 'bg-rose-50', 'text-rose-900');
+                msg.classList.add(ok ? 'border-emerald-300' : 'border-rose-300', ok ? 'bg-emerald-50' : 'bg-rose-50', ok ? 'text-emerald-900' : 'text-rose-900');
+            }
             const acao = String($(this).data('choques-lote-acao'));
             const entrega = String(box.find('[data-choques-lote-entrega]').val() || '');
             const pergunta = box.data(acao === 'sobrescrever' ? 'msg-confirmar-sobrescrever' : 'msg-confirmar-manter');
             window.c2fControles.dialogo.confirmar(pergunta, { perigo: acao === 'sobrescrever' }).then(function (confirmado) {
                 if (!confirmado) return;
                 box.find('button, select').prop('disabled', true);
-                $.ajax({ type: 'POST', url: url, dataType: 'json',
+                $.ajax({ type: 'POST', url: urlModulo, dataType: 'json',
                     data: { opcao: gestor.moduloOpcao, ajax: 'sim', ajaxOpcao: 'choques-resolver-lote', acao: acao, entrega: entrega } })
                     .done(function (r) {
                         if (r && r.status === 'Ok') {
                             const d = r.data || {};
                             mostrar(true, String(box.data('msg-ok')).replace('#resolvidos#', d.resolvidos || 0).replace('#pulados#', d.pulados || 0).replace('#falhas#', d.falhas || 0));
-                            setTimeout(function () { window.location.reload(); }, 1400);
+                            const atual = window.location.search.indexOf('choques=') !== -1 ? window.location.href : '?choques=pendentes';
+                            setTimeout(function () { carregar(atual); }, 1200);
                         } else {
                             box.find('button, select').prop('disabled', false);
                             mostrar(false, (r && r.message) || 'Erro');

@@ -272,9 +272,7 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertSame("l1 servidor\nl2 core v2\n", $this->ler('a.php'));
         // REQ-286: a mescla é decisão sobre este disco (a mesma entrega não volta a chocar).
         $this->assertSame('mesclar', instalacao_regras_ler($this->base)['a.php']['acao']);
-        $this->assertSame(hash('sha256', "l1 servidor
-l2 core v2
-"), instalacao_regras_ler($this->base)['a.php']['hash_disco']);
+        $this->assertSame(hash('sha256', "l1 servidor\nl2 core v2\n"), instalacao_regras_ler($this->base)['a.php']['hash_disco']);
     }
 
     public function testManterViraRegraParaAProximaEntrega(): void

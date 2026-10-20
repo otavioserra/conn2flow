@@ -109,7 +109,9 @@ final class AssetsMinifyCommand implements CommandInterface
 
         foreach ($fontes as $relativo => $absoluto) {
             $conteudo = (string)file_get_contents($absoluto);
-            $hash = sha1($conteudo);
+            // REQ-286 r2: hash sem diferença de quebra de linha. No checkout do Windows (CRLF) tudo parecia
+            // desatualizado e o CI (LF) concordava com o manifesto: ninguém confiava no `--verificar`.
+            $hash = sha1(str_replace("\r\n", "\n", $conteudo));
             $destino = preg_replace('/\.js$/', '.min.js', $absoluto);
 
             $registrado = $manifesto[$relativo]['sha1'] ?? null;
@@ -246,6 +248,13 @@ final class AssetsMinifyCommand implements CommandInterface
      */
     private function minificar(string $origem, string $destino): ?int
     {
+        // REQ-286 r2: fonte esvaziada (ex.: admin-categorias.js na migração para Tailwind da req-223) gera derivado
+        // vazio. Antes o terser "falhava", o .min.js antigo ficava e a produção seguia rodando o código removido
+        // (chamadas ao Fomantic numa tela sem Fomantic).
+        if (trim((string)file_get_contents($origem)) === '') {
+            return @file_put_contents($destino, '') === false ? null : 0;
+        }
+
         $temp = tempnam(sys_get_temp_dir(), 'c2f-min-') . '.js';
 
         $comando = 'npx --no-install terser ' . escapeshellarg($origem)
