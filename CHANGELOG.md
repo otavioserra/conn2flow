@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.10] - 2026-10-20
+
+### Fixed
+- Panel updater (`REQ-285` / `BATCH-294`): fixed database step in panel updates reading shadowed project `db/data` seeds instead of the delivered core data files, which caused 4,637 core records (including the `admin-atualizacoes` module page itself) to be erroneously withdrawn, resulting in HTTP 404 at finalize. Added `instalacao_core_dados_dir()` to source core seeds from delivery backups on conflict.
+- Panel updater (`REQ-285` / `DEC-136`): withdrawal of records and files now defaults to preserving them as pending conflicts ("retirado") rather than automatically deleting/deactivating them, requiring explicit confirmation (`--confirmar-retirada`) for deletion.
+- Panel updater (`REQ-285`): the `finalize` AJAX step now receives the same memory and execution limits (`atualizacoes_web_recursos()`) and fatal lock release guard as earlier steps, and displays HTTP status codes in the panel log upon failure.
+
 ## [3.0.9] - 2026-10-20
 
 ### Added

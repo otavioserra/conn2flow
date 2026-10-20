@@ -5,6 +5,13 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.10] - 2026-10-20
+
+### Fixed
+- Atualizador pelo painel (`REQ-285` / `BATCH-294`): corrigida a etapa de banco de dados que lia os seeds de `db/data` do projeto em vez dos dados entregues pelo core, o que causava a desativação/retirada incorreta de 4.637 registros do core (incluindo a própria tela de `admin-atualizacoes`) e erro 404 no finalize. Implementada a função `instalacao_core_dados_dir()` para carregar os dados entregues pelo core a partir dos backups em caso de choque de arquivos.
+- Atualizador pelo painel (`REQ-285` / `DEC-136`): registros e arquivos retirados agora são preservados por padrão como choques pendentes ("retirado") em vez de removidos/desativados sumariamente, exigindo confirmação explícita (`--confirmar-retirada`) para exclusão.
+- Atualizador pelo painel (`REQ-285`): a etapa web `finalize` agora recebe os mesmos limites de tempo e memória (`atualizacoes_web_recursos()`) e guarda de liberação de trava das etapas anteriores, além de exibir o código HTTP exato no log da interface em caso de falha.
+
 ## [3.0.9] - 2026-10-20
 
 ### Added
