@@ -5,6 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.9] - 2026-10-20
+
+### Added
+- Modules RESTful CRUD API engine (`REQ-283`): new canonical `api-crud.php` library exposing standardized REST operations (list, get, create, update, delete, status, clone) for opt-in modules (`api.crud` in `{modulo}.json`). Includes field allowlists for reading and writing, strict RBAC requiring module access in `usuarios_perfis_modulos` plus granular operation checks, optimistic concurrency (HTTP 409 on version conflict), proven writes, and full internationalization (`gestor_variaveis` in pt-br and en). Enabled for `admin-categorias`.
+
+### Fixed
+- Deploy & Installation: conflict diff in `instalacao-manifesto.php` now checks file size against safety threshold before reading, preventing PHP `memory_limit` exhaustion (HTTP 500) during `project:deploy` on large seed files (`REQ-284`).
+- Tailwind build: cache keys for per-resource compilation are now portable across directories, worktrees and drive letters (`gestor:/core:` relative prefix). The automatic layout/bundle scan now excludes `db/data/`, `logs/`, `backups/`, `temp/`, eliminating dead classes and accelerating compilation (`REQ-284`).
+- Resources compilation: text resources in `atualizacao-dados-recursos.php` now have LF line endings normalized, preventing false-positive version bumps and database updates from git CRLF checkouts (`REQ-284`).
+
 ## [3.0.8] - 2026-10-16
 
 ### Fixed

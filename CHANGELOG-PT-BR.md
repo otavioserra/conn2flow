@@ -5,6 +5,16 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.9] - 2026-10-20
+
+### Added
+- Motor Canônico de CRUD RESTful para Módulos (`REQ-283`): nova biblioteca `api-crud.php` expondo operações REST padronizadas (listar, ler, criar, atualizar, excluir, alternar status e clonar) para módulos configurados com `api.crud` no `{modulo}.json`. Inclui allowlist de campos para leitura e gravação, validação rigorosa de RBAC exigindo vínculo base em `usuarios_perfis_modulos` além da operação, concorrência otimista (HTTP 409 em conflito de versão), validação atômica de persistência e internacionalização completa via `gestor_variaveis` (pt-br/en). Habilitado para `admin-categorias`.
+
+### Fixed
+- Deploy e Instalação: o diff de choque no manifesto de instalação agora impõe limite de segurança por tamanho antes da leitura, prevenindo estouro de `memory_limit` (HTTP 500) no `project:deploy` ao comparar arquivos gigantes de seeds (`REQ-284`).
+- Compilação Tailwind: cache por recurso agora é portável entre pastas, worktrees e letras de unidade (prefixo relativo `gestor:/core:`). A varredura automática de layouts e bundles agora exclui `db/data/`, `logs/`, `backups/`, `temp/`, eliminando classes mortas no CSS e acelerando a compilação de minutos para segundos (`REQ-284`).
+- Compilação de Recursos: recursos de texto em `atualizacao-dados-recursos.php` agora têm quebras de linha normalizadas em LF, evitando falsos positivos de alteração de versão no git por checkouts CRLF (`REQ-284`).
+
 ## [3.0.8] - 2026-10-16
 
 ### Fixed
