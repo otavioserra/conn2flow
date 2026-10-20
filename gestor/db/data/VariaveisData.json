@@ -6239,6 +6239,15 @@
     {
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
+        "id": "updates-clash-retirado",
+        "valor": "Retirada pendente de confirmação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
         "id": "updates-clash-original-ausente",
         "valor": "Original do core ausente",
         "tipo": "string",
@@ -6304,6 +6313,15 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-clash-actions-help-retirado-editado",
         "valor": "A camada deixou de entregar o arquivo, mas ele foi editado no servidor. Sobrescrever aceita a retirada (o arquivo sai); manter deixa o arquivo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-retirado",
+        "valor": "A camada deixou de entregar este item. Nada é removido sem a sua confirmação: sobrescrever aceita a retirada (o arquivo sai ou o registro é desativado); manter deixa como está.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7976,6 +7994,15 @@
     {
         "language": "en",
         "modulo": "admin-atualizacoes",
+        "id": "updates-clash-retirado",
+        "valor": "Removal awaiting confirmation",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
         "id": "updates-clash-original-ausente",
         "valor": "Core original missing",
         "tipo": "string",
@@ -8041,6 +8068,15 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-clash-actions-help-retirado-editado",
         "valor": "The layer stopped delivering the file, but it was edited on the server. Overwrite accepts the removal (the file is deleted); keep leaves the file.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-retirado",
+        "valor": "The layer stopped delivering this item. Nothing is removed without your confirmation: overwrite accepts the removal (the file is deleted or the record is deactivated); keep leaves it as it is.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

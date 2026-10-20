@@ -1681,7 +1681,7 @@
             "built_at": "2026-10-20T15:10:39+00:00"
         },
         "module|admin-atualizacoes|en|pages|admin-atualizacoes": {
-            "fingerprint": "811b0853c7ecb34040088b4de4d303e3a2457108a8f0c96fa756f871f62045ab",
+            "fingerprint": "60775baa1a15e06a332cd05b45bc47dd4e4deb9a2c643afb4cc10ca02798f987",
             "output_hash": "0e50a8a9a732789f42cd08cbf2010b05d9e5f78fe410090767a0fe7afb19136f",
             "output": "modulos/admin-atualizacoes/resources/en/pages/admin-atualizacoes/admin-atualizacoes.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1697,10 +1697,10 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T15:10:39+00:00"
+            "built_at": "2026-10-20T16:02:34+00:00"
         },
         "module|admin-atualizacoes|en|pages|admin-atualizacoes-detalhe": {
-            "fingerprint": "8bf414f1d594b973c99c03d2b5219183265b309f9c42a2ce7a3058bf1c6e8d80",
+            "fingerprint": "961ebe1fd0a121d56b9cb282419daad00ac0e8b4b7380705f929b6ee1c26bcc2",
             "output_hash": "91ec0ce5f8053409da0047e47ea4d285f55f315f0b022e6b67f29adc86f94892",
             "output": "modulos/admin-atualizacoes/resources/en/pages/admin-atualizacoes-detalhe/admin-atualizacoes-detalhe.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1716,7 +1716,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T15:10:39+00:00"
+            "built_at": "2026-10-20T16:02:34+00:00"
         },
         "module|admin-atualizacoes|pt-br|components|atualizacoes-detalhe-comp-tailwind": {
             "fingerprint": "6cf181da431c917ed5f160a89f9b6436628d50397842ed9fa3d1789e7ea15672",
@@ -1741,7 +1741,7 @@
             "built_at": "2026-10-20T15:10:39+00:00"
         },
         "module|admin-atualizacoes|pt-br|pages|admin-atualizacoes": {
-            "fingerprint": "8b8b3a55a104acc6f25a7bad1e92228b08a5a04d524f50cadefb2bd4ca0d03f8",
+            "fingerprint": "f09a17a6caad20f004e325e3f9e5afed9fec5d59f33f2261b549ca5f4d3bcd02",
             "output_hash": "a575cf63fb2477df0cfda7f65a82d9a43b1f158842342c9d4a19c3df6eb420e5",
             "output": "modulos/admin-atualizacoes/resources/pt-br/pages/admin-atualizacoes/admin-atualizacoes.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1757,10 +1757,10 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T15:10:40+00:00"
+            "built_at": "2026-10-20T16:02:35+00:00"
         },
         "module|admin-atualizacoes|pt-br|pages|admin-atualizacoes-detalhe": {
-            "fingerprint": "1fff8663650a350f3f31a8b1fb47d452bd340695b627adfc8d3af23c0dc68fbd",
+            "fingerprint": "2e683abd96629cdbafbe36880136f8c23bc9645ffb5c094cdce3063274409b57",
             "output_hash": "81f1695cb72fd158cc4c2e6703f498dfed66c14c58b5506c2a55a6d6d9f26dac",
             "output": "modulos/admin-atualizacoes/resources/pt-br/pages/admin-atualizacoes-detalhe/admin-atualizacoes-detalhe.precompiled.css",
             "tailwind_version": "4.3.3",
@@ -1776,7 +1776,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-10-20T15:10:40+00:00"
+            "built_at": "2026-10-20T16:02:35+00:00"
         },
         "module|admin-categorias|en|pages|admin-categorias": {
             "fingerprint": "d4bccba8bf406373bed2294b967a493727ee539652890d252ca08e3b630873df",
