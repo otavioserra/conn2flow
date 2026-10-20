@@ -1,0 +1,7 @@
+﻿{"probe":"real gestor_variaveis + compiled seed + markers + missing fallback","variables_checked":52,"languages":["pt-br","en"]}
+{"probe":"actual handler, controlled auth\/transport\/hook","code":202,"loaded":[]}
+{"probe":"actual handler, controlled auth\/transport\/hook","code":403,"loaded":[]}
+{"probe":"actual handler, controlled auth\/transport\/hook","code":200,"loaded":["api-crud"]}
+{"probe":"actual handler invalid scalar body","language":"pt-br","response":{"code":400,"message":"O corpo da requisição deve ser um objeto JSON."}}
+{"probe":"actual handler invalid scalar body","language":"en","response":{"code":400,"message":"The request body must be a JSON object."}}
+{"warnings":[]}

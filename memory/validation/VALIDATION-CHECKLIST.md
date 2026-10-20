@@ -10,7 +10,7 @@
 - [x] Revisão independente (tríade): [REV-001](../human-reviews/rev-001.md), **RECOMMEND-REVISION** em 2026-10-19. F1–F4 abertos: acesso base ao módulo, falhas de persistência, corrida de versão e mensagens sem i18n. Testes dirigidos 13/13; reproduções isoladas anexas à ficha.
 - [x] Rodada 2 (Executor, 2026-10-19): F1–F4 corrigidos. `ApiCrudReq283Test` 20/20 (311 asserções, inclui RBAC com `gestor_acesso` real, falha de escrita, interleaving de versão e pt-br/en); PHPUnit completo 1.880, 0 falhas, 9 skips; [sondas r2](../human-reviews/evidence/req-283-probes-r2.jsonl) com saída 0.
 - [ ] Rodada 2 no Lab: variáveis `api-crud-*` no banco e E2E HTTP repetido (não executado nesta rodada).
-- [ ] Nova revisão independente da rodada 2.
+- [x] Nova revisão independente da rodada 2: [REV-002](../human-reviews/rev-002.md), **RECOMMEND-REVISION** por falta de validação integrada r2 (R2-V1). F1–F4 corrigidos no alcance isolado; Revisor executou CRUD 20/311 e módulos distribuídos 43/180 (testes/asserções), sondas r2 e getter real com 52 variáveis. DEC-135 aceita; G3/G4 preservados.
 - [ ] Homologação humana.
 
 Relatório: [BATCH-292](../implementation/BATCH-292.md).
