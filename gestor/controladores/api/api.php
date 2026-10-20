@@ -1237,18 +1237,30 @@ function api_project_resolve() {
 
 /** Grava na tabela `atualizacoes_choques` os choques pendentes da instalação (req-198). */
 function api_project_choques_gravar(string $raiz): int {
+    global $_GESTOR;
     if (!function_exists('instalacao_choques_gravar_pendentes')) return 0;
     $existe = banco_query("SHOW TABLES LIKE 'atualizacoes_choques'");
     if (!$existe || !banco_num_rows($existe)) return 0;
-    return instalacao_choques_gravar_pendentes($raiz, function (array $linha) {
+    $falhas = 0;
+    $n = instalacao_choques_gravar_pendentes($raiz, function (array $linha) use (&$falhas) {
         // O mesmo choque ainda pendente não vira outra linha.
         $ja = banco_query('SELECT 1 FROM atualizacoes_choques WHERE ' . instalacao_choque_pendente_filtro($linha, 'banco_escape_field') . ' LIMIT 1');
         if ($ja && banco_num_rows($ja)) return true;
         $campos = [];
         foreach ($linha as $k => $v) $campos[] = [$k, $v === null ? 'NULL' : banco_escape_field((string)$v), $v === null];
-        banco_insert_name($campos, 'atualizacoes_choques');
-        return true;
+        // REQ-286: o resultado real. Antes devolvia sempre true: o INSERT que falhava (emoji no diff numa coluna
+        // sem utf8mb4) marcava o pendente como gravado e o choque sumia (produção, deploy a3dbc89c).
+        $ok = (bool)banco_insert_name($campos, 'atualizacoes_choques');
+        if (!$ok) $falhas++;
+        return $ok;
     });
+    if ($falhas) error_log('[api-project-update] ' . $falhas . ' choque(s) não gravado(s) em atualizacoes_choques; o pendente fica em installation/choques/ para nova tentativa');
+    // REQ-286: choques que perderam o objeto (o disco já tem a versão entregue) saem da fila sozinhos.
+    if (is_file($_GESTOR['bibliotecas-path'] . 'atualizacoes-choques.php')) {
+        require_once $_GESTOR['bibliotecas-path'] . 'atualizacoes-choques.php';
+        if (function_exists('atualizacoes_choques_resolver_superados')) atualizacoes_choques_resolver_superados($raiz);
+    }
+    return $n;
 }
 
 function api_copy_directory($source, $destination) {

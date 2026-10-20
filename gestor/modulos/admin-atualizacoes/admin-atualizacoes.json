@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.8",
+    "versao": "1.0.9",
     "bibliotecas": [
         "interface",
         "html"
@@ -427,6 +427,96 @@
                 {
                     "id": "updates-clash-pending",
                     "value": "Pendente",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-superado",
+                    "value": "Superado (o disco já tem a versão entregue)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-automatico",
+                    "value": "Mantido automaticamente (artefato da camada de cima)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-filter-pending",
+                    "value": "Pendentes",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-filter-all",
+                    "value": "Todos",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-total",
+                    "value": "choque(s)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-pagination",
+                    "value": "Páginas dos choques",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-page",
+                    "value": "Página",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-page-prev",
+                    "value": "Anterior",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-page-next",
+                    "value": "Próxima",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-title",
+                    "value": "Decidir em lote",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-all",
+                    "value": "Todos os pendentes",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-keep",
+                    "value": "Manter todos",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-overwrite",
+                    "value": "Sobrescrever todos",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-help",
+                    "value": "Vale para cada choque pendente da entrega escolhida, com a mesma regra da decisão individual. O que não aceita a decisão (por exemplo, sobrescrever um arquivo de que o projeto é dono) continua pendente.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-confirm-keep",
+                    "value": "Manter a versão do servidor em todos os choques pendentes desta seleção?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-confirm-overwrite",
+                    "value": "Sobrescrever com a versão entregue em todos os choques pendentes desta seleção? Retiradas aceitas removem o arquivo ou desativam o registro.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-ok",
+                    "value": "Decididos: #resolvidos#. Continuam pendentes: #pulados#. Falhas: #falhas#.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-no-content-retirada",
+                    "value": "Retirada não tem versão nova nem diferença para mostrar: a camada deixou de entregar este arquivo. O arquivo continua no servidor até você decidir.",
                     "type": "string"
                 },
                 {
@@ -1548,6 +1638,96 @@
                 {
                     "id": "updates-clash-pending",
                     "value": "Pending",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-superado",
+                    "value": "Superseded (the server already has the delivered version)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-automatico",
+                    "value": "Kept automatically (upper layer artifact)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-filter-pending",
+                    "value": "Pending",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-filter-all",
+                    "value": "All",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-total",
+                    "value": "clash(es)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-pagination",
+                    "value": "Clash pages",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-page",
+                    "value": "Page",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-page-prev",
+                    "value": "Previous",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-page-next",
+                    "value": "Next",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-title",
+                    "value": "Decide in bulk",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-all",
+                    "value": "All pending",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-keep",
+                    "value": "Keep all",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-overwrite",
+                    "value": "Overwrite all",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-help",
+                    "value": "Applies to each pending clash of the chosen delivery, with the same rule as a single decision. Whatever does not accept the decision (for example, overwriting a file owned by the project) stays pending.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-confirm-keep",
+                    "value": "Keep the server version in every pending clash of this selection?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-confirm-overwrite",
+                    "value": "Overwrite with the delivered version in every pending clash of this selection? Accepted removals delete the file or deactivate the record.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-bulk-ok",
+                    "value": "Decided: #resolvidos#. Still pending: #pulados#. Failures: #falhas#.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-no-content-retirada",
+                    "value": "A removal has no new version or difference to show: the layer stopped delivering this file. The file stays on the server until you decide.",
                     "type": "string"
                 },
                 {

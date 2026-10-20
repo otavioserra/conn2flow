@@ -160,8 +160,17 @@ function admin_atualizacoes_choques_html(bool $emAba = false): string {
     if(!$existe || !banco_num_rows($existe)) return $vazio();
     $v = function($id){ global $_GESTOR; return htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>$id]), ENT_QUOTES, 'UTF-8'); };
     $e = function($t){ return htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8'); };
+    // REQ-286: abre só com os pendentes (a aba conta os pendentes; a lista misturava os resolvidos e cortava em 50)
+    // e pagina como as listas dos módulos.
+    $todos = (($_GET['choques'] ?? '') === 'todos');
+    $porPagina = 25;
+    $onde = $todos ? '' : " WHERE resolucao IS NULL OR resolucao=''";
+    $totalRes = @banco_query('SELECT COUNT(*) AS total FROM atualizacoes_choques'.$onde);
+    $total = (int)(($totalRes ? banco_fetch_assoc($totalRes) : null)['total'] ?? 0);
+    $paginas = max(1, (int)ceil($total / $porPagina));
+    $pagina = min($paginas, max(1, (int)($_GET['choques_pagina'] ?? 1)));
     $linhas = '';
-    $res = @banco_query("SELECT id_atualizacoes_choques,data_criacao,origem,camada,versao,caminho,motivo,camada_dona,resolucao FROM atualizacoes_choques ORDER BY id_atualizacoes_choques DESC LIMIT 50");
+    $res = @banco_query("SELECT id_atualizacoes_choques,data_criacao,origem,camada,versao,caminho,motivo,camada_dona,resolucao FROM atualizacoes_choques".$onde." ORDER BY id_atualizacoes_choques DESC LIMIT ".$porPagina." OFFSET ".(($pagina - 1) * $porPagina));
     if($res) while($r = banco_fetch_assoc($res)){
         $cor = in_array($r['motivo'], ['sobreposto'], true) ? 'blue' : 'orange';
         $linhas .= '<tr>'
@@ -176,13 +185,75 @@ function admin_atualizacoes_choques_html(bool $emAba = false): string {
             .'</tr>';
     }
     if($linhas === '') $linhas = '<tr><td colspan="8" class="c2fc-texto-suave">'.$v('updates-clash-empty').'</td></tr>';
+    $filtro = '<div class="flex flex-wrap items-center gap-2 text-sm" data-choques-filtro>'
+        .'<a class="rounded border px-3 py-1 '.($todos ? 'border-slate-300 text-slate-700 hover:bg-slate-50' : 'border-sky-600 bg-sky-50 font-semibold text-sky-800').'" href="?choques=pendentes">'.$v('updates-clash-filter-pending').'</a>'
+        .'<a class="rounded border px-3 py-1 '.($todos ? 'border-sky-600 bg-sky-50 font-semibold text-sky-800' : 'border-slate-300 text-slate-700 hover:bg-slate-50').'" href="?choques=todos">'.$v('updates-clash-filter-all').'</a>'
+        .'<span class="text-slate-500">'.$e($total).' '.$v('updates-clash-total').'</span></div>';
+    $navegacao = '';
+    if($paginas > 1){
+        $link = function(int $p, string $rotulo, bool $ativo = false) use ($todos, $e){
+            return '<a class="rounded border px-3 py-1 '.($ativo ? 'border-sky-600 bg-sky-50 font-semibold text-sky-800' : 'border-slate-300 text-slate-700 hover:bg-slate-50').'" href="?choques='.($todos ? 'todos' : 'pendentes').'&amp;choques_pagina='.$p.'">'.$rotulo.'</a>';
+        };
+        $navegacao = '<nav class="flex flex-wrap items-center gap-1 text-sm" aria-label="'.$v('updates-clash-pagination').'" data-choques-paginacao>';
+        if($pagina > 1) $navegacao .= $link($pagina - 1, '&laquo; '.$v('updates-clash-page-prev'));
+        for($p = max(1, $pagina - 3); $p <= min($paginas, $pagina + 3); $p++) $navegacao .= $link($p, (string)$p, $p === $pagina);
+        if($pagina < $paginas) $navegacao .= $link($pagina + 1, $v('updates-clash-page-next').' &raquo;');
+        $navegacao .= '<span class="ml-2 text-slate-500">'.$v('updates-clash-page').' '.$pagina.' / '.$paginas.'</span></nav>';
+    }
     $tabela = '<p class="text-sm text-slate-600">'.$v('updates-clash-help').'</p>'
+        .$filtro
+        .admin_atualizacoes_choques_lote_html()
         .'<div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-200 text-left text-sm [&_th]:px-3 [&_th]:py-2 [&_td]:px-3 [&_td]:py-3 [&_td]:align-top"><thead class="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase"><tr>'
         .'<th>'.$v('updates-clash-col-date').'</th><th>'.$v('updates-clash-col-layer').'</th><th>'.$v('updates-clash-col-path').'</th>'
         .'<th>'.$v('updates-clash-col-reason').'</th><th>'.$v('updates-clash-col-owner').'</th><th>'.$v('updates-clash-col-version').'</th>'
-        .'<th>'.$v('updates-clash-col-resolution').'</th><th></th></tr></thead><tbody class="divide-y divide-slate-100">'.$linhas.'</tbody></table></div>';
+        .'<th>'.$v('updates-clash-col-resolution').'</th><th></th></tr></thead><tbody class="divide-y divide-slate-100">'.$linhas.'</tbody></table></div>'
+        .$navegacao;
     if($emAba) return '<div class="space-y-3" data-atualizacoes-choques>'.$tabela.'</div>';
     return '<section class="space-y-3 rounded border border-slate-200 bg-white p-4" data-atualizacoes-choques><h2 class="text-base font-semibold text-slate-900">'.$v('updates-clash-title').'</h2>'.$tabela.'</section>';
+}
+
+/**
+ * REQ-286: decisão em lote — escolhe a entrega (ou todos os pendentes) e decide manter ou sobrescrever, com a
+ * confirmação do operador (DEC-136). Cada choque passa pelo mesmo motor da decisão individual.
+ */
+function admin_atualizacoes_choques_lote_html(): string {
+    global $_GESTOR;
+    require_once $_GESTOR['bibliotecas-path'].'atualizacoes-choques.php';
+    $entregas = atualizacoes_choques_entregas_pendentes();
+    if(!$entregas) return '';
+    $v = function($id){ global $_GESTOR; return htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>$id]), ENT_QUOTES, 'UTF-8'); };
+    $e = function($t){ return htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8'); };
+    $total = array_sum(array_column($entregas, 'total'));
+    $opcoes = '<option value="">'.$v('updates-clash-bulk-all').' ('.$total.')</option>';
+    foreach($entregas as $en){
+        $opcoes .= '<option value="'.$e(json_encode(['versao' => $en['versao'], 'origem' => $en['origem'], 'camada' => $en['camada']])).'">'
+            .$e($en['versao'].' · '.$en['origem'].' · '.$en['camada']).' ('.$en['total'].')</option>';
+    }
+    return '<div class="flex flex-wrap items-end gap-2 rounded border border-slate-200 bg-slate-50 p-3 text-sm" data-choques-lote'
+        .' data-msg-confirmar-manter="'.$v('updates-clash-bulk-confirm-keep').'" data-msg-confirmar-sobrescrever="'.$v('updates-clash-bulk-confirm-overwrite').'"'
+        .' data-msg-ok="'.$v('updates-clash-bulk-ok').'">'
+        .'<label class="block space-y-1"><span class="font-semibold text-slate-700">'.$v('updates-clash-bulk-title').'</span>'
+        .'<select class="block rounded border border-slate-300 bg-white px-2 py-1" data-choques-lote-entrega>'.$opcoes.'</select></label>'
+        .'<button type="button" class="rounded border border-slate-300 bg-white px-3 py-1 font-medium text-slate-700 hover:bg-slate-100" data-choques-lote-acao="manter">'.$v('updates-clash-bulk-keep').'</button>'
+        .'<button type="button" class="rounded border border-rose-300 bg-white px-3 py-1 font-medium text-rose-700 hover:bg-rose-50" data-choques-lote-acao="sobrescrever">'.$v('updates-clash-bulk-overwrite').'</button>'
+        .'<p class="w-full text-xs text-slate-500">'.$v('updates-clash-bulk-help').'</p>'
+        .'<div class="hidden w-full rounded border p-2" data-choques-lote-msg role="status"></div>'
+        .'</div>';
+}
+
+/** REQ-286: decisão em lote pelo painel. */
+function admin_atualizacoes_ajax_choques_resolver_lote(){
+    global $_GESTOR;
+    require_once $_GESTOR['bibliotecas-path'].'atualizacoes-choques.php';
+    $acao = (string)($_POST['acao'] ?? '');
+    $filtro = json_decode((string)($_POST['entrega'] ?? ''), true);
+    $filtro = is_array($filtro) ? array_intersect_key($filtro, array_flip(['versao', 'origem', 'camada'])) : [];
+    $u = function_exists('gestor_usuario') ? (array)gestor_usuario() : [];
+    $quem = 'painel (lote):'.(string)($u['email'] ?? ($u['usuario'] ?? ($_GESTOR['usuario-id'] ?? '?')));
+    $r = atualizacoes_choques_resolver_lote($_GESTOR['ROOT_PATH'], $filtro, $acao, $quem);
+    $_GESTOR['ajax-json'] = $r['ok']
+        ? ['status' => 'Ok', 'data' => ['resolvidos' => $r['resolvidos'], 'pulados' => $r['pulados'], 'falhas' => count($r['falhas'])]]
+        : ['status' => 'Erro', 'message' => $r['erro']];
 }
 
 /** req-240: quantos choques ainda esperam decisão (0 quando a tabela não existe). */
@@ -219,7 +290,9 @@ function admin_atualizacoes_choque_detalhe(int $id): string {
         .'<div class="flex flex-wrap gap-2"><dt class="font-semibold">'.$v('updates-clash-col-owner').':</dt><dd>'.$e($r['camada_dona'] ?? '—').'</dd></div>'
         .'<div class="flex flex-wrap gap-2"><dt class="font-semibold">'.$v('updates-clash-copy').':</dt><dd>'.($r['copia'] ? '<code>'.$e($r['copia']).'</code>' : '—').'</dd></div>'
         .'</dl>'
-        .($diff !== '' ? '<pre class="max-h-[60vh] overflow-auto whitespace-pre-wrap rounded border border-slate-200 bg-slate-950 p-3 font-mono text-xs text-slate-100">'.$e($diff).'</pre>' : '')
+        .($diff !== '' ? '<pre class="max-h-[60vh] overflow-auto whitespace-pre-wrap rounded border border-slate-200 bg-slate-950 p-3 font-mono text-xs text-slate-100">'.$e($diff).'</pre>'
+            // REQ-286: retirada (de arquivo) não tem versão nova nem diff; dizer isso em vez de mostrar vazio.
+            : (($r['tipo'] ?? '') === 'retirada' ? '<p class="rounded border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700" data-choque-sem-conteudo>'.$v('updates-clash-no-content-retirada').'</p>' : ''))
         .admin_atualizacoes_choque_decisao_html($r);
 }
 
@@ -613,6 +686,7 @@ function admin_atualizacoes_start(){
 		switch($_GESTOR['ajax-opcao']){
 			case 'update': admin_atualizacoes_ajax_update(); break;
 			case 'choque-resolver': admin_atualizacoes_ajax_choque_resolver(); break;
+			case 'choques-resolver-lote': admin_atualizacoes_ajax_choques_resolver_lote(); break;
 			case 'auto': admin_atualizacoes_ajax_auto(); break;
 		}
 		

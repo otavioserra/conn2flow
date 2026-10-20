@@ -7,7 +7,9 @@
  * para que a decisão seja a mesma venha de onde vier (painel, CLI, extensão do VS Code).
  */
 
-require_once __DIR__ . '/instalacao-manifesto.php';
+// REQ-286: o atualizador pode ter carregado a biblioteca do staging (outro caminho); incluir a instalada de novo
+// redeclararia as funções (erro fatal no fim da etapa de banco).
+if (!function_exists('instalacao_planejar')) require_once __DIR__ . '/instalacao-manifesto.php';
 
 /** A tabela existe (a migração pode não ter rodado ainda). */
 function atualizacoes_choques_disponivel(): bool {
@@ -34,6 +36,69 @@ function atualizacoes_choques_listar(bool $pendentes = true, int $limite = 100):
         $r['acoes'] = $r['resolucao'] ? [] : instalacao_choque_acoes($r);
         $out[] = $r;
     }
+    return $out;
+}
+
+/**
+ * REQ-286: resolve sozinhos os choques de arquivo que perderam o objeto (`instalacao_choque_superado`): o disco
+ * já tem a versão entregue, ou o arquivo retirado já não existe. Nada muda no disco; só o registro.
+ * Chamada depois de gravar os choques de uma entrega (atualização do sistema e deploy de projeto).
+ *
+ * @return int Quantos choques foram marcados como `superado`.
+ */
+function atualizacoes_choques_resolver_superados(string $base): int {
+    // Biblioteca do manifesto anterior (sem a regra) carregada no processo: não faz nada.
+    if (!function_exists('instalacao_choque_superado') || !atualizacoes_choques_disponivel()) return 0;
+    $res = banco_query("SELECT id_atualizacoes_choques, caminho, camada, tipo, motivo, hash_novo FROM atualizacoes_choques WHERE resolucao IS NULL AND tipo IN ('arquivo','retirada')");
+    if (!$res) return 0;
+    $manifestos = instalacao_manifestos($base);
+    $ids = [];
+    while ($c = banco_fetch_assoc($res)) {
+        if (instalacao_choque_superado($base, $c, $manifestos)) $ids[] = (int)$c['id_atualizacoes_choques'];
+    }
+    foreach (array_chunk($ids, 200) as $lote) {
+        banco_query("UPDATE atualizacoes_choques SET resolucao='superado', resolvido_em=NOW(), resolvido_por='automático' WHERE resolucao IS NULL AND id_atualizacoes_choques IN (" . implode(',', $lote) . ')');
+    }
+    return count($ids);
+}
+
+/**
+ * REQ-286: decisão em lote, com a confirmação do operador feita na tela. Cada choque passa pelo mesmo motor da
+ * decisão individual (`atualizacoes_choques_resolver`); o que não aceita a ação (ex.: `sobrescrever` num
+ * `sobreposto`) fica pendente e é contado. Mescla não existe em lote.
+ *
+ * @param array $filtro `['versao' => ?, 'origem' => ?, 'camada' => ?]` (vazio: todos os pendentes).
+ * @return array ['ok' => bool, 'erro' => string, 'resolvidos' => n, 'pulados' => n, 'falhas' => [id => erro]]
+ */
+function atualizacoes_choques_resolver_lote(string $base, array $filtro, string $acao, string $quem): array {
+    $out = ['ok' => false, 'erro' => '', 'resolvidos' => 0, 'pulados' => 0, 'falhas' => []];
+    if (!in_array($acao, ['manter', 'sobrescrever'], true)) { $out['erro'] = 'decisão em lote só aceita manter ou sobrescrever'; return $out; }
+    if (!atualizacoes_choques_disponivel()) { $out['erro'] = 'registro de choques indisponível'; return $out; }
+    $w = ['resolucao IS NULL'];
+    foreach (['versao', 'origem', 'camada'] as $k) {
+        if (isset($filtro[$k]) && $filtro[$k] !== '') $w[] = $k . "='" . banco_escape_field((string)$filtro[$k]) . "'";
+    }
+    $res = banco_query('SELECT id_atualizacoes_choques, motivo FROM atualizacoes_choques WHERE ' . implode(' AND ', $w) . ' ORDER BY id_atualizacoes_choques DESC');
+    $itens = [];
+    if ($res) while ($l = banco_fetch_assoc($res)) $itens[] = $l;
+    foreach ($itens as $l) {
+        if (!in_array($acao, instalacao_choque_acoes($l), true)) { $out['pulados']++; continue; }
+        $r = atualizacoes_choques_resolver($base, (int)$l['id_atualizacoes_choques'], $acao, null, $quem);
+        if ($r['ok']) $out['resolvidos'] += 1;
+        elseif ($r['erro'] !== '' && strpos($r['erro'], 'já resolvido') === false) $out['falhas'][(int)$l['id_atualizacoes_choques']] = $r['erro'];
+    }
+    $out['ok'] = true;
+    return $out;
+}
+
+/**
+ * REQ-286: entregas com choques pendentes, para a decisão em lote: `[['versao','origem','camada','total'], ...]`.
+ */
+function atualizacoes_choques_entregas_pendentes(): array {
+    if (!atualizacoes_choques_disponivel()) return [];
+    $res = banco_query('SELECT versao, origem, camada, COUNT(*) AS total, MAX(id_atualizacoes_choques) AS ultimo FROM atualizacoes_choques WHERE resolucao IS NULL GROUP BY versao, origem, camada ORDER BY ultimo DESC');
+    $out = [];
+    if ($res) while ($l = banco_fetch_assoc($res)) $out[] = ['versao' => (string)$l['versao'], 'origem' => (string)$l['origem'], 'camada' => (string)$l['camada'], 'total' => (int)$l['total']];
     return $out;
 }
 

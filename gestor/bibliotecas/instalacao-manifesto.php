@@ -43,6 +43,9 @@ const INSTALACAO_CORE_SEMPRE_ESCREVER = [
     'bibliotecas/db-data.php',
     'bibliotecas/instalacao-',
     'bibliotecas/atualizacoes-',
+    // REQ-286: o que é da instalação mora no `.env`; um `config.php` preservado como "editado" segurava a
+    // versão (selo "v3.0.8" depois da 3.0.11) e a lista de bibliotecas (sem `api-crud`) no Lab.
+    'config.php',
 ];
 
 /** req-278: o arquivo do core é do atualizador (sempre escrito)? Função PURA. */
@@ -53,6 +56,39 @@ function instalacao_core_sempre_escrever(string $camada, string $rel): bool {
         if ($rel === $prefixo || strpos($rel, $prefixo) === 0) return true;
     }
     return false;
+}
+
+/**
+ * REQ-286: artefatos de sistema — saída de build ou transporte de dados, que ninguém edita à mão. A camada dona
+ * SEMPRE os escreve (a cópia anterior fica no snapshot) e eles nunca viram choque "editado": no Lab, centenas de
+ * choques eram `vendor/`, `*.precompiled.css` e `db/data/` regravados por sincronizações de teste. Sobreposto por
+ * camada superior continua preservado, mas o choque já nasce resolvido (`automatico`). `db/data/` é transporte:
+ * o dado que a pessoa edita mora no banco, protegido por `user_modified`.
+ */
+const INSTALACAO_ARTEFATOS_PREFIXOS = ['vendor/', 'db/data/'];
+const INSTALACAO_ARTEFATOS_SUFIXOS = ['.min.js', '.precompiled.css'];
+const INSTALACAO_ARTEFATOS_EXATOS = ['assets/asset-versions.json', 'assets/modulos/covers/manifest.json', 'resources/.tailwind-build-manifest.json'];
+
+/** REQ-286: o caminho é artefato de sistema? Função PURA. */
+function instalacao_artefato_sistema(string $rel): bool {
+    $rel = str_replace('\\', '/', $rel);
+    if (in_array($rel, INSTALACAO_ARTEFATOS_EXATOS, true)) return true;
+    foreach (INSTALACAO_ARTEFATOS_PREFIXOS as $p) if (strpos($rel, $p) === 0) return true;
+    foreach (INSTALACAO_ARTEFATOS_SUFIXOS as $s) if (substr($rel, -strlen($s)) === $s) return true;
+    return false;
+}
+
+/** REQ-286: extensões de texto, em que diferença só de quebra de linha (CRLF x LF) não é edição. */
+const INSTALACAO_EXTENSOES_TEXTO = ['php', 'js', 'mjs', 'css', 'json', 'html', 'htm', 'md', 'txt', 'xml', 'svg', 'sh', 'yml', 'yaml', 'ini', 'sql', 'env', 'example', 'htaccess', 'conf', 'sample'];
+
+/** REQ-286: sha256 do arquivo de texto com `\r\n` trocado por `\n` (null: binário, ausente ou grande demais). */
+function instalacao_hash_disco_lf(string $base, string $rel): ?string {
+    $ext = strtolower((string)pathinfo($rel, PATHINFO_EXTENSION));
+    if ($ext === '' || !in_array($ext, INSTALACAO_EXTENSOES_TEXTO, true)) return null;
+    $f = instalacao_caminho_base($base) . str_replace('/', DIRECTORY_SEPARATOR, $rel);
+    if (!is_file($f) || filesize($f) > 64 * 1024 * 1024) return null;
+    $t = (string)file_get_contents($f);
+    return strpos($t, "\r\n") === false ? null : hash('sha256', str_replace("\r\n", "\n", $t));
 }
 
 function instalacao_caminho_base(string $base): string { return rtrim($base, '/\\') . DIRECTORY_SEPARATOR; }
@@ -158,6 +194,8 @@ function instalacao_rel(string $raiz, string $caminho): string {
 /** O caminho relativo fica fora do manifesto? (pastas protegidas e `installation/`) */
 function instalacao_fora(string $rel): bool {
     $topo = explode('/', $rel, 2)[0];
+    // REQ-286: controle do servidor (dono das migrações, req-194) não é entrega de nenhuma camada.
+    if (preg_match('#^db/\.c2f-migrations-[^/]*\.json$#', $rel)) return true;
     return in_array($topo, INSTALACAO_PASTAS_FORA, true);
 }
 
@@ -302,16 +340,42 @@ function instalacao_planejar(string $base, string $camada, array $pacote, bool $
         if (instalacao_fora($rel)) continue;
         $hDisco = instalacao_hash_disco($base, $rel);
         $sup = $dono($superiores, $rel);
+        $artefato = instalacao_artefato_sistema($rel);
+        // REQ-286: diferença só de quebra de linha não é edição. Igual ao novo: escreve (normaliza) sem choque;
+        // igual ao que a camada entregou antes: está intacto.
+        if ($sup === null && $hDisco !== null && $hDisco !== $hNovo && ($lf = instalacao_hash_disco_lf($base, $rel)) !== null) {
+            if ($lf === $hNovo) { $plano['escrever'][] = $rel; continue; }
+            if ($anterior !== null && ($anterior[$rel] ?? null) === $lf) $hDisco = $lf;
+        }
         // req-278: atualizador do core sempre chega (exceto se uma camada superior o sobrepõe).
-        if ($sup === null && $hDisco !== $hNovo && instalacao_core_sempre_escrever($camada, $rel)) {
+        // REQ-286: artefatos de sistema também, em qualquer camada.
+        if ($sup === null && $hDisco !== $hNovo && ($artefato || instalacao_core_sempre_escrever($camada, $rel))) {
             $plano['escrever'][] = $rel;
             if ($anterior !== null && $hDisco !== null && ($anterior[$rel] ?? null) !== $hDisco) $plano['forcados'][] = $rel;
             continue;
         }
-        // req-199: a camada entrega o mesmo conteúdo da entrega anterior e o disco é outro (sobreposto ou
-        // editado): não há nada novo a decidir. Fica como está, sem choque (antes virava choque a cada entrega,
-        // e voltava depois de uma mescla).
-        if ($anterior !== null && $hDisco !== null && $hDisco !== $hNovo && ($anterior[$rel] ?? null) === $hNovo) continue;
+        // REQ-286: artefato sobreposto por camada superior fica com ela (a versão nova vai para overrides/, onde a
+        // etapa de banco do core a encontra), mas o choque nasce resolvido: não há o que decidir.
+        if ($sup !== null && $artefato) {
+            if ($hDisco !== null && $hDisco !== $hNovo) $plano['preservar'][$rel] = ['motivo' => 'sobreposto', 'camada_dona' => $sup, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo, 'resolucao' => 'automatico'];
+            continue;
+        }
+        // req-199: a camada entrega o mesmo conteúdo da entrega anterior e o disco é outro. Só não há nada novo a
+        // decidir quando a divergência JÁ foi decidida (regra gravada para este disco) ou quando a camada de cima é
+        // a dona. REQ-286: antes pulava sempre — disco mudado por fora (sync de teste, edição) ficava velho em
+        // silêncio para sempre (316 arquivos do projeto no Lab; 10 de `db/data` na produção).
+        if ($anterior !== null && $hDisco !== null && $hDisco !== $hNovo && ($anterior[$rel] ?? null) === $hNovo) {
+            if ($sup !== null || (($regras[$rel]['hash_disco'] ?? null) === $hDisco)) continue;
+            $inf = $dono($inferiores, $rel);
+            if ($inf !== null && ($inferiores[$inf][$rel] ?? null) === $hDisco) {
+                // O disco voltou para a versão da camada de baixo: a de cima reescreve a sua (e guarda a original).
+                $plano['originais'][] = $rel;
+                $plano['escrever'][] = $rel;
+                continue;
+            }
+            $plano['preservar'][$rel] = ['motivo' => 'editado', 'camada_dona' => null, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo];
+            continue;
+        }
         if ($sup !== null && $hDisco !== null && $hDisco !== $hNovo) {
             $plano['preservar'][$rel] = ['motivo' => 'sobreposto', 'camada_dona' => $sup, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo] + $regra($rel, $hDisco);
             continue;
@@ -408,6 +472,20 @@ function instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, ar
         $rel['choques_arquivo'] = instalacao_choques_registrar($base, (string)($registro['origem'] ?? ''), $camada, $versao, $registro['execucao'] ?? null, $rel['choques']);
         if ($rel['choques_arquivo'] === null) { $rel['manifesto_gravado'] = false; return $rel; }
     }
+    // REQ-286: choque "editado" registrado e ainda sem decisão marca o disco como `pendente`. A mesma entrega de
+    // novo não repete o choque (ele está visível na tela); a divergência que nunca virou choque continua aparecendo.
+    $pendentes = [];
+    foreach ($plano['preservar'] as $r => $info) {
+        if (($info['motivo'] ?? '') === 'editado' && empty($info['resolucao']) && !empty($info['hash_disco'])) $pendentes[$r] = $info;
+    }
+    if ($pendentes) {
+        $regras = instalacao_regras_ler($base);
+        foreach ($pendentes as $r => $info) {
+            if (in_array($regras[$r]['acao'] ?? '', ['manter', 'mesclar'], true) && ($regras[$r]['hash_disco'] ?? null) === $info['hash_disco']) continue;
+            $regras[$r] = ['acao' => 'pendente', 'camada' => $camada, 'motivo' => 'editado', 'hash_disco' => $info['hash_disco'], 'hash_novo' => $info['hash_novo'] ?? null, 'em' => date('c')];
+        }
+        instalacao_regras_gravar($base, $regras);
+    }
     $rel['manifesto_gravado'] = instalacao_manifesto_gravar($base, $camada, $plano['manifesto'], $versao);
     return $rel;
 }
@@ -483,6 +561,25 @@ function instalacao_choques_registrar(string $base, string $origem, string $cama
     fclose($h);
     if (!$ok || !@rename($tmp, $f)) { @unlink($tmp); return null; }
     return $f;
+}
+
+/**
+ * REQ-286: o choque de arquivo perdeu o objeto? Edição/sobreposição em que o disco já tem a versão nova do choque
+ * (ou a última que a camada entregou), e retirada cujo arquivo já não existe. Choque de registro (`db:`) não entra.
+ * Função PURA sobre o disco e os manifestos (`$manifestos` = `instalacao_manifestos()`).
+ */
+function instalacao_choque_superado(string $base, array $choque, array $manifestos): bool {
+    $rel = (string)($choque['caminho'] ?? '');
+    if ($rel === '' || strpos($rel, 'db:') === 0 || strpos($rel, '..') !== false) return false;
+    $tipo = (string)($choque['tipo'] ?? 'arquivo');
+    $disco = instalacao_hash_disco($base, $rel);
+    if ($tipo === 'retirada') return $disco === null;
+    if ($tipo !== 'arquivo' || $disco === null) return false;
+    if (!empty($choque['hash_novo']) && $disco === $choque['hash_novo']) return true;
+    $camada = (string)($choque['camada'] ?? '');
+    $entregue = $manifestos[$camada]['arquivos'][$rel] ?? null;
+    // Sobreposto: o disco é da camada de cima por definição — não é superado por estar diferente.
+    return ($choque['motivo'] ?? '') !== 'sobreposto' && $entregue !== null && $disco === $entregue;
 }
 
 /**
@@ -854,6 +951,11 @@ function instalacao_choque_resolver(string $base, array $choque, string $acao, ?
     $regras = instalacao_regras_ler($base);
     if ($acao === 'manter') {
         $regras[$rel] = ['acao' => 'manter', 'camada' => (string)($choque['camada'] ?? ''), 'motivo' => (string)($choque['motivo'] ?? ''),
+            'hash_disco' => $hash, 'hash_novo' => $choque['hash_novo'] ?? null, 'em' => date('c')];
+    } elseif ($acao === 'mesclar') {
+        // REQ-286: a mescla também é decisão sobre este disco. Sem a regra, a mesma entrega voltaria a chocar
+        // (o planejamento só deixa de lado divergência decidida). Entrega com versão nova pede decisão de novo.
+        $regras[$rel] = ['acao' => 'mesclar', 'camada' => (string)($choque['camada'] ?? ''), 'motivo' => (string)($choque['motivo'] ?? ''),
             'hash_disco' => $hash, 'hash_novo' => $choque['hash_novo'] ?? null, 'em' => date('c')];
     } else {
         unset($regras[$rel]); // o disco mudou: uma regra antiga de "manter" não vale mais

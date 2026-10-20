@@ -162,3 +162,11 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **`sync-files` avulso no Lab deixa arquivos do projeto "editados"** para o manifesto (conteúdo e `mtime` fora do último deploy): no deploy seguinte, cada um vira choque.
 - **Selo de versão errado = `config.php` preservado como "editado"**: a versão vem de `$_GESTOR['versao']` no `config.php`, e um `config.php` regravado por sync de teste (CRLF) fica velho em todas as releases seguintes, sem a lista de bibliotecas nova. Comparar disco x `installation/manifests/core.json` por hash dá o retrato exato em segundos.
 - **Regra da req-199 esconde divergência nunca decidida**: "mesmo conteúdo da entrega anterior e disco diferente → pula". Disco alterado por fora fica velho em silêncio (316 arquivos no Lab). Fica para a REQ-286; no Lab, o saneamento marcou o disco como "entregue" para o deploy seguinte sobrescrever.
+
+### REQ-286 / BATCH-295 — choques sem falsos positivos (2026-10-20)
+
+- **Artefato de sistema nunca vira choque** (`instalacao_artefato_sistema()`): `vendor/`, `db/data/`, `*.min.js`, `*.precompiled.css`, manifestos de assets. A camada dona sempre escreve; sobreposto por camada de cima fica com ela e o choque nasce `automatico`. `config.php` do core é sempre escrito (o que é da instalação está no `.env`).
+- **A regra da req-199 só pula com decisão ou pendência**: `regras.json` guarda `manter`, `mesclar` e `pendente` (gravada ao registrar choque editado). Sem nada disso, divergência vira choque.
+- **`require_once` de caminho diferente redeclara funções**: o atualizador pode ter carregado `instalacao-manifesto.php` do staging; bibliotecas que dependem dele usam `if (!function_exists(...))`.
+- **INSERT via `banco_insert_name` que falha devolve false**: devolver `true` fixo no callback de pendentes apagava o choque em silêncio.
+- **Simular o motor com dados reais é barato**: `instalacao_planejar($G, $camada, $manifesto['arquivos'], true)` mostra o que a próxima entrega igual faria, sem pacote.

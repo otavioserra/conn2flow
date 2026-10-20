@@ -1,5 +1,21 @@
 # Validation Checklist
 
+## BATCH-295 — REQ-286
+
+- [x] Artefatos de sistema e `config.php` do core sempre escritos; sobreposto de artefato com choque automático (testes).
+- [x] Divergência nunca decidida vira choque; choque pendente não se repete; disco com a versão da camada de baixo é reescrito (testes).
+- [x] CRLF não é edição; `db/.c2f-migrations-*` fora do manifesto (testes).
+- [x] Superados saem sozinhos; lote passa pelo motor, pula o que não aceita e informa falhas (arnês SQLite).
+- [x] Tela: pendentes por padrão, paginação, lote com confirmação, aviso de retirada; variáveis pt-br/en.
+- [x] utf8mb4 na tabela de choques; INSERT que falha fica pendente e vai para o log.
+- [x] PHPUnit 1.905 (2 falhas de ambiente), Vitest 700/700; simulação no Lab e na produção (só leitura).
+- [ ] Release e conferência da aba de choques no Lab e na produção.
+- [ ] Homologação humana.
+
+Relatório: [BATCH-295](../implementation/BATCH-295.md).
+
+---
+
 ## BATCH-294 — REQ-285
 
 - [x] Causa do `Falha finalize` com dados reais: POST do finalize com HTTP 404 (página `admin-atualizacoes/` desativada pela retirada durante a etapa de banco).

@@ -270,7 +270,11 @@ final class InstalacaoManifestoTest extends TestCase
         $r = instalacao_choque_resolver($this->base, $c, 'mesclar', "l1 servidor\nl2 core v2\n");
         $this->assertTrue($r['ok']);
         $this->assertSame("l1 servidor\nl2 core v2\n", $this->ler('a.php'));
-        $this->assertSame([], instalacao_regras_ler($this->base), 'Mesclar não deixa regra.');
+        // REQ-286: a mescla é decisão sobre este disco (a mesma entrega não volta a chocar).
+        $this->assertSame('mesclar', instalacao_regras_ler($this->base)['a.php']['acao']);
+        $this->assertSame(hash('sha256', "l1 servidor
+l2 core v2
+"), instalacao_regras_ler($this->base)['a.php']['hash_disco']);
     }
 
     public function testManterViraRegraParaAProximaEntrega(): void
@@ -494,5 +498,99 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertNotFalse($extrai);
         $this->assertNotFalse(strpos($api, '@unlink($zip_path);', $extrai), 'O zip enviado sai da pasta extraída antes do plano.');
         $this->assertLessThan(strpos($api, 'api_project_aplicar_arquivos($project_content_dir'), strpos($api, "api_memoria_minima('1024M');", $extrai), 'Etapa de arquivos com 1 GB.');
+    }
+
+    /** REQ-286: artefatos de sistema são sempre escritos pela camada dona, sem choque. */
+    public function testArtefatosDeSistemaSempreEscritos(): void
+    {
+        $this->assertTrue(instalacao_artefato_sistema('vendor/composer/installed.php'));
+        $this->assertTrue(instalacao_artefato_sistema('db/data/PaginasData.part-001.json'));
+        $this->assertTrue(instalacao_artefato_sistema('modulos/x/resources/pt-br/pages/x/x.precompiled.css'));
+        $this->assertTrue(instalacao_artefato_sistema('modulos/x/x.min.js'));
+        $this->assertTrue(instalacao_artefato_sistema('assets/asset-versions.json'));
+        $this->assertFalse(instalacao_artefato_sistema('modulos/x/x.php'), 'Código continua com choque.');
+        $this->assertFalse(instalacao_artefato_sistema('resources/pt-br/pages/home/home.html'));
+
+        $this->entregar('projeto', ['vendor/composer/installed.php' => 'ref-1', 'db/data/FormsData.json' => '[1]', 'x.php' => 'x1'], 'p1');
+        file_put_contents($this->base . 'vendor/composer/installed.php', 'ref-sync-de-teste');
+        file_put_contents($this->base . 'db/data/FormsData.json', '[velho]');
+        file_put_contents($this->base . 'x.php', 'mudei à mão');
+        [$plano, $r] = $this->entregar('projeto', ['vendor/composer/installed.php' => 'ref-2', 'db/data/FormsData.json' => '[2]', 'x.php' => 'x2'], 'p2');
+        $this->assertSame('ref-2', $this->ler('vendor/composer/installed.php'));
+        $this->assertSame('[2]', $this->ler('db/data/FormsData.json'));
+        $this->assertSame(['x.php'], array_column($r['choques'], 'caminho'), 'Só o código vira choque.');
+        $this->assertContains('vendor/composer/installed.php', $plano['forcados']);
+    }
+
+    public function testArtefatoSobrepostoFicaComADonaEOChoqueNasceResolvido(): void
+    {
+        $this->entregar('core', ['db/data/ModulosData.json' => '[core-1]'], 'v1');
+        $this->entregar('projeto', ['db/data/ModulosData.json' => '[projeto]'], 'p1');
+        [$plano, $r] = $this->entregar('core', ['db/data/ModulosData.json' => '[core-2]'], 'v2');
+        $this->assertSame('[projeto]', $this->ler('db/data/ModulosData.json'));
+        $this->assertSame('automatico', $plano['preservar']['db/data/ModulosData.json']['resolucao']);
+        $this->assertSame('[core-2]', file_get_contents($this->base . 'backups/overrides/v2/db/data/ModulosData.json'), 'Versão do core em overrides/ para a etapa de banco.');
+    }
+
+    public function testConfigDoCoreSempreEscrito(): void
+    {
+        $this->assertTrue(instalacao_core_sempre_escrever('core', 'config.php'));
+        $this->assertFalse(instalacao_core_sempre_escrever('projeto', 'config.php'));
+        $this->entregar('core', ['config.php' => "versao 3.0.8"], 'v1');
+        file_put_contents($this->base . 'config.php', "versao 3.0.8\r\n# sync de teste");
+        [, $r] = $this->entregar('core', ['config.php' => "versao 3.0.11"], 'v2');
+        $this->assertSame('versao 3.0.11', $this->ler('config.php'));
+        $this->assertSame([], $r['choques']);
+    }
+
+    /** REQ-286: disco mudado por fora com a mesma entrega não fica escondido; choque visível não se repete. */
+    public function testDivergenciaNuncaDecididaViraChoque(): void
+    {
+        $this->entregar('projeto', ['a.php' => 'a1'], 'p1');
+        file_put_contents($this->base . 'a.php', 'regravado por sync de teste');
+        [, $r] = $this->entregar('projeto', ['a.php' => 'a2'], 'p2');
+        $this->assertSame('editado', $r['choques'][0]['motivo']);
+        // Agora o manifesto diz que a2 foi entregue. Reentregar a2: o choque já está pendente (visível), não repete.
+        [, $r2] = $this->entregar('projeto', ['a.php' => 'a2'], 'p3');
+        $this->assertSame([], $r2['choques']);
+        $this->assertSame('pendente', instalacao_regras_ler($this->base)['a.php']['acao']);
+
+        // Caso do Lab/produção: o disco mudou por fora DEPOIS de uma entrega e nunca houve choque.
+        $this->entregar('projeto', ['b.php' => 'b1'], 'p4');
+        file_put_contents($this->base . 'b.php', 'fora do deploy');
+        [$plano, $r3] = $this->entregar('projeto', ['a.php' => 'a2', 'b.php' => 'b1'], 'p5');
+        $this->assertSame('editado', $plano['preservar']['b.php']['motivo'], 'Antes pulava em silêncio.');
+        $this->assertContains('b.php', array_column($r3['choques'], 'caminho'));
+    }
+
+    public function testDiscoComAVersaoDoCoreEmArquivoDoProjetoVoltaParaADoProjeto(): void
+    {
+        $this->entregar('core', ['comum.php' => 'core'], 'v1');
+        $this->entregar('projeto', ['comum.php' => 'projeto'], 'p1');
+        file_put_contents($this->base . 'comum.php', 'core'); // alguém regravou com a versão do core
+        [$plano, $r] = $this->entregar('projeto', ['comum.php' => 'projeto'], 'p2');
+        $this->assertContains('comum.php', $plano['escrever']);
+        $this->assertSame('projeto', $this->ler('comum.php'));
+        $this->assertSame([], $r['choques']);
+    }
+
+    /** REQ-286: CRLF não é edição. */
+    public function testQuebraDeLinhaNaoEEdicao(): void
+    {
+        $this->entregar('core', ['a.php' => "l1\nl2\n", 'b.php' => "b1\n"], 'v1');
+        file_put_contents($this->base . 'a.php', "l1\r\nl2\r\n"); // igual ao entregue antes, com CRLF
+        file_put_contents($this->base . 'b.php', "b2\r\n");       // igual ao novo, com CRLF
+        [$plano, $r] = $this->entregar('core', ['a.php' => "l1\nl2 v2\n", 'b.php' => "b2\n"], 'v2');
+        $this->assertSame([], $r['choques']);
+        $this->assertSame("l1\nl2 v2\n", $this->ler('a.php'), 'Intacto: recebe a versão nova.');
+        $this->assertSame("b2\n", $this->ler('b.php'), 'Só a quebra de linha mudava: normaliza.');
+    }
+
+    public function testControleDeMigracoesForaDoManifesto(): void
+    {
+        $this->assertTrue(instalacao_fora('db/.c2f-migrations-projeto.json'));
+        $this->assertFalse(instalacao_fora('db/migrations/2026_x.php'));
+        $this->entregar('projeto', ['db/.c2f-migrations-projeto.json' => '{}', 'a.php' => 'a'], 'p1');
+        $this->assertArrayNotHasKey('db/.c2f-migrations-projeto.json', instalacao_manifesto_ler($this->base, 'projeto')['arquivos']);
     }
 }

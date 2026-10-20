@@ -47,6 +47,57 @@ $(document).ready(function () {
         });
     })();
 
+    // REQ-286: filtro e páginas dos choques recarregam a tela com `?choques=`; reabre a aba de choques.
+    (function choquesAbaPelaUrl() {
+        if (!/[?&]choques=/.test(window.location.search)) return;
+        const painel = document.querySelector('[data-c2f-painel="choques"]');
+        const grupo = painel && painel.closest('[data-c2f-abas]');
+        if (!grupo || !window.c2fControles) return;
+        const abas = window.c2fControles.de(grupo) || window.c2fControles.criar('abas', grupo);
+        if (abas) abas.definir('choques', true);
+        grupo.scrollIntoView({ block: 'start' });
+    })();
+
+    // REQ-286: decisão em lote dos choques (uma entrega ou todos os pendentes), com confirmação do operador.
+    (function choquesLote() {
+        const box = $('[data-choques-lote]');
+        if (!box.length) return;
+        const url = gestor.raiz + String(gestor.moduloCaminho).replace(/\/+$/, '') + '/';
+        const msg = box.find('[data-choques-lote-msg]')[0];
+        function mostrar(ok, texto) {
+            if (!msg) return;
+            msg.textContent = texto;
+            msg.classList.remove('hidden', 'border-emerald-300', 'bg-emerald-50', 'text-emerald-900', 'border-rose-300', 'bg-rose-50', 'text-rose-900');
+            msg.classList.add(ok ? 'border-emerald-300' : 'border-rose-300', ok ? 'bg-emerald-50' : 'bg-rose-50', ok ? 'text-emerald-900' : 'text-rose-900');
+        }
+        box.on('click', '[data-choques-lote-acao]', function () {
+            const acao = String($(this).data('choques-lote-acao'));
+            const entrega = String(box.find('[data-choques-lote-entrega]').val() || '');
+            const pergunta = box.data(acao === 'sobrescrever' ? 'msg-confirmar-sobrescrever' : 'msg-confirmar-manter');
+            window.c2fControles.dialogo.confirmar(pergunta, { perigo: acao === 'sobrescrever' }).then(function (confirmado) {
+                if (!confirmado) return;
+                box.find('button, select').prop('disabled', true);
+                $.ajax({ type: 'POST', url: url, dataType: 'json',
+                    data: { opcao: gestor.moduloOpcao, ajax: 'sim', ajaxOpcao: 'choques-resolver-lote', acao: acao, entrega: entrega } })
+                    .done(function (r) {
+                        if (r && r.status === 'Ok') {
+                            const d = r.data || {};
+                            mostrar(true, String(box.data('msg-ok')).replace('#resolvidos#', d.resolvidos || 0).replace('#pulados#', d.pulados || 0).replace('#falhas#', d.falhas || 0));
+                            setTimeout(function () { window.location.reload(); }, 1400);
+                        } else {
+                            box.find('button, select').prop('disabled', false);
+                            mostrar(false, (r && r.message) || 'Erro');
+                        }
+                    })
+                    .fail(function (x) {
+                        box.find('button, select').prop('disabled', false);
+                        if (x.status === 401) { window.location.href = gestor.raiz + 'signin/'; return; }
+                        mostrar(false, 'HTTP ' + x.status);
+                    });
+            });
+        });
+    })();
+
     // req-245 / BATCH-254: aba Automático — interruptor, período, opções e estado da atualização automática.
     (function atualizacaoAutomatica() {
         const painel = document.getElementById('atualizacoes-auto');

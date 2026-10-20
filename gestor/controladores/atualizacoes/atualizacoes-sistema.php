@@ -598,15 +598,28 @@ function gravarChoquesPendentes(string $basePath): void {
     $existe = banco_query("SHOW TABLES LIKE 'atualizacoes_choques'");
     if(!$existe || (function_exists('banco_num_rows') && !banco_num_rows($existe))) return;
     $esc = fn($v) => function_exists('banco_escape_field') ? banco_escape_field((string)$v) : addslashes((string)$v);
-    $repetidos = 0;
-    $n = instalacao_choques_gravar_pendentes($basePath, function(array $linha) use ($esc, &$repetidos){
+    $repetidos = 0; $falhas = 0;
+    $n = instalacao_choques_gravar_pendentes($basePath, function(array $linha) use ($esc, &$repetidos, &$falhas){
         $ja = banco_query('SELECT 1 FROM atualizacoes_choques WHERE '.instalacao_choque_pendente_filtro($linha, $esc).' LIMIT 1');
         if($ja && banco_num_rows($ja)){ $repetidos++; return true; }
         $cols = []; $vals = [];
         foreach($linha as $k => $v){ $cols[] = $k; $vals[] = $v === null ? 'NULL' : "'".$esc($v)."'"; }
-        return (bool)banco_query('INSERT INTO atualizacoes_choques ('.implode(',', $cols).') VALUES ('.implode(',', $vals).')');
+        $ok = (bool)banco_query('INSERT INTO atualizacoes_choques ('.implode(',', $cols).') VALUES ('.implode(',', $vals).')');
+        if(!$ok) $falhas++;
+        return $ok;
     });
     if($n) logAtualizacao('Choques gravados em atualizacoes_choques: '.($n - $repetidos).($repetidos ? ' (mais '.$repetidos.' já pendente(s))' : ''), 'WARNING');
+    // REQ-286: falha de INSERT não some em silêncio; o pendente fica em installation/choques/ para nova tentativa.
+    if($falhas) logAtualizacao('Choques NÃO gravados em atualizacoes_choques: '.$falhas.' (o pendente fica em installation/choques/)', 'ERROR');
+    // REQ-286: choques que perderam o objeto (o disco já tem a versão entregue) saem da fila sozinhos.
+    $lib = $basePath.'bibliotecas'.DIRECTORY_SEPARATOR.'atualizacoes-choques.php';
+    if(is_file($lib)){
+        require_once $lib;
+        if(function_exists('atualizacoes_choques_resolver_superados')){
+            $sup = atualizacoes_choques_resolver_superados($basePath);
+            if($sup) logAtualizacao('Choques superados resolvidos sozinhos (o disco já tem a versão entregue): '.$sup);
+        }
+    }
 }
 /**
  * req-198 / BATCH-203: dump do banco antes da etapa de banco, no snapshot da execução. O trabalho é da
