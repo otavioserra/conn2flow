@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.13] - 2026-10-20
+
+### Fixed
+- Panel Updates & Clash UI (`REQ-286` / `BATCH-295 r2`): regenerated minified JS (`admin-atualizacoes.min.js`, `admin-categorias.min.js`) so that bulk clash decisions and modal controls reach production environments; added CI guard test `MinifyDerivadosReq286Test` to fail if any minified file is stale.
+- Panel Updates UI (`REQ-286` / `BATCH-295 r2`): clash list navigation, pagination, filter toggling and bulk decisions now swap content in-place without page reload, keeping tab position, scroll state, and live pending badge counts.
+- Deploy & API (`REQ-286` / `BATCH-295 r2`): project deploy via API now elevates session `wait_timeout` to prevent connection drops on MariaDB/MySQL servers during prolonged file transfers.
+
 ## [3.0.12] - 2026-10-20
 
 ### Added
