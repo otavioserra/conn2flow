@@ -626,6 +626,8 @@ function instalacao_dist_ressincronizar(string $gestorRaiz, string $distPath): a
 function instalacao_choque_superado(string $base, array $choque, array $manifestos): bool {
     $rel = (string)($choque['caminho'] ?? '');
     if ($rel === '' || strpos($rel, 'db:') === 0 || strpos($rel, '..') !== false) return false;
+    // REQ-286 r3: caminho que deixou de fazer parte de qualquer entrega não tem o que decidir.
+    if (preg_match('#^db/\.c2f-migrations-[^/]*\.json$#', $rel)) return true;
     $tipo = (string)($choque['tipo'] ?? 'arquivo');
     $disco = instalacao_hash_disco($base, $rel);
     if ($tipo === 'retirada') return $disco === null;
@@ -971,6 +973,9 @@ function instalacao_choque_versoes(string $base, array $choque): array {
 function instalacao_choque_resolver(string $base, array $choque, string $acao, ?string $mesclado = null, bool $gravarRegras = true): array {
     $rel = (string)($choque['caminho'] ?? '');
     $falha = function (string $m) use ($acao) { return ['ok' => false, 'erro' => $m, 'acao' => $acao, 'hash_disco' => null]; };
+    // REQ-286 r3: choque antigo de um caminho que saiu das entregas (ex.: `db/.c2f-migrations-*.json`). "Manter" não
+    // mexe no disco nem precisa de regra: vale. As outras decisões continuam recusadas para caminho protegido.
+    if ($acao === 'manter' && preg_match('#^db/\.c2f-migrations-[^/]*\.json$#', $rel)) return ['ok' => true, 'erro' => '', 'acao' => $acao, 'hash_disco' => null];
     if ($rel === '' || strpos($rel, '..') !== false || instalacao_fora($rel)
         || ((!$gravarRegras || isset($choque['copia_externa'])) && !instalacao_recuperacao_caminho_valido($rel))) return $falha('caminho inválido');
     if (!in_array($acao, instalacao_choque_acoes($choque), true)) return $falha('decisão "' . $acao . '" não vale para um choque "' . ($choque['motivo'] ?? '') . '"');

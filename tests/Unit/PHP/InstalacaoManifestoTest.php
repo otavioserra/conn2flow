@@ -592,6 +592,16 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertArrayNotHasKey('db/.c2f-migrations-projeto.json', instalacao_manifesto_ler($this->base, 'projeto')['arquivos']);
     }
 
+    /** REQ-286 r3: choque antigo de caminho que saiu das entregas (produção: "Manter todos" falhou só nele). */
+    public function testChoqueAntigoDeCaminhoForaDasEntregas(): void
+    {
+        $c = ['caminho' => 'db/.c2f-migrations-projeto.json', 'camada' => 'projeto', 'tipo' => 'retirada', 'motivo' => 'retirado'];
+        $this->assertTrue(instalacao_choque_resolver($this->base, $c, 'manter')['ok']);
+        $this->assertFalse(instalacao_choque_resolver($this->base, $c, 'sobrescrever')['ok'], 'Remover controle do servidor continua recusado.');
+        $this->assertTrue(instalacao_choque_superado($this->base, $c, []), 'A passada automática o resolve.');
+        $this->assertSame([], instalacao_regras_ler($this->base));
+    }
+
     /** REQ-289: o dist/ publicado acompanha a entrega (antes ficava com o JS da última publicação manual). */
     public function testDistRepublicaOQueMudou(): void
     {

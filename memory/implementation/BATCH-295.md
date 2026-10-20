@@ -82,3 +82,7 @@ Relato do Engenheiro Chefe: 115 choques pendentes; filtro e páginas da lista re
 **Evidências:** `assets:minify --verificar` 0 desatualizados; PHPUnit 1.907 (só as 2 falhas de ambiente); Vitest 700/700.
 
 **Depois da próxima release:** na produção, "Decidir em lote" → "Todos os pendentes" → "Manter todos" resolve os 115 (os "sobreposto" aceitam manter; nada é removido).
+
+## Rodada 3 — choque órfão do controle de migrações (2026-10-20)
+
+Produção na 3.0.14: "Manter todos" resolveu 114 de 115; falhou o choque de retirada `db/.c2f-migrations-projeto.json` (deploy `a3dbc89c`). Causa: a REQ-286 tirou esse arquivo de controle das entregas (`instalacao_fora()`), e o resolvedor passou a recusá-lo como "caminho inválido". Correção: "manter" vale para os arquivos de controle `db/.c2f-migrations-*.json` (não mexe no disco nem grava regra; remover continua recusado) e a passada de superados os resolve sozinha. Teste `testChoqueAntigoDeCaminhoForaDasEntregas`; PHPUnit 1.911 (só as 2 falhas de ambiente). Na produção o choque se resolve na próxima entrega (passada de superados) ou com "Manter" depois da release.
