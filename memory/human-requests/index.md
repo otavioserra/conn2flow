@@ -23,6 +23,7 @@
 | REQ-285 | Falha na etapa de finalização (finalize) do atualizador do sistema pelo painel | Ao atualizar uma instância do site via painel administrativo (`admin-atualizacoes`) para a tag `gestor-v3.0.9`: | [source](<req-285.md>) | implemented-pending-homologation |
 | REQ-286 | Choques do atualizador sem falsos positivos: artefatos de sistema fora do diff, divergência nunca escondida e decisão em lote | Na REQ-285 o Lab (`conn2flow.local`, core + conn2flow-site) acumulou **1.423 choques** numa única atualização, e o de... | [source](<req-286.md>) | implemented-pending-homologation |
 | REQ-287 | Deploy de projeto com etapas visíveis: progresso do envio e do processamento no servidor | No `./c2f project:deploy &lt;id&gt;`, depois de `File size: 62M` o terminal fica parado por minutos sem dizer nada. Não dá ... | [source](<req-287.md>) | ready-for-intake |
+| REQ-288 | URL inexistente demorava segundos para responder (busca de outro idioma lia todas as páginas) | Ao digitar uma URL que não existe, o navegador fica carregando; a requisição do documento fica "pending" por ~5,5 s e... | [source](<req-288.md>) | implemented-pending-homologation |
 
 ## Directories
 

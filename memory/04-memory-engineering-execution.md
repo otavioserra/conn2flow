@@ -173,3 +173,8 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **Painel serve `.min.js` fora do desenvolvimento e a release não minifica**: mudar JS exige `php cli/c2f.php assets:minify` e commitar o `.min.js` com o `minify-manifest.json`. O `MinifyDerivadosReq286Test` reprova derivado desatualizado. Fonte vazia gera derivado vazio.
 - **Deploy pela API e MariaDB com `wait_timeout` de 10 s**: a conexão do gestor caía no meio ("gone away"); o deploy agora sobe o `wait_timeout` da sessão como as etapas web do atualizador.
 - **String com quebra de linha literal em teste PHP** muda de hash no checkout CRLF: usar `"\n"` sempre.
+
+### REQ-288 / BATCH-296 — 404 lento (2026-10-20)
+
+- **Achar pausa no PHP sem profiler**: rodar o front-controller no CLI do Lab (`$_SERVER` e `$_GET['_gestor-caminho']` preenchidos, `sudo -u admin`) sob `strace -tt -T -e trace=poll,recvfrom,sendto`; o `poll` longo depois de um `sendto` mostra a consulta lenta, e `-s 2000` traz o texto dela.
+- **Consulta sem filtro de idioma com colunas pesadas lê a tabela `paginas` inteira** (html/css): sem resultado, ainda assim custa segundos. Buscar só o id pelo índice e ler a página por id.

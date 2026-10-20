@@ -2953,17 +2953,36 @@ function gestor_roteador(){
 	// ===== Caso não encontre a página e a mesma exista em linguagem diferente do padrão do sistema, devolver a página com a primeira língua disponível.
 
 	if(!isset($paginas)){
-		$paginas = banco_select_name
+		// REQ-288: primeiro só o id, pelo índice (language, caminho) da req-263; a página inteira só se existir.
+		// A busca antiga pedia html/css sem filtrar idioma: o banco lia TODAS as páginas inteiras e todo 404
+		// levava ~1 s no Lab e ~6 s em produção (200 MB de `paginas`) antes do redirecionamento.
+		$idiomas = Array();
+		foreach((array)($_GESTOR['languages'] ?? Array()) as $idioma){
+			$idioma = trim((string)$idioma);
+			if($idioma !== '') $idiomas[] = "'".banco_escape_field($idioma)."'";
+		}
+		$outro_idioma = banco_select_name
 		(
-			banco_campos_virgulas($campos)
+			banco_campos_virgulas(Array('id_paginas'))
 			,
 			"paginas",
 			"WHERE caminho='".banco_escape_field($caminho)."'"
+			.($idiomas ? " AND language IN (".implode(',', $idiomas).")" : '')
 			." AND (tipo='sistema' OR tipo='pagina')"
 			." AND status='A'"
 			." AND (data_publicacao_inicio IS NULL OR data_publicacao_inicio <= NOW())"
 			." AND (data_publicacao_fim IS NULL OR data_publicacao_fim >= NOW())"
+			." LIMIT 1"
 		);
+		if($outro_idioma){
+			$paginas = banco_select_name
+			(
+				banco_campos_virgulas($campos)
+				,
+				"paginas",
+				"WHERE id_paginas='".banco_escape_field($outro_idioma[0]['id_paginas'])."'"
+			);
+		}
 	}
 
 	// ===== Hook: roteador.paginas
@@ -3011,6 +3030,8 @@ function gestor_roteador(){
 			,
 			"paginas",
 			"WHERE caminho='".banco_escape_field($caminho)."'"
+			// REQ-288: idiomas habilitados levam a busca ao índice (language, caminho); roda em toda página.
+			.(!empty($_GESTOR['languages']) ? " AND language IN ('".implode("','", array_map('banco_escape_field', array_map('trim', (array)$_GESTOR['languages'])))."')" : '')
 			." AND (tipo='sistema' OR tipo='pagina')"
 			." AND status='A'"
 		);

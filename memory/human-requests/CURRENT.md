@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-288.md](req-288.md) (BATCH-296 `implemented-pending-homologation`, 2026-10-20, branch `feat/req-288`, Core): URL inexistente esperava ~6 s em produção — a busca de outro idioma lia todas as páginas inteiras; agora vai pelo índice (7.849 ms → 26 ms).
   - [req-287.md](req-287.md) (sem batch, `ready-for-intake`, 2026-10-20, Core — Dupla / Supervisionado): deploy de projeto com etapas visíveis — progresso do envio, execução no servidor como tarefa com estado e rota de status, CLI acompanhando. Origem: deploy do conn2flow-site em produção na REQ-285.
   - [req-286.md](req-286.md) (BATCH-295 `implemented-pending-homologation`, branch `feat/req-286`, 2026-10-20, Core — Dupla / Supervisionado): choques do atualizador sem falsos positivos — artefatos de sistema (`vendor/`, `*.precompiled.css`, `db/data/`…) sempre escritos pela camada dona, divergência nunca escondida pela regra da req-199, decisão em lote na tela, diff em utf8mb4. Origem: REQ-285 no Lab.
   - [req-285.md](req-285.md) (BATCH-294 `implemented-pending-homologation`, 2026-10-20, branch `feat/req-285`, Core — Dupla): o `Falha finalize` era 404 — a etapa de banco leu os `db/data` do projeto como do core e a retirada automática desativou/apagou 4.637 registros do core. Etapa lê o que o core entregou; nada sai sem confirmação (DEC-136); Lab reparado. Falta release e nova atualização pelo painel.

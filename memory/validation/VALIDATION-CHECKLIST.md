@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-296 — REQ-288
+
+- [x] Causa medida: busca de outro idioma sem índice lendo todas as páginas (strace no Lab; 7.849 ms em produção).
+- [x] Busca em dois passos pelo índice (26 ms em produção); lista de idiomas da página com `language IN`.
+- [x] `Roteador404RapidoReq288Test`; PHPUnit completo sem falhas novas.
+- [ ] Release; URL inexistente sem espera no Lab e na produção.
+- [ ] Homologação humana.
+
+Relatório: [BATCH-296](../implementation/BATCH-296.md).
+
+---
+
 ## BATCH-295 — REQ-286
 
 - [x] Artefatos de sistema e `config.php` do core sempre escritos; sobreposto de artefato com choque automático (testes).
