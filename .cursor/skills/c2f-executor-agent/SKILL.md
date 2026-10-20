@@ -43,7 +43,9 @@ Classifique o diff antes de escolher a esteira. Em alterações mistas, qualquer
 | --- | --- | --- |
 | A — Backend | PHP, APIs, webhooks, migrations e regras de negócio sem mudanças de HTML, classes Tailwind, CSS ou fontes da compilação | Testes pertinentes; se precisar sincronizar o projeto local, use `./c2f project:update-all <id> --skip-css` ou, para Core/banco, `./c2f project:sync-core <id> --skip-css` seguido de `./c2f project:sync-db <id> --core-resources`. Para o sistema, `./c2f manager:update-all --skip-css`. |
 | B — Documentação e testes | Skills, testes unitários e memória MDD | Apenas checks/testes locais (`composer test`, `npm test`, `pytest`, indexação conforme o artefato); proibido rodar deploy no Lab. |
-| C — Interface e CSS | Telas, templates HTML, componentes, classes Tailwind, CSS autoral, fontes ou configuração da compilação | Pipeline completo: `./c2f project:update-all <id>` ou `./c2f manager:update-all`, sem `--skip-css`. |
+| C — Interface e CSS | Telas, templates HTML, componentes, classes Tailwind, CSS autoral, fontes ou configuração da compilação | Projeto: `./c2f project:deploy <id>` (compila o que mudou e publica só o projeto). Sistema: `./c2f manager:update-all`. Sem `--skip-css`. |
+
+**`project:update-all` é a exceção (REQ-284):** só quando core e projeto mudam no mesmo lote. Ele sincroniza e recompila o core e deixa o destino em manutenção (503) durante todo o pipeline. Também não publique com `project:sync-files` + `project:sync-db` avulsos: sem os dados do core aplicados antes, a retirada por dono desativa os perfis do core e tranca o admin fora do painel (incidente REQ-141 do conn2flow-site).
 
 Proibido executar build completo de Tailwind na Categoria A ou pipelines de deploy na Categoria B. `--skip-css` dispensa Tailwind e CSS derivado; não dispensa compilação dos dados, sincronização ou migrations necessárias. A via cirúrgica só atende mudanças de Core/banco: recursos próprios do projeto exigem seu pipeline apropriado. Execute um comando por vez, em foreground, com logs e verificação do resultado. A flag não autoriza produção, não muda o destino e não elimina Workspace Trust ou locks. A meta de <45 segundos precisa de medição real por ambiente; não é garantia universal.
 
@@ -61,7 +63,7 @@ Proibido executar build completo de Tailwind na Categoria A ou pipelines de depl
 - **NUNCA** copie arquivos manualmente (`cp`, `copy`, `Copy-Item`) para pastas de teste ou espelhos (`dev-environment/data/sites/`).
 - Use exclusivamente a esteira oficial:
   * Sistema: `./c2f manager:update-all`
-  * Projeto: `./c2f project:update-all <id>`
+  * Projeto: `./c2f project:deploy <id>` (`project:update-all <id>` só quando o core também mudou)
 
 ### 3. Padrão Canônico de Recursos e Variáveis
 - Todo texto, mensagem de alerta, rótulo ou erro DEVE ser registrado no sistema de variáveis (`resources/<lang>/variables.json` ou `<modulo>.json`) e consumido via `gestor_variaveis()`. Proibidas strings hardcoded em controllers.

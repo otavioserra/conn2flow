@@ -13,7 +13,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
-| BATCH-292 | ready-for-review | Exposição de CRUD via API RESTful para os módulos básicos do Core: Fase 1 Motor Canônico e RBAC (REQ-283) | [BATCH-292.md](BATCH-292.md) | Branch `feat/req-283`. CRUD opt-in por `api.crud` (DEC-135 proposta), `admin-categorias` habilitado. PHPUnit 1.873 sem falhas (13 novos); E2E HTTP no Lab 22/22. Revisão da tríade pendente. |
+| BATCH-293 | implemented-pending-homologation | Cache do Tailwind por recurso portável entre pastas/terminais, Data.json em LF, diff de choque sem estouro e skills com project:deploy (REQ-284) | [BATCH-293.md](BATCH-293.md) | conn2flow-site de outra pasta do core: 1207 recompilados (528 s) → 0 (7 s), Data.json idênticos; PHPUnit verde nas suítes tocadas.
+| BATCH-292 | implemented-pending-homologation | Exposição de CRUD via API RESTful para os módulos básicos do Core: Fase 1 Motor Canônico e RBAC (REQ-283) | [BATCH-292.md](BATCH-292.md) | Branch `feat/req-283`. CRUD opt-in por `api.crud` (DEC-135 aceita), `admin-categorias` habilitado. PHPUnit 1.880 sem falhas (20 novos); REV-001/REV-002 r2 concluídos.
 | BATCH-291 | complete | Estabilização do teste assíncrono de XHR no global-csrf-refresh (REQ-282) | [BATCH-291.md](BATCH-291.md) | Vitest 700/700; vi.waitFor determinístico; CI release 3.0.8 verde. |
 | BATCH-290 | complete | Deploy SSH grava com o dono do destino também entrando como root (BL-033) (REQ-281) | [BATCH-290.md](BATCH-290.md) | PHPUnit 1.860; 3 testes com bash real; release 3.0.8 homologado. |
 | BATCH-289 | complete | Trava da atualização pelo painel: dono morto via posix (open_basedir esconde o /proc) e etapa com erro cancela a sessão (REQ-280) | [BATCH-289.md](BATCH-289.md) | PHPUnit 1.857, Vitest 700; release 3.0.8 homologado. |

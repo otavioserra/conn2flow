@@ -19,7 +19,8 @@ user-invocable: false
 
 - **Categoria A — backend sem HTML/classes/CSS/fontes de compilação alterados:** use `./c2f project:update-all <id> --skip-css` ou `./c2f manager:update-all --skip-css` quando houver sincronização local necessária. Para mudanças exclusivamente de Core/banco: `./c2f project:sync-core <id> --skip-css` e depois `./c2f project:sync-db <id> --core-resources`, sequencialmente. Build completo de Tailwind é proibido nesta categoria.
 - **Categoria B — documentação, skills, testes unitários e memória MDD:** apenas checks/testes locais; proibido executar pipeline de deploy no Lab.
-- **Categoria C — telas, templates HTML, componentes, classes Tailwind, CSS ou configuração/fontes de compilação:** pipeline completo sem `--skip-css`; CSS derivado precisa corresponder ao HTML publicado. Mudanças mistas com impacto de CSS pertencem a C.
+- **Categoria C — telas, templates HTML, componentes, classes Tailwind, CSS ou configuração/fontes de compilação:** projeto → `./c2f project:deploy <id>`; sistema → `./c2f manager:update-all`; sem `--skip-css`. CSS derivado precisa corresponder ao HTML publicado. Mudanças mistas com impacto de CSS pertencem a C.
+- **`project:update-all` é a exceção da exceção (REQ-284):** só quando core e projeto mudam no mesmo lote. Ele sincroniza e recompila o core e mantém o destino em manutenção (503) até o fim. Nunca publique com `project:sync-files` + `project:sync-db` avulsos: sem os dados do core antes, a retirada por dono desativa perfis do core (`administradores` perdeu o `dashboard` no Lab, incidente REQ-141 do conn2flow-site).
 
 `--skip-css` já existe no Core: o pipeline de projeto repassa a flag nas etapas 2/8 e 4/8 e pula CSS derivado em 7/8; o sistema pula Tailwind em 2/6 e CSS derivado em 5/6. Dados/metadados, arquivos, banco, JS e publicação continuam nas demais etapas. A via cirúrgica não substitui compilação/sincronização de recursos de autoria do projeto. Não faça `resources:sync` completo separado para contornar a economia de A. A flag não muda permissões, ambiente alvo, locks ou verificação de conteúdo. A meta de <45 segundos é dependente do ambiente e exige medição; neste lote de governança não se faz deploy para demonstrá-la.
 
@@ -43,7 +44,8 @@ user-invocable: false
 5. CSS Rebuild: reconstrução do CSS derivado (dispensada em A com `--skip-css`).
 6. Publicação de assets em `dist/`.
 
-### Pipeline Completo para Projetos (Categoria C / 8 etapas; ver Regra #8):
+### Pipeline Completo para Projetos (só com core e projeto mudando juntos / 8 etapas; ver Regra #8):
+Mudança só do projeto não usa este comando: use `./c2f project:deploy <projectID>`.
 ```bash
 ./c2f project:update-all <projectID>
 ```

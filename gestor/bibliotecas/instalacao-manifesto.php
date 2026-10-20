@@ -320,7 +320,7 @@ function instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, ar
     foreach ($plano['preservar'] as $r => $info) {
         $copia = $abs($base . 'backups' . $ds . 'overrides' . $ds . $versaoPasta . $ds, $r);
         $copiar($abs($pacoteRaiz, $r), $copia);
-        $diff = instalacao_diff((string)@file_get_contents($abs($base, $r)), (string)@file_get_contents($abs($pacoteRaiz, $r)), $r);
+        $diff = instalacao_diff_arquivos($abs($base, $r), $abs($pacoteRaiz, $r), $r);
         if ($modo === 'preparar') @unlink($abs($pacoteRaiz, $r)); // não vai para o disco
         $rel['choques'][] = ['caminho' => $r, 'tipo' => 'arquivo'] + $info + ['copia' => instalacao_rel($base, $copia), 'diff' => $diff];
         $rel['preservados']++;
@@ -349,6 +349,22 @@ function instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, ar
  * Diff unificado curto entre dois textos (arquivo no ar × versão nova). Binário ou grande demais: só
  * o aviso. Suficiente para o registro de choques; o merge fica para a req-199.
  */
+/**
+ * Diff de dois arquivos sem carregá-los quando passam do limite (req-284).
+ *
+ * O `instalacao_diff` já desiste acima de INSTALACAO_DIFF_MAX_BYTES, mas quem chamava lia os dois lados
+ * inteiros antes: um seed de 83 MB marcado como editado estourava o memory_limit de 128 MB e a API de
+ * deploy do projeto respondia 500 (`PaginasData.part-001.json` do conn2flow-site no Lab).
+ */
+function instalacao_diff_arquivos(string $antes, string $depois, string $rotulo = ''): ?string {
+    $tamanhoAntes = is_file($antes) ? (int)@filesize($antes) : 0;
+    $tamanhoDepois = is_file($depois) ? (int)@filesize($depois) : 0;
+    if ($tamanhoAntes > INSTALACAO_DIFF_MAX_BYTES || $tamanhoDepois > INSTALACAO_DIFF_MAX_BYTES) {
+        return '(arquivo grande demais para o diff)';
+    }
+    return instalacao_diff((string)@file_get_contents($antes), (string)@file_get_contents($depois), $rotulo);
+}
+
 function instalacao_diff(string $antes, string $depois, string $rotulo = ''): ?string {
     if ($antes === $depois) return null;
     if (strlen($antes) > INSTALACAO_DIFF_MAX_BYTES || strlen($depois) > INSTALACAO_DIFF_MAX_BYTES) return '(arquivo grande demais para o diff)';
