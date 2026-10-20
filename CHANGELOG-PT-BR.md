@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.11] - 2026-10-20
+
+### Fixed
+- Deploy e Instalação (`REQ-285` / `BATCH-294 r2`): corrigido erro HTTP 500 no `project:deploy` ao registrar muitos choques de arquivos em servidores com limite estrito de memória no PHP-FPM. A função `instalacao_choques_registrar()` agora grava os choques de forma transmitida (streaming) um a um atomicamente, sem carregar todos os diffs em memória, registra os choques antes de gravar o manifesto (abortando o manifesto em caso de falha para não mascarar arquivos pendentes), eleva a memória da etapa de arquivos da API para 1 GB e remove o zip temporário do pacote de entrega.
+
 ## [3.0.10] - 2026-10-20
 
 ### Fixed

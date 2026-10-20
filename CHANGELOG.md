@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.11] - 2026-10-20
+
+### Fixed
+- Deploy & Installation (`REQ-285` / `BATCH-294 r2`): fixed HTTP 500 during `project:deploy` when recording large numbers of file clashes on servers with strict PHP-FPM memory limits. `instalacao_choques_registrar()` now writes clashes streamed one at a time atomically instead of buffering all diffs in a single memory structure, registers clashes before writing the manifest (aborting manifest update on error to prevent stale tracking), and raises the API file-step memory limit to 1 GB while excluding the uploaded temporary zip from the delivery package.
+
 ## [3.0.10] - 2026-10-20
 
 ### Fixed
