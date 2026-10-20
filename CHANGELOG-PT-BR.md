@@ -5,6 +5,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.12] - 2026-10-20
+
+### Added
+- Atualizações do Painel e Gestão de Choques (`REQ-286` / `BATCH-295`): decisões em lote (manter todos / sobrescrever todos) para choques pendentes com confirmação em modal, lista de choques paginada e auto-resolução de choques superados entre entregas.
+
+### Fixed
+- Atualizações do Painel e Gestão de Choques (`REQ-286` / `BATCH-295`): eliminação de choques falso-positivos ao tratar artefatos de sistema (`vendor/`, `db/data/`, `*.min.js`, `*.precompiled.css`, manifestos de assets) e o `config.php` do core como de posse da sua respectiva camada, gravando overrides como resolvidos automaticamente; desconsideradas diferenças exclusivas de quebra de linha CRLF/LF; exclusão de arquivos de cache de migração dos manifestos de entrega; conversão da tabela `atualizacoes_choques` para utf8mb4 e registro resiliente de falhas de inserção de choque em log.
+
 ## [3.0.11] - 2026-10-20
 
 ### Fixed

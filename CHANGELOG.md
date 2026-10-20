@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.12] - 2026-10-20
+
+### Added
+- Panel Updates & Clash Management (`REQ-286` / `BATCH-295`): bulk decisions (keep all / overwrite all) for pending clashes with modal confirmation, paginated clash list, and auto-resolution of superseded clashes across deliveries.
+
+### Fixed
+- Panel Updates & Clash Management (`REQ-286` / `BATCH-295`): eliminated false-positive clashes by treating system artifacts (`vendor/`, `db/data/`, `*.min.js`, `*.precompiled.css`, asset manifests) and core `config.php` as owned by their layer, marking overrides as automatically resolved; ignored CRLF line-ending differences; excluded migration cache tracking files from delivery manifests; converted `atualizacoes_choques` table to utf8mb4 and added persistent logging for failed clash inserts.
+
 ## [3.0.11] - 2026-10-20
 
 ### Fixed
