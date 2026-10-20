@@ -3,7 +3,7 @@
 **Plataforma PHP open source para construir e operar produtos digitais com IA — e um Agent Management System (AMS) para os agentes que ajudam nesse trabalho.**
 
 [![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/vers%C3%A3o-v3.0.13-1daac6.svg)](CHANGELOG-PT-BR.md)
+[![Versão](https://img.shields.io/badge/vers%C3%A3o-v3.0.14-1daac6.svg)](CHANGELOG-PT-BR.md)
 [![PHP](https://img.shields.io/badge/PHP-8.1%2B-777bb4.svg)](ai-workspace/pt-br/docs/guides/installation.md)
 
 [🇺🇸 English](README.md) · 🇧🇷 Português · [Site](https://conn2flow.com/) · [Plataforma](https://conn2flow.com/plataforma/) · [Conn2Flow Pro](https://conn2flow.com/pro/)

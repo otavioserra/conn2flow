@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.14] - 2026-10-20
+
+### Fixed
+- Assets Estáticos e Sincronização do Dist (`REQ-289` / `BATCH-297`): ressincronização automática dos assets de `public_html/dist/` (`.manifest.json`) a cada atualização de sistema (via CLI e painel) e deploy de projeto via API. Quando fontes minificados (`.min.js`, etc.) mudam em um release, a função `instalacao_dist_ressincronizar()` detecta as alterações, regrava os arquivos da pasta pública e renova os tokens de cache (`?v=`), garantindo que os navegadores recebam os scripts novos sem depender de execução manual de `assets:publish`.
+
 ## [3.0.13] - 2026-10-20
 
 ### Fixed

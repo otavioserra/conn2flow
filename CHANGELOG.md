@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.14] - 2026-10-20
+
+### Fixed
+- Static Assets & Dist Synchronization (`REQ-289` / `BATCH-297`): automatically resynchronize changed `public_html/dist/` assets (`.manifest.json`) on every system update (CLI and panel) and project API deploy. When minified sources (`.min.js`, etc.) are updated by a release, `instalacao_dist_ressincronizar()` detects differences, updates the published distribution files, and bumps their cache-busting tokens (`?v=`), ensuring browsers receive fresh frontend bundles without requiring manual `assets:publish`.
+
 ## [3.0.13] - 2026-10-20
 
 ### Fixed
