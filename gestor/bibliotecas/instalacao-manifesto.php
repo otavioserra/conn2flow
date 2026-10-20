@@ -356,10 +356,13 @@ function instalacao_planejar(string $base, string $camada, array $pacote, bool $
  * apenas removidos do pacote quando preservados, para quem aplica por conta própria (`'preparar'`,
  * usado pela atualização do sistema, que move o staging depois).
  *
+ * @param array|null $registro REQ-285: `['origem' => ..., 'execucao' => ...]` registra os choques antes de
+ *                   gravar o manifesto (null: o chamador registra; legado).
  * @return array ['escritos' => n, 'preservados' => n, 'retirados' => n, 'restaurados' => n,
- *               'choques' => [['caminho','motivo','camada_dona','hash_disco','hash_novo','copia','diff']]]
+ *               'choques' => [['caminho','motivo','camada_dona','hash_disco','hash_novo','copia','diff']],
+ *               'choques_arquivo' => string|null, 'manifesto_gravado' => bool]
  */
-function instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, array $plano, string $versao, string $modo = 'copiar'): array {
+function instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, array $plano, string $versao, string $modo = 'copiar', ?array $registro = null): array {
     $base = instalacao_caminho_base($base);
     $pacoteRaiz = instalacao_caminho_base($pacoteRaiz);
     $ds = DIRECTORY_SEPARATOR;
@@ -397,7 +400,15 @@ function instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, ar
     }
     foreach ($plano['retirar_choque'] as $r => $info) $rel['choques'][] = ['caminho' => $r, 'tipo' => 'retirada'] + $info + ['copia' => null, 'diff' => null];
 
-    instalacao_manifesto_gravar($base, $camada, $plano['manifesto'], $versao);
+    // REQ-285: choques registrados ANTES do manifesto. O manifesto diz "esta versão foi entregue"; gravado
+    // sem os choques (fatal ou falha no registro), a entrega seguinte via o mesmo conteúdo e não pedia mais
+    // decisão: os arquivos preservados ficavam velhos em silêncio. Falhou o registro, o manifesto fica.
+    $rel['choques_arquivo'] = null;
+    if ($registro !== null && $rel['choques']) {
+        $rel['choques_arquivo'] = instalacao_choques_registrar($base, (string)($registro['origem'] ?? ''), $camada, $versao, $registro['execucao'] ?? null, $rel['choques']);
+        if ($rel['choques_arquivo'] === null) { $rel['manifesto_gravado'] = false; return $rel; }
+    }
+    $rel['manifesto_gravado'] = instalacao_manifesto_gravar($base, $camada, $plano['manifesto'], $versao);
     return $rel;
 }
 
@@ -453,8 +464,25 @@ function instalacao_choques_registrar(string $base, string $origem, string $cama
     $dir = instalacao_caminho_base($base) . 'installation' . DIRECTORY_SEPARATOR . 'choques' . DIRECTORY_SEPARATOR;
     if (!is_dir($dir) && !@mkdir($dir, 0775, true) && !is_dir($dir)) return null;
     $f = $dir . date('Ymd-His') . '-' . bin2hex(random_bytes(3)) . '.pendente.json';
-    $dados = ['origem' => $origem, 'camada' => $camada, 'versao' => $versao, 'execucao' => $execucao, 'registrado_em' => date('c'), 'choques' => $choques];
-    return @file_put_contents($f, json_encode($dados, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)) !== false ? $f : null;
+    // REQ-285: um choque por vez. Centenas de choques com diff num só `json_encode` (e com PRETTY_PRINT)
+    // passavam dos 128 MB do PHP-FPM no deploy de projeto pela API.
+    $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE;
+    $tmp = $f . '.tmp';
+    $h = @fopen($tmp, 'wb');
+    if (!$h) return null;
+    $cabecalho = json_encode(['origem' => $origem, 'camada' => $camada, 'versao' => $versao, 'execucao' => $execucao, 'registrado_em' => date('c')], $flags);
+    $ok = $cabecalho !== false && fwrite($h, substr($cabecalho, 0, -1) . ',"choques":[') !== false;
+    $primeiro = true;
+    foreach ($choques as $c) {
+        if (!$ok) break;
+        $j = json_encode($c, $flags);
+        $ok = $j !== false && fwrite($h, ($primeiro ? "\n" : ",\n") . $j) !== false;
+        $primeiro = false;
+    }
+    $ok = $ok && fwrite($h, "\n]}\n") !== false;
+    fclose($h);
+    if (!$ok || !@rename($tmp, $f)) { @unlink($tmp); return null; }
+    return $f;
 }
 
 /**

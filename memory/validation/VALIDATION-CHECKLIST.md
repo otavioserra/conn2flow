@@ -8,7 +8,9 @@
 - [x] `finalize` com `atualizacoes_web_recursos()` e liberação da trava no fatal; tela mostra o HTTP das falhas.
 - [x] Suítes do atualizador 234/4.783 verdes; PHPUnit completo só com as 2 falhas de ambiente do Windows (OpenSSL e CRLF do `api.php`); Vitest 700/700.
 - [x] Lab reparado pelo dump do snapshot (1.069 status de volta, 3.568 linhas reinseridas, manifesto de recursos do core regravado); painel responde de novo.
-- [ ] Release do core e atualização do Lab pelo painel concluindo o `finalize` (critério 2 da REQ-285).
+- [x] Release 3.0.10 e atualização do Lab pelo painel concluindo o `finalize` (critério 2 da REQ-285), relatada pelo Engenheiro Chefe.
+- [x] Rodada 2: deploy de projeto com HTTP 500 (fatal de memória no registro de 298 choques). Registro em fluxo e antes do manifesto, 1 GB na etapa de arquivos, zip enviado fora da entrega; 3 testes novos; manifesto do projeto no Lab restaurado.
+- [ ] Release 3.0.11 e `project:deploy conn2flow-site-local` com HTTP 200.
 - [ ] Homologação humana.
 
 Relatório: [BATCH-294](../implementation/BATCH-294.md).

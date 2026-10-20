@@ -69,3 +69,25 @@ Resultado: módulos `A=154 / D=4` e 9.386 variáveis, iguais ao dump; home 200; 
 
 - Release do core com este lote e nova atualização do Lab pelo painel (Engenheiro Chefe).
 - Projeto que entrega `db/data` com os nomes do core continua sendo a raiz estrutural (já registrada na REQ-284). Aqui o core passou a não ler esses arquivos; a separação física das pastas fica para uma requisição própria.
+
+## Rodada 2 — deploy de projeto com HTTP 500 depois da 3.0.10 (2026-10-20)
+
+A 3.0.10 atualizou o Lab pelo painel sem erro (1.423 choques pendentes). O `project:deploy conn2flow-site-local` seguinte deu HTTP 500.
+
+**Causa:** fatal de memória (128 MB do PHP-FPM) no `json_encode` de `instalacao_choques_registrar()`, chamado pelo deploy por API (`api_project_aplicar_arquivos`). A entrega tinha 298 arquivos do projeto editados no servidor (todos regravados em 19/10 ~16h17 por um `sync-files` avulso, fora do manifesto, com `mtime` e conteúdo diferentes do deploy das 16h01). Cada um virou choque com diff, e tudo era codificado de uma vez, em JSON *pretty*. O 1 GB da API só valia para a etapa de banco.
+
+**Agravante:** o fatal veio depois de `instalacao_aplicar()` gravar o manifesto do projeto e antes de registrar os choques. A entrega seguinte veria "versão já entregue" e deixaria os 298 arquivos velhos sem pedir decisão.
+
+**Defeito antigo achado junto:** a API salvava o zip enviado como `project.zip` dentro da pasta extraída, e ele entrava na entrega do projeto (copiado para a raiz do gestor e listado no manifesto).
+
+| Arquivo | O quê |
+| --- | --- |
+| `gestor/bibliotecas/instalacao-manifesto.php` | `instalacao_choques_registrar()` grava em fluxo (um choque por vez, sem PRETTY_PRINT, UTF-8 inválido substituído) e de forma atômica. `instalacao_aplicar(..., ?array $registro)` registra os choques antes do manifesto; se o registro falhar, o manifesto não é gravado (`manifesto_gravado=false`). |
+| `gestor/controladores/api/api.php` | Zip enviado removido após a extração; `api_memoria_minima('1024M')` antes da etapa de arquivos; registro dos choques pelo `instalacao_aplicar`. |
+| `gestor/controladores/atualizacoes/atualizacoes-sistema.php` | Mesmo registro antes do manifesto na atualização do core (com reserva para a biblioteca anterior). |
+
+**Evidências:** testes novos `testChoquesRegistradosAntesDoManifestoEEmFluxo` (com emoji no arquivo), `testRegistroDosChoquesFalhouOManifestoNaoEGravado` (e o choque volta na entrega seguinte), `testApiNaoEntregaOProprioZipEnviado`. Suítes do atualizador e da API: 292 testes, só a falha de CRLF já conhecida. PHPUnit completo: 1.892 testes, as mesmas 2 falhas de ambiente.
+
+**Lab:** `installation/manifests/projeto.json` voltou ao de antes da tentativa (`38cdbe60`, do snapshot `api-20261020-160646-bed1`); o gravado pela tentativa está em `/root/req285-projeto.json.apos-deploy-falho`. Nenhum arquivo do projeto foi mexido. Os 20 arquivos que a tentativa sobrescreveu já estão na versão nova (o próximo deploy não os reescreve).
+
+**Pendente:** release 3.0.11 e novo `project:deploy`. Os 298 arquivos vão virar choques "Editado no servidor", e a tela de choques não tem decisão em lote: aplicar a versão do deploy exige 298 decisões, uma a uma.

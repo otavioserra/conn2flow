@@ -374,6 +374,13 @@ function api_project_update() {
 
         $zip->extractTo($extract_dir);
         $zip->close();
+        // REQ-285: o zip enviado ficava na pasta extraída e entrava na entrega do projeto como `project.zip`
+        // (copiado para a raiz do gestor, no manifesto e, editado, como choque com diff de 60 MB).
+        @unlink($zip_path);
+
+        // REQ-285: a etapa de arquivos também precisa de folga (planos, diffs e choques de centenas de arquivos);
+        // com os 128 MB do PHP-FPM o registro dos choques estourava depois de o manifesto já estar gravado.
+        api_memoria_minima('1024M');
 
         // Usar a raiz do sistema como destino
         $project_path = $_GESTOR['ROOT_PATH'];
@@ -1029,7 +1036,9 @@ function api_project_aplicar_arquivos(string $pacote, string $raiz, string $proj
     instalacao_snapshot_podar(dirname(rtrim($snapDir, '/\\')), 4);
     $snap = instalacao_snapshot_criar($raiz, $plano, $snapDir, ['versao' => $versao, 'origem' => 'api-project-update', 'projeto' => $projectId]);
 
-    $r = instalacao_aplicar($raiz, $pacote, 'projeto', $plano, $versao, 'copiar');
+    // REQ-285: choques registrados antes do manifesto (dentro de `instalacao_aplicar`).
+    $r = instalacao_aplicar($raiz, $pacote, 'projeto', $plano, $versao, 'copiar',
+        ['origem' => 'api-project-update', 'execucao' => $projectId !== '' ? $projectId . '@' . date('c') : null]);
 
     // Pastas que o manifesto não cobre seguem a cópia de sempre (menos `installation/`, que é do servidor).
     foreach (INSTALACAO_PASTAS_FORA as $pasta) {
@@ -1037,7 +1046,6 @@ function api_project_aplicar_arquivos(string $pacote, string $raiz, string $proj
         api_copy_directory($pacote . $pasta, rtrim($raiz, '/\\') . DIRECTORY_SEPARATOR . $pasta);
     }
 
-    instalacao_choques_registrar($raiz, 'api-project-update', 'projeto', $versao, $projectId !== '' ? $projectId . '@' . date('c') : null, $r['choques']);
     return [
         'snapshot' => $snapshot,
         'snapshot_itens' => $snap,

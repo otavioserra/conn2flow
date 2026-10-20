@@ -444,4 +444,55 @@ final class InstalacaoManifestoTest extends TestCase
         file_put_contents($this->base . 'db/data/PaginasData.manifest.json', '{}');
         $this->assertNotNull(instalacao_core_dados_dir($this->base, 'v1', $this->raiz . 'x'), 'Particionado que encobre o core é conflito.');
     }
+
+    /**
+     * REQ-285 (deploy de projeto no Lab): 298 arquivos editados no servidor viraram choque com diff; o registro
+     * codificava tudo de uma vez e estourava a memória depois de o manifesto já estar gravado. A entrega seguinte
+     * via o mesmo conteúdo e deixava os arquivos velhos sem pedir decisão.
+     */
+    public function testChoquesRegistradosAntesDoManifestoEEmFluxo(): void
+    {
+        $this->entregar('projeto', ['a.php' => 'a1', 'b.css' => 'b1'], 'p1');
+        file_put_contents($this->base . 'a.php', "editado\xF0\x9F\x8E\xAF à mão");
+        file_put_contents($this->base . 'b.css', 'editado');
+        $p = $this->pacote('p2', ['a.php' => 'a2', 'b.css' => 'b2']);
+        $plano = instalacao_planejar($this->base, 'projeto', instalacao_mapa($p), true);
+        $r = instalacao_aplicar($this->base, $p, 'projeto', $plano, 'p2', 'copiar', ['origem' => 'api-project-update', 'execucao' => 'site@x']);
+        $this->assertTrue($r['manifesto_gravado']);
+        $this->assertFileExists($r['choques_arquivo']);
+        $d = json_decode((string)file_get_contents($r['choques_arquivo']), true);
+        $this->assertSame(['origem' => 'api-project-update', 'camada' => 'projeto', 'versao' => 'p2', 'execucao' => 'site@x'],
+            array_intersect_key($d, array_flip(['origem', 'camada', 'versao', 'execucao'])), 'Arquivo em fluxo é JSON válido.');
+        $this->assertSame(['a.php', 'b.css'], array_column($d['choques'], 'caminho'));
+        $linhas = [];
+        $this->assertSame(2, instalacao_choques_gravar_pendentes($this->base, function ($l) use (&$linhas) { $linhas[] = $l; return true; }));
+        $this->assertSame('editado', $linhas[0]['motivo']);
+    }
+
+    public function testRegistroDosChoquesFalhouOManifestoNaoEGravado(): void
+    {
+        $this->entregar('projeto', ['a.php' => 'a1'], 'p1');
+        file_put_contents($this->base . 'a.php', 'editado');
+        // `installation/choques` ocupado por um arquivo: o registro não tem onde gravar.
+        file_put_contents($this->base . 'installation/choques', 'x');
+        $p = $this->pacote('p2', ['a.php' => 'a2']);
+        $plano = instalacao_planejar($this->base, 'projeto', instalacao_mapa($p), true);
+        $r = instalacao_aplicar($this->base, $p, 'projeto', $plano, 'p2', 'copiar', ['origem' => 'api-project-update']);
+        $this->assertNull($r['choques_arquivo']);
+        $this->assertFalse($r['manifesto_gravado']);
+        $this->assertSame(hash('sha256', 'a1'), instalacao_manifesto_ler($this->base, 'projeto')['arquivos']['a.php'], 'Manifesto continua o anterior.');
+        // Na entrega seguinte, o choque volta (antes ficava "já entregue" e sumia).
+        unlink($this->base . 'installation/choques');
+        $plano = instalacao_planejar($this->base, 'projeto', instalacao_mapa($p), true);
+        $this->assertSame('editado', $plano['preservar']['a.php']['motivo']);
+    }
+
+    public function testApiNaoEntregaOProprioZipEnviado(): void
+    {
+        $api = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/controladores/api/api.php');
+        $extrai = strpos($api, '$zip->extractTo($extract_dir);');
+        $this->assertNotFalse($extrai);
+        $this->assertNotFalse(strpos($api, '@unlink($zip_path);', $extrai), 'O zip enviado sai da pasta extraída antes do plano.');
+        $this->assertLessThan(strpos($api, 'api_project_aplicar_arquivos($project_content_dir'), strpos($api, "api_memoria_minima('1024M');", $extrai), 'Etapa de arquivos com 1 GB.');
+    }
 }
