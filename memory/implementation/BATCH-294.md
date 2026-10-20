@@ -91,3 +91,18 @@ A 3.0.10 atualizou o Lab pelo painel sem erro (1.423 choques pendentes). O `proj
 **Lab:** `installation/manifests/projeto.json` voltou ao de antes da tentativa (`38cdbe60`, do snapshot `api-20261020-160646-bed1`); o gravado pela tentativa está em `/root/req285-projeto.json.apos-deploy-falho`. Nenhum arquivo do projeto foi mexido. Os 20 arquivos que a tentativa sobrescreveu já estão na versão nova (o próximo deploy não os reescreve).
 
 **Pendente:** release 3.0.11 e novo `project:deploy`. Os 298 arquivos vão virar choques "Editado no servidor", e a tela de choques não tem decisão em lote: aplicar a versão do deploy exige 298 decisões, uma a uma.
+
+## Rodada 3 — falsos positivos do Lab e selo "v3.0.8" depois da 3.0.11 (2026-10-20)
+
+A 3.0.11 atualizou pelo painel sem erro, mas o dashboard mostrava "Gestor v3.0.8" e havia 1.423 choques pendentes.
+
+**Diagnóstico:**
+- O core no disco estava idêntico à 3.0.11 em 1.811 dos 1.845 arquivos (os outros 32 são do projeto). Só `config.php` e `vendor/composer/installed.php` diferiam: versões velhas com CRLF, regravadas em 19/10 por uma sincronização de teste e preservadas como "editado" em três releases. O `config.php` velho trazia `versao 3.0.8` e não registrava a biblioteca `api-crud` (REQ-283).
+- 316 arquivos do projeto divergiam do deploy sem nenhum choque: a regra da req-199 ("mesmo conteúdo da entrega anterior e disco diferente → nada a decidir") esconde divergências que nunca foram decididas.
+- O Engenheiro Chefe confirmou: no Lab, core e site vêm do mesmo Git, então esses choques são falsos positivos e o que vale é a versão entregue.
+
+**Saneamento (aprovado e executado pelo Engenheiro Chefe):** script com simulação, usando o motor da tela de choques. Resultado: 2 arquivos do core sobrescritos com a cópia da 3.0.11; 1.367 choques superados resolvidos; 24 "sobreposto" mantidos; 316 arquivos do projeto registrados como intactos; 25 choques "editado" do projeto marcados. Em seguida, `project:deploy conn2flow-site-local`.
+
+**Conferência final (só leitura):** projeto 1.443/1.443 idênticos ao deploy `4b249e89`; core 1.825 idênticos à 3.0.11, com os 20 restantes sendo arquivos que o projeto reivindica (`db/data`, manifestos de assets); `config.php` em 3.0.11 com `api-crud`; `manager_updates` 3.0.11; selo do dashboard em 3.0.11 (conferido pelo Engenheiro Chefe); sem erro novo no PHP; sem trava. Os 12 choques restantes (resíduos do incidente e dos testes) foram decididos pelo Engenheiro Chefe: 11 "manter" e a retirada do `project.zip` aceita; pendentes: 0.
+
+**Encaminhado:** REQ-286 (branch `docs/req-286`) para artefatos de sistema fora do choque, divergência nunca escondida, decisão em lote e diff em `utf8mb4`. Relatório de aprendizado para o workspace: `conn2flow-ai-workspace/memory/reports/REP-002-req285-atualizador-choques-learnings.md`.

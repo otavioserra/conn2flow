@@ -10,7 +10,9 @@
 - [x] Lab reparado pelo dump do snapshot (1.069 status de volta, 3.568 linhas reinseridas, manifesto de recursos do core regravado); painel responde de novo.
 - [x] Release 3.0.10 e atualização do Lab pelo painel concluindo o `finalize` (critério 2 da REQ-285), relatada pelo Engenheiro Chefe.
 - [x] Rodada 2: deploy de projeto com HTTP 500 (fatal de memória no registro de 298 choques). Registro em fluxo e antes do manifesto, 1 GB na etapa de arquivos, zip enviado fora da entrega; 3 testes novos; manifesto do projeto no Lab restaurado.
-- [ ] Release 3.0.11 e `project:deploy conn2flow-site-local` com HTTP 200.
+- [x] Release 3.0.11 e `project:deploy conn2flow-site-local` sem erro (Engenheiro Chefe).
+- [x] Rodada 3: falsos positivos do Lab saneados com aprovação (2 do core sobrescritos, 1.367 superados, 316 do projeto entregues no deploy); selo em 3.0.11, `api-crud` registrado, projeto 1.443/1.443 e core idênticos às entregas.
+- [ ] Produção: release 3.0.11 e deploy do projeto (Engenheiro Chefe).
 - [ ] Homologação humana.
 
 Relatório: [BATCH-294](../implementation/BATCH-294.md).
