@@ -592,6 +592,18 @@ function aplicarManifestoCore(string $realRoot, string $basePath): ?array {
     $CONTEXT['installation'] = ['versao' => $versao, 'primeira' => $plano['primeira'], 'escritos' => $r['escritos'], 'preservados' => $r['preservados'], 'retirados' => $r['retirados'], 'choques' => count($r['choques'])];
     return $r;
 }
+/**
+ * REQ-289: republica em `dist/` os assets que mudaram nesta entrega (o servidor web entrega `dist/` direto; sem
+ * isso o navegador seguia com o JS da última publicação manual). Biblioteca do staging, sempre a da versão nova.
+ */
+function atualizacoesDistRessincronizar(): void {
+    global $BASE_PATH;
+    $dist = (string)($GLOBALS['_GESTOR']['dist-path'] ?? '');
+    if($dist === '' || !atualizacoes_manifesto_carregar() || !function_exists('instalacao_dist_ressincronizar')) return;
+    $r = instalacao_dist_ressincronizar($BASE_PATH, $dist);
+    if($r['verificados']) logAtualizacao(sprintf('dist/: %d verificado(s), %d republicado(s), %d sem fonte, %d falha(s)', $r['verificados'], $r['atualizados'], $r['sem_fonte'], $r['falhas']), $r['falhas'] ? 'WARNING' : 'INFO');
+}
+
 /** req-198: grava na tabela os choques pendentes (depois da etapa de banco, quando a tabela já existe). */
 function gravarChoquesPendentes(string $basePath): void {
     if(!function_exists('instalacao_choques_gravar_pendentes') || !function_exists('banco_query')) return;
@@ -1191,6 +1203,7 @@ function main_update_executar(array $argv): int {
                 limparMigracoesCore($realRoot,$BASE_PATH);
                 aplicarManifestoCore($realRoot,$BASE_PATH);
                 $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
+                atualizacoesDistRessincronizar(); // REQ-289
                 logAtualizacao('Deploy concluído (itens movidos) count='.$movidos);
                 // Revalida críticos
                 foreach ($critical as $cf){ if(!file_exists($BASE_PATH.$cf)) throw new ExtractionException('Após deploy arquivo crítico ausente: '.$cf); }
@@ -1588,6 +1601,7 @@ function webDeployFiles(string $sid): array {
         if(!empty($st['release_tag'])) $CONTEXT['release_tag'] = $st['release_tag'];
         aplicarManifestoCore($realRoot,$BASE_PATH);
         $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
+        atualizacoesDistRessincronizar(); // REQ-289
         logAtualizacao('WebDeployFiles: itens movidos count='.$movidos,'DEBUG');
         $stats = ['removed'=>$removidos,'copied'=>$movidos];
     }

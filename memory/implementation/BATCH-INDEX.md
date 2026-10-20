@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-297 | implemented-pending-homologation | dist/ republicado a cada atualização e deploy: JS/CSS publicados não ficam mais congelados (REQ-289) | [BATCH-297.md](BATCH-297.md) | Branch `feat/req-289`. Simulação: Lab 2/611, produção 59/611 congelados. PHPUnit 1.910 (2 falhas de ambiente). Falta release. |
 | BATCH-296 | implemented-pending-homologation | 404 sem espera: busca de outro idioma pelo índice (REQ-288) | [BATCH-296.md](BATCH-296.md) | Branch `feat/req-288`. Produção: consulta 7.849 ms → 26 ms. PHPUnit 1.909 (2 falhas de ambiente). Falta release. |
 | BATCH-295 | implemented-pending-homologation | Choques sem falsos positivos: artefatos de sistema e `config.php` sempre escritos, divergência nunca escondida, superados automáticos, decisão em lote, lista paginada, utf8mb4 (REQ-286) | [BATCH-295.md](BATCH-295.md) | Branch `feat/req-286`. PHPUnit 1.905 (só 2 falhas de ambiente), Vitest 700; motor simulado contra Lab e produção. Falta release. |
 | BATCH-294 | implemented-pending-homologation | Atualização pelo painel parava no finalize: etapa de banco lia os dados do projeto e a retirada automática desativava o core; manter por padrão (REQ-285, DEC-136) | [BATCH-294.md](BATCH-294.md) | Branch `feat/req-285`. Suítes do atualizador 234 verdes, Vitest 700/700; Lab reparado pelo dump do snapshot. Falta release e nova atualização pelo painel. |

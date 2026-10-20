@@ -405,6 +405,10 @@ function api_project_update() {
         // req-198: arquivos pela camada `projeto` do manifesto (precedência sobre o core, originais do core
         // guardadas, o que o projeto deixou de entregar sai ou devolve a original do core).
         $instalacao = api_project_aplicar_arquivos($project_content_dir, $project_path, (string)$project_id);
+        // REQ-289: o JS/CSS publicado em dist/ (servido direto pelo servidor web) acompanha a entrega.
+        if (!empty($_GESTOR['dist-path']) && function_exists('instalacao_dist_ressincronizar')) {
+            $instalacao['dist'] = instalacao_dist_ressincronizar($project_path, (string)$_GESTOR['dist-path']);
+        }
         $snapshot_dir = instalacao_snapshot_dir($project_path, $instalacao['snapshot']);
 
         // req-198 / BATCH-204: dump do banco no snapshot, antes da etapa de banco.

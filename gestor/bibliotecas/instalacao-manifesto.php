@@ -564,6 +564,61 @@ function instalacao_choques_registrar(string $base, string $origem, string $cama
 }
 
 /**
+ * REQ-289: republica em `dist/` os assets que mudaram desde a última publicação.
+ *
+ * O `public_html/dist/` (req-028) é servido direto pelo servidor web: o `.manifest.json` lista cada arquivo publicado,
+ * sua `fonte` (relativa ao gestor) e o hash, e a URL leva `?v=<hash publicado>`. Nenhuma entrega (atualização do
+ * sistema, deploy de projeto) republicava: no Lab e na produção o navegador seguia recebendo o JS de 16/10 — a aba
+ * de choques da REQ-286 nunca chegou. Aqui, para cada item do manifesto, a fonte atual (o `.min.js` quando a publicação
+ * é minificada e ele não está vazio, como no `assets:publish`) é comparada pelo sha1; mudou, o arquivo publicado e o
+ * registro (`sha1`, `bytes`, `v`) são atualizados. Não publica arquivos novos nem remove nada: o que não está no
+ * manifesto segue servido pelo controlador estático (sempre atual). Função PURA (sem `$_GESTOR`).
+ *
+ * @return array ['verificados' => n, 'atualizados' => n, 'sem_fonte' => n, 'falhas' => n]
+ */
+function instalacao_dist_ressincronizar(string $gestorRaiz, string $distPath): array {
+    $res = ['verificados' => 0, 'atualizados' => 0, 'sem_fonte' => 0, 'falhas' => 0];
+    $distPath = rtrim($distPath, '/\\');
+    $arqManifesto = $distPath . DIRECTORY_SEPARATOR . '.manifest.json';
+    if ($distPath === '' || !is_file($arqManifesto)) return $res;
+    $m = json_decode((string)@file_get_contents($arqManifesto), true);
+    if (!is_array($m) || !is_array($m['arquivos'] ?? null)) return $res;
+    $raiz = instalacao_caminho_base($gestorRaiz);
+    $preferirMin = !empty($m['minificado']);
+    foreach ($m['arquivos'] as $url => $registro) {
+        $fonte = str_replace('\\', '/', (string)($registro['fonte'] ?? ''));
+        if ($fonte === '' || strpos($fonte, '..') !== false || strpos((string)$url, '..') !== false) continue;
+        $res['verificados']++;
+        // A fonte registrada pode ser o próprio .min.js: volta ao de autoria e escolhe de novo.
+        $autoria = substr($fonte, -7) === '.min.js' ? substr($fonte, 0, -7) . '.js' : $fonte;
+        $fisico = $raiz . str_replace('/', DIRECTORY_SEPARATOR, $autoria);
+        if ($preferirMin && substr($autoria, -3) === '.js') {
+            $min = substr($fisico, 0, -3) . '.min.js';
+            if (is_file($min) && filesize($min) > 0) $fisico = $min;
+        }
+        if (!is_file($fisico)) { $res['sem_fonte']++; continue; }
+        $conteudo = (string)file_get_contents($fisico);
+        $hash = sha1($conteudo);
+        if ($hash === ($registro['sha1'] ?? null)) continue;
+        $destino = $distPath . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, (string)$url);
+        if (!is_dir(dirname($destino))) @mkdir(dirname($destino), 0775, true);
+        $tmp = $destino . '.' . bin2hex(random_bytes(3)) . '.tmp';
+        if (@file_put_contents($tmp, $conteudo) === false || !@rename($tmp, $destino)) { @unlink($tmp); $res['falhas']++; continue; }
+        $m['arquivos'][$url] = ['sha1' => $hash, 'bytes' => strlen($conteudo), 'v' => substr($hash, 0, 16), 'fonte' => instalacao_rel($raiz, $fisico)] + $registro;
+        $res['atualizados']++;
+    }
+    if ($res['atualizados']) {
+        $m['gerado_em'] = date('c');
+        $tmp = $arqManifesto . '.' . bin2hex(random_bytes(3)) . '.tmp';
+        if (@file_put_contents($tmp, json_encode($m, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n") === false || !@rename($tmp, $arqManifesto)) {
+            @unlink($tmp);
+            $res['falhas']++;
+        }
+    }
+    return $res;
+}
+
+/**
  * REQ-286: o choque de arquivo perdeu o objeto? Edição/sobreposição em que o disco já tem a versão nova do choque
  * (ou a última que a camada entregou), e retirada cujo arquivo já não existe. Choque de registro (`db:`) não entra.
  * Função PURA sobre o disco e os manifestos (`$manifestos` = `instalacao_manifestos()`).

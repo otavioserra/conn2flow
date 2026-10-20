@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-297 — REQ-289
+
+- [x] Causa: navegador servido por `dist/` publicado em 16/10 (Lab) e 15/10 (produção); Playwright confirmou o recarregamento.
+- [x] `instalacao_dist_ressincronizar()` na atualização e no deploy; teste unitário; simulação sobre cópia no Lab (2) e na produção (59).
+- [x] PHPUnit completo sem falhas novas.
+- [ ] Release; aba de choques sem recarregar no Lab (Playwright) e `?v=` novo do `admin-atualizacoes`.
+- [ ] Homologação humana.
+
+Relatório: [BATCH-297](../implementation/BATCH-297.md).
+
+---
+
 ## BATCH-296 — REQ-288
 
 - [x] Causa medida: busca de outro idioma sem índice lendo todas as páginas (strace no Lab; 7.849 ms em produção).

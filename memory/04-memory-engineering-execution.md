@@ -178,3 +178,8 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 
 - **Achar pausa no PHP sem profiler**: rodar o front-controller no CLI do Lab (`$_SERVER` e `$_GET['_gestor-caminho']` preenchidos, `sudo -u admin`) sob `strace -tt -T -e trace=poll,recvfrom,sendto`; o `poll` longo depois de um `sendto` mostra a consulta lenta, e `-s 2000` traz o texto dela.
 - **Consulta sem filtro de idioma com colunas pesadas lê a tabela `paginas` inteira** (html/css): sem resultado, ainda assim custa segundos. Buscar só o id pelo índice e ler a página por id.
+
+### REQ-289 / BATCH-297 — dist/ congelado (2026-10-20)
+
+- **O navegador não recebe o JS do módulo, recebe `public_html/dist/`** quando o `.manifest.json` lista o arquivo (URL e `?v=` saem do manifesto). Mudou JS e não chegou? Conferir o `dist/` antes de mexer no código.
+- **Playwright autenticado no Lab**: `c2f auth:cookie --project=conn2flow-site-local` gera o jar (a saída imprime o cookie: não copiar para registros); `ignoreHTTPSErrors`, marca em `window` antes do clique e conferência depois mostram se houve recarregamento.

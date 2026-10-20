@@ -591,4 +591,38 @@ final class InstalacaoManifestoTest extends TestCase
         $this->entregar('projeto', ['db/.c2f-migrations-projeto.json' => '{}', 'a.php' => 'a'], 'p1');
         $this->assertArrayNotHasKey('db/.c2f-migrations-projeto.json', instalacao_manifesto_ler($this->base, 'projeto')['arquivos']);
     }
+
+    /** REQ-289: o dist/ publicado acompanha a entrega (antes ficava com o JS da última publicação manual). */
+    public function testDistRepublicaOQueMudou(): void
+    {
+        $dist = $this->raiz . 'public' . DIRECTORY_SEPARATOR . 'dist' . DIRECTORY_SEPARATOR;
+        $escrever = function (string $f, string $c) { @mkdir(dirname($f), 0777, true); file_put_contents($f, $c); };
+        $escrever($this->base . 'modulos/m/m.js', 'fonte nova');
+        $escrever($this->base . 'modulos/m/m.min.js', 'min nova');
+        $escrever($this->base . 'modulos/v/v.js', 'v');
+        $escrever($this->base . 'modulos/v/v.min.js', '');            // min vazio: publica a de autoria
+        $escrever($this->base . 'assets/a/a.js', 'igual');
+        $escrever($dist . 'm/js.js', 'min velha');
+        $escrever($dist . 'a/a.js', 'igual');
+        $manifesto = ['versao' => 1, 'minificado' => true, 'arquivos' => [
+            'm/js.js' => ['sha1' => sha1('min velha'), 'bytes' => 9, 'v' => substr(sha1('min velha'), 0, 16), 'fonte' => 'modulos/m/m.min.js'],
+            'v/js.js' => ['sha1' => 'x', 'bytes' => 1, 'v' => 'x', 'fonte' => 'modulos/v/v.js'],
+            'a/a.js' => ['sha1' => sha1('igual'), 'bytes' => 5, 'v' => substr(sha1('igual'), 0, 16), 'fonte' => 'assets/a/a.js'],
+            'sumiu/js.js' => ['sha1' => 'y', 'bytes' => 1, 'v' => 'y', 'fonte' => 'modulos/sumiu/sumiu.js'],
+        ]];
+        $escrever($dist . '.manifest.json', json_encode($manifesto));
+
+        $r = instalacao_dist_ressincronizar($this->base, $dist);
+        $this->assertSame(['verificados' => 4, 'atualizados' => 2, 'sem_fonte' => 1, 'falhas' => 0], $r);
+        $this->assertSame('min nova', file_get_contents($dist . 'm/js.js'));
+        $this->assertSame('v', file_get_contents($dist . 'v/js.js'));
+        $novo = json_decode((string)file_get_contents($dist . '.manifest.json'), true)['arquivos'];
+        $this->assertSame(substr(sha1('min nova'), 0, 16), $novo['m/js.js']['v'], 'O ?v= da URL muda junto.');
+        $this->assertSame('modulos/m/m.min.js', $novo['m/js.js']['fonte']);
+        $this->assertSame('modulos/v/v.js', $novo['v/js.js']['fonte']);
+        $this->assertSame(sha1('igual'), $novo['a/a.js']['sha1']);
+        $this->assertArrayHasKey('sumiu/js.js', $novo, 'Nada é removido.');
+        $this->assertSame(['verificados' => 4, 'atualizados' => 0, 'sem_fonte' => 1, 'falhas' => 0], instalacao_dist_ressincronizar($this->base, $dist), 'Segunda passada: nada a fazer.');
+        $this->assertSame(['verificados' => 0, 'atualizados' => 0, 'sem_fonte' => 0, 'falhas' => 0], instalacao_dist_ressincronizar($this->base, ''), 'Sem dist/: nada.');
+    }
 }

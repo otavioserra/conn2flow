@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-289.md](req-289.md) (BATCH-297 `implemented-pending-homologation`, 2026-10-20, branch `feat/req-289`, Core): JS/CSS de `dist/` congelados na última publicação manual — atualização e deploy passam a republicar o que mudou.
   - [req-288.md](req-288.md) (BATCH-296 `implemented-pending-homologation`, 2026-10-20, branch `feat/req-288`, Core): URL inexistente esperava ~6 s em produção — a busca de outro idioma lia todas as páginas inteiras; agora vai pelo índice (7.849 ms → 26 ms).
   - [req-287.md](req-287.md) (sem batch, `ready-for-intake`, 2026-10-20, Core — Dupla / Supervisionado): deploy de projeto com etapas visíveis — progresso do envio, execução no servidor como tarefa com estado e rota de status, CLI acompanhando. Origem: deploy do conn2flow-site em produção na REQ-285.
   - [req-286.md](req-286.md) (BATCH-295 `implemented-pending-homologation`, branch `feat/req-286`, 2026-10-20, Core — Dupla / Supervisionado): choques do atualizador sem falsos positivos — artefatos de sistema (`vendor/`, `*.precompiled.css`, `db/data/`…) sempre escritos pela camada dona, divergência nunca escondida pela regra da req-199, decisão em lote na tela, diff em utf8mb4. Origem: REQ-285 no Lab.
