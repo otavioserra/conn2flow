@@ -17,7 +17,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.39",
+                    "version": "1.40",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -43,10 +43,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "6c22f9ed8bbde71652f4847c693b0872",
+                        "html": "4227f9e09e711629dae5a9cb0c157caa",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "5473038b33ff0b31c55f21e13cf2a86e"
+                        "combined": "dc472bf59f044a26d44daab00dce9099"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -386,7 +386,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.41",
+                    "version": "1.42",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -412,10 +412,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "e04fb54232493a4a4e831f1ee83aee2a",
+                        "html": "02005c45a781c05ef6b312f0571a42cc",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "424bd347f6977a0b8ca4093d64ee0cb8"
+                        "combined": "f08f486b671ac3ec84594261c80392da"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }

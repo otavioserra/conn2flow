@@ -146,13 +146,13 @@
                 {
                     "name": "Atualizações - Lista Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "19362999cbde7a62496941411e0e3a06",
+                        "html": "a5bf3ff9edf87a6cc14a35bb9e07e855",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "19362999cbde7a62496941411e0e3a06"
+                        "combined": "a5bf3ff9edf87a6cc14a35bb9e07e855"
                     }
                 },
                 {
@@ -1257,13 +1257,13 @@
                 {
                     "name": "Updates - List Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "19362999cbde7a62496941411e0e3a06",
+                        "html": "a5bf3ff9edf87a6cc14a35bb9e07e855",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "19362999cbde7a62496941411e0e3a06"
+                        "combined": "a5bf3ff9edf87a6cc14a35bb9e07e855"
                     }
                 },
                 {

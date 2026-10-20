@@ -588,12 +588,12 @@
         "name": "Formulário UI",
         "id": "form-ui",
         "framework_css": "tailwindcss",
-        "version": "1.22",
+        "version": "1.23",
         "checksum": {
-            "html": "5ecc1570f0b1d95360ffd251487b861b",
-            "css": "3f9679815b21b1b268d0163c92b98694",
+            "html": "053c927b5d9ac677f6387e81e3a2e85e",
+            "css": "8bae95429e1b338148bb29ffea241d2f",
             "css_precompiled": "",
-            "combined": "3db6220d00b9480ac74a0dd342c0d741"
+            "combined": "4235fa5de31aebaa67a4e102795b9b9d"
         }
     },
     {
