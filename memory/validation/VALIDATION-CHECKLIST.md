@@ -1,5 +1,20 @@
 # Validation Checklist
 
+## BATCH-294 — REQ-285
+
+- [x] Causa do `Falha finalize` com dados reais: POST do finalize com HTTP 404 (página `admin-atualizacoes/` desativada pela retirada durante a etapa de banco).
+- [x] Etapa de banco lê os dados entregues pelo core quando `db/data/` tem os do projeto; conferido contra a instalação real do Lab (274 páginas do core, sem o particionado).
+- [x] Nada sai sem confirmação (DEC-136): registro e arquivo viram choque `retirado`; `--confirmar-retirada` remove direto. Testes novos verdes, incidente reproduzido em teste.
+- [x] `finalize` com `atualizacoes_web_recursos()` e liberação da trava no fatal; tela mostra o HTTP das falhas.
+- [x] Suítes do atualizador 234/4.783 verdes; PHPUnit completo só com as 2 falhas de ambiente do Windows (OpenSSL e CRLF do `api.php`); Vitest 700/700.
+- [x] Lab reparado pelo dump do snapshot (1.069 status de volta, 3.568 linhas reinseridas, manifesto de recursos do core regravado); painel responde de novo.
+- [ ] Release do core e atualização do Lab pelo painel concluindo o `finalize` (critério 2 da REQ-285).
+- [ ] Homologação humana.
+
+Relatório: [BATCH-294](../implementation/BATCH-294.md).
+
+---
+
 ## BATCH-292 — REQ-283 (Fase 1)
 
 - [x] Motor responde às sete rotas para módulo com `api.crud`; sem `api.crud` ou inativo, 404 como antes.

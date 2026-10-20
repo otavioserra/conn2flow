@@ -52,6 +52,11 @@ global $LOG_FILE_DB, $BASE_PATH_DB, $DB_DATA_DIR, $BACKUP_DIR_BASE, $GLOBALS;
 $LOG_FILE_DB = 'atualizacoes-bd';
 $BASE_PATH_DB = realpath(dirname(__FILE__) . '/../../') . DIRECTORY_SEPARATOR;
 $DB_DATA_DIR = $BASE_PATH_DB . 'db/data/';
+// REQ-285: a atualização do core informa a pasta com os dados que o core entregou quando `db/data/` tem os
+// do projeto (mesmos nomes) — ver `instalacao_core_dados_dir()`.
+if (!empty($GLOBALS['CLI_OPTS']['data-dir']) && is_dir((string)$GLOBALS['CLI_OPTS']['data-dir'])) {
+    $DB_DATA_DIR = rtrim((string)$GLOBALS['CLI_OPTS']['data-dir'], '/\\') . DIRECTORY_SEPARATOR;
+}
 $BACKUP_DIR_BASE = $BASE_PATH_DB . 'backups/atualizacoes/';
 
 // Bibliotecas

@@ -277,6 +277,18 @@ Aceita pelo Arquiteto Master em 2026-10-19 após revisão independente (REV-001)
 - O id alfanumérico não muda na edição pela API (o painel o regenera ao trocar o nome).
 - As Fases 2 a 4 passam a ser "declarar `api.crud` e os hooks de ciclo de vida" em cada módulo.
 
+## DEC-136 - 2026-10-20 - accepted
+
+**Atualização e deploy mantêm por padrão: nada é removido sem confirmação explícita do operador (REQ-285 / BATCH-294).**
+
+Regra original do Engenheiro Chefe, restaurada (a retirada automática da REQ-199 / BATCH-207 tinha se desviado dela):
+
+- Registro que o dono deixou de entregar não recebe `status='D'` nem `DELETE`: vira choque `retirado` (tipo `registro`), pendente na tela de choques.
+- Arquivo intacto que a camada deixou de entregar não sai do disco: vira choque `retirado` (tipo `retirada`).
+- `sobrescrever` aceita a retirada; `manter` deixa como está. Só a flag `--confirmar-retirada`, pedida pelo operador, remove sem decisão caso a caso.
+- A lista imperativa `deletar` do `schema-metadata.json` e o `--wipe` (ambos declarados explicitamente) não mudam.
+- Motivo: em 2026-10-20 a atualização 3.0.8 → 3.0.9 do Lab leu os dados do projeto como do core e a retirada automática desativou ou apagou 4.637 registros do core, incluindo a página do próprio atualizador.
+
 [Archived history](<archive/compacted/DECISION-LOG-1aee91bdfe67.md>)
 
 [Archived history](<archive/compacted/DECISION-LOG-ddf6e879c579.md>)

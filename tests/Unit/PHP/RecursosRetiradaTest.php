@@ -5,6 +5,7 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 require_once CONN2FLOW_ROOT . '/gestor/controladores/atualizacoes/atualizacoes-recursos-retirada.php';
+require_once CONN2FLOW_ROOT . '/gestor/bibliotecas/instalacao-manifesto.php';
 
 /** req-199 / BATCH-207: exclusão declarativa de dados — o que o dono deixou de entregar sai do banco. */
 final class RecursosRetiradaTest extends TestCase
@@ -13,7 +14,13 @@ final class RecursosRetiradaTest extends TestCase
 
     private function pdo(bool $comStatus = true): PDO
     {
-        $pdo = new PDO('sqlite::memory:');
+        // `SHOW COLUMNS` (MySQL) traduzido para o SQLite, para a passada completa (`recursos_retirada_tabela`).
+        $pdo = new class('sqlite::memory:') extends PDO {
+            public function query(string $query, ?int $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false {
+                if (preg_match('/^SHOW COLUMNS FROM `([a-z_]+)`$/', $query, $m)) $query = "SELECT name AS Field FROM pragma_table_info('" . $m[1] . "')";
+                return $fetchMode === null ? parent::query($query) : parent::query($query, $fetchMode, ...$fetchModeArgs);
+            }
+        };
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->exec('CREATE TABLE paginas (id_paginas INTEGER PRIMARY KEY, id TEXT, language TEXT, modulo TEXT, project TEXT, user_modified INTEGER DEFAULT 0'
             . ($comStatus ? ", status TEXT DEFAULT 'A'" : '') . ')');
@@ -44,21 +51,66 @@ final class RecursosRetiradaTest extends TestCase
         $this->assertSame(['antiga|pt-br|blog'], array_keys(recursos_retirada_planejar($antes, $depois)), 'linguagem_codigo vale como language.');
     }
 
-    public function testRetiraOQueSaiuComStatusD(): void
+    public function testRetiradaConfirmadaMarcaStatusD(): void
     {
         $pdo = $this->pdo();
         $itens = recursos_retirada_chaves([['id' => 'antiga', 'language' => 'pt-br', 'modulo' => 'blog']], self::NK);
-        $r = recursos_retirada_aplicar($pdo, 'paginas', $itens, $this->colunas($pdo), null, false);
+        $r = recursos_retirada_aplicar($pdo, 'paginas', $itens, $this->colunas($pdo), null, false, true);
         $this->assertSame(1, $r['marcados']);
         $this->assertSame('D', $this->statusDe($pdo, 'antiga'));
         $this->assertSame('A', $this->statusDe($pdo, 'home'));
         $this->assertSame('A', $this->statusDe($pdo, 'criada-no-painel'), 'O que nunca foi entregue não sai.');
     }
 
-    public function testSemColunaStatusApaga(): void
+    /** REQ-285: manter é o padrão — sem confirmação do operador nada sai; cada registro vira choque `retirado`. */
+    public function testSemConfirmacaoNadaSaiEViraChoqueRetirado(): void
+    {
+        $pdo = $this->pdo();
+        $itens = recursos_retirada_chaves([['id' => 'antiga', 'language' => 'pt-br', 'modulo' => 'blog'], ['id' => 'home', 'language' => 'pt-br']], self::NK);
+        $r = recursos_retirada_aplicar($pdo, 'paginas', $itens, $this->colunas($pdo), null, false);
+        $this->assertSame(0, $r['marcados']);
+        $this->assertSame(0, $r['retirados']);
+        $this->assertSame(2, $r['pendentes']);
+        $this->assertSame([], $r['marcados_chaves']);
+        $this->assertSame('A', $this->statusDe($pdo, 'antiga'));
+        $this->assertSame('A', $this->statusDe($pdo, 'home'));
+        $this->assertSame(['retirado', 'retirado'], array_column($r['choques'], 'motivo'));
+        $this->assertSame('db:paginas?id=antiga&language=pt-br&modulo=blog', $r['choques'][0]['caminho']);
+        $this->assertSame(['sobrescrever', 'manter'], instalacao_choque_acoes($r['choques'][0]), 'O operador decide: aceitar a retirada ou manter.');
+
+        $semStatus = $this->pdo(false);
+        $r = recursos_retirada_aplicar($semStatus, 'paginas', recursos_retirada_chaves([['id' => 'home', 'language' => 'pt-br']], self::NK), $this->colunas($semStatus), null, false);
+        $this->assertSame(0, $r['retirados']);
+        $this->assertSame(1, (int)$semStatus->query("SELECT COUNT(*) FROM paginas WHERE id = 'home'")->fetchColumn(), 'Sem status também não apaga.');
+    }
+
+    /**
+     * REQ-285 (incidente do Lab, 3.0.8 → 3.0.9): a entrega do core chegou com os dados do projeto e quase todas
+     * as chaves do core "saíram". Nada pode ser desativado; o manifesto passa a refletir a entrega e o que saiu
+     * fica pendente de decisão.
+     */
+    public function testEntregaComDadosDeOutroDonoNaoDesativaNada(): void
+    {
+        $base = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'c2f-rec-' . uniqid();
+        $pdo = $this->pdo();
+        $core = [['id' => 'home', 'language' => 'pt-br'], ['id' => 'antiga', 'language' => 'pt-br', 'modulo' => 'blog'], ['id' => 'criada-no-painel', 'language' => 'pt-br']];
+        $this->assertTrue(recursos_retirada_manifesto_gravar($base, 'core', ['paginas' => recursos_retirada_chaves($core, self::NK)]));
+        $doProjeto = [['id' => 'docs-1', 'language' => 'pt-br', 'modulo' => 'documentation'], ['id' => 'docs-2', 'language' => 'pt-br', 'modulo' => 'documentation']];
+        $r = recursos_retirada_tabela($pdo, $base, 'paginas', $doProjeto, self::NK, null, false);
+        $this->assertSame(3, $r['saidos']);
+        $this->assertSame(0, $r['marcados']);
+        $this->assertSame(3, $r['pendentes']);
+        $this->assertSame(0, (int)$pdo->query("SELECT COUNT(*) FROM paginas WHERE status = 'D'")->fetchColumn());
+        $this->assertSame([], recursos_retirada_marcados_ler($base, 'core')['paginas'] ?? []);
+        @unlink(recursos_retirada_manifesto_arquivo($base, 'core'));
+        foreach (glob($base . '/installation/choques/*') ?: [] as $f) @unlink($f);
+        @rmdir($base . '/installation/choques'); @rmdir($base . '/installation/manifests'); @rmdir($base . '/installation'); @rmdir($base);
+    }
+
+    public function testRetiradaConfirmadaSemColunaStatusApaga(): void
     {
         $pdo = $this->pdo(false);
-        $r = recursos_retirada_aplicar($pdo, 'paginas', recursos_retirada_chaves([['id' => 'home', 'language' => 'pt-br']], self::NK), $this->colunas($pdo), null, false);
+        $r = recursos_retirada_aplicar($pdo, 'paginas', recursos_retirada_chaves([['id' => 'home', 'language' => 'pt-br']], self::NK), $this->colunas($pdo), null, false, true);
         $this->assertSame(1, $r['retirados']);
         $this->assertSame(0, (int)$pdo->query("SELECT COUNT(*) FROM paginas WHERE id = 'home'")->fetchColumn());
     }
@@ -79,12 +131,12 @@ final class RecursosRetiradaTest extends TestCase
     {
         $pdo = $this->pdo();
         $item = recursos_retirada_chaves([['id' => 'do-projeto', 'language' => 'pt-br']], self::NK);
-        $core = recursos_retirada_aplicar($pdo, 'paginas', $item, $this->colunas($pdo), null, false);
+        $core = recursos_retirada_aplicar($pdo, 'paginas', $item, $this->colunas($pdo), null, false, true);
         $this->assertSame(1, $core['ausentes'], 'O core não retira registro marcado de projeto.');
         $this->assertSame('A', $this->statusDe($pdo, 'do-projeto'));
-        $outro = recursos_retirada_aplicar($pdo, 'paginas', $item, $this->colunas($pdo), 'outro', false);
+        $outro = recursos_retirada_aplicar($pdo, 'paginas', $item, $this->colunas($pdo), 'outro', false, true);
         $this->assertSame(1, $outro['ausentes']);
-        $dono = recursos_retirada_aplicar($pdo, 'paginas', $item, $this->colunas($pdo), 'site', false);
+        $dono = recursos_retirada_aplicar($pdo, 'paginas', $item, $this->colunas($pdo), 'site', false, true);
         $this->assertSame(1, $dono['marcados']);
     }
 
@@ -114,7 +166,7 @@ final class RecursosRetiradaTest extends TestCase
         $pdo = $this->pdo();
         $pdo->exec("UPDATE paginas SET status = 'I' WHERE id = 'home'");
         $itens = recursos_retirada_chaves([['id' => 'antiga', 'language' => 'pt-br', 'modulo' => 'blog'], ['id' => 'home', 'language' => 'pt-br']], self::NK);
-        $r = recursos_retirada_aplicar($pdo, 'paginas', $itens, $this->colunas($pdo), null, false);
+        $r = recursos_retirada_aplicar($pdo, 'paginas', $itens, $this->colunas($pdo), null, false, true);
         $this->assertSame(['antiga|pt-br|blog', 'home|pt-br|'], array_keys($r['marcados_chaves']));
         $this->assertSame('I', $r['marcados_chaves']['home|pt-br|']['status'], 'Guarda o status que o registro tinha.');
         $this->assertSame('D', $this->statusDe($pdo, 'antiga'));

@@ -39,10 +39,10 @@ final class InstalacaoManifestoTest extends TestCase
         return $dir;
     }
 
-    private function entregar(string $camada, array $arquivos, string $versao, bool $completo = true): array
+    private function entregar(string $camada, array $arquivos, string $versao, bool $completo = true, bool $retirarConfirmado = false): array
     {
         $p = $this->pacote(preg_replace('/[^a-z0-9-]/i', '_', $camada) . '-' . $versao . '-' . uniqid(), $arquivos);
-        $plano = instalacao_planejar($this->base, $camada, instalacao_mapa($p), $completo);
+        $plano = instalacao_planejar($this->base, $camada, instalacao_mapa($p), $completo, null, null, $retirarConfirmado);
         return [$plano, instalacao_aplicar($this->base, $p, $camada, $plano, $versao)];
     }
 
@@ -95,16 +95,35 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertSame(1, $r['preservados']);
     }
 
-    public function testRetiradaIntactaSaiEEditadaViraChoque(): void
+    /** REQ-285: manter é o padrão — o que a camada deixou de entregar fica no disco até o operador decidir. */
+    public function testRetiradaSemConfirmacaoFicaEViraChoque(): void
     {
         $this->entregar('core', ['velho.php' => 'v', 'editado.php' => 'e', 'fica.php' => 'f'], 'v1');
         file_put_contents($this->base . 'editado.php', 'mudei');
         [$plano, $r] = $this->entregar('core', ['fica.php' => 'f'], 'v2');
+        $this->assertSame([], $plano['retirar']);
+        $this->assertSame('v', $this->ler('velho.php'), 'Intacto também fica.');
+        $this->assertSame('mudei', $this->ler('editado.php'));
+        $this->assertSame(0, $r['retirados']);
+        $this->assertSame(['editado.php' => 'retirado-editado', 'velho.php' => 'retirado'], array_column($r['choques'], 'motivo', 'caminho'));
+        $this->assertSame(['sobrescrever', 'manter'], instalacao_choque_acoes(['motivo' => 'retirado']));
+        $this->assertSame(['fica.php'], array_keys(instalacao_manifesto_ler($this->base, 'core')['arquivos']));
+
+        // O operador aceita a retirada na tela de choques: só então o arquivo sai.
+        $choque = ['camada' => 'core'] + array_column($r['choques'], null, 'caminho')['velho.php'];
+        $this->assertTrue(instalacao_choque_resolver($this->base, $choque, 'sobrescrever')['ok']);
+        $this->assertNull($this->ler('velho.php'));
+    }
+
+    public function testRetiradaConfirmadaIntactaSaiEEditadaViraChoque(): void
+    {
+        $this->entregar('core', ['velho.php' => 'v', 'editado.php' => 'e', 'fica.php' => 'f'], 'v1');
+        file_put_contents($this->base . 'editado.php', 'mudei');
+        [$plano, $r] = $this->entregar('core', ['fica.php' => 'f'], 'v2', true, true);
         $this->assertSame(['velho.php'], $plano['retirar']);
         $this->assertNull($this->ler('velho.php'));
         $this->assertSame('mudei', $this->ler('editado.php'));
         $this->assertSame('retirado-editado', $r['choques'][0]['motivo']);
-        $this->assertSame(['fica.php'], array_keys(instalacao_manifesto_ler($this->base, 'core')['arquivos']));
     }
 
     public function testProjetoDeixaDeSobreporERestauraOCore(): void
@@ -144,10 +163,11 @@ final class InstalacaoManifestoTest extends TestCase
         $lista = ['a.php' => hash('sha256', '1'), 'b.php' => hash('sha256', '2b')];
         $plano = instalacao_planejar($this->base, 'projeto', instalacao_mapa($p), true, null, $lista);
         instalacao_aplicar($this->base, $p, 'projeto', $plano, 'p2');
-        $this->assertSame(['c.php'], $plano['retirar']);
+        $this->assertSame([], $plano['retirar']);
+        $this->assertSame('retirado', $plano['retirar_choque']['c.php']['motivo']);
         $this->assertSame('1', $this->ler('a.php'), 'a.php, fora do pacote e na lista, fica.');
         $this->assertSame('2b', $this->ler('b.php'));
-        $this->assertNull($this->ler('c.php'));
+        $this->assertSame('3', $this->ler('c.php'), 'Sem confirmação, c.php fica (REQ-285).');
         $this->assertSame(['a.php', 'b.php'], array_keys(instalacao_manifesto_ler($this->base, 'projeto')['arquivos']));
     }
 
@@ -165,7 +185,7 @@ final class InstalacaoManifestoTest extends TestCase
     {
         $this->entregar('core', ['a.php' => 'a1', 'velho.php' => 'v1', 'b.php' => 'b1'], 'v1');
         $p = $this->pacote('v2', ['a.php' => 'a2', 'b.php' => 'b1', 'novo.php' => 'n']);
-        $plano = instalacao_planejar($this->base, 'core', instalacao_mapa($p), true);
+        $plano = instalacao_planejar($this->base, 'core', instalacao_mapa($p), true, null, null, true);
         $snap = $this->raiz . 'snap' . DIRECTORY_SEPARATOR;
         $c = instalacao_snapshot_criar($this->base, $plano, $snap, ['versao' => 'v2']);
         $this->assertSame(['sobrescritos' => 1, 'removidos' => 1, 'novos' => 1], $c, 'Só a.php (muda), velho.php (sai) e novo.php (novo).');
@@ -388,5 +408,40 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertFalse(instalacao_core_sempre_escrever('core', 'modulos/admin-paginas/admin-paginas.php'));
         $this->assertFalse(instalacao_core_sempre_escrever('projeto', 'controladores/atualizacoes/atualizacoes-sistema.php'));
         $this->assertFalse(instalacao_core_sempre_escrever('plugin:x', 'bibliotecas/deploy-lock.php'));
+    }
+
+    /**
+     * REQ-285 (Lab, 3.0.8 -> 3.0.9): o projeto reivindica `db/data/ModulosData.json` (o do core fica em
+     * overrides/) e deixou o particionado de `paginas`, que encobre o `PaginasData.json` do core. A etapa de
+     * banco tem de ler só o que o core entregou.
+     */
+    public function testDadosDoCoreQuandoOProjetoOcupaDbData(): void
+    {
+        $this->entregar('core', ['db/data/PaginasData.json' => '[{"id":"core"}]', 'db/data/ModulosData.json' => '[{"id":"m-core"}]'], 'v1');
+        $this->entregar('projeto', ['db/data/ModulosData.json' => '[{"id":"m-projeto"}]'], 'p1');
+        $this->entregar('core', ['db/data/PaginasData.json' => '[{"id":"core"}]', 'db/data/ModulosData.json' => '[{"id":"m-core-2"}]'], 'v2');
+        $this->assertSame('[{"id":"m-projeto"}]', $this->ler('db/data/ModulosData.json'), 'O arquivo do projeto fica no disco.');
+        file_put_contents($this->base . 'db/data/PaginasData.manifest.json', '{"parts":[]}');
+        file_put_contents($this->base . 'db/data/PaginasData.part-001.json', '[{"id":"docs"}]');
+        file_put_contents($this->base . 'db/data/ProdutosData.json', '[]'); // tabela só do projeto: não importa ao core
+
+        $destino = $this->raiz . 'dados-core' . DIRECTORY_SEPARATOR;
+        $dir = instalacao_core_dados_dir($this->base, 'v2', $destino);
+        $this->assertSame($destino, $dir);
+        $arquivos = array_map('basename', glob($dir . '*'));
+        sort($arquivos);
+        $this->assertSame(['ModulosData.json', 'PaginasData.json'], $arquivos, 'Sem o particionado nem a tabela do projeto.');
+        $this->assertSame('[{"id":"m-core-2"}]', file_get_contents($dir . 'ModulosData.json'), 'A versão do core vem de overrides/.');
+        $this->assertSame('[{"id":"core"}]', file_get_contents($dir . 'PaginasData.json'));
+    }
+
+    public function testDadosDoCoreSemConflitoLeDbData(): void
+    {
+        $this->assertNull(instalacao_core_dados_dir($this->base, 'v1', $this->raiz . 'x'), 'Sem manifesto do core.');
+        $this->entregar('core', ['db/data/PaginasData.json' => '[]', 'db/data/ModulosData.json' => '[]'], 'v1');
+        file_put_contents($this->base . 'db/data/ProdutosData.json', '[]');
+        $this->assertNull(instalacao_core_dados_dir($this->base, 'v1', $this->raiz . 'x'), 'Tabela a mais do projeto não é conflito.');
+        file_put_contents($this->base . 'db/data/PaginasData.manifest.json', '{}');
+        $this->assertNotNull(instalacao_core_dados_dir($this->base, 'v1', $this->raiz . 'x'), 'Particionado que encobre o core é conflito.');
     }
 }

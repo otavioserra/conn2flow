@@ -247,8 +247,8 @@ $(document).ready(function () {
             }
             iniciar();
         }
-        function doDeploy() { log('Deploy: executando arquivos + merge .env'); setLoading(true); ajax({ acao: 'deploy', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro deploy: ' + (resp.erro || '')); cancelar(); return; } const data = resp.data; if (data.error) { log('Erro deploy: ' + data.error); cancelar(); return; } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; log('Deploy concluído.'); next(data.next); }).fail(() => { setLoading(false); log('Falha deploy'); cancelar(); }); }
-        function doDb() { log('Banco: iniciando'); setLoading(true); ajax({ acao: 'db', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro banco: ' + (resp.erro || '')); cancelar(); return; } const data = resp.data; if (data.error) { log('Erro banco: ' + data.error); } else if (data.skipped) { log('Banco ignorado.'); } else { log('Banco concluído.'); } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; next(data.next); }).fail(() => { setLoading(false); log('Falha banco'); cancelar(); }); }
+        function doDeploy() { log('Deploy: executando arquivos + merge .env'); setLoading(true); ajax({ acao: 'deploy', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro deploy: ' + (resp.erro || '')); cancelar(); return; } const data = resp.data; if (data.error) { log('Erro deploy: ' + data.error); cancelar(); return; } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; log('Deploy concluído.'); next(data.next); }).fail(xhr => { setLoading(false); log('Falha deploy: HTTP ' + ((xhr && xhr.status) || '?')); cancelar(); }); }
+        function doDb() { log('Banco: iniciando'); setLoading(true); ajax({ acao: 'db', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro banco: ' + (resp.erro || '')); cancelar(); return; } const data = resp.data; if (data.error) { log('Erro banco: ' + data.error); } else if (data.skipped) { log('Banco ignorado.'); } else { log('Banco concluído.'); } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; next(data.next); }).fail(xhr => { setLoading(false); log('Falha banco: HTTP ' + ((xhr && xhr.status) || '?')); cancelar(); }); }
         function concluirInterface() {
             if (polling) clearInterval(polling);
             polling = null;
@@ -270,7 +270,7 @@ $(document).ready(function () {
                 log('Sessão finalizada.');
                 if (data.finished || data.already) { concluirInterface(); return; }
                 startPolling();
-            }).fail(() => { setLoading(false); log('Falha finalize'); });
+            }).fail(xhr => { setLoading(false); log('Falha finalize: HTTP ' + ((xhr && xhr.status) || '?')); });
         }
         function startPolling() {
             if (polling) clearInterval(polling);

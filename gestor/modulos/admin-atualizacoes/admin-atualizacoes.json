@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.7",
+    "versao": "1.0.8",
     "bibliotecas": [
         "interface",
         "html"
@@ -455,6 +455,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "updates-clash-retirado",
+                    "value": "Retirada pendente de confirmação",
+                    "type": "string"
+                },
+                {
                     "id": "updates-clash-original-ausente",
                     "value": "Original do core ausente",
                     "type": "string"
@@ -492,6 +497,11 @@
                 {
                     "id": "updates-clash-actions-help-retirado-editado",
                     "value": "A camada deixou de entregar o arquivo, mas ele foi editado no servidor. Sobrescrever aceita a retirada (o arquivo sai); manter deixa o arquivo.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-retirado",
+                    "value": "A camada deixou de entregar este item. Nada é removido sem a sua confirmação: sobrescrever aceita a retirada (o arquivo sai ou o registro é desativado); manter deixa como está.",
                     "type": "string"
                 },
                 {
@@ -1566,6 +1576,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "updates-clash-retirado",
+                    "value": "Removal awaiting confirmation",
+                    "type": "string"
+                },
+                {
                     "id": "updates-clash-original-ausente",
                     "value": "Core original missing",
                     "type": "string"
@@ -1603,6 +1618,11 @@
                 {
                     "id": "updates-clash-actions-help-retirado-editado",
                     "value": "The layer stopped delivering the file, but it was edited on the server. Overwrite accepts the removal (the file is deleted); keep leaves the file.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-retirado",
+                    "value": "The layer stopped delivering this item. Nothing is removed without your confirmation: overwrite accepts the removal (the file is deleted or the record is deactivated); keep leaves it as it is.",
                     "type": "string"
                 },
                 {

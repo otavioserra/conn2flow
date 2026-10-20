@@ -19,6 +19,8 @@
 | BATCH-290 | Deploy SSH com o dono do destino entrando como root (REQ-281) | Durante o deploy SSH do `temp.conn2flow.com` o site deu **500** (`require_once(gestor.php): Permission denied`) e o c... | [source](<BATCH-290.md>) | complete |
 | BATCH-291 | Estabilização do teste assíncrono de XHR no global-csrf-refresh (REQ-282) |  | [source](<BATCH-291.md>) | complete |
 | BATCH-292 | Motor canônico de CRUD da API e RBAC — Fase 1 (REQ-283) | Motor api-crud.php, fallback no api.php, RBAC por perfil e escopo, admin-categorias habilitado. | [source](<BATCH-292.md>) | ready-for-review |
+| BATCH-293 | Cache do Tailwind por recurso portável, Data.json sem troca de quebra de linha e diff de choque sem estouro (REQ-284) | Compilar o conn2flow-site de outra pasta do core ou com outra caixa de drive passou de 1207 recursos recompilados (528 s) para 0 (7 s), com Data.json idênticos byte a byte. Detecção automática sem ler seeds; diff de choque sem estouro de memória; skills mandam project:deploy para mudança só de projeto. | [source](<BATCH-293.md>) | implemented-pending-homologation |
+| BATCH-294 | Atualização pelo painel parava no finalize: a etapa de banco lia os dados do projeto e a retirada desativava o core (REQ-285) | O 404 do finalize era consequência: a etapa de banco leu db/data do projeto como se fosse do core e a retirada automática desativou ou apagou 1.069 registros do core, inclusive a página do admin-atualizacoes. A etapa passa a ler o que o core entregou, nada sai sem confirmação do operador (DEC-136) e o Lab foi reparado pelo dump do snapshot. | [source](<BATCH-294.md>) | implemented-pending-homologation |
 
 ## Directories
 

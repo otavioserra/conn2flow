@@ -223,6 +223,7 @@ function help(): void {
     echo "  --rollback=<exec-id>    (req-198) Volta os arquivos de uma execução pelo snapshot; com --com-banco, também o banco\n";
     echo "  --no-health             (req-198) Pula a verificação pós-atualização (erro fatal novo / HTTP da raiz)\n";
     echo "  --no-rollback           (req-198) Verifica, mas não volta os arquivos sozinho quando a verificação falha\n";
+    echo "  --confirmar-retirada    (REQ-285) Remove sem pedir decisão o que o core deixou de entregar (arquivos e registros). Sem ela, tudo fica e vira choque pendente\n";
     echo "  --health-url=URL        (req-198) URL da verificação HTTP (padrão https://<domínio>/; .env ATUALIZACOES_SAUDE_URL)\n";
     echo "  --health-ip=IP          (req-198) Resolve o host da verificação para este IP (.env ATUALIZACOES_SAUDE_IP)\n";
     echo "  --log-stdout            (req-201) Repete cada linha do log na saída padrão (execução disparada pela API)\n";
@@ -568,7 +569,7 @@ function aplicarManifestoCore(string $realRoot, string $basePath): ?array {
     $versao = (string)($CONTEXT['release_tag'] ?? '');
     if($versao === '') $versao = date('Ymd-His');
     $pacote = instalacao_mapa($realRoot, ['gestor.zip', 'gestor-local.zip', 'gestor.zip.sha256']);
-    $plano = instalacao_planejar($basePath, 'core', $pacote, true);
+    $plano = instalacao_planejar($basePath, 'core', $pacote, true, null, null, !empty($CONTEXT['opts']['confirmar-retirada'])); // REQ-285: manter é o padrão
     // req-198 / BATCH-203: snapshot seletivo (só o que muda) antes de mexer em qualquer arquivo.
     if(function_exists('instalacao_snapshot_criar')){
         $idSnap = !empty($CONTEXT['exec_id']) ? 'exec-'.$CONTEXT['exec_id'] : 'exec-'.date('Ymd-His');
@@ -704,6 +705,20 @@ function mergeEnv(string $envAtualPath, string $envTemplatePath, array &$context
 // ----------------------------
 // Atualização Banco
 // ----------------------------
+/**
+ * REQ-285: pasta com os dados que o core entregou nesta versão, quando `db/data/` ficou com os do projeto
+ * (mesmos nomes); null = ler `db/data/` normalmente. Ver `instalacao_core_dados_dir()`.
+ */
+function atualizacoes_core_dados_dir(): ?string {
+    global $BASE_PATH, $CONTEXT;
+    if(empty($BASE_PATH) || !atualizacoes_manifesto_carregar() || !function_exists('instalacao_core_dados_dir')) return null;
+    $versao = (string)($CONTEXT['release_tag'] ?? '');
+    $destino = $BASE_PATH.'temp'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'dados-core'.DIRECTORY_SEPARATOR;
+    $dir = instalacao_core_dados_dir($BASE_PATH, $versao, $destino);
+    if($dir !== null) logAtualizacao('Banco: db/data tem dados do projeto; sincronizando os entregues pelo core ('.$versao.') a partir de '.$dir, 'WARNING');
+    return $dir;
+}
+
 function executarAtualizacaoBanco(array $opts): void {
         global $BASE_PATH, $GLOBALS, $_BANCO;
         $script = $BASE_PATH . 'controladores' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR . 'atualizacoes-banco-de-dados.php';
@@ -723,7 +738,10 @@ function executarAtualizacaoBanco(array $opts): void {
                 'pass' => $_BANCO['senha'] ?? '',
             ],
         ];
-        foreach (['debug','force-all','tables','log-diff','dry-run','orphans-detail','orphans-mode','defer-session-reset'] as $k) { if (isset($opts[$k])) $cli[$k] = $opts[$k]; }
+        foreach (['debug','force-all','tables','log-diff','dry-run','orphans-detail','orphans-mode','defer-session-reset','confirmar-retirada'] as $k) { if (isset($opts[$k])) $cli[$k] = $opts[$k]; }
+        // REQ-285: com `db/data/` ocupado pelos dados do projeto, a etapa lê os que o core entregou.
+        $dadosCore = atualizacoes_core_dados_dir();
+        if ($dadosCore !== null) $cli['data-dir'] = $dadosCore;
         $GLOBALS['CLI_OPTS'] = $cli;
 
         $dbLogs = [];
@@ -1598,6 +1616,7 @@ function webDatabase(string $sid): array { global $CONTEXT, $BASE_PATH, $_GESTOR
         // do fluxo; caso contrário, o token CSRF validado acima desaparece antes
         // da chamada de finalize.
         $opts['defer-session-reset'] = true;
+        if(!empty($st['release_tag'])) $CONTEXT['release_tag'] = $st['release_tag']; // REQ-285: pasta overrides/<versão>
         if(!empty($st['snapshot_dir'])){ $CONTEXT['snapshot_dir'] = $st['snapshot_dir']; backupBancoSnapshot(); }
         executarAtualizacaoBanco($opts);
         gravarChoquesPendentes($BASE_PATH);
@@ -1697,7 +1716,8 @@ if(PHP_SAPI!=='cli') {
                 case 'deploy': atualizacoes_web_recursos(); atualizacoes_web_trava_no_fatal((string)($_REQUEST['sid']??'')); jsonResponse(webDeployFiles($_REQUEST['sid']??'')); break;
                 case 'db': atualizacoes_web_recursos(); atualizacoes_web_trava_no_fatal((string)($_REQUEST['sid']??'')); jsonResponse(webDatabase($_REQUEST['sid']??'')); break;
                 case 'unlock': jsonResponse(webLiberarTravaOrfa()); break;
-                case 'finalize': $r = webFinalize($_REQUEST['sid']??''); webLiberarTrava($_REQUEST['sid']??''); jsonResponse($r); break;
+                // REQ-285: a verificação de saúde do finalize faz HTTP e lê o log; mesma proteção das outras etapas.
+                case 'finalize': atualizacoes_web_recursos(); atualizacoes_web_trava_no_fatal((string)($_REQUEST['sid']??'')); $r = webFinalize($_REQUEST['sid']??''); webLiberarTrava($_REQUEST['sid']??''); jsonResponse($r); break;
                 case 'status': jsonResponse(webStatus($_REQUEST['sid']??'')); break;
                 case 'cancel': $r = webCancel($_REQUEST['sid']??''); webLiberarTrava($_REQUEST['sid']??''); jsonResponse($r); break;
                 default: jsonResponse(['error'=>'Ação desconhecida']);

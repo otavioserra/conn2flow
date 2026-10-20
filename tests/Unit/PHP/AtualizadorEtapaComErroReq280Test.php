@@ -17,9 +17,9 @@ final class AtualizadorEtapaComErroReq280Test extends TestCase
 
         self::assertStringContainsString("log('Erro deploy: ' + (resp.erro || '')); cancelar(); return;", $js);
         self::assertStringContainsString("log('Erro deploy: ' + data.error); cancelar(); return;", $js);
-        self::assertStringContainsString("log('Falha deploy'); cancelar();", $js);
+        self::assertStringContainsString("log('Falha deploy: HTTP ' + ((xhr && xhr.status) || '?')); cancelar();", $js);
         self::assertStringContainsString("log('Erro banco: ' + (resp.erro || '')); cancelar(); return;", $js);
-        self::assertStringContainsString("log('Falha banco'); cancelar();", $js);
+        self::assertStringContainsString("log('Falha banco: HTTP ' + ((xhr && xhr.status) || '?')); cancelar();", $js);
         self::assertStringContainsString("log('Cancelado.'); currentSid = null;", $js, 'cancelada, a tela pode iniciar de novo');
     }
 

@@ -149,3 +149,12 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **CRLF/LF nos Data.json**: o Tailwind grava LF, o git devolve CRLF no checkout; o compilador lia cru e o checksum oscilava. `readFileIfExists()` normaliza texto.
 - **`bash` no PowerShell é o do WSL** (`WindowsApps\bash.exe`): roda outro PHP e outros caminhos. Para medir no Windows, chamar `php cli/c2f.php` direto.
 - **Busca de classe por substring engana** (`bg-blue-900` casa em `bg-blue-900/20`): conferir com fronteira de token.
+
+### REQ-285 / BATCH-294 — finalize em 404 e retirada automática desativando o core (2026-10-20)
+
+- **`Falha finalize` era 404 do roteador**, não timeout: corpo de 39 bytes = `{"error":"404","info":"JSON not found"}`. Conferir o access log do nginx (`/var/log/nginx/domains/<dominio>.log`) antes de supor memória/sessão. O log da sessão sem `WebFinalize: iniciando` mostra que a requisição morreu antes.
+- **`db/data/` tem dois donos**: com o projeto reivindicando os `*Data.json` no `projeto.json`, o core guarda os seus em `backups/overrides/<tag>/` e a etapa de banco lia os do projeto. Particionado do projeto (`.manifest.json` + partes) também encobre o arquivo único do core. Agora `instalacao_core_dados_dir()` monta a pasta só com o que o core entregou.
+- **Manter por padrão (DEC-136, regra original do Engenheiro Chefe)**: retirada de registro ou arquivo vira choque `retirado`; só `--confirmar-retirada` remove. Tabela sem `status` levava `DELETE` (3.524 `variaveis` apagadas no Lab).
+- **Reparo de banco no Lab**: o snapshot `backups/atualizacoes/snapshots/exec-N/banco.sql.gz` é anterior à etapa de banco. Carregar num banco auxiliar e comparar por PK (status e linhas ausentes) é mais preciso que a lista `retirados` do manifesto. `sudo mariadb` e PDO por `unix_socket` como root funcionam no `ssh lab`; o gestor fica em `/home/admin/web/conn2flow.local/conn2flow-gestor` (só com sudo).
+- **`cat > arquivo` sem heredoc no Bash espera stdin** e trava o comando até o timeout. Script Python com aspas triplas ou barras: escrever com Write e rodar o arquivo.
+- **`grep -c $'\r'` no Git Bash deu 0 em arquivo com CRLF** (`api.php`); conferir com `php -r` e `bin2hex`.

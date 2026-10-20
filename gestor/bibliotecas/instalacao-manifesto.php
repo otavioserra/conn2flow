@@ -98,6 +98,58 @@ function instalacao_manifesto_gravar(string $base, string $camada, array $arquiv
     return @rename($tmp, $f);
 }
 
+/**
+ * REQ-285: pasta de dados que a etapa de banco da atualização do core deve ler.
+ *
+ * `db/data/` tem dois donos com os mesmos nomes de arquivo (core e projeto). Quando o projeto reivindica um
+ * `*Data.json`, o core preserva o do projeto e guarda o seu em `backups/overrides/<versão>/`; e um projeto
+ * pode deixar no disco o conjunto particionado de uma tabela (`.manifest.json` + partes) que encobre o
+ * arquivo único entregue pelo core. Ler `db/data/` nesses casos sincronizava os dados do projeto como se
+ * fossem do core, e a retirada por dono desativava páginas e módulos do core (Lab, 3.0.8 → 3.0.9: a página
+ * do próprio `admin-atualizacoes` saiu do ar no meio da atualização).
+ *
+ * Sem conflito, devolve null (a etapa lê `db/data/` como sempre). Com conflito, monta `$destino` só com os
+ * arquivos de dados que o core entregou nesta versão — a cópia guardada em `overrides/` quando o disco
+ * ficou com a do projeto — e devolve a pasta (com separador no fim).
+ */
+function instalacao_core_dados_dir(string $base, string $versao, string $destino): ?string {
+    $base = instalacao_caminho_base($base);
+    $manifesto = instalacao_manifesto_ler($base, 'core');
+    if (!$manifesto) return null;
+    $ds = DIRECTORY_SEPARATOR;
+    $dados = $base . 'db' . $ds . 'data' . $ds;
+    $overrides = $base . 'backups' . $ds . 'overrides' . $ds . preg_replace('/[^A-Za-z0-9._-]/', '_', $versao) . $ds . 'db' . $ds . 'data' . $ds;
+    $tabela = function (string $nome): ?string {
+        return preg_match('/^([A-Za-z][A-Za-z0-9_]*Data)(?:\.manifest|\.part-\d+)?\.json$/D', $nome, $m) ? $m[1] : null;
+    };
+    $fontes = []; $tabelasCore = []; $conflito = false;
+    foreach (array_keys($manifesto['arquivos']) as $rel) {
+        $rel = str_replace('\\', '/', (string)$rel);
+        if (strpos($rel, 'db/data/') !== 0) continue;
+        $nome = substr($rel, 8);
+        if ($nome === '' || strpos($nome, '/') !== false) continue;
+        if (($t = $tabela($nome)) !== null) $tabelasCore[$t] = true;
+        if ($versao !== '' && is_file($overrides . $nome)) { $fontes[$nome] = $overrides . $nome; $conflito = true; }
+        elseif (is_file($dados . $nome)) $fontes[$nome] = $dados . $nome;
+    }
+    if (!$fontes) return null;
+    // Arquivo de uma tabela do core que o core não entregou (ex.: particionado do projeto) encobre o do core.
+    foreach (glob($dados . '*.json') ?: [] as $f) {
+        $nome = basename($f);
+        if (isset($fontes[$nome])) continue;
+        $t = $tabela($nome);
+        if ($t !== null && isset($tabelasCore[$t])) { $conflito = true; break; }
+    }
+    if (!$conflito) return null;
+    $destino = instalacao_caminho_base($destino);
+    if (!is_dir($destino) && !@mkdir($destino, 0775, true) && !is_dir($destino)) return null;
+    foreach (glob($destino . '*') ?: [] as $velho) if (is_file($velho)) @unlink($velho);
+    foreach ($fontes as $nome => $origem) {
+        if (!@copy($origem, $destino . $nome)) return null;
+    }
+    return $destino;
+}
+
 /** Caminho relativo com `/`. */
 function instalacao_rel(string $raiz, string $caminho): string {
     return str_replace('\\', '/', ltrim(substr($caminho, strlen(instalacao_caminho_base($raiz))), '/\\'));
@@ -217,11 +269,13 @@ function instalacao_hash_disco(string $base, string $rel): ?string {
  * @param array|null $listaCompleta Mapa `rel → sha256` de TUDO que a camada entrega, quando o pacote
  *                   físico é parcial (gitDeploy): decide as retiradas e vira o manifesto; os arquivos
  *                   escritos continuam sendo só os do pacote.
+ * @param bool $retirarConfirmado REQ-285: o operador pediu a retirada. Sem isso, o arquivo intacto que a camada
+ *                   deixou de entregar fica no disco e vira choque `retirado` (manter é o padrão).
  * @return array ['primeira' => bool, 'escrever' => rel[], 'preservar' => [rel => info], 'retirar' => rel[],
  *               'restaurar' => [rel => camada inferior], 'originais' => rel[], 'retirar_choque' => [rel => info],
  *               'manifesto' => mapa final da camada]
  */
-function instalacao_planejar(string $base, string $camada, array $pacote, bool $completo, ?array $manifestos = null, ?array $listaCompleta = null): array {
+function instalacao_planejar(string $base, string $camada, array $pacote, bool $completo, ?array $manifestos = null, ?array $listaCompleta = null, bool $retirarConfirmado = false): array {
     $manifestos = $manifestos ?? instalacao_manifestos($base);
     $anterior = $manifestos[$camada]['arquivos'] ?? null;
     $nivel = instalacao_nivel($camada);
@@ -284,7 +338,9 @@ function instalacao_planejar(string $base, string $camada, array $pacote, bool $
                 continue;
             }
             $inf = $dono($inferiores, $rel);
-            if ($inf !== null) $plano['restaurar'][$rel] = $inf; else $plano['retirar'][] = $rel;
+            if ($inf !== null) $plano['restaurar'][$rel] = $inf;
+            elseif ($retirarConfirmado) $plano['retirar'][] = $rel;
+            else $plano['retirar_choque'][$rel] = ['motivo' => 'retirado', 'camada_dona' => null, 'hash_disco' => $hDisco, 'hash_novo' => null] + $regra($rel, $hDisco);
         }
     }
 
@@ -692,13 +748,15 @@ function instalacao_regras_gravar(string $base, array $regras): bool {
  * - `sobreposto` (a camada de cima é a dona): manter ou mesclar. Sobrescrever não vale aqui: a próxima
  *   entrega da camada dona escreveria de novo; o lugar de desfazer a sobreposição é o repositório dela;
  * - `retirado-editado`: sobrescrever (aceita a retirada, o arquivo sai) ou manter;
+ * - `retirado` (REQ-285): a camada deixou de entregar; nada sai sem o operador — sobrescrever (sai) ou manter;
  * - `original-ausente`: manter.
  */
 function instalacao_choque_acoes(array $choque): array {
     switch ((string)($choque['motivo'] ?? '')) {
         case 'editado': return ['sobrescrever', 'manter', 'mesclar'];
         case 'sobreposto': return ['manter', 'mesclar'];
-        case 'retirado-editado': return ['sobrescrever', 'manter'];
+        case 'retirado-editado':
+        case 'retirado': return ['sobrescrever', 'manter'];
         default: return ['manter'];
     }
 }
@@ -744,7 +802,7 @@ function instalacao_choque_resolver(string $base, array $choque, string $acao, ?
     };
 
     if ($acao === 'sobrescrever') {
-        if (($choque['motivo'] ?? '') === 'retirado-editado') {
+        if (in_array(($choque['motivo'] ?? ''), ['retirado-editado', 'retirado'], true)) {
             if (is_file($alvo) && !@unlink($alvo)) return $falha('não foi possível remover o arquivo');
         } else {
             if (isset($choque['copia_externa'])) {

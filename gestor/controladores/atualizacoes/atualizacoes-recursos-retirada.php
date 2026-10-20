@@ -17,12 +17,18 @@
  * retirada indevida só se desfazia nas tabelas cujo `*Data.json` traz a coluna `status`; nas demais
  * (`forms`, por exemplo) o registro ficava `D` para sempre, com a entrega dizendo "sem alteração".
  * Só volta o que ESTA rotina retirou: registro desativado por outra via nunca entrou na lista.
+ *
+ * REQ-285 — manter por padrão: a entrega NUNCA retira sozinha. O que saiu do manifesto vira choque `retirado`
+ * (tipo `registro`), pendente até o operador decidir na tela de choques (`sobrescrever` aceita a retirada,
+ * `manter` deixa o registro). Só `--confirmar-retirada`, pedido explícito do operador, aplica direto.
+ * A retirada automática desativou páginas e módulos do core no Lab (3.0.8 → 3.0.9) quando a etapa de banco
+ * leu os dados do projeto como se fossem do core.
  */
 
 /**
  * Chamada do sincronizador (`comparacaoDados()` em `atualizacoes-banco-de-dados.php`) para cada tabela
  * sincronizada: resolve dono, base e colunas, roda a passada e registra no log do banco.
- * `--no-resource-removal` desliga; `--dry-run` só simula.
+ * `--no-resource-removal` desliga; `--dry-run` só simula; `--confirmar-retirada` aplica sem pedir decisão.
  */
 function recursos_retirada_passada(PDO $pdo, string $tabela, array $registros): ?array {
     $opts = $GLOBALS['CLI_OPTS'] ?? [];
@@ -32,14 +38,14 @@ function recursos_retirada_passada(PDO $pdo, string $tabela, array $registros): 
     if (!function_exists('instalacao_choques_registrar') && is_file($lib)) require_once $lib;
     $projeto = isset($opts['project']) && $opts['project'] !== '' ? (string)$opts['project'] : null;
     try {
-        $r = recursos_retirada_tabela($pdo, $base, $tabela, $registros, naturalKeyColumns($tabela), $projeto, !empty($opts['dry-run']));
+        $r = recursos_retirada_tabela($pdo, $base, $tabela, $registros, naturalKeyColumns($tabela), $projeto, !empty($opts['dry-run']), !empty($opts['confirmar-retirada']));
     } catch (Throwable $e) {
         if (function_exists('log_unificado')) log_unificado('RECURSOS_RETIRADA_ERRO tabela=' . $tabela . ' msg=' . $e->getMessage(), $GLOBALS['LOG_FILE_DB'] ?? 'atualizacoes-bd');
         return null;
     }
     if ($r && function_exists('log_unificado') && ($r['saidos'] || $r['primeira'] || !empty($r['reativados']))) {
-        log_unificado(sprintf('RECURSOS_RETIRADA tabela=%s dono=%s primeira=%d saidos=%d marcados=%d removidos=%d choques=%d ausentes=%d simulados=%d reativados=%d',
-            $tabela, $projeto ?? 'core', $r['primeira'] ? 1 : 0, $r['saidos'], $r['marcados'], $r['retirados'], count($r['choques']), $r['ausentes'], $r['simulados'], (int)($r['reativados'] ?? 0)),
+        log_unificado(sprintf('RECURSOS_RETIRADA tabela=%s dono=%s primeira=%d saidos=%d pendentes=%d marcados=%d removidos=%d choques=%d ausentes=%d simulados=%d reativados=%d',
+            $tabela, $projeto ?? 'core', $r['primeira'] ? 1 : 0, $r['saidos'], (int)($r['pendentes'] ?? 0), $r['marcados'], $r['retirados'], count($r['choques']), $r['ausentes'], $r['simulados'], (int)($r['reativados'] ?? 0)),
             $GLOBALS['LOG_FILE_DB'] ?? 'atualizacoes-bd');
     }
     return $r;
@@ -116,11 +122,13 @@ function recursos_retirada_planejar(array $anterior, array $atual): array {
  * @param array $itens `chave → [coluna → valor]` (de `recursos_retirada_planejar`).
  * @param array $colunasBanco Colunas reais da tabela (`coluna → true`).
  * @param string|null $projeto Id do projeto dono (null = core): só casa registros do mesmo dono.
- * @return array ['retirados' => n, 'marcados' => n, 'choques' => [..], 'ausentes' => n, 'simulados' => n,
- *                'marcados_chaves' => [chave => ['valores' => [...], 'status' => anterior]]]
+ * @param bool $confirmado REQ-285: o operador pediu a retirada (`--confirmar-retirada`). Sem isso, nada sai:
+ *                         cada registro vira choque `retirado`, pendente da decisão dele.
+ * @return array ['retirados' => n, 'marcados' => n, 'pendentes' => n, 'choques' => [..], 'ausentes' => n,
+ *                'simulados' => n, 'marcados_chaves' => [chave => ['valores' => [...], 'status' => anterior]]]
  */
-function recursos_retirada_aplicar(PDO $pdo, string $tabela, array $itens, array $colunasBanco, ?string $projeto, bool $simular): array {
-    $res = ['retirados' => 0, 'marcados' => 0, 'choques' => [], 'ausentes' => 0, 'simulados' => 0, 'marcados_chaves' => []];
+function recursos_retirada_aplicar(PDO $pdo, string $tabela, array $itens, array $colunasBanco, ?string $projeto, bool $simular, bool $confirmado = false): array {
+    $res = ['retirados' => 0, 'marcados' => 0, 'pendentes' => 0, 'choques' => [], 'ausentes' => 0, 'simulados' => 0, 'marcados_chaves' => []];
     if (!preg_match('/^[a-zA-Z0-9_]+$/', $tabela) || !$itens) return $res;
     $temStatus = isset($colunasBanco['status']);
     $temUser = isset($colunasBanco['user_modified']);
@@ -154,6 +162,13 @@ function recursos_retirada_aplicar(PDO $pdo, string $tabela, array $itens, array
             continue;
         }
         if ($simular) { $res['simulados'] += count($linhas); continue; }
+        if (!$confirmado) {
+            $res['choques'][] = ['caminho' => 'db:' . $tabela . '?' . http_build_query(array_filter((array)$valores, function ($v) { return $v !== null; })),
+                'tipo' => 'registro', 'motivo' => 'retirado', 'camada_dona' => null, 'hash_disco' => null, 'hash_novo' => null, 'copia' => null,
+                'diff' => 'Registro que a camada deixou de entregar. Fica no banco até o operador confirmar a retirada. Chave: ' . $chave];
+            $res['pendentes']++;
+            continue;
+        }
         if ($temStatus) {
             $u = $pdo->prepare("UPDATE `$tabela` SET `status` = 'D' WHERE $where");
             $u->execute($params); $res['marcados'] += $u->rowCount();
@@ -207,7 +222,7 @@ function recursos_retirada_reativar(PDO $pdo, string $tabela, array $itens, arra
  * @param array $colunasNaturais Colunas da chave natural (vazio: tabela fora da retirada).
  * @return array|null Resumo, ou null quando a tabela não participa.
  */
-function recursos_retirada_tabela(PDO $pdo, string $base, string $tabela, array $registros, array $colunasNaturais, ?string $projeto, bool $simular): ?array {
+function recursos_retirada_tabela(PDO $pdo, string $base, string $tabela, array $registros, array $colunasNaturais, ?string $projeto, bool $simular, bool $confirmado = false): ?array {
     if (!$colunasNaturais || !$registros) return null;
     $dono = ($projeto !== null && $projeto !== '') ? $projeto : 'core';
     $manifesto = recursos_retirada_manifesto_ler($base, $dono);
@@ -217,7 +232,7 @@ function recursos_retirada_tabela(PDO $pdo, string $base, string $tabela, array 
     $colunasBanco = [];
     foreach ($pdo->query("SHOW COLUMNS FROM `$tabela`")->fetchAll(PDO::FETCH_ASSOC) as $c) $colunasBanco[$c['Field']] = true;
     $donoBanco = ($projeto !== null && $projeto !== '') ? $projeto : null;
-    $r = recursos_retirada_aplicar($pdo, $tabela, $itens, $colunasBanco, $donoBanco, $simular);
+    $r = recursos_retirada_aplicar($pdo, $tabela, $itens, $colunasBanco, $donoBanco, $simular, $confirmado);
     // O que esta rotina retirou antes e o dono voltou a entregar retorna ao status que tinha.
     $marcados = recursos_retirada_marcados_ler($base, $dono);
     $daTabela = (array)($marcados[$tabela] ?? []);
