@@ -11,6 +11,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Atualizações do Painel e Interface de Choques (`REQ-286` / `BATCH-295 r2`): regeneração dos JS minificados (`admin-atualizacoes.min.js`, `admin-categorias.min.js`) garantindo que as ações em lote e controles de modais cheguem aos ambientes de produção; adicionado teste de guarda de CI `MinifyDerivadosReq286Test` para falhar o build caso algum `.min.js` fique defasado.
 - Interface do Painel de Atualizações (`REQ-286` / `BATCH-295 r2`): paginação, filtros e decisões em lote na lista de choques agora atualizam o conteúdo dinamicamente sem recarregar a página inteira, mantendo a aba ativa, a rolagem e o badge numérico de pendências em tempo real.
 - Deploy e API (`REQ-286` / `BATCH-295 r2`): a rota de deploy de projeto na API agora eleva o `wait_timeout` da sessão de banco, prevenindo quedas de conexão do Gestor no meio do deploy em servidores MariaDB/MySQL com timeout curto.
+- Roteador e Performance do 404 (`REQ-288` / `BATCH-296`): eliminação de atraso de ~6 s em URLs inexistentes antes do redirecionamento para `/404`. A verificação de página em outro idioma agora consulta apenas o ID pelo índice composto `(language, caminho)` sem carregar colunas pesadas de HTML/CSS do banco, acelerando o roteamento do 404 de ~7,8 s para ~26 ms.
 
 ## [3.0.12] - 2026-10-20
 
