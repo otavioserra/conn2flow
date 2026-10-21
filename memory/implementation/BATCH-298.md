@@ -1,7 +1,7 @@
 ---
 id: "BATCH-298"
 title: "Atualização de Segurança PHP2Shell no Lab, Prod, Docker e Composer (REQ-290)"
-status: "in-progress"
+status: "implemented-pending-review"
 date: "2026-10-21"
 author: "executor"
 target_repo: "conn2flow"
@@ -119,3 +119,18 @@ O humano executou como root os comandos preparados pelo executor; o agente só v
 - Pools: 8.5 atende conn2flow, dev.snapphoton, ia-parceria, server, snapphoton e transformamp; 8.2 atende fsmjd; 8.3 atende o `www` (webmail). Nenhum fatal nos logs de erro dos últimos 15 minutos.
 - **Pendências:** `hestia-php` (painel, 8.5.9, aguardando o Hestia; a 8083 segue restrita); remover o PHP 8.1 (sem correção oficial); SSL Full/Full (strict) na Cloudflare para o proxy do webmail; `ip6tables` da 8083 não persiste após reboot; decisão sobre a restrição de PHP no `composer.json`.
 - **E-mail do cron durante o upgrade (transitório):** `undefined symbol` em mysqlnd/mysqli/mbstring/dom e o fatal `mysqli_report()` em `cron.php`. O cron das 15:32:01 rodou entre a troca do `php8.5-mysql` (15:31:57) e a do `php8.5-common` (15:32:10). Depois disso: CLI 8.5.12 com mysqli, mbstring e dom carregados, 0 avisos de startup; o cron das 15:34 às 15:36 roda "Concluido" com tarefas `[sucesso]`. As extensões PECL (apcu, redis, imagick, igbinary, imap, pspell) têm versão própria, o que é normal.
+
+---
+
+## Handoff para o Macro-Arquiteto (topologia dupla)
+
+- **Projeto:** conn2flow (Core) · **Raiz:** `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow` · **REQ-290 / BATCH-298** · branch `feat/req-290`, sem push.
+- **Critérios de aceite:**
+  1. Lab atualizado: ✅ 8.2.35 / 8.3.36 / 8.4.27 / 8.5.12; 10 sites com 200.
+  2. Prod atualizado: ✅ mesmas versões; 7 sites e 3 webmails respondendo; cron saudável.
+  3. Docker local: ✅ 8.3.36 / 8.5.12, com tags fixadas.
+  4. Composer: ⚠️ **não aplicado.** `">=8.2.35"` não barra 8.3.35 nem 8.5.10, e o `platform_check.php` versionado transforma qualquer restrição em fatal nas instalações sem patch. Pede decisão do Arquiteto: restrição por ramo (`~8.2.35 || ~8.3.36 || ~8.4.27 || >=8.5.12`) ou aviso no painel (recomendado). A suíte phpunit não foi rodada porque não houve mudança de código PHP.
+  5. Evidências: ✅ neste arquivo.
+- **Fora do escopo original, feito por necessidade:** firewall de Prod (80/443 só Cloudflare, 8083 só para o IP do operador, DROP da 8083 em IPv6) aplicado pelo humano; fonte do apt trocada para `packages.sury.org` no Lab e em Prod; template nginx `conn2flow-req092` em 6 domínios do Lab.
+- **Pendências:** `hestia-php` 8.5.9 (aguardando o Hestia; 8083 restrita); remover o PHP 8.1 de Lab e Prod; SSL Full/Full (strict) na Cloudflare para o webmail; persistir o `ip6tables`; decisão sobre o composer; marcar o VALIDATION-CHECKLIST na homologação.
+- **Autonomia:** escritas em Prod e persistência no Lab foram barradas pelo classificador do agente e executadas pelo humano. O agente não fez deploy nem alteração autônoma em produção.

@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-290.md](req-290.md) (BATCH-298 `ready-for-intake`, 2026-10-21, Core — Dupla / Autônomo Monitorado): Mitigação Emergencial PHP2Shell (CVE-2026-109618 / CVE-2026-109619) — atualização do PHP nos hosts SSH (Lab e Prod), rebuild dos containers Docker locais e restrição no composer.json do Core.
+  - [req-290.md](req-290.md) (BATCH-298 `implemented-pending-review`, 2026-10-21, branch `feat/req-290`, Core — Dupla / Autônomo Monitorado): Mitigação Emergencial PHP2Shell (CVE-2026-109618 / CVE-2026-109619) — atualização do PHP nos hosts SSH (Lab e Prod), rebuild dos containers Docker locais e restrição no composer.json do Core.
   - [req-289.md](req-289.md) (BATCH-297 `implemented-pending-homologation`, 2026-10-20, branch `feat/req-289`, Core): JS/CSS de `dist/` congelados na última publicação manual — atualização e deploy passam a republicar o que mudou.
   - [req-288.md](req-288.md) (BATCH-296 `implemented-pending-homologation`, 2026-10-20, branch `feat/req-288`, Core): URL inexistente esperava ~6 s em produção — a busca de outro idioma lia todas as páginas inteiras; agora vai pelo índice (7.849 ms → 26 ms).
   - [req-287.md](req-287.md) (sem batch, `ready-for-intake`, 2026-10-20, Core — Dupla / Supervisionado): deploy de projeto com etapas visíveis — progresso do envio, execução no servidor como tarefa com estado e rota de status, CLI acompanhando. Origem: deploy do conn2flow-site em produção na REQ-285.
