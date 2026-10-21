@@ -1,8 +1,7 @@
-# 02 [DRAFT - PROJETO CONCLUÍDO - AGUARDANDO AUTORIZAÇÃO] Especificação Normativa: Sincronização de Recursos de Banco de Dados
+# 02 Especificação Normativa: Sincronização de Recursos de Banco de Dados
 
-> [!WARNING]
-> **ESTADO DO LOTE:** Planejamento Arquitetural Concluído. **AGUARDANDO AUTORIZAÇÃO PARA IMPLEMENTAÇÃO.**
-> Este arquivo representa um brainstorming de projeto futuro e não deve ser consumido por agentes de execução ativa neste momento.
+> [!NOTE]
+> Especificação implementada. O comportamento vigente está em `gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php` (geração do `schema-metadata.json`) e `gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php` (sincronização no deploy); em caso de divergência, vale o código.
 
 ## Objetivo e Contexto
 
