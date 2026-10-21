@@ -103,3 +103,10 @@ O humano executou como root os comandos preparados pelo executor; o agente só v
 - **Regressão causada pela regeneração e corrigida:** 6 sites com o template nginx `conn2flow` (`listen %ip%:port`) entraram em loop de 301. O Caddy chega por `host.docker.internal` (`172.18.0.1:8443`) e caía no `default_server`. Os arquivos tinham sido ajustados à mão antes (havia backup `.orig-ip` na v3.1). Correção duradoura: `v-change-web-domain-tpl ... conn2flow-req092` (idêntico, só com `listen %web_ssl_port%`) em conn2flow.local, updtest.local, snapphoton.local, transformamp.local, v3.1-conn2flow.local e website-conn2flow.local; `nginx -t` ok.
 - Resultado pelo Caddy: 10 sites com 200 e página completa, nenhum fatal. `teste.conn2flow.local` segue em 301 por `SSL='no'` (situação anterior, sem relação com a troca).
 - **packages.sury.org** (sugerido no fórum do Hestia, post de eris em 21/10/2026) já publica para jammy: 8.2.35, 8.3.36, **8.4.27** e **8.5.12**. O Launchpad (PPA) está atrasado e devolvendo 503.
+
+## Evidências — Lab definitivo pelo packages.sury.org (2026-10-21, ~18:40 UTC)
+
+- Fonte do apt: `ondrej-ubuntu-php-jammy.list` renomeada para `.disabled`; criada `php-sury.list` (`deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ jammy main`), chave RSA 3072 de 2019.
+- `apt-get install --only-upgrade` de 62 pacotes php8.3/8.4/8.5 com status ii: rc=0, 50 `Setting up`, sem E:/W:. Vigia pausado durante a atualização e reativado depois.
+- `php-fpm -v`: **8.2.35 / 8.3.36 / 8.4.27 / 8.5.12**, todos `active`.
+- `v-change-sys-php 8.5` + `v-rebuild-web-domains` em cada usuário: 11 sockets 8.5, `nginx -t` ok, CLI `PHP 8.5.12`. Os 10 sites conn2flow responderam 200 pelo Caddy, sem fatal; o template `conn2flow-req092` segurou a regeneração.

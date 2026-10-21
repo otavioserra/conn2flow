@@ -191,3 +191,5 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **O painel do Hestia tem PHP próprio** (`hestia-php`), que entra separado no inventário de patches.
 - **`"php": ">=8.2.35"` não barra 8.3.35 nem 8.5.10**; e o `gestor/vendor/composer/platform_check.php` versionado transforma a restrição em erro fatal em quem ainda não atualizou.
 - **Escrita remota em Prod é barrada pelo classificador do agente** mesmo com ok no chat: preparar comandos com backup e rollback para o humano rodar, depois verificar em modo leitura.
+- **PPA ondrej (Launchpad) x packages.sury.org**: no dia do patch o Launchpad atrasou e devolveu 503; o `packages.sury.org/php` já tinha 8.4.27 e 8.5.12 para jammy. Em atualização de segurança, usar a fonte do sury.
+- **Hestia no Lab com Caddy na frente**: o Caddy chega ao nginx por `host.docker.internal:8443`, então o domínio precisa do template nginx `conn2flow-req092` (`listen` sem `%ip%`). Com o template `conn2flow`, qualquer `v-rebuild-web-domains` / `v-change-sys-php` cria um loop de 301. E o `v-change-sys-php` regenera os domínios *antes* de trocar o padrão: rode `v-rebuild-web-domains` em cada usuário depois.
