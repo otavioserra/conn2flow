@@ -52,6 +52,12 @@ final class DocsSddReq184Test extends TestCase
         file_put_contents($this->root . '/memory/README.md', "# MDD\n\nMemória pública.\n");
         file_put_contents($this->root . '/memory/process/01-WORKFLOW.md', "# Fluxo MDD\n\nFluxo público.\n");
         file_put_contents($this->root . '/memory/MEMORIA-ENGENHARIA-EXECUCAO.md', '# Privado');
+        // req-292: com o nome MDD as memórias de engenharia continuam fora da publicação.
+        file_put_contents($this->root . '/memory/03-memory-engineering-chief.md', '# Privado');
+        file_put_contents($this->root . '/memory/04-memory-engineering-execution.md', '# Privado');
+        // Índices derivados (`mdd index`) não viram página nem tomam o lugar da entrada da seção.
+        file_put_contents($this->root . '/memory/index.md', "# Index — memory\n\n| ID | Title |\n");
+        file_put_contents($this->root . '/memory/process/index.md', "# Index — process\n\n| ID | Title |\n");
         file_put_contents($this->root . '/sdd/README.md', "# Legado\n\nFonte antiga.\n");
 
         $result = (new SddSource())->collect($this->root);
@@ -113,14 +119,17 @@ final class DocsSddReq184Test extends TestCase
         self::assertSame([], $plan['errors']);
         self::assertSame(['pages' => 3, 'publications' => 2, 'landings' => 1], $plan['stats']);
         $pages = json_decode($plan['write'][$this->root . '/site/resources/pt-br/pages.json'], true);
-        self::assertContains('docs/sdd/', array_column($pages, 'path'));
+        self::assertContains('docs/mdd/', array_column($pages, 'path'));
+        // req-292: só o endereço muda; o id fica, para a sincronização gravar o 301 de docs/sdd/.
+        self::assertSame('docs/mdd/', array_column($pages, 'path', 'id')['docs-sdd'] ?? null);
+        self::assertNotContains('docs/sdd/', array_column($pages, 'path'));
         $html = $plan['write'][$this->root . '/site/resources/pt-br/pages/docs-sdd-README/docs-sdd-README.html'];
-        self::assertStringContainsString('docs/sdd/process/01-WORKFLOW/', $html);
+        self::assertStringContainsString('docs/mdd/process/01-WORKFLOW/', $html);
         $flow = $plan['write'][$this->root . '/site/resources/pt-br/pages/docs-sdd-process-01-WORKFLOW/docs-sdd-process-01-WORKFLOW.html'];
         self::assertStringNotContainsString('192.168.1.10', $flow);
         self::assertStringContainsString('[REDACTED]', $plan['write'][$this->root . '/site/assets/docs/llms-full-pt-br.txt']);
-        self::assertStringContainsString('docs/sdd/', $plan['write'][$this->root . '/site/assets/docs/llms-pt-br.txt']);
-        self::assertStringContainsString('- [Core SDD](https://conn2flow.com/docs/sdd/): Public SDD', $plan['write'][$this->root . '/site/assets/docs/llms.txt']);
+        self::assertStringContainsString('docs/mdd/', $plan['write'][$this->root . '/site/assets/docs/llms-pt-br.txt']);
+        self::assertStringContainsString('- [Core SDD](https://conn2flow.com/docs/mdd/): Public SDD', $plan['write'][$this->root . '/site/assets/docs/llms.txt']);
         $menus = json_decode($plan['write'][$this->root . '/site/resources/pt-br/menus.json'], true);
         self::assertSame('SDD', $menus[0]['fields_schema']['menus']['visible_to_all'][0]['label']);
     }

@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Documentation (`REQ-292`): `c2f docs:build` publishes the Core engineering memory (`memory/`, MDD) under `/docs/mdd/` (configurable with `sdd.slug`), keeping the `docs-sdd-*` page ids. Engineering memories and the derived `index.md` files from `mdd index` stay out of the publication. Release notes for the 3.0 series were added to What's New.
+
+### Fixed
+- Resource sync (`REQ-292`): when the sync changes the `caminho` of an existing page, the old path goes into `paginas_301`, as the panel already did. Moving a page by its resource no longer leaves the old link on 404.
+
 ## [3.0.14] - 2026-10-20
 
 ### Fixed

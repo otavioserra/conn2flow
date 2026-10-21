@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### REQ-292 / BATCH-300 — docs em /docs/mdd/ e What's New 3.0 (2026-10-21)
+
+- **Mudar o endereço sem mudar o id**: o id da página de docs sai do caminho relativo (`pageId`). Para trocar a URL e ganhar 301, mude só o `urlPath`. Com o id igual, a sincronização grava o caminho antigo em `paginas_301` (`sincronizarRegistrarPagina301`), e o roteador já resolve. Isso só vale com o core novo no servidor; publique o core antes.
+- **Renomear arquivos da memória fura filtros por nome**: o `SddSource` só barrava `MEMORIA*`, e as memórias `03/04-memory-engineering-*` iam para o site. O `memory/index.md` derivado também virava a entrada da seção. Depois de renomear qualquer coisa em `memory/`, rodar `docs:build --dry-run` e ler a lista.
+- `git add` com centenas de caminhos estoura o limite de argumentos no Git Bash: usar `git add --pathspec-from-file=<lista>` (continua explícito).
+- O `heredoc` em Python quebrou `\n` dentro de string PHP de novo; para PHP, usar sempre o Edit.
+
 ### REQ-283 / BATCH-292 — motor de CRUD da API (2026-10-19)
 
 - **CRUD pela API é opt-in**: `api.crud` no `{modulo}.json` com `campos` (graváveis), `obrigatorios`, `id_origem`, `busca` e, se preciso, `leitura`, `campo_usuario`, `idioma`, `exclusao`, `hooks`. Habilitar um módulo nas fases seguintes = declarar isso; nunca listar coluna sensível. O hook `api` do módulo tem prioridade; o motor é o fallback de `api_handle_modulo()`.
@@ -183,3 +190,14 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 
 - **O navegador não recebe o JS do módulo, recebe `public_html/dist/`** quando o `.manifest.json` lista o arquivo (URL e `?v=` saem do manifesto). Mudou JS e não chegou? Conferir o `dist/` antes de mexer no código.
 - **Playwright autenticado no Lab**: `c2f auth:cookie --project=conn2flow-site-local` gera o jar (a saída imprime o cookie: não copiar para registros); `ignoreHTTPSErrors`, marca em `window` antes do clique e conferência depois mostram se houve recarregamento.
+
+### REQ-290 / BATCH-298 — PHP2Shell, mitigação enquanto o patch não sai (2026-10-21)
+
+- **"Versão corrigida" no php.net não quer dizer pacote disponível**: PPA ondrej e imagens oficiais do Docker atrasam horas. Conferir com `apt-cache madison php8.5-fpm` e `docker pull php:X.Y.Z-apache`. Tag recém-criada com índice vazio dá `no matching manifest for linux/amd64`.
+- **Cloudflare na frente não protege se a origem responde direto**: testar com `curl --resolve dominio:443:IP_ORIGEM`. No Hestia de Prod a solução foi um ipset `cloudflare` (ips-v4, autoupdate) na regra WEB. O firewall do Hestia **não gerencia IPv6** (política ACCEPT), e o 8083 escuta em `[::]`.
+- **O painel do Hestia tem PHP próprio** (`hestia-php`), que entra separado no inventário de patches.
+- **`"php": ">=8.2.35"` não barra 8.3.35 nem 8.5.10**; e o `gestor/vendor/composer/platform_check.php` versionado transforma a restrição em erro fatal em quem ainda não atualizou.
+- **Escrita remota em Prod é barrada pelo classificador do agente** mesmo com ok no chat: preparar comandos com backup e rollback para o humano rodar, depois verificar em modo leitura.
+- **PPA ondrej (Launchpad) x packages.sury.org**: no dia do patch o Launchpad atrasou e devolveu 503; o `packages.sury.org/php` já tinha 8.4.27 e 8.5.12 para jammy. Em atualização de segurança, usar a fonte do sury.
+- **Hestia no Lab com Caddy na frente**: o Caddy chega ao nginx por `host.docker.internal:8443`, então o domínio precisa do template nginx `conn2flow-req092` (`listen` sem `%ip%`). Com o template `conn2flow`, qualquer `v-rebuild-web-domains` / `v-change-sys-php` cria um loop de 301. E o `v-change-sys-php` regenera os domínios *antes* de trocar o padrão: rode `v-rebuild-web-domains` em cada usuário depois.
+- **Atualizar o PHP com o cron por minuto ativo gera um e-mail de fatal transitório** (extensão nova + core velho: `undefined symbol`). Antes de diagnosticar, confira o horário no `dpkg.log` contra o do cron.

@@ -1,5 +1,6 @@
 # Dockerfile PHP 8.5 para conn2flow - Suporte a MySQL + PostgreSQL via PDO
-FROM php:8.5-apache
+# REQ-290: mínimo 8.5.12 (correção PHP2Shell CVE-2026-109618/109619)
+FROM php:8.5.12-apache
 
 # Instalar dependências do sistema (inclui libs para PostgreSQL)
 RUN apt-get update && apt-get install -y \

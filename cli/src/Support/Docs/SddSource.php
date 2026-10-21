@@ -40,10 +40,18 @@ final class SddSource
             }
             // req-188: o `archive/` de cada pasta também é publicado (histórico antigo); nada mais fundo.
             $noArquivo = count($parts) === 3 && $parts[1] === 'archive';
-            if ((count($parts) > 2 && !$noArquivo) || preg_match('~(?:^|/)(?:backlog|MEMORIA[^/]*)/|(?:^|/)MEMORIA[^/]*\.md$~i', $relative)) {
+            // req-292: as memórias de engenharia (chefia e execução) não são públicas, nem com o nome
+            // MDD (`03-memory-engineering-chief.md`, `04-memory-engineering-execution.md`).
+            if ((count($parts) > 2 && !$noArquivo) || preg_match('~(?:^|/)(?:backlog|MEMORIA[^/]*)/|(?:^|/)MEMORIA[^/]*\.md$|(?:^|/)(?:\d+-)?memory-engineering[^/]*\.md$~i', $relative)) {
                 continue;
             }
             $body = (string)file_get_contents($file->getPathname());
+            // req-292: `index.md` gerado pelo `mdd index` / `c2f memory:index` é derivado (tabela com
+            // o resumo de cada arquivo, inclusive dos excluídos acima) e tomaria o lugar da página de
+            // entrada configurada da seção.
+            if (basename($relative) === 'index.md' && preg_match('/^\x{FEFF}?#\s+Index\s+—/u', $body)) {
+                continue;
+            }
             $filtered = $this->filter($body);
             if ($filtered === null) {
                 $warnings[] = "sdd/{$relative}: excluído pelo filtro de conteúdo sensível.";

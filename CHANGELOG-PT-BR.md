@@ -5,6 +5,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+### Changed
+- Documentação (`REQ-292`): o `c2f docs:build` publica a memória de engenharia do core (`memory/`, MDD) em `/docs/mdd/` (configurável por `sdd.slug`), mantendo os ids `docs-sdd-*` das páginas. As memórias de engenharia e os `index.md` derivados do `mdd index` ficam fora da publicação. As notas da série 3.0 entraram no What's New.
+
+### Fixed
+- Sincronização de recursos (`REQ-292`): quando a sincronização muda o `caminho` de uma página existente, o caminho antigo vai para `paginas_301`, como o painel já fazia. Mudar o endereço de uma página pelo recurso não deixa mais o link antigo em 404.
+
 ## [3.0.14] - 2026-10-20
 
 ### Fixed
