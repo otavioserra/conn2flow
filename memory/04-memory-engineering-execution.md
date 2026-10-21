@@ -183,3 +183,11 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 
 - **O navegador não recebe o JS do módulo, recebe `public_html/dist/`** quando o `.manifest.json` lista o arquivo (URL e `?v=` saem do manifesto). Mudou JS e não chegou? Conferir o `dist/` antes de mexer no código.
 - **Playwright autenticado no Lab**: `c2f auth:cookie --project=conn2flow-site-local` gera o jar (a saída imprime o cookie: não copiar para registros); `ignoreHTTPSErrors`, marca em `window` antes do clique e conferência depois mostram se houve recarregamento.
+
+### REQ-290 / BATCH-298 — PHP2Shell, mitigação enquanto o patch não sai (2026-10-21)
+
+- **"Versão corrigida" no php.net não quer dizer pacote disponível**: PPA ondrej e imagens oficiais do Docker atrasam horas. Conferir com `apt-cache madison php8.5-fpm` e `docker pull php:X.Y.Z-apache`. Tag recém-criada com índice vazio dá `no matching manifest for linux/amd64`.
+- **Cloudflare na frente não protege se a origem responde direto**: testar com `curl --resolve dominio:443:IP_ORIGEM`. No Hestia de Prod a solução foi um ipset `cloudflare` (ips-v4, autoupdate) na regra WEB. O firewall do Hestia **não gerencia IPv6** (política ACCEPT), e o 8083 escuta em `[::]`.
+- **O painel do Hestia tem PHP próprio** (`hestia-php`), que entra separado no inventário de patches.
+- **`"php": ">=8.2.35"` não barra 8.3.35 nem 8.5.10**; e o `gestor/vendor/composer/platform_check.php` versionado transforma a restrição em erro fatal em quem ainda não atualizou.
+- **Escrita remota em Prod é barrada pelo classificador do agente** mesmo com ok no chat: preparar comandos com backup e rollback para o humano rodar, depois verificar em modo leitura.
