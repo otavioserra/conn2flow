@@ -87,3 +87,10 @@ O humano executou como root os comandos preparados pelo executor; o agente só v
 - Lab, `apt-get install --only-upgrade` dos 44 pacotes php8.2/8.3 com status ii: **falhou** com 503 do Launchpad em 16 `.deb`. O apt abortou antes de instalar, então o Lab segue em 8.2.33/8.3.33 com fpm ativo e sem erros no journal.
 - Certificados de origem: válidos (`ssl_verify=0`) em todos os nomes, menos `dev.snapphoton.com`. O webmail proxied entrou em loop de 301 com o SSL Flexible; a orientação é Full (strict) nas zonas conn2flow e transformamp e Full na snapphoton.
 - O agendamento do verificador foi negado pela política do agente (persistência); o loop fica a cargo do humano (`/loop`).
+
+## Evidências — Docker local corrigido (2026-10-21, ~17:15 UTC)
+
+- As imagens oficiais amd64 `php:8.3.36-apache` e `php:8.5.12-apache` foram publicadas. Fixei as tags em `dev-environment/docker/Dockerfile` e `Dockerfile.php85`, para que um cache antigo nunca volte a uma versão vulnerável.
+- `docker compose build --no-cache --pull app` (via WSL) nos três compose: `docker-compose.yml` → **PHP 8.3.36**; `docker-compose.php85-mysql.yml` e `docker-compose.php85-pgsql.yml` → **PHP 8.5.12**. Os três geram a mesma imagem `docker-app` e o último build vence; por isso reconstruí o principal por último (8.3.36).
+- Varredura nos 8 repositórios da workspace (arquivos versionados): só o `conn2flow` usa imagem PHP. lumix e nexus são Python, o mcp-hub é Node; o `gestor/vendor/cakephp/chronos/Dockerfile` é de terceiros e não entra no ambiente. O `phpmyadmin/phpmyadmin:latest` não está fixado e não estava em execução.
+- Vigia no Lab (`php2shell-watch.timer`) instalado pelo humano. A primeira versão tinha um bug de locale: o `apt-cache` em pt-BR escreve "Candidato:". Corrigido com `LC_ALL=C`; falta o humano reinstalar o script.

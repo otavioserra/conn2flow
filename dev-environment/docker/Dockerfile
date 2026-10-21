@@ -1,5 +1,6 @@
 # Dockerfile SIMPLIFICADO para conn2flow - Apenas infraestrutura básica
-FROM php:8.3-apache
+# REQ-290: mínimo 8.3.36 (correção PHP2Shell CVE-2026-109618/109619)
+FROM php:8.3.36-apache
 
 # Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
