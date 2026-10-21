@@ -94,3 +94,12 @@ O humano executou como root os comandos preparados pelo executor; o agente só v
 - `docker compose build --no-cache --pull app` (via WSL) nos três compose: `docker-compose.yml` → **PHP 8.3.36**; `docker-compose.php85-mysql.yml` e `docker-compose.php85-pgsql.yml` → **PHP 8.5.12**. Os três geram a mesma imagem `docker-app` e o último build vence; por isso reconstruí o principal por último (8.3.36).
 - Varredura nos 8 repositórios da workspace (arquivos versionados): só o `conn2flow` usa imagem PHP. lumix e nexus são Python, o mcp-hub é Node; o `gestor/vendor/cakephp/chronos/Dockerfile` é de terceiros e não entra no ambiente. O `phpmyadmin/phpmyadmin:latest` não está fixado e não estava em execução.
 - Vigia no Lab (`php2shell-watch.timer`) instalado pelo humano. A primeira versão tinha um bug de locale: o `apt-cache` em pt-BR escreve "Candidato:". Corrigido com `LC_ALL=C`; falta o humano reinstalar o script.
+
+## Evidências — Lab no PHP 8.2.35 (2026-10-21, ~18:15 UTC)
+
+- O vigia do Lab instalou **8.2.35** (cli e fpm, serviço ativo, journal limpo). O 8.3.36 segue pendente por 503 do Launchpad.
+- Compatibilidade: `gestor/vendor/composer/platform_check.php` exige `>= 8.2.0`. `php8.2 -l` no gestor instalado no Lab, sem `vendor/`: **0 erros em 7.559 arquivos** (v3.1 685, conn2flow.local 4.577, transformamp 651, snapphoton 1.646).
+- `v-change-sys-php 8.2` trocou o PHP padrão, mas regenera os domínios *antes* do `update-alternatives`. Foi preciso rodar `v-rebuild-web-domains` em cada usuário para levar os pools para `/etc/php/8.2/fpm/pool.d/` (11 sockets 8.2; no 8.5 ficou só o `dummy`).
+- **Regressão causada pela regeneração e corrigida:** 6 sites com o template nginx `conn2flow` (`listen %ip%:port`) entraram em loop de 301. O Caddy chega por `host.docker.internal` (`172.18.0.1:8443`) e caía no `default_server`. Os arquivos tinham sido ajustados à mão antes (havia backup `.orig-ip` na v3.1). Correção duradoura: `v-change-web-domain-tpl ... conn2flow-req092` (idêntico, só com `listen %web_ssl_port%`) em conn2flow.local, updtest.local, snapphoton.local, transformamp.local, v3.1-conn2flow.local e website-conn2flow.local; `nginx -t` ok.
+- Resultado pelo Caddy: 10 sites com 200 e página completa, nenhum fatal. `teste.conn2flow.local` segue em 301 por `SSL='no'` (situação anterior, sem relação com a troca).
+- **packages.sury.org** (sugerido no fórum do Hestia, post de eris em 21/10/2026) já publica para jammy: 8.2.35, 8.3.36, **8.4.27** e **8.5.12**. O Launchpad (PPA) está atrasado e devolvendo 503.
