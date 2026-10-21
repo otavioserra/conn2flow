@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### REQ-292 / BATCH-300 — docs em /docs/mdd/ e What's New 3.0 (2026-10-21)
+
+- **Mudar o endereço sem mudar o id**: o id da página de docs sai do caminho relativo (`pageId`). Para trocar a URL e ganhar 301, mude só o `urlPath`. Com o id igual, a sincronização grava o caminho antigo em `paginas_301` (`sincronizarRegistrarPagina301`), e o roteador já resolve. Isso só vale com o core novo no servidor; publique o core antes.
+- **Renomear arquivos da memória fura filtros por nome**: o `SddSource` só barrava `MEMORIA*`, e as memórias `03/04-memory-engineering-*` iam para o site. O `memory/index.md` derivado também virava a entrada da seção. Depois de renomear qualquer coisa em `memory/`, rodar `docs:build --dry-run` e ler a lista.
+- `git add` com centenas de caminhos estoura o limite de argumentos no Git Bash: usar `git add --pathspec-from-file=<lista>` (continua explícito).
+- O `heredoc` em Python quebrou `\n` dentro de string PHP de novo; para PHP, usar sempre o Edit.
+
 ### REQ-283 / BATCH-292 — motor de CRUD da API (2026-10-19)
 
 - **CRUD pela API é opt-in**: `api.crud` no `{modulo}.json` com `campos` (graváveis), `obrigatorios`, `id_origem`, `busca` e, se preciso, `leitura`, `campo_usuario`, `idioma`, `exclusao`, `hooks`. Habilitar um módulo nas fases seguintes = declarar isso; nunca listar coluna sensível. O hook `api` do módulo tem prioridade; o motor é o fallback de `api_handle_modulo()`.

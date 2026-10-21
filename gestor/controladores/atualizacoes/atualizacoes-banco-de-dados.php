@@ -601,6 +601,29 @@ function descobrirPK(string $tabela, array $row): string {
     return array_key_exists('id',$row) ? 'id' : array_key_first($row);
 }
 
+/**
+ * req-292: página existente que muda de `caminho` pela sincronização deixa o caminho antigo em
+ * `paginas_301`, como o painel já faz (`gestor_pagina_301_registrar`). Sem isso, renomear o endereço
+ * de uma página pelo recurso (ex.: `docs/sdd/` → `docs/mdd/`) deixava o link antigo em 404.
+ * Idempotente por (caminho, id_paginas); falha aqui nunca derruba a sincronização.
+ */
+function sincronizarRegistrarPagina301(PDO $pdo, string $tabela, array $exist, array $diff): void {
+    if ($tabela !== 'paginas' || !array_key_exists('caminho', $diff)) return;
+    $antigo = trim((string)($exist['caminho'] ?? ''));
+    $id = (int)($exist['id_paginas'] ?? 0);
+    if ($antigo === '' || $id <= 0 || $antigo === trim((string)$diff['caminho'])) return;
+    try {
+        $stmt = $pdo->prepare('SELECT 1 FROM `paginas_301` WHERE `caminho` = :c AND `id_paginas` = :i LIMIT 1');
+        $stmt->execute([':c' => $antigo, ':i' => $id]);
+        if ($stmt->fetchColumn()) return;
+        $pdo->prepare('INSERT INTO `paginas_301` (`id_paginas`, `caminho`, `data_criacao`) VALUES (:i, :c, :d)')
+            ->execute([':i' => $id, ':c' => $antigo, ':d' => date('Y-m-d H:i:s')]);
+        log_unificado("PAGINA_301 id_paginas=$id caminho=" . encLog($antigo), $GLOBALS['LOG_FILE_DB']);
+    } catch (Throwable $e) {
+        log_unificado("WARN_PAGINA_301 id_paginas=$id msg=" . encLog($e->getMessage()), $GLOBALS['LOG_FILE_DB']);
+    }
+}
+
 /** Insere registros ausentes e atualiza divergentes */
 /**
  * Sincroniza uma tabela com registros vindos de arquivos JSON.
@@ -797,7 +820,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     $diff['project'] = $project;
                 }
                 if ($simulate) { log_unificado("SIMULATE_UPDATE $tabela pk=$pkVal campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
-                else { $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff))); $sql="UPDATE `$tabela` SET $sets WHERE `$pkDeclarada`=:pk"; $stmt=$pdo->prepare($sql); $params=$diff; $params['pk']=$pkVal; $stmt->execute(paramsBanco($params));}            
+                else { $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff))); $sql="UPDATE `$tabela` SET $sets WHERE `$pkDeclarada`=:pk"; $stmt=$pdo->prepare($sql); $params=$diff; $params['pk']=$pkVal; $stmt->execute(paramsBanco($params)); sincronizarRegistrarPagina301($pdo, $tabela, $exist, $diff);}
                 if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_unificado(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$pkVal,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE_DB']); }
                 $updated++; } else { $same++; }
         }
@@ -966,6 +989,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     }
                     $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));
                     $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute(paramsBanco($params));
+                    sincronizarRegistrarPagina301($pdo, $tabela, $exist, $diff);
                 }
                 if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_unificado(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$k,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE_DB']); }
                 $updated++;
@@ -1065,6 +1089,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                         }
                         $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));
                         $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute(paramsBanco($params));
+                        sincronizarRegistrarPagina301($pdo, $tabela, $exist, $diff);
                     }
                     if ($logDiffs) { $pairs=[]; foreach ($diff as $c=>$v){ $pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(count($pairs)>=10){$pairs[]='...';break;} } log_unificado("FALLBACK_UPDATE_NAT tabela=$tabela chave=$fallbackKey campos=".implode(', ',$pairs), $GLOBALS['LOG_FILE_DB']); }
                     $updated++;

@@ -41,8 +41,8 @@ final class DocsBuildCommand extends BaseProcessCommand
             . "or <project gestor>/docs.config.json) and ai-workspace/<lang>/docs/ (guides, concepts, reference,\n"
             . "whats-new) and writes, per language, resources/<lang>/{pages,publisher_pages,menus}/ plus pages.json,\n"
             . "publisher-pages.json and menus.json (merged by id: only ids 'docs' and 'docs-*' are managed), and\n"
-            . "assets/docs/llms*.txt. With sdd.enabled in the configuration, also publishes filtered Core SDD\n"
-            . "documents (pt-br only) under /docs/sdd/. With 'module' set, pages belong to that module, templates\n"
+            . "assets/docs/llms*.txt. With sdd.enabled in the configuration, also publishes the filtered Core\n"
+            . "engineering memory (memory/, MDD; pt-br only) under /docs/mdd/ (sdd.slug changes it). With 'module' set, pages belong to that module, templates\n"
             . "are read from its resources first and modulos/<module>/documentation.status.json records the build.\n"
             . "Broken docs links or invalid frontmatter abort the build.\n\n"
             . "Next step (local only): php cli/c2f.php project:update-all <id>";

@@ -13,6 +13,10 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-303 | ready-for-intake | Docs de conceitos, guias, CLI, API e hooks na 3.0.14; termos SDD → MDD (REQ-295) | [req-295.md](../human-requests/req-295.md) | Frente 4 da revisão das docs. |
+| BATCH-302 | ready-for-intake | Docs de módulos na 3.0.14 com "Como usar" (REQ-294) | [req-294.md](../human-requests/req-294.md) | Frente 3 da revisão das docs. |
+| BATCH-301 | ready-for-intake | Docs de bibliotecas na 3.0.14, 35 pendentes e 7 ausentes (REQ-293) | [req-293.md](../human-requests/req-293.md) | Frente 2 da revisão das docs. |
+| BATCH-300 | implemented-pending-homologation | `/docs/mdd/` com 301 pela sincronização, What's New 3.0 e memórias de engenharia fora da publicação (REQ-292) | [BATCH-300.md](BATCH-300.md) | Branch `feat/req-292`. PHPUnit Docs/Req292 38 verdes; Lab 200 nas novas e 301 nas antigas. Produção depende do release 3.0.15. |
 | BATCH-297 | implemented-pending-homologation | dist/ republicado a cada atualização e deploy: JS/CSS publicados não ficam mais congelados (REQ-289) | [BATCH-297.md](BATCH-297.md) | Branch `feat/req-289`. Simulação: Lab 2/611, produção 59/611 congelados. PHPUnit 1.910 (2 falhas de ambiente). Falta release. |
 | BATCH-296 | implemented-pending-homologation | 404 sem espera: busca de outro idioma pelo índice (REQ-288) | [BATCH-296.md](BATCH-296.md) | Branch `feat/req-288`. Produção: consulta 7.849 ms → 26 ms. PHPUnit 1.909 (2 falhas de ambiente). Falta release. |
 | BATCH-295 | implemented-pending-homologation | Choques sem falsos positivos: artefatos de sistema e `config.php` sempre escritos, divergência nunca escondida, superados automáticos, decisão em lote, lista paginada, utf8mb4 (REQ-286) | [BATCH-295.md](BATCH-295.md) | Branch `feat/req-286`. PHPUnit 1.905 (só 2 falhas de ambiente), Vitest 700; motor simulado contra Lab e produção. Falta release. |

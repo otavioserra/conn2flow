@@ -691,9 +691,10 @@ final class DocsBuilder
             $path = $this->gestorPath . '/assets/docs/llms.txt';
             if (isset($out[$path])) {
                 $labels = $this->labels($defaultLang);
-                $title = (string)($labels['landings']['docs-sdd']['title'] ?? 'SDD');
+                $title = (string)($labels['landings']['docs-sdd']['title'] ?? 'MDD');
                 $description = (string)($labels['landings']['docs-sdd']['description'] ?? '');
-                $out[$path] .= "\n## SDD\n\n- [{$title}](" . $site . $this->urlPath('sdd/index.md') . "): {$description}\n";
+                $heading = (string)($labels['sections']['sdd'] ?? 'MDD');
+                $out[$path] .= "\n## {$heading}\n\n- [{$title}](" . $site . $this->urlPath('sdd/index.md') . "): {$description}\n";
             }
         }
 
@@ -732,8 +733,22 @@ final class DocsBuilder
     {
         $base = trim((string)($this->config['base_path'] ?? 'docs/'), '/');
         $slug = self::relSlug($rel);
+        // req-292: a fonte é `memory/` (MDD) e a seção é publicada em `docs/mdd/`. O prefixo interno
+        // continua `sdd/` para os ids das páginas (`docs-sdd-*`) não mudarem: a sincronização grava o
+        // caminho antigo em `paginas_301` e `docs/sdd/...` responde 301 para o endereço novo.
+        if ($slug === 'sdd' || str_starts_with($slug, 'sdd/')) {
+            $slug = $this->memorySlug() . substr($slug, 3);
+        }
 
         return $base . '/' . ($slug === '' ? '' : $slug . '/');
+    }
+
+    /** Segmento público da seção da memória de engenharia (`sdd.slug` na configuração; padrão `mdd`). */
+    private function memorySlug(): string
+    {
+        $slug = trim((string)($this->config['sdd']['slug'] ?? 'mdd'), '/');
+
+        return preg_match('~^[a-z0-9-]+$~', $slug) ? $slug : 'mdd';
     }
 
     private function blobUrl(string $repoPath): string

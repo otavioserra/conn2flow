@@ -90,7 +90,7 @@ final class DocsReq188Test extends TestCase
         self::assertSame(['Lote 1'], array_column($pasta['children'][1]['children'], 'label'));
 
         $html = $plan['write'][$this->root . '/site/resources/pt-br/pages/docs-sdd-implementation-BATCH-2/docs-sdd-implementation-BATCH-2.html'];
-        self::assertStringContainsString('docs/sdd/implementation/archive/BATCH-1/', $html);
+        self::assertStringContainsString('docs/mdd/implementation/archive/BATCH-1/', $html);
     }
 
     public function testDeployPelaApiRegeneraOSitemapDepoisDoBancoEDosHooks(): void
