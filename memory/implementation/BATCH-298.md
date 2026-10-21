@@ -79,3 +79,11 @@ O humano executou como root os comandos preparados pelo executor; o agente só v
 - Verificação pela Cloudflare: conn2flow.com 200, snapphoton.com 200, transformamp.com 200, ia-parceria 200, dev.snapphoton 302, fsmjd.transformamp 200.
 - Efeito colateral esperado: `webmail.*` e `server.conn2flow.com` (DNS-only) passam a responder só para o IP do operador. IMAP, SMTP e POP não foram afetados.
 - Pendências: ligar o proxy da Cloudflare em `webmail.*`; atualizar o PHP (sury) e o `hestia-php` quando os pacotes corrigidos saírem; reconstruir o Docker quando as imagens amd64 8.3.36/8.5.12 forem publicadas; decidir a restrição no composer.
+
+## Evidências — Lançamentos parciais e tentativa no Lab (2026-10-21, ~16:40 UTC)
+
+- Verificador (`check-php2shell.sh`): o PPA ondrej publicou **8.2.35** e **8.3.36**. Continuam pendentes 8.4 (em 8.4.26), 8.5 (em 8.5.11), `hestia-php` (em 8.5.9) e as imagens Docker amd64.
+- Prod por PHP: 8.5 atende conn2flow.com, snapphoton.com, dev.snapphoton, transformamp.com, ia-parceria e server; 8.2 atende fsmjd.transformamp; 8.3 (pool `www`) atende o webmail.
+- Lab, `apt-get install --only-upgrade` dos 44 pacotes php8.2/8.3 com status ii: **falhou** com 503 do Launchpad em 16 `.deb`. O apt abortou antes de instalar, então o Lab segue em 8.2.33/8.3.33 com fpm ativo e sem erros no journal.
+- Certificados de origem: válidos (`ssl_verify=0`) em todos os nomes, menos `dev.snapphoton.com`. O webmail proxied entrou em loop de 301 com o SSL Flexible; a orientação é Full (strict) nas zonas conn2flow e transformamp e Full na snapphoton.
+- O agendamento do verificador foi negado pela política do agente (persistência); o loop fica a cargo do humano (`/loop`).
