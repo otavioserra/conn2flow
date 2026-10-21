@@ -110,3 +110,11 @@ O humano executou como root os comandos preparados pelo executor; o agente só v
 - `apt-get install --only-upgrade` de 62 pacotes php8.3/8.4/8.5 com status ii: rc=0, 50 `Setting up`, sem E:/W:. Vigia pausado durante a atualização e reativado depois.
 - `php-fpm -v`: **8.2.35 / 8.3.36 / 8.4.27 / 8.5.12**, todos `active`.
 - `v-change-sys-php 8.5` + `v-rebuild-web-domains` em cada usuário: 11 sockets 8.5, `nginx -t` ok, CLI `PHP 8.5.12`. Os 10 sites conn2flow responderam 200 pelo Caddy, sem fatal; o template `conn2flow-req092` segurou a regeneração.
+
+## Evidências — Produção corrigida (2026-10-21, ~19:00 UTC, aplicado pelo humano)
+
+- O humano trocou a fonte para o `packages.sury.org` e atualizou os pacotes php8.2 a 8.5 com status ii. `php-fpm -v`: **8.2.35 / 8.3.36 / 8.4.27 / 8.5.12**, todos `active`; CLI `PHP 8.5.12`. O `needrestart` adiou só serviços do sistema (dbus, logind, networkd-dispatcher, unattended-upgrades, user@0).
+- Pela Cloudflare: conn2flow.com 200 (263 KB), www 200, ia-parceria 200, snapphoton.com 200, dev.snapphoton 200, transformamp.com 200, fsmjd.transformamp 200 (7,4 s: primeiro acesso com o pool ondemand frio). Nenhum fatal.
+- Webmail direto na origem (IP do operador liberado): os três `webmail.*` respondem 200 com Roundcube.
+- Pools: 8.5 atende conn2flow, dev.snapphoton, ia-parceria, server, snapphoton e transformamp; 8.2 atende fsmjd; 8.3 atende o `www` (webmail). Nenhum fatal nos logs de erro dos últimos 15 minutos.
+- **Pendências:** `hestia-php` (painel, 8.5.9, aguardando o Hestia; a 8083 segue restrita); remover o PHP 8.1 (sem correção oficial); SSL Full/Full (strict) na Cloudflare para o proxy do webmail; `ip6tables` da 8083 não persiste após reboot; decisão sobre a restrição de PHP no `composer.json`.
