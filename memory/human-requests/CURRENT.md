@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-296.md](req-296.md) (BATCH-304 `ready-for-intake`, 2026-10-28, Core — Solo / Autônomo Monitorado): Remoção de payload heurístico de trojan (PHP/Chopper) no teste de upload e blindagem anti-falso-positivo do Windows Defender.
+  - [req-296.md](req-296.md) (BATCH-304 `implemented-pending-homologation`, 2026-10-28, Core — Solo / Autônomo Monitorado): Remoção de payload heurístico de trojan (PHP/Chopper) no teste de upload e blindagem anti-falso-positivo do Windows Defender.
   - [req-295.md](req-295.md) (BATCH-303 `ready-for-intake`, 2026-10-21, Core — Solo / Autônomo Monitorado): docs de conceitos, guias, CLI, API e hooks na 3.0.14 e troca dos termos SDD por MDD. Frente 4 da revisão das docs.
   - [req-294.md](req-294.md) (BATCH-302 `ready-for-intake`, 2026-10-21, Core — Solo / Autônomo Monitorado): docs de módulos na 3.0.14 com "Como usar" (33 pendentes e `dashboard-pages` ausente). Frente 3.
   - [req-293.md](req-293.md) (BATCH-301 `ready-for-intake`, 2026-10-21, Core — Solo / Autônomo Monitorado): docs de bibliotecas na 3.0.14 (35 pendentes e 7 ausentes). Frente 2.
