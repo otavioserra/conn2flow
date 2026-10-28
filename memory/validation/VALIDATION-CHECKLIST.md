@@ -1,5 +1,18 @@
 # Validation Checklist
 
+## BATCH-304 — REQ-296
+
+- [x] Fixture de upload substituída por PHP inofensivo, preservando as sete rejeições por extensão.
+- [x] PHPUnit no Windows: **OK (8 tests, 46 assertions)**, saída 0.
+- [x] `gestor/bibliotecas/arquivo.php` sem alterações; `git diff --check` sem erros.
+- [x] Defender: log operacional acessível e habilitado; zero eventos 1116 desde o início do teste (2026-10-28 12:17:05 -03:00) na consulta após a execução.
+- [x] Auto-revisão solo e commit pontual da fixture `8b077602`.
+- [ ] Homologação humana.
+
+Relatório: [BATCH-304](../implementation/BATCH-304.md).
+
+---
+
 ## BATCH-297 — REQ-289
 
 - [x] Causa: navegador servido por `dist/` publicado em 16/10 (Lab) e 15/10 (produção); Playwright confirmou o recarregamento.

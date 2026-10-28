@@ -63,7 +63,7 @@ final class ArquivoUploadReq240Test extends TestCase
 
     public function testConteudoQueContradizAExtensaoERecusado(): void
     {
-        $php = "<?php system(\$_GET['c']); ?>";
+        $php = "<?php echo 'c2f-teste-conteudo-invalido-sem-magic-bytes'; ?>";
         foreach (['foto.png', 'foto.jpg', 'anim.gif', 'foto.webp', 'doc.pdf', 'modelo.glb', 'icone.svg'] as $nome) {
             $this->assertFalse(arquivo_assinatura_confere($this->gravar('falso-' . $nome, $php), $nome), $nome);
         }

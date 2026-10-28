@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-304 | implemented-pending-homologation | Fixture inofensiva de upload (REQ-296), sem alteração de produção | [BATCH-304.md](BATCH-304.md) | Branch `fix/req-296`; PHPUnit 8 testes e 46 asserções; Defender sem eventos 1116 na janela consultada. |
 | BATCH-303 | ready-for-intake | Docs de conceitos, guias, CLI, API e hooks na 3.0.14; termos SDD → MDD (REQ-295) | [req-295.md](../human-requests/req-295.md) | Frente 4 da revisão das docs. |
 | BATCH-302 | ready-for-intake | Docs de módulos na 3.0.14 com "Como usar" (REQ-294) | [req-294.md](../human-requests/req-294.md) | Frente 3 da revisão das docs. |
 | BATCH-301 | ready-for-intake | Docs de bibliotecas na 3.0.14, 35 pendentes e 7 ausentes (REQ-293) | [req-293.md](../human-requests/req-293.md) | Frente 2 da revisão das docs. |
