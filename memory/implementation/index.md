@@ -27,6 +27,7 @@
 | BATCH-298 | Atualização de Segurança PHP2Shell no Lab, Prod, Docker e Composer (REQ-290) | Mitigação emergencial das vulnerabilidades críticas PHP2Shell (CVE-2026-109618 e CVE-2026-109619). Atualização de pacotes nos servidores SSH (Lab e Prod), rebuild dos containers Docker locais e restrição de versão no composer.json do Core. | [source](<BATCH-298.md>) | implemented-pending-review |
 | BATCH-299 | Hardening de Infraestrutura Pós-PHP2Shell e Alerta de Segurança no Painel (REQ-291) | Tratamento de pendências de infraestrutura pós-PHP2Shell: persistência de ip6tables, remoção do PHP 8.1 EOL, atualização do hestia-php, SSL Cloudflare no webmail e aviso de segurança no admin-environment. | [source](<BATCH-299.md>) | ready-for-intake |
 | BATCH-300 | Docs na 3.0: seção MDD em /docs/mdd/ com 301, What's New da série 3.0 e rebuild (REQ-292) | docs:build publica memory/ em /docs/mdd/ mantendo os ids; a sincronização grava paginas_301 quando o caminho muda; What's New 3.0.0–3.0.14; memórias de engenharia e índices derivados fora da publicação. Lab validado; produção depende de release do core. | [source](<BATCH-300.md>) | implemented-pending-homologation |
+| BATCH-304 | REQ-296: fixture de upload inofensiva | Fixture de upload substituída por PHP inofensivo; 8 testes e 46 asserções aprovados no Windows. | [source](<BATCH-304.md>) | implemented-pending-homologation |
 
 ## Directories
 
