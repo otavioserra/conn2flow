@@ -7,7 +7,7 @@
 - [x] `gestor/bibliotecas/arquivo.php` sem alterações; `git diff --check` sem erros.
 - [x] Defender: log operacional acessível e habilitado; zero eventos 1116 desde o início do teste (2026-10-28 12:17:05 -03:00) na consulta após a execução.
 - [x] Auto-revisão solo e commit pontual da fixture `8b077602`.
-- [ ] Homologação humana.
+- [x] Homologação humana (merged to main).
 
 Relatório: [BATCH-304](../implementation/BATCH-304.md).
 
