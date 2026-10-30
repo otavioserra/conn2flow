@@ -1230,9 +1230,10 @@ function usuario_organizacao_id(?int $id_usuario = null): int {
  * Diz se a hierarquia impede o acesso de um usuário.
  *
  * Só sub-usuários são afetados: conta própria segue as regras de sempre. O bloqueio é calculado a
- * cada verificação, sem alterar o status do filho, então a conta volta sozinha quando o titular é
- * reativado. O status do próprio filho entra aqui porque o guardião de sessão web não o confere:
- * desativar um membro precisa derrubar a sessão que ele já tem aberta.
+ * cada verificação, sem alterar o status do filho, então a conta volta sozinha quando a condição
+ * deixa de existir. Bloqueiam: o próprio filho desativado, titular inativo e equipe desligada no
+ * perfil do titular (chave desligada ou limite 0), mesmo com membros cadastrados. O status do filho
+ * entra aqui porque o guardião de sessão web não o confere.
  *
  * @param int $id_usuario Usuário consultado.
  *
@@ -1249,14 +1250,18 @@ function usuario_hierarquia_bloqueado(int $id_usuario): bool {
 	if(!$usuario || empty($usuario['id_usuarios_pai'])) return false;
 	if($usuario['status'] !== 'A') return true;
 
+	$id_titular = (int)$usuario['id_usuarios_pai'];
+
 	$titular = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'usuarios',
 		'campos' => Array('status'),
-		'extra' => "WHERE id_usuarios='".(int)$usuario['id_usuarios_pai']."'",
+		'extra' => "WHERE id_usuarios='".$id_titular."'",
 	));
 
-	return !$titular || $titular['status'] !== 'A';
+	if(!$titular || $titular['status'] !== 'A') return true;
+
+	return !usuario_equipe_cota($id_titular)['ativa'];
 }
 
 /**
@@ -1280,16 +1285,43 @@ function usuario_equipe_titular(int $id_usuario): ?array {
 }
 
 /**
+ * Lê o perfil de uma conta, com a configuração de equipe.
+ *
+ * @param int $id_usuario Usuário dono do perfil.
+ *
+ * @return array|null Linha de `usuarios_perfis` (id, max_sub_users, sub_users_active) ou null.
+ */
+function usuario_equipe_perfil_da_conta(int $id_usuario): ?array {
+	$usuario = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('id_usuarios_perfis'),
+		'extra' => "WHERE id_usuarios='".$id_usuario."'",
+	));
+
+	if(empty($usuario['id_usuarios_perfis'])) return null;
+
+	$perfil = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('id', 'max_sub_users', 'sub_users_active'),
+		'extra' => "WHERE id_usuarios_perfis='".(int)$usuario['id_usuarios_perfis']."'",
+	));
+
+	return $perfil ?: null;
+}
+
+/**
  * Lista os membros da equipe de um titular, sem os excluídos.
  *
  * @param int $id_titular Conta titular.
  *
- * @return array Linhas com id_usuarios, nome, email, status e data_criacao.
+ * @return array Linhas com id_usuarios, nome, email, status, id_usuarios_perfis e data_criacao.
  */
 function usuario_equipe_membros(int $id_titular): array {
 	$membros = banco_select(Array(
 		'tabela' => 'usuarios',
-		'campos' => Array('id_usuarios', 'nome', 'email', 'status', 'data_criacao'),
+		'campos' => Array('id_usuarios', 'nome', 'email', 'status', 'id_usuarios_perfis', 'data_criacao'),
 		'extra' => "WHERE id_usuarios_pai='".$id_titular."' AND status!='D' ORDER BY nome ASC",
 	));
 
@@ -1297,54 +1329,278 @@ function usuario_equipe_membros(int $id_titular): array {
 }
 
 /**
- * Calcula o consumo de assentos de um titular.
+ * Calcula a situação da equipe de um titular.
  *
- * Só membros ativos ocupam assento. Depois de uma troca para um plano menor os membros além do
- * limite continuam ativos: nada é desativado, apenas novos cadastros e ativações são recusados.
+ * A equipe só funciona com a chave do perfil ligada e limite diferente de 0. Só membros ativos
+ * ocupam assento. Depois de uma troca para um plano menor os membros além do limite continuam
+ * ativos: nada é desativado, apenas novos cadastros e ativações são recusados.
  *
  * @param int $id_titular Conta titular.
  *
- * @return array Chaves limite, usados, ilimitado e disponivel.
+ * @return array Chaves ativa, limite, usados, ilimitado e disponivel.
  */
 function usuario_equipe_cota(int $id_titular): array {
-	$titular = banco_select(Array(
-		'unico' => true,
-		'tabela' => 'usuarios',
-		'campos' => Array('id_usuarios_perfis'),
-		'extra' => "WHERE id_usuarios='".$id_titular."'",
-	));
-
-	$perfil = !empty($titular['id_usuarios_perfis']) ? banco_select(Array(
-		'unico' => true,
-		'tabela' => 'usuarios_perfis',
-		'campos' => Array('max_sub_users'),
-		'extra' => "WHERE id_usuarios_perfis='".(int)$titular['id_usuarios_perfis']."'",
-	)) : false;
+	$perfil = usuario_equipe_perfil_da_conta($id_titular);
 
 	$limite = (int)($perfil['max_sub_users'] ?? 0);
+	$ativa = !empty($perfil['sub_users_active']) && $limite !== 0;
 	$usados = count(array_filter(usuario_equipe_membros($id_titular), function($membro){ return $membro['status'] === 'A'; }));
 
 	return Array(
+		'ativa' => $ativa,
 		'limite' => $limite,
 		'usados' => $usados,
 		'ilimitado' => $limite < 0,
-		'disponivel' => $limite < 0 || $usados < $limite,
+		'disponivel' => $ativa && ($limite < 0 || $usados < $limite),
 	);
 }
 
 /**
  * Diz se a gestão de equipe se aplica à conta.
  *
- * Quem perdeu a cota mas ainda tem membros continua vendo a equipe, para poder desativá-los.
- *
  * @param int $id_usuario Usuário consultado.
  *
- * @return bool True quando a conta é titular e tem cota ou membros.
+ * @return bool True quando a conta é titular e a equipe está ligada no perfil dela.
  */
 function usuario_equipe_habilitada(int $id_usuario): bool {
-	if(!usuario_equipe_titular($id_usuario)) return false;
+	return usuario_equipe_titular($id_usuario) !== null && usuario_equipe_cota($id_usuario)['ativa'];
+}
 
-	return usuario_equipe_cota($id_usuario)['limite'] !== 0 || usuario_equipe_membros($id_usuario);
+/**
+ * Monta o filtro SQL que limita um sub-usuário ao que o titular tem hoje.
+ *
+ * A permissão efetiva do membro é a do perfil dele E a do perfil do titular: quando o titular perde
+ * um módulo, os membros perdem junto, sem precisar reescrever os perfis da equipe. Conta própria
+ * recebe filtro vazio.
+ *
+ * @param int $id_usuario Usuário consultado.
+ * @param string $coluna 'modulo' ou 'operacao'.
+ *
+ * @return string Trecho a concatenar no WHERE da consulta de permissão.
+ */
+function usuario_equipe_permissao_sql(int $id_usuario, string $coluna = 'modulo'): string {
+	$id_titular = usuario_organizacao_id($id_usuario);
+
+	if(!$id_titular || $id_titular === $id_usuario) return '';
+
+	$perfil = usuario_equipe_perfil_da_conta($id_titular);
+
+	if(!$perfil) return ' AND 1=0';
+
+	$tabela = $coluna === 'operacao' ? 'usuarios_perfis_modulos_operacoes' : 'usuarios_perfis_modulos';
+
+	return " AND ".$coluna." IN (SELECT ".$coluna." FROM ".$tabela." WHERE perfil='".banco_escape_field($perfil['id'])."')";
+}
+
+/**
+ * Lista o que o titular pode distribuir aos perfis da equipe: só o que ele próprio recebeu.
+ *
+ * `equipe` nunca entra, porque sub-usuário não gere equipe. `perfil-usuario` fica fora da escolha:
+ * todo membro recebe, para cuidar da própria senha.
+ *
+ * @global array $_GESTOR Sistema global; `linguagem-codigo` escolhe os nomes.
+ *
+ * @param int $id_titular Conta titular.
+ *
+ * @return array Chaves `modulos` (id => nome, modulo_grupo_id) e `operacoes` (id => nome, modulo_id).
+ */
+function usuario_equipe_permissoes_disponiveis(int $id_titular): array {
+	global $_GESTOR;
+
+	$disponiveis = Array('modulos' => Array(), 'operacoes' => Array());
+	$perfil = usuario_equipe_perfil_da_conta($id_titular);
+
+	if(!$perfil) return $disponiveis;
+
+	$perfil_sql = banco_escape_field($perfil['id']);
+	$idioma = banco_escape_field($_GESTOR['linguagem-codigo'] ?? 'pt-br');
+
+	$linhas = banco_select(Array(
+		'tabela' => 'modulos',
+		'campos' => Array('id', 'nome', 'modulo_grupo_id'),
+		'extra' => "WHERE status='A' AND language='".$idioma."' AND id NOT IN ('equipe','perfil-usuario')"
+			." AND id IN (SELECT modulo FROM usuarios_perfis_modulos WHERE perfil='".$perfil_sql."') ORDER BY nome ASC",
+	));
+
+	foreach((is_array($linhas) ? $linhas : Array()) as $linha){
+		$disponiveis['modulos'][$linha['id']] = $linha;
+	}
+
+	$linhas = banco_select(Array(
+		'tabela' => 'modulos_operacoes',
+		'campos' => Array('id', 'nome', 'modulo_id'),
+		'extra' => "WHERE status='A' AND language='".$idioma."'"
+			." AND id IN (SELECT operacao FROM usuarios_perfis_modulos_operacoes WHERE perfil='".$perfil_sql."') ORDER BY nome ASC",
+	));
+
+	foreach((is_array($linhas) ? $linhas : Array()) as $linha){
+		if(isset($disponiveis['modulos'][$linha['modulo_id']])) $disponiveis['operacoes'][$linha['id']] = $linha;
+	}
+
+	return $disponiveis;
+}
+
+/**
+ * Lista os perfis de equipe de um titular, com módulos e operações marcados.
+ *
+ * @param int $id_titular Conta titular.
+ *
+ * @return array Linhas com id_usuarios_perfis, id, nome, modulos e operacoes.
+ */
+function usuario_equipe_perfis(int $id_titular): array {
+	$perfis = banco_select(Array(
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
+		'extra' => "WHERE id_usuarios_dono='".$id_titular."' AND status!='D' ORDER BY nome ASC",
+	));
+
+	$saida = Array();
+
+	foreach((is_array($perfis) ? $perfis : Array()) as $perfil){
+		$perfil_sql = banco_escape_field($perfil['id']);
+
+		$modulos = banco_select(Array('tabela' => 'usuarios_perfis_modulos', 'campos' => Array('modulo'), 'extra' => "WHERE perfil='".$perfil_sql."'"));
+		$operacoes = banco_select(Array('tabela' => 'usuarios_perfis_modulos_operacoes', 'campos' => Array('operacao'), 'extra' => "WHERE perfil='".$perfil_sql."'"));
+
+		$perfil['modulos'] = array_column(is_array($modulos) ? $modulos : Array(), 'modulo');
+		$perfil['operacoes'] = array_column(is_array($operacoes) ? $operacoes : Array(), 'operacao');
+		$saida[] = $perfil;
+	}
+
+	return $saida;
+}
+
+/**
+ * Procura um perfil de equipe pelo id numérico, só entre os do titular.
+ *
+ * @param int $id_titular Conta titular.
+ * @param int $id_perfil Perfil procurado.
+ *
+ * @return array|null Linha do perfil ou null.
+ */
+function usuario_equipe_perfil(int $id_titular, int $id_perfil): ?array {
+	$perfil = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
+		'extra' => "WHERE id_usuarios_perfis='".$id_perfil."' AND id_usuarios_dono='".$id_titular."' AND status!='D'",
+	));
+
+	return $perfil ?: null;
+}
+
+/**
+ * Cria ou altera um perfil de equipe.
+ *
+ * O limite é conferido aqui, no servidor: pedido com módulo ou operação que o titular não tem é
+ * recusado por inteiro, e não só filtrado, porque indica formulário adulterado.
+ *
+ * @param int $id_titular Conta titular.
+ * @param array $dados Campos `id_perfil` (0 = novo), `nome`, `modulos` e `operacoes`.
+ *
+ * @return array `ok` true com `id_perfil`, ou `ok` false com `erro` (id de variável do módulo).
+ */
+function usuario_equipe_perfil_salvar(int $id_titular, array $dados): array {
+	global $_GESTOR;
+
+	if(!usuario_equipe_habilitada($id_titular)) return Array('ok' => false, 'erro' => 'team-not-allowed');
+
+	$nome = trim((string)($dados['nome'] ?? ''));
+	$id_perfil = (int)($dados['id_perfil'] ?? 0);
+	$modulos = array_values(array_unique(array_map('strval', (array)($dados['modulos'] ?? Array()))));
+	$operacoes = array_values(array_unique(array_map('strval', (array)($dados['operacoes'] ?? Array()))));
+
+	if($nome === '' || mb_strlen($nome, 'UTF-8') > 255) return Array('ok' => false, 'erro' => 'team-profile-name-required');
+	if(!$modulos) return Array('ok' => false, 'erro' => 'team-profile-modules-required');
+
+	$disponiveis = usuario_equipe_permissoes_disponiveis($id_titular);
+
+	if(array_diff($modulos, array_keys($disponiveis['modulos'])) || array_diff($operacoes, array_keys($disponiveis['operacoes']))){
+		return Array('ok' => false, 'erro' => 'team-permission-denied');
+	}
+
+	$nome_sql = banco_escape_field($nome);
+
+	if($id_perfil){
+		$perfil = usuario_equipe_perfil($id_titular, $id_perfil);
+
+		if(!$perfil) return Array('ok' => false, 'erro' => 'team-profile-not-found');
+
+		if(banco_update("nome='".$nome_sql."',versao=versao+1,data_modificacao=NOW()", 'usuarios_perfis', "WHERE id_usuarios_perfis='".$id_perfil."'") === false){
+			return Array('ok' => false, 'erro' => 'team-save-error');
+		}
+
+		$id = $perfil['id'];
+	} else {
+		$id = banco_identificador(Array(
+			'id' => 'equipe '.$id_titular.' '.$nome_sql,
+			'tabela' => Array(
+				'nome' => 'usuarios_perfis',
+				'campo' => 'id',
+				'id_nome' => 'id_usuarios_perfis',
+			),
+		));
+
+		$campos = null;
+		$campos[] = Array('id_usuarios_dono', $id_titular, true);
+		$campos[] = Array('nome', $nome_sql);
+		$campos[] = Array('id', $id);
+		$campos[] = Array('language', banco_escape_field($_GESTOR['linguagem-codigo'] ?? 'pt-br'));
+		$campos[] = Array('status', 'A');
+		$campos[] = Array('versao', 1, true);
+		$campos[] = Array('data_criacao', 'NOW()', true);
+		$campos[] = Array('data_modificacao', 'NOW()', true);
+
+		if(banco_insert_name($campos, 'usuarios_perfis') === false) return Array('ok' => false, 'erro' => 'team-save-error');
+
+		$id_perfil = (int)banco_last_id();
+	}
+
+	$id_sql = banco_escape_field($id);
+
+	banco_delete('usuarios_perfis_modulos', "WHERE perfil='".$id_sql."'");
+	banco_delete('usuarios_perfis_modulos_operacoes', "WHERE perfil='".$id_sql."'");
+
+	foreach(array_merge($modulos, Array('perfil-usuario')) as $modulo){
+		banco_insert_name(Array(Array('perfil', $id_sql), Array('modulo', banco_escape_field($modulo))), 'usuarios_perfis_modulos');
+	}
+
+	foreach($operacoes as $operacao){
+		banco_insert_name(Array(Array('perfil', $id_sql), Array('operacao', banco_escape_field($operacao))), 'usuarios_perfis_modulos_operacoes');
+	}
+
+	return Array('ok' => true, 'id_perfil' => $id_perfil);
+}
+
+/**
+ * Exclui um perfil de equipe que nenhum membro use.
+ *
+ * @param int $id_titular Conta titular.
+ * @param int $id_perfil Perfil a excluir.
+ *
+ * @return array `ok` true, ou `ok` false com `erro` (id de variável do módulo).
+ */
+function usuario_equipe_perfil_excluir(int $id_titular, int $id_perfil): array {
+	if(!usuario_equipe_habilitada($id_titular)) return Array('ok' => false, 'erro' => 'team-not-allowed');
+
+	$perfil = usuario_equipe_perfil($id_titular, $id_perfil);
+
+	if(!$perfil) return Array('ok' => false, 'erro' => 'team-profile-not-found');
+
+	foreach(usuario_equipe_membros($id_titular) as $membro){
+		if((int)$membro['id_usuarios_perfis'] === $id_perfil) return Array('ok' => false, 'erro' => 'team-profile-in-use');
+	}
+
+	if(banco_update("status='D',versao=versao+1,data_modificacao=NOW()", 'usuarios_perfis', "WHERE id_usuarios_perfis='".$id_perfil."'") === false){
+		return Array('ok' => false, 'erro' => 'team-save-error');
+	}
+
+	$id_sql = banco_escape_field($perfil['id']);
+
+	banco_delete('usuarios_perfis_modulos', "WHERE perfil='".$id_sql."'");
+	banco_delete('usuarios_perfis_modulos_operacoes', "WHERE perfil='".$id_sql."'");
+
+	return Array('ok' => true);
 }
 
 /**
@@ -1377,26 +1633,28 @@ function usuario_equipe_destravar(int $id_titular): void {
 /**
  * Cria um sub-usuário na equipe do titular.
  *
- * O membro herda o perfil do titular: como não há seleção de perfil, a tela não abre caminho para
- * escalar privilégio. O login do membro é o e-mail.
+ * O perfil precisa ser um perfil de equipe do próprio titular, então o membro nunca recebe mais do
+ * que o titular tem. O login do membro é o e-mail.
  *
  * @param int $id_titular Conta titular.
- * @param array $dados Campos `nome`, `email` e `senha`.
+ * @param array $dados Campos `nome`, `email`, `senha` e `id_perfil`.
  *
  * @return array `ok` true com `id_usuarios`, ou `ok` false com `erro` (id de variável do módulo).
  */
 function usuario_equipe_membro_criar(int $id_titular, array $dados): array {
 	$titular = usuario_equipe_titular($id_titular);
 
-	if(!$titular) return Array('ok' => false, 'erro' => 'team-not-allowed');
+	if(!$titular || !usuario_equipe_cota($id_titular)['ativa']) return Array('ok' => false, 'erro' => 'team-not-allowed');
 
 	$nome = trim((string)($dados['nome'] ?? ''));
 	$email = trim((string)($dados['email'] ?? ''));
 	$senha = (string)($dados['senha'] ?? '');
+	$id_perfil = (int)($dados['id_perfil'] ?? 0);
 
 	if($nome === '' || mb_strlen($nome, 'UTF-8') > 255) return Array('ok' => false, 'erro' => 'team-name-required');
 	if(mb_strlen($email, 'UTF-8') > 255 || !filter_var($email, FILTER_VALIDATE_EMAIL)) return Array('ok' => false, 'erro' => 'team-email-invalid');
 	if(strlen($senha) < 12) return Array('ok' => false, 'erro' => 'team-password-weak');
+	if(!usuario_equipe_perfil($id_titular, $id_perfil)) return Array('ok' => false, 'erro' => 'team-profile-required');
 
 	if(!usuario_equipe_travar($id_titular)) return Array('ok' => false, 'erro' => 'team-busy');
 
@@ -1433,7 +1691,7 @@ function usuario_equipe_membro_criar(int $id_titular, array $dados): array {
 
 		$campos = null;
 		$campos[] = Array('id_usuarios_pai', (int)$titular['id_usuarios'], true);
-		$campos[] = Array('id_usuarios_perfis', (int)$titular['id_usuarios_perfis'], true);
+		$campos[] = Array('id_usuarios_perfis', $id_perfil, true);
 		if(!empty($titular['id_hosts'])) $campos[] = Array('id_hosts', (int)$titular['id_hosts'], true);
 		$campos[] = Array('nome', $nome_sql);
 		$campos[] = Array('nome_conta', $nome_sql);
@@ -1458,6 +1716,37 @@ function usuario_equipe_membro_criar(int $id_titular, array $dados): array {
 }
 
 /**
+ * Troca o perfil de equipe de um membro.
+ *
+ * @param int $id_titular Conta titular.
+ * @param int $id_membro Sub-usuário alvo.
+ * @param int $id_perfil Perfil de equipe do titular.
+ *
+ * @return array `ok` true, ou `ok` false com `erro` (id de variável do módulo).
+ */
+function usuario_equipe_membro_perfil(int $id_titular, int $id_membro, int $id_perfil): array {
+	if(!usuario_equipe_habilitada($id_titular)) return Array('ok' => false, 'erro' => 'team-not-allowed');
+	if(!usuario_equipe_perfil($id_titular, $id_perfil)) return Array('ok' => false, 'erro' => 'team-profile-required');
+
+	$filtro = "WHERE id_usuarios='".$id_membro."' AND id_usuarios_pai='".$id_titular."' AND status!='D'";
+
+	$membro = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('id_usuarios'),
+		'extra' => $filtro,
+	));
+
+	if(!$membro) return Array('ok' => false, 'erro' => 'team-member-not-found');
+
+	if(banco_update("id_usuarios_perfis='".$id_perfil."',versao=versao+1,data_modificacao=NOW()", 'usuarios', $filtro) === false){
+		return Array('ok' => false, 'erro' => 'team-save-error');
+	}
+
+	return Array('ok' => true);
+}
+
+/**
  * Ativa ou desativa um membro da equipe do titular.
  *
  * O dono do membro entra no WHERE: o id viaja pelo formulário e, sem isso, um id adivinhado
@@ -1470,7 +1759,7 @@ function usuario_equipe_membro_criar(int $id_titular, array $dados): array {
  * @return array `ok` true, ou `ok` false com `erro` (id de variável do módulo).
  */
 function usuario_equipe_membro_status(int $id_titular, int $id_membro, string $status): array {
-	if(!in_array($status, Array('A', 'I'), true) || !usuario_equipe_titular($id_titular)){
+	if(!in_array($status, Array('A', 'I'), true) || !usuario_equipe_habilitada($id_titular)){
 		return Array('ok' => false, 'erro' => 'team-not-allowed');
 	}
 

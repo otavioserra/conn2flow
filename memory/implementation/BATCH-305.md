@@ -76,6 +76,24 @@ Pedido do Engenheiro Chefe: publicar no Lab do Photon e conferir o logo gigante 
 - Só pt-br tem a cópia do `lumix`; a página `en` do Photon usa a do core.
 - O topo do painel do Photon mostra o logo da Conn2Flow: o `admin-topbar-tailwind` usa `images/logo-principal.png`, não `project/logo-principal.png`.
 
+## Rodada 3: módulo Equipe e dados da organização (2026-10-30)
+
+Pedido do Engenheiro Chefe, que escolheu a opção A e adiou o release para depois dos testes dele. Substitui a aba MVP e o trecho "o membro herda o perfil" dos limites abaixo.
+
+- **Core:** migração `20261030100020` (`sub_users_active`, `id_usuarios_dono`), módulo `equipe` (abas Membros e Perfis), chave no perfil e filtro `gestor_perfil_permissao_sql()` em dez leituras de permissão (menu, acesso ao módulo, `gestor_acesso`, operações, quatro no dashboard, API e acesso distribuído).
+- **`lumix` (sem commit):** `gestor_organizacao_id()` em pacientes, prontuário, agenda, anamnese, automações, equipamentos, protocolos, calculadora e consumo do plano. Plano por perfil do membro passa a ser o do titular. Lista de perfis dos planos sem perfis de conta. Continuam por usuário: histórico do chat, buscas frequentes e configurações pessoais.
+- **Validação:** PHPUnit 1.972 sem falhas, Vitest 700/700, 59 casos da hierarquia com 5 mutantes novos reprovados, 27 testes PHP do `lumix`. No `snapphoton.local`: 30/30 do módulo e prova de dados, com paciente do titular visto pelo membro e vice-versa, com plano herdado.
+- **Defeito achado no teste real:** membro de titular com plano por perfil caía no plano padrão.
+- **Estado do Lab:** `administradores` com limite 3 e chave ligada, para o teste humano. Pacientes de teste arquivados.
+
+### Pendente desta rodada
+
+- **Autoria clínica:** o backend usa o mesmo id como organização e autor (`encounters.py`, `clinical_audit`). Evolução e auditoria feitas por um membro ficam em nome do titular. Bloqueia uso real por profissionais, e corrigir exige mudança no backend Python.
+- **Agenda:** `professional_user_id` também é o titular; a agenda é única por conta.
+- **Chat e busca clínica:** o membro ainda usa o plano padrão, porque esses módulos calculam o plano pelo próprio id.
+- **Isolamento entre contas no navegador:** a conta de comparação foi barrada antes, por não ter o módulo. A separação em si é a do backend, que não mudou.
+- **Capa do módulo `equipe`:** provisória, cópia da de `usuarios-perfis`. Falta a capa própria.
+
 ## Limites conhecidos
 
 - O administrador pode reativar um membro pelo módulo `usuarios` sem passar pela cota; a cota vale na aba Equipe.

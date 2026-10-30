@@ -8,6 +8,9 @@
 - [x] Bloqueio por titular inativo em sessão web, login e API; acesso volta sozinho com o titular reativado.
 - [x] Aba Equipe em Tailwind, pt-br e en, sem erro de JavaScript e sem rolagem em 390 px.
 - [x] PHPUnit 1.947 sem falhas, 34 casos novos e 4 mutantes reprovados; Vitest 700/700; navegador 23/23 no Lab.
+- [x] Rodada 3: chave de sub-usuários, módulo Equipe, perfis da conta só com o que o titular tem e perda em cascata; PHPUnit 1.972, 5 mutantes reprovados, navegador 30/30 no `snapphoton.local`.
+- [x] Rodada 3: dados compartilhados no Photon (paciente do titular visto pelo membro e vice-versa) com plano herdado.
+- [ ] Autoria clínica do membro no backend do Photon: hoje fica em nome do titular.
 - [ ] Token pessoal bloqueado em execução real (hoje, teste de fonte) e migrações em MySQL 8.
 - [ ] Atualização do core no Dev (`snapphoton-dev`): será por release e painel (decisão de 2026-10-30), depois da homologação.
 - [ ] Homologação humana.

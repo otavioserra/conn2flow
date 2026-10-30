@@ -47,6 +47,13 @@ final class UsuarioHierarquiaReq297Test extends TestCase
             'emissão OAuth' => ['bibliotecas/oauth2.php', 'if(usuario_hierarquia_bloqueado((int)$id_usuarios)){'],
             'validação OAuth' => ['bibliotecas/oauth2.php', 'if(usuario_hierarquia_bloqueado((int)$usuarios[0][\'id_usuarios\'])){'],
             'login do aplicativo' => ['controladores/api/api-auth.php', '!usuario_hierarquia_bloqueado((int) $usuarios[\'id_usuarios\'])'],
+            'menu' => ['gestor.php', '"WHERE perfil=\'".$perfil."\'".gestor_perfil_permissao_sql($usuario)'],
+            'acesso ao módulo' => ['gestor.php', '." AND modulo=\'".$modulo."\'".gestor_perfil_permissao_sql($usuario)'],
+            'gestor_acesso' => ['gestor.php', '." AND perfil=\'".$perfil."\'".gestor_perfil_permissao_sql($usuario)'],
+            'operações' => ['gestor.php', 'gestor_perfil_permissao_sql($usuario,\'operacao\')'],
+            'cartões do painel' => ['modulos/dashboard/dashboard.php', '"WHERE perfil=\'".$perfil."\'".gestor_perfil_permissao_sql($usuario)'],
+            'módulos do aplicativo' => ['controladores/api/api-auth.php', 'banco_escape_field($perfil_id) . "\'" . gestor_perfil_permissao_sql($usuario)'],
+            'acesso distribuído' => ['bibliotecas/autenticacao.php', 'gestor_perfil_permissao_sql($usuario)'],
         ];
     }
 

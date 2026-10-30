@@ -71,7 +71,7 @@ function paginas_layouts_perfis_linha($modulo, $indice, $layout, $perfil){
             'nome' => 'layout_profile_profile[]', 'procurar' => true, 'limpar' => true,
             'placeholder' => gestor_variaveis(['modulo' => $modulo, 'id' => 'profile-mapping-profile']),
             'tabela' => ['id' => true, 'nome' => 'usuarios_perfis', 'campo' => 'nome',
-                'id_selecionado' => $perfil, 'where' => "language='".$idioma."'"],
+                'id_selecionado' => $perfil, 'where' => "language='".$idioma."' AND id_usuarios_dono IS NULL"],
         ],
     ];
     foreach($campos as $campo) $linha = interface_formulario_campos(['pagina' => $linha, 'campos' => [$campo]]);

@@ -30,6 +30,9 @@
 - **Registro do core com `project` preenchido nunca mais atualiza** (`if(!$project && !empty($exist['project']))` no sincronizador). Sintoma: tela nova com layout velho e classe sem regra. Medir: marcados no banco, fora dos `Data.json` do projeto e presentes nos do core.
 - **Layout coberto pelo bundle não carrega a própria folha** (`gestor_css_layouts_cobertos`): HTML de layout divergente do compilado perde as utilities em silêncio.
 - **Projeto com página sobreposta não recebe marcação nova do core**, e dependência Tailwind de projeto não enxerga componente de módulo do core. Testar telas novas no projeto real, não só no Lab do core.
+- **`git checkout` em worktree com `autocrlf=true` devolve CRLF**, e script de edição com `\n` falha. Para restaurar sem isso: `git show HEAD:arquivo > arquivo`.
+- **Teste de permissão em perfil real**: confira se o perfil tem o módulo. `academico` não tem `pacientes`, e o teste de dados passaria sem provar nada.
+- **Agente paralelo no mesmo destino**: `project:deploy` não tem trava. Esperar com um laço em segundo plano sobre `db/data` e acessos do nginx.
 - **Medir cobertura de CSS no navegador**: percorrer as classes do DOM contra `document.styleSheets` achou duas classes sem regra que a tela não denunciava.
 
 ### REQ-292 / BATCH-300 — docs em /docs/mdd/ e What's New 3.0 (2026-10-21)

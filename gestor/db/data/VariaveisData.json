@@ -20881,6 +20881,1032 @@
     },
     {
         "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-title",
+        "valor": "Equipe",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-help",
+        "valor": "Membros entram com o próprio acesso e trabalham nos dados da sua conta, com as permissões do perfil que você definir. Se a sua conta for desativada, o acesso deles é bloqueado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-tab-members",
+        "valor": "Membros",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-tab-profiles",
+        "valor": "Perfis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-seats-used",
+        "valor": "#usados# de #limite# utilizados",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-seats-unlimited",
+        "valor": "#usados# utilizados, sem limite",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-quota-full",
+        "valor": "Todos os assentos estão em uso. Desative um membro ou mude de plano para adicionar outro.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-first",
+        "valor": "Crie um perfil na aba Perfis antes de adicionar membros.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-add",
+        "valor": "Adicionar membro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-name-label",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-email-label",
+        "valor": "E-mail (será o login)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-password-label",
+        "valor": "Senha inicial",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-password-help",
+        "valor": "Mínimo de 12 caracteres. Repasse a senha ao membro por um canal seguro.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-label",
+        "valor": "Perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-choose",
+        "valor": "Selecione um perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-confirm",
+        "valor": "Criar acesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-empty",
+        "valor": "Nenhum membro cadastrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-col-name",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-col-email",
+        "valor": "E-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-col-profile",
+        "valor": "Perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-col-status",
+        "valor": "Situação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-col-actions",
+        "valor": "Ações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-status-active",
+        "valor": "Ativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-status-inactive",
+        "valor": "Inativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-activate",
+        "valor": "Ativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-deactivate",
+        "valor": "Desativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-deactivate-confirm",
+        "valor": "Desativar o acesso deste membro? As sessões abertas dele serão encerradas.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-created-ok",
+        "valor": "Membro adicionado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-status-ok",
+        "valor": "Acesso atualizado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profiles-help",
+        "valor": "Cada perfil define o que os membros podem acessar. Só aparecem aqui os módulos que a sua conta tem.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-add",
+        "valor": "Novo perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-name-label",
+        "valor": "Nome do perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-modules-label",
+        "valor": "Módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-operations-label",
+        "valor": "Operações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-save",
+        "valor": "Salvar perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-edit",
+        "valor": "Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-delete",
+        "valor": "Excluir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-delete-confirm",
+        "valor": "Excluir este perfil?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profiles-empty",
+        "valor": "Nenhum perfil criado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-saved-ok",
+        "valor": "Perfil salvo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-deleted-ok",
+        "valor": "Perfil excluído.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-name-required",
+        "valor": "Informe o nome do perfil.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-modules-required",
+        "valor": "Marque pelo menos um módulo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-required",
+        "valor": "Selecione um perfil da sua equipe.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-not-found",
+        "valor": "Perfil não encontrado na sua equipe.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-profile-in-use",
+        "valor": "Este perfil está em uso por membros da equipe.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-permission-denied",
+        "valor": "Você só pode distribuir o que a sua conta tem.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-not-allowed",
+        "valor": "Sua conta não pode gerenciar uma equipe.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-name-required",
+        "valor": "Informe o nome do membro.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-email-invalid",
+        "valor": "Informe um e-mail válido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-email-taken",
+        "valor": "Este e-mail já está em uso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-password-weak",
+        "valor": "A senha precisa ter pelo menos 12 caracteres.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-quota-reached",
+        "valor": "O limite de membros do seu plano foi atingido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-not-found",
+        "valor": "Membro não encontrado na sua equipe.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-busy",
+        "valor": "Outra alteração na equipe está em andamento. Tente de novo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-save-error",
+        "valor": "Não foi possível salvar. Tente de novo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-title",
+        "valor": "Team",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-help",
+        "valor": "Members sign in with their own access and work on your account data, with the permissions of the profile you set. If your account is deactivated, their access is blocked.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-tab-members",
+        "valor": "Members",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-tab-profiles",
+        "valor": "Profiles",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-seats-used",
+        "valor": "#usados# of #limite# in use",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-seats-unlimited",
+        "valor": "#usados# in use, no limit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-quota-full",
+        "valor": "All seats are in use. Deactivate a member or change your plan to add another.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-first",
+        "valor": "Create a profile in the Profiles tab before adding members.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-add",
+        "valor": "Add member",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-email-label",
+        "valor": "Email (used to sign in)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-password-label",
+        "valor": "Initial password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-password-help",
+        "valor": "At least 12 characters. Share it with the member over a secure channel.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-label",
+        "valor": "Profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-choose",
+        "valor": "Select a profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-confirm",
+        "valor": "Create access",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-empty",
+        "valor": "No team members yet.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-col-name",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-col-email",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-col-profile",
+        "valor": "Profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-col-actions",
+        "valor": "Actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-status-active",
+        "valor": "Active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-status-inactive",
+        "valor": "Inactive",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-activate",
+        "valor": "Activate",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-deactivate",
+        "valor": "Deactivate",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-deactivate-confirm",
+        "valor": "Deactivate this member? Their open sessions will end.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-created-ok",
+        "valor": "Member added.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-status-ok",
+        "valor": "Access updated.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profiles-help",
+        "valor": "Each profile sets what members can access. Only the modules your account has appear here.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-add",
+        "valor": "New profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-name-label",
+        "valor": "Profile name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-modules-label",
+        "valor": "Modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-operations-label",
+        "valor": "Operations",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-save",
+        "valor": "Save profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-delete",
+        "valor": "Delete",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-delete-confirm",
+        "valor": "Delete this profile?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profiles-empty",
+        "valor": "No profiles yet.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-saved-ok",
+        "valor": "Profile saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-deleted-ok",
+        "valor": "Profile deleted.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-name-required",
+        "valor": "Enter the profile name.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-modules-required",
+        "valor": "Select at least one module.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-required",
+        "valor": "Select a profile from your team.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-not-found",
+        "valor": "Profile not found in your team.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-profile-in-use",
+        "valor": "This profile is in use by team members.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-permission-denied",
+        "valor": "You can only grant what your account has.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-not-allowed",
+        "valor": "Your account cannot manage a team.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-name-required",
+        "valor": "Enter the member name.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-email-invalid",
+        "valor": "Enter a valid email.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-email-taken",
+        "valor": "This email is already in use.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-password-weak",
+        "valor": "The password must have at least 12 characters.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-quota-reached",
+        "valor": "Your plan member limit has been reached.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-not-found",
+        "valor": "Member not found in your team.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-busy",
+        "valor": "Another team change is in progress. Try again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-save-error",
+        "valor": "Could not save. Try again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "forms",
         "id": "form-name-label",
         "valor": "Nome",
@@ -26849,312 +27875,6 @@
     {
         "language": "pt-br",
         "modulo": "perfil-usuario",
-        "id": "profile-tab-team",
-        "valor": "Equipe",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-title",
-        "valor": "Minha equipe",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-help",
-        "valor": "Membros da equipe entram com o próprio acesso, compartilham os dados da sua conta e usam o mesmo perfil dela. Se a sua conta for desativada, o acesso deles é bloqueado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-seats-used",
-        "valor": "#usados# de #limite# utilizados",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-seats-unlimited",
-        "valor": "#usados# utilizados, sem limite",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-quota-full",
-        "valor": "Todos os assentos estão em uso. Desative um membro ou mude de plano para adicionar outro.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-add",
-        "valor": "Adicionar membro",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-name-label",
-        "valor": "Nome",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-email-label",
-        "valor": "E-mail (será o login)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-password-label",
-        "valor": "Senha inicial",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-password-help",
-        "valor": "Mínimo de 12 caracteres. Repasse a senha ao membro por um canal seguro.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-confirm",
-        "valor": "Criar acesso",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-cancel",
-        "valor": "Cancelar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-empty",
-        "valor": "Nenhum membro cadastrado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-col-name",
-        "valor": "Nome",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-col-email",
-        "valor": "E-mail",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-col-status",
-        "valor": "Situação",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-col-actions",
-        "valor": "Ações",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-status-active",
-        "valor": "Ativo",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-status-inactive",
-        "valor": "Inativo",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-activate",
-        "valor": "Ativar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-deactivate",
-        "valor": "Desativar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-deactivate-confirm",
-        "valor": "Desativar o acesso deste membro? As sessões abertas dele serão encerradas.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-created-ok",
-        "valor": "Membro adicionado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-status-ok",
-        "valor": "Acesso atualizado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-not-allowed",
-        "valor": "Sua conta não pode gerenciar uma equipe.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-name-required",
-        "valor": "Informe o nome do membro.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-email-invalid",
-        "valor": "Informe um e-mail válido.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-email-taken",
-        "valor": "Este e-mail já está em uso.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-password-weak",
-        "valor": "A senha precisa ter pelo menos 12 caracteres.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-quota-reached",
-        "valor": "O limite de membros do seu plano foi atingido.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-member-not-found",
-        "valor": "Membro não encontrado na sua equipe.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-busy",
-        "valor": "Outra alteração na equipe está em andamento. Tente de novo.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
-        "id": "team-save-error",
-        "valor": "Não foi possível salvar. Tente de novo.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "perfil-usuario",
         "id": "api-tokens-title",
         "valor": "Chaves de API pessoais",
         "tipo": "string",
@@ -29335,312 +30055,6 @@
         "modulo": "perfil-usuario",
         "id": "profile-tab-api-tokens",
         "valor": "API Keys",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "profile-tab-team",
-        "valor": "Team",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-title",
-        "valor": "My team",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-help",
-        "valor": "Team members sign in with their own access, share your account data and use the same profile. If your account is deactivated, their access is blocked.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-seats-used",
-        "valor": "#usados# of #limite# in use",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-seats-unlimited",
-        "valor": "#usados# in use, no limit",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-quota-full",
-        "valor": "All seats are in use. Deactivate a member or change your plan to add another.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-add",
-        "valor": "Add member",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-name-label",
-        "valor": "Name",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-email-label",
-        "valor": "Email (used to sign in)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-password-label",
-        "valor": "Initial password",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-password-help",
-        "valor": "At least 12 characters. Share it with the member over a secure channel.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-confirm",
-        "valor": "Create access",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-cancel",
-        "valor": "Cancel",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-empty",
-        "valor": "No team members yet.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-col-name",
-        "valor": "Name",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-col-email",
-        "valor": "Email",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-col-status",
-        "valor": "Status",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-col-actions",
-        "valor": "Actions",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-status-active",
-        "valor": "Active",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-status-inactive",
-        "valor": "Inactive",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-activate",
-        "valor": "Activate",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-deactivate",
-        "valor": "Deactivate",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-deactivate-confirm",
-        "valor": "Deactivate this member? Their open sessions will end.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-created-ok",
-        "valor": "Member added.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-status-ok",
-        "valor": "Access updated.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-not-allowed",
-        "valor": "Your account cannot manage a team.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-name-required",
-        "valor": "Enter the member name.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-email-invalid",
-        "valor": "Enter a valid email.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-email-taken",
-        "valor": "This email is already in use.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-password-weak",
-        "valor": "The password must have at least 12 characters.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-quota-reached",
-        "valor": "Your plan member limit has been reached.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-member-not-found",
-        "valor": "Member not found in your team.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-busy",
-        "valor": "Another team change is in progress. Try again.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "perfil-usuario",
-        "id": "team-save-error",
-        "valor": "Could not save. Try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -32861,6 +33275,15 @@
     {
         "language": "pt-br",
         "modulo": "usuarios-perfis",
+        "id": "form-sub-users-active-label",
+        "valor": "Ativar sub-usuários",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
         "id": "form-max-sub-users-label",
         "valor": "Limite de sub-usuários",
         "tipo": "string",
@@ -32871,7 +33294,7 @@
         "language": "pt-br",
         "modulo": "usuarios-perfis",
         "id": "form-max-sub-users-help",
-        "valor": "Quantos membros de equipe uma conta com este perfil pode manter ativos. 0 = sem equipe; -1 = sem limite.",
+        "valor": "Quantos membros de equipe uma conta com este perfil pode manter ativos. 0 = sem equipe; -1 = sem limite. Só vale com a chave acima ligada.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -33014,6 +33437,15 @@
     {
         "language": "en",
         "modulo": "usuarios-perfis",
+        "id": "form-sub-users-active-label",
+        "valor": "Enable sub-users",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "usuarios-perfis",
         "id": "form-max-sub-users-label",
         "valor": "Sub-user limit",
         "tipo": "string",
@@ -33024,7 +33456,7 @@
         "language": "en",
         "modulo": "usuarios-perfis",
         "id": "form-max-sub-users-help",
-        "valor": "How many team members an account with this profile can keep active. 0 = no team; -1 = no limit.",
+        "valor": "How many team members an account with this profile can keep active. 0 = no team; -1 = no limit. Only applies with the switch above on.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -249,6 +249,11 @@
         "origem": 7406,
         "minificado": 3710
     },
+    "gestor/modulos/equipe/equipe.js": {
+        "sha1": "742e047d6f2d2c908f7c0012418f726e3daa2617",
+        "origem": 6097,
+        "minificado": 4234
+    },
     "gestor/modulos/forms-search/forms-search.js": {
         "sha1": "c5e04c069308be571c29ce93d05c926dc1f696ca",
         "origem": 19383,
@@ -320,9 +325,9 @@
         "minificado": 5338
     },
     "gestor/modulos/perfil-usuario/perfil-usuario.js": {
-        "sha1": "7a1b4a4e5a93ed1db448a584f33e47892764e99b",
-        "origem": 33231,
-        "minificado": 16824
+        "sha1": "ae92f81f88cdbe4876ef37d747783643730aa977",
+        "origem": 31393,
+        "minificado": 15817
     },
     "gestor/modulos/publisher-highlights/publisher-highlights.js": {
         "sha1": "2c84f7c4bb0094fc9a2729fdf82ce82226210161",

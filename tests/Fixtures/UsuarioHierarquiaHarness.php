@@ -16,7 +16,11 @@ $GLOBALS['sqls'] = [];
 
 $GLOBALS['pdo'] = new PDO('sqlite::memory:');
 $GLOBALS['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$GLOBALS['pdo']->exec("CREATE TABLE usuarios_perfis (id_usuarios_perfis INTEGER PRIMARY KEY, id TEXT, language TEXT, max_sub_users INTEGER NOT NULL DEFAULT 0);
+$GLOBALS['pdo']->exec("CREATE TABLE usuarios_perfis (id_usuarios_perfis INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT, nome TEXT, language TEXT, status TEXT, versao INTEGER DEFAULT 1, data_criacao TEXT, data_modificacao TEXT, max_sub_users INTEGER NOT NULL DEFAULT 0, sub_users_active INTEGER NOT NULL DEFAULT 0, id_usuarios_dono INTEGER);
+CREATE TABLE modulos (id_modulos INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT, nome TEXT, modulo_grupo_id TEXT, language TEXT, status TEXT);
+CREATE TABLE modulos_operacoes (id TEXT, nome TEXT, modulo_id TEXT, language TEXT, status TEXT);
+CREATE TABLE usuarios_perfis_modulos (id_usuarios_perfis_modulos INTEGER PRIMARY KEY AUTOINCREMENT, perfil TEXT, modulo TEXT);
+CREATE TABLE usuarios_perfis_modulos_operacoes (id_usuarios_perfis_modulos_operacoes INTEGER PRIMARY KEY AUTOINCREMENT, perfil TEXT, operacao TEXT);
 CREATE TABLE usuarios (id_usuarios INTEGER PRIMARY KEY AUTOINCREMENT, id_usuarios_pai INTEGER, id_usuarios_perfis INTEGER, id_hosts INTEGER, nome_conta TEXT, nome TEXT, id TEXT, usuario TEXT, senha TEXT, email TEXT, primeiro_nome TEXT, nome_do_meio TEXT, ultimo_nome TEXT, status TEXT, versao INTEGER, data_criacao TEXT, data_modificacao TEXT);");
 
 // Trava de conexão: o cenário decide se a próxima tentativa consegue.
@@ -69,7 +73,7 @@ function extrair_funcoes(string $arquivo, array $nomes): void {
     }
 }
 
-extrair_funcoes($raiz . 'bibliotecas/banco.php', ['banco_select', 'banco_sql', 'banco_campos_virgulas', 'banco_update', 'banco_insert_name', 'banco_retirar_acentos', 'banco_identificador_unico', 'banco_identificador']);
-extrair_funcoes($raiz . 'bibliotecas/usuario.php', ['usuario_organizacao_id', 'usuario_hierarquia_bloqueado', 'usuario_equipe_titular', 'usuario_equipe_membros', 'usuario_equipe_cota', 'usuario_equipe_habilitada', 'usuario_equipe_travar', 'usuario_equipe_destravar', 'usuario_equipe_membro_criar', 'usuario_equipe_membro_status']);
+extrair_funcoes($raiz . 'bibliotecas/banco.php', ['banco_select', 'banco_sql', 'banco_campos_virgulas', 'banco_update', 'banco_insert_name', 'banco_delete', 'banco_retirar_acentos', 'banco_identificador_unico', 'banco_identificador']);
+extrair_funcoes($raiz . 'bibliotecas/usuario.php', ['usuario_organizacao_id', 'usuario_hierarquia_bloqueado', 'usuario_equipe_titular', 'usuario_equipe_perfil_da_conta', 'usuario_equipe_membros', 'usuario_equipe_cota', 'usuario_equipe_habilitada', 'usuario_equipe_permissao_sql', 'usuario_equipe_permissoes_disponiveis', 'usuario_equipe_perfis', 'usuario_equipe_perfil', 'usuario_equipe_perfil_salvar', 'usuario_equipe_perfil_excluir', 'usuario_equipe_travar', 'usuario_equipe_destravar', 'usuario_equipe_membro_criar', 'usuario_equipe_membro_perfil', 'usuario_equipe_membro_status']);
 
 }

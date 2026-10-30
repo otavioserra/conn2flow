@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.4",
+    "versao": "1.0.5",
     "bibliotecas": [
         "interface",
         "html",
@@ -85,12 +85,12 @@
                 {
                     "name": "Usuários Perfis - Adicionar",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "dac5c9d43babe5b1ee2283570333c245",
+                        "html": "569a23523168c35fd66f1ad2462a0eec",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dac5c9d43babe5b1ee2283570333c245"
+                        "combined": "569a23523168c35fd66f1ad2462a0eec"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/adicionar/",
@@ -139,12 +139,12 @@
                 {
                     "name": "Usuários Perfis - Editar",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "328f315f2912cec2de3a8241ce330b91",
+                        "html": "9897401a4885f6dcf2895ff9880ef8cc",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "328f315f2912cec2de3a8241ce330b91"
+                        "combined": "9897401a4885f6dcf2895ff9880ef8cc"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/editar/",
@@ -233,13 +233,18 @@
                     "type": "string"
                 },
                 {
+                    "id": "form-sub-users-active-label",
+                    "value": "Ativar sub-usuários",
+                    "type": "string"
+                },
+                {
                     "id": "form-max-sub-users-label",
                     "value": "Limite de sub-usuários",
                     "type": "string"
                 },
                 {
                     "id": "form-max-sub-users-help",
-                    "value": "Quantos membros de equipe uma conta com este perfil pode manter ativos. 0 = sem equipe; -1 = sem limite.",
+                    "value": "Quantos membros de equipe uma conta com este perfil pode manter ativos. 0 = sem equipe; -1 = sem limite. Só vale com a chave acima ligada.",
                     "type": "string"
                 },
                 {
@@ -365,12 +370,12 @@
                 {
                     "name": "User Profiles - Add",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "dac5c9d43babe5b1ee2283570333c245",
+                        "html": "569a23523168c35fd66f1ad2462a0eec",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dac5c9d43babe5b1ee2283570333c245"
+                        "combined": "569a23523168c35fd66f1ad2462a0eec"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/adicionar/",
@@ -419,12 +424,12 @@
                 {
                     "name": "User Profiles - Edit",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "328f315f2912cec2de3a8241ce330b91",
+                        "html": "9897401a4885f6dcf2895ff9880ef8cc",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "328f315f2912cec2de3a8241ce330b91"
+                        "combined": "9897401a4885f6dcf2895ff9880ef8cc"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/editar/",
@@ -513,13 +518,18 @@
                     "type": "string"
                 },
                 {
+                    "id": "form-sub-users-active-label",
+                    "value": "Enable sub-users",
+                    "type": "string"
+                },
+                {
                     "id": "form-max-sub-users-label",
                     "value": "Sub-user limit",
                     "type": "string"
                 },
                 {
                     "id": "form-max-sub-users-help",
-                    "value": "How many team members an account with this profile can keep active. 0 = no team; -1 = no limit.",
+                    "value": "How many team members an account with this profile can keep active. 0 = no team; -1 = no limit. Only applies with the switch above on.",
                     "type": "string"
                 },
                 {

@@ -1,5 +1,5 @@
 {
-    "versao": "1.7.4",
+    "versao": "1.7.3",
     "bibliotecas": [
         "interface",
         "html",
@@ -228,12 +228,12 @@
                 {
                     "name": "Perfil Usuário",
                     "id": "perfil-usuario",
-                    "version": "1.12",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "d86760a502c3a6c018daca7ad09af3a2",
+                        "html": "6ed00170400438047a8338ab2fc1bd8c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d86760a502c3a6c018daca7ad09af3a2"
+                        "combined": "6ed00170400438047a8338ab2fc1bd8c"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "perfil-usuario/",
@@ -290,10 +290,6 @@
                         {
                             "type": "components",
                             "id": "perfil-usuario-api-tokens"
-                        },
-                        {
-                            "type": "components",
-                            "id": "perfil-usuario-equipe"
                         }
                     ],
                     "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
@@ -1357,176 +1353,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "profile-tab-team",
-                    "value": "Equipe",
-                    "type": "string"
-                },
-                {
-                    "id": "team-title",
-                    "value": "Minha equipe",
-                    "type": "string"
-                },
-                {
-                    "id": "team-help",
-                    "value": "Membros da equipe entram com o próprio acesso, compartilham os dados da sua conta e usam o mesmo perfil dela. Se a sua conta for desativada, o acesso deles é bloqueado.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-seats-used",
-                    "value": "#usados# de #limite# utilizados",
-                    "type": "string"
-                },
-                {
-                    "id": "team-seats-unlimited",
-                    "value": "#usados# utilizados, sem limite",
-                    "type": "string"
-                },
-                {
-                    "id": "team-quota-full",
-                    "value": "Todos os assentos estão em uso. Desative um membro ou mude de plano para adicionar outro.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-add",
-                    "value": "Adicionar membro",
-                    "type": "string"
-                },
-                {
-                    "id": "team-name-label",
-                    "value": "Nome",
-                    "type": "string"
-                },
-                {
-                    "id": "team-email-label",
-                    "value": "E-mail (será o login)",
-                    "type": "string"
-                },
-                {
-                    "id": "team-password-label",
-                    "value": "Senha inicial",
-                    "type": "string"
-                },
-                {
-                    "id": "team-password-help",
-                    "value": "Mínimo de 12 caracteres. Repasse a senha ao membro por um canal seguro.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-confirm",
-                    "value": "Criar acesso",
-                    "type": "string"
-                },
-                {
-                    "id": "team-cancel",
-                    "value": "Cancelar",
-                    "type": "string"
-                },
-                {
-                    "id": "team-empty",
-                    "value": "Nenhum membro cadastrado.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-name",
-                    "value": "Nome",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-email",
-                    "value": "E-mail",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-status",
-                    "value": "Situação",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-actions",
-                    "value": "Ações",
-                    "type": "string"
-                },
-                {
-                    "id": "team-status-active",
-                    "value": "Ativo",
-                    "type": "string"
-                },
-                {
-                    "id": "team-status-inactive",
-                    "value": "Inativo",
-                    "type": "string"
-                },
-                {
-                    "id": "team-activate",
-                    "value": "Ativar",
-                    "type": "string"
-                },
-                {
-                    "id": "team-deactivate",
-                    "value": "Desativar",
-                    "type": "string"
-                },
-                {
-                    "id": "team-deactivate-confirm",
-                    "value": "Desativar o acesso deste membro? As sessões abertas dele serão encerradas.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-created-ok",
-                    "value": "Membro adicionado.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-status-ok",
-                    "value": "Acesso atualizado.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-not-allowed",
-                    "value": "Sua conta não pode gerenciar uma equipe.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-name-required",
-                    "value": "Informe o nome do membro.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-email-invalid",
-                    "value": "Informe um e-mail válido.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-email-taken",
-                    "value": "Este e-mail já está em uso.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-password-weak",
-                    "value": "A senha precisa ter pelo menos 12 caracteres.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-quota-reached",
-                    "value": "O limite de membros do seu plano foi atingido.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-member-not-found",
-                    "value": "Membro não encontrado na sua equipe.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-busy",
-                    "value": "Outra alteração na equipe está em andamento. Tente de novo.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-save-error",
-                    "value": "Não foi possível salvar. Tente de novo.",
-                    "type": "string"
-                },
-                {
                     "id": "api-tokens-title",
                     "value": "Chaves de API pessoais",
                     "type": "string"
@@ -1948,24 +1774,6 @@
                     }
                 },
                 {
-                    "name": "Perfil Usuário Equipe",
-                    "id": "perfil-usuario-equipe",
-                    "framework_css": "tailwindcss",
-                    "tailwind_sources": [
-                        "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json",
-                        "../../../../perfil-usuario.js"
-                    ],
-                    "tailwind_sources_reason": "REQ-297: as classes do componente vivem nas variaveis do sistema e as cores de estado do membro sao escolhidas em perfil-usuario.php.",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "259bf15e5d8a0451b6b80dc59d24227a",
-                        "css": "",
-                        "css_precompiled": "",
-                        "combined": "259bf15e5d8a0451b6b80dc59d24227a"
-                    }
-                },
-                {
                     "name": "Perfil Usuário Chaves de API",
                     "id": "perfil-usuario-api-tokens",
                     "framework_css": "tailwindcss",
@@ -2239,12 +2047,12 @@
                 {
                     "name": "User Profile",
                     "id": "perfil-usuario",
-                    "version": "1.12",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "d86760a502c3a6c018daca7ad09af3a2",
+                        "html": "6ed00170400438047a8338ab2fc1bd8c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d86760a502c3a6c018daca7ad09af3a2"
+                        "combined": "6ed00170400438047a8338ab2fc1bd8c"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "perfil-usuario/",
@@ -2301,10 +2109,6 @@
                         {
                             "type": "components",
                             "id": "perfil-usuario-api-tokens"
-                        },
-                        {
-                            "type": "components",
-                            "id": "perfil-usuario-equipe"
                         }
                     ],
                     "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
@@ -2554,24 +2358,6 @@
                         "css": "",
                         "css_precompiled": "",
                         "combined": "668e857f688b292743ff479ef68fd4af"
-                    }
-                },
-                {
-                    "name": "User Profile Team",
-                    "id": "perfil-usuario-equipe",
-                    "framework_css": "tailwindcss",
-                    "tailwind_sources": [
-                        "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json",
-                        "../../../../perfil-usuario.js"
-                    ],
-                    "tailwind_sources_reason": "REQ-297: as classes do componente vivem nas variaveis do sistema e as cores de estado do membro sao escolhidas em perfil-usuario.php.",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "259bf15e5d8a0451b6b80dc59d24227a",
-                        "css": "",
-                        "css_precompiled": "",
-                        "combined": "259bf15e5d8a0451b6b80dc59d24227a"
                     }
                 },
                 {
@@ -3484,176 +3270,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "profile-tab-team",
-                    "value": "Team",
-                    "type": "string"
-                },
-                {
-                    "id": "team-title",
-                    "value": "My team",
-                    "type": "string"
-                },
-                {
-                    "id": "team-help",
-                    "value": "Team members sign in with their own access, share your account data and use the same profile. If your account is deactivated, their access is blocked.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-seats-used",
-                    "value": "#usados# of #limite# in use",
-                    "type": "string"
-                },
-                {
-                    "id": "team-seats-unlimited",
-                    "value": "#usados# in use, no limit",
-                    "type": "string"
-                },
-                {
-                    "id": "team-quota-full",
-                    "value": "All seats are in use. Deactivate a member or change your plan to add another.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-add",
-                    "value": "Add member",
-                    "type": "string"
-                },
-                {
-                    "id": "team-name-label",
-                    "value": "Name",
-                    "type": "string"
-                },
-                {
-                    "id": "team-email-label",
-                    "value": "Email (used to sign in)",
-                    "type": "string"
-                },
-                {
-                    "id": "team-password-label",
-                    "value": "Initial password",
-                    "type": "string"
-                },
-                {
-                    "id": "team-password-help",
-                    "value": "At least 12 characters. Share it with the member over a secure channel.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-confirm",
-                    "value": "Create access",
-                    "type": "string"
-                },
-                {
-                    "id": "team-cancel",
-                    "value": "Cancel",
-                    "type": "string"
-                },
-                {
-                    "id": "team-empty",
-                    "value": "No team members yet.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-name",
-                    "value": "Name",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-email",
-                    "value": "Email",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-status",
-                    "value": "Status",
-                    "type": "string"
-                },
-                {
-                    "id": "team-col-actions",
-                    "value": "Actions",
-                    "type": "string"
-                },
-                {
-                    "id": "team-status-active",
-                    "value": "Active",
-                    "type": "string"
-                },
-                {
-                    "id": "team-status-inactive",
-                    "value": "Inactive",
-                    "type": "string"
-                },
-                {
-                    "id": "team-activate",
-                    "value": "Activate",
-                    "type": "string"
-                },
-                {
-                    "id": "team-deactivate",
-                    "value": "Deactivate",
-                    "type": "string"
-                },
-                {
-                    "id": "team-deactivate-confirm",
-                    "value": "Deactivate this member? Their open sessions will end.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-created-ok",
-                    "value": "Member added.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-status-ok",
-                    "value": "Access updated.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-not-allowed",
-                    "value": "Your account cannot manage a team.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-name-required",
-                    "value": "Enter the member name.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-email-invalid",
-                    "value": "Enter a valid email.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-email-taken",
-                    "value": "This email is already in use.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-password-weak",
-                    "value": "The password must have at least 12 characters.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-quota-reached",
-                    "value": "Your plan member limit has been reached.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-member-not-found",
-                    "value": "Member not found in your team.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-busy",
-                    "value": "Another team change is in progress. Try again.",
-                    "type": "string"
-                },
-                {
-                    "id": "team-save-error",
-                    "value": "Could not save. Try again.",
-                    "type": "string"
-                },
-                {
                     "id": "api-tokens-title",
                     "value": "Personal API keys",
                     "type": "string"
@@ -4041,7 +3657,7 @@
             ]
         }
     },
-    "asset_version": "4509a729f0f9335a",
+    "asset_version": "527cb1340253d911",
     "hooks": {
         "controllers": {
             "perfil-usuario": "perfil-usuario.hooks.php"

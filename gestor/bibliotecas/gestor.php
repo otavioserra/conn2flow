@@ -4144,4 +4144,57 @@ function gestor_html_script_e_javascript($tagCompleta){
 	), true);
 }
 
+/**
+ * Filtro SQL que limita um sub-usuário ao que o titular tem hoje (REQ-297).
+ *
+ * Concatenado no WHERE das leituras de permissão por perfil. Conta própria recebe texto vazio, e a
+ * checagem da função cobre a troca de arquivos de uma atualização em andamento.
+ *
+ * @param array $usuario Linha do usuário, com `id_usuarios`.
+ * @param string $coluna 'modulo' ou 'operacao'.
+ *
+ * @return string Trecho de SQL.
+ */
+function gestor_perfil_permissao_sql($usuario, $coluna = 'modulo'){
+	if(isset($GLOBALS['_GESTOR']['bibliotecas-dados']['usuario'])) gestor_incluir_biblioteca('usuario');
+
+	if(!function_exists('usuario_equipe_permissao_sql')) return '';
+
+	return usuario_equipe_permissao_sql((int)($usuario['id_usuarios'] ?? 0), $coluna);
+}
+
+/**
+ * Organização (tenant) de um usuário, para projetos e módulos em qualquer controlador (REQ-297).
+ *
+ * Atalho sempre carregado de `usuario_organizacao_id()`: conta própria devolve o próprio id.
+ *
+ * @param int|null $id_usuario Usuário consultado; null usa o usuário autenticado.
+ *
+ * @return int Id da organização, ou 0 sem usuário autenticado.
+ */
+function gestor_organizacao_id($id_usuario = null){
+	if(isset($GLOBALS['_GESTOR']['bibliotecas-dados']['usuario'])) gestor_incluir_biblioteca('usuario');
+
+	if(!function_exists('usuario_organizacao_id')) return (int)$id_usuario;
+
+	return usuario_organizacao_id($id_usuario === null ? null : (int)$id_usuario);
+}
+
+/**
+ * Slug do perfil que define o plano da organização do usuário autenticado (REQ-297).
+ *
+ * Plano ligado a perfil é da conta: o sub-usuário usa o do titular, não o do perfil de equipe dele.
+ *
+ * @return string Slug do perfil do titular, ou vazio sem organização.
+ */
+function gestor_organizacao_perfil_slug(){
+	$id_organizacao = (int)gestor_organizacao_id();
+
+	if(!$id_organizacao || !function_exists('usuario_equipe_perfil_da_conta')) return '';
+
+	$perfil = usuario_equipe_perfil_da_conta($id_organizacao);
+
+	return (string)($perfil['id'] ?? '');
+}
+
 ?>

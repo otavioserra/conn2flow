@@ -779,7 +779,7 @@ function dashboard_cards(){
 			banco_campos_virgulas(Array('modulo'))
 			,
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".$perfil."'"
+			"WHERE perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 	}
 	
@@ -1100,7 +1100,7 @@ function dashboard_3d(){
 		$usuarios_perfis_modulos = banco_select_name(
 			banco_campos_virgulas(Array('modulo')),
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".$perfil."'"
+			"WHERE perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 	}
 	
@@ -1394,7 +1394,7 @@ function dashboard_menu(){
 			))
 			,
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".$perfil."'"
+			"WHERE perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 	}
 	
@@ -1758,7 +1758,7 @@ function dashboard_site_toolbar_menu(){
 		$upm = banco_select_name(
 			banco_campos_virgulas(Array('modulo')),
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".$perfil."'"
+			"WHERE perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 
 		if($upm)foreach($upm as $m) $perfil_modulos[$m['modulo']] = true;

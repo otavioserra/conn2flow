@@ -306,6 +306,24 @@
         "user_modified": 0
     },
     {
+        "modulo_grupo_id": "geral",
+        "nome": "Team",
+        "id": "equipe",
+        "titulo": null,
+        "icone": "users",
+        "icone_tailwind": "users-round",
+        "icone2": "",
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "en",
+        "versao": 1,
+        "checksum": "dd9440436e80931cf1f74c83b7ac3c47",
+        "user_modified": 0
+    },
+    {
         "modulo_grupo_id": "administracao-comunicacao",
         "nome": "Forms Definitions",
         "id": "forms",
@@ -951,6 +969,24 @@
         "language": "pt-br",
         "versao": 1,
         "checksum": "9a302977a08918de476ed2312f209044",
+        "user_modified": 0
+    },
+    {
+        "modulo_grupo_id": "geral",
+        "nome": "Equipe",
+        "id": "equipe",
+        "titulo": null,
+        "icone": "users",
+        "icone_tailwind": "users-round",
+        "icone2": "",
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "pt-br",
+        "versao": 1,
+        "checksum": "40bc90dac2c05a6d0a6202140efab1e4",
         "user_modified": 0
     },
     {

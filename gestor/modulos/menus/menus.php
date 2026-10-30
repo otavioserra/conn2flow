@@ -1107,7 +1107,7 @@ function menus_ajax_profiles_search(){
 	$rows = banco_select(Array(
 		'tabela' => 'usuarios_perfis',
 		'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
-		'extra' => $where." ORDER BY nome ASC LIMIT 50",
+		'extra' => $where." AND id_usuarios_dono IS NULL ORDER BY nome ASC LIMIT 50",
 	));
 
 	$results = [];

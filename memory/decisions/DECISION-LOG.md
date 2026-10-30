@@ -296,7 +296,10 @@ Regra original do Engenheiro Chefe, restaurada (a retirada automática da REQ-19
 Pontos que a REQ-297 deixou em aberto, decididos pelo Executor e sujeitos à homologação humana:
 
 - `max_sub_users`: `0` = sem equipe (padrão, nenhuma conta muda de comportamento), `-1` = sem limite, `N` = assentos. Um valor por perfil, gravado em todas as linhas de idioma.
-- O membro herda o perfil do titular e entra com o e-mail: sem escolha de perfil na tela, não há caminho para escalar privilégio. A escolha de perfis filhos segue no BL-032.
+- Revisto pelo Engenheiro Chefe em 2026-10-30 (opção A): o membro não herda mais o perfil do titular. O titular cria perfis da própria conta (`usuarios_perfis.id_usuarios_dono`), distribuindo só o que tem, com validação no servidor. Esses perfis ficam fora das listas do sistema. O membro entra com o e-mail.
+- `usuarios_perfis.sub_users_active` é a chave da equipe: funciona só com a chave ligada e limite diferente de `0`. Fora disso, nenhum membro entra, mesmo cadastrado, e o módulo `equipe` sai do perfil. Chave e limite concedem o módulo sozinhos.
+- A permissão efetiva do membro é a do perfil dele E a do titular, por filtro SQL nas leituras de permissão: quem perde um módulo leva os membros junto.
+- A gestão fica no módulo novo `equipe`, não no módulo administrativo `usuarios-perfis`, que exporia telas do sistema. A aba em `/perfil-usuario/` foi só o MVP e saiu.
 - A hierarquia tem um nível: sub-usuário nunca é titular.
 - O bloqueio é calculado a cada verificação, sem alterar o status do filho, e inclui o status do próprio filho, porque o guardião de sessão web não confere status.
 - Só membros ativos ocupam assento. Plano menor não desativa ninguém: apenas recusa novos cadastros e ativações.

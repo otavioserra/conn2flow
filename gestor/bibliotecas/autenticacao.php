@@ -1446,7 +1446,7 @@ function autenticacao_distribuido_verificar_permissao_modulo($id_usuarios, $modu
 	$perm = banco_select_name(
 		banco_campos_virgulas(Array('id_usuarios_perfis_modulos')),
 		"usuarios_perfis_modulos",
-		"WHERE perfil='".$perfilDireto."' AND modulo='".$modulo_escapado."'"
+		"WHERE perfil='".$perfilDireto."' AND modulo='".$modulo_escapado."'".gestor_perfil_permissao_sql($usuario)
 	);
 	return (bool)$perm;
 }

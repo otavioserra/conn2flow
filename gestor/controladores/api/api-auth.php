@@ -210,7 +210,7 @@ function api_auth_resolver_perfil($usuario) {
             $permissoes = banco_select(Array(
                 'tabela' => 'usuarios_perfis_modulos',
                 'campos' => Array('modulo'),
-                'extra' => "WHERE perfil='" . banco_escape_field($perfil_id) . "'"
+                'extra' => "WHERE perfil='" . banco_escape_field($perfil_id) . "'" . gestor_perfil_permissao_sql($usuario)
             ));
         } else {
             $permissoes = false;

@@ -281,7 +281,7 @@ function gestor_pagina_menu($params = false){
 			))
 			,
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".$perfil."'"
+			"WHERE perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 	}
 
@@ -2008,7 +2008,7 @@ function gestor_permissao_modulo($alertar = true, $modulo_forcado = false){
 				,
 				"usuarios_perfis_modulos",
 				"WHERE perfil='".$perfil."'"
-				." AND modulo='".$modulo."'"
+				." AND modulo='".$modulo."'".gestor_perfil_permissao_sql($usuario)
 			);
 			
 			// ===== Caso tenha permissão retornar true.
@@ -2239,7 +2239,7 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 			,
 			"usuarios_perfis_modulos",
 			"WHERE modulo='".$modulo."'"
-			." AND perfil='".$perfil."'"
+			." AND perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 
 		$modulo_acesso = ($usuarios_perfis_modulos ? true : false);
@@ -2280,7 +2280,7 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 				,
 				"usuarios_perfis_modulos_operacoes",
 				"WHERE operacao='".$operacao_id."'"
-				." AND perfil='".$perfil."'"
+				." AND perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario,'operacao')
 			);
 			
 			if($usuarios_perfis_modulos_operacoes){
