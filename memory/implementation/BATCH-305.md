@@ -59,6 +59,23 @@ Critério da REQ pendente. Nada foi enviado ao Dev; só houve leitura pela API.
 
 **Decisão do Engenheiro Chefe (2026-10-30):** o Dev será atualizado por release e pelo painel. Ordem: homologação humana, merge na `main`, release `gestor-v3.0.16` e atualização pelo `admin-atualizacoes` do Dev, autenticado com perfil válido. Merge e release aguardam o ok humano. Depois da atualização, conferir no Dev: migrações, aba Equipe e dados do projeto preservados. Publicar o projeto só com `project:deploy`.
 
+## Rodada 2: `snapphoton-local` (2026-10-30)
+
+Pedido do Engenheiro Chefe: publicar no Lab do Photon e conferir o logo gigante da dashboard. O código do core não mudou nesta rodada.
+
+- **Publicação:** `project:update-all snapphoton-local`, saída 0. O caminho só de core (`sync-core` + `sync-db`) foi descartado, porque as sementes do core sobrescreveriam as telas que o `lumix` sobrepõe. Os arquivos sem commit do `lumix` foram conferidos por hash e já eram iguais aos do Lab.
+- **Página sobreposta:** o `lumix` mantém cópia própria de `perfil-usuario.html`, sem a aba. Foram acrescentados aba, painel e paleta Tailwind inerte (`py-0.5`, `hover:border-slate-400`), no `lumix`, sem commit. A dependência declarada não funciona: o compilador de projeto não enxerga componente de módulo do core.
+- **Causa do logo:** em 17/09 uma sincronização carimbou registros do core com `project=snapphoton-local`. A proteção de projeto passou a impedir o core de atualizá-los. O `layout-administrativo-tailwind` ficou congelado, com logo `h-8`, enquanto a página nova era compilada para o layout atual, sem essa regra.
+- **Correção no Lab:** 68 registros soltos (8 layouts, 32 páginas e 28 componentes), `user_modified=0`, com backup em `/tmp/req297-photon-antes-de-soltar.sql.gz` no Lab. Ficaram marcados 11 componentes que o `lumix` tem em `resources/` sem entregar nos dados (`form-ui` e três modais), que seguem desatualizados.
+- **Validação:** navegador 34/34 em `snapphoton.local`, com a titular `local@conn2flow.com`: fluxo completo, toda classe da aba com regra CSS, logo com 44 px e HTTP 200 em dez telas, sem erro de JavaScript. Membro de teste removido. O perfil `academico` ficou com limite 3 para a homologação.
+
+### Pendente desta rodada
+
+- O Dev pode ter os mesmos registros presos. Não dá para medir sem acesso ao banco, e a correção no Lab foi manual: a release não a resolve sozinha. Falta uma solução permanente no sincronizador, que não foi feita.
+- A aba Equipe no Photon depende do commit no `lumix` e de `project:deploy snapphoton-dev`.
+- Só pt-br tem a cópia do `lumix`; a página `en` do Photon usa a do core.
+- O topo do painel do Photon mostra o logo da Conn2Flow: o `admin-topbar-tailwind` usa `images/logo-principal.png`, não `project/logo-principal.png`.
+
 ## Limites conhecidos
 
 - O administrador pode reativar um membro pelo módulo `usuarios` sem passar pela cota; a cota vale na aba Equipe.

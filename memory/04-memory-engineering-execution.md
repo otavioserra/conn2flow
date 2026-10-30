@@ -27,6 +27,10 @@
 - **`project:sync-core` recompila no checkout**: em worktree LF, oito módulos e o `asset-versions.json` mudam só de hash, por causa de `asset_version` gerado em CRLF. Desfazer antes do commit.
 - **PHP do Windows no CLI não valida TLS** de site real (sem CA). Para leitura remota, usar o `curl` do sistema; não desligar a verificação.
 - **`snapphoton-dev` não é alcançável por `project:update-all`**: é projeto só de API, sem SSH, `target` ou `path_tests`. Ver `BATCH-305`.
+- **Registro do core com `project` preenchido nunca mais atualiza** (`if(!$project && !empty($exist['project']))` no sincronizador). Sintoma: tela nova com layout velho e classe sem regra. Medir: marcados no banco, fora dos `Data.json` do projeto e presentes nos do core.
+- **Layout coberto pelo bundle não carrega a própria folha** (`gestor_css_layouts_cobertos`): HTML de layout divergente do compilado perde as utilities em silêncio.
+- **Projeto com página sobreposta não recebe marcação nova do core**, e dependência Tailwind de projeto não enxerga componente de módulo do core. Testar telas novas no projeto real, não só no Lab do core.
+- **Medir cobertura de CSS no navegador**: percorrer as classes do DOM contra `document.styleSheets` achou duas classes sem regra que a tela não denunciava.
 
 ### REQ-292 / BATCH-300 — docs em /docs/mdd/ e What's New 3.0 (2026-10-21)
 
