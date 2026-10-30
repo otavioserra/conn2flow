@@ -777,6 +777,17 @@ function perfil_usuario_editar(){
 			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'<!-- aba-api-tokens > -->','');
 		}
 
+		// ===== Aba Equipe (REQ-297)
+
+		perfil_usuario_editar_equipe();
+
+		if(empty($_GESTOR['perfil-equipe-visivel'])){
+			$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- aba-equipe < -->','<!-- aba-equipe > -->');
+		} else {
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'<!-- aba-equipe < -->','');
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'<!-- aba-equipe > -->','');
+		}
+
 		// ===== Dicionário do runtime do painel (req-118)
 		//
 		// Só os textos que o JS escreve sozinho (força de senha e confirmações de revogação); tudo
@@ -794,6 +805,8 @@ function perfil_usuario_editar(){
 			'api-tokens-name-required' => perfil_usuario_seguranca_var('api-tokens-name-required'),
 			'api-tokens-create-error' => perfil_usuario_seguranca_var('api-tokens-create-error'),
 			'api-tokens-revoke-confirm' => perfil_usuario_seguranca_var('api-tokens-revoke-confirm'),
+			'team-deactivate-confirm' => perfil_usuario_seguranca_var('team-deactivate-confirm'),
+			'team-save-error' => perfil_usuario_seguranca_var('team-save-error'),
 			'api-tokens-revoke-error' => perfil_usuario_seguranca_var('api-tokens-revoke-error'),
 			'api-tokens-copied' => perfil_usuario_seguranca_var('api-tokens-copied'),
 			'api-tokens-status-revogado' => perfil_usuario_seguranca_var('api-tokens-status-revogado'),
@@ -1326,6 +1339,75 @@ function perfil_usuario_editar_api_tokens(){
 }
 
 /**
+ * Renderiza a seção "Equipe" no bloco `equipe-campos` da página de perfil (REQ-297).
+ *
+ * A aba só existe para o titular com cota ou com membros: sub-usuário não gere equipe, e quem não
+ * tem o recurso no plano não veria nada útil nela.
+ */
+function perfil_usuario_editar_equipe(){
+	global $_GESTOR;
+
+	$bloco = 'equipe-campos';
+
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+
+	if(!$id_usuarios || !usuario_equipe_habilitada($id_usuarios)){
+		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', '');
+		$_GESTOR['perfil-equipe-visivel'] = false;
+		return;
+	}
+
+	$_GESTOR['perfil-equipe-visivel'] = true;
+
+	$componente = perfil_usuario_componente('perfil-usuario-equipe');
+	$cota = usuario_equipe_cota($id_usuarios);
+	$membros = usuario_equipe_membros($id_usuarios);
+
+	$html = perfil_usuario_bloco($componente,'conteiner');
+
+	$assentos = perfil_usuario_seguranca_var($cota['ilimitado'] ? 'team-seats-unlimited' : 'team-seats-used');
+	$assentos = modelo_var_troca($assentos,'#usados#',(string)$cota['usados']);
+	$assentos = modelo_var_troca($assentos,'#limite#',(string)$cota['limite']);
+
+	$html = modelo_var_troca($html,'#assentos#',htmlspecialchars($assentos));
+
+	$html = $cota['disponivel'] ? perfil_usuario_bloco_manter($html,'novo') : perfil_usuario_bloco_remover($html,'novo');
+	$html = $cota['disponivel'] ? perfil_usuario_bloco_remover($html,'cheia') : perfil_usuario_bloco_manter($html,'cheia');
+
+	if(!$membros){
+		$html = perfil_usuario_bloco_remover($html,'tabela');
+		$html = perfil_usuario_bloco_manter($html,'vazio');
+	} else {
+		$html = perfil_usuario_bloco_remover($html,'vazio');
+		$html = perfil_usuario_bloco_manter($html,'tabela');
+
+		$modeloLinha = perfil_usuario_bloco($componente,'linha');
+
+		foreach($membros as $membro){
+			$ativo = ($membro['status'] === 'A');
+
+			$linha = $modeloLinha;
+			$linha = modelo_var_troca($linha,'#nome#',htmlspecialchars((string)$membro['nome']));
+			$linha = modelo_var_troca($linha,'#email#',htmlspecialchars((string)$membro['email']));
+			$linha = modelo_var_troca($linha,'#cor-status#',($ativo ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600'));
+			$linha = modelo_var_troca($linha,'#status#',perfil_usuario_seguranca_var($ativo ? 'team-status-active' : 'team-status-inactive'));
+			$linha = modelo_var_troca($linha,'#id#',(string)(int)$membro['id_usuarios']);
+			$linha = modelo_var_troca($linha,'#proximo-status#',($ativo ? 'I' : 'A'));
+			$linha = modelo_var_troca($linha,'#acao#',perfil_usuario_seguranca_var($ativo ? 'team-deactivate' : 'team-activate'));
+
+			$html = modelo_var_in($html,'<!-- linha -->',$linha);
+		}
+
+		$html = modelo_var_troca($html,'<!-- linha -->','');
+	}
+
+	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', $html);
+}
+
+/**
  * Renderiza a seção "Sessões & Dispositivos" no bloco `sessoes-campos` da página de perfil.
  *
  * A sessão da requisição corrente recebe a etiqueta "Este dispositivo" e não tem botão de revogar:
@@ -1654,7 +1736,7 @@ function perfil_usuario_oauth_authenticate(){
 				if($usuarios){
 					if(!gestor_acesso('acesso-api', 'admin-environment',$usuarios[0]) || !perfil_usuario_api_perfil_permitido($usuarios[0]['id_usuarios_perfis'])){
 						$user_without_permission = true;
-					} elseif($usuarios[0]['status'] !== 'A'){
+					} elseif($usuarios[0]['status'] !== 'A' || usuario_hierarquia_bloqueado((int)$usuarios[0]['id_usuarios'])){
 						$user_inactive = true;
 					} elseif(!empty($usuarios[0]['email'])){
 						$id_usuarios = (int)$usuarios[0]['id_usuarios'];
@@ -1704,7 +1786,7 @@ function perfil_usuario_oauth_authenticate(){
 							$status = $usuarios[0]['status'];
 							$id_usuarios = $usuarios[0]['id_usuarios'];
 
-							if($status == 'A'){
+							if($status == 'A' && !usuario_hierarquia_bloqueado((int)$id_usuarios)){
 								$user_invalid = false;
 
 								autenticacao_acesso_confirmar(['tipo' => 'oauth2']);
@@ -2069,7 +2151,7 @@ function perfil_usuario_signin(){
 					." AND status!='D'"
 				);
 
-				if($usuarios && isset($usuarios[0]['status']) && $usuarios[0]['status'] === 'A'){
+				if($usuarios && isset($usuarios[0]['status']) && $usuarios[0]['status'] === 'A' && !usuario_hierarquia_bloqueado((int)$usuarios[0]['id_usuarios'])){
 					$id_usuarios = (int)$usuarios[0]['id_usuarios'];
 					$emailUsuario = isset($usuarios[0]['email']) ? $usuarios[0]['email'] : '';
 
@@ -2129,7 +2211,7 @@ function perfil_usuario_signin(){
 						$status = $usuarios[0]['status'];
 						$id_usuarios = $usuarios[0]['id_usuarios'];
 
-						if($status == 'A'){
+						if($status == 'A' && !usuario_hierarquia_bloqueado((int)$id_usuarios)){
 							$user_invalid = false;
 
 							// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
@@ -4179,6 +4261,43 @@ function perfil_usuario_ajax_api_token_revogar(){
 	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('api-tokens-revoked-ok'));
 }
 
+// ==== Equipe do titular (REQ-297) ====
+
+/**
+ * Traduz o resultado de uma operação de equipe no envelope do AJAX do perfil.
+ */
+function perfil_usuario_ajax_equipe_resposta($resultado,$mensagem_ok){
+	global $_GESTOR;
+
+	$_GESTOR['ajax-json'] = !empty($resultado['ok'])
+		? Array('status' => 'success', 'message' => perfil_usuario_seguranca_var($mensagem_ok))
+		: Array('status' => 'error', 'message' => perfil_usuario_seguranca_var($resultado['erro']));
+}
+
+function perfil_usuario_ajax_equipe_criar(){
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+
+	perfil_usuario_ajax_equipe_resposta(usuario_equipe_membro_criar((int)$usuario['id_usuarios'],Array(
+		'nome' => $_REQUEST['nome'] ?? '',
+		'email' => $_REQUEST['email'] ?? '',
+		'senha' => $_REQUEST['senha'] ?? '',
+	)),'team-created-ok');
+}
+
+function perfil_usuario_ajax_equipe_status(){
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+
+	perfil_usuario_ajax_equipe_resposta(usuario_equipe_membro_status(
+		(int)$usuario['id_usuarios'],
+		(int)($_REQUEST['id'] ?? 0),
+		(string)($_REQUEST['status'] ?? '')
+	),'team-status-ok');
+}
+
 // ==== Sessões ativas (req-118) ====
 
 /**
@@ -4252,6 +4371,8 @@ function perfil_usuario_start(){
 			case 'sessoes-revogar-outras': perfil_usuario_ajax_sessoes_revogar_outras(); break;
 			case 'api-token-gerar': perfil_usuario_ajax_api_token_gerar(); break;
 			case 'api-token-revogar': perfil_usuario_ajax_api_token_revogar(); break;
+			case 'equipe-criar': perfil_usuario_ajax_equipe_criar(); break;
+			case 'equipe-status': perfil_usuario_ajax_equipe_status(); break;
 		}
 		
 		interface_ajax_finalizar();

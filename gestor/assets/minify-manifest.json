@@ -320,9 +320,9 @@
         "minificado": 5338
     },
     "gestor/modulos/perfil-usuario/perfil-usuario.js": {
-        "sha1": "ae92f81f88cdbe4876ef37d747783643730aa977",
-        "origem": 31393,
-        "minificado": 15817
+        "sha1": "7a1b4a4e5a93ed1db448a584f33e47892764e99b",
+        "origem": 33231,
+        "minificado": 16824
     },
     "gestor/modulos/publisher-highlights/publisher-highlights.js": {
         "sha1": "2c84f7c4bb0094fc9a2729fdf82ce82226210161",

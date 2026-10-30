@@ -289,6 +289,19 @@ Regra original do Engenheiro Chefe, restaurada (a retirada automática da REQ-19
 - A lista imperativa `deletar` do `schema-metadata.json` e o `--wipe` (ambos declarados explicitamente) não mudam.
 - Motivo: em 2026-10-20 a atualização 3.0.8 → 3.0.9 do Lab leu os dados do projeto como do core e a retirada automática desativou ou apagou 4.637 registros do core, incluindo a página do próprio atualizador.
 
+## DEC-137 - 2026-10-30 - accepted
+
+**Hierarquia pai/filho: um nível, perfil herdado e bloqueio calculado (REQ-297 / BATCH-305).**
+
+Pontos que a REQ-297 deixou em aberto, decididos pelo Executor e sujeitos à homologação humana:
+
+- `max_sub_users`: `0` = sem equipe (padrão, nenhuma conta muda de comportamento), `-1` = sem limite, `N` = assentos. Um valor por perfil, gravado em todas as linhas de idioma.
+- O membro herda o perfil do titular e entra com o e-mail: sem escolha de perfil na tela, não há caminho para escalar privilégio. A escolha de perfis filhos segue no BL-032.
+- A hierarquia tem um nível: sub-usuário nunca é titular.
+- O bloqueio é calculado a cada verificação, sem alterar o status do filho, e inclui o status do próprio filho, porque o guardião de sessão web não confere status.
+- Só membros ativos ocupam assento. Plano menor não desativa ninguém: apenas recusa novos cadastros e ativações.
+- Cota e cadastro correm sob `GET_LOCK` por titular, para dois pedidos simultâneos não ocuparem o mesmo assento.
+
 [Archived history](<archive/compacted/DECISION-LOG-1aee91bdfe67.md>)
 
 [Archived history](<archive/compacted/DECISION-LOG-ddf6e879c579.md>)

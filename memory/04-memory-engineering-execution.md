@@ -16,6 +16,18 @@
 
 ## Tarefas recentes
 
+### REQ-297 / BATCH-305 — usuários pai/filho (2026-10-30)
+
+- **Chave estrangeira para `usuarios`**: `id_usuarios` é `int unsigned` nas instalações; a migração lê o tipo com `SHOW COLUMNS` e copia o sinal.
+- **O guardião de sessão web não confere `usuarios.status`**, só o token: desativar usuário comum não derruba sessão aberta. Para sub-usuários, `usuario_hierarquia_bloqueado()` cobre isso.
+- **`banco_update_executar()` não devolve resultado**; para decidir por falha, usar `banco_update()`.
+- **Teste de `banco_*` no PHPUnit**: o `bootstrap` carrega o `banco.php` real e `banco_escape_field()` exige mysqli. Dublê roda em processo à parte, fora do bootstrap (`UsuarioHierarquiaCenarios.php`).
+- **`auth:cookie --user=<nome>` casa `nome OR id=1`** e apaga o token CLI anterior do usuário: nome errado invalida o cookie do admin. Usar id numérico.
+- **`abaDaUrl()` do perfil só aceita abas listadas**: aba nova precisa entrar ali para abrir por `#hash`.
+- **`project:sync-core` recompila no checkout**: em worktree LF, oito módulos e o `asset-versions.json` mudam só de hash, por causa de `asset_version` gerado em CRLF. Desfazer antes do commit.
+- **PHP do Windows no CLI não valida TLS** de site real (sem CA). Para leitura remota, usar o `curl` do sistema; não desligar a verificação.
+- **`snapphoton-dev` não é alcançável por `project:update-all`**: é projeto só de API, sem SSH, `target` ou `path_tests`. Ver `BATCH-305`.
+
 ### REQ-292 / BATCH-300 — docs em /docs/mdd/ e What's New 3.0 (2026-10-21)
 
 - **Mudar o endereço sem mudar o id**: o id da página de docs sai do caminho relativo (`pageId`). Para trocar a URL e ganhar 301, mude só o `urlPath`. Com o id igual, a sincronização grava o caminho antigo em `paginas_301` (`sincronizarRegistrarPagina301`), e o roteador já resolve. Isso só vale com o core novo no servidor; publique o core antes.

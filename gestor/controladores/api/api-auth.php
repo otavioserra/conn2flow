@@ -279,11 +279,14 @@ function api_auth_login() {
             . " AND status!='D'"
     ));
 
+    gestor_incluir_biblioteca('usuario');
+
     $credenciais_validas =
         $usuarios &&
         isset($usuarios['senha']) &&
         password_verify($senha, $usuarios['senha']) &&
-        ($usuarios['status'] === 'A');
+        ($usuarios['status'] === 'A') &&
+        !usuario_hierarquia_bloqueado((int) $usuarios['id_usuarios']);
 
     if (!$credenciais_validas) {
         api_auth_login_throttle($usuario_login, true);

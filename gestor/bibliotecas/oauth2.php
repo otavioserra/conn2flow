@@ -73,6 +73,14 @@ function oauth2_gerar_token_client_credentials($params = false){
         return false;
     }
 
+    // ===== REQ-297: sub-usuário bloqueado pela hierarquia não recebe nem renova tokens
+
+    gestor_incluir_biblioteca('usuario');
+
+    if(usuario_hierarquia_bloqueado((int)$id_usuarios)){
+        return false;
+    }
+
     // ===== Limpar expirados e aplicar rotação FIFO de access tokens ativos
     $max_tokens = isset($_CONFIG['oauth2']['maximo-tokens-usuario']) ? $_CONFIG['oauth2']['maximo-tokens-usuario'] : 5;
     oauth2_limpar_tokens_expirados();
@@ -339,6 +347,14 @@ function oauth2_validar_token($params = false){
     );
 
     if(!$usuarios){
+        return false;
+    }
+
+    // ===== REQ-297: token emitido antes do bloqueio deixa de valer na hora
+
+    gestor_incluir_biblioteca('usuario');
+
+    if(usuario_hierarquia_bloqueado((int)$usuarios[0]['id_usuarios'])){
         return false;
     }
 

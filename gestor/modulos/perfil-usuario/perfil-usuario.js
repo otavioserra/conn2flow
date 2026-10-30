@@ -383,7 +383,7 @@ $(document).ready(function(){
 		if (/[?&]mudar-(nome|email|usuario|senha)=/.test(busca)) return 'dados';
 
 		var hash = (window.location.hash || '').replace('#', '');
-		if (hash === 'dados' || hash === 'seguranca' || hash === 'sessoes') return hash;
+		if (hash === 'dados' || hash === 'seguranca' || hash === 'sessoes' || hash === 'equipe') return hash;
 
 		return null;
 	}
@@ -825,6 +825,62 @@ $(document).ready(function(){
 	}
 
 	// ===================================================================================
+	// Equipe do titular (REQ-297)
+	// ===================================================================================
+
+	function iniciarEquipe() {
+		var raiz = document.getElementById('seg-equipe');
+		if (!raiz) return;
+
+		var alvo = '#equipe-msg';
+		var formulario = document.getElementById('equipe-form');
+
+		function aoClicar(id, acao) {
+			var el = document.getElementById(id);
+			if (el) el.addEventListener('click', acao);
+		}
+
+		// Assentos e lista saem do servidor: recarregar na própria aba mantém os dois em dia.
+		function recarregar() {
+			window.location.hash = 'equipe';
+			window.location.reload();
+		}
+
+		aoClicar('btn-equipe-novo', function () {
+			if (formulario) formulario.classList.remove('hidden');
+			var nome = document.getElementById('equipe-nome');
+			if (nome) nome.focus();
+		});
+
+		aoClicar('btn-equipe-cancelar', function () {
+			if (formulario) formulario.classList.add('hidden');
+		});
+
+		aoClicar('btn-equipe-criar', function () {
+			enviar({
+				ajaxOpcao: 'equipe-criar',
+				nome: valorDe('equipe-nome'),
+				email: valorDe('equipe-email'),
+				senha: document.getElementById('equipe-senha').value
+			}, alvo).then(function (json) {
+				if (json) recarregar();
+			});
+		});
+
+		Array.prototype.forEach.call(raiz.querySelectorAll('.btn-equipe-status'), function (botao) {
+			botao.addEventListener('click', async function () {
+				var status = botao.getAttribute('data-status');
+
+				if (status === 'I' && !(await confirmar(texto('team-deactivate-confirm', 'Desativar este membro?')))) return;
+
+				enviar({ ajaxOpcao: 'equipe-status', id: botao.getAttribute('data-id'), status: status }, alvo).then(function (json) {
+					if (json) recarregar();
+				});
+			});
+		});
+	}
+
+	// ===================================================================================
 	// Códigos de recuperação exibidos após ativar o 2FA (req-119)
 	// ===================================================================================
 
@@ -876,6 +932,7 @@ $(document).ready(function(){
 		iniciarSeguranca();
 		iniciarSessoes();
 		iniciarApiTokens();
+		iniciarEquipe();
 	}
 
 	if (document.readyState === 'loading') {

@@ -22,6 +22,12 @@
             class="-mb-px inline-flex items-center gap-2 border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-slate-500 transition-colors hover:text-slate-800 focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4" /><path d="m21 2-9.6 9.6" /><circle cx="7.5" cy="15.5" r="5.5" /></svg> @[[profile-tab-api-tokens]]@
         </button><!-- aba-api-tokens > -->
+        <!-- aba-equipe < -->
+        <button type="button" role="tab" aria-selected="false" aria-controls="perfil-painel-equipe"
+            id="perfil-aba-equipe" data-perfil-aba="equipe"
+            class="-mb-px inline-flex items-center gap-2 border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-slate-500 transition-colors hover:text-slate-800 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg> @[[profile-tab-team]]@
+        </button><!-- aba-equipe > -->
     </nav>
 
     <section id="perfil-painel-dados" role="tabpanel" aria-labelledby="perfil-aba-dados"
@@ -156,4 +162,7 @@
 
     <section id="perfil-painel-api-tokens" role="tabpanel" aria-labelledby="perfil-aba-api-tokens"
         data-perfil-painel="api-tokens" class="hidden space-y-6"><!-- api-tokens-campos < --><!-- api-tokens-campos > --></section>
+
+    <section id="perfil-painel-equipe" role="tabpanel" aria-labelledby="perfil-aba-equipe"
+        data-perfil-painel="equipe" class="hidden space-y-6"><!-- equipe-campos < --><!-- equipe-campos > --></section>
 </div>

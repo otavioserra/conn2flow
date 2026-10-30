@@ -8,14 +8,14 @@
  *
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.2.0
+ * @version 1.3.0
  */
 
 global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-usuario']							=	Array(
-	'versao' => '1.2.0',
+	'versao' => '1.3.0',
 );
 
 // ===== Funções auxiliares
@@ -172,6 +172,9 @@ function usuario_gerar_token_autorizacao($params = false){
 	
 	// Valida parâmetro obrigatório
 	if(isset($id_usuarios)){
+		// REQ-297: última barreira de todas as vias de login web (senha, 2FA, social e distribuído).
+		if(usuario_hierarquia_bloqueado((int)$id_usuarios)) return false;
+
 		// ===== Define expiração do token
 		if(isset($sessao)){
 			$expiration = '0'; // Cookie de sessão
@@ -925,6 +928,7 @@ function usuario_api_token_validar($token_puro){
 
 	// Usuário inativo ou removido derruba o token junto: a credencial pertence à conta, não a si mesma.
 	if(!is_array($usuarios) || !isset($usuarios[0])) return false;
+	if(usuario_hierarquia_bloqueado((int)$usuarios[0]['id_usuarios'])) return false;
 
 	banco_update_campo('ultimo_uso','NOW()',true);
 	banco_update_executar('usuarios_api_tokens',"WHERE id_usuarios_api_tokens='".(int)$registro['id_usuarios_api_tokens']."'");
@@ -1180,6 +1184,322 @@ function usuario_host_dados($params = false){
 		} else {
 			return $_USUARIO['host-dados'];
 		}
+	}
+}
+
+// ===== Hierarquia de usuários: titular e sub-usuários (REQ-297)
+
+/**
+ * Resolve a organização (tenant) de um usuário: o titular, ou o próprio usuário.
+ *
+ * É a chave de isolamento de dados para módulos e APIs. Conta sem titular devolve o próprio id, o
+ * que mantém o contrato `organization_id = user_id` dos módulos existentes. A hierarquia tem um só
+ * nível: um sub-usuário nunca é titular (ver `usuario_equipe_titular()`).
+ *
+ * Sem `id_usuarios_pai` no banco (atualização antes da migração) a consulta devolve false e a
+ * resposta é o próprio usuário.
+ *
+ * @global array $_GESTOR Sistema global; `usuario-id` é o usuário da sessão ou do token.
+ *
+ * @param int|null $id_usuario Usuário consultado; null usa o usuário autenticado.
+ *
+ * @return int Id da organização, ou 0 sem usuário autenticado.
+ */
+function usuario_organizacao_id(?int $id_usuario = null): int {
+	global $_GESTOR;
+
+	$id = $id_usuario ?? (int)($_GESTOR['usuario-id'] ?? 0);
+
+	if($id <= 0) return 0;
+
+	if(!isset($_GESTOR['usuario-organizacao'][$id])){
+		$usuario = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array('id_usuarios_pai'),
+			'extra' => "WHERE id_usuarios='".$id."'",
+		));
+
+		$_GESTOR['usuario-organizacao'][$id] = !empty($usuario['id_usuarios_pai']) ? (int)$usuario['id_usuarios_pai'] : $id;
+	}
+
+	return $_GESTOR['usuario-organizacao'][$id];
+}
+
+/**
+ * Diz se a hierarquia impede o acesso de um usuário.
+ *
+ * Só sub-usuários são afetados: conta própria segue as regras de sempre. O bloqueio é calculado a
+ * cada verificação, sem alterar o status do filho, então a conta volta sozinha quando o titular é
+ * reativado. O status do próprio filho entra aqui porque o guardião de sessão web não o confere:
+ * desativar um membro precisa derrubar a sessão que ele já tem aberta.
+ *
+ * @param int $id_usuario Usuário consultado.
+ *
+ * @return bool True quando o acesso deve ser recusado.
+ */
+function usuario_hierarquia_bloqueado(int $id_usuario): bool {
+	$usuario = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('id_usuarios_pai', 'status'),
+		'extra' => "WHERE id_usuarios='".$id_usuario."'",
+	));
+
+	if(!$usuario || empty($usuario['id_usuarios_pai'])) return false;
+	if($usuario['status'] !== 'A') return true;
+
+	$titular = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('status'),
+		'extra' => "WHERE id_usuarios='".(int)$usuario['id_usuarios_pai']."'",
+	));
+
+	return !$titular || $titular['status'] !== 'A';
+}
+
+/**
+ * Lê a conta que pode gerir uma equipe: ativa e que não seja sub-usuária.
+ *
+ * @param int $id_usuario Usuário consultado.
+ *
+ * @return array|null Dados do titular ou null.
+ */
+function usuario_equipe_titular(int $id_usuario): ?array {
+	$titular = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('id_usuarios', 'id_usuarios_perfis', 'id_usuarios_pai', 'id_hosts', 'status'),
+		'extra' => "WHERE id_usuarios='".$id_usuario."'",
+	));
+
+	if(!$titular || !empty($titular['id_usuarios_pai']) || $titular['status'] !== 'A') return null;
+
+	return $titular;
+}
+
+/**
+ * Lista os membros da equipe de um titular, sem os excluídos.
+ *
+ * @param int $id_titular Conta titular.
+ *
+ * @return array Linhas com id_usuarios, nome, email, status e data_criacao.
+ */
+function usuario_equipe_membros(int $id_titular): array {
+	$membros = banco_select(Array(
+		'tabela' => 'usuarios',
+		'campos' => Array('id_usuarios', 'nome', 'email', 'status', 'data_criacao'),
+		'extra' => "WHERE id_usuarios_pai='".$id_titular."' AND status!='D' ORDER BY nome ASC",
+	));
+
+	return is_array($membros) ? $membros : Array();
+}
+
+/**
+ * Calcula o consumo de assentos de um titular.
+ *
+ * Só membros ativos ocupam assento. Depois de uma troca para um plano menor os membros além do
+ * limite continuam ativos: nada é desativado, apenas novos cadastros e ativações são recusados.
+ *
+ * @param int $id_titular Conta titular.
+ *
+ * @return array Chaves limite, usados, ilimitado e disponivel.
+ */
+function usuario_equipe_cota(int $id_titular): array {
+	$titular = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('id_usuarios_perfis'),
+		'extra' => "WHERE id_usuarios='".$id_titular."'",
+	));
+
+	$perfil = !empty($titular['id_usuarios_perfis']) ? banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('max_sub_users'),
+		'extra' => "WHERE id_usuarios_perfis='".(int)$titular['id_usuarios_perfis']."'",
+	)) : false;
+
+	$limite = (int)($perfil['max_sub_users'] ?? 0);
+	$usados = count(array_filter(usuario_equipe_membros($id_titular), function($membro){ return $membro['status'] === 'A'; }));
+
+	return Array(
+		'limite' => $limite,
+		'usados' => $usados,
+		'ilimitado' => $limite < 0,
+		'disponivel' => $limite < 0 || $usados < $limite,
+	);
+}
+
+/**
+ * Diz se a gestão de equipe se aplica à conta.
+ *
+ * Quem perdeu a cota mas ainda tem membros continua vendo a equipe, para poder desativá-los.
+ *
+ * @param int $id_usuario Usuário consultado.
+ *
+ * @return bool True quando a conta é titular e tem cota ou membros.
+ */
+function usuario_equipe_habilitada(int $id_usuario): bool {
+	if(!usuario_equipe_titular($id_usuario)) return false;
+
+	return usuario_equipe_cota($id_usuario)['limite'] !== 0 || usuario_equipe_membros($id_usuario);
+}
+
+/**
+ * Serializa as operações que ocupam assento de um titular.
+ *
+ * Sem isto, dois pedidos simultâneos contariam o mesmo assento livre e ultrapassariam a cota.
+ * A trava é da conexão, e o MySQL a libera sozinho se o processo morrer.
+ *
+ * @param int $id_titular Conta titular.
+ *
+ * @return bool True quando a trava foi obtida.
+ */
+function usuario_equipe_travar(int $id_titular): bool {
+	$resultado = banco_sql("SELECT GET_LOCK('c2f-equipe-".$id_titular."',5)");
+
+	return !empty($resultado[0]) && (int)reset($resultado[0]) === 1;
+}
+
+/**
+ * Libera a trava de `usuario_equipe_travar()`.
+ *
+ * @param int $id_titular Conta titular.
+ *
+ * @return void
+ */
+function usuario_equipe_destravar(int $id_titular): void {
+	banco_query("SELECT RELEASE_LOCK('c2f-equipe-".$id_titular."')");
+}
+
+/**
+ * Cria um sub-usuário na equipe do titular.
+ *
+ * O membro herda o perfil do titular: como não há seleção de perfil, a tela não abre caminho para
+ * escalar privilégio. O login do membro é o e-mail.
+ *
+ * @param int $id_titular Conta titular.
+ * @param array $dados Campos `nome`, `email` e `senha`.
+ *
+ * @return array `ok` true com `id_usuarios`, ou `ok` false com `erro` (id de variável do módulo).
+ */
+function usuario_equipe_membro_criar(int $id_titular, array $dados): array {
+	$titular = usuario_equipe_titular($id_titular);
+
+	if(!$titular) return Array('ok' => false, 'erro' => 'team-not-allowed');
+
+	$nome = trim((string)($dados['nome'] ?? ''));
+	$email = trim((string)($dados['email'] ?? ''));
+	$senha = (string)($dados['senha'] ?? '');
+
+	if($nome === '' || mb_strlen($nome, 'UTF-8') > 255) return Array('ok' => false, 'erro' => 'team-name-required');
+	if(mb_strlen($email, 'UTF-8') > 255 || !filter_var($email, FILTER_VALIDATE_EMAIL)) return Array('ok' => false, 'erro' => 'team-email-invalid');
+	if(strlen($senha) < 12) return Array('ok' => false, 'erro' => 'team-password-weak');
+
+	if(!usuario_equipe_travar($id_titular)) return Array('ok' => false, 'erro' => 'team-busy');
+
+	try {
+		if(!usuario_equipe_cota($id_titular)['disponivel']) return Array('ok' => false, 'erro' => 'team-quota-reached');
+
+		$nome_sql = banco_escape_field($nome);
+		$email_sql = banco_escape_field($email);
+
+		$existente = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array('id_usuarios'),
+			'extra' => "WHERE (usuario='".$email_sql."' OR email='".$email_sql."') AND status!='D'",
+		));
+
+		if($existente) return Array('ok' => false, 'erro' => 'team-email-taken');
+
+		$id = banco_identificador(Array(
+			'id' => $nome_sql,
+			'tabela' => Array(
+				'nome' => 'usuarios',
+				'campo' => 'id',
+				'id_nome' => 'id_usuarios',
+			),
+		));
+
+		// O login compara a senha já escapada: o hash precisa nascer da mesma forma.
+		$senha_hash = password_hash(banco_escape_field($senha), PASSWORD_ARGON2I, Array('cost' => 9));
+
+		$nomes = explode(' ', preg_replace('/\s+/', ' ', $nome_sql));
+		$primeiro_nome = array_shift($nomes);
+		$ultimo_nome = array_pop($nomes);
+
+		$campos = null;
+		$campos[] = Array('id_usuarios_pai', (int)$titular['id_usuarios'], true);
+		$campos[] = Array('id_usuarios_perfis', (int)$titular['id_usuarios_perfis'], true);
+		if(!empty($titular['id_hosts'])) $campos[] = Array('id_hosts', (int)$titular['id_hosts'], true);
+		$campos[] = Array('nome', $nome_sql);
+		$campos[] = Array('nome_conta', $nome_sql);
+		$campos[] = Array('id', $id);
+		$campos[] = Array('usuario', $email_sql);
+		$campos[] = Array('email', $email_sql);
+		$campos[] = Array('senha', $senha_hash);
+		$campos[] = Array('primeiro_nome', $primeiro_nome);
+		if($nomes) $campos[] = Array('nome_do_meio', implode(' ', $nomes));
+		if($ultimo_nome !== null) $campos[] = Array('ultimo_nome', $ultimo_nome);
+		$campos[] = Array('status', 'A');
+		$campos[] = Array('versao', 1, true);
+		$campos[] = Array('data_criacao', 'NOW()', true);
+		$campos[] = Array('data_modificacao', 'NOW()', true);
+
+		if(banco_insert_name($campos, 'usuarios') === false) return Array('ok' => false, 'erro' => 'team-save-error');
+
+		return Array('ok' => true, 'id_usuarios' => (int)banco_last_id());
+	} finally {
+		usuario_equipe_destravar($id_titular);
+	}
+}
+
+/**
+ * Ativa ou desativa um membro da equipe do titular.
+ *
+ * O dono do membro entra no WHERE: o id viaja pelo formulário e, sem isso, um id adivinhado
+ * alteraria a conta de outra organização.
+ *
+ * @param int $id_titular Conta titular.
+ * @param int $id_membro Sub-usuário alvo.
+ * @param string $status 'A' para ativar, 'I' para desativar.
+ *
+ * @return array `ok` true, ou `ok` false com `erro` (id de variável do módulo).
+ */
+function usuario_equipe_membro_status(int $id_titular, int $id_membro, string $status): array {
+	if(!in_array($status, Array('A', 'I'), true) || !usuario_equipe_titular($id_titular)){
+		return Array('ok' => false, 'erro' => 'team-not-allowed');
+	}
+
+	if(!usuario_equipe_travar($id_titular)) return Array('ok' => false, 'erro' => 'team-busy');
+
+	try {
+		$filtro = "WHERE id_usuarios='".$id_membro."' AND id_usuarios_pai='".$id_titular."' AND status!='D'";
+
+		$membro = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array('status'),
+			'extra' => $filtro,
+		));
+
+		if(!$membro) return Array('ok' => false, 'erro' => 'team-member-not-found');
+		if($membro['status'] === $status) return Array('ok' => true);
+
+		if($status === 'A' && !usuario_equipe_cota($id_titular)['disponivel']){
+			return Array('ok' => false, 'erro' => 'team-quota-reached');
+		}
+
+		if(banco_update("status='".$status."',versao=versao+1,data_modificacao=NOW()", 'usuarios', $filtro) === false){
+			return Array('ok' => false, 'erro' => 'team-save-error');
+		}
+
+		return Array('ok' => true);
+	} finally {
+		usuario_equipe_destravar($id_titular);
 	}
 }
 
