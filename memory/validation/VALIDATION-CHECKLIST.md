@@ -9,7 +9,7 @@
 - [x] Aba Equipe em Tailwind, pt-br e en, sem erro de JavaScript e sem rolagem em 390 px.
 - [x] PHPUnit 1.947 sem falhas, 34 casos novos e 4 mutantes reprovados; Vitest 700/700; navegador 23/23 no Lab.
 - [ ] Token pessoal bloqueado em execução real (hoje, teste de fonte) e migrações em MySQL 8.
-- [ ] Atualização do core no Dev (`snapphoton-dev`): os comandos autorizados não alcançam o ambiente; depende de decisão humana.
+- [ ] Atualização do core no Dev (`snapphoton-dev`): será por release e painel (decisão de 2026-10-30), depois da homologação.
 - [ ] Homologação humana.
 
 Relatório: [BATCH-305](../implementation/BATCH-305.md).

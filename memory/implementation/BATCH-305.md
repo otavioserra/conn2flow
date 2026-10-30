@@ -5,8 +5,8 @@ status: "blocked"
 date: "2026-10-30"
 author: "executor"
 target_repo: "conn2flow"
-summary_short: "Pai/filho, cota max_sub_users, bloqueio herdado e aba Equipe prontos; atualização do Dev bloqueada por decisão humana."
-summary_medium: "PHPUnit 1.947 sem falhas, Vitest 700 e E2E 23/23 no Lab.\nO Dev não é alcançável pelos comandos autorizados: falta definir o caminho de atualização do core."
+summary_short: "Pai/filho, cota max_sub_users, bloqueio herdado e aba Equipe prontos; Dev será atualizado por release e painel após homologação."
+summary_medium: "PHPUnit 1.947 sem falhas, Vitest 700 e E2E 23/23 no Lab.\nO Dev não é alcançável pelos comandos autorizados: o caminho decidido é release e painel, após homologação."
 request: "REQ-297"
 topology: "solo"
 autonomy: "autonomo_monitorado"
@@ -57,6 +57,8 @@ Critério da REQ pendente. Nada foi enviado ao Dev; só houve leitura pela API.
 - `update:core` não funciona: o Dev responde que só conhece `start, deploy, db, finalize, status, cancel`, ou seja, é anterior à REQ-201 (30/09) e nem informa a versão. Além disso, `update:core` baixa releases, e este lote está em branch.
 - Acesso anônimo com 302 para `/signin/` é o bloqueio intencional.
 
+**Decisão do Engenheiro Chefe (2026-10-30):** o Dev será atualizado por release e pelo painel. Ordem: homologação humana, merge na `main`, release `gestor-v3.0.16` e atualização pelo `admin-atualizacoes` do Dev, autenticado com perfil válido. Merge e release aguardam o ok humano. Depois da atualização, conferir no Dev: migrações, aba Equipe e dados do projeto preservados. Publicar o projeto só com `project:deploy`.
+
 ## Limites conhecidos
 
 - O administrador pode reativar um membro pelo módulo `usuarios` sem passar pela cota; a cota vale na aba Equipe.
@@ -69,4 +71,4 @@ Critério da REQ pendente. Nada foi enviado ao Dev; só houve leitura pela API.
 
 ## Handoff
 
-Projeto `conn2flow`, raiz `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req297`, REQ-297, BATCH-305, topologia solo, autonomia `autonomo_monitorado`. Próxima ação: decisão humana sobre o caminho do Dev e, depois, homologação humana. Antes de remover a worktree, desfazer as junctions de `vendor` e `node_modules`.
+Projeto `conn2flow`, raiz `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req297`, REQ-297, BATCH-305, topologia solo, autonomia `autonomo_monitorado`. Próxima ação: homologação humana e ok para merge e release; depois, atualização do Dev pelo painel. Antes de remover a worktree, desfazer as junctions de `vendor` e `node_modules`.
