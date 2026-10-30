@@ -88,11 +88,21 @@ Pedido do Engenheiro Chefe, que escolheu a opção A e adiou o release para depo
 
 ### Pendente desta rodada
 
-- **Autoria clínica:** o backend usa o mesmo id como organização e autor (`encounters.py`, `clinical_audit`). Evolução e auditoria feitas por um membro ficam em nome do titular. Bloqueia uso real por profissionais, e corrigir exige mudança no backend Python.
-- **Agenda:** `professional_user_id` também é o titular; a agenda é única por conta.
-- **Chat e busca clínica:** o membro ainda usa o plano padrão, porque esses módulos calculam o plano pelo próprio id.
+- **Agenda:** `professional_user_id` é a conta; a agenda é única por conta. Agenda por profissional é funcionalidade nova: exige tela de escolha do profissional e vários ajustes em `agenda.py`.
+- **Busca clínica:** não calcula plano no Gestor; não foi exercitada com membro.
 - **Isolamento entre contas no navegador:** a conta de comparação foi barrada antes, por não ter o módulo. A separação em si é a do backend, que não mudou.
-- **Capa do módulo `equipe`:** provisória, cópia da de `usuarios-perfis`. Falta a capa própria.
+- **Capa do módulo `equipe`:** provisória, cópia da de `usuarios-perfis`. A capa própria fica com o agente de imagens.
+
+## Rodada 4: autoria por usuário no Photon (2026-10-30)
+
+Aceita pelo Engenheiro Chefe, que informou não haver usuários reais e liberou adaptar o que fosse preciso. Código só no `lumix`, sem commit; o core não mudou nesta rodada.
+
+- **Contrato:** `user_id` segue sendo a organização. O autor real vai em `X-Photon-Actor`, enviado por `photon_oauth_authorization_headers()`, ponto único dos módulos. No backend, `request_actor.py` (middleware ASGI e `actor_id()`), com a organização como reserva em rotinas e páginas públicas.
+- **Coberto:** pacientes, histórico, anamnese, atendimento, adendo, arquivos, relatórios, termos, equipamentos, automações e auditoria clínica.
+- **Plano do membro no chat:** corrigido nos dois módulos de chat, pelo titular.
+- **Páginas públicas:** termo e anamnese mostram quem enviou o link (`professional_id`), não o titular.
+- **Validação:** backend 822/822, PHP do `lumix` 27/27, e 14/14 no `snapphoton.local` com consulta direta ao banco clínico (titular 2, membro 41): paciente, histórico, atendimento e auditoria no membro, com a organização no titular. Teste de guarda reprova autor igual à organização.
+- **API local:** roda de imagem (`lumix-api`), não do espelho WSL: a REQ-118 trocou o compose. Procedimento em `docker-compose.local-image.yml`. Imagem anterior guardada como `lumix-api:antes-req297`.
 
 ## Limites conhecidos
 

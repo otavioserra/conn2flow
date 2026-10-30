@@ -32,6 +32,8 @@
 - **Projeto com página sobreposta não recebe marcação nova do core**, e dependência Tailwind de projeto não enxerga componente de módulo do core. Testar telas novas no projeto real, não só no Lab do core.
 - **`git checkout` em worktree com `autocrlf=true` devolve CRLF**, e script de edição com `\n` falha. Para restaurar sem isso: `git show HEAD:arquivo > arquivo`.
 - **Teste de permissão em perfil real**: confira se o perfil tem o módulo. `academico` não tem `pacientes`, e o teste de dados passaria sem provar nada.
+- **API local do Photon roda de imagem, não do espelho WSL**: conferir `docker inspect lumix-api-1` antes de confiar em restart. Para aplicar código: `docker build -t lumix-api:latest` da fonte e recriar só a API com `docker-compose.local-image.yml`. O recreate apaga o `/tmp` do container.
+- **Chamada ao WSL com aspas compostas**: gravar o script em arquivo e rodar com `tr -d '\r' < arquivo | bash`.
 - **Agente paralelo no mesmo destino**: `project:deploy` não tem trava. Esperar com um laço em segundo plano sobre `db/data` e acessos do nginx.
 - **Medir cobertura de CSS no navegador**: percorrer as classes do DOM contra `document.styleSheets` achou duas classes sem regra que a tela não denunciava.
 

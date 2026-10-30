@@ -300,6 +300,7 @@ Pontos que a REQ-297 deixou em aberto, decididos pelo Executor e sujeitos à hom
 - `usuarios_perfis.sub_users_active` é a chave da equipe: funciona só com a chave ligada e limite diferente de `0`. Fora disso, nenhum membro entra, mesmo cadastrado, e o módulo `equipe` sai do perfil. Chave e limite concedem o módulo sozinhos.
 - A permissão efetiva do membro é a do perfil dele E a do titular, por filtro SQL nas leituras de permissão: quem perde um módulo leva os membros junto.
 - A gestão fica no módulo novo `equipe`, não no módulo administrativo `usuarios-perfis`, que exporia telas do sistema. A aba em `/perfil-usuario/` foi só o MVP e saiu.
+- Em projetos, `user_id` da API é a organização, e o autor é informado à parte: no Photon, cabeçalho `X-Photon-Actor`. Registro clínico fica no nome de quem fez, dentro da conta do titular.
 - A hierarquia tem um nível: sub-usuário nunca é titular.
 - O bloqueio é calculado a cada verificação, sem alterar o status do filho, e inclui o status do próprio filho, porque o guardião de sessão web não confere status.
 - Só membros ativos ocupam assento. Plano menor não desativa ninguém: apenas recusa novos cadastros e ativações.
