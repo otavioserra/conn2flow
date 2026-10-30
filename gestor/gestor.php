@@ -281,7 +281,7 @@ function gestor_pagina_menu($params = false){
 			))
 			,
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".$perfil."'"
+			"WHERE perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 	}
 
@@ -1785,8 +1785,16 @@ function gestor_permissao_token_processar(){
 					
 					$bd_hash = $usuarios_tokens[0]['pubIDValidation'];
 					$token_hash = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
-					
-					if($bd_hash === $token_hash){
+
+					// ===== REQ-297: sub-usuário desativado ou com titular inativo perde a sessão aberta.
+					//       `function_exists` cobre a troca de arquivos de uma atualização em andamento.
+
+					gestor_incluir_biblioteca('usuario');
+
+					$hierarquia_bloqueada = function_exists('usuario_hierarquia_bloqueado')
+						&& usuario_hierarquia_bloqueado((int)$usuarios_tokens[0]['id_usuarios']);
+
+					if($bd_hash === $token_hash && !$hierarquia_bloqueada){
 						$data_criacao = $usuarios_tokens[0]['data_criacao'];
 						$id_usuarios = $usuarios_tokens[0]['id_usuarios'];
 						
@@ -2000,7 +2008,7 @@ function gestor_permissao_modulo($alertar = true, $modulo_forcado = false){
 				,
 				"usuarios_perfis_modulos",
 				"WHERE perfil='".$perfil."'"
-				." AND modulo='".$modulo."'"
+				." AND modulo='".$modulo."'".gestor_perfil_permissao_sql($usuario)
 			);
 			
 			// ===== Caso tenha permissão retornar true.
@@ -2231,7 +2239,7 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 			,
 			"usuarios_perfis_modulos",
 			"WHERE modulo='".$modulo."'"
-			." AND perfil='".$perfil."'"
+			." AND perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario)
 		);
 
 		$modulo_acesso = ($usuarios_perfis_modulos ? true : false);
@@ -2272,7 +2280,7 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 				,
 				"usuarios_perfis_modulos_operacoes",
 				"WHERE operacao='".$operacao_id."'"
-				." AND perfil='".$perfil."'"
+				." AND perfil='".$perfil."'".gestor_perfil_permissao_sql($usuario,'operacao')
 			);
 			
 			if($usuarios_perfis_modulos_operacoes){

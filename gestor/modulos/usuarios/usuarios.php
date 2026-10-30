@@ -248,7 +248,7 @@ function usuarios_adicionar(){
 						'nome' => 'usuarios_perfis',
 						'campo' => 'nome',
 						'id_numerico' => 'id_usuarios_perfis',
-						'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+						'where' => "language='".$_GESTOR['linguagem-codigo']."' AND id_usuarios_dono IS NULL",
 					),
 				)
 			)
@@ -843,7 +843,7 @@ function usuarios_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id_usuarios_perfis',
 						'id_selecionado' => $id_usuarios_perfis,
-						'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+						'where' => "language='".$_GESTOR['linguagem-codigo']."' AND id_usuarios_dono IS NULL",
 					),
 				)
 			)

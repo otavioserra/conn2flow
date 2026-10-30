@@ -20,6 +20,34 @@ function usuarios_perfis_pagina_inicial($caminho){
 	return $pagina ? $pagina['caminho'] : null;
 }
 
+/**
+ * REQ-297: normaliza a cota de sub-usuários. 0 = sem equipe, -1 = sem limite, N = assentos.
+ */
+function usuarios_perfis_max_sub_users($valor){
+	$valor = is_scalar($valor) ? (int)$valor : 0;
+	return max(-1, $valor);
+}
+
+/**
+ * REQ-297: mantém o módulo Equipe no perfil só enquanto a equipe estiver ligada.
+ *
+ * É a chave e o limite que liberam a equipe: o administrador não precisa marcar o módulo à parte.
+ */
+function usuarios_perfis_equipe_modulo($perfil,$ativa){
+	$perfil = banco_escape_field($perfil);
+	$vinculo = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis_modulos',
+		'campos' => Array('id_usuarios_perfis_modulos'),
+		'extra' => "WHERE perfil='".$perfil."' AND modulo='equipe'",
+	));
+	if($ativa && !$vinculo){
+		banco_insert_name(Array(Array('perfil',$perfil),Array('modulo','equipe')),'usuarios_perfis_modulos');
+	} else if(!$ativa && $vinculo){
+		banco_delete('usuarios_perfis_modulos',"WHERE perfil='".$perfil."' AND modulo='equipe'");
+	}
+}
+
 function usuarios_perfis_rotulo_pagina($pagina){
     return $pagina['nome'].' ('.$pagina['id'].' · '.$pagina['caminho'].')';
 }
@@ -113,7 +141,9 @@ function usuarios_perfis_adicionar(){
 		$campo_nome = "padrao"; $post_nome = "padrao"; $campo_valor = '1';				if($_REQUEST[$post_nome] == 'on'){		$campos[] = Array($campo_nome,$campo_valor,true);}
 		$pagina_inicial = usuarios_perfis_pagina_inicial($_REQUEST['pagina_inicial'] ?? '');
 		if($pagina_inicial !== null) $campos[] = Array('pagina_inicial', banco_escape_field($pagina_inicial));
-		
+		$campos[] = Array('max_sub_users', usuarios_perfis_max_sub_users($_REQUEST['max_sub_users'] ?? 0), true);
+		$campos[] = Array('sub_users_active', ($_REQUEST['sub_users_active'] ?? '') === 'on' ? 1 : 0, true);
+
 		// ===== Campos comuns
 		
 		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
@@ -240,6 +270,8 @@ function usuarios_perfis_adicionar(){
 			
 			$count++;
 		}
+		
+		usuarios_perfis_equipe_modulo($id,($_REQUEST['sub_users_active'] ?? '') === 'on' && usuarios_perfis_max_sub_users($_REQUEST['max_sub_users'] ?? 0) !== 0);
 		
 		// ===== Redirecionar
 		
@@ -395,6 +427,8 @@ function usuarios_perfis_adicionar(){
 	// ===== Atualizar página
 	
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($pagina, '#home-page-autocomplete#', usuarios_perfis_componente_pagina_inicial());
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#max-sub-users#', '0');
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#sub-users-active-checked#', '');
 	
 	// ===== Interface adicionar finalizar opções
 	
@@ -428,6 +462,8 @@ function usuarios_perfis_editar(){
 		'nome',
 		'padrao',
 		'pagina_inicial',
+		'max_sub_users',
+		'sub_users_active',
 		$modulo['tabela']['id_numerico'],
 	);
 	
@@ -513,7 +549,21 @@ function usuarios_perfis_editar(){
 		if(banco_select_campos_antes('pagina_inicial') !== $pagina_inicial){
 			$editar['dados'][] = 'pagina_inicial='.($pagina_inicial === null ? 'NULL' : "'".banco_escape_field($pagina_inicial)."'");
 		}
-		
+		$max_sub_users = usuarios_perfis_max_sub_users($_REQUEST['max_sub_users'] ?? 0);
+		if((int)banco_select_campos_antes('max_sub_users') !== $max_sub_users){
+			$editar['dados'][] = 'max_sub_users='.$max_sub_users;
+			$alteracoes[] = Array('campo' => 'form-max-sub-users-label', 'valor_antes' => (int)banco_select_campos_antes('max_sub_users'),'valor_depois' => $max_sub_users);
+
+			$alterouCota = true;
+		}
+		$sub_users_active = ($_REQUEST['sub_users_active'] ?? '') === 'on' ? 1 : 0;
+		if((int)banco_select_campos_antes('sub_users_active') !== $sub_users_active){
+			$editar['dados'][] = 'sub_users_active='.$sub_users_active;
+			$alteracoes[] = Array('campo' => 'form-sub-users-active-label', 'filtro' => 'checkbox', 'valor_antes' => (string)(int)banco_select_campos_antes('sub_users_active'),'valor_depois' => (string)$sub_users_active);
+
+			$alterouCota = true;
+		}
+
 		// ===== Pegar os dados atuais do registro no banco de dados.
 		
 		$retorno_bd = banco_select_editar
@@ -746,6 +796,8 @@ function usuarios_perfis_editar(){
 			}
 		}
 		
+		usuarios_perfis_equipe_modulo($id,$sub_users_active === 1 && $max_sub_users !== 0);
+		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
 		if(isset($editar['dados']) || isset($alterouModulos) || isset($alterouModulosOperacoes)){
@@ -756,7 +808,17 @@ function usuarios_perfis_editar(){
 				
 				banco_update_executar($modulo['tabela']['nome'],"WHERE padrao IS NOT NULL");
 			}
-			
+
+			// ===== REQ-297: um perfil tem uma linha por idioma e o usuário aponta para uma delas; a cota
+			//       é do perfil, então vale para todas.
+
+			if(isset($alterouCota)){
+				banco_update_campo('max_sub_users',$max_sub_users,true);
+				banco_update_campo('sub_users_active',$sub_users_active,true);
+
+				banco_update_executar($modulo['tabela']['nome'],"WHERE ".$modulo['tabela']['id']."='".banco_escape_field($id)."'");
+			}
+
 			// ===== Atualizar versão e data.
 			
 			$campo_nome = $modulo['tabela']['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
@@ -1242,6 +1304,8 @@ function usuarios_perfis_editar(){
 		// ===== Atualizar página
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($pagina, '#home-page-autocomplete#', usuarios_perfis_componente_pagina_inicial($retorno_bd['pagina_inicial'] ?? ''));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#max-sub-users#', (string)(int)($retorno_bd['max_sub_users'] ?? 0));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#sub-users-active-checked#', (!empty($retorno_bd['sub_users_active']) ? 'checked' : ''));
 	} else {
 		gestor_redirecionar_raiz();
 	}
@@ -1310,7 +1374,7 @@ function usuarios_perfis_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
-					'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+					'where' => "language='".$_GESTOR['linguagem-codigo']."' AND id_usuarios_dono IS NULL",
 				),
 				'tabela' => Array(
 					'rodape' => true,

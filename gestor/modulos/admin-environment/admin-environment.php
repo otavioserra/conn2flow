@@ -355,7 +355,7 @@ function admin_environment_raiz(){
     $perfis = banco_select(Array(
         'tabela' => 'usuarios_perfis',
         'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
-        'extra' => "WHERE status!='D' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' ORDER BY nome ASC",
+        'extra' => "WHERE status!='D' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND id_usuarios_dono IS NULL ORDER BY nome ASC",
     ));
 
     $apiProfilesHtml = '';
@@ -684,7 +684,7 @@ function admin_environment_ajax_buscar_perfis(){
     $perfis = banco_select(Array(
         'tabela' => 'usuarios_perfis',
         'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
-        'extra' => "WHERE status!='D' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'".$filtro." ORDER BY nome ASC LIMIT 10",
+        'extra' => "WHERE status!='D' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND id_usuarios_dono IS NULL".$filtro." ORDER BY nome ASC LIMIT 10",
     ));
 
     $resultados = Array();

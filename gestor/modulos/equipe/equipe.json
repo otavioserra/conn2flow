@@ -1,0 +1,680 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": [],
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Equipe",
+                    "id": "equipe",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "equipe/",
+                    "type": "system",
+                    "option": "raiz",
+                    "root": true,
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../equipe.php",
+                        "../../../../equipe.js"
+                    ],
+                    "tailwind_sources_reason": "REQ-297: as mensagens de retorno da tela recebem as cores em equipe.js.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-297: componentes globais montados dinamicamente na página administrativa.",
+                    "checksum": {
+                        "html": "f37caf6fee876b635bbc0981848a9e73",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f37caf6fee876b635bbc0981848a9e73"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "team-title",
+                    "value": "Equipe",
+                    "type": "string"
+                },
+                {
+                    "id": "team-help",
+                    "value": "Membros entram com o próprio acesso e trabalham nos dados da sua conta, com as permissões do perfil que você definir. Se a sua conta for desativada, o acesso deles é bloqueado.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-tab-members",
+                    "value": "Membros",
+                    "type": "string"
+                },
+                {
+                    "id": "team-tab-profiles",
+                    "value": "Perfis",
+                    "type": "string"
+                },
+                {
+                    "id": "team-seats-used",
+                    "value": "#usados# de #limite# utilizados",
+                    "type": "string"
+                },
+                {
+                    "id": "team-seats-unlimited",
+                    "value": "#usados# utilizados, sem limite",
+                    "type": "string"
+                },
+                {
+                    "id": "team-quota-full",
+                    "value": "Todos os assentos estão em uso. Desative um membro ou mude de plano para adicionar outro.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-first",
+                    "value": "Crie um perfil na aba Perfis antes de adicionar membros.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-add",
+                    "value": "Adicionar membro",
+                    "type": "string"
+                },
+                {
+                    "id": "team-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "team-email-label",
+                    "value": "E-mail (será o login)",
+                    "type": "string"
+                },
+                {
+                    "id": "team-password-label",
+                    "value": "Senha inicial",
+                    "type": "string"
+                },
+                {
+                    "id": "team-password-help",
+                    "value": "Mínimo de 12 caracteres. Repasse a senha ao membro por um canal seguro.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-label",
+                    "value": "Perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-choose",
+                    "value": "Selecione um perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "team-confirm",
+                    "value": "Criar acesso",
+                    "type": "string"
+                },
+                {
+                    "id": "team-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "team-empty",
+                    "value": "Nenhum membro cadastrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-name",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-email",
+                    "value": "E-mail",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-profile",
+                    "value": "Perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-status",
+                    "value": "Situação",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-actions",
+                    "value": "Ações",
+                    "type": "string"
+                },
+                {
+                    "id": "team-status-active",
+                    "value": "Ativo",
+                    "type": "string"
+                },
+                {
+                    "id": "team-status-inactive",
+                    "value": "Inativo",
+                    "type": "string"
+                },
+                {
+                    "id": "team-activate",
+                    "value": "Ativar",
+                    "type": "string"
+                },
+                {
+                    "id": "team-deactivate",
+                    "value": "Desativar",
+                    "type": "string"
+                },
+                {
+                    "id": "team-deactivate-confirm",
+                    "value": "Desativar o acesso deste membro? As sessões abertas dele serão encerradas.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-created-ok",
+                    "value": "Membro adicionado.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-status-ok",
+                    "value": "Acesso atualizado.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profiles-help",
+                    "value": "Cada perfil define o que os membros podem acessar. Só aparecem aqui os módulos que a sua conta tem.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-add",
+                    "value": "Novo perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-name-label",
+                    "value": "Nome do perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-modules-label",
+                    "value": "Módulos",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-operations-label",
+                    "value": "Operações",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-save",
+                    "value": "Salvar perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-edit",
+                    "value": "Editar",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-delete",
+                    "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-delete-confirm",
+                    "value": "Excluir este perfil?",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profiles-empty",
+                    "value": "Nenhum perfil criado.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-saved-ok",
+                    "value": "Perfil salvo.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-deleted-ok",
+                    "value": "Perfil excluído.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-name-required",
+                    "value": "Informe o nome do perfil.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-modules-required",
+                    "value": "Marque pelo menos um módulo.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-required",
+                    "value": "Selecione um perfil da sua equipe.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-not-found",
+                    "value": "Perfil não encontrado na sua equipe.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-in-use",
+                    "value": "Este perfil está em uso por membros da equipe.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-permission-denied",
+                    "value": "Você só pode distribuir o que a sua conta tem.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-not-allowed",
+                    "value": "Sua conta não pode gerenciar uma equipe.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-name-required",
+                    "value": "Informe o nome do membro.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-email-invalid",
+                    "value": "Informe um e-mail válido.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-email-taken",
+                    "value": "Este e-mail já está em uso.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-password-weak",
+                    "value": "A senha precisa ter pelo menos 12 caracteres.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-quota-reached",
+                    "value": "O limite de membros do seu plano foi atingido.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-not-found",
+                    "value": "Membro não encontrado na sua equipe.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-busy",
+                    "value": "Outra alteração na equipe está em andamento. Tente de novo.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-save-error",
+                    "value": "Não foi possível salvar. Tente de novo.",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Team",
+                    "id": "equipe",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "equipe/",
+                    "type": "system",
+                    "option": "raiz",
+                    "root": true,
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../equipe.php",
+                        "../../../../equipe.js"
+                    ],
+                    "tailwind_sources_reason": "REQ-297: as mensagens de retorno da tela recebem as cores em equipe.js.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-297: componentes globais montados dinamicamente na página administrativa.",
+                    "checksum": {
+                        "html": "f37caf6fee876b635bbc0981848a9e73",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f37caf6fee876b635bbc0981848a9e73"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "team-title",
+                    "value": "Team",
+                    "type": "string"
+                },
+                {
+                    "id": "team-help",
+                    "value": "Members sign in with their own access and work on your account data, with the permissions of the profile you set. If your account is deactivated, their access is blocked.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-tab-members",
+                    "value": "Members",
+                    "type": "string"
+                },
+                {
+                    "id": "team-tab-profiles",
+                    "value": "Profiles",
+                    "type": "string"
+                },
+                {
+                    "id": "team-seats-used",
+                    "value": "#usados# of #limite# in use",
+                    "type": "string"
+                },
+                {
+                    "id": "team-seats-unlimited",
+                    "value": "#usados# in use, no limit",
+                    "type": "string"
+                },
+                {
+                    "id": "team-quota-full",
+                    "value": "All seats are in use. Deactivate a member or change your plan to add another.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-first",
+                    "value": "Create a profile in the Profiles tab before adding members.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-add",
+                    "value": "Add member",
+                    "type": "string"
+                },
+                {
+                    "id": "team-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "team-email-label",
+                    "value": "Email (used to sign in)",
+                    "type": "string"
+                },
+                {
+                    "id": "team-password-label",
+                    "value": "Initial password",
+                    "type": "string"
+                },
+                {
+                    "id": "team-password-help",
+                    "value": "At least 12 characters. Share it with the member over a secure channel.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-label",
+                    "value": "Profile",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-choose",
+                    "value": "Select a profile",
+                    "type": "string"
+                },
+                {
+                    "id": "team-confirm",
+                    "value": "Create access",
+                    "type": "string"
+                },
+                {
+                    "id": "team-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "team-empty",
+                    "value": "No team members yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-name",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-email",
+                    "value": "Email",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-profile",
+                    "value": "Profile",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "team-col-actions",
+                    "value": "Actions",
+                    "type": "string"
+                },
+                {
+                    "id": "team-status-active",
+                    "value": "Active",
+                    "type": "string"
+                },
+                {
+                    "id": "team-status-inactive",
+                    "value": "Inactive",
+                    "type": "string"
+                },
+                {
+                    "id": "team-activate",
+                    "value": "Activate",
+                    "type": "string"
+                },
+                {
+                    "id": "team-deactivate",
+                    "value": "Deactivate",
+                    "type": "string"
+                },
+                {
+                    "id": "team-deactivate-confirm",
+                    "value": "Deactivate this member? Their open sessions will end.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-created-ok",
+                    "value": "Member added.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-status-ok",
+                    "value": "Access updated.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profiles-help",
+                    "value": "Each profile sets what members can access. Only the modules your account has appear here.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-add",
+                    "value": "New profile",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-name-label",
+                    "value": "Profile name",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-modules-label",
+                    "value": "Modules",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-operations-label",
+                    "value": "Operations",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-save",
+                    "value": "Save profile",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-edit",
+                    "value": "Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-delete",
+                    "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-delete-confirm",
+                    "value": "Delete this profile?",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profiles-empty",
+                    "value": "No profiles yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-saved-ok",
+                    "value": "Profile saved.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-deleted-ok",
+                    "value": "Profile deleted.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-name-required",
+                    "value": "Enter the profile name.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-modules-required",
+                    "value": "Select at least one module.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-required",
+                    "value": "Select a profile from your team.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-not-found",
+                    "value": "Profile not found in your team.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-profile-in-use",
+                    "value": "This profile is in use by team members.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-permission-denied",
+                    "value": "You can only grant what your account has.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-not-allowed",
+                    "value": "Your account cannot manage a team.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-name-required",
+                    "value": "Enter the member name.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-email-invalid",
+                    "value": "Enter a valid email.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-email-taken",
+                    "value": "This email is already in use.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-password-weak",
+                    "value": "The password must have at least 12 characters.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-quota-reached",
+                    "value": "Your plan member limit has been reached.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-not-found",
+                    "value": "Member not found in your team.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-busy",
+                    "value": "Another team change is in progress. Try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-save-error",
+                    "value": "Could not save. Try again.",
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "asset_version": "dd7ee1f2613cf4d2"
+}

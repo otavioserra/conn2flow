@@ -56,6 +56,15 @@
                 <span class="c2fc-campo-rotulo">@[[home-page-label]]@</span>
                 #home-page-autocomplete#
             </div>
+            <div class="c2fc-campo">
+                <span class="c2fc-campo-rotulo">@[[form-sub-users-active-label]]@</span>
+                <label class="c2fc-chave mt-1"><input type="checkbox" name="sub_users_active" data-checked="#sub-users-active-checked#"><span class="c2fc-chave-trilho" aria-hidden="true"></span></label>
+            </div>
+            <div class="c2fc-campo">
+                <label class="c2fc-campo-rotulo" for="max_sub_users">@[[form-max-sub-users-label]]@</label>
+                <input type="number" id="max_sub_users" name="max_sub_users" class="c2fc-campo-entrada" min="-1" step="1" value="#max-sub-users#">
+                <p class="mt-1 text-sm text-slate-500">@[[form-max-sub-users-help]]@</p>
+            </div>
         </div>
     </div>
 </div>

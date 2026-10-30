@@ -379,6 +379,20 @@
     },
     {
         "modulo_grupo_id": "geral",
+        "nome": "Equipe",
+        "id": "equipe",
+        "titulo": null,
+        "icone": "users",
+        "icone_tailwind": "users-round",
+        "icone2": "",
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A"
+    },
+    {
+        "modulo_grupo_id": "geral",
         "nome": "Perfil Usuário",
         "id": "perfil-usuario",
         "titulo": null,

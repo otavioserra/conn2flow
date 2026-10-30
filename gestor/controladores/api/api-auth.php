@@ -210,7 +210,7 @@ function api_auth_resolver_perfil($usuario) {
             $permissoes = banco_select(Array(
                 'tabela' => 'usuarios_perfis_modulos',
                 'campos' => Array('modulo'),
-                'extra' => "WHERE perfil='" . banco_escape_field($perfil_id) . "'"
+                'extra' => "WHERE perfil='" . banco_escape_field($perfil_id) . "'" . gestor_perfil_permissao_sql($usuario)
             ));
         } else {
             $permissoes = false;
@@ -279,11 +279,14 @@ function api_auth_login() {
             . " AND status!='D'"
     ));
 
+    gestor_incluir_biblioteca('usuario');
+
     $credenciais_validas =
         $usuarios &&
         isset($usuarios['senha']) &&
         password_verify($senha, $usuarios['senha']) &&
-        ($usuarios['status'] === 'A');
+        ($usuarios['status'] === 'A') &&
+        !usuario_hierarquia_bloqueado((int) $usuarios['id_usuarios']);
 
     if (!$credenciais_validas) {
         api_auth_login_throttle($usuario_login, true);

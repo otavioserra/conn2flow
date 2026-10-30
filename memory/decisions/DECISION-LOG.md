@@ -289,6 +289,23 @@ Regra original do Engenheiro Chefe, restaurada (a retirada automática da REQ-19
 - A lista imperativa `deletar` do `schema-metadata.json` e o `--wipe` (ambos declarados explicitamente) não mudam.
 - Motivo: em 2026-10-20 a atualização 3.0.8 → 3.0.9 do Lab leu os dados do projeto como do core e a retirada automática desativou ou apagou 4.637 registros do core, incluindo a página do próprio atualizador.
 
+## DEC-137 - 2026-10-30 - accepted
+
+**Hierarquia pai/filho: um nível, perfil herdado e bloqueio calculado (REQ-297 / BATCH-305).**
+
+Pontos que a REQ-297 deixou em aberto, decididos pelo Executor e sujeitos à homologação humana:
+
+- `max_sub_users`: `0` = sem equipe (padrão, nenhuma conta muda de comportamento), `-1` = sem limite, `N` = assentos. Um valor por perfil, gravado em todas as linhas de idioma.
+- Revisto pelo Engenheiro Chefe em 2026-10-30 (opção A): o membro não herda mais o perfil do titular. O titular cria perfis da própria conta (`usuarios_perfis.id_usuarios_dono`), distribuindo só o que tem, com validação no servidor. Esses perfis ficam fora das listas do sistema. O membro entra com o e-mail.
+- `usuarios_perfis.sub_users_active` é a chave da equipe: funciona só com a chave ligada e limite diferente de `0`. Fora disso, nenhum membro entra, mesmo cadastrado, e o módulo `equipe` sai do perfil. Chave e limite concedem o módulo sozinhos.
+- A permissão efetiva do membro é a do perfil dele E a do titular, por filtro SQL nas leituras de permissão: quem perde um módulo leva os membros junto.
+- A gestão fica no módulo novo `equipe`, não no módulo administrativo `usuarios-perfis`, que exporia telas do sistema. A aba em `/perfil-usuario/` foi só o MVP e saiu.
+- Em projetos, `user_id` da API é a organização, e o autor é informado à parte: no Photon, cabeçalho `X-Photon-Actor`. Registro clínico fica no nome de quem fez, dentro da conta do titular.
+- A hierarquia tem um nível: sub-usuário nunca é titular.
+- O bloqueio é calculado a cada verificação, sem alterar o status do filho, e inclui o status do próprio filho, porque o guardião de sessão web não confere status.
+- Só membros ativos ocupam assento. Plano menor não desativa ninguém: apenas recusa novos cadastros e ativações.
+- Cota e cadastro correm sob `GET_LOCK` por titular, para dois pedidos simultâneos não ocuparem o mesmo assento.
+
 [Archived history](<archive/compacted/DECISION-LOG-1aee91bdfe67.md>)
 
 [Archived history](<archive/compacted/DECISION-LOG-ddf6e879c579.md>)

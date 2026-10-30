@@ -249,6 +249,11 @@
         "origem": 7406,
         "minificado": 3710
     },
+    "gestor/modulos/equipe/equipe.js": {
+        "sha1": "742e047d6f2d2c908f7c0012418f726e3daa2617",
+        "origem": 6097,
+        "minificado": 4234
+    },
     "gestor/modulos/forms-search/forms-search.js": {
         "sha1": "c5e04c069308be571c29ce93d05c926dc1f696ca",
         "origem": 19383,

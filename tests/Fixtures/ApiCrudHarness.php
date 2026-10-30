@@ -139,6 +139,7 @@ extrair_funcoes($raiz . 'bibliotecas/banco.php', ['banco_select', 'banco_campos_
 if (getenv('API_CRUD_ACESSO_REAL')) {
     // RBAC real: gestor_acesso() do gestor.php e suas consultas, sobre as tabelas de perfil.
     function existe($valor) { return isset($valor) && $valor !== ''; }
+    function gestor_perfil_permissao_sql($usuario, $coluna = 'modulo') { return ''; }
     extrair_funcoes($raiz . 'bibliotecas/banco.php', ['banco_select_name']);
     extrair_funcoes($raiz . 'gestor.php', ['gestor_acesso']);
     $GLOBALS['pdo']->exec("CREATE TABLE usuarios_perfis (id_usuarios_perfis INTEGER, id TEXT);

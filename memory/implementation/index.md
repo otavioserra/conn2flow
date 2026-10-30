@@ -28,6 +28,8 @@
 | BATCH-299 | Hardening de Infraestrutura Pós-PHP2Shell e Alerta de Segurança no Painel (REQ-291) | Tratamento de pendências de infraestrutura pós-PHP2Shell: persistência de ip6tables, remoção do PHP 8.1 EOL, atualização do hestia-php, SSL Cloudflare no webmail e aviso de segurança no admin-environment. | [source](<BATCH-299.md>) | ready-for-intake |
 | BATCH-300 | Docs na 3.0: seção MDD em /docs/mdd/ com 301, What's New da série 3.0 e rebuild (REQ-292) | docs:build publica memory/ em /docs/mdd/ mantendo os ids; a sincronização grava paginas_301 quando o caminho muda; What's New 3.0.0–3.0.14; memórias de engenharia e índices derivados fora da publicação. Lab validado; produção depende de release do core. | [source](<BATCH-300.md>) | implemented-pending-homologation |
 | BATCH-304 | REQ-296: fixture de upload inofensiva | Fixture de upload substituída por PHP inofensivo; 8 testes e 46 asserções aprovados no Windows. | [source](<BATCH-304.md>) | implemented-pending-homologation |
+| BATCH-305 | REQ-297: hierarquia de usuários pai/filho, cotas por perfil e aba Equipe | Pai/filho, cota max_sub_users, bloqueio herdado e aba Equipe prontos; Dev será atualizado por release e painel após homologação. | [source](<BATCH-305.md>) | blocked |
+| RELATORIO-REQ-297 | REQ-297: relatório ao Arquiteto-Chefe | A REQ-297 cresceu para módulo Equipe, perfis por conta, dados por organização e autoria clínica no Photon. | [source](<RELATORIO-REQ-297-ARQUITETO.md>) | ready-for-review |
 
 ## Directories
 

@@ -101,6 +101,16 @@
       "sha256": "52987f57d5677085dc1fc1227e5fe084fde972707260cbf59568191cd5741a59"
     },
     {
+      "id": "equipe",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/equipe.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 89984,
+      "quality": 90,
+      "sha256": "52987f57d5677085dc1fc1227e5fe084fde972707260cbf59568191cd5741a59"
+    },
+    {
       "id": "admin-arquivos",
       "repository": "conn2flow",
       "path": "gestor/assets/modulos/covers/admin-arquivos.webp",

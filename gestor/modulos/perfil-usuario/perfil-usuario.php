@@ -1654,7 +1654,7 @@ function perfil_usuario_oauth_authenticate(){
 				if($usuarios){
 					if(!gestor_acesso('acesso-api', 'admin-environment',$usuarios[0]) || !perfil_usuario_api_perfil_permitido($usuarios[0]['id_usuarios_perfis'])){
 						$user_without_permission = true;
-					} elseif($usuarios[0]['status'] !== 'A'){
+					} elseif($usuarios[0]['status'] !== 'A' || usuario_hierarquia_bloqueado((int)$usuarios[0]['id_usuarios'])){
 						$user_inactive = true;
 					} elseif(!empty($usuarios[0]['email'])){
 						$id_usuarios = (int)$usuarios[0]['id_usuarios'];
@@ -1704,7 +1704,7 @@ function perfil_usuario_oauth_authenticate(){
 							$status = $usuarios[0]['status'];
 							$id_usuarios = $usuarios[0]['id_usuarios'];
 
-							if($status == 'A'){
+							if($status == 'A' && !usuario_hierarquia_bloqueado((int)$id_usuarios)){
 								$user_invalid = false;
 
 								autenticacao_acesso_confirmar(['tipo' => 'oauth2']);
@@ -2069,7 +2069,7 @@ function perfil_usuario_signin(){
 					." AND status!='D'"
 				);
 
-				if($usuarios && isset($usuarios[0]['status']) && $usuarios[0]['status'] === 'A'){
+				if($usuarios && isset($usuarios[0]['status']) && $usuarios[0]['status'] === 'A' && !usuario_hierarquia_bloqueado((int)$usuarios[0]['id_usuarios'])){
 					$id_usuarios = (int)$usuarios[0]['id_usuarios'];
 					$emailUsuario = isset($usuarios[0]['email']) ? $usuarios[0]['email'] : '';
 
@@ -2129,7 +2129,7 @@ function perfil_usuario_signin(){
 						$status = $usuarios[0]['status'];
 						$id_usuarios = $usuarios[0]['id_usuarios'];
 
-						if($status == 'A'){
+						if($status == 'A' && !usuario_hierarquia_bloqueado((int)$id_usuarios)){
 							$user_invalid = false;
 
 							// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
