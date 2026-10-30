@@ -1684,23 +1684,24 @@ function html_editor_widgets_buscar($params = array()){
 		if($tabela === '' || !preg_match('/^[a-zA-Z0-9_]+$/', $tabela)){ continue; }
 
 		$coluna_where = isset($def['coluna_where']) ? trim((string)$def['coluna_where']) : '';
+		$coluna_nome = $tabela === 'templates' ? 'nome' : 'name';
 
 		$where = "WHERE status = 'A' AND language = '" . banco_escape_field($idioma) . "'";
 		if($coluna_where !== '' && preg_match('/^[a-zA-Z0-9_]+$/', $coluna_where)){
 			$where .= " AND " . $coluna_where . " = '" . banco_escape_field($def['id']) . "'";
 		}
 		if($busca !== ''){
-			$where .= " AND (name LIKE '%" . $buscaEsc . "%' OR id LIKE '%" . $buscaEsc . "%')";
+			$where .= " AND (" . $coluna_nome . " LIKE '%" . $buscaEsc . "%' OR id LIKE '%" . $buscaEsc . "%')";
 		}
 
 		$retorno_bd = banco_select([
 			'tabela' => $tabela,
-			'campos' => ['id', 'name'],
-			'extra'  => $where . " ORDER BY name ASC",
+			'campos' => ['id', $coluna_nome],
+			'extra'  => $where . " ORDER BY " . $coluna_nome . " ASC",
 		]);
 
 		if($retorno_bd)foreach($retorno_bd as $registro){
-			$nome = (isset($registro['name']) && $registro['name'] !== '') ? $registro['name'] : $registro['id'];
+			$nome = (isset($registro[$coluna_nome]) && $registro[$coluna_nome] !== '') ? $registro[$coluna_nome] : $registro['id'];
 			$itens[] = Array('id' => $registro['id'], 'nome' => $nome, 'module' => $def['id']);
 		}
 	}
