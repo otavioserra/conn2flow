@@ -22,6 +22,9 @@
 | BL-029 | BL-029 — Erro intermitente na suíte PHPUnit no Windows (suspeita: bloqueio do antivírus) | Há dois ou três dias o Windows mostra um aviso de vírus encontrado; a verificação manual do antivírus não acha nada. ... | [source](<BL-029-phpunit-erro-intermitente-windows.md>) | RESOLVIDO (2026-10-07) — causa identificada no mesmo dia; não era o antivírus nem defeito do produto |
 | BL-030 | BL-030 — Aposentar ou marcar como legado os layouts de e-mail, impressão e iframe | Os três não estão sem uso; nenhum deles é layout de página de site. | [source](<BL-030-layouts-legados-email-impressao-iframe.md>) | ICEBOX |
 | BL-031 | BL-031: Eventos duráveis dos gateways e unificação dos e-commerces | O humano pediu que esta melhoria permaneça no backlog para implementação futura. BATCH-274 / BATCH-116 devem somente ... | [source](<BL-031-eventos-gateways-ecommerce-unificado.md>) | ICEBOX |
+| BL-032 | BL-032 — Hierarquia de Usuários Pai/Filho (Multi-Usuários por Conta) e Cotas de Sub-Usuários por Perfil | Estrutura nativa no Core para usuário titular (pai) gerenciar usuários vinculados (filhos) com limite definido por perfil de usuário. | [source](<BL-032-usuarios-pai-filho-e-cotas-por-perfil.md>) | IN-DISCUSSION |
+| BL-046 | BL-046 — Logo do painel configurável na aba Site do admin-environment | Permitir trocar pelo painel o logo do layout principal, que hoje é fixo em images/logo-principal.png no core. | [source](<BL-046-logo-configuravel-admin-environment.md>) | IN-DISCUSSION |
+| BL-047 | BL-047 — Topo do painel com aparência diferente entre projetos | No Photon, o topo do painel fica colado ao logo e com outra cor; a classe h-16 existe no HTML, mas não tem efeito. | [source](<BL-047-topo-do-painel-diferente-entre-projetos.md>) | IN-DISCUSSION |
 
 ## Directories
 

@@ -33,6 +33,9 @@
 | [BL-029](BL-029-phpunit-erro-intermitente-windows.md) | Spike/Reliability | RESOLVIDO | Erro intermitente na suíte PHPUnit no Windows (suspeita: bloqueio do antivírus) | Causa achada: comando de teste (`MSYS_NO_PATHCONV` com `OPENSSL_CONF`); nada a mudar no produto | 2026-10-07 |
 | [BL-030](BL-030-layouts-legados-email-impressao-iframe.md) | Architecture/Maintainability | ICEBOX | Aposentar ou marcar como legado os layouts de e-mail, impressão e iframe | Decidir entre esconder das listas, marcar legado ou remover | 2026-10-07 |
 | [BL-031](BL-031-eventos-gateways-ecommerce-unificado.md) | Architecture/Reliability | ICEBOX | Eventos duráveis dos gateways e unificação dos e-commerces de produtos e assinaturas | Aguardar nova requisição do humano; entrega atual preserva a estrutura existente | 2026-10-08 |
+| [BL-032](BL-032-usuarios-pai-filho-e-cotas-por-perfil.md) | Epic/Core Architecture/IAM | IN-DISCUSSION | Hierarquia de Usuários Pai/Filho (Multi-Usuários por Conta) e Cotas de Sub-Usuários por Perfil | Promover após lançamento inicial do Snap Photon V2.0 | 2026-10-29 |
+| [BL-046](BL-046-logo-configuravel-admin-environment.md) | Feature/Core/Interface | IN-DISCUSSION | Logo do painel configurável na aba Site do `admin-environment` | Definir armazenamento do arquivo e abrangência; promover depois das frentes atuais | 2026-10-30 |
+| [BL-047](BL-047-topo-do-painel-diferente-entre-projetos.md) | Bug visual/Tailwind | IN-DISCUSSION | Topo do painel com aparência diferente entre projetos | Confirmar por que a folha do `admin-topbar-tailwind` não chega às páginas do Photon | 2026-10-30 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 
