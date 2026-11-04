@@ -75,7 +75,7 @@ function gestor_pagina_menu_icone($modulo, $campo, $tailwind){
  */
 function gestor_pagina_menu_icone_fomantic_lucide($nome){
 	$nome = strtolower(trim((string)$nome));
-	if($nome === '' || preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $nome)) return $nome;
+	if($nome === '') return '';
 	$mapa = Array(
 		'chart bar' => 'chart-column', 'chart bar outline' => 'chart-column', 'chart line' => 'chart-line', 'chart pie' => 'chart-pie',
 		'chart area' => 'chart-area', 'credit card' => 'credit-card', 'credit card outline' => 'credit-card', 'shopping cart' => 'shopping-cart',
@@ -95,6 +95,7 @@ function gestor_pagina_menu_icone_fomantic_lucide($nome){
 		'question circle' => 'circle-help', 'info circle' => 'info', 'exclamation triangle' => 'triangle-alert', 'check circle' => 'circle-check',
 	);
 	if(isset($mapa[$nome])) return $mapa[$nome];
+	if(preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $nome)) return $nome;
 	$simples = trim(preg_replace('/\s+/', ' ', preg_replace('/\b(outline|alternate|icon)\b/', '', $nome)));
 	if(isset($mapa[$simples])) return $mapa[$simples];
 	return str_replace(' ', '-', $simples);

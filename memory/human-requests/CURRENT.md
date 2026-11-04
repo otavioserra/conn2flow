@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-299.md](req-299.md) (BATCH-307 ready-for-intake, 2026-11-04, Core - Solo / Autonomo Monitorado): Propagacao automatica de bloqueio por assinatura vencida/inativa da conta titular para sub-usuarios da equipe.
+  - [req-299.md](req-299.md) (BATCH-307 implemented-pending-homologation, 2026-11-04, Core - Solo / Autonomo Monitorado): CRUD completo de membros em Equipe, abas UI 3.0 sem scroll vertical e propagacao automatica de bloqueio por assinatura vencida/inativa da conta titular para sub-usuarios da equipe.
   - [req-298.md](req-298.md) (BATCH-306 merged-to-main, 2026-11-03, Core - Solo / Autonomo Monitorado): Correcoes pos-homologacao em Equipe (UI de perfis espelhada em usuarios-perfis/adicionar, fim do vazamento de modulos nao autorizados no menu do membro, correcao do loop de redirect em /dashboard/, redirect pos-login e responsividade mobile 390px).
   - [req-297.md](req-297.md) (BATCH-305 merged-to-main, 2026-10-30, Core - Solo / Autonomo Monitorado): Hierarquia de Usuarios Pai/Filho (BL-032), limite max_sub_users em usuarios_perfis, helper canonico usuario_organizacao_id() e atualizacao do Core no Dev (snapphoton-dev).
   - [req-296.md](req-296.md) (BATCH-304 `merged-to-main`, 2026-10-28, Core — Solo / Autônomo Monitorado): Remoção de payload heurístico de trojan (PHP/Chopper) no teste de upload e blindagem anti-falso-positivo do Windows Defender.
