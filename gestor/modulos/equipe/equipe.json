@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.1",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -18,7 +18,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.3",
+                    "version": "1.6",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -45,10 +45,10 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-297: componentes globais montados dinamicamente na página administrativa.",
                     "checksum": {
-                        "html": "0cbe579ed9766ab7970cb337103da545",
+                        "html": "f85d7bbc2f9d4735c22ed55a4cbca738",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "0cbe579ed9766ab7970cb337103da545"
+                        "combined": "f85d7bbc2f9d4735c22ed55a4cbca738"
                     }
                 }
             ],
@@ -353,6 +353,56 @@
                     "id": "team-group-other",
                     "value": "Outros módulos",
                     "type": "string"
+                },
+                {
+                    "id": "team-member-edit",
+                    "value": "Editar membro",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-password",
+                    "value": "Redefinir senha",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-delete",
+                    "value": "Excluir membro",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-delete-confirm",
+                    "value": "Excluir este membro definitivamente? O acesso será removido e a vaga ficará disponível para outro membro.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-editar-ok",
+                    "value": "Dados do membro atualizados. Ele deverá entrar novamente com o e-mail cadastrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-senha-ok",
+                    "value": "Senha redefinida. O membro deverá entrar novamente com a nova senha.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-excluir-ok",
+                    "value": "Membro excluído. A vaga da equipe já está disponível.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-subscription-blocked",
+                    "value": "O acesso da equipe está bloqueado porque a assinatura da conta titular está inativa ou com pagamento pendente. Peça ao titular para regularizar a assinatura e entre novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-save",
+                    "value": "Salvar alterações",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-new-password",
+                    "value": "Nova senha",
+                    "type": "string"
                 }
             ]
         },
@@ -367,7 +417,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.3",
+                    "version": "1.6",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -394,10 +444,10 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-297: componentes globais montados dinamicamente na página administrativa.",
                     "checksum": {
-                        "html": "0cbe579ed9766ab7970cb337103da545",
+                        "html": "f85d7bbc2f9d4735c22ed55a4cbca738",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "0cbe579ed9766ab7970cb337103da545"
+                        "combined": "f85d7bbc2f9d4735c22ed55a4cbca738"
                     }
                 }
             ],
@@ -702,9 +752,59 @@
                     "id": "team-group-other",
                     "value": "Other modules",
                     "type": "string"
+                },
+                {
+                    "id": "team-member-edit",
+                    "value": "Edit member",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-password",
+                    "value": "Reset password",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-delete",
+                    "value": "Delete member",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-delete-confirm",
+                    "value": "Permanently delete this member? Their access will be removed and the seat will become available for another member.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-editar-ok",
+                    "value": "Member details updated. They must sign in again using the registered email.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-senha-ok",
+                    "value": "Password reset. The member must sign in again using the new password.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-excluir-ok",
+                    "value": "Member deleted. The team seat is now available.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-subscription-blocked",
+                    "value": "Team access is blocked because the account owner’s subscription is inactive or has an outstanding payment. Ask the owner to resolve the subscription and sign in again.",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-save",
+                    "value": "Save changes",
+                    "type": "string"
+                },
+                {
+                    "id": "team-member-new-password",
+                    "value": "New password",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "87d3b3c76fbaec94"
+    "asset_version": "08d5fed5bc3c12b0"
 }

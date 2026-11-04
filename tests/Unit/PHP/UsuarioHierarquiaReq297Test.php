@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
- * REQ-297 — titular e sub-usuários: tenant, cotas por perfil e bloqueio herdado do pai.
+ * REQ-297/299 — tenant, cotas, CRUD de membros e bloqueio herdado da assinatura do pai.
  *
  * Os cenários de banco ficam em `tests/Fixtures/UsuarioHierarquiaCenarios.php` e rodam fora do
  * bootstrap: o `banco.php` real exige conexão mysqli, e o arnês simula só a E/S sobre SQLite.

@@ -22,6 +22,7 @@ CREATE TABLE modulos_operacoes (id TEXT, nome TEXT, modulo_id TEXT, language TEX
 CREATE TABLE usuarios_perfis_modulos (id_usuarios_perfis_modulos INTEGER PRIMARY KEY AUTOINCREMENT, perfil TEXT, modulo TEXT);
 CREATE TABLE usuarios_perfis_modulos_operacoes (id_usuarios_perfis_modulos_operacoes INTEGER PRIMARY KEY AUTOINCREMENT, perfil TEXT, operacao TEXT);
 CREATE TABLE usuarios (id_usuarios INTEGER PRIMARY KEY AUTOINCREMENT, id_usuarios_pai INTEGER, id_usuarios_perfis INTEGER, id_hosts INTEGER, nome_conta TEXT, nome TEXT, id TEXT, usuario TEXT, senha TEXT, email TEXT, primeiro_nome TEXT, nome_do_meio TEXT, ultimo_nome TEXT, status TEXT, versao INTEGER, data_criacao TEXT, data_modificacao TEXT);");
+$GLOBALS['pdo']->exec("CREATE TABLE usuarios_tokens (id_usuarios INTEGER, pubID TEXT)");
 
 // Trava de conexão: o cenário decide se a próxima tentativa consegue.
 $GLOBALS['pdo']->sqliteCreateFunction('GET_LOCK', function ($nome, $espera) {
@@ -43,6 +44,8 @@ final class HierarquiaResultado {
 function banco_escape_field($v) { return str_replace("'", "''", (string)$v); }
 function banco_query($sql) {
     $GLOBALS['sqls'][] = $sql;
+    if ($sql === 'START TRANSACTION') $sql = 'BEGIN TRANSACTION';
+    if (!empty($GLOBALS['falhar_sql']) && str_contains($sql, $GLOBALS['falhar_sql'])) return false;
     $sql = str_replace('NOW()', "datetime('now')", $sql);
     try {
         $stmt = $GLOBALS['pdo']->query($sql);
@@ -62,6 +65,8 @@ function banco_num_fields($r) { return count($r->colunas); }
 function banco_field_name($r, $i) { return $r->colunas[$i]; }
 function banco_row_array($r) { return $r->linhas[$r->pos++] ?? null; }
 function banco_last_id() { return $GLOBALS['pdo']->lastInsertId(); }
+function banco_tabelas_lista() { return $GLOBALS['pdo']->query("SELECT name FROM sqlite_master WHERE type='table'")->fetchAll(PDO::FETCH_COLUMN); }
+function gestor_incluir_biblioteca($nome) {}
 
 function extrair_funcoes(string $arquivo, array $nomes): void {
     $fonte = str_replace("\r\n", "\n", (string)file_get_contents($arquivo));
@@ -74,6 +79,8 @@ function extrair_funcoes(string $arquivo, array $nomes): void {
 }
 
 extrair_funcoes($raiz . 'bibliotecas/banco.php', ['banco_select', 'banco_sql', 'banco_campos_virgulas', 'banco_update', 'banco_insert_name', 'banco_delete', 'banco_retirar_acentos', 'banco_identificador_unico', 'banco_identificador']);
-extrair_funcoes($raiz . 'bibliotecas/usuario.php', ['usuario_organizacao_id', 'usuario_hierarquia_bloqueado', 'usuario_equipe_titular', 'usuario_equipe_perfil_da_conta', 'usuario_equipe_membros', 'usuario_equipe_cota', 'usuario_equipe_habilitada', 'usuario_equipe_permissao_sql', 'usuario_equipe_permissoes_disponiveis', 'usuario_equipe_perfis', 'usuario_equipe_perfil', 'usuario_equipe_perfil_salvar', 'usuario_equipe_perfil_excluir', 'usuario_equipe_travar', 'usuario_equipe_destravar', 'usuario_equipe_membro_criar', 'usuario_equipe_membro_perfil', 'usuario_equipe_membro_status']);
+extrair_funcoes($raiz . 'bibliotecas/usuario.php', ['usuario_organizacao_id', 'usuario_hierarquia_bloqueado', 'usuario_equipe_assinatura_bloqueada', 'usuario_equipe_titular', 'usuario_equipe_perfil_da_conta', 'usuario_equipe_membros', 'usuario_equipe_cota', 'usuario_equipe_habilitada', 'usuario_equipe_permissao_sql', 'usuario_equipe_permissoes_disponiveis', 'usuario_equipe_perfis', 'usuario_equipe_perfil', 'usuario_equipe_perfil_salvar', 'usuario_equipe_perfil_excluir', 'usuario_equipe_travar', 'usuario_equipe_destravar', 'usuario_equipe_membro_criar', 'usuario_equipe_membro_perfil', 'usuario_equipe_membro_status', 'usuario_equipe_membro_alterar']);
+extrair_funcoes($raiz . 'bibliotecas/gestor.php', ['gestor_schema_tabela_existe']);
+extrair_funcoes($raiz . 'gestor.php', ['gestor_acesso']);
 
 }

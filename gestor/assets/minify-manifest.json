@@ -250,9 +250,9 @@
         "minificado": 3710
     },
     "gestor/modulos/equipe/equipe.js": {
-        "sha1": "31eccb2089a1c6fb27c27d9e777160257c034703",
-        "origem": 7431,
-        "minificado": 4952
+        "sha1": "fdee5abbffcadf94acb6740b9d879a93f6f75bc8",
+        "origem": 9567,
+        "minificado": 6476
     },
     "gestor/modulos/forms-search/forms-search.js": {
         "sha1": "c5e04c069308be571c29ce93d05c926dc1f696ca",

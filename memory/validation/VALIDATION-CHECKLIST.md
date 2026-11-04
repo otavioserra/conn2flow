@@ -1,5 +1,24 @@
 # Validation Checklist
 
+## BATCH-307 — REQ-299
+
+- [x] Titular edita nome, e-mail/login e perfil; redefinição de senha com hash compatível e sessões web encerradas.
+- [x] Exclusão física confirmada remove o membro e libera a cota; operações de outra equipe/perfil alheio recusadas.
+- [x] Abas Membros/Perfis com indicador inferior verde e hover, sem scroll vertical; screenshot e métricas em 1280/390 px.
+- [x] Cancelamento/suspensão/vencimento do titular bloqueiam sessão aberta do membro com orientação; reativação devolve acesso.
+- [x] Banco sem subscriptions, conta própria e conta sem assinatura preservados; verificação sem chamadas ao gateway.
+- [x] SQLite e código real: hierarquia 67 testes, permissões/rotas 22, RBAC/derivados sem regressões; suíte completa com 21 falhas CRLF do BATCH-306, nenhuma nova.
+- [x] Vitest 700/700; E2E 17/17, incluindo GET 405, POST sem CSRF 403, Escape na confirmação e remoção das fixtures.
+- [x] Pipeline nativo do Core, banco, CSS e dist no Lab local, sequencial e com trava do destino; fontes concorrentes do lumix preservadas.
+- [x] Auto-revisão solo, arquivos específicos e evidências persistidas em [BATCH-307](../implementation/BATCH-307.md) / [results.json](req299-evidence/results.json).
+- [ ] Homologação humana.
+
+Capturas examinadas: [abas desktop](req299-evidence/1280-membros.png), [abas mobile](req299-evidence/390-membros.png), [perfis mobile](req299-evidence/390-perfis.png), [edição](req299-evidence/editar-membro.png), [senha](req299-evidence/redefinir-senha.png), [confirmação](req299-evidence/excluir-confirmacao.png), [bloqueio](req299-evidence/bloqueio-cancelled.png).
+
+Roteiro reproduzível: reservar a trava nativa de `snapphoton-local`; `node memory/validation/req299-lab.cjs prepare`; `node memory/validation/req299-browser.cjs`. O E2E sempre remove fixtures no finally. Snapshot pré/pós: `node memory/validation/req299-lab.cjs snapshot`. Cookies ficam em `temp/req299` e não integram o Git.
+
+---
+
 ## BATCH-305 — REQ-297
 
 - [x] `id_usuarios_pai` indexada, com FK `RESTRICT`; migração aplicada em MariaDB a partir de core defasado.

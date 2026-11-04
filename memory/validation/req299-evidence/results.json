@@ -1,0 +1,207 @@
+{
+  "request": "REQ-299",
+  "batch": "BATCH-307",
+  "date": "2026-11-04",
+  "repository": "conn2flow",
+  "branch": "main",
+  "environment": {
+    "url": "https://snapphoton.local/",
+    "local": true,
+    "topology": "solo"
+  },
+  "phpunit_focused": {
+    "final_tests": 111,
+    "final_assertions": 417,
+    "hierarchy": 67,
+    "permissions_and_routes": 22,
+    "api_crud_and_minify_and_hierarchy": 89,
+    "failures": 0
+  },
+  "phpunit_full": {
+    "tests": 1992,
+    "assertions": 21568,
+    "failures": 21,
+    "skipped": 9,
+    "baseline": "BATCH-306: CRLF nas suítes Dashboard req-247/251/258 e Manutencao req-210; OpenSSL configurado, sem erro RSA."
+  },
+  "vitest": {
+    "files": 63,
+    "tests": 700,
+    "failures": 0
+  },
+  "browser": {
+    "passed": 17,
+    "checks": [
+      {
+        "name": "1280-membros-metrics",
+        "metrics": {
+          "selected": "true",
+          "border": "2px",
+          "color": "oklch(0.596 0.145 163.225)",
+          "transition": "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to",
+          "overflow": "hidden",
+          "height": 46,
+          "scroll": 46,
+          "pageOverflow": 0
+        }
+      },
+      {
+        "name": "1280px aba membros: indicador, transição e sem scroll vertical",
+        "ok": true
+      },
+      {
+        "name": "1280-perfis-metrics",
+        "metrics": {
+          "selected": "true",
+          "border": "2px",
+          "color": "oklch(0.596 0.145 163.225)",
+          "transition": "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to",
+          "overflow": "hidden",
+          "height": 46,
+          "scroll": 46,
+          "pageOverflow": 0
+        }
+      },
+      {
+        "name": "1280px aba perfis: indicador, transição e sem scroll vertical",
+        "ok": true
+      },
+      {
+        "name": "390-membros-metrics",
+        "metrics": {
+          "selected": "true",
+          "border": "2px",
+          "color": "oklch(0.596 0.145 163.225)",
+          "transition": "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to",
+          "overflow": "hidden",
+          "height": 46,
+          "scroll": 46,
+          "pageOverflow": 0
+        }
+      },
+      {
+        "name": "390px aba membros: indicador, transição e sem scroll vertical",
+        "ok": true
+      },
+      {
+        "name": "390-perfis-metrics",
+        "metrics": {
+          "selected": "true",
+          "border": "2px",
+          "color": "oklch(0.596 0.145 163.225)",
+          "transition": "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to",
+          "overflow": "hidden",
+          "height": 46,
+          "scroll": 46,
+          "pageOverflow": 0
+        }
+      },
+      {
+        "name": "390px aba perfis: indicador, transição e sem scroll vertical",
+        "ok": true
+      },
+      {
+        "name": "criar membro pela interface",
+        "ok": true
+      },
+      {
+        "name": "sessão de membro ativa acessa agenda",
+        "ok": true
+      },
+      {
+        "name": "editar nome, e-mail/login e perfil pela interface",
+        "ok": true
+      },
+      {
+        "name": "redefinir senha pela interface e conferir hash",
+        "ok": true
+      },
+      {
+        "name": "GET de exclusão recusado sem alterar membro",
+        "ok": true
+      },
+      {
+        "name": "POST sem CSRF recusado sem alterar membro",
+        "ok": true
+      },
+      {
+        "name": "sessão aberta bloqueada pela assinatura cancelled",
+        "ok": true
+      },
+      {
+        "name": "sessão aberta bloqueada pela assinatura suspended",
+        "ok": true
+      },
+      {
+        "name": "sessão aberta bloqueada pela assinatura expired",
+        "ok": true
+      },
+      {
+        "name": "reativação devolve acesso sem alterar membro",
+        "ok": true
+      },
+      {
+        "name": "exclusão confirmada remove membro e libera assento",
+        "ok": true
+      },
+      {
+        "name": "nenhum erro JavaScript no módulo equipe",
+        "ok": true
+      },
+      {
+        "name": "fixtures removidas",
+        "ok": true
+      }
+    ]
+  },
+  "fixtures": {
+    "before": {
+      "active_users": 7,
+      "active_profiles": 7
+    },
+    "after": {
+      "users": [
+        {
+          "status": "A",
+          "total": "7"
+        }
+      ],
+      "profiles": [
+        {
+          "status": "A",
+          "total": "7"
+        }
+      ]
+    },
+    "remaining_test_users": 0
+  },
+  "runtime": {
+    "core_pages_before": 262,
+    "core_pages_after": 264,
+    "project_pages_before": 136,
+    "project_pages_after": 136,
+    "note": "Duas páginas do Core EN antes ausentes foram inseridas; nenhum usuário/perfil preexistente removido. Houve reclassificação de duas páginas entre donos de projeto; total de páginas de projeto permaneceu 136."
+  },
+  "publication": {
+    "core_sync": 0,
+    "database_sync": 0,
+    "css_rebuild": 0,
+    "assets_publish": 0,
+    "source": "Core e autoria já instalada no destino; nenhuma fonte lumix em andamento publicada."
+  },
+  "screenshots": [
+    "1280-membros.png",
+    "1280-perfis.png",
+    "390-membros.png",
+    "390-perfis.png",
+    "bloqueio-cancelled.png",
+    "editar-membro.png",
+    "excluir-confirmacao.png",
+    "redefinir-senha.png"
+  ],
+  "limits": [
+    "OAuth/PAT exercitados pelas barreiras unitárias existentes; não emitidos no E2E.",
+    "Nenhum gateway real chamado, nenhuma produção alterada.",
+    "Homologação humana pendente."
+  ]
+}

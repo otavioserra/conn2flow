@@ -92,8 +92,9 @@ function equipe_raiz(){
 		// Membro sem perfil de equipe (criado antes dos perfis) precisa escolher um.
 		if(!isset($nomesPerfis[$id_perfil])) $selecao = '<option value="">'.htmlspecialchars(equipe_var('team-profile-choose')).'</option>'.$selecao;
 
-		$linha = modelo_var_troca($linha,'#nome#',htmlspecialchars((string)$membro['nome']));
-		$linha = modelo_var_troca($linha,'#email#',htmlspecialchars((string)$membro['email']));
+		$linha = modelo_var_troca_tudo($linha,'#nome#',htmlspecialchars((string)$membro['nome'],ENT_QUOTES));
+		$linha = modelo_var_troca_tudo($linha,'#email#',htmlspecialchars((string)$membro['email'],ENT_QUOTES));
+		$linha = modelo_var_troca_tudo($linha,'#perfil-id#',(string)$id_perfil);
 		$linha = modelo_var_troca($linha,'#selecao-perfil#',$selecao);
 		$linha = modelo_var_troca($linha,'#selo-status#',$ativo ? 'c2fc-selo-ativo' : 'c2fc-selo-inativo');
 		$linha = modelo_var_troca($linha,'#status#',equipe_var($ativo ? 'team-status-active' : 'team-status-inactive'));
@@ -219,6 +220,15 @@ function equipe_ajax_membro_status(){
 	),'team-status-ok');
 }
 
+function equipe_ajax_membro_alterar($acao){
+	equipe_ajax_resposta(usuario_equipe_membro_alterar(equipe_usuario_id(), (int)($_REQUEST['id'] ?? 0), $acao, Array(
+		'nome' => $_REQUEST['nome'] ?? '',
+		'email' => $_REQUEST['email'] ?? '',
+		'id_perfil' => $_REQUEST['id_perfil'] ?? 0,
+		'senha' => $_REQUEST['senha'] ?? '',
+	)), 'team-member-'.$acao.'-ok');
+}
+
 function equipe_ajax_membro_perfil(){
 	equipe_ajax_resposta(usuario_equipe_membro_perfil(
 		equipe_usuario_id(),
@@ -249,8 +259,17 @@ function equipe_start(){
 
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
+		if(($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST'){
+			http_response_code(405);
+			equipe_ajax_resposta(Array('ok' => false, 'erro' => 'team-not-allowed'), 'team-status-ok');
+			interface_ajax_finalizar();
+			return;
+		}
 
 		switch($_GESTOR['ajax-opcao']){
+			case 'membro-editar': equipe_ajax_membro_alterar('editar'); break;
+			case 'membro-senha': equipe_ajax_membro_alterar('senha'); break;
+			case 'membro-excluir': equipe_ajax_membro_alterar('excluir'); break;
 			case 'membro-criar': equipe_ajax_membro_criar(); break;
 			case 'membro-status': equipe_ajax_membro_status(); break;
 			case 'membro-perfil': equipe_ajax_membro_perfil(); break;

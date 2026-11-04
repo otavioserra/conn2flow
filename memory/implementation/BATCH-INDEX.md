@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-307 | implemented-pending-homologation | CRUD de membros, abas de equipe e bloqueio por assinatura do titular (REQ-299) | [BATCH-307.md](BATCH-307.md) | `main`; Lab E2E 17/17, Vitest 700/700, sem falhas PHP novas (21 CRLF do BATCH-306). |
 | BATCH-306 | implemented-pending-review | Equipe com perfis em cartões, rota inicial do perfil sem laço, atalhos de layout por módulo e mobile (REQ-298) | [BATCH-306.md](BATCH-306.md) | `main`, sem commit. PHPUnit focado 81/81; E2E 16/16 no `snapphoton.local` (com BATCH-267 do lumix). |
 | BATCH-305 | blocked | Usuários pai/filho, cota `max_sub_users`, bloqueio herdado do titular e aba Equipe (REQ-297) | [BATCH-305.md](BATCH-305.md) | Branch `feat/req-297-usuarios-pai-filho`. PHPUnit 1.947 sem falhas, Vitest 700, E2E 23/23 no Lab. Dev por release + painel: aguarda homologação e ok humano. |
 | BATCH-304 | implemented-pending-homologation | Fixture inofensiva de upload (REQ-296), sem alteração de produção | [BATCH-304.md](BATCH-304.md) | Branch `fix/req-296`; PHPUnit 8 testes e 46 asserções; Defender sem eventos 1116 na janela consultada. |

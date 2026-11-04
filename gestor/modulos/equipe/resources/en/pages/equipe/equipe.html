@@ -1,6 +1,6 @@
 <!-- REQ-298: perfis de equipe no padrão de usuarios-perfis/adicionar (cartões por grupo, chave por módulo e
      operações dentro do cartão) e selects da biblioteca de controles (`data-c2f-select`). -->
-<div id="equipe-painel" class="mx-auto w-full max-w-6xl min-w-0 space-y-5 px-0 py-2 sm:px-4 sm:py-5" data-confirmar-desativar="@[[team-deactivate-confirm]]@" data-confirmar-excluir="@[[team-profile-delete-confirm]]@" data-erro="@[[team-save-error]]@">
+<div id="equipe-painel" class="mx-auto w-full max-w-6xl min-w-0 space-y-5 px-0 py-2 sm:px-4 sm:py-5" data-confirmar-desativar="@[[team-deactivate-confirm]]@" data-confirmar-excluir="@[[team-profile-delete-confirm]]@" data-erro="@[[team-save-error]]@" data-confirmar-excluir-membro="@[[team-member-delete-confirm]]@" data-editar="@[[team-member-edit]]@" data-senha="@[[team-member-password]]@" data-adicionar="@[[team-add]]@" data-confirmar="@[[team-confirm]]@" data-salvar="@[[team-member-save]]@" data-nova-senha="@[[team-member-new-password]]@" data-senha-inicial="@[[team-password-label]]@">
     <div>
         <h1 class="flex items-center gap-2 text-xl font-semibold text-slate-900 sm:text-2xl"><i data-lucide="users-round" class="size-6 shrink-0"></i> @[[team-title]]@</h1>
         <p class="mt-1 text-sm text-slate-500">@[[team-help]]@</p>
@@ -8,9 +8,9 @@
     </div>
     <div id="equipe-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>
     <div>
-        <div class="c2fc-abas-lista c2fc-anexa overflow-x-auto" role="tablist">
-            <button type="button" class="c2fc-aba active" role="tab" aria-selected="true" data-equipe-aba="membros"><i data-lucide="users" class="size-4"></i> @[[team-tab-members]]@</button>
-            <button type="button" class="c2fc-aba" role="tab" aria-selected="false" data-equipe-aba="perfis"><i data-lucide="shield-check" class="size-4"></i> @[[team-tab-profiles]]@</button>
+        <div class="flex h-auto gap-2 overflow-x-auto overflow-y-hidden border-b border-slate-200" role="tablist">
+            <button type="button" class="inline-flex shrink-0 items-center gap-2 border-b-2 border-transparent px-4 py-3 text-sm font-medium text-slate-500 transition-colors hover:border-emerald-300 hover:text-emerald-700 aria-selected:border-emerald-600 aria-selected:text-emerald-700 active" role="tab" aria-selected="true" data-equipe-aba="membros"><i data-lucide="users" class="size-4"></i> @[[team-tab-members]]@</button>
+            <button type="button" class="inline-flex shrink-0 items-center gap-2 border-b-2 border-transparent px-4 py-3 text-sm font-medium text-slate-500 transition-colors hover:border-emerald-300 hover:text-emerald-700 aria-selected:border-emerald-600 aria-selected:text-emerald-700" role="tab" aria-selected="false" data-equipe-aba="perfis"><i data-lucide="shield-check" class="size-4"></i> @[[team-tab-profiles]]@</button>
         </div>
 
         <section class="c2fc-painel-aba min-w-0 space-y-5" role="tabpanel" data-equipe-painel="membros">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <button type="button" class="c2fc-botao justify-center" id="btn-equipe-cancelar">@[[team-cancel]]@</button>
-                    <button type="button" class="c2fc-botao c2fc-botao-primario justify-center" id="btn-equipe-criar"><i data-lucide="check" class="size-4"></i> @[[team-confirm]]@</button>
+                    <button type="button" class="c2fc-botao c2fc-botao-primario justify-center" id="btn-equipe-criar"><i data-lucide="check" class="size-4"></i> <span id="equipe-confirmar-rotulo">@[[team-confirm]]@</span></button>
                 </div>
             </div>
             <!-- membros-vazio < -->
@@ -72,7 +72,12 @@
                             <td class="break-all">#email#</td>
                             <td class="min-w-[180px]"><select class="equipe-membro-perfil c2fc-campo-selecao" data-c2f-select data-id="#id#" aria-label="@[[team-col-profile]]@">#selecao-perfil#</select></td>
                             <td><span class="c2fc-selo #selo-status#">#status#</span></td>
-                            <td><button type="button" class="c2fc-botao c2fc-botao-pequeno btn-equipe-status" data-id="#id#" data-status="#proximo-status#">#acao#</button></td>
+                            <td><div class="flex flex-wrap gap-2">
+                                <button type="button" class="c2fc-botao c2fc-botao-pequeno btn-equipe-editar" data-id="#id#" data-nome="#nome#" data-email="#email#" data-perfil="#perfil-id#">@[[team-member-edit]]@</button>
+                                <button type="button" class="c2fc-botao c2fc-botao-pequeno btn-equipe-senha" data-id="#id#">@[[team-member-password]]@</button>
+                                <button type="button" class="c2fc-botao c2fc-botao-pequeno btn-equipe-status" data-id="#id#" data-status="#proximo-status#">#acao#</button>
+                                <button type="button" class="c2fc-botao c2fc-botao-pequeno c2fc-botao-perigo-suave btn-equipe-excluir" data-id="#id#">@[[team-member-delete]]@</button>
+                            </div></td>
                         </tr><!-- membro > -->
                     </tbody>
                 </table>

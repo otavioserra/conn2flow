@@ -2195,7 +2195,9 @@ function perfil_usuario_signin(){
 			if($user_inactive){
 				interface_alerta(Array(
 					'redirect' => true,
-					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-inactive'))
+					'msg' => !empty($_GESTOR['usuario-assinatura-bloqueada'][(int)($id_usuarios ?? 0)])
+						? gestor_variaveis(Array('modulo' => 'equipe', 'id' => 'team-subscription-blocked'))
+						: gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-inactive'))
 				));
 			} else {
 				interface_alerta(Array(

@@ -69,6 +69,26 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 
+	function abrirMembro(acao, botao) {
+		formMembro.dataset.acao = acao;
+		formMembro.dataset.id = botao ? botao.dataset.id : '0';
+		formMembro.querySelector('h2').textContent = acao === 'editar' ? raiz.dataset.editar : (acao === 'senha' ? raiz.dataset.senha : raiz.dataset.adicionar);
+		document.getElementById('equipe-confirmar-rotulo').textContent = acao === 'criar' ? raiz.dataset.confirmar : raiz.dataset.salvar;
+		formMembro.querySelector('label[for="equipe-senha"]').textContent = acao === 'senha' ? raiz.dataset.novaSenha : raiz.dataset.senhaInicial;
+		document.getElementById('equipe-nome').value = botao ? botao.dataset.nome || '' : '';
+		document.getElementById('equipe-email').value = botao ? botao.dataset.email || '' : '';
+		document.getElementById('equipe-senha').value = '';
+		var perfil = document.getElementById('equipe-perfil');
+		perfil.value = botao ? botao.dataset.perfil || '' : (perfil.options[0] ? perfil.options[0].value : '');
+		perfil.dispatchEvent(new Event('change', { bubbles: true }));
+		['equipe-nome', 'equipe-email', 'equipe-perfil', 'equipe-senha'].forEach(function (id) {
+			var campo = document.getElementById(id);
+			campo.closest('.c2fc-campo').classList.toggle('hidden!', id === 'equipe-senha' ? acao === 'editar' : acao === 'senha');
+		});
+		formMembro.classList.remove('hidden');
+		document.getElementById(acao === 'senha' ? 'equipe-senha' : 'equipe-nome').focus();
+	}
+
 	Array.prototype.forEach.call(raiz.querySelectorAll('[data-equipe-aba]'), function (aba) {
 		aba.addEventListener('click', function () { ativarAba(aba.getAttribute('data-equipe-aba')); });
 	});
@@ -122,19 +142,31 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 			sincronizarOperacoes();
 		} else if (botao.id === 'btn-equipe-novo') {
-			formMembro.classList.remove('hidden');
-			document.getElementById('equipe-nome').focus();
+			abrirMembro('criar');
+		} else if (botao.classList.contains('btn-equipe-editar') || botao.classList.contains('btn-equipe-senha')) {
+			abrirMembro(botao.classList.contains('btn-equipe-editar') ? 'editar' : 'senha', botao);
+		} else if (botao.classList.contains('btn-equipe-excluir')) {
+			if (!(await confirmar(raiz.dataset.confirmarExcluirMembro))) return;
+			botao.disabled = true;
+			var removido = await enviar({ ajaxOpcao: 'membro-excluir', id: botao.dataset.id });
+			if (removido) recarregar('membros');
+			else botao.disabled = false;
 		} else if (botao.id === 'btn-equipe-cancelar') {
+			document.getElementById('equipe-senha').value = '';
 			formMembro.classList.add('hidden');
 		} else if (botao.id === 'btn-equipe-criar') {
+			botao.disabled = true;
 			var criado = await enviar({
-				ajaxOpcao: 'membro-criar',
+				ajaxOpcao: 'membro-' + (formMembro.dataset.acao || 'criar'),
+				id: formMembro.dataset.id || '0',
 				nome: document.getElementById('equipe-nome').value,
 				email: document.getElementById('equipe-email').value,
 				senha: document.getElementById('equipe-senha').value,
 				id_perfil: document.getElementById('equipe-perfil').value
 			});
+			document.getElementById('equipe-senha').value = '';
 			if (criado) recarregar('membros');
+			else botao.disabled = false;
 		} else if (botao.classList.contains('btn-equipe-status')) {
 			var status = botao.getAttribute('data-status');
 			if (status === 'I' && !(await confirmar(raiz.dataset.confirmarDesativar))) return;

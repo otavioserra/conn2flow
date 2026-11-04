@@ -21420,6 +21420,96 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-edit",
+        "valor": "Editar membro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-password",
+        "valor": "Redefinir senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-delete",
+        "valor": "Excluir membro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-delete-confirm",
+        "valor": "Excluir este membro definitivamente? O acesso será removido e a vaga ficará disponível para outro membro.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-editar-ok",
+        "valor": "Dados do membro atualizados. Ele deverá entrar novamente com o e-mail cadastrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-senha-ok",
+        "valor": "Senha redefinida. O membro deverá entrar novamente com a nova senha.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-excluir-ok",
+        "valor": "Membro excluído. A vaga da equipe já está disponível.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-subscription-blocked",
+        "valor": "O acesso da equipe está bloqueado porque a assinatura da conta titular está inativa ou com pagamento pendente. Peça ao titular para regularizar a assinatura e entre novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-save",
+        "valor": "Salvar alterações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-member-new-password",
+        "valor": "Nova senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "equipe",
         "id": "team-title",
@@ -21955,6 +22045,96 @@
         "modulo": "equipe",
         "id": "team-group-other",
         "valor": "Other modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-edit",
+        "valor": "Edit member",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-password",
+        "valor": "Reset password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-delete",
+        "valor": "Delete member",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-delete-confirm",
+        "valor": "Permanently delete this member? Their access will be removed and the seat will become available for another member.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-editar-ok",
+        "valor": "Member details updated. They must sign in again using the registered email.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-senha-ok",
+        "valor": "Password reset. The member must sign in again using the new password.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-excluir-ok",
+        "valor": "Member deleted. The team seat is now available.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-subscription-blocked",
+        "valor": "Team access is blocked because the account owner’s subscription is inactive or has an outstanding payment. Ask the owner to resolve the subscription and sign in again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-save",
+        "valor": "Save changes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-member-new-password",
+        "valor": "New password",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -1240,6 +1240,9 @@ function usuario_organizacao_id(?int $id_usuario = null): int {
  * @return bool True quando o acesso deve ser recusado.
  */
 function usuario_hierarquia_bloqueado(int $id_usuario): bool {
+	global $_GESTOR;
+
+	unset($_GESTOR['usuario-assinatura-bloqueada'][$id_usuario]);
 	$usuario = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'usuarios',
@@ -1260,8 +1263,37 @@ function usuario_hierarquia_bloqueado(int $id_usuario): bool {
 	));
 
 	if(!$titular || $titular['status'] !== 'A') return true;
+	if(usuario_equipe_assinatura_bloqueada($id_titular)){
+		$_GESTOR['usuario-assinatura-bloqueada'][$id_usuario] = true;
+		return true;
+	}
 
 	return !usuario_equipe_cota($id_titular)['ativa'];
+}
+
+/**
+ * REQ-299: estado local da assinatura do titular, atualizado pelos webhooks.
+ * Instalações sem subscriptions e contas sem assinatura mantêm o acesso próprio.
+ * Não consulta gateways nem guarda o resultado: uma reativação vale na próxima verificação.
+ */
+function usuario_equipe_assinatura_bloqueada(int $id_titular): bool {
+	if(!gestor_schema_tabela_existe('subscriptions')) return false;
+
+	$assinatura = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'subscriptions',
+		'campos' => Array('status', 'payment_status'),
+		'extra' => "WHERE user_id='".$id_titular."' AND status_controle!='D' ORDER BY id_subscriptions DESC LIMIT 1",
+	));
+
+	if(!$assinatura) return false;
+
+	$status = str_replace('_', '-', strtolower(trim((string)$assinatura['status'])));
+	$pagamento = str_replace('_', '-', strtolower(trim((string)$assinatura['payment_status'])));
+	$bloqueados = Array('inactive', 'cancelled', 'canceled', 'suspended', 'paused', 'expired', 'overdue', 'past-due', 'unpaid', 'incomplete', 'incomplete-expired', 'payment-failed', 'pending-payment');
+
+	return in_array($status, $bloqueados, true)
+		|| in_array($pagamento, Array('failed', 'declined', 'overdue', 'past-due', 'unpaid', 'late', 'expired'), true);
 }
 
 /**
@@ -1744,6 +1776,57 @@ function usuario_equipe_membro_perfil(int $id_titular, int $id_membro, int $id_p
 	}
 
 	return Array('ok' => true);
+}
+
+/** Edita cadastro e login, redefine senha ou exclui definitivamente um membro do titular. */
+function usuario_equipe_membro_alterar(int $id_titular, int $id_membro, string $acao, array $dados = Array()): array {
+	if(!usuario_equipe_habilitada($id_titular) || !in_array($acao, Array('editar', 'senha', 'excluir'), true)){
+		return Array('ok' => false, 'erro' => 'team-not-allowed');
+	}
+	if(!usuario_equipe_travar($id_titular)) return Array('ok' => false, 'erro' => 'team-busy');
+
+	$transacao = false;
+	try {
+		$filtro = "WHERE id_usuarios='".$id_membro."' AND id_usuarios_pai='".$id_titular."' AND status!='D'";
+		$membro = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('id_usuarios'), 'extra' => $filtro));
+		if(!$membro) return Array('ok' => false, 'erro' => 'team-member-not-found');
+
+		if($acao === 'editar'){
+			$nome = trim((string)($dados['nome'] ?? ''));
+			$email = trim((string)($dados['email'] ?? ''));
+			$id_perfil = (int)($dados['id_perfil'] ?? 0);
+			if($nome === '' || mb_strlen($nome) > 255) return Array('ok' => false, 'erro' => 'team-name-required');
+			if(strlen($email) > 255 || !filter_var($email, FILTER_VALIDATE_EMAIL)) return Array('ok' => false, 'erro' => 'team-email-invalid');
+			if(!usuario_equipe_perfil($id_titular, $id_perfil)) return Array('ok' => false, 'erro' => 'team-profile-required');
+			$email_sql = banco_escape_field($email);
+			$existente = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('id_usuarios'),
+				'extra' => "WHERE (usuario='".$email_sql."' OR email='".$email_sql."') AND id_usuarios!='".$id_membro."' AND status!='D'"));
+			if($existente) return Array('ok' => false, 'erro' => 'team-email-taken');
+			$nomes = explode(' ', preg_replace('/\s+/', ' ', $nome));
+			$primeiro = array_shift($nomes);
+			$ultimo = array_pop($nomes) ?? '';
+			$atualizacao = "nome='".banco_escape_field($nome)."',nome_conta='".banco_escape_field($nome)."',email='".$email_sql."',usuario='".$email_sql."',id_usuarios_perfis='".$id_perfil."'"
+				.",primeiro_nome='".banco_escape_field($primeiro)."',nome_do_meio='".banco_escape_field(implode(' ', $nomes))."',ultimo_nome='".banco_escape_field($ultimo)."'";
+		} elseif($acao === 'senha'){
+			$senha = (string)($dados['senha'] ?? '');
+			if(strlen($senha) < 12) return Array('ok' => false, 'erro' => 'team-password-weak');
+			$atualizacao = "senha='".banco_escape_field(password_hash(banco_escape_field($senha), PASSWORD_ARGON2I, Array('cost' => 9)))."'";
+		}
+
+		if(banco_query('START TRANSACTION') === false) return Array('ok' => false, 'erro' => 'team-save-error');
+		$transacao = true;
+		// Toda alteração exige nova autenticação e atualização do perfil na sessão.
+		if(banco_delete('usuarios_tokens', "WHERE id_usuarios='".$id_membro."'") === false) return Array('ok' => false, 'erro' => 'team-save-error');
+		$gravado = $acao === 'excluir'
+			? banco_delete('usuarios', $filtro)
+			: banco_update($atualizacao.',versao=versao+1,data_modificacao=NOW()', 'usuarios', $filtro);
+		if($gravado === false || banco_query('COMMIT') === false) return Array('ok' => false, 'erro' => 'team-save-error');
+		$transacao = false;
+		return Array('ok' => true);
+	} finally {
+		if($transacao) banco_query('ROLLBACK');
+		usuario_equipe_destravar($id_titular);
+	}
 }
 
 /**

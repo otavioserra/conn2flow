@@ -108,6 +108,124 @@ final class UsuarioHierarquiaCenarios extends PHPUnit\Framework\Assert
         $this->assertSame('membro@teste.local', $this->valor("SELECT usuario FROM usuarios WHERE id_usuarios={$id}"));
     }
 
+    public function testReq299EditaCadastroLoginEPerfilSemMudarOrganizacao(): void
+    {
+        $id = $this->criar()['id_usuarios'];
+        $perfil = usuario_equipe_perfil_salvar(self::TITULAR, ['nome' => 'Segundo', 'modulos' => ['agenda'], 'operacoes' => []]);
+        $this->assertTrue($perfil['ok']);
+        $idPerfil = (int)$this->valor("SELECT id_usuarios_perfis FROM usuarios_perfis WHERE nome='Segundo'");
+        $this->sql("INSERT INTO usuarios_tokens VALUES ({$id}, 'sessao')");
+        $this->assertTrue(usuario_equipe_membro_alterar(self::TITULAR, $id, 'editar', ['nome' => "Lia D'Ávila", 'email' => 'lia@teste.local', 'id_perfil' => $idPerfil])['ok']);
+        $this->assertSame("Lia D'Ávila", $this->valor("SELECT nome FROM usuarios WHERE id_usuarios={$id}"));
+        $this->assertSame('lia@teste.local', $this->valor("SELECT usuario FROM usuarios WHERE id_usuarios={$id}"));
+        $this->assertSame('lia@teste.local', $this->valor("SELECT email FROM usuarios WHERE id_usuarios={$id}"));
+        $this->assertSame($idPerfil, (int)$this->valor("SELECT id_usuarios_perfis FROM usuarios WHERE id_usuarios={$id}"));
+        $this->assertSame(self::TITULAR, usuario_organizacao_id($id));
+        $this->assertSame(0, (int)$this->valor("SELECT COUNT(*) FROM usuarios_tokens WHERE id_usuarios={$id}"));
+    }
+
+    public function testReq299ValidaEdicaoSemAlterarCadastro(): void
+    {
+        $id = $this->criar()['id_usuarios'];
+        $validos = ['nome' => 'Lia', 'email' => 'lia@teste.local', 'id_perfil' => self::PERFIL_EQUIPE];
+        foreach ([['nome' => ''], ['nome' => str_repeat('a', 256)], ['email' => 'invalido'], ['email' => 'outra@teste.local'], ['id_perfil' => self::PERFIL_OUTRA_EQUIPE], ['id_perfil' => 2]] as $invalido) {
+            $this->assertFalse(usuario_equipe_membro_alterar(self::TITULAR, $id, 'editar', array_replace($validos, $invalido))['ok']);
+        }
+        $this->assertSame('Ana Maria Souza', $this->valor("SELECT nome FROM usuarios WHERE id_usuarios={$id}"));
+        $this->assertTrue(usuario_equipe_membro_alterar(self::TITULAR, $id, 'editar', array_replace($validos, ['email' => 'membro@teste.local']))['ok']);
+    }
+
+    public function testReq299RedefineSenhaEEncerraSessoes(): void
+    {
+        $id = $this->criar()['id_usuarios'];
+        $senha = "nova-senha-com-'aspas";
+        $this->sql("INSERT INTO usuarios_tokens VALUES ({$id}, 'sessao')");
+        $this->assertFalse(usuario_equipe_membro_alterar(self::TITULAR, $id, 'senha', ['senha' => 'curta'])['ok']);
+        $this->assertTrue(usuario_equipe_membro_alterar(self::TITULAR, $id, 'senha', ['senha' => $senha])['ok']);
+        $hash = $this->valor("SELECT senha FROM usuarios WHERE id_usuarios={$id}");
+        $this->assertTrue(password_verify(banco_escape_field($senha), $hash));
+        $this->assertFalse(password_verify(banco_escape_field(self::SENHA), $hash));
+        $this->assertSame(0, (int)$this->valor("SELECT COUNT(*) FROM usuarios_tokens WHERE id_usuarios={$id}"));
+    }
+
+    public function testReq299ExclusaoDefinitivaLiberaAssento(): void
+    {
+        $id = $this->criar()['id_usuarios'];
+        $this->criar('segundo@teste.local');
+        $this->assertFalse(usuario_equipe_cota(self::TITULAR)['disponivel']);
+        $this->assertTrue(usuario_equipe_membro_alterar(self::TITULAR, $id, 'excluir')['ok']);
+        $this->assertSame(0, (int)$this->valor("SELECT COUNT(*) FROM usuarios WHERE id_usuarios={$id}"));
+        $this->assertTrue(usuario_equipe_cota(self::TITULAR)['disponivel']);
+        $this->assertTrue($this->criar('terceiro@teste.local')['ok']);
+    }
+
+    public function testReq299AcoesRecusamOutraEquipeTitularFilhoEExcluido(): void
+    {
+        $id = $this->filho(40);
+        $excluido = $this->filho(41, 'D');
+        foreach (['editar', 'senha', 'excluir'] as $acao) {
+            $dados = ['nome' => 'Ataque', 'email' => 'ataque@teste.local', 'senha' => self::SENHA, 'id_perfil' => self::PERFIL_EQUIPE];
+            foreach ([[self::OUTRO_TITULAR, $id], [self::TITULAR, self::TITULAR], [$id, self::TITULAR], [self::TITULAR, $excluido]] as [$titular, $alvo]) {
+                $this->assertFalse(usuario_equipe_membro_alterar($titular, $alvo, $acao, $dados)['ok']);
+            }
+        }
+        $this->assertSame(5, (int)$this->valor('SELECT COUNT(*) FROM usuarios'));
+    }
+
+    public function testReq299FalhaDeEscritaReverteRevogacaoELiberaTrava(): void
+    {
+        $id = $this->criar()['id_usuarios'];
+        $this->sql("INSERT INTO usuarios_tokens VALUES ({$id}, 'sessao')");
+        $GLOBALS['falhar_sql'] = 'DELETE FROM usuarios WHERE';
+        $this->assertFalse(usuario_equipe_membro_alterar(self::TITULAR, $id, 'excluir')['ok']);
+        $this->assertSame(1, (int)$this->valor("SELECT COUNT(*) FROM usuarios_tokens WHERE id_usuarios={$id}"));
+        $this->assertSame(1, usuario_equipe_cota(self::TITULAR)['usados']);
+        $this->assertSame(count($GLOBALS['travas']), count($GLOBALS['liberadas']));
+    }
+
+    private function assinatura(string $status, string $pagamento = ''): void
+    {
+        unset($GLOBALS['_GESTOR']['schema-tabelas']);
+        $this->sql('CREATE TABLE IF NOT EXISTS subscriptions (id_subscriptions INTEGER PRIMARY KEY, user_id INTEGER, status TEXT, payment_status TEXT, status_controle TEXT)');
+        $this->sql('DELETE FROM subscriptions');
+        $this->sql("INSERT INTO subscriptions VALUES (1, 10, '{$status}', '{$pagamento}', 'A')");
+    }
+
+    public function testReq299AssinaturaBloqueiaMembroESemAlterarSeuStatus(): void
+    {
+        $id = $this->filho(40);
+        foreach (['inactive', 'cancelled', 'canceled', 'suspended', 'paused', 'expired', 'past_due', 'unpaid', 'pending-payment', 'incomplete_expired'] as $status) {
+            $this->assinatura($status);
+            $this->assertTrue(usuario_hierarquia_bloqueado($id), $status);
+            $this->assertFalse(gestor_acesso(false, 'agenda', ['id_usuarios' => $id, 'id_usuarios_perfis' => self::PERFIL_EQUIPE]));
+            $this->assertFalse(usuario_hierarquia_bloqueado(self::TITULAR));
+            $this->assertSame('A', $this->valor("SELECT status FROM usuarios WHERE id_usuarios={$id}"));
+        }
+        foreach (['failed', 'past_due', 'overdue', 'unpaid'] as $pagamento) {
+            $this->assinatura('payment-confirmed', $pagamento);
+            $this->assertTrue(usuario_hierarquia_bloqueado($id));
+        }
+        $this->assinatura('payment-confirmed', 'completed');
+        $this->assertFalse(usuario_hierarquia_bloqueado($id));
+        $this->assertEmpty($GLOBALS['_GESTOR']['usuario-assinatura-bloqueada'][$id]);
+    }
+
+    public function testReq299SemAssinaturaOuTabelaPreservaAcesso(): void
+    {
+        $id = $this->filho(40);
+        $this->assertFalse(usuario_hierarquia_bloqueado($id));
+        $this->assinatura('active');
+        $this->assertFalse(usuario_hierarquia_bloqueado($id));
+        $this->assinatura('trialing');
+        $this->assertFalse(usuario_hierarquia_bloqueado($id));
+        $this->assinatura('cancelled');
+        $this->sql("UPDATE subscriptions SET user_id=20");
+        $this->assertFalse(usuario_hierarquia_bloqueado($id));
+        $this->sql("UPDATE subscriptions SET user_id=10, status_controle='D'");
+        $this->assertFalse(usuario_hierarquia_bloqueado($id));
+        $this->assertEmpty($GLOBALS['erros_sql']);
+    }
+
     public function testMembroNaoNasceComOPerfilDoTitularNemDeOutraConta(): void
     {
         foreach ([2, 1, self::PERFIL_OUTRA_EQUIPE, 0] as $perfil) {

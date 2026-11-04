@@ -138,11 +138,15 @@ extrair_funcoes($raiz . 'bibliotecas/banco.php', ['banco_select', 'banco_campos_
 
 if (getenv('API_CRUD_ACESSO_REAL')) {
     // RBAC real: gestor_acesso() do gestor.php e suas consultas, sobre as tabelas de perfil.
+    function gestor_incluir_biblioteca($nome) {}
+    extrair_funcoes($raiz . 'bibliotecas/usuario.php', ['usuario_hierarquia_bloqueado']);
     function existe($valor) { return isset($valor) && $valor !== ''; }
     function gestor_perfil_permissao_sql($usuario, $coluna = 'modulo') { return ''; }
     extrair_funcoes($raiz . 'bibliotecas/banco.php', ['banco_select_name']);
     extrair_funcoes($raiz . 'gestor.php', ['gestor_acesso']);
-    $GLOBALS['pdo']->exec("CREATE TABLE usuarios_perfis (id_usuarios_perfis INTEGER, id TEXT);
+    $GLOBALS['pdo']->exec("CREATE TABLE usuarios (id_usuarios INTEGER, id_usuarios_pai INTEGER, status TEXT);
+INSERT INTO usuarios VALUES (7, NULL, 'A');
+CREATE TABLE usuarios_perfis (id_usuarios_perfis INTEGER, id TEXT);
 CREATE TABLE usuarios_perfis_modulos (id_usuarios_perfis_modulos INTEGER PRIMARY KEY AUTOINCREMENT, modulo TEXT, perfil TEXT);
 CREATE TABLE modulos_operacoes (id TEXT, operacao TEXT, language TEXT, modulo_id TEXT, status TEXT);
 CREATE TABLE usuarios_perfis_modulos_operacoes (id_usuarios_perfis_modulos_operacoes INTEGER PRIMARY KEY AUTOINCREMENT, operacao TEXT, perfil TEXT);");

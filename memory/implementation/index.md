@@ -29,6 +29,8 @@
 | BATCH-300 | Docs na 3.0: seção MDD em /docs/mdd/ com 301, What's New da série 3.0 e rebuild (REQ-292) | docs:build publica memory/ em /docs/mdd/ mantendo os ids; a sincronização grava paginas_301 quando o caminho muda; What's New 3.0.0–3.0.14; memórias de engenharia e índices derivados fora da publicação. Lab validado; produção depende de release do core. | [source](<BATCH-300.md>) | implemented-pending-homologation |
 | BATCH-304 | REQ-296: fixture de upload inofensiva | Fixture de upload substituída por PHP inofensivo; 8 testes e 46 asserções aprovados no Windows. | [source](<BATCH-304.md>) | implemented-pending-homologation |
 | BATCH-305 | REQ-297: hierarquia de usuários pai/filho, cotas por perfil e aba Equipe | Pai/filho, cota max_sub_users, bloqueio herdado e aba Equipe prontos; Dev será atualizado por release e painel após homologação. | [source](<BATCH-305.md>) | blocked |
+| BATCH-306 | REQ-298: equipe com perfis no padrão de usuarios-perfis, fim do vazamento de atalhos, rota inicial do perfil e mobile | Recusa leva à primeira página do perfil (sem laço), atalhos fixos de layout por módulo, Dashboard só com permissão e perfis de equipe em cartões. | [source](<BATCH-306.md>) | implemented-pending-review |
+| BATCH-307 | REQ-299 — CRUD de membros, abas de equipe e bloqueio por assinatura do titular | Gestão completa de membros e bloqueio herdado da assinatura local do titular. | [source](<BATCH-307.md>) | implemented-pending-homologation |
 | RELATORIO-REQ-297 | REQ-297: relatório ao Arquiteto-Chefe | A REQ-297 cresceu para módulo Equipe, perfis por conta, dados por organização e autoria clínica no Photon. | [source](<RELATORIO-REQ-297-ARQUITETO.md>) | ready-for-review |
 
 ## Directories

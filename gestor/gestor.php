@@ -1803,6 +1803,9 @@ function gestor_permissao_token_processar(){
 
 					$hierarquia_bloqueada = function_exists('usuario_hierarquia_bloqueado')
 						&& usuario_hierarquia_bloqueado((int)$usuarios_tokens[0]['id_usuarios']);
+					if($bd_hash === $token_hash && !empty($_GESTOR['usuario-assinatura-bloqueada'][(int)$usuarios_tokens[0]['id_usuarios']])){
+						gestor_sessao_variavel('alerta', Array('msg' => gestor_variaveis(Array('modulo' => 'equipe', 'id' => 'team-subscription-blocked'))));
+					}
 
 					if($bd_hash === $token_hash && !$hierarquia_bloqueada){
 						$data_criacao = $usuarios_tokens[0]['data_criacao'];
@@ -2265,6 +2268,9 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 	if(!$usuario){
 		$usuario = gestor_usuario();
 	}
+
+	gestor_incluir_biblioteca('usuario');
+	if(usuario_hierarquia_bloqueado((int)($usuario['id_usuarios'] ?? 0))) return false;
 	
 	if(!$modulo){
 		$modulo = $_GESTOR['modulo'];
