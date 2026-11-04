@@ -1,7 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-298.md](req-298.md) (BATCH-306 ready-for-intake, 2026-11-03, Core - Solo / Autonomo Monitorado): Correcoes pos-homologacao em Equipe (UI de perfis espelhada em usuarios-perfis/adicionar, fim do vazamento de modulos nao autorizados no menu do membro, correcao do loop de redirect em /dashboard/, redirect pos-login e responsividade mobile 390px).
+  - [req-299.md](req-299.md) (BATCH-307 ready-for-intake, 2026-11-04, Core - Solo / Autonomo Monitorado): Propagacao automatica de bloqueio por assinatura vencida/inativa da conta titular para sub-usuarios da equipe.
+  - [req-298.md](req-298.md) (BATCH-306 merged-to-main, 2026-11-03, Core - Solo / Autonomo Monitorado): Correcoes pos-homologacao em Equipe (UI de perfis espelhada em usuarios-perfis/adicionar, fim do vazamento de modulos nao autorizados no menu do membro, correcao do loop de redirect em /dashboard/, redirect pos-login e responsividade mobile 390px).
   - [req-297.md](req-297.md) (BATCH-305 merged-to-main, 2026-10-30, Core - Solo / Autonomo Monitorado): Hierarquia de Usuarios Pai/Filho (BL-032), limite max_sub_users em usuarios_perfis, helper canonico usuario_organizacao_id() e atualizacao do Core no Dev (snapphoton-dev).
   - [req-296.md](req-296.md) (BATCH-304 `merged-to-main`, 2026-10-28, Core — Solo / Autônomo Monitorado): Remoção de payload heurístico de trojan (PHP/Chopper) no teste de upload e blindagem anti-falso-positivo do Windows Defender.
   - [req-295.md](req-295.md) (BATCH-303 `ready-for-intake`, 2026-10-21, Core — Solo / Autônomo Monitorado): docs de conceitos, guias, CLI, API e hooks na 3.0.14 e troca dos termos SDD por MDD. Frente 4 da revisão das docs.
