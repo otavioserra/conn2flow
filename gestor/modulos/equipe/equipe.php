@@ -105,14 +105,14 @@ function equipe_raiz(){
 	});
 
 	$pagina = equipe_blocos($pagina,'perfil',$perfis,function($linha,$perfil) use ($disponiveis){
-		$nomes = Array();
+		$selos = '';
 
 		foreach($perfil['modulos'] as $modulo){
-			if(isset($disponiveis['modulos'][$modulo])) $nomes[] = $disponiveis['modulos'][$modulo]['nome'];
+			if(isset($disponiveis['modulos'][$modulo])) $selos .= '<span class="c2fc-selo">'.htmlspecialchars((string)$disponiveis['modulos'][$modulo]['nome']).'</span>';
 		}
 
 		$linha = modelo_var_troca_tudo($linha,'#nome#',htmlspecialchars((string)$perfil['nome'],ENT_QUOTES));
-		$linha = modelo_var_troca($linha,'#modulos#',htmlspecialchars(implode(', ',$nomes)));
+		$linha = modelo_var_troca($linha,'#modulos#',$selos);
 		$linha = modelo_var_troca_tudo($linha,'#id#',(string)(int)$perfil['id_usuarios_perfis']);
 		$linha = modelo_var_troca($linha,'#json-modulos#',htmlspecialchars(json_encode($perfil['modulos']),ENT_QUOTES));
 		$linha = modelo_var_troca($linha,'#json-operacoes#',htmlspecialchars(json_encode($perfil['operacoes']),ENT_QUOTES));
@@ -120,25 +120,73 @@ function equipe_raiz(){
 		return $linha;
 	});
 
-	$pagina = equipe_blocos($pagina,'opcao-modulo',$disponiveis['modulos'],function($linha,$modulo){
-		$linha = modelo_var_troca($linha,'#valor#',htmlspecialchars((string)$modulo['id'],ENT_QUOTES));
-		$linha = modelo_var_troca($linha,'#rotulo#',htmlspecialchars((string)$modulo['nome']));
-
-		return $linha;
-	});
-
-	$pagina = equipe_bloco_condicional($pagina,'grupo-operacoes',(bool)$disponiveis['operacoes']);
-
-	$pagina = equipe_blocos($pagina,'opcao-operacao',$disponiveis['operacoes'],function($linha,$operacao) use ($disponiveis){
-		$rotulo = $disponiveis['modulos'][$operacao['modulo_id']]['nome'].': '.$operacao['nome'];
-
-		$linha = modelo_var_troca($linha,'#valor#',htmlspecialchars((string)$operacao['id'],ENT_QUOTES));
-		$linha = modelo_var_troca($linha,'#rotulo#',htmlspecialchars($rotulo));
-
-		return $linha;
-	});
+	$pagina = modelo_tag_in($pagina,'<!-- grupo-modulos < -->','<!-- grupo-modulos > -->',equipe_grupos_html($pagina,$disponiveis));
+	$pagina = modelo_tag_in($pagina,'<!-- opcao-operacao < -->','<!-- opcao-operacao > -->','');
 
 	$_GESTOR['pagina'] = $pagina;
+}
+
+/**
+ * Monta os cartões de módulos por grupo, como em usuarios-perfis/adicionar (REQ-298).
+ *
+ * Cada módulo traz as próprias operações dentro do cartão; grupos seguem a ordem do menu e módulos
+ * sem grupo conhecido vão para um grupo final.
+ */
+function equipe_grupos_html($pagina,$disponiveis){
+	global $_GESTOR;
+
+	$modeloGrupo = modelo_tag_val($pagina,'<!-- grupo-modulos < -->','<!-- grupo-modulos > -->');
+	$modeloModulo = modelo_tag_val($modeloGrupo,'<!-- opcao-modulo < -->','<!-- opcao-modulo > -->');
+	$modeloOperacoes = modelo_tag_val($modeloModulo,'<!-- operacoes-modulo < -->','<!-- operacoes-modulo > -->');
+	$modeloOperacao = modelo_tag_val($pagina,'<!-- opcao-operacao < -->','<!-- opcao-operacao > -->');
+
+	$grupos = banco_select(Array(
+		'tabela' => 'modulos_grupos',
+		'campos' => Array('id', 'nome'),
+		'extra' => "WHERE language='".banco_escape_field($_GESTOR['linguagem-codigo'] ?? 'pt-br')."' ORDER BY CASE WHEN ordemMenu IS NULL THEN 1 ELSE 0 END, ordemMenu ASC, nome ASC",
+	));
+
+	$nomesGrupos = Array();
+
+	foreach((is_array($grupos) ? $grupos : Array()) as $grupo){
+		$nomesGrupos[(string)$grupo['id']] = (string)$grupo['nome'];
+	}
+
+	$porGrupo = Array();
+
+	foreach($disponiveis['modulos'] as $modulo){
+		$grupo = (string)($modulo['modulo_grupo_id'] ?? '');
+		$porGrupo[isset($nomesGrupos[$grupo]) ? $grupo : ''][] = $modulo;
+	}
+
+	$html = '';
+
+	foreach(array_merge(array_keys($nomesGrupos), Array('')) as $grupo){
+		if(empty($porGrupo[$grupo])) continue;
+
+		$cartoes = '';
+
+		foreach($porGrupo[$grupo] as $modulo){
+			$operacoes = '';
+
+			foreach($disponiveis['operacoes'] as $operacao){
+				if($operacao['modulo_id'] !== $modulo['id']) continue;
+
+				$item = modelo_var_troca($modeloOperacao,'#valor#',htmlspecialchars((string)$operacao['id'],ENT_QUOTES));
+				$item = modelo_var_troca($item,'#modulo#',htmlspecialchars((string)$modulo['id'],ENT_QUOTES));
+				$operacoes .= modelo_var_troca($item,'#rotulo#',htmlspecialchars((string)$operacao['nome']));
+			}
+
+			$cartao = modelo_tag_in($modeloModulo,'<!-- operacoes-modulo < -->','<!-- operacoes-modulo > -->',$operacoes !== '' ? modelo_var_troca($modeloOperacoes,'#operacoes#',$operacoes) : '');
+			$cartao = modelo_var_troca($cartao,'#valor#',htmlspecialchars((string)$modulo['id'],ENT_QUOTES));
+			$cartoes .= modelo_var_troca_tudo($cartao,'#rotulo#',htmlspecialchars((string)$modulo['nome'],ENT_QUOTES));
+		}
+
+		$bloco = modelo_tag_in($modeloGrupo,'<!-- opcao-modulo < -->','<!-- opcao-modulo > -->',$cartoes);
+		$html .= modelo_var_troca($bloco,'#grupo-nome#',htmlspecialchars($grupo !== '' ? $nomesGrupos[$grupo] : equipe_var('team-group-other')));
+	}
+
+	return $html;
 }
 
 // ==== Ajax

@@ -387,13 +387,17 @@ function gestor_pagina_menu($params = false){
 	
 	$dashboard = '';
 	$grupos = Array();
-	
+
+	// REQ-298: o painel entra sempre no menu da conta própria, como antes. Sub-usuário só o vê quando o
+	// perfil de equipe dele o libera; senão o item levava a uma recusa.
+	$menuSubUsuario = (int)gestor_organizacao_id((int)($usuario['id_usuarios'] ?? 0)) !== (int)($usuario['id_usuarios'] ?? 0);
+
 	if($modulos)
 	foreach($modulos as $modulo){
 		// ===== Se o módulo tiver permissão de acesso incluir
 		$modulo_perfil = false;
-		
-		if($modulo['id'] == 'dashboard'){
+
+		if($modulo['id'] == 'dashboard' && !$menuSubUsuario){
 			$modulo_perfil = true;
 		} else {
 			if($usuarios_perfis_modulos)
@@ -869,6 +873,12 @@ function gestor_pagina_variaveis(){
 	// ===== Página variáveis trocar
 	
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#menu'.$close,gestor_pagina_menu());
+
+	// REQ-298: atalhos fixos do layout marcados com o módulo somem para quem não pode abri-lo.
+	$_GESTOR['pagina'] = gestor_pagina_blocos_por_modulo($_GESTOR['pagina'], function($modulo){
+		return isset($GLOBALS['_GESTOR']['usuario-id']) && gestor_permissao_modulo(false, $modulo);
+	});
+
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-raiz'.$close,$_GESTOR['url-raiz']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-full-http'.$close,$_GESTOR['url-full-http']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-caminho'.$close,$caminho);
@@ -2087,7 +2097,16 @@ function gestor_permissao(){
 	$rota_painel = gestor_permissao_rota_painel($_GESTOR['modulo'] ?? '', $_GESTOR['caminho-total'] ?? '');
 
 	if(!gestor_permissao_modulo(!$rota_painel)){
-		if($rota_painel){
+		// REQ-298: perfil sem o painel vai para a primeira página que ele pode abrir. O 403 só fica
+		// para quem não tem nenhuma, ou quando o destino seria a própria rota recusada.
+		$rota_inicial = gestor_permissao_rota_inicial();
+		$rota_atual = trim((string)($_GESTOR['caminho-total'] ?? ''), '/').'/';
+
+		if($rota_painel && !$_GESTOR['ajax'] && $rota_inicial !== '' && $rota_inicial !== 'dashboard/' && $rota_inicial !== $rota_atual){
+			gestor_redirecionar($rota_inicial);
+		}
+
+		if($rota_painel || $rota_inicial === '' || $rota_inicial === $rota_atual){
 			gestor_roteador_acesso_restrito_negado(Array(
 				'titulo' => 'panel-access-denied-title',
 				'texto' => 'panel-access-denied-text',
@@ -2098,15 +2117,66 @@ function gestor_permissao(){
 			gestor_roteador_erro(Array(
 				'codigo' => 401,
 				'ajax' => $_GESTOR['ajax'],
-				'redirect' => 'dashboard/',
+				'redirect' => $rota_inicial,
 			));
 		} else {
 			gestor_roteador_erro(Array(
 				'codigo' => 401,
-				'redirect' => 'dashboard/',
+				'redirect' => $rota_inicial,
 			));
 		}
 	}
+}
+
+/**
+ * REQ-298: primeira página que o usuário autenticado pode abrir, na ordem do menu.
+ *
+ * @return string Caminho relativo com barra final, ou vazio quando o perfil não abre nada.
+ */
+function gestor_permissao_rota_inicial(){
+	global $_GESTOR;
+
+	if(isset($_GESTOR['rota-inicial'])) return $_GESTOR['rota-inicial'];
+
+	$usuario = gestor_usuario();
+
+	// Usuário de host segue o caminho histórico: o painel decide.
+	if(existe($usuario['id_hosts'])) return $_GESTOR['rota-inicial'] = 'dashboard/';
+
+	$perfil = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('id'),
+		'extra' => "WHERE id_usuarios_perfis='".banco_escape_field((string)$usuario['id_usuarios_perfis'])."'",
+	));
+
+	if(!$perfil) return $_GESTOR['rota-inicial'] = '';
+
+	$permitidos = banco_select(Array(
+		'tabela' => 'usuarios_perfis_modulos',
+		'campos' => Array('modulo'),
+		'extra' => "WHERE perfil='".banco_escape_field($perfil['id'])."'".gestor_perfil_permissao_sql($usuario),
+	));
+
+	$idioma = banco_escape_field($_GESTOR['linguagem-codigo']);
+
+	$ordem = banco_select(Array(
+		'tabela' => 'modulos',
+		'campos' => Array('id'),
+		'extra' => "WHERE status='A' AND language='".$idioma."' ORDER BY nome ASC",
+	));
+
+	$paginas = banco_select(Array(
+		'tabela' => 'paginas',
+		'campos' => Array('modulo', 'caminho'),
+		'extra' => "WHERE raiz='1' AND status='A' AND language='".$idioma."'",
+	));
+
+	return $_GESTOR['rota-inicial'] = gestor_permissao_rota_inicial_escolher(
+		array_column(is_array($permitidos) ? $permitidos : Array(), 'modulo'),
+		array_column(is_array($ordem) ? $ordem : Array(), 'id'),
+		is_array($paginas) ? $paginas : Array()
+	);
 }
 
 function gestor_usuario(){

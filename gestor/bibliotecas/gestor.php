@@ -1453,6 +1453,70 @@ function gestor_permissao_rota_painel($modulo, $caminho){
 }
 
 /**
+ * REQ-298: escolhe a primeira página inicial que o usuário pode abrir. Função PURA.
+ *
+ * Perfil sem o painel (comum em perfis de equipe) recebia toda recusa em `dashboard/`, que também
+ * era recusado. A escolha segue a ordem do menu; `perfil-usuario` só vale como último recurso, porque
+ * todo membro de equipe o recebe e ele não é uma tela de trabalho.
+ *
+ * @param array $permitidos Ids dos módulos liberados ao usuário.
+ * @param array $ordem Ids dos módulos na ordem do menu.
+ * @param array $paginas Linhas com `modulo` e `caminho` das páginas raiz.
+ * @return string Caminho relativo com barra final, ou vazio quando nada serve.
+ */
+function gestor_permissao_rota_inicial_escolher(array $permitidos, array $ordem, array $paginas){
+	if(in_array('dashboard', $permitidos, true)) return 'dashboard/';
+
+	$caminhos = Array();
+
+	foreach($paginas as $pagina){
+		$modulo = (string)($pagina['modulo'] ?? '');
+		$caminho = trim((string)($pagina['caminho'] ?? ''), '/');
+
+		if($modulo === '' || $caminho === '') continue;
+
+		// A página cujo caminho é o próprio módulo vence as demais páginas raiz dele (ex.: a
+		// página pública `anamnese-paciente/` não é a entrada do módulo `anamnese`).
+		if(!isset($caminhos[$modulo]) || $caminho === $modulo) $caminhos[$modulo] = $caminho.'/';
+	}
+
+	$candidatos = array_merge(array_values(array_diff($ordem, Array('perfil-usuario'))), Array('perfil-usuario'));
+
+	foreach($candidatos as $modulo){
+		if(in_array($modulo, $permitidos, true) && isset($caminhos[$modulo])) return $caminhos[$modulo];
+	}
+
+	return '';
+}
+
+/**
+ * REQ-298: remove do layout os blocos de módulos que o usuário não pode abrir. Função PURA.
+ *
+ * Layouts de projeto trazem atalhos fixos (assinatura, configurações da conta) fora do menu montado
+ * pelo perfil. Um bloco entre `<!-- c2f-modulo:ID < -->` e `<!-- c2f-modulo:ID > -->` só fica quando
+ * `$permitido(ID)` devolve true. A recusa de acesso continua no roteador: isto só evita o atalho.
+ *
+ * @param string $html Página montada.
+ * @param callable $permitido Recebe o id do módulo e devolve bool.
+ * @return string
+ */
+function gestor_pagina_blocos_por_modulo($html, callable $permitido){
+	if(strpos((string)$html, '<!-- c2f-modulo:') === false) return (string)$html;
+
+	$decisoes = Array();
+
+	return (string)preg_replace_callback(
+		'/<!-- c2f-modulo:([a-z0-9_-]+) < -->(.*?)<!-- c2f-modulo:\1 > -->/is',
+		function($m) use ($permitido, &$decisoes){
+			if(!isset($decisoes[$m[1]])) $decisoes[$m[1]] = (bool)$permitido($m[1]);
+
+			return $decisoes[$m[1]] ? $m[2] : '';
+		},
+		(string)$html
+	);
+}
+
+/**
  * Registra um redirecionamento 301 de um caminho liberado por uma página (F10 do review 2026-08-15).
  *
  * Antes daqui, `admin-paginas` e `publisher-pages` traziam o mesmo bloco duplicado, com dedup por

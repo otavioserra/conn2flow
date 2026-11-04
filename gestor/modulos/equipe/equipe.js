@@ -88,15 +88,40 @@ document.addEventListener('DOMContentLoaded', function () {
 		Array.prototype.forEach.call(formPerfil.querySelectorAll('.equipe-opcao-operacao'), function (campo) {
 			campo.checked = operacoes.indexOf(campo.value) !== -1;
 		});
+		sincronizarOperacoes();
 		formPerfil.classList.remove('hidden');
 		document.getElementById('equipe-perfil-nome').focus();
 	}
+
+	// REQ-298: operação só vale com o módulo ligado; desligar o módulo limpa as operações dele.
+	function sincronizarOperacoes() {
+		Array.prototype.forEach.call(formPerfil.querySelectorAll('.equipe-opcao-modulo'), function (modulo) {
+			var cartao = modulo.closest('.equipe-modulo-cartao');
+			if (!cartao) return;
+			cartao.classList.toggle('border-sky-300', modulo.checked);
+			cartao.classList.toggle('bg-sky-50', modulo.checked);
+			Array.prototype.forEach.call(cartao.querySelectorAll('.equipe-opcao-operacao'), function (operacao) {
+				if (!modulo.checked) operacao.checked = false;
+				operacao.disabled = !modulo.checked;
+			});
+		});
+	}
+
+	formPerfil.addEventListener('change', function (evento) {
+		if (evento.target.classList.contains('equipe-opcao-modulo')) sincronizarOperacoes();
+	});
 
 	raiz.addEventListener('click', async function (evento) {
 		var botao = evento.target.closest('button');
 		if (!botao) return;
 
-		if (botao.id === 'btn-equipe-novo') {
+		if (botao.classList.contains('equipe-marcar-grupo')) {
+			var marcar = botao.getAttribute('data-marcar') === '1';
+			Array.prototype.forEach.call(botao.closest('.equipe-grupo').querySelectorAll('.equipe-opcao-modulo, .equipe-opcao-operacao'), function (campo) {
+				campo.checked = marcar;
+			});
+			sincronizarOperacoes();
+		} else if (botao.id === 'btn-equipe-novo') {
 			formMembro.classList.remove('hidden');
 			document.getElementById('equipe-nome').focus();
 		} else if (botao.id === 'btn-equipe-cancelar') {

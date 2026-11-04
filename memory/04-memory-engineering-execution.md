@@ -222,3 +222,11 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **PPA ondrej (Launchpad) x packages.sury.org**: no dia do patch o Launchpad atrasou e devolveu 503; o `packages.sury.org/php` já tinha 8.4.27 e 8.5.12 para jammy. Em atualização de segurança, usar a fonte do sury.
 - **Hestia no Lab com Caddy na frente**: o Caddy chega ao nginx por `host.docker.internal:8443`, então o domínio precisa do template nginx `conn2flow-req092` (`listen` sem `%ip%`). Com o template `conn2flow`, qualquer `v-rebuild-web-domains` / `v-change-sys-php` cria um loop de 301. E o `v-change-sys-php` regenera os domínios *antes* de trocar o padrão: rode `v-rebuild-web-domains` em cada usuário depois.
 - **Atualizar o PHP com o cron por minuto ativo gera um e-mail de fatal transitório** (extensão nova + core velho: `undefined symbol`). Antes de diagnosticar, confira o horário no `dpkg.log` contra o do cron.
+
+### REQ-298 / BATCH-306 — equipe, rota inicial do perfil e atalhos de layout (2026-11-03)
+
+- **Toda recusa ia para `dashboard/`**: perfil de equipe sem o painel recebia 403. `gestor_permissao_rota_inicial()` escolhe a primeira página raiz permitida (membro ∩ titular); 403 só sem destino.
+- **Atalho fixo de layout por módulo**: `<!-- c2f-modulo:ID < -->…<!-- c2f-modulo:ID > -->` some sem `gestor_permissao_modulo(false, ID)`, resolvido em `gestor_pagina_variaveis()`.
+- **Testar como outro usuário sem senha**: `c2f auth:cookie --project=<id> --user=<id> --out=<jar>`; para Playwright, ler o jar no script em vez de passar o cookie pela conversa.
+- **`node_modules` não existe na árvore principal**: `assets:minify` avisa e não gera o `.min.js`. `npm ci` (ignorado no git) antes de minificar.
+- **Suíte completa no checkout CRLF**: 21 falhas + 1 erro de ambiente (Dashboard Req247/251/258, Manutencao Req210, RSA). Comparar sempre com os arquivos tocados antes de concluir regressão.

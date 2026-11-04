@@ -1,131 +1,155 @@
-<div id="equipe-painel" class="mx-auto max-w-6xl space-y-5 px-4 py-5" data-confirmar-desativar="@[[team-deactivate-confirm]]@" data-confirmar-excluir="@[[team-profile-delete-confirm]]@" data-erro="@[[team-save-error]]@">
+<!-- REQ-298: perfis de equipe no padrão de usuarios-perfis/adicionar (cartões por grupo, chave por módulo e
+     operações dentro do cartão) e selects da biblioteca de controles (`data-c2f-select`). -->
+<div id="equipe-painel" class="mx-auto w-full max-w-6xl min-w-0 space-y-5 px-0 py-2 sm:px-4 sm:py-5" data-confirmar-desativar="@[[team-deactivate-confirm]]@" data-confirmar-excluir="@[[team-profile-delete-confirm]]@" data-erro="@[[team-save-error]]@">
     <div>
-        <h1 class="flex items-center gap-2 text-2xl font-semibold text-slate-900"><i data-lucide="users-round" class="size-6 shrink-0"></i> @[[team-title]]@</h1>
+        <h1 class="flex items-center gap-2 text-xl font-semibold text-slate-900 sm:text-2xl"><i data-lucide="users-round" class="size-6 shrink-0"></i> @[[team-title]]@</h1>
         <p class="mt-1 text-sm text-slate-500">@[[team-help]]@</p>
-        <p id="equipe-assentos" class="mt-3 text-sm font-semibold text-slate-800">#assentos#</p>
+        <p id="equipe-assentos" class="mt-3 inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-800"><i data-lucide="armchair" class="size-4"></i> #assentos#</p>
     </div>
     <div id="equipe-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>
-    <div class="c2fc-abas-lista c2fc-anexa" role="tablist">
-        <button type="button" class="c2fc-aba active" role="tab" aria-selected="true" data-equipe-aba="membros">@[[team-tab-members]]@</button>
-        <button type="button" class="c2fc-aba" role="tab" aria-selected="false" data-equipe-aba="perfis">@[[team-tab-profiles]]@</button>
-    </div>
-
-    <section class="space-y-5" role="tabpanel" data-equipe-painel="membros">
-        <!-- sem-assento < -->
-        <p class="text-sm text-slate-500">@[[team-quota-full]]@</p><!-- sem-assento > -->
-        <!-- sem-perfil < -->
-        <p class="text-sm text-slate-500">@[[team-profile-first]]@</p><!-- sem-perfil > -->
-        <!-- novo-membro < -->
-        <button type="button" class="c2fc-botao c2fc-botao-primario" id="btn-equipe-novo"><i data-lucide="user-plus" class="size-4"></i> @[[team-add]]@</button><!-- novo-membro > -->
-        <div id="equipe-membro-form" class="c2fc-cartao hidden">
-            <h2 class="c2fc-cartao-titulo">@[[team-add]]@</h2>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div class="c2fc-campo">
-                    <label class="c2fc-campo-rotulo" for="equipe-nome">@[[team-name-label]]@</label>
-                    <input type="text" id="equipe-nome" maxlength="255" autocomplete="off" class="c2fc-campo-entrada">
-                </div>
-                <div class="c2fc-campo">
-                    <label class="c2fc-campo-rotulo" for="equipe-email">@[[team-email-label]]@</label>
-                    <input type="email" id="equipe-email" maxlength="255" autocomplete="off" class="c2fc-campo-entrada">
-                </div>
-                <div class="c2fc-campo">
-                    <label class="c2fc-campo-rotulo" for="equipe-senha">@[[team-password-label]]@</label>
-                    <input type="password" id="equipe-senha" minlength="12" autocomplete="new-password" class="c2fc-campo-entrada">
-                    <p class="c2fc-campo-ajuda">@[[team-password-help]]@</p>
-                </div>
-                <div class="c2fc-campo">
-                    <label class="c2fc-campo-rotulo" for="equipe-perfil">@[[team-profile-label]]@</label>
-                    <select id="equipe-perfil" class="c2fc-campo-selecao">#opcoes-perfil#</select>
-                </div>
-            </div>
-            <div class="mt-4 flex flex-wrap gap-2">
-                <button type="button" class="c2fc-botao c2fc-botao-primario" id="btn-equipe-criar">@[[team-confirm]]@</button>
-                <button type="button" class="c2fc-botao" id="btn-equipe-cancelar">@[[team-cancel]]@</button>
-            </div>
+    <div>
+        <div class="c2fc-abas-lista c2fc-anexa overflow-x-auto" role="tablist">
+            <button type="button" class="c2fc-aba active" role="tab" aria-selected="true" data-equipe-aba="membros"><i data-lucide="users" class="size-4"></i> @[[team-tab-members]]@</button>
+            <button type="button" class="c2fc-aba" role="tab" aria-selected="false" data-equipe-aba="perfis"><i data-lucide="shield-check" class="size-4"></i> @[[team-tab-profiles]]@</button>
         </div>
-        <!-- membros-vazio < -->
-        <p class="text-sm text-slate-500">@[[team-empty]]@</p><!-- membros-vazio > -->
-        <!-- membros-tabela < -->
-        <div class="c2fc-tabela-caixa">
-            <table id="equipe-lista" class="c2fc-tabela">
-                <thead>
-                    <tr>
-                        <th>@[[team-col-name]]@</th>
-                        <th>@[[team-col-email]]@</th>
-                        <th>@[[team-col-profile]]@</th>
-                        <th>@[[team-col-status]]@</th>
-                        <th>@[[team-col-actions]]@</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- membro < -->
-                    <tr>
-                        <td class="font-medium">#nome#</td>
-                        <td>#email#</td>
-                        <td><select class="equipe-membro-perfil c2fc-campo-selecao" data-id="#id#" aria-label="@[[team-col-profile]]@">#selecao-perfil#</select></td>
-                        <td><span class="c2fc-selo #selo-status#">#status#</span></td>
-                        <td><button type="button" class="c2fc-botao c2fc-botao-pequeno btn-equipe-status" data-id="#id#" data-status="#proximo-status#">#acao#</button></td>
-                    </tr><!-- membro > -->
-                </tbody>
-            </table>
-        </div><!-- membros-tabela > -->
-    </section>
 
-    <section class="hidden space-y-5" role="tabpanel" data-equipe-painel="perfis">
-        <p class="text-sm text-slate-500">@[[team-profiles-help]]@</p>
-        <button type="button" class="c2fc-botao c2fc-botao-primario" id="btn-perfil-novo"><i data-lucide="plus" class="size-4"></i> @[[team-profile-add]]@</button>
-        <div id="equipe-perfil-form" class="c2fc-cartao hidden">
-            <input type="hidden" id="equipe-perfil-id" value="0">
-            <div class="c2fc-campo">
-                <label class="c2fc-campo-rotulo" for="equipe-perfil-nome">@[[team-profile-name-label]]@</label>
-                <input type="text" id="equipe-perfil-nome" maxlength="255" autocomplete="off" class="c2fc-campo-entrada">
-            </div>
-            <fieldset class="mt-4">
-                <legend class="c2fc-campo-rotulo">@[[team-profile-modules-label]]@</legend>
-                <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                    <!-- opcao-modulo < -->
-                    <label class="flex items-center gap-2 text-sm text-slate-700"><input type="checkbox" class="equipe-opcao-modulo" value="#valor#"> #rotulo#</label><!-- opcao-modulo > -->
+        <section class="c2fc-painel-aba min-w-0 space-y-5" role="tabpanel" data-equipe-painel="membros">
+            <!-- sem-assento < -->
+            <div class="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800"><i data-lucide="triangle-alert" class="mt-0.5 size-4 shrink-0"></i><span>@[[team-quota-full]]@</span></div><!-- sem-assento > -->
+            <!-- sem-perfil < -->
+            <div class="flex items-start gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800"><i data-lucide="info" class="mt-0.5 size-4 shrink-0"></i><span>@[[team-profile-first]]@</span></div><!-- sem-perfil > -->
+            <!-- novo-membro < -->
+            <div class="flex flex-wrap items-center justify-end gap-2">
+                <button type="button" class="c2fc-botao c2fc-botao-primario w-full justify-center sm:w-auto" id="btn-equipe-novo"><i data-lucide="user-plus" class="size-4"></i> @[[team-add]]@</button>
+            </div><!-- novo-membro > -->
+            <div id="equipe-membro-form" class="c2fc-cartao hidden">
+                <h2 class="c2fc-cartao-titulo">@[[team-add]]@</h2>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div class="c2fc-campo">
+                        <label class="c2fc-campo-rotulo" for="equipe-nome">@[[team-name-label]]@</label>
+                        <input type="text" id="equipe-nome" maxlength="255" autocomplete="off" class="c2fc-campo-entrada">
+                    </div>
+                    <div class="c2fc-campo">
+                        <label class="c2fc-campo-rotulo" for="equipe-email">@[[team-email-label]]@</label>
+                        <input type="email" id="equipe-email" maxlength="255" autocomplete="off" class="c2fc-campo-entrada">
+                    </div>
+                    <div class="c2fc-campo">
+                        <label class="c2fc-campo-rotulo" for="equipe-senha">@[[team-password-label]]@</label>
+                        <input type="password" id="equipe-senha" minlength="12" autocomplete="new-password" class="c2fc-campo-entrada">
+                        <p class="c2fc-campo-ajuda">@[[team-password-help]]@</p>
+                    </div>
+                    <div class="c2fc-campo">
+                        <label class="c2fc-campo-rotulo" for="equipe-perfil">@[[team-profile-label]]@</label>
+                        <select id="equipe-perfil" class="c2fc-campo-selecao" data-c2f-select>#opcoes-perfil#</select>
+                    </div>
                 </div>
-            </fieldset>
-            <!-- grupo-operacoes < -->
-            <fieldset class="mt-4">
-                <legend class="c2fc-campo-rotulo">@[[team-profile-operations-label]]@</legend>
-                <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <!-- opcao-operacao < -->
-                    <label class="flex items-center gap-2 text-sm text-slate-700"><input type="checkbox" class="equipe-opcao-operacao" value="#valor#"> #rotulo#</label><!-- opcao-operacao > -->
+                <div class="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                    <button type="button" class="c2fc-botao justify-center" id="btn-equipe-cancelar">@[[team-cancel]]@</button>
+                    <button type="button" class="c2fc-botao c2fc-botao-primario justify-center" id="btn-equipe-criar"><i data-lucide="check" class="size-4"></i> @[[team-confirm]]@</button>
                 </div>
-            </fieldset><!-- grupo-operacoes > -->
-            <div class="mt-4 flex flex-wrap gap-2">
-                <button type="button" class="c2fc-botao c2fc-botao-primario" id="btn-perfil-salvar">@[[team-profile-save]]@</button>
-                <button type="button" class="c2fc-botao" id="btn-perfil-cancelar">@[[team-cancel]]@</button>
             </div>
-        </div>
-        <!-- perfis-vazio < -->
-        <p class="text-sm text-slate-500">@[[team-profiles-empty]]@</p><!-- perfis-vazio > -->
-        <!-- perfis-tabela < -->
-        <div class="c2fc-tabela-caixa">
-            <table id="equipe-perfis-lista" class="c2fc-tabela">
-                <thead>
-                    <tr>
-                        <th>@[[team-profile-name-label]]@</th>
-                        <th>@[[team-profile-modules-label]]@</th>
-                        <th>@[[team-col-actions]]@</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- perfil < -->
-                    <tr>
-                        <td class="font-medium">#nome#</td>
-                        <td>#modulos#</td>
-                        <td>
-                            <div class="flex flex-wrap gap-2">
-                                <button type="button" class="c2fc-botao c2fc-botao-pequeno btn-perfil-editar" data-id="#id#" data-nome="#nome#" data-modulos="#json-modulos#" data-operacoes="#json-operacoes#">@[[team-profile-edit]]@</button>
-                                <button type="button" class="c2fc-botao c2fc-botao-pequeno c2fc-botao-perigo-suave btn-perfil-excluir" data-id="#id#">@[[team-profile-delete]]@</button>
+            <!-- membros-vazio < -->
+            <div class="flex flex-col items-center gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+                <span class="inline-flex size-12 items-center justify-center rounded-full bg-sky-100 text-sky-700"><i data-lucide="users" class="size-6"></i></span>
+                <p class="text-sm font-medium text-slate-700">@[[team-empty]]@</p>
+            </div><!-- membros-vazio > -->
+            <!-- membros-tabela < -->
+            <div class="c2fc-tabela-caixa max-w-full overflow-x-auto">
+                <table id="equipe-lista" class="c2fc-tabela min-w-[640px]">
+                    <thead>
+                        <tr>
+                            <th>@[[team-col-name]]@</th>
+                            <th>@[[team-col-email]]@</th>
+                            <th>@[[team-col-profile]]@</th>
+                            <th>@[[team-col-status]]@</th>
+                            <th>@[[team-col-actions]]@</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- membro < -->
+                        <tr>
+                            <td class="font-medium">#nome#</td>
+                            <td class="break-all">#email#</td>
+                            <td class="min-w-[180px]"><select class="equipe-membro-perfil c2fc-campo-selecao" data-c2f-select data-id="#id#" aria-label="@[[team-col-profile]]@">#selecao-perfil#</select></td>
+                            <td><span class="c2fc-selo #selo-status#">#status#</span></td>
+                            <td><button type="button" class="c2fc-botao c2fc-botao-pequeno btn-equipe-status" data-id="#id#" data-status="#proximo-status#">#acao#</button></td>
+                        </tr><!-- membro > -->
+                    </tbody>
+                </table>
+            </div><!-- membros-tabela > -->
+        </section>
+
+        <section class="c2fc-painel-aba hidden min-w-0 space-y-5" role="tabpanel" data-equipe-painel="perfis">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p class="text-sm text-slate-500">@[[team-profiles-help]]@</p>
+                <button type="button" class="c2fc-botao c2fc-botao-primario w-full shrink-0 justify-center sm:w-auto" id="btn-perfil-novo"><i data-lucide="plus" class="size-4"></i> @[[team-profile-add]]@</button>
+            </div>
+            <div id="equipe-perfil-form" class="c2fc-cartao hidden space-y-4">
+                <input type="hidden" id="equipe-perfil-id" value="0">
+                <div class="c2fc-campo">
+                    <label class="c2fc-campo-rotulo" for="equipe-perfil-nome">@[[team-profile-name-label]]@</label>
+                    <input type="text" id="equipe-perfil-nome" maxlength="255" autocomplete="off" class="c2fc-campo-entrada">
+                </div>
+                <h4 class="border-b border-slate-200 pb-2 text-sm font-semibold text-slate-900">@[[team-profile-modules-label]]@</h4>
+                <!-- grupo-modulos < -->
+                <div class="rounded-xl border border-slate-200 bg-white p-4 equipe-grupo">
+                    <div class="mb-3 flex flex-wrap items-center gap-2">
+                        <h5 class="mr-auto text-base font-semibold text-slate-900">#grupo-nome#</h5>
+                        <button class="c2fc-botao c2fc-botao-pequeno equipe-marcar-grupo" type="button" data-marcar="1"><i data-lucide="circle-check" class="size-4"></i> @[[team-select-all]]@</button>
+                        <button class="c2fc-botao c2fc-botao-pequeno equipe-marcar-grupo" type="button" data-marcar="0"><i data-lucide="circle-x" class="size-4"></i> @[[team-unselect-all]]@</button>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        <!-- opcao-modulo < -->
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 equipe-modulo-cartao">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-sm font-semibold text-slate-800">#rotulo#</span>
+                                <label class="c2fc-chave"><input type="checkbox" class="equipe-opcao-modulo" value="#valor#" aria-label="#rotulo#"><span class="c2fc-chave-trilho" aria-hidden="true"></span></label>
                             </div>
-                        </td>
-                    </tr><!-- perfil > -->
-                </tbody>
-            </table>
-        </div><!-- perfis-tabela > -->
-    </section>
+                            <!-- operacoes-modulo < -->
+                            <div class="mt-3 border-t border-slate-200 pt-2">
+                                <p class="mb-1 text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[team-profile-operations-label]]@</p>
+                                <div class="space-y-1">#operacoes#</div>
+                            </div><!-- operacoes-modulo > -->
+                        </div><!-- opcao-modulo > -->
+                    </div>
+                </div><!-- grupo-modulos > -->
+                <!-- opcao-operacao < -->
+                <label class="flex items-center gap-2 text-sm text-slate-700"><input type="checkbox" class="equipe-opcao-operacao size-4 rounded border-slate-300" value="#valor#" data-modulo="#modulo#"> <span>#rotulo#</span></label><!-- opcao-operacao > -->
+                <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                    <button type="button" class="c2fc-botao justify-center" id="btn-perfil-cancelar">@[[team-cancel]]@</button>
+                    <button type="button" class="c2fc-botao c2fc-botao-primario justify-center" id="btn-perfil-salvar"><i data-lucide="save" class="size-4"></i> @[[team-profile-save]]@</button>
+                </div>
+            </div>
+            <!-- perfis-vazio < -->
+            <div class="flex flex-col items-center gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+                <span class="inline-flex size-12 items-center justify-center rounded-full bg-sky-100 text-sky-700"><i data-lucide="shield-check" class="size-6"></i></span>
+                <p class="text-sm font-medium text-slate-700">@[[team-profiles-empty]]@</p>
+            </div><!-- perfis-vazio > -->
+            <!-- perfis-tabela < -->
+            <div class="c2fc-tabela-caixa max-w-full overflow-x-auto">
+                <table id="equipe-perfis-lista" class="c2fc-tabela min-w-[560px]">
+                    <thead>
+                        <tr>
+                            <th>@[[team-profile-name-label]]@</th>
+                            <th>@[[team-profile-modules-label]]@</th>
+                            <th>@[[team-col-actions]]@</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- perfil < -->
+                        <tr>
+                            <td class="font-medium">#nome#</td>
+                            <td><div class="flex flex-wrap gap-1">#modulos#</div></td>
+                            <td>
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="button" class="c2fc-botao c2fc-botao-pequeno btn-perfil-editar" data-id="#id#" data-nome="#nome#" data-modulos="#json-modulos#" data-operacoes="#json-operacoes#"><i data-lucide="pencil" class="size-4"></i> @[[team-profile-edit]]@</button>
+                                    <button type="button" class="c2fc-botao c2fc-botao-pequeno c2fc-botao-perigo-suave btn-perfil-excluir" data-id="#id#"><i data-lucide="trash-2" class="size-4"></i> @[[team-profile-delete]]@</button>
+                                </div>
+                            </td>
+                        </tr><!-- perfil > -->
+                    </tbody>
+                </table>
+            </div><!-- perfis-tabela > -->
+        </section>
+    </div>
 </div>

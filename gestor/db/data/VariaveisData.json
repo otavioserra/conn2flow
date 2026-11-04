@@ -21393,6 +21393,33 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-select-all",
+        "valor": "Marcar todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-unselect-all",
+        "valor": "Desmarcar todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "equipe",
+        "id": "team-group-other",
+        "valor": "Outros módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "equipe",
         "id": "team-title",
@@ -21901,6 +21928,33 @@
         "modulo": "equipe",
         "id": "team-save-error",
         "valor": "Could not save. Try again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-select-all",
+        "valor": "Select all",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-unselect-all",
+        "valor": "Unselect all",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "equipe",
+        "id": "team-group-other",
+        "valor": "Other modules",
         "tipo": "string",
         "grupo": null,
         "descricao": null

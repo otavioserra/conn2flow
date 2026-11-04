@@ -45,9 +45,10 @@ final class GestorPainelSemLacoReq131Test extends TestCase
         self::assertStringContainsString("\$rota_painel = gestor_permissao_rota_painel(\$_GESTOR['modulo'] ?? '', \$_GESTOR['caminho-total'] ?? '');", $corpo);
         self::assertStringContainsString('if(!gestor_permissao_modulo(!$rota_painel)){', $corpo);
 
-        // A tela 403 precisa vir antes de qualquer `redirect => dashboard/`.
+        // A tela 403 precisa vir antes de qualquer redirecionamento da recusa. REQ-298: o destino
+        // deixou de ser `dashboard/` fixo e passou a ser a primeira página do perfil.
         $negado = strpos($corpo, 'gestor_roteador_acesso_restrito_negado(');
-        $redirect = strpos($corpo, "'redirect' => 'dashboard/'");
+        $redirect = strpos($corpo, "'redirect' => \$rota_inicial");
         self::assertNotFalse($negado);
         self::assertLessThan($redirect, $negado);
         self::assertStringContainsString("'titulo' => 'panel-access-denied-title'", $corpo);
