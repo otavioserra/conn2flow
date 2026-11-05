@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.17] - 2026-11-05
+
+### Added
+- Project-Themable UI 3.0 Controls (`REQ-300` / `BATCH-308`): CSS action tokens in `controles.css` (`--c2fc-acao*`) allow project themes to customize action, focus and ring colors seamlessly. Added support for top-layer `<dialog>` overlay nesting in `c2fControles.dialogo`, project-level control layouts (`$_GESTOR['project-controles-layouts']`), customizable panel container (`c2f-painel-pagina`), and per-page layout override (`$_GESTOR['project-paginas-layout']`).
+- Interactive Calendar & Dynamic AJAX Selects (`REQ-300` / `BATCH-309`): new `c2fControles.calendario` for date inputs with keyboard navigation and available-date highlights (`BL-050`), hybrid AJAX dynamic search for large select dropdowns with debouncing (`BL-048`), and replaced native browser confirms with UI modal dialogs in `admin-cron` and `admin-environment` (`BL-049`).
+
 ## [3.0.16] - 2026-11-05
 
 ### Added

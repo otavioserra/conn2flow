@@ -5,6 +5,12 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.17] - 2026-11-05
+
+### Added
+- Controles de UI 3.0 Tematizáveis por Projeto (`REQ-300` / `BATCH-308`): tokens CSS de ação em `controles.css` (`--c2fc-acao*`) permitindo tematização de cores de ação, foco e anéis sem sobreposição manual. Adicionado suporte a diálogos sobrepostos dentro de `<dialog>` (top-layer) em `c2fControles.dialogo`, inclusão automática de controles por layout de projeto (`$_GESTOR['project-controles-layouts']`), container de painel customizável (`c2f-painel-pagina`) e substituição de layout por página (`$_GESTOR['project-paginas-layout']`).
+- Calendário Interativo e Selects Dinâmicos AJAX (`REQ-300` / `BATCH-309`): novo controle `c2fControles.calendario` para campos de data com navegação por teclado e destaque de dias disponíveis (`BL-050`), busca remota híbrida com debounce para selects com muitas opções (`BL-048`), e substituição de confirmações nativas por modais de diálogo no `admin-cron` e `admin-environment` (`BL-049`).
+
 ## [3.0.16] - 2026-11-05
 
 ### Added
