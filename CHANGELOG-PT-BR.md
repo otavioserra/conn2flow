@@ -5,6 +5,17 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.16] - 2026-11-05
+
+### Added
+- Gestão de Equipe e Sub-usuários (`REQ-297`, `REQ-298`, `REQ-299` / `BATCH-305`, `BATCH-306`, `BATCH-307`): novo módulo canônico `equipe` e aba Equipe no perfil de usuário permitindo às contas titulares gerenciar membros com perfis próprios e permissões dedicadas. Adicionada coluna `id_usuarios_pai` em `usuarios` e cota `max_sub_users` em `usuarios_perfis`, além do helper canônico `usuario_organizacao_id()`. Inclui CRUD completo de membros, redefinição de senha, modais de confirmação e interface responsiva para dispositivos móveis.
+- Bloqueio em Cascata por Assinatura (`REQ-299`): propagação automática de bloqueio de conta titular (status inativo ou assinatura vencida/cancelada) para todos os sub-usuários da equipe em sessões web, autenticação/renovação OAuth e tokens pessoais.
+
+### Fixed
+- Ícones de Menu (`REQ-299`): consulta ao mapa de compatibilidade Fomantic-para-Lucide antes do retorno rápido para classes de palavra única, garantindo renderização correta de ícones legados no menu do painel.
+- Catálogo de Widgets: correção da coluna `nome` do template no catálogo de registros (`html-editor.php`).
+- Fixture de Teste de Upload (`REQ-296` / `BATCH-304`): substituição de fixture heurística por arquivo inofensivo, prevenindo falsos positivos do Windows Defender em testes locais.
+
 ## [3.0.15] - 2026-10-21
 
 ### Changed

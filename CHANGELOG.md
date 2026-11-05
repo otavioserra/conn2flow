@@ -5,6 +5,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.16] - 2026-11-05
+
+### Added
+- Team Management & Sub-users (`REQ-297`, `REQ-298`, `REQ-299` / `BATCH-305`, `BATCH-306`, `BATCH-307`): new canonical `equipe` module and profile Team tab allowing owner accounts to manage team members with dedicated sub-user profiles and permissions. Added `id_usuarios_pai` on `usuarios` and `max_sub_users` quota on `usuarios_perfis` with canonical helper `usuario_organizacao_id()`. Includes member CRUD, password reset, modal confirmations and mobile responsive UI.
+- Subscription Cascade Lock (`REQ-299`): automatically propagates account lock or expired/inactive subscription from parent account to all team sub-users across web sessions, OAuth token issuance/refresh and personal tokens.
+
+### Fixed
+- Menu Icons (`REQ-299`): consult Fomantic-to-Lucide icon mapping before early return on single-word classes, ensuring legacy menu icons render correctly.
+- Widget Catalog: use template `nome` column in record catalog (`html-editor.php`).
+- Security Test Fixture (`REQ-296` / `BATCH-304`): replaced upload test fixture with an inert payload, preventing Windows Defender false-positive heuristics during local testing.
+
 ## [3.0.15] - 2026-10-21
 
 ### Changed
