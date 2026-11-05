@@ -403,9 +403,13 @@
                 abrirLogs(tarefa);
                 break;
             case 'delete':
-                if (window.confirm(rotulos.msgConfirmDelete)) {
-                    comBloqueio(botao, chamar('excluir', { id: id }));
-                }
+                // REQ-300 (BL-049): diálogo da UI 3.0; `confirm()` nativo só se os controles faltarem.
+                (window.c2fControles && window.c2fControles.dialogo
+                    ? window.c2fControles.dialogo.confirmar(rotulos.msgConfirmDelete, { perigo: true })
+                    : Promise.resolve(window.confirm(rotulos.msgConfirmDelete))
+                ).then(function (confirmado) {
+                    if (confirmado) comBloqueio(botao, chamar('excluir', { id: id }));
+                });
                 break;
         }
     }

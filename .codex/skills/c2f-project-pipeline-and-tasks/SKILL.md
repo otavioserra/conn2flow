@@ -3,7 +3,6 @@ name: c2f-project-pipeline-and-tasks
 description: "LEIA ANTES de sincronizar, compilar, testar ou fazer deploy de projetos e sites locais ou remotos. Se não ler: sincronização por cópia manual (cp) em vez do pipeline, banco desincronizado, *Data.json não recompilados, estado híbrido pós-deploy por ausência de css:rebuild e paralelismo concorrente travando o PHP."
 user-invocable: false
 ---
-
 # Pipeline de Projetos, Autoridade Declarativa e Tasks do Conn2Flow
 
 # ⚡ Gatilho Obrigatório
@@ -17,10 +16,9 @@ user-invocable: false
 
 ### Regra de Proporcionalidade de Build — REQ-075 / Core REQ-269
 
-- **Categoria A — backend sem HTML/classes/CSS/fontes de compilação alterados:** use `./c2f project:update-all <id> --skip-css` ou `./c2f manager:update-all --skip-css` quando houver sincronização local necessária. Para mudanças exclusivamente de Core/banco: `./c2f project:sync-core <id> --skip-css` e depois `./c2f project:sync-db <id> --core-resources`, sequencialmente. Build completo de Tailwind é proibido nesta categoria.
+- **Categoria A — backend sem HTML/classes/CSS/fontes de compilação alterados:** use `./c2f project:deploy <id>` ou `./c2f manager:update-all --skip-css` quando houver sincronização local necessária. Para Core isolado, use o pipeline do sistema. Build completo de Tailwind é proibido nesta categoria.
 - **Categoria B — documentação, skills, testes unitários e memória MDD:** apenas checks/testes locais; proibido executar pipeline de deploy no Lab.
-- **Categoria C — telas, templates HTML, componentes, classes Tailwind, CSS ou configuração/fontes de compilação:** projeto → `./c2f project:deploy <id>`; sistema → `./c2f manager:update-all`; sem `--skip-css`. CSS derivado precisa corresponder ao HTML publicado. Mudanças mistas com impacto de CSS pertencem a C.
-- **`project:update-all` é a exceção da exceção (REQ-284):** só quando core e projeto mudam no mesmo lote. Ele sincroniza e recompila o core e mantém o destino em manutenção (503) até o fim. Nunca publique com `project:sync-files` + `project:sync-db` avulsos: sem os dados do core antes, a retirada por dono desativa perfis do core (`administradores` perdeu o `dashboard` no Lab, incidente REQ-141 do conn2flow-site).
+- **Categoria C — telas, templates HTML, componentes, classes Tailwind, CSS ou configuração/fontes de compilação:** pipeline completo sem `--skip-css`; CSS derivado precisa corresponder ao HTML publicado. Mudanças mistas com impacto de CSS pertencem a C.
 
 `--skip-css` já existe no Core: o pipeline de projeto repassa a flag nas etapas 2/8 e 4/8 e pula CSS derivado em 7/8; o sistema pula Tailwind em 2/6 e CSS derivado em 5/6. Dados/metadados, arquivos, banco, JS e publicação continuam nas demais etapas. A via cirúrgica não substitui compilação/sincronização de recursos de autoria do projeto. Não faça `resources:sync` completo separado para contornar a economia de A. A flag não muda permissões, ambiente alvo, locks ou verificação de conteúdo. A meta de <45 segundos é dependente do ambiente e exige medição; neste lote de governança não se faz deploy para demonstrá-la.
 
@@ -44,12 +42,11 @@ user-invocable: false
 5. CSS Rebuild: reconstrução do CSS derivado (dispensada em A com `--skip-css`).
 6. Publicação de assets em `dist/`.
 
-### Pipeline Completo para Projetos (só com core e projeto mudando juntos / 8 etapas; ver Regra #8):
-Mudança só do projeto não usa este comando: use `./c2f project:deploy <projectID>`.
+### Pipeline padrão para projetos (95% dos casos):
 ```bash
-./c2f project:update-all <projectID>
+./c2f project:deploy <projectID>
 ```
-Consulte a sequência completa e atual de oito etapas na Regra #8; a Categoria A aplica `--skip-css` nas etapas pertinentes, sem alterar as demais.
+O deploy publica o projeto via `deploy-project-v2.sh`. Não atribua a ele as oito etapas de `project:update-all` nem a flag `--skip-css`, que o wrapper de deploy não repassa. A Regra #8 descreve somente a exceção mista Core + projeto.
 
 > [!IMPORTANT]
 > **Prevenção do Estado Híbrido Pós-Deploy**:
@@ -102,7 +99,7 @@ As tarefas definidas em `.vscode/tasks.json` são atalhos visuais para os comand
 | VS Code Task | Comando CLI Equivalente | Descrição |
 |---|---|---|
 | 🗃️ Projects - Sync Core → ID | `c2f project:sync-core <id>` | Sincroniza o Core para o espelho do projeto |
-| 🗃️ Projects - Update All → ID | `c2f project:update-all <id>` | 8 etapas: JS → Core → DB → Resources → Files → DB → CSS Rebuild → dist; Categoria A usa --skip-css |
+| 🗃️ Projects - Update All → ID (somente lote misto) | `c2f project:update-all <id>` | 8 etapas: JS → Core → DB → Resources → Files → DB → CSS Rebuild → dist; Categoria A usa --skip-css |
 | 🚀 Projects - Deploy Project → ID | `c2f project:deploy <id>` | Deploy do projeto para o servidor de destino |
 | 📦 Manager - Update All | `c2f manager:update-all` | 6 etapas: JS → Resources → Files → DB → CSS Rebuild → dist; Categoria A usa --skip-css |
 | 🎨 Tailwind - Sync Resources | `c2f resources:sync` | Compila recursos e gera `*Data.json` |
@@ -166,9 +163,9 @@ O endpoint `/_api/project/update` executa a sincronização de banco com `SELECT
 
 Diante de HTTP 500 no deploy via API:
 
-1. **Inspecionar imediatamente** o arquivo `conn2flow-gestor/logs/php-error.log` no servidor de destino.
-2. Buscar por `Allowed memory size of ... bytes exhausted`.
-3. O endpoint do Core foi ajustado para invocar `api_memoria_minima('1024M')`.
+1. Inspecionar log da sessão e depois access log do Nginx (código HTTP, bytes e horário).
+2. Correlacionar `conn2flow-gestor/logs/php-error.log` no mesmo horário; buscar `Allowed memory size of ... bytes exhausted` somente como hipótese a confirmar.
+3. Conferir banco SQL após os logs. O endpoint do Core foi ajustado para invocar `api_memoria_minima('1024M')`; não concluir falta de memória só pelo HTTP 500.
 
 ```bash
 # Via SSH — verificar últimas linhas do log de erro
@@ -180,7 +177,7 @@ ssh usuario@host "tail -50 /path/to/conn2flow-gestor/logs/php-error.log"
 
 ---
 
-## 🧭 Regra #8: O pipeline de projeto tem 8 etapas (correção da contagem)
+## 🧭 Regra #8: Exceção mista Core + projeto — `project:update-all <id>` (8 etapas)
 
 A sequência de `ProjectUpdateAllCommand.php` tem **oito** etapas. Use esta lista ao ler o log:
 
@@ -221,15 +218,29 @@ O pipeline por SSH não tem trava. Dois agentes publicando no mesmo ambiente ger
 
 - Antes de publicar e antes de validar, confira se o ambiente está ocioso: data de modificação do log `logs/atualizacoes-bd-<data>.log` e da pasta `resources/` no destino. Menos de dois minutos: espere.
 - Falha 500/503 intermitente numa rota que respondia 200 é, antes de tudo, sinal de deploy concorrente. Repita com o ambiente ocioso antes de investigar o código.
-- Árvore compartilhada com lote de outro agente em andamento não é origem de pipeline: o trabalho inacabado dele vai junto. Use uma worktree limpa (`scripts/git/create-agent-worktree`), com `dev-environment/data/environment.json` copiado.
+- Árvore compartilhada com lote de outro agente em andamento não é origem de pipeline: o trabalho inacabado dele vai junto. Preserve a origem e coordene os agentes; uma worktree só é admitida com concorrência comprovada, registro e consulta humana em caso de dúvida.
 
 ---
 
 ## 🧱 Regra #11: Regras de dados do sincronizador
 
 - `insert_only` vale para as estratégias `pk` e `natural_key`. Ao mudar a estratégia de uma tabela no contrato, confira que as proteções existem no ramo novo de `sincronizarTabela()`.
-- **Retirada por dono**: o que o dono deixa de entregar recebe `status='D'` (ou é apagado, se a tabela não tem `status`). O que volta a ser entregue é reativado pelo manifesto de retirados. Uma entrega com fonte incompleta desativa registros de verdade: nunca publique a partir de fonte pela metade.
+- **Retirada por dono (DEC-136)**: o que o dono deixa de entregar vira choque `retirado`, mantido até confirmação humana. Com retirada confirmada, tabelas sem `status` sofrem DELETE físico e exigem dump para recuperação. Fonte incompleta gera retiradas indevidas para análise; nunca a publique nem confirme essas retiradas automaticamente.
 - **Compilação de projeto usa as sementes do projeto.** Tabela declarada pelo core sem semente no projeto é pulada (`DYNAMIC_SKIP_PROJETO_SEM_SEMENTE`).
 - O pipeline de projeto roda **sem backup** das tabelas. Antes de validar regra de dados num ambiente, fotografe as tabelas envolvidas (uma consulta de leitura salva em arquivo) e compare depois.
 
 Nota de autoria: na via cirúrgica Core/banco, --core-resources preserva o dono das sementes do Core. Dados e recursos próprios do projeto exigem sua sincronização específica; não use essa flag para transferir autoria.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.
+
+## REP-002 — manifesto e diagnóstico
+
+`project:sync-core` e `sync-files` no Lab gravam fora do manifesto e podem produzir choques falsos. Prefira deploy/release; reconciliação em massa requer simulação e autorização humana. Não use essa via como atalho de rotina.
+“Falha <etapa>” é falha HTTP: log da sessão → access log do Nginx (código e bytes) → `php-error.log` no horário → banco SQL. Hipóteses de timeout/memória/sessão exigem evidência.
+
+Nota REQ-077: `--skip-css` refere-se aos comandos que a implementam (`manager:update-all` e à exceção `project:update-all`). O wrapper `ProjectDeployCommand.php` repassa somente projeto e `--contents`; não prescreva essa flag a `project:deploy`.

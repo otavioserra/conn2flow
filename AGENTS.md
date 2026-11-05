@@ -17,9 +17,9 @@
 
 ---
 
-## 📦 Configuração de Skills (45 Skills Oficiais)
+## 📦 Configuração de Skills (46 Skills Oficiais)
 
-Todas as **45 skills** do framework estão disponíveis em `.claude/skills/` e `.gemini/skills/` (com espelhamento nos demais clientes) e seguem o padrão aberto de progressive disclosure (`SKILL.md`):
+Todas as **46 skills** do framework estão disponíveis em `.claude/skills/` e `.gemini/skills/` (com espelhamento nos demais clientes) e seguem o padrão aberto de progressive disclosure (`SKILL.md`):
 
 ### 1. Skills de Papéis da Tríade MDD (3 Skills):
 > Consulte [memory/process/STARTER-PROMPTS.md](memory/process/STARTER-PROMPTS.md) para modelos de abertura rápida de chat prontos para copiar e colar.
@@ -63,7 +63,7 @@ Todas as **45 skills** do framework estão disponíveis em `.claude/skills/` e `
 - `c2f-quill-editor`
 - `c2f-assets-management`
 
-### 3. Skills de Governança e Workflow MDD (8 Skills):
+### 3. Skills de Governança e Workflow MDD (9 Skills):
 - `c2f-mdd-indexing-and-handoffs`
 - `mdd-workflow`
 - `start-mdd-slice`
@@ -91,7 +91,7 @@ Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `
 ## 🛡️ Regras Invioláveis de Governança
 
 1. **Proibição Absoluta de `git add -A` e `git add .`**: Commits devem SEMPRE listar arquivos específicos (`git add <caminhos-especificos>`).
-2. **Proibição de Sincronização por Cópia Manual**: NUNCA copie arquivos manualmente (`cp`, `copy`, `Copy-Item`) para pastas de teste/espelho (`dev-environment/data/sites/`). Use sempre `./c2f manager:update-all` (sistema) ou `./c2f project:update-all <id>` (projeto).
+2. **Proibição de Sincronização por Cópia Manual**: NUNCA copie arquivos manualmente (`cp`, `copy`, `Copy-Item`) para pastas de teste/espelho (`dev-environment/data/sites/`). Use sempre `./c2f manager:update-all` (sistema) ou `./c2f project:deploy <id>` (projeto).
 3. **Execução Sequencial Exclusiva**: Comandos de compilação em lote (`manager:update-all`, `project:update-all`, `css:rebuild`, `resources:sync`) devem executar um por vez em foreground com logs desbufferizados.
 4. **Fonte da Verdade em Runtime**: O runtime serve HTML e CSS exclusivamente do banco de dados SQL. `resources/` é a semente de autoria.
 5. **Version Bump Mandatório**: Ao alterar scripts JS ou estilos estáticos, incremente a versão no metadado `<id>.json` do recurso.
@@ -104,6 +104,15 @@ Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `
 
 ## Trava Tripla MDD — REQ-072 / ARCH-015
 
-Leia `c2f-mdd-indexing-and-handoffs` antes de criar metadados, regenerar índices ou transferir o lote. Novos artefatos usam YAML frontmatter; `memory:index/set/get` no core e `mdd index/meta set/meta get` no Client mantêm o índice derivado. A fonte canônica contém **45 skills** (3 papéis, 34 de core e 8 de governança).
+Leia `c2f-mdd-indexing-and-handoffs` antes de criar metadados, regenerar índices ou transferir o lote. Novos artefatos usam YAML frontmatter; `memory:index/set/get` no core e `mdd index/meta set/meta get` no Client mantêm o índice derivado. A fonte canônica contém **46 skills** (3 papéis, 34 de core e 9 de governança).
 
 Handoffs incluem projeto, raiz absoluta, REQ, BATCH, escopo, evidências, pendências, topologia e autonomia. `solo`: auto-revisão; `dupla`: retorno ao Macro-Arquiteto; `triade`: recibo e Revisor Independente com ficha em memory/human-reviews/. `supervisionado`: aguardar input humano em cada transição; `autonomo_monitorado`: Live Todo e acionamento autorizado; `autonomo_headless`: despacho/recibos persistentes. Somente humano assina homologação. Detalhes em memory/02-policy.md; dez fichas ativas, arquivos duais compacted/original.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.
+
+- `c2f-multilingual-skills-governance`: governança das traduções de skills e hash pairing SHA-256.

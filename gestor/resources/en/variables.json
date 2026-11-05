@@ -751,6 +751,26 @@
         "type": "string"
     },
     {
+        "id": "controles-mes-anterior",
+        "value": "Previous month",
+        "type": "string"
+    },
+    {
+        "id": "controles-proximo-mes",
+        "value": "Next month",
+        "type": "string"
+    },
+    {
+        "id": "controles-disponivel",
+        "value": "Available",
+        "type": "string"
+    },
+    {
+        "id": "controles-indisponivel",
+        "value": "Unavailable",
+        "type": "string"
+    },
+    {
         "id": "list-tailwind-search",
         "value": "Search",
         "type": "string",

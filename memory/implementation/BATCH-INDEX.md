@@ -13,6 +13,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-309 | implemented-pending-homologation | BL-049 confirmações, BL-048 select AJAX híbrido e BL-050 calendário de vagas (REQ-300) | [BATCH-309.md](BATCH-309.md) | `main`, sem commit; Vitest 716/716; Lab via lumix (agendamento público 6/6). |
+| BATCH-308 | implemented-pending-homologation | Tokens de ação no controles.css, diálogo em modal, controles/layout por projeto e container de painel por variável (REQ-300) | [BATCH-308.md](BATCH-308.md) | `main`, sem commit; equivalência do CSS provada; PHPUnit Req300 5/5; Lab via lumix 11/11 + 11/11. |
 | BATCH-307 | implemented-pending-homologation | CRUD de membros, abas de equipe e bloqueio por assinatura do titular (REQ-299) | [BATCH-307.md](BATCH-307.md) | `main`; Lab E2E 17/17, Vitest 700/700, sem falhas PHP novas (21 CRLF do BATCH-306). |
 | BATCH-306 | implemented-pending-review | Equipe com perfis em cartões, rota inicial do perfil sem laço, atalhos de layout por módulo e mobile (REQ-298) | [BATCH-306.md](BATCH-306.md) | `main`, sem commit. PHPUnit focado 81/81; E2E 16/16 no `snapphoton.local` (com BATCH-267 do lumix). |
 | BATCH-305 | blocked | Usuários pai/filho, cota `max_sub_users`, bloqueio herdado do titular e aba Equipe (REQ-297) | [BATCH-305.md](BATCH-305.md) | Branch `feat/req-297-usuarios-pai-filho`. PHPUnit 1.947 sem falhas, Vitest 700, E2E 23/23 no Lab. Dev por release + painel: aguarda homologação e ok humano. |

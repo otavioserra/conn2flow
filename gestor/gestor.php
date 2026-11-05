@@ -2890,6 +2890,18 @@ function gestor_roteador_csrf_token(){
 	exit;
 }
 
+/**
+ * REQ-300 (BATCH-308): layout que o PROJETO define para uma página (`$_GESTOR['project-paginas-layout']`,
+ * mapa `id da página => id do layout`). Sem mapa ou sem entrada, devolve o layout da própria página.
+ */
+function gestor_roteador_layout_projeto($paginaId, $layoutPadrao){
+	global $_GESTOR;
+	$mapa = $_GESTOR['project-paginas-layout'] ?? null;
+	if(!is_array($mapa) || $paginaId === '' || !isset($mapa[$paginaId])) return $layoutPadrao;
+	$layout = trim((string)$mapa[$paginaId]);
+	return $layout !== '' ? $layout : $layoutPadrao;
+}
+
 function gestor_roteador_layout_perfil($layoutPadrao, $mapeamento, $perfil){
 	if(!$perfil || !$mapeamento) return $layoutPadrao;
 	$mapa = gestor_layouts_perfis_mapa($mapeamento);
@@ -3354,7 +3366,15 @@ function gestor_roteador(){
 			// ele, como o painel inicial (dashboard), ficavam sem o CSS e sem a ponte.
 			// req-240: vale também em iframe (seletor de arquivos). A página Tailwind aberta em iframe usa os
 			// mesmos controles (diálogos de confirmação, dicas, selects); sem eles o seletor perdia funções.
-			if(strpos((string)($paginas[0]['layout_id'] ?? ''), 'layout-administrativo-tailwind') === 0){
+			// REQ-300 (BATCH-308): o projeto que tem painel próprio (ex.: layout `photon-admin`) lista os seus
+			// layouts em `project-controles-layouts` e recebe a biblioteca nas mesmas condições do painel do núcleo.
+			// O layout final da página (por projeto ou por perfil) também conta.
+			$layoutsComControles = is_array($_GESTOR['project-controles-layouts'] ?? null) ? $_GESTOR['project-controles-layouts'] : array();
+			$layoutDaPagina = (string)($paginas[0]['layout_id'] ?? '');
+			$layoutDoProjeto = gestor_roteador_layout_projeto((string)($paginas[0]['id'] ?? ''), $layoutDaPagina);
+			if(strpos($layoutDaPagina, 'layout-administrativo-tailwind') === 0
+				|| in_array($layoutDaPagina, $layoutsComControles, true)
+				|| in_array($layoutDoProjeto, $layoutsComControles, true)){
 				gestor_incluir_biblioteca('controles');
 				if(function_exists('controles_incluir')) controles_incluir();
 
@@ -3375,6 +3395,19 @@ function gestor_roteador(){
 			
 			// ===== Incluir um layout específico, ou padrão ou nenhum.
 			
+			// REQ-300 (BATCH-308): layout por página definido pelo projeto (`project-paginas-layout`), para servir
+			// uma página do núcleo no painel do projeto sem copiar o HTML. Mesmo tratamento do layout por perfil:
+			// o CSS da página só vale sozinho se foi compilado com o layout novo; senão entra o sidecar do layout.
+			// Limite (REQ-124 do lumix): com sidecar, utilities da página podem vencer as responsivas do layout
+			// (o `hidden` da página apaga um `lg:flex` do layout). Para layout Tailwind com barra responsiva,
+			// prefira a página declarada no projeto e compilada no bundle do layout.
+			$layoutOriginalProjeto = (string)($paginas[0]['layout_id'] ?? '');
+			$layoutTrocadoProjeto = gestor_roteador_layout_projeto((string)($paginas[0]['id'] ?? ''), $layoutOriginalProjeto);
+			if($layoutTrocadoProjeto !== $layoutOriginalProjeto){
+				$paginas[0]['layout_id'] = $layoutTrocadoProjeto;
+				$_GESTOR['tailwind-page-bundle'] = in_array($layoutTrocadoProjeto, gestor_css_layouts_cobertos((string)$css_precompiled), true);
+			}
+
 			if(!empty($paginas[0]['layouts_users_profiles'])){
 				$usuarioLayout = gestor_usuario();
 				$perfilLayout = !empty($usuarioLayout['id_usuarios_perfis']) && $usuarioLayout['id_usuarios_perfis'] !== '0'

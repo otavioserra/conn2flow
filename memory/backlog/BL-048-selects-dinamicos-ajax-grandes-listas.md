@@ -1,7 +1,8 @@
 ---
 id: "BL-048"
 title: "BL-048 — Selects Customizados com Busca e Paginação AJAX para Coleções Extensas (> 50 Registros) no Core UI"
-status: "BACKLOG"
+status: "PROMOTED"
+promoted_to: "REQ-300 (BATCH-309)"
 date: "2026-11-04"
 author: "architect"
 target_repo: "conn2flow"
@@ -12,7 +13,7 @@ summary_medium: "Evita sobrecarga de renderização HTML e consumo de memória a
 # BL-048 — Selects Customizados com Busca e Paginação AJAX para Coleções Extensas
 
 - **Tipo:** Feature / UI Core Subsystem
-- **Status:** BACKLOG
+- **Status:** PROMOTED → [req-300.md](../human-requests/req-300.md) (BATCH-309), 2026-11-05, por decisão do operador
 - **Prioridade:** Média (Planejado para escala de clínicas com alta volumetria de pacientes)
 - **Origem:** Observação do Engenheiro Chefe durante homologação da Versão 2.0 do SnapPhoton
 

@@ -18,7 +18,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -45,10 +45,10 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-297: componentes globais montados dinamicamente na página administrativa.",
                     "checksum": {
-                        "html": "f85d7bbc2f9d4735c22ed55a4cbca738",
+                        "html": "37fe8e222eed4d5f810cbe2103097541",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f85d7bbc2f9d4735c22ed55a4cbca738"
+                        "combined": "37fe8e222eed4d5f810cbe2103097541"
                     }
                 }
             ],
@@ -417,7 +417,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -444,10 +444,10 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-297: componentes globais montados dinamicamente na página administrativa.",
                     "checksum": {
-                        "html": "f85d7bbc2f9d4735c22ed55a4cbca738",
+                        "html": "37fe8e222eed4d5f810cbe2103097541",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f85d7bbc2f9d4735c22ed55a4cbca738"
+                        "combined": "37fe8e222eed4d5f810cbe2103097541"
                     }
                 }
             ],
@@ -806,5 +806,5 @@
             ]
         }
     },
-    "asset_version": "08d5fed5bc3c12b0"
+    "asset_version": "5cdef25c8b615cf4"
 }

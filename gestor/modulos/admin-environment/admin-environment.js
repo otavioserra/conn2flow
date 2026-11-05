@@ -798,8 +798,15 @@ $(document).ready(function () {
     });
 
     $('#btn-navegador-revogar-todos').click(function () {
-        if (!window.confirm($('#site-restricted-bypass').attr('data-confirm-revoke-all'))) return;
-        navegadorPasse('navegador-revogar-todos', $(this));
+        // REQ-300 (BL-049): diálogo da UI 3.0; `confirm()` nativo só se os controles faltarem.
+        var $botao = $(this);
+        var pergunta = $('#site-restricted-bypass').attr('data-confirm-revoke-all');
+        (window.c2fControles && window.c2fControles.dialogo
+            ? window.c2fControles.dialogo.confirmar(pergunta, { perigo: true })
+            : Promise.resolve(window.confirm(pergunta))
+        ).then(function (confirmado) {
+            if (confirmado) navegadorPasse('navegador-revogar-todos', $botao);
+        });
     });
 
     // Função para mostrar mensagens

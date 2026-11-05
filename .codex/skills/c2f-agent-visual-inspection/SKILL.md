@@ -147,7 +147,7 @@ Consulte o schema das ferramentas exposto pela versão instalada, incluindo `pag
 
 O ciclo de cinco etapas acima nasceu para o espelho Docker. Num projeto com `deploy_mode: ssh` (o destino é uma VM), use:
 
-1. `./c2f project:update-all <id>` a partir do core: é o que leva código e conteúdo ao ambiente.
+1. `./c2f project:deploy <id>` a partir do core: é o que leva código e conteúdo ao ambiente.
 2. `./c2f auth:cookie --project=<id>` (e `--user=<n>` para outro usuário) gera o jar pelo SSH.
 3. Para a barra de edição aparecer no Playwright, acrescente também o cookie de perfil ao contexto; só o de sessão não basta.
 4. `ignoreHTTPSErrors: true` no contexto: o certificado do ambiente de teste é local.
@@ -172,3 +172,10 @@ Deploy de outro agente em andamento produz 500/503 passageiros. Veja a Regra #10
 ### Guarde os scripts
 
 Script de validação escrito durante o lote vai para `sdd/validation/` do repositório, com o JSON do resultado. Script que fica só na pasta temporária da sessão não pode ser repetido por ninguém.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.

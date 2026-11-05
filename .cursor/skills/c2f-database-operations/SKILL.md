@@ -172,7 +172,7 @@ A sincronização de arquivos do pipeline (`project:update-all`) opera em **modo
 
 Ao renumerar uma migração Phinx para resolver conflito de timestamp:
 
-1. **Remover manualmente** o arquivo com o nome antigo do diretório de destino (`gestor/db/migrations/` no ambiente remoto ou espelho) **antes** de rodar o pipeline.
+1. **Após confirmação explícita do humano, remover manualmente** o arquivo com o nome antigo do diretório de destino (`gestor/db/migrations/` no ambiente remoto ou espelho) **antes** de rodar o pipeline.
 2. Em ambientes remotos, usar SSH para deletar:
 ```bash
 ssh usuario@host "rm /path/to/gestor/db/migrations/YYYYMMDDHHIISS_old_name.php"
@@ -200,7 +200,7 @@ O deploy não é só `INSERT`/`UPDATE`: o sincronizador aplica regras do contrat
 | `insert_only: true` | O registro que já existe nunca é atualizado. É o que protege `usuarios`: sem isso, a semente regrava login, e-mail e senha do administrador |
 | `preserve_on_user_modified` | Campos listados não são sobrescritos quando `user_modified=1` |
 | `strategy` (`pk` ou `natural_key`) | Define o ramo de `sincronizarTabela()`. Toda proteção precisa existir nos dois |
-| Retirada por dono | O que o dono deixou de entregar vira `status='D'`; o que volta é reativado pelo manifesto |
+| Retirada por dono | Retirada vira choque pendente; somente confirmação humana permite desativação ou DELETE (DEC-136) |
 
 ### Regras de trabalho
 
@@ -209,3 +209,15 @@ O deploy não é só `INSERT`/`UPDATE`: o sincronizador aplica regras do contrat
 - **Fotografe antes.** Consulta de leitura das tabelas de identidade e permissão antes e depois de validar uma regra de dados num ambiente; `diff` dos dois resultados.
 - **Teste os dois ramos.** Regra nova no sincronizador tem teste com `strategy: pk` e com `strategy: natural_key`.
 - **MariaDB e MySQL divergem**: `CAST(... AS JSON)` quebra no MariaDB; `JSON_QUERY` não existe no MySQL. Use `JSON_EXTRACT(x, '$')` e teste nos dois.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.
+
+## REP-002 — retirada física e Unicode
+
+DEC-136: mantenha registros por padrão; `status='D'` e `DELETE` requerem confirmação humana. Confira schema e `RECURSOS_RETIRADA ... removidos=` antes de propor reparo. Tabelas sem coluna `status`, como `variaveis`, sofrem DELETE físico quando a retirada é confirmada: não há reativação lógica. Valide o dump anterior, restaure em banco auxiliar, compare PKs/status/ausências e simule antes de aplicar o reparo autorizado.
+Tabelas e colunas de diff de choques (`atualizacoes_choques.diff`) devem usar `utf8mb4`, inclusive a conexão, para preservar emojis e evitar INSERT rejeitado no MariaDB. Confira retorno da gravação; não silencie erros.

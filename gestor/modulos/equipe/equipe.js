@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		Array.prototype.forEach.call(formPerfil.querySelectorAll('.equipe-opcao-modulo'), function (modulo) {
 			var cartao = modulo.closest('.equipe-modulo-cartao');
 			if (!cartao) return;
-			cartao.classList.toggle('border-sky-300', modulo.checked);
-			cartao.classList.toggle('bg-sky-50', modulo.checked);
+			cartao.classList.toggle('border-(--c2fc-acao-realce)', modulo.checked);
+			cartao.classList.toggle('bg-(--c2fc-acao-claro)', modulo.checked);
 			Array.prototype.forEach.call(cartao.querySelectorAll('.equipe-opcao-operacao'), function (operacao) {
 				if (!modulo.checked) operacao.checked = false;
 				operacao.disabled = !modulo.checked;

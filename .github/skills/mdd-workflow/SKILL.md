@@ -73,7 +73,7 @@ Se a tarefa apontar para `memory/human-requests/*.md` ou para a pasta `memory/hu
 2. **Nível 2: AUTÔNOMO MONITORADO (Live Autopilot / Glass-Box no Chat)**:
    - Ativado quando a requisição contiver `modo: autonomo_monitorado` ou o usuário autorizar expressamente o acompanhamento contínuo na tela.
    - O agente executa a esteira completa com **Live Todo List (`[ ]` ➔ `[x]`) visível e atualizado em tempo real**:
-     * Criação de branch/worktree isolada (`feat/req-XXX`).
+     * Criação de branch (`feat/req-XXX`); worktree apenas sob concorrência comprovada, conforme REQ-077.
      * Codificação e compilação de recursos (`c2f resources:sync`).
      * Execução de testes automatizados (`c2f db:test`).
      * **DEPLOY EXCLUSIVAMENTE EM AMBIENTE DE TESTE LOCAL** (`c2f manager:update-all` ou Docker local).
@@ -87,7 +87,7 @@ Se a tarefa apontar para `memory/human-requests/*.md` ou para a pasta `memory/hu
 
 3. **Nível 3: AUTÔNOMO HEADLESS (Background Silencioso / Black-Box)**:
    - Ativado quando a requisição contiver `modo: autonomo_headless`.
-   - O agente executa toda a esteira em segundo plano isolado via MCP Hub / Git Worktrees, emitindo notificação e relatório consolidado apenas ao término.
+   - O agente executa a esteira via MCP Hub, emitindo notificação e relatório consolidado ao término; worktree somente sob concorrência comprovada e com expurgo seguro ao fechar o lote.
 
 ## 🔒 Regras Mandatórias de Concorrência & Reserva Atômica de Requisições (`req-XXX.md`)
 
@@ -173,3 +173,10 @@ Na matriz conn2flow-ai-workspace e nos satélites migrados, use memory/; leia 00
 CURRENT.md pode apontar para requisição externa: resolva o link contra a origem, identifique repositório/raiz e leia a aprovação lá. Não crie cópia fictícia local nem execute no repo incorreto. Reparadores só reescrevem caminhos internos; links que saem do repositório são classificados e preservados. Se ferramenta legada rejeitar o link externo, registre a incompatibilidade e não remova o ponteiro só para conseguir PASS.
 
 Antes de reservar número novo, consulte refs com git ls-remote --heads origin para todas as branches envolvidas, fetch das refs relevantes e confira a sequência incluindo arquivos arquivados. Código de saída de grep encadeado não prova reserva nem ausência remota. Crie o intake com caminhos explícitos, faça o push autorizado e confira novamente a ref exata via git ls-remote; em rejeição ou movimento concorrente, releia a sequência e resolva a colisão sem force push. ls-remote é verificação, não lock atômico por si só; o push condicionado à ref anterior e a conferência da reserva são a garantia. Nesta entrega REQ-067 já está reservada: não reserve novo número.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.

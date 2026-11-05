@@ -16,6 +16,15 @@
 
 ## Tarefas recentes
 
+### REQ-300 / BATCH-308 e 309 — UI 3.0 tematizável e backlogs de controles (2026-11-05)
+
+- **Cor de ação dos controles é token** (`--c2fc-acao*` em `:root` do `controles.css`); projeto redefine com `html:root` (vence em qualquer ordem). Trocar hex por token: provar equivalência resolvendo os tokens pelos padrões.
+- **`dialogo.*` dentro de `<dialog>` modal**: o overlay entra no último `dialog:modal`. jsdom tem `showModal()` mas `:modal` é sempre false — emular no teste.
+- **Trocar layout em runtime (`project-paginas-layout`, layout por perfil) concatena sidecars**: o `hidden` da página apaga `lg:flex` do layout novo. Layout Tailwind com barra responsiva pede a página compilada no bundle do layout.
+- **`project:update-all` do Lab não publica `dist/`** (sem `ssh_public_path`); depois dele, `project:deploy` republica. Retirada de registro do projeto vira choque: `project:deploy` registra, `update:resolve --acao=sobrescrever` só com ok do operador.
+- Tailwind 4.3 compila `bg-(--token)`; heredoc com `\` corrompeu scripts 3 vezes nesta sessão — Write/Edit.
+- Memória em 240+ linhas: alerta preventivo (≥ 200); poda só em 300.
+
 ### REQ-297 / BATCH-305 — usuários pai/filho (2026-10-30)
 
 - **Chave estrangeira para `usuarios`**: `id_usuarios` é `int unsigned` nas instalações; a migração lê o tipo com `SHOW COLUMNS` e copia o sinal.

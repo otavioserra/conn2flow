@@ -19,7 +19,7 @@ if (-not $command) {
 # 1. Bloqueio de cópia manual para ambientes de teste/espelho
 $copyPattern = '\b(cp|copy|Copy-Item|xcopy)\b.*(dev-environment[\\/]data[\\/]sites|\/sites\/|\\sites\\)'
 if ($command -match $copyPattern) {
-    $msg = "Bloqueado por Governança: É proibido sincronizar por cópia manual. Utilize 'c2f manager:update-all' (sistema) ou 'c2f project:update-all <id>' (projeto)."
+    $msg = "Bloqueado por Governança: É proibido sincronizar por cópia manual. Utilize 'c2f manager:update-all' (sistema) ou 'c2f project:deploy <id>' (projeto)."
     [Console]::Error.WriteLine($msg)
     Write-Output "{`"permissionDecision`":`"deny`",`"reason`":`"$msg`"}"
     exit 1

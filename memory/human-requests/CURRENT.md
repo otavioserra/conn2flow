@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-300.md](req-300.md) (BATCH-308 + BATCH-309 `implemented-pending-homologation`, 2026-11-05, Core - Solo / Autonomo Monitorado): UI 3.0 tematizavel por projeto (tokens de acao no controles.css, dialogo dentro de `<dialog>` modal, controles e layout por pagina definidos pelo projeto, container de painel por variavel) e backlogs promovidos BL-048 (select AJAX hibrido), BL-049 (confirmacoes) e BL-050 (calendario). Origem: REQ-123/BATCH-271 do lumix; coordenada com a REQ-124 do lumix.
   - [req-299.md](req-299.md) (BATCH-307 implemented-pending-homologation, 2026-11-04, Core - Solo / Autonomo Monitorado): CRUD completo de membros em Equipe, abas UI 3.0 sem scroll vertical e propagacao automatica de bloqueio por assinatura vencida/inativa da conta titular para sub-usuarios da equipe.
   - [req-298.md](req-298.md) (BATCH-306 merged-to-main, 2026-11-03, Core - Solo / Autonomo Monitorado): Correcoes pos-homologacao em Equipe (UI de perfis espelhada em usuarios-perfis/adicionar, fim do vazamento de modulos nao autorizados no menu do membro, correcao do loop de redirect em /dashboard/, redirect pos-login e responsividade mobile 390px).
   - [req-297.md](req-297.md) (BATCH-305 merged-to-main, 2026-10-30, Core - Solo / Autonomo Monitorado): Hierarquia de Usuarios Pai/Filho (BL-032), limite max_sub_users em usuarios_perfis, helper canonico usuario_organizacao_id() e atualizacao do Core no Dev (snapphoton-dev).

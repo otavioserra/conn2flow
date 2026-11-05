@@ -23,14 +23,14 @@ O Antigravity suporta 3 papéis distintos no ecossistema:
   * Ler o briefing em `memory/human-requests/CURRENT.md` antes de qualquer alteração.
   * Renderizar e atualizar a Live Todo List (`[ ]` ➔ `[x]`) a cada etapa.
   * Implementar código, compilar recursos (`c2f resources:sync`) e rodar testes (`c2f test:run`).
-  * Executar pipelines oficiais (`./c2f manager:update-all` ou `./c2f project:update-all <id>`).
+  * Executar pipelines oficiais (`./c2f manager:update-all` ou `./c2f project:deploy <id>`).
 - **Regra**: Nunca copiar arquivos manualmente para pastas de teste e nunca usar `git add -A`.
 
 ### 3. 🔍 Revisor Técnico / Auditor de Qualidade (`c2f_reviewer`)
 - **Atuação**: Inspeção e auditoria técnica independente antes do fechamento de lotes.
 - **Responsabilidades**:
   * Auditar diffs de código (`git diff`) checando padrões de segurança, `variables.json` mandatório e CSRF.
-  * Executar `php cli/c2f.php ai:sync` para validar os contratos das 45 skills.
+  * Executar `php cli/c2f.php ai:sync` para validar os contratos das 46 skills.
   * Executar `c2f css:audit` para assegurar que não haja classes órfãs ou dívidas em PHP/JS.
   * Gerar o relatório de homologação técnica em `memory/validation/review-YYY.md`.
 
@@ -97,7 +97,7 @@ Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `
 
 ## 📦 Skills e Ferramentas
 
-O workspace possui **45 skills oficiais** em `.gemini/skills/` que seguem o padrão aberto de progressive disclosure (`SKILL.md`):
+O workspace possui **46 skills oficiais** em `.gemini/skills/` que seguem o padrão aberto de progressive disclosure (`SKILL.md`):
 - Papéis da Tríade MDD: `c2f-architect-master`, `c2f-executor-agent`, `c2f-reviewer-agent` (consulte [memory/process/STARTER-PROMPTS.md](memory/process/STARTER-PROMPTS.md) para modelos de abertura rápida de chat).
 - Planejamento e fluxo MDD: `mdd-workflow`, `start-mdd-slice`, `continue-mdd-batch`.
 - Mudanças e Governança: `raise-spec-change`, `mdd-memory-gardening`, `project-validation`.
@@ -107,6 +107,15 @@ O workspace possui **45 skills oficiais** em `.gemini/skills/` que seguem o padr
 
 ## Trava Tripla MDD — REQ-072 / ARCH-015
 
-Leia `c2f-mdd-indexing-and-handoffs` antes de criar metadados, regenerar índices ou transferir o lote. Novos artefatos usam YAML frontmatter; `memory:index/set/get` no core e `mdd index/meta set/meta get` no Client mantêm o índice derivado. A fonte canônica contém **45 skills** (3 papéis, 34 de core e 8 de governança).
+Leia `c2f-mdd-indexing-and-handoffs` antes de criar metadados, regenerar índices ou transferir o lote. Novos artefatos usam YAML frontmatter; `memory:index/set/get` no core e `mdd index/meta set/meta get` no Client mantêm o índice derivado. A fonte canônica contém **46 skills** (3 papéis, 34 de core e 9 de governança).
 
 Handoffs incluem projeto, raiz absoluta, REQ, BATCH, escopo, evidências, pendências, topologia e autonomia. `solo`: auto-revisão; `dupla`: retorno ao Macro-Arquiteto; `triade`: recibo e Revisor Independente com ficha em memory/human-reviews/. `supervisionado`: aguardar input humano em cada transição; `autonomo_monitorado`: Live Todo e acionamento autorizado; `autonomo_headless`: despacho/recibos persistentes. Somente humano assina homologação. Detalhes em memory/02-policy.md; dez fichas ativas, arquivos duais compacted/original.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.
+
+- `c2f-multilingual-skills-governance`: governança das traduções de skills e hash pairing SHA-256.

@@ -410,3 +410,11 @@ Não crie junction para outra worktree temporária; quando necessária, a refer�
 ### 19. iconv //TRANSLIT não portável no PHP Windows
 
 iconv('UTF-8', 'ASCII//TRANSLIT', $texto) pode substituir acentos por caracteres diferentes, interrogação ou retornar false conforme a plataforma. Para chaves/slugs que exigem determinismo, use tabela associativa explícita com strtr (inclua minúsculas/maiúsculas e o conjunto de caracteres aceito pelo produto), seguida de normalização controlada. Não converta falha em string vazia nem silencie warning. Exercite entrada acentuada em Windows e Linux, caracteres fora do mapa e repetibilidade; não aplique transliteração ao texto de apresentação. Preserve o comportamento de Unicode definido pelo contrato do recurso.
+
+## 20. REP-002 — stdin, edição com asserções e CRLF
+
+- Nunca execute `cat > arquivo;` sem entrada delimitada: fica esperando stdin até timeout. Prefira ferramenta de edição; scripts complexos devem ser escritos em arquivo e executados depois.
+- Substituições exigem caminho explícito e asserção da contagem esperada antes de gravar. Zero ou múltiplos inesperados abortam sem escrita; valide todos os alvos antes de alteração em lote.
+- Arquivos CRLF exigem ferramenta de edição segura ou script que leia bytes e preserve/normalize conscientemente os finais de linha; não aplique regex multilinha presumindo LF.
+- `grep -c $'\r'` pode produzir falso negativo no Windows/Git Bash. Confira bytes (`Path(...).read_bytes().count(b'\r\n')` ou PHP `bin2hex`); saída zero de grep não prova LF.
+- Na remoção Windows, use uma única shell de ponta a ponta; verifique caminhos absolutos e reparse points antes de excluir. Não enumere no PowerShell para passar exclusão ao CMD. Nunca atravesse junctions na limpeza.

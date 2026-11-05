@@ -22,7 +22,7 @@ fi
 
 # 1. Bloqueio de cópia manual para ambientes de teste/espelho
 if echo "$command" | grep -Eq '\b(cp|copy|Copy-Item|xcopy)\b.*(dev-environment/data/sites|/sites/)'; then
-    msg="Bloqueado por Governança: É proibido sincronizar por cópia manual. Utilize 'c2f manager:update-all' (sistema) ou 'c2f project:update-all <id>' (projeto)."
+    msg="Bloqueado por Governança: É proibido sincronizar por cópia manual. Utilize 'c2f manager:update-all' (sistema) ou 'c2f project:deploy <id>' (projeto)."
     echo "$msg" >&2
     echo "{\"permissionDecision\":\"deny\",\"reason\":\"$msg\"}"
     exit 1

@@ -60,7 +60,7 @@ verified_at: 5b4348ab       # git rev-parse --short HEAD do Core no momento da c
    - rode `php cli/c2f.php docs:extract --all`;
    - rode de novo `php cli/c2f.php docs:audit` até o item sair do ranking (score 0).
 7. **Publicar (local):**
-   - `php cli/c2f.php docs:build --project=conn2flow-site-local`, depois `php cli/c2f.php project:update-all conn2flow-site-local`;
+   - `php cli/c2f.php docs:build --project=conn2flow-site-local`, depois `php cli/c2f.php project:deploy conn2flow-site-local`;
    - confira as páginas (HTTP 200, `c2f page:inspect ... --screenshot`).
    - O deploy de **produção é do operador**.
 8. Registre no SDD do lote e atualize a memória de execução.
@@ -104,3 +104,10 @@ verified_at: 5b4348ab       # git rev-parse --short HEAD do Core no momento da c
 Cada tela documentada recebe uma seção padronizada "Como usar" ("How to use" no par inglês). Confira os rótulos reais em resources/ e os handlers atuais antes de escrever. Descreva entrada/rota e permissão, campos obrigatórios/opcionais com seus nomes literais, sequência de botões com seus nomes literais, resultado esperado e recuperação de erro. Mantenha o par de idiomas alinhado e use os termos exibidos naquele idioma.
 
 Não substitua nome visível por coluna SQL nem invente fluxo a partir de manual antigo. O assistente consulta essa seção via RAG: comportamento não documentado não pode ser prometido. Preserve referência técnica separadamente e confira o uso contra a tela real quando o fluxo mudar.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.

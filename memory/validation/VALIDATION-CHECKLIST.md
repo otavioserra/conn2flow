@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-308 / BATCH-309 — REQ-300
+
+- [x] Tokens `--c2fc-acao*` sem mudança visual no núcleo (equivalência com os padrões); projeto troca a cor só redefinindo tokens (lumix).
+- [x] Diálogo aberto de dentro de `<dialog>` modal fica dentro dele e clicável (Vitest + Lab).
+- [x] `project-controles-layouts` inclui a biblioteca; `.c2f-painel-pagina` com largura/respiro por variável na `equipe`.
+- [~] `project-paginas-layout` funciona, mas com sidecar o CSS da página vence as responsivas de layout Tailwind (barra do photon-admin): limite documentado.
+- [x] Sem `confirm()` nativo direto no núcleo; `confirmar` em forma objeto.
+- [x] Select AJAX híbrido (lista inicial, resposta atrasada descartada, parâmetros, 300 ms) e calendário de vagas com testes.
+- [x] Vitest 716/716; PHPUnit sem falha nova (23 preexistentes no Windows).
+- [ ] Homologação humana e release.
+
 ## BATCH-307 — REQ-299
 
 - [x] Titular edita nome, e-mail/login e perfil; redefinição de senha com hash compatível e sessões web encerradas.

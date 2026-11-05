@@ -35,7 +35,8 @@
     if (global.c2fControles) return;
 
     var PADRAO = { ok: 'OK', cancelar: 'Cancel', buscar: 'Search…', semResultado: 'No results', carregando: 'Loading…',
-        fechar: 'Close', selecione: 'Select…', confirmar: 'Confirm', remover: 'Remove', atencao: 'Attention' };
+        fechar: 'Close', selecione: 'Select…', confirmar: 'Confirm', remover: 'Remove', atencao: 'Attention',
+        mesAnterior: 'Previous month', proximoMes: 'Next month', disponivel: 'Available', indisponivel: 'Unavailable' };
 
     function texto(chave) {
         var t = (global.gestor && global.gestor.controlesTextos) || {};
@@ -54,6 +55,12 @@
         });
         (filhos || []).forEach(function (f) { if (f) n.appendChild(typeof f === 'string' ? document.createTextNode(f) : f); });
         return n;
+    }
+
+    // REQ-300: JSON de atributo (parâmetros fixos do select AJAX, datas do calendário); inválido = vazio.
+    function lerJson(bruto, padrao) {
+        if (!bruto) return padrao === undefined ? {} : padrao;
+        try { return JSON.parse(bruto); } catch (e) { return padrao === undefined ? {} : padrao; }
     }
 
     function opcaoNova(rotulo, valor) {
@@ -128,6 +135,17 @@
 
     var focoAnterior = [];
 
+    // REQ-300 (BATCH-308): um <dialog> aberto com showModal() fica na top layer e deixa o resto da página
+    // inerte. Diálogo dos controles aberto de dentro dele precisa nascer DENTRO dele, senão fica por trás e
+    // sem clique. Devolve o modal aberto mais recente (navegador sem `:modal`: qualquer <dialog open>).
+    function modalAberto() {
+        var abertos = document.querySelectorAll('dialog[open]');
+        for (var i = abertos.length - 1; i >= 0; i--) {
+            try { if (abertos[i].matches(':modal')) return abertos[i]; } catch (e) { return abertos[i]; }
+        }
+        return null;
+    }
+
     // Mensagem com ênfase vinda das variáveis do sistema (`<b>NÃO</b>`): só as tags de ênfase desta lista
     // viram elemento, e sem atributo nenhum; o resto da marcação entra como texto.
     var TAGS_FORMATADAS = { B: 1, STRONG: 1, I: 1, EM: 1, U: 1, BR: 1, CODE: 1 };
@@ -197,7 +215,7 @@
             if (cancelar) cancelar.addEventListener('click', negar);
             fundo.addEventListener('mousedown', function (ev) { if (ev.target === fundo && tipo !== 'alerta') negar(); });
             document.addEventListener('keydown', teclas, true);
-            document.body.appendChild(fundo);
+            (modalAberto() || document.body).appendChild(fundo);
             (entrada || ok).focus();
             if (entrada) entrada.select();
         });
@@ -205,7 +223,11 @@
 
     var dialogos = {
         alerta: function (mensagem, opcoes) { return dialogo('alerta', mensagem, null, opcoes); },
-        confirmar: function (mensagem, opcoes) { return dialogo('confirmar', mensagem, null, opcoes); },
+        // REQ-300 (BL-049): também na forma objeto, `confirmar({ titulo, mensagem, ok, cancelar, perigo })`.
+        confirmar: function (mensagem, opcoes) {
+            if (mensagem && typeof mensagem === 'object' && opcoes === undefined) { opcoes = mensagem; mensagem = opcoes.mensagem; }
+            return dialogo('confirmar', mensagem, null, opcoes);
+        },
         perguntar: function (mensagem, valor, opcoes) { return dialogo('perguntar', mensagem, valor, opcoes); }
     };
 
@@ -256,7 +278,13 @@
             var op = this.opcoes;
             this.multiplo = nativo.multiple;
             this.ajax = op.ajax || (nativo.getAttribute('data-c2f-ajax-opcao') ? { url: nativo.getAttribute('data-c2f-ajax-url') || global.location.pathname,
-                opcao: nativo.getAttribute('data-c2f-ajax-opcao'), minimo: parseInt(nativo.getAttribute('data-c2f-ajax-minimo') || '2', 10) } : null);
+                opcao: nativo.getAttribute('data-c2f-ajax-opcao'), minimo: parseInt(nativo.getAttribute('data-c2f-ajax-minimo') || '2', 10),
+                parametros: lerJson(nativo.getAttribute('data-c2f-ajax-parametros')) } : null);
+            // REQ-300 (BL-048): modo híbrido. As opções que vêm no HTML (as ~50 mais recentes/frequentes) são a
+            // lista de termo vazio ou curto; a busca remota troca a lista e, ao apagar o termo, elas voltam.
+            this._iniciais = this.ajax ? Array.prototype.filter.call(nativo.options, function (o) { return o.value !== ''; })
+                .map(function (o) { return { texto: o.textContent, valor: o.value }; }) : [];
+            this._buscaSeq = 0;
             var comBusca = op.busca !== undefined ? !!op.busca : (nativo.hasAttribute('data-c2f-busca') || !!this.ajax || nativo.options.length > 8);
             var idLista = idNovo('c2fc-l-');
             this.raiz = el('div', { 'class': 'c2fc-select' + (nativo.disabled ? ' c2fc-select-desabilitado' : '') });
@@ -423,7 +451,8 @@
             var self = this;
             var ajax = this.ajax;
             clearTimeout(this._temporizador);
-            if (termo.length < (ajax.minimo || 0)) { this._desenharLista(termo); return; }
+            var seq = ++this._buscaSeq;
+            if (termo.length < (ajax.minimo || 0)) { this._restaurarIniciais(); this._desenharLista(termo); return; }
             this._temporizador = setTimeout(function () {
                 var corpo = new URLSearchParams({ ajax: 'sim', ajaxOpcao: ajax.opcao, q: termo });
                 Object.keys(ajax.parametros || {}).forEach(function (k) { corpo.set(k, ajax.parametros[k]); });
@@ -431,20 +460,32 @@
                 fetch(ajax.url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: corpo })
                     .then(function (r) { return r.json(); })
                     .then(function (j) {
+                        // Resposta de uma digitação anterior que chegou depois da última: descartada.
+                        if (seq !== self._buscaSeq) return;
                         var itens = (j && j.data && (j.data.items || j.data.results)) || (j && (j.items || j.results)) || [];
-                        var mantidos = self._selecionados();
-                        Array.prototype.slice.call(self.nativo.options).forEach(function (o) { if (!o.selected && o.value !== '') self.nativo.removeChild(o); });
-                        itens.forEach(function (it) {
+                        self._trocarOpcoes(itens.map(function (it) {
                             var valor = String(it.value !== undefined ? it.value : it.id);
-                            if (mantidos.some(function (m) { return m.value === valor; })) return;
-                            self.nativo.appendChild(opcaoNova(it.text !== undefined ? it.text : (it.name || valor), valor));
-                        });
+                            return { texto: it.text !== undefined ? it.text : (it.name || valor), valor: valor };
+                        }));
                         self._desenharLista('');
                     })
-                    .catch(function () { self._desenharLista(termo); })
-                    .then(function () { carregando(self.painel, false); });
-            }, 250);
+                    .catch(function () { if (seq === self._buscaSeq) self._desenharLista(termo); })
+                    .then(function () { if (seq === self._buscaSeq) carregando(self.painel, false); });
+            }, 300);
         },
+
+        /** Troca as opções não selecionadas pelas da lista dada (as selecionadas ficam, sem duplicar). */
+        _trocarOpcoes: function (itens) {
+            var self = this;
+            var mantidos = this._selecionados();
+            Array.prototype.slice.call(this.nativo.options).forEach(function (o) { if (!o.selected && o.value !== '') self.nativo.removeChild(o); });
+            itens.forEach(function (it) {
+                if (mantidos.some(function (m) { return m.value === it.valor; })) return;
+                self.nativo.appendChild(opcaoNova(it.texto, it.valor));
+            });
+        },
+
+        _restaurarIniciais: function () { if (this.ajax && this._iniciais.length) this._trocarOpcoes(this._iniciais); },
 
         abrir: function () {
             if (this.nativo.disabled || !this.painel.classList.contains('c2fc-oculto')) return this;
@@ -459,6 +500,8 @@
                 global.addEventListener('resize', this._reposicionar);
             }
             if (this.busca) { this.busca.value = ''; this.busca.focus({ preventScroll: true }); }
+            // BL-048: reabrir mostra de novo a lista inicial, não o resultado da última busca remota.
+            if (this.ajax) { ++this._buscaSeq; this._restaurarIniciais(); }
             this._desenharLista('');
             return this;
         },
@@ -617,9 +660,226 @@
         }
     });
 
+    // =========================================================================== calendário
+
+    /**
+     * REQ-300 (BL-050): calendário mensal sobre um <input type="date" data-c2f-calendario>. O input continua
+     * sendo a fonte de verdade (o formulário o envia; `change` é disparado nele) e fica visualmente oculto.
+     * Disponibilidade (opcional): lista fixa em `data-c2f-calendario-disponiveis` (JSON ["AAAA-MM-DD"]) ou
+     * por mês via AJAX (`data-c2f-calendario-opcao`, `data-c2f-calendario-url`, `data-c2f-calendario-parametros`;
+     * POST com `mes=AAAA-MM`, resposta `{disponiveis:[...]}` direta ou em `data`). Com disponibilidade, só os
+     * dias listados podem ser escolhidos. `min`/`max` do input valem sempre. Semana começa no domingo
+     * (`data-c2f-calendario-inicio="1"` para segunda). Opções JS equivalentes: disponiveis, ajax, inicioSemana.
+     */
+    function isoData(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+    function dataIso(s) {
+        var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+        return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+    }
+
+    var Calendario = estender(Controle, {
+        montar: function () {
+            var self = this;
+            var input = this.input = this.elemento;
+            var op = this.opcoes;
+            var lista = op.disponiveis || lerJson(input.getAttribute('data-c2f-calendario-disponiveis'), null);
+            this.fixos = Array.isArray(lista) ? lista.slice() : null;
+            this.ajax = op.ajax || (input.getAttribute('data-c2f-calendario-opcao') ? { opcao: input.getAttribute('data-c2f-calendario-opcao'),
+                url: input.getAttribute('data-c2f-calendario-url') || global.location.pathname,
+                parametros: lerJson(input.getAttribute('data-c2f-calendario-parametros')) } : null);
+            this.inicioSemana = op.inicioSemana !== undefined ? op.inicioSemana : (input.getAttribute('data-c2f-calendario-inicio') === '1' ? 1 : 0);
+            this.porMes = {};
+            this.seq = 0;
+            var lingua = document.documentElement.lang || undefined;
+            this.fmtMes = new Intl.DateTimeFormat(lingua, { month: 'long', year: 'numeric' });
+            this.fmtDia = new Intl.DateTimeFormat(lingua, { weekday: 'short' });
+            this.fmtLongo = new Intl.DateTimeFormat(lingua, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+            // A classe própria oculta o nativo também quando o calendário nasce pela API JS (sem o atributo).
+            input.classList.add('c2fc-nativo', 'c2fc-calendario-nativo');
+            input.tabIndex = -1;
+            input.setAttribute('aria-hidden', 'true');
+            this.raiz = el('div', { 'class': 'c2fc-calendario' + (this.fixos || this.ajax ? ' c2fc-calendario-com-vagas' : '') });
+            this.anterior = el('button', { type: 'button', 'class': 'c2fc-calendario-nav', 'data-c2fc-mes-anterior': true, 'aria-label': texto('mesAnterior'), text: '‹' });
+            this.proximo = el('button', { type: 'button', 'class': 'c2fc-calendario-nav', 'data-c2fc-mes-proximo': true, 'aria-label': texto('proximoMes'), text: '›' });
+            this.titulo = el('h3', { 'class': 'c2fc-calendario-titulo', id: idNovo('c2fc-cal-'), 'aria-live': 'polite' });
+            this.raiz.appendChild(el('div', { 'class': 'c2fc-calendario-topo' }, [this.anterior, this.titulo, this.proximo]));
+            this.grade = el('table', { 'class': 'c2fc-calendario-grade', role: 'grid', 'aria-labelledby': this.titulo.id });
+            this.raiz.appendChild(this.grade);
+            if (this.fixos || this.ajax) {
+                this.raiz.appendChild(el('p', { 'class': 'c2fc-calendario-legenda' }, [
+                    el('span', { 'class': 'c2fc-legenda-disponivel', text: texto('disponivel') }),
+                    el('span', { 'class': 'c2fc-legenda-indisponivel', text: texto('indisponivel') })]));
+            }
+            input.parentNode.insertBefore(this.raiz, input.nextSibling);
+
+            var inicial = dataIso(input.value) || this._limitar(new Date());
+            this.mes = new Date(inicial.getFullYear(), inicial.getMonth(), 1);
+            this.foco = inicial;
+            this.anterior.addEventListener('click', function () { self.irMes(-1); });
+            this.proximo.addEventListener('click', function () { self.irMes(1); });
+            this.grade.addEventListener('keydown', function (ev) { self._teclas(ev); });
+            input.addEventListener('change', function () {
+                var d = dataIso(input.value);
+                if (d && (d.getMonth() !== self.mes.getMonth() || d.getFullYear() !== self.mes.getFullYear())) { self.mes = new Date(d.getFullYear(), d.getMonth(), 1); }
+                if (d) self.foco = d;
+                self._desenhar();
+            });
+            if (op.aoMudar) this.on('mudou', op.aoMudar);
+            this._desenhar();
+        },
+
+        _limite: function (atributo) { return dataIso(this.input.getAttribute(atributo)); },
+        _limitar: function (d) {
+            var min = this._limite('min'), max = this._limite('max');
+            if (min && d < min) return min;
+            if (max && d > max) return max;
+            return d;
+        },
+        _chaveMes: function (d) { return isoData(d).slice(0, 7); },
+        _disponiveis: function () {
+            if (this.fixos) return this.fixos;
+            if (this.ajax) return this.porMes[this._chaveMes(this.mes)] || null;
+            return null;
+        },
+        podeEscolher: function (d) {
+            var min = this._limite('min'), max = this._limite('max');
+            if ((min && d < min) || (max && d > max)) return false;
+            if (!this.fixos && !this.ajax) return true;
+            var vagas = this._disponiveis();
+            return !!vagas && vagas.indexOf(isoData(d)) >= 0;
+        },
+
+        irMes: function (passo) {
+            this.mes = new Date(this.mes.getFullYear(), this.mes.getMonth() + passo, 1);
+            var dia = Math.min(this.foco.getDate(), new Date(this.mes.getFullYear(), this.mes.getMonth() + 1, 0).getDate());
+            this.foco = new Date(this.mes.getFullYear(), this.mes.getMonth(), dia);
+            this._desenhar(true);
+            return this;
+        },
+
+        _carregarMes: function () {
+            var self = this, ajax = this.ajax, chave = this._chaveMes(this.mes);
+            if (!ajax || this.porMes[chave]) return;
+            var seq = ++this.seq;
+            var corpo = new URLSearchParams({ ajax: 'sim', ajaxOpcao: ajax.opcao, mes: chave });
+            Object.keys(ajax.parametros || {}).forEach(function (k) { corpo.set(k, ajax.parametros[k]); });
+            this.raiz.setAttribute('aria-busy', 'true');
+            fetch(ajax.url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: corpo })
+                .then(function (r) { return r.json(); })
+                .then(function (j) {
+                    var vagas = (j && j.data && j.data.disponiveis) || (j && j.disponiveis) || [];
+                    self.porMes[chave] = Array.isArray(vagas) ? vagas : [];
+                })
+                .catch(function () { self.porMes[chave] = []; })
+                .then(function () {
+                    // Mês que o usuário já deixou para trás: guarda no cache, mas não redesenha.
+                    if (seq !== self.seq) return;
+                    self.raiz.removeAttribute('aria-busy');
+                    self._desenhar();
+                });
+        },
+
+        _desenhar: function (focar) {
+            var self = this;
+            this._carregarMes();
+            this.titulo.textContent = this.fmtMes.format(this.mes);
+            var min = this._limite('min'), max = this._limite('max');
+            var primeiroDoMes = new Date(this.mes.getFullYear(), this.mes.getMonth(), 1);
+            var ultimoDoMes = new Date(this.mes.getFullYear(), this.mes.getMonth() + 1, 0);
+            this.anterior.disabled = !!(min && new Date(this.mes.getFullYear(), this.mes.getMonth(), 0) < min);
+            this.proximo.disabled = !!(max && new Date(this.mes.getFullYear(), this.mes.getMonth() + 1, 1) > max);
+            while (this.grade.firstChild) this.grade.removeChild(this.grade.firstChild);
+            var cabeca = el('tr');
+            for (var i = 0; i < 7; i++) {
+                var diaSemana = new Date(2023, 0, 1 + ((i + this.inicioSemana) % 7)); // 01/01/2023 foi domingo
+                cabeca.appendChild(el('th', { scope: 'col', abbr: this.fmtDia.format(diaSemana), text: this.fmtDia.format(diaSemana).replace('.', '') }));
+            }
+            this.grade.appendChild(el('thead', {}, [cabeca]));
+            var corpo = el('tbody');
+            var desloca = (primeiroDoMes.getDay() - this.inicioSemana + 7) % 7;
+            var hoje = isoData(new Date()), escolhido = this.input.value;
+            if (!this.podeEscolher(this.foco) || this.foco.getMonth() !== this.mes.getMonth()) {
+                var achou = null;
+                for (var d = 1; d <= ultimoDoMes.getDate() && !achou; d++) {
+                    var c = new Date(this.mes.getFullYear(), this.mes.getMonth(), d);
+                    if (this.podeEscolher(c)) achou = c;
+                }
+                if (achou && !(this.foco.getMonth() === this.mes.getMonth() && this.podeEscolher(this.foco))) this.foco = achou;
+            }
+            var linha = el('tr');
+            for (var v = 0; v < desloca; v++) linha.appendChild(el('td', { role: 'gridcell', 'class': 'c2fc-calendario-vazio' }));
+            for (var dia = 1; dia <= ultimoDoMes.getDate(); dia++) {
+                if (linha.children.length === 7) { corpo.appendChild(linha); linha = el('tr'); }
+                var data = new Date(this.mes.getFullYear(), this.mes.getMonth(), dia), iso = isoData(data);
+                var livre = this.podeEscolher(data);
+                var classes = 'c2fc-calendario-dia' + (iso === hoje ? ' c2fc-dia-hoje' : '')
+                    + ((this.fixos || this.ajax) ? (livre ? ' c2fc-dia-disponivel' : ' c2fc-dia-indisponivel') : '');
+                var botao = el('button', { type: 'button', 'class': classes, 'data-data': iso, tabindex: iso === isoData(this.foco) ? '0' : '-1',
+                    'aria-selected': iso === escolhido ? 'true' : 'false', 'aria-label': this.fmtLongo.format(data) + (!livre && (this.fixos || this.ajax) ? ' — ' + texto('indisponivel') : ''),
+                    text: String(dia) });
+                if (!livre) { botao.disabled = true; botao.setAttribute('aria-disabled', 'true'); }
+                botao.addEventListener('click', (function (alvo) { return function () { self.definir(alvo); }; })(iso));
+                linha.appendChild(el('td', { role: 'gridcell' }, [botao]));
+            }
+            while (linha.children.length < 7) linha.appendChild(el('td', { role: 'gridcell', 'class': 'c2fc-calendario-vazio' }));
+            corpo.appendChild(linha);
+            this.grade.appendChild(corpo);
+            if (focar) { var alvo = this.grade.querySelector('[tabindex="0"]'); if (alvo) alvo.focus(); }
+        },
+
+        _teclas: function (ev) {
+            var passos = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+            var d = this.foco, novo = null;
+            if (passos[ev.key] !== undefined) novo = new Date(d.getFullYear(), d.getMonth(), d.getDate() + passos[ev.key]);
+            else if (ev.key === 'PageUp' || ev.key === 'PageDown') { ev.preventDefault(); return this.irMes(ev.key === 'PageUp' ? -1 : 1); }
+            else if (ev.key === 'Home' || ev.key === 'End') {
+                var dow = (d.getDay() - this.inicioSemana + 7) % 7;
+                novo = new Date(d.getFullYear(), d.getMonth(), d.getDate() + (ev.key === 'Home' ? -dow : 6 - dow));
+            } else if (ev.key === 'Enter' || ev.key === ' ') {
+                ev.preventDefault();
+                if (this.podeEscolher(d)) this.definir(isoData(d));
+                return;
+            } else return;
+            ev.preventDefault();
+            var mudouMes = novo.getMonth() !== this.mes.getMonth() || novo.getFullYear() !== this.mes.getFullYear();
+            this.foco = novo;
+            if (mudouMes) this.mes = new Date(novo.getFullYear(), novo.getMonth(), 1);
+            this._desenhar(true);
+            // _desenhar pode ter movido o foco para o primeiro dia livre; navegação por teclado mantém o pedido.
+            var exato = this.grade.querySelector('[data-data="' + isoData(novo) + '"]');
+            if (exato && !mudouMes) { this.grade.querySelectorAll('[tabindex="0"]').forEach(function (b) { b.tabIndex = -1; }); exato.tabIndex = 0; exato.focus(); }
+        },
+
+        valor: function () { return this.input.value || null; },
+        definir: function (valor, silencioso) {
+            var d = dataIso(valor);
+            if (valor && (!d || !this.podeEscolher(d))) return this;
+            if (this.input.value === (valor || '')) { this._desenhar(); return this; }
+            this.input.value = valor || '';
+            if (d) { this.foco = d; this.mes = new Date(d.getFullYear(), d.getMonth(), 1); }
+            if (!silencioso) { disparar(this.input, 'input'); disparar(this.input, 'change'); this.emitir('mudou', this.input.value); }
+            else this._desenhar();
+            return this;
+        },
+        disponibilidade: function (lista) { this.fixos = Array.isArray(lista) ? lista.slice() : null; this._desenhar(); return this; },
+        /** Vagas dependem de um filtro que mudou (ex.: serviço escolhido): novos parâmetros, cache limpo. */
+        recarregar: function (parametros) {
+            if (!this.ajax) return this;
+            if (parametros) this.ajax.parametros = parametros;
+            this.porMes = {};
+            ++this.seq;
+            if (this.input.value && !this._limite('min') && !this._limite('max')) this.foco = dataIso(this.input.value) || this.foco;
+            this._desenhar();
+            return this;
+        },
+        habilitar: function (sim) { this.input.disabled = !sim; this.raiz.classList.toggle('c2fc-calendario-desabilitado', !sim); return this; }
+    });
+
     registrar('select', Select);
     registrar('chave', Chave);
     registrar('abas', Abas);
+    registrar('calendario', Calendario);
 
     function iniciar(raiz) {
         raiz = raiz || document;
@@ -627,6 +887,7 @@
         // Atalhos antigos desta mesma fatia.
         Array.prototype.forEach.call(raiz.querySelectorAll('select[data-c2f-select]'), function (no) { criar('select', no); });
         Array.prototype.forEach.call(raiz.querySelectorAll('[data-c2f-abas]'), function (no) { criar('abas', no); });
+        Array.prototype.forEach.call(raiz.querySelectorAll('input[type="date"][data-c2f-calendario]'), function (no) { criar('calendario', no); });
     }
 
     global.c2fControles = {
@@ -634,6 +895,7 @@
         tipos: tipos, dialogo: dialogos, aviso: aviso, carregando: carregando, texto: texto, formatado: formatado,
         // Atalhos.
         select: function (nativo, opcoes) { return nativo && nativo.tagName === 'SELECT' ? criar('select', nativo, opcoes) : null; },
+        calendario: function (input, opcoes) { return input && input.tagName === 'INPUT' ? criar('calendario', input, opcoes) : null; },
         instancia: de
     };
 

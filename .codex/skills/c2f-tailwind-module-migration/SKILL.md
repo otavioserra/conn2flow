@@ -35,9 +35,9 @@ user-invocable: false
 - Tooltips: `data-c2f-dica` (o `data-tooltip` é CSS do Fomantic).
 - Não mexa em `controles.js`/`controles.css`/`controles.php`, `interface.php` nem `html-editor.php` fora do seu escopo: peça no relatório ao dono da req-219.
 - Comentário em recurso nunca cita placeholder (`#x#`, `@[[x]]@`): a troca pega a primeira ocorrência, dentro do comentário.
-- Pipeline: desde a req-219 a minificação é a etapa 1; uma rodada de `project:update-all` basta.
+- Pipeline de projeto: uma rodada de `project:deploy <id>`; confira assets minificados na entrega. `project:update-all` só para lote misto Core + projeto.
 - Validação mínima: teste PHP de contrato (variante x original, metadados, HTML sem `class="ui `), Vitest se mexer em JS, roteiro Playwright no Lab (sem asset do Fomantic no documento principal — `request.frame() === page.mainFrame()` —, salvar sem 403, 390 px sem rolagem, nenhum `.ui.modal` visível solto) e o mesmo módulo Fomantic de controle sem mudança.
-- Lab compartilhado: trave com `mkdir C:/Users/otavi/OneDrive/Documentos/GIT/.c2f-lab-lock` (falhou = outro agente usando; espere), faça `git merge origin/main` na sua branch antes do `project:update-all conn2flow-site-local` (rode 2 vezes quando mudar JS) e do roteiro, e libere com `rmdir` ao terminar.
+- Lab compartilhado: trave com `mkdir C:/Users/otavi/OneDrive/Documentos/GIT/.c2f-lab-lock` (falhou = outro agente usando; espere), faça `git merge origin/main` na sua branch antes do `project:deploy conn2flow-site-local` (rode 2 vezes quando mudar JS) e do roteiro, e libere com `rmdir` ao terminar.
 - Pendência humana vai para `conn2flow-site/sdd/PENDENCIAS-HUMANAS.md`, item do roteiro único da req-219.
 
 ## Escopo main e inicialização tardia por hooks (BL-028)
@@ -46,4 +46,11 @@ Leitura de campos/rótulos da tela fica restrita a main, pois o menu de busca ta
 
 Script incluído por hook pode executar antes de o editor/componentes serem criados. Faça tentativa inicial após DOM pronto e observe main com MutationObserver (childList/subtree); use debounce/intervalo limitado para novas tentativas, sem loop apertado. Inicialização deve ser idempotente, impedir handlers/botões duplicados e desconectar observador/timer quando não forem mais necessários ou ao desmontar tela. Valide com editor criado depois do hook e abertura repetida.
 
-A orientação histórica de duas publicações para JS não se aplica ao pipeline atual: com lock, atualize timestamps dos arquivos versionados alterados e rode project:update-all uma vez por projeto, sequencialmente. Dois projetos com a mesma origem precisam de uma rodada cada.
+A orientação histórica de duas publicações para JS não se aplica ao pipeline atual: com lock, atualize timestamps dos arquivos versionados alterados e rode project:deploy <id> uma vez por projeto, sequencialmente. Dois projetos com a mesma origem precisam de uma rodada cada.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.

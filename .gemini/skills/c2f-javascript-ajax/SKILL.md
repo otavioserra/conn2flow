@@ -310,3 +310,13 @@ Em uma sessão local isolada preparada conforme `c2f-agent-visual-inspection`, r
 5. Para multipart, confira campos e boundary gerado pelo navegador; não fixe manualmente Content-Type em `FormData`. Registre latência observada e pedidos duplicados após cliques repetidos. Verifique resultado no DOM com novo snapshot/screenshot.
 
 Prefira observar a requisição original. Reenviar mutações como `fetch()` pode duplicar gravações/pagamentos e exige escopo de teste autorizado. Evidências devem conter IDs e dados sanitizados, nunca dumps integrais de headers sensíveis. Referência: [ferramentas oficiais](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md).
+
+## REP-002 — falhas HTTP observáveis
+
+Callbacks `.fail()` de chamadas AJAX críticas devem registrar explicitamente `xhr.status`, etapa e horário para correlacionar com o access log, sem tokens nem conteúdo sensível:
+```javascript
+.fail(function (xhr) {
+    console.error('HTTP', xhr.status);
+});
+```
+Preserve liberação de spinner e tratamento de sessão/CSRF. Mensagem “Falha” sozinha não sustenta diagnóstico de timeout ou memória.

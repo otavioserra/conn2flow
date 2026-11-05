@@ -5,6 +5,32 @@
  * Paleta do painel Tailwind: slate para texto e bordas, sky para ação.
  */
 .c2fc-oculto { display: none !important; }
+/* ---------- REQ-300 (BATCH-308): tokens de ação e container de painel.
+   A cor de ação dos controles (botão primário, aba, chave, select aberto, opção marcada, foco, links e
+   realces de listagem) vem destes tokens. Os padrões são o sky que o painel do núcleo sempre usou; um
+   projeto troca a identidade redefinindo só os tokens (ex.: no CSS do seu layout, `:root { --c2fc-acao: … }`).
+   Azul de informação (`.c2fc-nota`, `.c2fc-alerta-info`) e a paleta `.c2fc-cor-*` são semânticos e não seguem a ação. */
+:root {
+    --c2fc-acao: #0284c7;
+    --c2fc-acao-escuro: #0369a1;
+    --c2fc-acao-texto: #075985;
+    --c2fc-acao-claro: #f0f9ff;
+    --c2fc-acao-suave: #e0f2fe;
+    --c2fc-acao-borda: #bae6fd;
+    --c2fc-acao-realce: #7dd3fc;
+    --c2fc-acao-foco: #0ea5e9;
+    --c2fc-acao-anel: rgba(14, 165, 233, .25);
+    --c2fc-disponivel: #15803d;
+    --c2fc-disponivel-claro: #f0fdf4;
+    --c2fc-disponivel-borda: #86efac;
+}
+
+/* Container de página do painel: largura e respiro por variável. Sem variável, os valores de sempre
+   (72rem; .5rem 0, e 1.25rem 1rem a partir de 640 px). Um layout que já dá o respiro da página zera
+   `--c2f-painel-respiro`/`--c2f-painel-respiro-sm` e ajusta `--c2f-painel-largura`. */
+.c2f-painel-pagina { width: 100%; min-width: 0; margin-inline: auto; max-width: var(--c2f-painel-largura, 72rem); padding: var(--c2f-painel-respiro, .5rem 0); box-sizing: border-box; }
+@media (min-width: 640px) { .c2f-painel-pagina { padding: var(--c2f-painel-respiro-sm, 1.25rem 1rem); } }
+
 
 /* ---------- cursor de clique: o preflight do Tailwind deixa <button> com cursor padrão */
 button:not(:disabled):not(.disabled), [role="button"]:not([aria-disabled="true"]), [role="tab"], summary, select:not(:disabled),
@@ -13,17 +39,17 @@ input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label
 /* ---------- listagem (req-220): cabeçalho ordenável ocupa a célula toda, com fundo no hover; linha destacada */
 #_gestor-interface-listar thead th:has(> button) { padding: 0; }
 #_gestor-interface-listar thead th > button { width: 100%; padding: 12px; border-radius: 0; transition: background-color .15s, color .15s; }
-#_gestor-interface-listar thead th > button:not(:disabled):hover { background: #e0f2fe; color: #0284c7; }
+#_gestor-interface-listar thead th > button:not(:disabled):hover { background: var(--c2fc-acao-suave); color: var(--c2fc-acao); }
 /* coluna ainda sem ordem: seta fraca no hover avisando que dá para ordenar (Ctrl+clique soma colunas) */
 #_gestor-interface-listar thead th[aria-sort="none"] > button:not(:disabled):hover [data-lista-direcao]:empty::after { content: "↑"; opacity: .4; }
 #_gestor-interface-listar thead th > button [data-lista-direcao] { min-width: 1.5em; font-variant-numeric: tabular-nums; }
-#_gestor-interface-listar thead th > button:not(:disabled):focus-visible { outline: 2px solid #0284c7; outline-offset: -2px; }
-#_gestor-interface-listar thead th[aria-sort="ascending"] > button, #_gestor-interface-listar thead th[aria-sort="descending"] > button { background: #f0f9ff; color: #0369a1; }
+#_gestor-interface-listar thead th > button:not(:disabled):focus-visible { outline: 2px solid var(--c2fc-acao); outline-offset: -2px; }
+#_gestor-interface-listar thead th[aria-sort="ascending"] > button, #_gestor-interface-listar thead th[aria-sort="descending"] > button { background: var(--c2fc-acao-claro); color: var(--c2fc-acao-escuro); }
 #_gestor-interface-listar tbody td { transition: background-color .12s; }
 /* coluna sob o cursor (até 12 colunas), depois a linha, depois a célula: o destaque fica mais forte no cruzamento */
-#_gestor-interface-listar table:has(tbody td:nth-child(1):hover) :is(td, th):nth-child(1), #_gestor-interface-listar table:has(tbody td:nth-child(2):hover) :is(td, th):nth-child(2), #_gestor-interface-listar table:has(tbody td:nth-child(3):hover) :is(td, th):nth-child(3), #_gestor-interface-listar table:has(tbody td:nth-child(4):hover) :is(td, th):nth-child(4), #_gestor-interface-listar table:has(tbody td:nth-child(5):hover) :is(td, th):nth-child(5), #_gestor-interface-listar table:has(tbody td:nth-child(6):hover) :is(td, th):nth-child(6), #_gestor-interface-listar table:has(tbody td:nth-child(7):hover) :is(td, th):nth-child(7), #_gestor-interface-listar table:has(tbody td:nth-child(8):hover) :is(td, th):nth-child(8), #_gestor-interface-listar table:has(tbody td:nth-child(9):hover) :is(td, th):nth-child(9), #_gestor-interface-listar table:has(tbody td:nth-child(10):hover) :is(td, th):nth-child(10), #_gestor-interface-listar table:has(tbody td:nth-child(11):hover) :is(td, th):nth-child(11), #_gestor-interface-listar table:has(tbody td:nth-child(12):hover) :is(td, th):nth-child(12) { background: #f0f9ff; }
-#_gestor-interface-listar tbody tr:hover > td { background: #e0f2fe; }
-#_gestor-interface-listar tbody tr:hover > td:hover { background: #bae6fd; }
+#_gestor-interface-listar table:has(tbody td:nth-child(1):hover) :is(td, th):nth-child(1), #_gestor-interface-listar table:has(tbody td:nth-child(2):hover) :is(td, th):nth-child(2), #_gestor-interface-listar table:has(tbody td:nth-child(3):hover) :is(td, th):nth-child(3), #_gestor-interface-listar table:has(tbody td:nth-child(4):hover) :is(td, th):nth-child(4), #_gestor-interface-listar table:has(tbody td:nth-child(5):hover) :is(td, th):nth-child(5), #_gestor-interface-listar table:has(tbody td:nth-child(6):hover) :is(td, th):nth-child(6), #_gestor-interface-listar table:has(tbody td:nth-child(7):hover) :is(td, th):nth-child(7), #_gestor-interface-listar table:has(tbody td:nth-child(8):hover) :is(td, th):nth-child(8), #_gestor-interface-listar table:has(tbody td:nth-child(9):hover) :is(td, th):nth-child(9), #_gestor-interface-listar table:has(tbody td:nth-child(10):hover) :is(td, th):nth-child(10), #_gestor-interface-listar table:has(tbody td:nth-child(11):hover) :is(td, th):nth-child(11), #_gestor-interface-listar table:has(tbody td:nth-child(12):hover) :is(td, th):nth-child(12) { background: var(--c2fc-acao-claro); }
+#_gestor-interface-listar tbody tr:hover > td { background: var(--c2fc-acao-suave); }
+#_gestor-interface-listar tbody tr:hover > td:hover { background: var(--c2fc-acao-borda); }
 
 /* ---------- diálogos (alerta, confirmar, perguntar) — mesma cara do modal do painel */
 .c2fc-overlay { position: fixed; inset: 0; z-index: 100020; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, .6); }
@@ -35,9 +61,9 @@ input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label
 .c2fc-botao { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 8px; padding: 8px 16px; font: 500 14px/1.2 inherit; cursor: pointer; box-shadow: 0 1px 2px rgba(15,23,42,.06); transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s, transform .15s; }
 .c2fc-botao:hover { background: #f1f5f9; border-color: #94a3b8; box-shadow: 0 4px 10px -3px rgba(15,23,42,.2); transform: translateY(-1px); }
 .c2fc-botao:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(15,23,42,.12); }
-.c2fc-botao:focus-visible, .c2fc-entrada:focus-visible, .c2fc-select-gatilho:focus-visible, .c2fc-aba:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
-.c2fc-botao-primario { border-color: #0284c7; background: #0284c7; color: #fff; }
-.c2fc-botao-primario:hover { background: #0369a1; border-color: #0369a1; }
+.c2fc-botao:focus-visible, .c2fc-entrada:focus-visible, .c2fc-select-gatilho:focus-visible, .c2fc-aba:focus-visible { outline: 2px solid var(--c2fc-acao); outline-offset: 2px; }
+.c2fc-botao-primario { border-color: var(--c2fc-acao); background: var(--c2fc-acao); color: #fff; }
+.c2fc-botao-primario:hover { background: var(--c2fc-acao-escuro); border-color: var(--c2fc-acao-escuro); }
 .c2fc-botao-perigo { border-color: #dc2626; background: #dc2626; color: #fff; }
 .c2fc-botao-perigo:hover { background: #b91c1c; border-color: #b91c1c; }
 .c2fc-entrada { width: 100%; box-sizing: border-box; margin-top: 10px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font: 14px/1.4 inherit; color: #0f172a; background: #fff; }
@@ -49,8 +75,8 @@ input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label
 .c2fc-campo-entrada { display: block; width: 100%; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; padding: 8px 12px; font: 14px/1.4 inherit; color: #0f172a; }
 .c2fc-campo-entrada::placeholder { color: #94a3b8; }
 .c2fc-campo-entrada:hover:not(:disabled):not(:focus), .c2fc-select-gatilho:hover, .c2fc-campo:hover > .c2fc-campo-entrada:not(:disabled):not(:focus) { border-color: #94a3b8; }
-.c2fc-campo:focus-within > .c2fc-campo-rotulo { color: #0369a1; }
-.c2fc-campo-entrada:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.25); }
+.c2fc-campo:focus-within > .c2fc-campo-rotulo { color: var(--c2fc-acao-escuro); }
+.c2fc-campo-entrada:focus { outline: none; border-color: var(--c2fc-acao-foco); box-shadow: 0 0 0 3px var(--c2fc-acao-anel); }
 .c2fc-campo-entrada:disabled, .c2fc-campo-entrada[readonly] { background: #f1f5f9; color: #64748b; }
 .c2fc-campo-entrada[aria-invalid="true"] { border-color: #dc2626; }
 .c2fc-campo-ajuda { margin: 0; font-size: 12px; color: #64748b; }
@@ -70,7 +96,7 @@ input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label
 .c2fc-botao-icone { padding: 8px; }
 .c2fc-botao-pequeno.c2fc-botao-icone { padding: 5px; }
 /* `.active` é o estado que o JS legado do editor liga (tela, variáveis/simulação). */
-.c2fc-botao.active { border-color: #0284c7; background: #e0f2fe; color: #075985; }
+.c2fc-botao.active { border-color: var(--c2fc-acao); background: var(--c2fc-acao-suave); color: var(--c2fc-acao-texto); }
 .c2fc-grupo { display: inline-flex; flex-wrap: wrap; }
 .c2fc-grupo > .c2fc-botao { border-radius: 0; margin-left: -1px; }
 .c2fc-grupo > .c2fc-botao:first-child { border-radius: 8px 0 0 8px; margin-left: 0; }
@@ -85,7 +111,7 @@ a.c2fc-botao { text-decoration: none; }
 .c2fc-acao svg, .c2fc-acao i { width: 16px; height: 16px; }
 .c2fc-acao:hover { background: var(--c2fc-forte); border-color: var(--c2fc-forte); color: #fff; box-shadow: 0 4px 10px -2px rgba(15,23,42,.25); transform: translateY(-1px); }
 .c2fc-acao:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(15,23,42,.15); }
-.c2fc-acao:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+.c2fc-acao:focus-visible { outline: 2px solid var(--c2fc-acao); outline-offset: 2px; }
 .c2fc-acao:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
 /* paleta compartilhada por .c2fc-acao e .c2fc-rotulo (nomes de cor do Fomantic) */
 .c2fc-cor-blue { --c2fc-forte: #2563eb; --c2fc-claro: #eff6ff; --c2fc-borda: #93c5fd; --c2fc-texto: #1d4ed8; border-color: #93c5fd; color: #1d4ed8; }
@@ -101,9 +127,9 @@ a.c2fc-botao { text-decoration: none; }
 .c2fc-cor-grey, .c2fc-cor-black { --c2fc-forte: #475569; --c2fc-claro: #f1f5f9; --c2fc-borda: #cbd5e1; --c2fc-texto: #334155; border-color: #cbd5e1; color: #334155; }
 /* rótulo-link vindo de formatador (ex.: caminho da página no admin-paginas) */
 .c2fc-rotulo { display: inline-flex; align-items: center; max-width: 100%; padding: 2px 8px; border: 1px solid #e2e8f0; border-radius: 6px; background: #f8fafc; color: #334155; font-size: 12px; font-weight: 500; overflow-wrap: anywhere; }
-a.c2fc-rotulo { color: #0369a1; text-decoration: none; }
+a.c2fc-rotulo { color: var(--c2fc-acao-escuro); text-decoration: none; }
 .c2fc-rotulo[class*="c2fc-cor-"] { border-color: var(--c2fc-borda); background: var(--c2fc-claro); color: var(--c2fc-texto); }
-a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoration: underline; }
+a.c2fc-rotulo:hover { border-color: var(--c2fc-acao-realce); background: var(--c2fc-acao-claro); text-decoration: underline; }
 .c2fc-texto-suave { color: #94a3b8; }
 
 /* ---------- histórico de alterações (formulário de edição Tailwind)
@@ -112,7 +138,7 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
    numa linha só, como antes. */
 [data-c2f-historico] .list > .item { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
 [data-c2f-historico] .list > .item:last-child { border-bottom: 0; }
-[data-c2f-historico] .list > .item > i.icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #e0f2fe; color: #0284c7; font: 700 11px/1 system-ui, sans-serif !important; font-style: normal; transform: translateY(2px); }
+[data-c2f-historico] .list > .item > i.icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: var(--c2fc-acao-suave); color: var(--c2fc-acao); font: 700 11px/1 system-ui, sans-serif !important; font-style: normal; transform: translateY(2px); }
 [data-c2f-historico] .list > .item > i.icon::before { content: "i" !important; font-family: system-ui, sans-serif !important; }
 [data-c2f-historico] .list > .item > .content { display: flex; flex-flow: row nowrap; align-items: baseline; gap: 12px; min-width: 0; }
 [data-c2f-historico] .list > .item > .content > .header { flex: none; display: inline; font-weight: 600; color: #0f172a; }
@@ -137,7 +163,7 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 .c2fc-cartao + .c2fc-cartao { margin-top: 12px; }
 .c2fc-cartao > * + * { margin-top: 8px; }
 .c2fc-cartao-titulo { margin: 0; font-size: 15px; font-weight: 600; color: #0f172a; }
-.c2fc-cartao-titulo a { color: #0369a1; text-decoration: none; }
+.c2fc-cartao-titulo a { color: var(--c2fc-acao-escuro); text-decoration: none; }
 .c2fc-cartao-titulo a:hover { text-decoration: underline; }
 .c2fc-texto { margin: 0; font-size: 14px; color: #475569; overflow-wrap: anywhere; }
 .c2fc-tabela-caixa { max-width: 100%; overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
@@ -145,11 +171,11 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 .c2fc-tabela th { background: #f8fafc; color: #475569; font-size: 12px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
 .c2fc-tabela td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; color: #1e293b; vertical-align: top; }
 .c2fc-tabela tr:last-child td { border-bottom: 0; }
-.c2fc-tabela a { color: #0369a1; }
+.c2fc-tabela a { color: var(--c2fc-acao-escuro); }
 .c2fc-lista { list-style: none; margin: 0; padding: 0; }
 .c2fc-lista > li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b; }
 .c2fc-lista > li:last-child { border-bottom: 0; }
-.c2fc-lista a { color: #0369a1; font-weight: 600; text-decoration: none; }
+.c2fc-lista a { color: var(--c2fc-acao-escuro); font-weight: 600; text-decoration: none; }
 .c2fc-lista a:hover { text-decoration: underline; }
 .c2fc-lista small { color: #64748b; }
 .c2fc-ponto { display: inline-block; flex: none; width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; }
@@ -181,19 +207,19 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 .c2fc-select select.c2fc-nativo { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .c2fc-select-gatilho { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; width: 100%; min-height: 38px; box-sizing: border-box; padding: 6px 34px 6px 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #0f172a; text-align: left; cursor: pointer; position: relative; }
 .c2fc-select-gatilho::after { content: ""; position: absolute; right: 12px; top: 50%; width: 8px; height: 8px; border-right: 2px solid #64748b; border-bottom: 2px solid #64748b; transform: translateY(-70%) rotate(45deg); }
-.c2fc-select-aberto .c2fc-select-gatilho { border-color: #0284c7; }
+.c2fc-select-aberto .c2fc-select-gatilho { border-color: var(--c2fc-acao); }
 /* o JS legado desabilita pondo a classe `disabled` no <select> (era o `.ui.dropdown.disabled` do Fomantic) */
 .c2fc-select:has(> select.disabled) .c2fc-select-gatilho { pointer-events: none; opacity: .6; }
 .c2fc-select-desabilitado .c2fc-select-gatilho { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
 .c2fc-select-vazio { color: #94a3b8; }
-.c2fc-ficha { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 12px; }
+.c2fc-ficha { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: var(--c2fc-acao-suave); color: var(--c2fc-acao-texto); font-size: 12px; }
 .c2fc-ficha button { border: 0; background: none; color: inherit; cursor: pointer; padding: 0; font-size: 14px; line-height: 1; }
 .c2fc-select-painel { position: absolute; z-index: 100015; left: 0; right: 0; top: calc(100% + 4px); background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,.15); overflow: hidden; }
 .c2fc-select-painel.c2fc-acima { top: auto; bottom: calc(100% + 4px); }
 .c2fc-select-busca { display: block; width: 100%; box-sizing: border-box; border: 0; border-bottom: 1px solid #e2e8f0; padding: 8px 10px; font: 14px/1.4 inherit; outline: none; }
 .c2fc-select-lista { list-style: none; margin: 0; padding: 4px 0; max-height: 260px; overflow-y: auto; }
 .c2fc-select-opcao { padding: 7px 12px; cursor: pointer; color: #0f172a; overflow-wrap: anywhere; }
-.c2fc-select-opcao[aria-selected="true"] { background: #e0f2fe; color: #075985; font-weight: 600; }
+.c2fc-select-opcao[aria-selected="true"] { background: var(--c2fc-acao-suave); color: var(--c2fc-acao-texto); font-weight: 600; }
 .c2fc-select-opcao.c2fc-ativa { background: #f1f5f9; }
 .c2fc-select-opcao[aria-disabled="true"] { color: #94a3b8; cursor: not-allowed; }
 .c2fc-select-grupo { padding: 6px 12px 2px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #64748b; }
@@ -204,15 +230,15 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 .c2fc-chave input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .c2fc-chave-trilho { position: relative; width: 40px; height: 22px; flex: none; border-radius: 999px; background: #cbd5e1; transition: background .15s; }
 .c2fc-chave-trilho::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: transform .15s; }
-.c2fc-chave input:checked + .c2fc-chave-trilho { background: #0284c7; }
+.c2fc-chave input:checked + .c2fc-chave-trilho { background: var(--c2fc-acao); }
 .c2fc-chave input:checked + .c2fc-chave-trilho::after { transform: translateX(18px); }
-.c2fc-chave input:focus-visible + .c2fc-chave-trilho { outline: 2px solid #0284c7; outline-offset: 2px; }
+.c2fc-chave input:focus-visible + .c2fc-chave-trilho { outline: 2px solid var(--c2fc-acao); outline-offset: 2px; }
 .c2fc-chave input:disabled + .c2fc-chave-trilho { opacity: .5; }
 
 /* ---------- abas */
 .c2fc-abas-lista { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #e2e8f0; margin-bottom: 12px; }
 .c2fc-aba { border: 0; border-bottom: 2px solid transparent; background: none; padding: 8px 14px; font-family: inherit; font-size: 14px; line-height: 1.2; font-weight: 600; color: #64748b; cursor: pointer; margin-bottom: -1px; }
-.c2fc-aba[aria-selected="true"], .c2fc-aba.active { border-bottom-color: #0284c7; color: #0369a1; }
+.c2fc-aba[aria-selected="true"], .c2fc-aba.active { border-bottom-color: var(--c2fc-acao); color: var(--c2fc-acao-escuro); }
 a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
 .c2fc-painel-aba { padding: 16px; border: 1px solid #e2e8f0; border-top: 0; border-radius: 0 0 12px 12px; background: #fff; }
 .c2fc-abas-lista.c2fc-anexa { margin-bottom: 0; }
@@ -234,7 +260,7 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
    o ícone ganhava um contorno em volta. Ícone nunca tem contorno próprio. */
 svg.icon.outline, svg.lucide.outline, i.icon.outline { outline: 0 !important; }
 /* REQ-243: item de navegação que aponta para a tela atual (barra de módulo, como a do Host Manager). */
-.c2fc-botao[aria-current="page"]:not(.c2fc-botao-primario) { border-color: #0284c7; background: #f0f9ff; color: #075985; }
+.c2fc-botao[aria-current="page"]:not(.c2fc-botao-primario) { border-color: var(--c2fc-acao); background: var(--c2fc-acao-claro); color: var(--c2fc-acao-texto); }
 /* REQ-243: seletor de várias imagens — cancelar e concluir ficam na bandeja do gerenciador, na base do modal. */
 .c2fc-ponte-modal.c2f-seletor-multiplo > .actions { display: none; }
 /* REQ-243: dica vazia não desenha balão. */
@@ -251,7 +277,7 @@ svg.icon.outline, svg.lucide.outline, i.icon.outline { outline: 0 !important; }
 .c2fc-carregando-alvo { position: relative; }
 .c2fc-carregando { position: absolute; inset: 0; z-index: 100012; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.7); border-radius: inherit; }
 .c2fc-carregando.c2fc-pagina { position: fixed; background: rgba(15, 23, 42, .35); }
-.c2fc-giro { width: 32px; height: 32px; border: 3px solid #bae6fd; border-top-color: #0284c7; border-radius: 50%; animation: c2fc-giro .8s linear infinite; }
+.c2fc-giro { width: 32px; height: 32px; border: 3px solid var(--c2fc-acao-borda); border-top-color: var(--c2fc-acao); border-radius: 50%; animation: c2fc-giro .8s linear infinite; }
 @keyframes c2fc-giro { to { transform: rotate(360deg); } }
 
 /* ---------- ponte Fomantic (só quando o Fomantic não está na página) */
@@ -318,8 +344,8 @@ svg.icon.outline, svg.lucide.outline, i.icon.outline { outline: 0 !important; }
 [data-c2f-historico] .item, [data-c2f-historico] .content { display: flex; flex-flow: row nowrap; align-items: center; gap: 12px; font-size: 14px; color: #475569; }
 [data-c2f-historico] .item { padding: 8px 0; }
 [data-c2f-historico] .header { white-space: nowrap; }
-[data-c2f-historico] .item > svg { flex: 0 0 16px; color: #0284c7; }
-.c2f-breadcrumb .c2f-crumb { color: #0369a1; cursor: pointer; }
+[data-c2f-historico] .item > svg { flex: 0 0 16px; color: var(--c2fc-acao); }
+.c2f-breadcrumb .c2f-crumb { color: var(--c2fc-acao-escuro); cursor: pointer; }
 .c2f-search-box input, .c2f-filter-accordion { background: #fff; border-color: #cbd5e1; }
 .template-fields-list #linked-fields-list > *, .template-link-publisher-fields .field-row { min-width: 0; }
 .field-row .fields { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
@@ -341,7 +367,7 @@ svg.icon.outline, svg.lucide.outline, i.icon.outline { outline: 0 !important; }
 .field-row .search > .results { display: flex; flex-direction: column; gap: 2px; max-height: 240px; overflow-y: auto; padding: 4px; color: #64748b; font-size: 13px; }
 .field-row .search > .results[hidden], .field-row .search > .results:empty { display: none; }
 .field-row .search > .results > .c2fc-botao { justify-content: flex-start; width: 100%; border-color: transparent; box-shadow: none; }
-.field-row .search > .results > .c2fc-botao:hover, .field-row .search > .results > .c2fc-botao:focus-visible { background: #f0f9ff; }
+.field-row .search > .results > .c2fc-botao:hover, .field-row .search > .results > .c2fc-botao:focus-visible { background: var(--c2fc-acao-claro); }
 /* REQ-243: mapeamento de variáveis da família publisher — três colunas iguais, cada uma com cabeçalho em
    destaque e respiro até os botões. As colunas vêm daqui, não só das utilities, para não depender da ordem
    das folhas da página. */
@@ -363,7 +389,7 @@ svg.icon.outline, svg.lucide.outline, i.icon.outline { outline: 0 !important; }
 /* REQ-240: estados do select nativo padronizado e variantes do alerta. */
 .c2fc-campo-selecao { box-sizing: border-box; line-height: 1.4; font-family: inherit; }
 .c2fc-campo-selecao:hover:not(:disabled):not(:focus) { border-color: #94a3b8; }
-.c2fc-campo-selecao:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.25); }
+.c2fc-campo-selecao:focus { outline: none; border-color: var(--c2fc-acao-foco); box-shadow: 0 0 0 3px var(--c2fc-acao-anel); }
 .c2fc-campo-selecao:disabled { background: #f1f5f9; color: #64748b; }
 .c2fc-campo-selecao[aria-invalid="true"] { border-color: #dc2626; }
 .c2fc-alerta-sucesso { border-color: #bbf7d0; background: #f0fdf4; color: #166534; }
@@ -411,3 +437,31 @@ input[type="checkbox"]:not(:disabled) + label, input[type="radio"]:not(:disabled
 .c2fc-selo-recusado { background: #fef2f2; color: #b91c1c; }
 .c2fc-botao-perigo-suave { border-color: #fca5a5; color: #b91c1c; }
 .c2fc-botao-perigo-suave:hover { border-color: #f87171; background: #fef2f2; }
+
+/* ---------- calendário (REQ-300 / BL-050): grade mensal sobre <input type="date" data-c2f-calendario>.
+   Seleção e foco seguem os tokens de ação; dia com vaga usa os tokens de disponibilidade. */
+input.c2fc-calendario-nativo { position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; border: 0 !important; }
+.c2fc-calendario { width: 100%; max-width: 22rem; box-sizing: border-box; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; padding: 12px; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0f172a; }
+.c2fc-calendario[aria-busy="true"] .c2fc-calendario-grade { opacity: .55; }
+.c2fc-calendario-topo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.c2fc-calendario-titulo { margin: 0; font-size: 15px; font-weight: 600; }
+.c2fc-calendario-titulo::first-letter { text-transform: uppercase; }
+.c2fc-calendario-nav { width: 32px; height: 32px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #334155; font-size: 18px; line-height: 1; cursor: pointer; }
+.c2fc-calendario-nav:hover:not(:disabled) { border-color: var(--c2fc-acao); color: var(--c2fc-acao-escuro); background: var(--c2fc-acao-claro); }
+.c2fc-calendario-nav:disabled { opacity: .4; cursor: not-allowed; }
+.c2fc-calendario-nav:focus-visible, .c2fc-calendario-dia:focus-visible { outline: 2px solid var(--c2fc-acao); outline-offset: 2px; }
+.c2fc-calendario-grade { width: 100%; border-collapse: separate; border-spacing: 3px; table-layout: fixed; transition: opacity .15s; }
+.c2fc-calendario-grade th { padding: 4px 0; font-size: 11px; font-weight: 600; text-transform: uppercase; color: #64748b; text-align: center; }
+.c2fc-calendario-grade td { padding: 0; text-align: center; }
+.c2fc-calendario-dia { width: 100%; aspect-ratio: 1; min-height: 32px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #0f172a; font: inherit; cursor: pointer; transition: background-color .12s, border-color .12s; }
+.c2fc-calendario-dia:hover:not(:disabled) { background: var(--c2fc-acao-claro); border-color: var(--c2fc-acao-borda); }
+.c2fc-calendario-dia:disabled { color: #cbd5e1; cursor: not-allowed; }
+.c2fc-dia-hoje { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.c2fc-dia-disponivel { background: var(--c2fc-disponivel-claro); border-color: var(--c2fc-disponivel-borda); color: var(--c2fc-disponivel); font-weight: 600; }
+.c2fc-dia-indisponivel:disabled { background: #f8fafc; text-decoration: line-through; }
+.c2fc-calendario-dia[aria-selected="true"], .c2fc-calendario-dia[aria-selected="true"]:hover { background: var(--c2fc-acao); border-color: var(--c2fc-acao); color: #fff; }
+.c2fc-calendario-legenda { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 0; font-size: 12px; color: #475569; }
+.c2fc-calendario-legenda span::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 3px; vertical-align: -1px; }
+.c2fc-legenda-disponivel::before { background: var(--c2fc-disponivel-claro); border: 1px solid var(--c2fc-disponivel-borda); }
+.c2fc-legenda-indisponivel::before { background: #f8fafc; border: 1px solid #e2e8f0; }
+.c2fc-calendario-desabilitado { opacity: .6; pointer-events: none; }

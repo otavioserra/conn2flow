@@ -1,7 +1,8 @@
 ---
 id: "BL-050"
 title: "BL-050 — Componente de Calendário Interativo com Destaque de Datas Disponíveis no Agendamento Público"
-status: "BACKLOG"
+status: "PROMOTED"
+promoted_to: "REQ-300 (BATCH-309)"
 date: "2026-11-04"
 author: "architect"
 target_repo: "conn2flow"
@@ -12,7 +13,7 @@ summary_medium: "Melhora a experiência de autoagendamento permitindo que o paci
 # BL-050 — Componente de Calendário Interativo com Destaque de Datas Disponíveis
 
 - **Tipo:** Feature / UI Core Component
-- **Status:** BACKLOG
+- **Status:** PROMOTED → [req-300.md](../human-requests/req-300.md) (BATCH-309), 2026-11-05, por decisão do operador
 - **Prioridade:** Média (Melhoria de UX no Agendamento Público)
 - **Origem:** Observação do Engenheiro Chefe durante homologação da página `/agendar/`
 

@@ -13,7 +13,8 @@
 /** Textos dos controles para o JavaScript (variáveis globais `controles-*`). */
 function controles_textos(){
 	$textos = Array();
-	foreach(Array('ok', 'cancelar', 'buscar', 'semResultado' => 'sem-resultado', 'carregando', 'fechar', 'selecione', 'confirmar', 'remover', 'atencao') as $chave => $id){
+	foreach(Array('ok', 'cancelar', 'buscar', 'semResultado' => 'sem-resultado', 'carregando', 'fechar', 'selecione', 'confirmar', 'remover', 'atencao',
+		'mesAnterior' => 'mes-anterior', 'proximoMes' => 'proximo-mes', 'disponivel', 'indisponivel') as $chave => $id){
 		if(is_int($chave)) $chave = $id;
 		$valor = (string)gestor_variaveis(Array('id' => 'controles-' . $id));
 		if($valor !== '') $textos[$chave] = $valor;

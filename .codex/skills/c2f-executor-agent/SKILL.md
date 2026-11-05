@@ -41,11 +41,9 @@ Classifique o diff antes de escolher a esteira. Em alterações mistas, qualquer
 
 | Categoria | Alteração | Validação e sincronização |
 | --- | --- | --- |
-| A — Backend | PHP, APIs, webhooks, migrations e regras de negócio sem mudanças de HTML, classes Tailwind, CSS ou fontes da compilação | Testes pertinentes; se precisar sincronizar o projeto local, use `./c2f project:update-all <id> --skip-css` ou, para Core/banco, `./c2f project:sync-core <id> --skip-css` seguido de `./c2f project:sync-db <id> --core-resources`. Para o sistema, `./c2f manager:update-all --skip-css`. |
+| A — Backend | PHP, APIs, webhooks, migrations e regras de negócio sem mudanças de HTML, classes Tailwind, CSS ou fontes da compilação | Testes pertinentes; se precisar sincronizar o projeto local, use `./c2f project:deploy <id>` e para Core isolado use o pipeline do sistema. Para o sistema, `./c2f manager:update-all --skip-css`. |
 | B — Documentação e testes | Skills, testes unitários e memória MDD | Apenas checks/testes locais (`composer test`, `npm test`, `pytest`, indexação conforme o artefato); proibido rodar deploy no Lab. |
-| C — Interface e CSS | Telas, templates HTML, componentes, classes Tailwind, CSS autoral, fontes ou configuração da compilação | Projeto: `./c2f project:deploy <id>` (compila o que mudou e publica só o projeto). Sistema: `./c2f manager:update-all`. Sem `--skip-css`. |
-
-**`project:update-all` é a exceção (REQ-284):** só quando core e projeto mudam no mesmo lote. Ele sincroniza e recompila o core e deixa o destino em manutenção (503) durante todo o pipeline. Também não publique com `project:sync-files` + `project:sync-db` avulsos: sem os dados do core aplicados antes, a retirada por dono desativa os perfis do core e tranca o admin fora do painel (incidente REQ-141 do conn2flow-site).
+| C — Interface e CSS | Telas, templates HTML, componentes, classes Tailwind, CSS autoral, fontes ou configuração da compilação | Pipeline completo: `./c2f project:deploy <id>` ou `./c2f manager:update-all`, sem `--skip-css`. |
 
 Proibido executar build completo de Tailwind na Categoria A ou pipelines de deploy na Categoria B. `--skip-css` dispensa Tailwind e CSS derivado; não dispensa compilação dos dados, sincronização ou migrations necessárias. A via cirúrgica só atende mudanças de Core/banco: recursos próprios do projeto exigem seu pipeline apropriado. Execute um comando por vez, em foreground, com logs e verificação do resultado. A flag não autoriza produção, não muda o destino e não elimina Workspace Trust ou locks. A meta de <45 segundos precisa de medição real por ambiente; não é garantia universal.
 
@@ -63,7 +61,7 @@ Proibido executar build completo de Tailwind na Categoria A ou pipelines de depl
 - **NUNCA** copie arquivos manualmente (`cp`, `copy`, `Copy-Item`) para pastas de teste ou espelhos (`dev-environment/data/sites/`).
 - Use exclusivamente a esteira oficial:
   * Sistema: `./c2f manager:update-all`
-  * Projeto: `./c2f project:deploy <id>` (`project:update-all <id>` só quando o core também mudou)
+  * Projeto: `./c2f project:deploy <id>`
 
 ### 3. Padrão Canônico de Recursos e Variáveis
 - Todo texto, mensagem de alerta, rótulo ou erro DEVE ser registrado no sistema de variáveis (`resources/<lang>/variables.json` ou `<modulo>.json`) e consumido via `gestor_variaveis()`. Proibidas strings hardcoded em controllers.
@@ -98,10 +96,24 @@ Script complexo com regex, barras invertidas ou aspas triplas é escrito em arqu
 
 banco_select monta campos e depois explode por vírgula; coluna calculada é indexada pela expressão inteira, não pelo alias SQL. Evite expressão com vírgula nessa API e leia a chave real ou um auxiliar/posição compatível, conferindo a implementação de banco.php. Dublê de teste deve reproduzir esse comportamento, sem inventar chave de alias.
 
-Deploy local: adquira lock exclusivo já previsto no ambiente (falha = outra execução; aguarde, não apague lock alheio), atualize timestamps somente dos arquivos versionados alterados quando exigido pelo pipeline, rode project:update-all <projeto> uma vez por projeto, sequencialmente com logs, e libere apenas seu lock em finally. Projetos com origem comum são destinos distintos. Não use cópia manual nem rode pipelines paralelos; registre falhas sem ocultá-las.
+Deploy local: adquira lock exclusivo já previsto no ambiente (falha = outra execução; aguarde, não apague lock alheio), atualize timestamps somente dos arquivos versionados alterados quando exigido pelo pipeline, rode project:deploy <projeto> uma vez por projeto, sequencialmente com logs, e libere apenas seu lock em finally. Projetos com origem comum são destinos distintos. Não use cópia manual nem rode pipelines paralelos; registre falhas sem ocultá-las.
 
 ## REQ-071: engineering memory navigation
 
 Read memory/03-memory-engineering-chief.md for directives and memory/04-memory-engineering-execution.md for dated execution history. Preserve historical entries during renames. Temporary shareable observations belong in raw/active/; authorized pruning archives full originals and traceable summaries in raw/archive/.
 
 Nota de autoria: na via cirúrgica Core/banco, --core-resources preserva o dono das sementes do Core. Dados e recursos próprios do projeto exigem sua sincronização específica; não use essa flag para transferir autoria.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.
+
+## REP-002 — diagnóstico e rodadas
+
+“Falha <etapa>” significa falha HTTP. Inspecione log da sessão → access log do Nginx (código e bytes) → `php-error.log` no horário → banco SQL. Não siga hipótese preliminar sem evidência. Confira branch e git status antes de deploy.
+Use seções “Rodada N” no lote e no VALIDATION-CHECKLIST, com escopo, alterações, comandos/resultados, evidências e pendências de cada rodada. Preserve os resultados anteriores; não atribua homologação humana.
+
+Nota REQ-077: `--skip-css` refere-se aos comandos que a implementam (`manager:update-all` e à exceção `project:update-all`). O wrapper `ProjectDeployCommand.php` repassa somente projeto e `--contents`; não prescreva essa flag a `project:deploy`.

@@ -1288,6 +1288,42 @@
     },
     {
         "language": "pt-br",
+        "modulo": null,
+        "id": "controles-mes-anterior",
+        "valor": "Mês anterior",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-proximo-mes",
+        "valor": "Próximo mês",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-disponivel",
+        "valor": "Disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-indisponivel",
+        "valor": "Indisponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "interface",
         "id": "list-tailwind-search",
         "valor": "Buscar",
@@ -3217,6 +3253,42 @@
         "modulo": null,
         "id": "controles-atencao",
         "valor": "Attention",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-mes-anterior",
+        "valor": "Previous month",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-proximo-mes",
+        "valor": "Next month",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-disponivel",
+        "valor": "Available",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-indisponivel",
+        "valor": "Unavailable",
         "tipo": "string",
         "grupo": null,
         "descricao": null

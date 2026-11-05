@@ -24,7 +24,7 @@ user-invocable: false
 
 Classifique o diff antes de compilar:
 
-- **Categoria A:** backend PHP/APIs/migrations/regras de negócio sem alteração de HTML, classes Tailwind, CSS ou fontes/configuração de compilação. Não recompile Tailwind. Se sincronização local for necessária, use `./c2f project:update-all <id> --skip-css` ou `./c2f manager:update-all --skip-css`. Mudanças exclusivamente de Core/banco admitem `./c2f project:sync-core <id> --skip-css` seguido de `./c2f project:sync-db <id> --core-resources`.
+- **Categoria A:** backend PHP/APIs/migrations/regras de negócio sem alteração de HTML, classes Tailwind, CSS ou fontes/configuração de compilação. Não recompile Tailwind. Se sincronização local for necessária, use `./c2f project:deploy <id>` ou `./c2f manager:update-all --skip-css`. Core isolado usa o pipeline do sistema.
 - **Categoria B:** documentação, skills, testes unitários e memória MDD. Execute apenas os testes/checks locais pertinentes; nenhum pipeline de deploy no Lab.
 - **Categoria C:** telas/templates HTML/componentes/classes/CSS autoral/fontes de compilação. Execute o pipeline completo sem `--skip-css`; mudanças mistas com impacto visual também são C.
 
@@ -75,7 +75,7 @@ resources/ (disco) → c2f resources:sync → *Data.json → Upsert no Banco SQL
 
 * **Disco (`resources/`)**: É a **semente de compilação** — a fonte de autoria onde desenvolvedores criam e editam.
 * **Banco de Dados**: É a **fonte da verdade em runtime** — o que o visitante vê e o que o Gestor edita.
-* **Pipeline Oficial**: Alterações em disco SÓ chegam ao runtime após execução de `c2f manager:update-all` (para o sistema) ou `c2f project:update-all <id>` (para projetos).
+* **Pipeline Oficial**: Alterações em disco SÓ chegam ao runtime após execução de `c2f manager:update-all` (para o sistema) ou `c2f project:deploy <id>` (para projetos).
 
 **Ao investigar o comportamento de uma página publicada:**
 1. Inspecione o banco PRIMEIRO (tabelas `paginas`, `layouts`, `componentes`).
@@ -131,3 +131,26 @@ Os `field_types` suportados são:
 A compilação gera `[PascalCase]Data.json` (ex: `MinhaTabelaData.json`) automaticamente.
 
 Nota de autoria: na via cirúrgica Core/banco, --core-resources preserva o dono das sementes do Core. Dados e recursos próprios do projeto exigem sua sincronização específica; não use essa flag para transferir autoria.
+
+## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
+
+- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
+- Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
+- DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.
+
+## REP-002 — manifestos por camada e choques
+
+Precedência: `projeto` > `plugin:<id>` > `core`. Arquivos usam `installation/manifests/<camada>.json`; dados usam `recursos-<dono>.json`. Dados homônimos em `db/data/` não mudam de dono: a etapa Core lê a entrega Core; a etapa projeto lê a entrega projeto.
+
+| Choque | Situação |
+| --- | --- |
+| `editado` | Arquivo local difere da versão entregue pela camada |
+| `sobreposto` | Camada superior tem precedência sobre a entrega |
+| `retirado` | Dono deixou de entregar; manter até decisão humana |
+| `retirado-editado` | Arquivo retirado também possui edição local |
+| `original-ausente` | Original necessário à comparação não está disponível |
+
+Registrar choques antes de gravar o manifesto; versões novas ficam em `backups/overrides/<versão>/`. Nunca reconciliar em massa sem simulação e confirmação humana (DEC-136).
+
+Nota REQ-077: `--skip-css` refere-se aos comandos que a implementam (`manager:update-all` e à exceção `project:update-all`). O wrapper `ProjectDeployCommand.php` repassa somente projeto e `--contents`; não prescreva essa flag a `project:deploy`.
