@@ -6,7 +6,7 @@ user-invocable: false
 
 # Governança multilíngue de skills — REQ-078
 
-## Gatilho obrigatório
+# ⚡ Gatilho Obrigatório
 
 - **TRIGGER**: Criar, renomear ou editar uma skill; adicionar um idioma aos templates.
 - **SKIP APENAS SE**: Alteração sem impacto nas skills ou no catálogo de traduções.

@@ -34,6 +34,7 @@ final class AiSyncCommand implements CommandInterface
         'c2f-modelo-templates',
         'c2f-module-crud-scaffolding',
         'c2f-module-visual-assets',
+        'c2f-multilingual-skills-governance',
         'c2f-multilingual-system',
         'c2f-mysql-utf8-emoji-encoding',
         'c2f-payment-gateways',
