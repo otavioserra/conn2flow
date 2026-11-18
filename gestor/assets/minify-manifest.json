@@ -230,9 +230,9 @@
         "minificado": 2020
     },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
-        "sha1": "29cfd666ffac20ffcefeda8655f38b832406cc86",
-        "origem": 17198,
-        "minificado": 5440
+        "sha1": "f91cf229b1089dbb2a82c0f65a417fa0f2054674",
+        "origem": 17120,
+        "minificado": 5639
     },
     "gestor/modulos/dashboard/dashboard.js": {
         "sha1": "b6ae3db629984216a36d86868eddbe70f873d811",
@@ -240,9 +240,9 @@
         "minificado": 52463
     },
     "gestor/modulos/dashboard/dashboard.toolbar.js": {
-        "sha1": "738079037c80bdc0a9586b7b8a440fc23e64c1bc",
-        "origem": 94860,
-        "minificado": 45434
+        "sha1": "5576a5b248817cca50a885bb749289a34f475f90",
+        "origem": 100773,
+        "minificado": 48612
     },
     "gestor/modulos/dashboard/dashboard.widget.js": {
         "sha1": "bbfa3b5b1fab5fac8c30ebe2d0910f675ea8ed45",

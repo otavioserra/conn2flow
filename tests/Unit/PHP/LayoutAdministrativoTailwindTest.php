@@ -48,10 +48,8 @@ final class LayoutAdministrativoTailwindTest extends TestCase
     // ===== F1: compensação de topo da Editbar
 
     /**
-     * A Editbar é um iframe `position:fixed` de 30px. O `dashboard.toolbar.js` compensa o documento
-     * com `margin-top` no <html>, mas margem não alcança quem está fora do fluxo: a barra lateral
-     * (`fixed`) e o cabeçalho (`sticky top-0`) voltam a ficar por baixo dela. A compensação precisa
-     * ser CSS ancorado numa classe que o PHP escreve no <body>.
+     * O dashboard desloca a barra lateral e o cabeçalho. O shell reserva a altura medida da
+     * Editbar para que min-height não crie rolagem em páginas curtas.
      */
     #[DataProvider('idiomasProvider')]
     public function testLayoutCompensaAAlturaDaEditbar(string $lang): void
@@ -59,15 +57,15 @@ final class LayoutAdministrativoTailwindTest extends TestCase
         $css = self::recurso($lang, 'layouts', 'layout-administrativo-tailwind', 'css');
 
         self::assertMatchesRegularExpression(
-            '/body\.c2f-toolbar-ativa[^{]*\[data-admin-sidebar\][^{]*\{[^}]*top:\s*30px/s',
+            '/body\.c2f-toolbar-ativa[^{]*#c2f-admin-shell[^{]*\{[^}]*min-height:\s*calc\(100vh - var\(--c2f-toolbar-offset, 0px\)\)/s',
             $css,
-            "Barra lateral sem compensação da Editbar ({$lang})"
+            "Shell sem compensação dinâmica da Editbar ({$lang})"
         );
 
-        self::assertMatchesRegularExpression(
-            '/body\.c2f-toolbar-ativa[^{]*header[^{]*\{[^}]*top:\s*30px/s',
+        self::assertDoesNotMatchRegularExpression(
+            '/body\.c2f-toolbar-ativa[^{]*\{[^}]*\btop:/s',
             $css,
-            "Cabeçalho sem compensação da Editbar ({$lang})"
+            "Compensação duplicada de elementos fora do fluxo ({$lang})"
         );
     }
 

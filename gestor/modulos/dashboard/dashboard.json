@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.30",
+    "versao": "1.0.31",
     "core_modules": [
         "admin-arquivos",
         "admin-atualizacoes",
@@ -2598,5 +2598,5 @@
             ]
         }
     },
-    "asset_version": "a9e3f41bdaed83ff"
+    "asset_version": "0c7373829b459e31"
 }

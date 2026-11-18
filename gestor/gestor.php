@@ -1393,11 +1393,8 @@ function gestor_dashboard_toolbar($params = false){
 
 	// ===== Injetar o iframe imediatamente após a abertura do <body>.
 	//
-	//       req-124 F1: junto com o iframe, o <body> recebe a classe `c2f-toolbar-ativa`. A barra é
-	//       `position:fixed` e por isso ignora o `margin-top` que o `dashboard.toolbar.js` aplica no
-	//       <html> — todo elemento `fixed`/`sticky` ancorado em `top:0` (a barra lateral e o cabeçalho
-	//       do `layout-administrativo-tailwind`) continuaria por baixo dela. A classe é o gancho que os
-	//       CSS de layout usam para descer esses elementos nos 30px da barra.
+	//       O dashboard.toolbar.js desloca o fluxo e os elementos fixed/sticky pela altura medida.
+	//       A classe permite ao layout administrativo descontar a mesma altura da área útil.
 
 	$_GESTOR['pagina'] = preg_replace_callback('/(<body\b)([^>]*)(>)/i', function($m) use ($iframe){
 		$atributos = $m[2];

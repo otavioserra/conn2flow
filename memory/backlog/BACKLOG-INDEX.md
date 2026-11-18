@@ -36,6 +36,7 @@
 | [BL-032](BL-032-usuarios-pai-filho-e-cotas-por-perfil.md) | Epic/Core Architecture/IAM | IN-DISCUSSION | Hierarquia de Usuários Pai/Filho (Multi-Usuários por Conta) e Cotas de Sub-Usuários por Perfil | Promover após lançamento inicial do Snap Photon V2.0 | 2026-10-29 |
 | [BL-046](BL-046-logo-configuravel-admin-environment.md) | Feature/Core/Interface | IN-DISCUSSION | Logo do painel configurável na aba Site do `admin-environment` | Definir armazenamento do arquivo e abrangência; promover depois das frentes atuais | 2026-10-30 |
 | [BL-047](BL-047-topo-do-painel-diferente-entre-projetos.md) | Bug visual/Tailwind | IN-DISCUSSION | Topo do painel com aparência diferente entre projetos | Confirmar por que a folha do `admin-topbar-tailwind` não chega às páginas do Photon | 2026-10-30 |
+| [BL-051](BL-051-editbar-deslocamento-dinamico-layout-e-elementos-fixos.md) | Bug visual/UX/Core | PROMOTED | Editbar / Site Toolbar: deslocamento dinâmico do layout principal e de elementos fixos/sticky no topo (ex.: `ia-parceria.local`) | Promovido para [req-302.md](../human-requests/req-302.md) (BATCH-311) | 2026-11-18 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 

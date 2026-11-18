@@ -34,29 +34,10 @@ body.c2f-admin-redimensionando [data-admin-conteudo] {
     transition: none !important;
 }
 
-/*
- * req-124 F1 — compensação de topo da Editbar (`#c2f-site-toolbar`).
- *
- * `gestor_dashboard_toolbar()` marca o <body> com `c2f-toolbar-ativa` sempre que injeta a barra, e o
- * `dashboard.toolbar.js` desce o documento aplicando `margin-top:30px` no <html>. Esse deslocamento
- * só alcança o FLUXO: `position:fixed` resolve contra o viewport e `position:sticky` gruda no
- * scrollport, então a barra lateral e o cabeçalho voltariam para trás da Editbar. As regras abaixo
- * reancoram os dois nos 30px da barra e devolvem a altura perdida ao shell, para o `min-h-screen`
- * não gerar uma rolagem residual de exatamente 30px.
- */
-
-body.c2f-toolbar-ativa [data-admin-sidebar],
-body.c2f-toolbar-ativa [data-admin-overlay] {
-    top: 30px;
-}
-
-body.c2f-toolbar-ativa [data-admin-conteudo] > header {
-    top: 30px;
-}
-
+/* A toolbar já desloca os elementos fixed/sticky. Reserve seu espaço no shell de altura mínima. */
 body.c2f-toolbar-ativa #c2f-admin-shell,
 body.c2f-toolbar-ativa #c2f-admin-shell [data-admin-conteudo] {
-    min-height: calc(100vh - 30px);
+    min-height: calc(100vh - var(--c2f-toolbar-offset, 0px));
 }
 
 /*
@@ -94,7 +75,6 @@ body.c2f-toolbar-ativa #c2f-admin-shell [data-admin-conteudo] {
 [data-admin-topbar] [data-topbar-disclosure] > div { max-height: calc(100dvh - 110px); overflow-y: auto; }
 @media (max-width: 767px) {
     #topbar-more { position: fixed; left: 12px; right: 12px; top: 64px; width: auto; }
-    body.c2f-toolbar-ativa #topbar-more { top: 94px; }
 }
 
 /* REQ-238: deterministic shell typography and disclosure geometry across module bundles. */
@@ -112,7 +92,6 @@ body.c2f-toolbar-ativa #c2f-admin-shell [data-admin-conteudo] {
 @media (max-width: 767px) {
     [data-admin-topbar] .c2fc-topbar-user-name { max-width: 4.5rem; }
     [data-admin-topbar] #topbar-profile { position: fixed; right: 12px; top: 64px; }
-    body.c2f-toolbar-ativa [data-admin-topbar] #topbar-profile { top: 94px; }
 }
 
 /* REQ-238: page headings share size, alignment and module icon dimensions. */

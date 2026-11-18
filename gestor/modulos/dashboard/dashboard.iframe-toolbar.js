@@ -16,8 +16,6 @@
     'use strict';
 
     var origin = window.location.origin;
-    var MAIN_H = 30;
-    var EDIT_H = 44;
     var editOn = false;
     var openDropdown = null;   // menuEl (caixa) do dropdown atualmente aberto (mede a altura do iframe).
     var closeTimer = null;     // hover-intent: timer de fechamento adiado, cancelável.
@@ -51,27 +49,25 @@
         var root = document.getElementById('c2f-toolbar-root');
         var pageId = root ? (root.getAttribute('data-page-id') || '') : '';
 
-        function persistentHeight() {
-            // Altura que EMPURRA a página (barra 30px + editbar quando aberta).
-            return MAIN_H + (editOn ? EDIT_H : 0);
-        }
-
-        function iframeHeight() {
-            // Altura do iframe: inclui o dropdown aberto (menu de módulos / Página / Usuário), que
-            // apenas sobrepõe — não empurra a página. A caixa é medida já VISÍVEL (FORCE_OPEN),
-            // então `offsetHeight` é confiável (não depende do timing do `:hover`).
-            var h = persistentHeight();
-            if (openDropdown) {
-                h = Math.max(h, MAIN_H + openDropdown.offsetHeight + 8);
-            }
-            return h;
-        }
+        if (!root) { return; }
+        var lastHeight, lastOffset;
 
         function pushHeight() {
+            // A editbar está no fluxo da raiz. Os dropdowns são absolutos e só ampliam o iframe.
+            var rect = root.getBoundingClientRect();
+            var offset = Math.ceil(rect.height);
+            var height = Math.ceil(rect.bottom);
+            if (openDropdown) {
+                height = Math.max(height, Math.ceil(openDropdown.getBoundingClientRect().bottom + 8));
+            }
+            height = Math.max(height, offset);
+            if (height === lastHeight && offset === lastOffset) { return; }
+            lastHeight = height;
+            lastOffset = offset;
             window.parent.postMessage({
                 type: 'c2f-toolbar:resize',
-                height: iframeHeight(),
-                offset: persistentHeight()
+                height: height,
+                offset: offset
             }, origin);
         }
 
@@ -302,9 +298,12 @@
         registerHoverDropdown(pageDD, pageDD ? pageDD.querySelector('.c2f-dropdown-menu') : null);
         registerHoverDropdown(userDD, userDD ? userDD.querySelector('.c2f-dropdown-menu') : null);
 
-        // Redimensionar a janela com um dropdown aberto → reajusta a altura do iframe (a caixa pode
-        // ter mudado de altura com a nova largura).
-        window.addEventListener('resize', function () { if (openDropdown) { pushHeight(); } });
+        if (typeof window.ResizeObserver === 'function') {
+            var resizeObserver = new window.ResizeObserver(pushHeight);
+            resizeObserver.observe(root, { box: 'border-box' });
+        }
+        window.addEventListener('resize', pushHeight);
+        pushHeight();
 
         // Reentrada automática no modo de edição após restaurar um backup (BATCH-085). O roteador
         // sinaliza `gestor.siteToolbarBackupRestaurado` na página HOSPEDEIRA (same-origin → acessível

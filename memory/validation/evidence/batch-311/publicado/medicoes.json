@@ -1,0 +1,97 @@
+{
+  "closed": {
+    "offset": 30,
+    "margin": 30,
+    "scrollPadding": 30,
+    "iframe": 30,
+    "bar": 30,
+    "header": 29.78125,
+    "progress": 30,
+    "layout": 30,
+    "fixed": 4
+  },
+  "dropdown": {
+    "offset": 30,
+    "margin": 30,
+    "scrollPadding": 30,
+    "iframe": 422,
+    "bar": 30,
+    "header": 30,
+    "progress": 30,
+    "layout": 30,
+    "fixed": 4
+  },
+  "editing": {
+    "offset": 74,
+    "margin": 74,
+    "scrollPadding": 74,
+    "iframe": 74,
+    "bar": 74,
+    "header": 73.640625,
+    "progress": 74,
+    "layout": 74,
+    "fixed": 11
+  },
+  "cancel": {
+    "offset": 30,
+    "margin": 30,
+    "scrollPadding": 30,
+    "iframe": 30,
+    "bar": 30,
+    "header": 29.78125,
+    "progress": 30,
+    "layout": 30,
+    "fixed": 4
+  },
+  "mobile": {
+    "offset": 30,
+    "margin": 30,
+    "scrollPadding": 30,
+    "iframe": 30,
+    "bar": 30,
+    "header": 30,
+    "progress": 30,
+    "layout": 30,
+    "fixed": 4
+  },
+  "flowStatus": 404,
+  "flow": {
+    "offset": 30,
+    "margin": 30,
+    "scrollPadding": 30,
+    "iframe": 30,
+    "bar": 30,
+    "header": null,
+    "progress": null,
+    "layout": 30,
+    "fixed": 0
+  },
+  "resizedBar": {
+    "offset": 54,
+    "margin": 54,
+    "scrollPadding": 54,
+    "iframe": 201,
+    "bar": 53.5,
+    "header": 53.59375,
+    "progress": 54,
+    "layout": 54,
+    "fixed": 4
+  },
+  "save": {
+    "intercepted": true,
+    "htmlBytes": 53907,
+    "layoutBytes": 17539,
+    "offsetMarkup": false
+  },
+  "pageErrors": [],
+  "assets": {
+    "toolbar": {
+      "file": "toolbar.min.js",
+      "sha256": "3d5231e2a72b7f912ae31ade67f709b60591dda96d5f77434dd4faee7541b81c"
+    },
+    "iframe-toolbar": {
+      "file": "iframe-toolbar.min.js",
+      "sha256": "45ffd278231c4bf1115264841d52d32b92bcc1c7e36e124cbe1b9ea1bf66b584"
+    }
+  }
+}

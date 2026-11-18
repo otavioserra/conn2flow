@@ -1,5 +1,27 @@
 # Validation Checklist
 
+## BATCH-311 — REQ-302
+
+- [x] Altura medida do iframe, atualização dinâmica e dropdown com altura independente do offset.
+- [x] Offset no fluxo, em âncoras e no topo de elementos fixed/sticky. UI do editor excluída e HTML de autoria preservado.
+- [x] Minificados e token do dashboard atualizados. Vitest 721/721 e PHPUnit do layout administrativo 15/15.
+- [x] Chromium autenticado na home e em rota sem elementos fixos com os novos minificados entregues pelo Playwright. POST de salvamento conferido antes do envio.
+- [x] Publicação por SSH informada pelo operador. Minificados confirmados por hash HTTP e Chromium autenticado sem erros JavaScript. [BATCH-311](../implementation/BATCH-311.md)
+- [ ] Conferência da persistência em banco após um salvamento efetivo.
+
+## BATCH-310 — REQ-301
+
+- [x] `mercadopago.php`: Bearer, idempotência em POST, cartão/Pix/Boleto, consulta, reembolso total/parcial, HMAC `x-signature` pelo manifesto oficial (inclusive notificação só por query) e status canônicos.
+- [x] `pagamentos-gateways.php`: drivers stripe/mercadopago/paypal + extensão por filtro; ordem prioridade → padrão → id com fallback sem a coluna; capacidades (Stripe BR sem parcelas, MP até 12, PayPal configurável).
+- [x] Fachada com prova de posse (valor, moeda, referência) e recusa de parcelas acima da capacidade antes de chamar o provedor.
+- [x] Envelope canônico: gateway escolhido pela assinatura, estado do MP lido por GET autenticado, configuração global restaurada.
+- [x] `plataforma-gateways.php`: rotas `/_gateways/[modulo/]mercadopago/{webhook|return|cancel}`, `canonical` em Stripe/PayPal/universal com campos legados intactos.
+- [x] PHPUnit 22/22 novos (Windows + lab); suíte completa sem falha nova (21 CRLF preexistentes); Vitest 716/716.
+- [x] Smoke real somente leitura no sandbox do Mercado Pago (conexão 200, 404 mapeado, token fora do log).
+- [ ] Revisão do Macro-Arquiteto (topologia dupla).
+- [ ] Cadastro do webhook no painel do Mercado Pago e assinatura secreta (operador).
+- [ ] Homologação humana.
+
 ## BATCH-308 / BATCH-309 — REQ-300
 
 - [x] Tokens `--c2fc-acao*` sem mudança visual no núcleo (equivalência com os padrões); projeto troca a cor só redefinindo tokens (lumix).

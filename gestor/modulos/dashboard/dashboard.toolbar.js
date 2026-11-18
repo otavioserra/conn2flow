@@ -20,7 +20,6 @@
 (function () {
 	'use strict';
 
-	var TOOLBAR_HEIGHT = 30;
 	var TOOLBAR_ID = 'c2f-site-toolbar';
 	var CONTENT_ID = 'c2f-page-content';
 	var LAYOUT_ROOT_ID = 'c2f-layout-root';
@@ -52,22 +51,146 @@
 
 	// ===== Offset / redimensionamento
 
-	function setPageOffset(offset) {
-		var el = document.documentElement;
-		if (!el) { return; }
-		var o = parseInt(offset, 10);
-		if (isNaN(o) || o < TOOLBAR_HEIGHT) { o = TOOLBAR_HEIGHT; }
-		el.style.setProperty('margin-top', o + 'px', 'important');
+	var pageOffset;
+	var offsetSheet;
+	var offsetFrame = null;
+	var offsetProperty = '--c2f-toolbar-offset';
+	var editorUi = '#c2f-site-toolbar, [id^="c2f-he-"], [id^="html-editor-"], ' +
+		'[id^="c2f-toolbar-"], :not(body):is([class^="c2f-toolbar-"], [class*=" c2f-toolbar-"]), ' +
+		'[class^="c2f-he-"], [class*=" c2f-he-"], #c2f-device-preview, #c2f-save-loader, ' +
+		'#c2f-add-panel, #c2f-backup-panel, #c2f-view-options-panel, #c2f-page-config-panel, ' +
+		'#c2f-page-config-picker, #c2f-code-panel, .html-editor-container, .ui.dimmer.modals';
+
+	// A folha fica fora do HTML editável. Seletores estruturais dispensam atributos no conteúdo,
+	// inclusive durante clonagem de elementos, histórico e extração do HTML para salvamento.
+	var offsetRootSelector = ':root:is(*,#c2f-site-toolbar#c2f-site-toolbar#c2f-site-toolbar)';
+
+	function offsetSelector(el) {
+		var path = '';
+		while (el !== document.documentElement) {
+			var index = Array.prototype.indexOf.call(el.parentElement.children, el) + 1;
+			path = ' > :nth-child(' + index + ')' + path;
+			el = el.parentElement;
+		}
+		return offsetRootSelector + path;
 	}
 
-	function applyOffset() { setPageOffset(TOOLBAR_HEIGHT); }
+	function addOffset(value) {
+		return 'calc(' + value + ' + var(' + offsetProperty + '))';
+	}
+
+	function transitionTarget(el, property, value) {
+		// Ao desativar a folha, uma transition:all pode interpolar a posição anterior. Use o
+		// destino dessa transição, que pertence ao CSS da página, como base do novo offset.
+		var transition = el.getAnimations && el.getAnimations().find(function (animation) {
+			return animation.transitionProperty === property;
+		});
+		if (!transition || !transition.effect) { return value; }
+		var keyframes = transition.effect.getKeyframes();
+		var key = property.replace(/-([a-z])/g, function (_, letter) { return letter.toUpperCase(); });
+		return keyframes.length ? keyframes[keyframes.length - 1][key] || value : value;
+	}
+
+	function hasLocalPositioningContext(element, position) {
+		for (var parent = element.parentElement; parent && parent !== document.documentElement; parent = parent.parentElement) {
+			var style = window.getComputedStyle(parent);
+			if (position === 'sticky') {
+				// O overflow do body se propaga ao viewport quando o overflow da raiz é visível.
+				if (parent === document.body && window.getComputedStyle(document.documentElement).overflowY === 'visible') {
+					continue;
+				}
+				if (/^(auto|scroll|hidden|overlay)$/.test(style.overflowY)) { return true; }
+			} else if ((style.transform && style.transform !== 'none') ||
+				(style.filter && style.filter !== 'none') || (style.perspective && style.perspective !== 'none') ||
+				(style.backdropFilter && style.backdropFilter !== 'none') ||
+				(style.translate && style.translate !== 'none') || (style.rotate && style.rotate !== 'none') ||
+				(style.scale && style.scale !== 'none') || /\b(layout|paint|strict|content)\b/.test(style.contain) ||
+				/\b(transform|perspective|filter|backdrop-filter|contain|translate|rotate|scale)\b/.test(style.willChange)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function refreshPageOffset() {
+		if (!offsetSheet) { return; }
+		// Leia os estilos do projeto com as regras temporárias desativadas. Isso também resolve
+		// mudanças de classe, breakpoints e elementos que deixaram de ser fixed/sticky.
+		offsetSheet.disabled = true;
+		while (offsetSheet.cssRules.length) { offsetSheet.deleteRule(offsetSheet.cssRules.length - 1); }
+		if (pageOffset > 0 && document.getElementById(TOOLBAR_ID)) {
+			var root = document.documentElement;
+			var rootStyle = window.getComputedStyle(root);
+			var margin = transitionTarget(root, 'margin-top', rootStyle.marginTop) || '0px';
+			var padding = transitionTarget(root, 'scroll-padding-top', rootStyle.scrollPaddingTop);
+			if (!padding || padding === 'auto') { padding = '0px'; }
+			offsetSheet.insertRule(offsetRootSelector + ' {' + offsetProperty + ':' + pageOffset + 'px;' +
+				'margin-top:' + addOffset(margin) + ' !important;' +
+				'scroll-padding-top:' + addOffset(padding) + ' !important;}');
+
+			document.body.querySelectorAll('*').forEach(function (el) {
+				if (el.closest(editorUi)) { return; }
+				var style = window.getComputedStyle(el);
+				var position = style.position;
+				if (position !== 'fixed' && position !== 'sticky') { return; }
+				// getComputedStyle pode resolver top:auto de um fixed como a posição em pixels.
+				var top = el.computedStyleMap ? el.computedStyleMap().get('top') : style.top;
+				if (!top || String(top) === 'auto' || hasLocalPositioningContext(el, position)) { return; }
+				top = transitionTarget(el, 'top', String(top));
+				if (top === 'auto') { return; }
+				var rule = offsetSelector(el) + ' {top:' + addOffset(top) + ' !important;}';
+				offsetSheet.insertRule(rule, offsetSheet.cssRules.length);
+			});
+		}
+		offsetSheet.disabled = false;
+	}
+
+	function schedulePageOffset() {
+		if (offsetFrame !== null) { return; }
+		offsetFrame = window.requestAnimationFrame(function () {
+			offsetFrame = null;
+			refreshPageOffset();
+		});
+	}
+
+	function measuredSize(value) {
+		return typeof value === 'number' && Number.isFinite(value) && value >= 0 ? Math.ceil(value) : null;
+	}
+
+	function setPageOffset(offset) {
+		var size = measuredSize(offset);
+		if (size === null || !document.getElementById(TOOLBAR_ID)) { return; }
+		pageOffset = size;
+		refreshPageOffset();
+	}
+
+	function applyOffset() {
+		var toolbar = document.getElementById(TOOLBAR_ID);
+		if (!toolbar) { return; }
+		var style = document.createElement('style');
+		document.head.appendChild(style);
+		offsetSheet = style.sheet;
+		setPageOffset(pageOffset === undefined ? toolbar.getBoundingClientRect().height : pageOffset);
+		window.addEventListener('resize', schedulePageOffset);
+		document.addEventListener('load', function (ev) {
+			if (ev.target.tagName === 'LINK' && ev.target.rel === 'stylesheet') { schedulePageOffset(); }
+		}, true);
+		new window.MutationObserver(function (mutations) {
+			if (mutations.some(function (mutation) {
+				var target = mutation.target;
+				if (target.nodeType !== 1) { target = target.parentElement; }
+				return target && !target.closest(editorUi);
+			})) { schedulePageOffset(); }
+		}).observe(document.documentElement, {
+			subtree: true, childList: true, characterData: true, attributes: true
+		});
+	}
 
 	function setToolbarHeight(height) {
 		var tb = document.getElementById(TOOLBAR_ID);
 		if (!tb) { return; }
-		var h = parseInt(height, 10);
-		if (isNaN(h) || h < TOOLBAR_HEIGHT) { h = TOOLBAR_HEIGHT; }
-		tb.style.height = h + 'px';
+		var size = measuredSize(height);
+		if (size !== null) { tb.style.height = size + 'px'; }
 	}
 
 	// ===== Base URL (raiz) derivada do src do iframe da toolbar
