@@ -43,8 +43,9 @@ summary_short: "Canonical no head, og:image:width/height/type do arquivo local, 
 - Regressões PHP cobrem três grafias de `/docs/`, idioma não padrão, caminho cadastrado com maiúsculas, referências completas, colapsadas e curtas e link inline com título em aspas simples. Filtro de seis classes: 115 testes, 3.227 asserções e quatro depreciações do PHPUnit. `php -l` e `git diff --check` passaram.
 - Suíte completa no PHP 8.5.8: 2.021 testes contra 2.018 na base `8c2f2b72`. O comparativo dos JUnit confirma exatamente os mesmos 28 casos com falha, um erro e 11 testes ignorados.
 - Build de documentação isolado com fonte `e644c3ca`: 1.690 arquivos HTML de docs verificados com parser de HTML e zero destinos privados em `href` ou `src`.
+- Lab `conn2flow-site-local`: `project:update-all --skip-css` concluído. Conferidos por SHA-256 os dois arquivos PHP do runtime e os dois do gerador. Nas respostas HTTP, `/docs/`, `/Docs/` e `/DOCS/` emitiram a mesma canonical e o mesmo `og:url`. `/eN/Docs/` convergiu para `/en/docs/` e o registro `BATCH-311` preservou as maiúsculas. Um teste do gerador instalado confirmou que os dois casos privados renderizam como texto e o link público segue ativo. Evidência em [BATCH-149](../../../conn2flow-site/memory/implementation/batch-149-pacote-seo-whatsapp-canonicals-sitemap.md).
 
 ## Pendências
 
 - Evidência do Lab: registrada no BATCH-149 do site (publicação por `project:update-all conn2flow-site-local`).
-- Revisão técnica; merge na `main`; homologação humana.
+- Nova revisão técnica, merge na `main` e homologação humana. Achados menores do parecer seguem para acompanhamento.
