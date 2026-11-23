@@ -43,6 +43,8 @@ function admin_environment_env_read(){
         'EMAIL_FROM_NAME' => $_ENV['EMAIL_FROM_NAME'] ?? '',
         'EMAIL_REPLY_TO' => $_ENV['EMAIL_REPLY_TO'] ?? '',
         'EMAIL_REPLY_TO_NAME' => $_ENV['EMAIL_REPLY_TO_NAME'] ?? '',
+        // req-304: caixa de teste (mesma fonte do admin-comunicacao); ignorada em produção.
+        'MAIL_REDIRECT_TO' => $_ENV['MAIL_REDIRECT_TO'] ?? '',
         'LANGUAGE_DEFAULT' => $_ENV['LANGUAGE_DEFAULT'] ?? '',
         'LANGUAGE_WIDGET_ACTIVE' => $_ENV['LANGUAGE_WIDGET_ACTIVE'] ?? 'false',
         'LANGUAGE_AUTO_DETECT' => $_ENV['LANGUAGE_AUTO_DETECT'] ?? 'false',
@@ -314,6 +316,7 @@ function admin_environment_raiz(){
         'email_from_name' => $envData['EMAIL_FROM_NAME'] ?? '',
         'email_reply_to' => $envData['EMAIL_REPLY_TO'] ?? '',
         'email_reply_to_name' => $envData['EMAIL_REPLY_TO_NAME'] ?? '',
+        'mail_redirect_to' => $envData['MAIL_REDIRECT_TO'] ?? '',
         'language_default' => $envData['LANGUAGE_DEFAULT'] ?? 'pt-br',
         'language_widget_active' => $envData['LANGUAGE_WIDGET_ACTIVE'] ?? 'false',
         'language_auto_detect' => $envData['LANGUAGE_AUTO_DETECT'] ?? 'false',
@@ -478,6 +481,18 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-reply-to#', $dados['email_reply_to']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-reply-to-name#', $dados['email_reply_to_name']);
 
+    // req-304: redirecionamento de teste + estado real (ativo, travado em produção ou desligado).
+    gestor_incluir_biblioteca('comunicacao');
+    $redirect = comunicacao_redirecionamento_status();
+    $redirectEstado = $redirect['ativo'] ? 'email-redirect-state-active' : ($redirect['bloqueado'] ? 'email-redirect-state-blocked' : 'email-redirect-state-off');
+    $redirectClasse = $redirect['ativo']
+        ? 'border-amber-300 bg-amber-50 text-amber-900'
+        : ($redirect['bloqueado'] ? 'border-rose-300 bg-rose-50 text-rose-900' : 'border-slate-200 bg-slate-50 text-slate-700');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#mail-redirect-to#', htmlspecialchars((string)$dados['mail_redirect_to'], ENT_QUOTES, 'UTF-8'));
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#mail-redirect-state#', htmlspecialchars(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => $redirectEstado)), ENT_QUOTES, 'UTF-8'));
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#mail-redirect-state-class#', $redirectClasse);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#mail-redirect-env#', htmlspecialchars($redirect['ambiente'], ENT_QUOTES, 'UTF-8'));
+
     // Linguagem
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-widget-active-checked#', $dados['language_widget_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-auto-detect-checked#', $dados['language_auto_detect'] === 'true' ? 'checked' : '');
@@ -559,6 +574,16 @@ function admin_environment_ajax_opcao(){
 
 function admin_environment_ajax_salvar(){
     global $_GESTOR;
+
+    if(($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST'){
+        http_response_code(405);
+        header('Allow: POST');
+        $_GESTOR['ajax-json'] = Array(
+            'status' => 'Erro',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'msg-post-required')),
+        );
+        return;
+    }
     
     $data = [];
     
@@ -619,6 +644,18 @@ function admin_environment_ajax_salvar(){
     if(isset($_REQUEST['email_from_name'])) $data['EMAIL_FROM_NAME'] = $_REQUEST['email_from_name'];
     if(isset($_REQUEST['email_reply_to'])) $data['EMAIL_REPLY_TO'] = $_REQUEST['email_reply_to'];
     if(isset($_REQUEST['email_reply_to_name'])) $data['EMAIL_REPLY_TO_NAME'] = $_REQUEST['email_reply_to_name'];
+    // req-304: vazio desliga; qualquer outro valor precisa ser um e-mail válido.
+    if(isset($_POST['mail_redirect_to'])){
+        $redirectTo = trim((string)$_POST['mail_redirect_to']);
+        if($redirectTo !== '' && filter_var($redirectTo, FILTER_VALIDATE_EMAIL) === false){
+            $_GESTOR['ajax-json'] = [
+                'status' => 'error',
+                'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'email-redirect-invalid')),
+            ];
+            return;
+        }
+        $data['MAIL_REDIRECT_TO'] = $redirectTo;
+    }
 
     // Coletar dados do formulário — Linguagem
     if(isset($_REQUEST['language_default'])) $data['LANGUAGE_DEFAULT'] = $_REQUEST['language_default'];

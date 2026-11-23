@@ -1866,9 +1866,9 @@ function gestor_css_classes_usadas($html){
 	foreach($matches as $match){
 		foreach(preg_split('/\s+/', trim($match[2])) as $classe){
 			if($classe === '') continue;
-			// Marcadores de template (`@[[VAR]]@`, `[[item#x]]`, `{{x}}`) não são classes: entram no
+			// Marcadores de template (`@[[VAR]]@`, `[[item#x]]`, `{{x}}`, `#x#`) entram no
 			// HTML antes da substituição e contariam como descoberta falsa.
-			if(strpos($classe, '[') !== false || strpos($classe, '{') !== false || strpos($classe, '@') !== false) continue;
+			if(strpos($classe, '[') !== false || strpos($classe, '{') !== false || strpos($classe, '@') !== false || preg_match('/^#[a-z0-9_-]+#$/i', $classe)) continue;
 			$classes[$classe] = true;
 		}
 	}

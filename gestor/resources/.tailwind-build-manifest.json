@@ -2074,6 +2074,42 @@
             "safelist": [],
             "built_at": "2026-10-20T15:10:42+00:00"
         },
+        "module|admin-comunicacao|en|pages|admin-comunicacao": {
+            "fingerprint": "7721b7715f06c41f3356c8e761a19373925717b9c6fe5abede3e15f7082395bb",
+            "output_hash": "809451e21122aa09c139146b2f9412df8e73babd7ebf479a156446af944cd131",
+            "output": "modulos/admin-comunicacao/resources/en/pages/admin-comunicacao/admin-comunicacao.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-comunicacao/resources/en/pages/admin-comunicacao/admin-comunicacao.html",
+                "modulos/admin-comunicacao/admin-comunicacao.js",
+                "modulos/admin-comunicacao/admin-comunicacao.php",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-11-23T21:28:58+00:00"
+        },
+        "module|admin-comunicacao|pt-br|pages|admin-comunicacao": {
+            "fingerprint": "d72360904ccbc77dd4804230bc5564421b928ce8c3c7d505014f03ffc139a96c",
+            "output_hash": "ef6c689f5661564fcf4c3bf1833528300381c1886f9e76842668d8fd19765f72",
+            "output": "modulos/admin-comunicacao/resources/pt-br/pages/admin-comunicacao/admin-comunicacao.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-comunicacao/resources/pt-br/pages/admin-comunicacao/admin-comunicacao.html",
+                "modulos/admin-comunicacao/admin-comunicacao.js",
+                "modulos/admin-comunicacao/admin-comunicacao.php",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-11-23T21:28:58+00:00"
+        },
         "module|admin-cron|en|pages|admin-cron": {
             "fingerprint": "39a7922a92a0c6bcc690d06dc6615104941004e53f2271071b2e88f64bf4cbd4",
             "output_hash": "6f6defbba236963de457fa58fff333eb58616c0bee13e2d240718906c9c6c70d",
@@ -2115,8 +2151,8 @@
             "built_at": "2026-11-05T16:03:28+00:00"
         },
         "module|admin-environment|en|pages|admin-environment": {
-            "fingerprint": "3abc95ada8e2d8d632c6fb1238c1a93115f476438b449a40f348b96a3200d8e1",
-            "output_hash": "606220cf2eb1a65f0790ce1afd383eb985739e172ce847f10708b21076e774b1",
+            "fingerprint": "9b8edab553736b00054d908100140d2864cc55cb3624266e72444514d2c2b895",
+            "output_hash": "1a8f83ae4e39343ec3dcd7a6396b067c7e768741b4180ca7639c9067e791eee6",
             "output": "modulos/admin-environment/resources/en/pages/admin-environment/admin-environment.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2130,11 +2166,11 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-11-05T16:03:28+00:00"
+            "built_at": "2026-11-23T21:25:48+00:00"
         },
         "module|admin-environment|pt-br|pages|admin-environment": {
-            "fingerprint": "288fcb91333d6f14f3fe48cb32bf932cd19f2a2932949990eecf4ad34fce0d7b",
-            "output_hash": "72530a28bab7c40001aec57bca9a6290d6295e1102a6d93c60520de29d2fbf03",
+            "fingerprint": "f136af375fb84ee4893f87ab94af08416dee3e85ceb68f0e2a364d79fcec84f2",
+            "output_hash": "08661ec780804494f68ee4636ba6fb736e009cbc5e72a9f16c7a0807c99a4b35",
             "output": "modulos/admin-environment/resources/pt-br/pages/admin-environment/admin-environment.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2148,7 +2184,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-11-05T16:03:28+00:00"
+            "built_at": "2026-11-23T21:25:48+00:00"
         },
         "module|admin-ia|en|pages|admin-ia-adicionar": {
             "fingerprint": "7979cfd79326d7318ae0c972a130f70647b07d5abfe6af0911698689c61cb4e1",

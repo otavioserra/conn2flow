@@ -297,7 +297,21 @@ $_CONFIG = [
             'fromName' => $_ENV['EMAIL_FROM_NAME'] ?? '',
             'replyTo' => $_ENV['EMAIL_REPLY_TO'] ?? '',
             'replyToName' => $_ENV['EMAIL_REPLY_TO_NAME'] ?? '',
-        ]
+        ],
+        // req-304: ambiente (trava do redirecionamento de teste), caixa de teste, timeout SMTP e fila.
+        // Sem APP_ENV, só DEVELOPMENT_ENV=true tira a instalação de produção.
+        'ambiente' => strtolower(trim((string)($_ENV['APP_ENV'] ?? ''))) !== ''
+            ? strtolower(trim((string)$_ENV['APP_ENV']))
+            : (filter_var($_ENV['DEVELOPMENT_ENV'] ?? false, FILTER_VALIDATE_BOOLEAN) ? 'development' : 'production'),
+        'redirect_to' => trim((string)($_ENV['MAIL_REDIRECT_TO'] ?? '')),
+        'redirect_permitir_producao' => filter_var($_ENV['MAIL_REDIRECT_ALLOW_PRODUCTION'] ?? false, FILTER_VALIDATE_BOOLEAN),
+        'timeout' => (int)($_ENV['EMAIL_TIMEOUT'] ?? 15),
+        'fila' => [
+            'modo' => $_ENV['COMUNICACAO_MODO'] ?? 'hibrido',
+            'rate_limit' => (int)($_ENV['COMUNICACAO_RATE_LIMIT'] ?? 30),
+            'max_tentativas' => (int)($_ENV['COMUNICACAO_MAX_TENTATIVAS'] ?? 4),
+            'retencao_dias' => (int)($_ENV['COMUNICACAO_RETENCAO_DIAS'] ?? 90),
+        ],
     ],
     'language' => [
         'widget-active' => filter_var($_ENV['LANGUAGE_WIDGET_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),

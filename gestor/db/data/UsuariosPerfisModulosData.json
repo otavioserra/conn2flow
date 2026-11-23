@@ -33,6 +33,14 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "admin-comunicacao",
+        "status": "A",
+        "versao": 1,
+        "checksum": "d7107088e8e5067d06e3a2b8af6e195d",
+        "user_modified": 0
+    },
+    {
+        "perfil": "administradores",
         "modulo": "admin-cron",
         "status": "A",
         "versao": 3,

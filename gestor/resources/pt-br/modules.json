@@ -71,6 +71,20 @@
     },
     {
         "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin Comunicação",
+        "id": "admin-comunicacao",
+        "titulo": "Comunicação",
+        "icone": "envelope outline",
+        "icone_tailwind": "mail",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
         "nome": "Admin Environment",
         "id": "admin-environment",
         "titulo": "Ambiente Config",

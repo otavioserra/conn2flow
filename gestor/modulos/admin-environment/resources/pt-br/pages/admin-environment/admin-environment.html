@@ -595,6 +595,15 @@
                         </div>
                     </div>
 
+                    <div class="space-y-1.5 rounded border p-3 #mail-redirect-state-class#" id="mail-redirect-box">
+                        <label for="mail_redirect_to" class="text-sm font-medium">@[[email-redirect-label]]@</label>
+                        <input type="email" id="mail_redirect_to" name="mail_redirect_to" value="#mail-redirect-to#"
+                            placeholder="@[[email-redirect-placeholder]]@" autocomplete="off"
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                        <p class="text-xs">@[[email-redirect-help]]@</p>
+                        <p class="text-xs font-semibold"><span>#mail-redirect-state#</span> <span class="font-normal">(APP_ENV: #mail-redirect-env#)</span></p>
+                    </div>
+
                     <div class="space-y-1.5">
                         <button type="button"
                             class="c2fc-botao"

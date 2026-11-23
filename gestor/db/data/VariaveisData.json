@@ -10279,6 +10279,1698 @@
     },
     {
         "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "page-title",
+        "valor": "Comunicação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "page-subtitle",
+        "valor": "Fila, histórico e configurações das mensagens enviadas pelo sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "button-refresh",
+        "valor": "Atualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "button-refresh-tooltip",
+        "valor": "Recarrega a lista e os indicadores",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "banner-redirect-active",
+        "valor": "MODO TESTE ATIVO: todos os e-mails estão sendo redirecionados para #destino#. Nenhuma mensagem chega aos destinatários reais.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "banner-redirect-blocked",
+        "valor": "MAIL_REDIRECT_TO está preenchido, mas esta instalação está em produção: o redirecionamento está TRAVADO e os e-mails vão para os destinatários reais.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-table-missing",
+        "valor": "A tabela comunicacao_mensagens ainda não existe nesta instalação. Rode a atualização do banco (migrations) para ativar a fila e o histórico; até lá os e-mails seguem saindo direto.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "card-sent-today",
+        "valor": "Enviados hoje",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "card-queued",
+        "valor": "Na fila",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "card-failed",
+        "valor": "Falhas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "card-rate",
+        "valor": "Limite por minuto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "tab-queue",
+        "valor": "Fila e histórico",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "tab-settings",
+        "valor": "Configurações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "filter-search-placeholder",
+        "valor": "Buscar por destinatário ou assunto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "filter-status-label",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "filter-status-all",
+        "valor": "Todos os status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "filter-channel-label",
+        "valor": "Canal",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "filter-channel-all",
+        "valor": "Todos os canais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "filter-date-from",
+        "valor": "Desde",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "filter-date-to",
+        "valor": "Até",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-date",
+        "valor": "Criada em",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-channel",
+        "valor": "Canal",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-recipient",
+        "valor": "Destinatário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-subject",
+        "valor": "Assunto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-actions",
+        "valor": "Ações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "table-empty",
+        "valor": "Nenhuma mensagem encontrada com estes filtros.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-label",
+        "valor": "Paginação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-page",
+        "valor": "Página #pagina# de #paginas# · #total# mensagem(ns)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-prev",
+        "valor": "Anterior",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-next",
+        "valor": "Próxima",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "status-pendente",
+        "valor": "Na fila",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "status-enviando",
+        "valor": "Enviando",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "status-enviado",
+        "valor": "Enviado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "status-falhou",
+        "valor": "Falhou",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "status-cancelado",
+        "valor": "Cancelado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "label-redirected-from",
+        "valor": "redirecionado de #original#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "label-attempts",
+        "valor": "Tentativas: #n# de #max#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "label-next-try",
+        "valor": "Próxima tentativa: #data#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "label-none",
+        "valor": "—",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "action-view",
+        "valor": "Ver",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "action-resend",
+        "valor": "Reenviar agora",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "action-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-confirm-cancel",
+        "valor": "Cancelar esta mensagem? Ela sai da fila e não será enviada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-confirm-resend",
+        "valor": "Reenviar esta mensagem agora? Uma nova entrada será criada no histórico.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "modal-title",
+        "valor": "Mensagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "button-close",
+        "valor": "Fechar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-recipient",
+        "valor": "Destinatário efetivo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-original",
+        "valor": "Destinatário original",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-sender",
+        "valor": "Remetente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-attempts",
+        "valor": "Tentativas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-dates",
+        "valor": "Criada → enviada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-attachments",
+        "valor": "Anexos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-error",
+        "valor": "Último erro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "detail-preview",
+        "valor": "Pré-visualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-title",
+        "valor": "Configurações da fila",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-label",
+        "valor": "Modo de disparo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-hibrido",
+        "valor": "Híbrido (envia na hora e usa a fila em falha ou limite)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-sempre-fila",
+        "valor": "Sempre pela fila (envio pelo agendador)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-help",
+        "valor": "No modo híbrido, o e-mail sai na hora enquanto o limite por minuto não é atingido; se o SMTP falhar, volta para a fila. Em \"sempre pela fila\", quem envia é a rotina agendada a cada minuto.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-rate-label",
+        "valor": "Envios por minuto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-attempts-label",
+        "valor": "Máximo de tentativas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-retention-label",
+        "valor": "Dias de histórico",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-retry-help",
+        "valor": "Depois de cada falha, a próxima tentativa espera 1, 5, 15 e 60 minutos. O histórico de mensagens enviadas ou canceladas é apagado depois dos dias configurados (0 mantém tudo); falhas nunca são apagadas automaticamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-redirect-label",
+        "valor": "Redirecionar e-mails de teste (MAIL_REDIRECT_TO)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-redirect-placeholder",
+        "valor": "Ex: qa@seudominio.com (vazio desliga)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "settings-redirect-help",
+        "valor": "Fora de produção, todos os e-mails vão só para este endereço, com o assunto \"[TESTE → destinatário original]\". Em produção o valor é ignorado. É o mesmo campo do Admin Environment.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "button-save",
+        "valor": "Salvar configurações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "test-title",
+        "valor": "Enviar e-mail de teste",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "test-help",
+        "valor": "Passa pelo mesmo caminho de qualquer e-mail do sistema: SMTP configurado, fila, limite por minuto e redirecionamento de teste. O resultado aparece no histórico.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "test-recipient-label",
+        "valor": "Destinatário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "button-send-test",
+        "valor": "Enviar teste",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "test-email-subject",
+        "valor": "Teste de comunicação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "test-email-title",
+        "valor": "Teste de comunicação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "test-email-body",
+        "valor": "Este e-mail foi enviado pelo módulo Comunicação para validar o SMTP, a fila e o redirecionamento de teste.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "api-error-generic",
+        "valor": "Não foi possível concluir a ação. Tente novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-not-found",
+        "valor": "Mensagem não encontrada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-cancel-invalid",
+        "valor": "Só é possível cancelar mensagens que ainda estão na fila.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-cancel-success",
+        "valor": "Mensagem cancelada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-invalid",
+        "valor": "Só é possível reenviar mensagens enviadas ou com falha.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-sent",
+        "valor": "Mensagem reenviada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-queued",
+        "valor": "Mensagem colocada na fila para reenvio.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-failed",
+        "valor": "O reenvio falhou. Veja o erro no histórico.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-config-invalid",
+        "valor": "Revise os valores: modo híbrido ou sempre pela fila, envios por minuto entre 1 e 1000, tentativas entre 1 e 10 e histórico entre 0 e 3650 dias.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-post-required",
+        "valor": "Esta ação exige uma requisição POST.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-redirect-invalid",
+        "valor": "O endereço de redirecionamento de teste não é um e-mail válido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-config-save-error",
+        "valor": "Não foi possível gravar o arquivo .env desta instalação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-config-saved",
+        "valor": "Configurações salvas.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-invalid",
+        "valor": "Informe um e-mail de destino válido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-disabled",
+        "valor": "O envio de e-mail está desativado nesta instalação (EMAIL_ACTIVE).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-sent",
+        "valor": "E-mail de teste enviado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-queued",
+        "valor": "E-mail de teste aceito e colocado na fila.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-failed",
+        "valor": "O e-mail de teste falhou. Veja o erro no histórico.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "page-title",
+        "valor": "Communication",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "page-subtitle",
+        "valor": "Queue, history and settings of the messages sent by the system",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "button-refresh",
+        "valor": "Refresh",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "button-refresh-tooltip",
+        "valor": "Reloads the list and the indicators",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "banner-redirect-active",
+        "valor": "TEST MODE ON: every e-mail is being redirected to #destino#. No message reaches the real recipients.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "banner-redirect-blocked",
+        "valor": "MAIL_REDIRECT_TO is filled in, but this installation is in production: the redirect is LOCKED and e-mails go to the real recipients.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-table-missing",
+        "valor": "The comunicacao_mensagens table does not exist on this installation yet. Run the database update (migrations) to turn on the queue and the history; until then e-mails keep being sent directly.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "card-sent-today",
+        "valor": "Sent today",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "card-queued",
+        "valor": "Queued",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "card-failed",
+        "valor": "Failed",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "card-rate",
+        "valor": "Limit per minute",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "tab-queue",
+        "valor": "Queue and history",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "tab-settings",
+        "valor": "Settings",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "filter-search-placeholder",
+        "valor": "Search by recipient or subject",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "filter-status-label",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "filter-status-all",
+        "valor": "All statuses",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "filter-channel-label",
+        "valor": "Channel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "filter-channel-all",
+        "valor": "All channels",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "filter-date-from",
+        "valor": "From",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "filter-date-to",
+        "valor": "To",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-date",
+        "valor": "Created",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-channel",
+        "valor": "Channel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-recipient",
+        "valor": "Recipient",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-subject",
+        "valor": "Subject",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "table-col-actions",
+        "valor": "Actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "table-empty",
+        "valor": "No message found with these filters.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-label",
+        "valor": "Pagination",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-page",
+        "valor": "Page #pagina# of #paginas# · #total# message(s)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-prev",
+        "valor": "Previous",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "pagination-next",
+        "valor": "Next",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "status-pendente",
+        "valor": "Queued",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "status-enviando",
+        "valor": "Sending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "status-enviado",
+        "valor": "Sent",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "status-falhou",
+        "valor": "Failed",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "status-cancelado",
+        "valor": "Cancelled",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "label-redirected-from",
+        "valor": "redirected from #original#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "label-attempts",
+        "valor": "Attempts: #n# of #max#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "label-next-try",
+        "valor": "Next attempt: #data#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "label-none",
+        "valor": "—",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "action-view",
+        "valor": "View",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "action-resend",
+        "valor": "Resend now",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "action-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-confirm-cancel",
+        "valor": "Cancel this message? It leaves the queue and will not be sent.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-confirm-resend",
+        "valor": "Resend this message now? A new entry will be created in the history.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "modal-title",
+        "valor": "Message",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "button-close",
+        "valor": "Close",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-recipient",
+        "valor": "Effective recipient",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-original",
+        "valor": "Original recipient",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-sender",
+        "valor": "Sender",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-attempts",
+        "valor": "Attempts",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-dates",
+        "valor": "Created → sent",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-attachments",
+        "valor": "Attachments",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-error",
+        "valor": "Last error",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "detail-preview",
+        "valor": "Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-title",
+        "valor": "Queue settings",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-label",
+        "valor": "Sending mode",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-hibrido",
+        "valor": "Hybrid (sends right away, uses the queue on failure or limit)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-sempre-fila",
+        "valor": "Always through the queue (sent by the scheduler)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-mode-help",
+        "valor": "In hybrid mode the e-mail goes out right away while the per-minute limit is not reached; if SMTP fails, it goes back to the queue. In \"always through the queue\", the task scheduled every minute does the sending.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-rate-label",
+        "valor": "Sends per minute",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-attempts-label",
+        "valor": "Maximum attempts",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-retention-label",
+        "valor": "History days",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-retry-help",
+        "valor": "After each failure the next attempt waits 1, 5, 15 and 60 minutes. The history of sent or cancelled messages is deleted after the configured days (0 keeps everything); failures are never deleted automatically.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-redirect-label",
+        "valor": "Redirect test e-mails (MAIL_REDIRECT_TO)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-redirect-placeholder",
+        "valor": "E.g. qa@yourdomain.com (empty turns it off)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "settings-redirect-help",
+        "valor": "Outside production, every e-mail goes only to this address, with the subject \"[TESTE → original recipient]\". In production the value is ignored. It is the same field as in Admin Environment.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "button-save",
+        "valor": "Save settings",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "test-title",
+        "valor": "Send a test e-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "test-help",
+        "valor": "Goes through the same path as any system e-mail: configured SMTP, queue, per-minute limit and test redirect. The result shows up in the history.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "test-recipient-label",
+        "valor": "Recipient",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "button-send-test",
+        "valor": "Send test",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "test-email-subject",
+        "valor": "Communication test",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "test-email-title",
+        "valor": "Communication test",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "test-email-body",
+        "valor": "This e-mail was sent by the Communication module to validate SMTP, the queue and the test redirect.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "api-error-generic",
+        "valor": "The action could not be completed. Please try again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-not-found",
+        "valor": "Message not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-cancel-invalid",
+        "valor": "Only messages still in the queue can be cancelled.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-cancel-success",
+        "valor": "Message cancelled.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-invalid",
+        "valor": "Only sent or failed messages can be resent.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-sent",
+        "valor": "Message resent.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-queued",
+        "valor": "Message queued for resending.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-resend-failed",
+        "valor": "The resend failed. See the error in the history.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-config-invalid",
+        "valor": "Check the values: hybrid or always-queue mode, sends per minute between 1 and 1000, attempts between 1 and 10 and history between 0 and 3650 days.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-post-required",
+        "valor": "This action requires a POST request.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-redirect-invalid",
+        "valor": "The test redirect address is not a valid e-mail.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-config-save-error",
+        "valor": "The .env file of this installation could not be written.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-config-saved",
+        "valor": "Settings saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-invalid",
+        "valor": "Enter a valid recipient e-mail.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-disabled",
+        "valor": "E-mail sending is turned off on this installation (EMAIL_ACTIVE).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-sent",
+        "valor": "Test e-mail sent.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-queued",
+        "valor": "Test e-mail accepted and queued.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-comunicacao",
+        "id": "msg-test-failed",
+        "valor": "The test e-mail failed. See the error in the history.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "admin-cron",
         "id": "page-title",
         "valor": "Rotinas Automáticas",
@@ -12420,6 +14112,78 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-redirect-label",
+        "valor": "Redirecionar e-mails de teste (MAIL_REDIRECT_TO)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-redirect-placeholder",
+        "valor": "Ex: qa@seudominio.com (vazio desliga)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-redirect-help",
+        "valor": "Fora de produção, TODOS os e-mails (Para, Cc e Cco) vão só para este endereço, com o assunto \"[TESTE → destinatário original]\" e o cabeçalho X-Original-To. Em produção (APP_ENV=production) o valor é ignorado. O mesmo campo aparece em Comunicação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-redirect-state-active",
+        "valor": "Redirecionamento ATIVO: os e-mails não chegam aos destinatários reais.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-redirect-state-blocked",
+        "valor": "Redirecionamento TRAVADO: esta instalação está em produção e o valor é ignorado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-redirect-state-off",
+        "valor": "Redirecionamento desligado: os e-mails vão para os destinatários reais.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "msg-post-required",
+        "valor": "Esta ação exige uma requisição POST.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-redirect-invalid",
+        "valor": "O endereço de redirecionamento de teste não é um e-mail válido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-environment",
         "id": "email-tests-head-title",
@@ -12991,6 +14755,78 @@
         "modulo": "admin-environment",
         "id": "tip-bypass-revoke-all",
         "valor": "Invalidates the passes of every browser, on any device",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "email-redirect-label",
+        "valor": "Redirect test e-mails (MAIL_REDIRECT_TO)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "email-redirect-placeholder",
+        "valor": "E.g. qa@yourdomain.com (empty turns it off)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "email-redirect-help",
+        "valor": "Outside production, ALL e-mails (To, Cc and Bcc) go only to this address, with the subject \"[TESTE → original recipient]\" and the X-Original-To header. In production (APP_ENV=production) the value is ignored. The same field is shown in Communication.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "email-redirect-state-active",
+        "valor": "Redirect ON: e-mails do not reach the real recipients.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "email-redirect-state-blocked",
+        "valor": "Redirect LOCKED: this installation is in production and the value is ignored.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "email-redirect-state-off",
+        "valor": "Redirect off: e-mails go to the real recipients.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "msg-post-required",
+        "valor": "This action requires a POST request.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "email-redirect-invalid",
+        "valor": "The test redirect address is not a valid e-mail.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
