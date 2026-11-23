@@ -225,7 +225,8 @@ final class Indexer
     {
         $absolute = preg_match('~^(?:[A-Za-z]:[/\\\\]|[/\\\\])~', $target);
         $candidates = $absolute ? [$target] : [$this->root . '/' . $target, $this->memory . '/' . $target];
-        foreach ($candidates as $candidate) {
+        $explicit = $directory || $absolute || str_contains($target, '/') || str_contains($target, '\\');
+        foreach ($explicit ? $candidates : [] as $candidate) {
             if (file_exists($candidate)) {
                 $path = $this->safe($candidate);
                 if (is_dir($path) !== $directory || (!$directory && strtolower(pathinfo($path, PATHINFO_EXTENSION)) !== 'md')) {
@@ -234,14 +235,49 @@ final class Indexer
                 return $path;
             }
         }
-        if ($directory || str_contains($target, '/') || str_contains($target, '\\')) {
+        if ($explicit) {
             throw new RuntimeException('Target not found: ' . $target);
         }
-        $matches = array_values(array_filter($this->files($this->memory), static fn($p) => strcasecmp(basename($p), $target) === 0 || strcasecmp(pathinfo($p, PATHINFO_FILENAME), $target) === 0));
-        if (count($matches) !== 1) {
-            throw new RuntimeException('Target must be unique: ' . $target . ' (' . count($matches) . ' matches)');
+
+        $key = self::fold($target);
+        $paths = $this->files($this->memory);
+        $matches = array_values(array_filter($paths, static fn(string $path) =>
+            self::fold(basename($path)) === $key || self::fold(pathinfo($path, PATHINFO_FILENAME)) === $key
+        ));
+        if (!$matches) {
+            $matches = array_values(array_filter($paths, static fn(string $path) => self::matchesId($path, $key)));
+        }
+        if (count($matches) > 1) {
+            $choices = array_map(fn(string $path) => str_replace(DIRECTORY_SEPARATOR, '/', substr($path, strlen($this->root) + 1)), $matches);
+            sort($choices, SORT_STRING);
+            throw new RuntimeException('Target must be unique: ' . $target . '. Use a path under memory/: ' . implode(', ', $choices));
+        }
+        if (!$matches) {
+            throw new RuntimeException('Target not found: ' . $target);
         }
         return $matches[0];
+    }
+
+    private static function fold(string $value): string
+    {
+        return function_exists('mb_convert_case') ? mb_convert_case($value, MB_CASE_FOLD, 'UTF-8') : strtolower($value);
+    }
+
+    private static function matchesId(string $path, string $key): bool
+    {
+        if (in_array(strtolower(basename($path)), self::INFRA, true)) {
+            return false;
+        }
+        if (str_starts_with(self::fold(pathinfo($path, PATHINFO_FILENAME)), $key . '-')) {
+            return true;
+        }
+        $content = @file_get_contents($path);
+        if ($content === false || !preg_match('//u', $content)) {
+            return false;
+        }
+        $parsed = self::parse($content);
+        return isset($parsed['meta']['id']) && self::fold($parsed['meta']['id']) === $key
+            && !in_array('Duplicate field: id', $parsed['errors'], true);
     }
 
     private static function cell(string $value): string
