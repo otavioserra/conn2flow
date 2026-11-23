@@ -393,6 +393,8 @@ function meu_modulo_interfaces_padroes(){
 ```
 
 ### 3.6. Dispatcher Central `_start()`
+
+O núcleo `interface` reserva quatro valores de `ajaxOpcao` (`listar`, `verificar-campo`, `backup-campos-mudou`, `historico-mais-resultados`). É proibido usá-los em endpoints AJAX customizados do módulo. Use ações específicas do módulo, como `listar-itens`.
 ```php
 function meu_modulo_start(){
     global $_GESTOR;

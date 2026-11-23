@@ -99,3 +99,10 @@ gestor/
       .env                  <-- Valores reais e secretos
   config.php                <-- Bootstrap: carrega .env e popula $_CONFIG, $_BANCO, $_GESTOR
 ```
+
+## 5. `APP_ENV` e comunicação por e-mail
+
+- O template `gestor/autenticacoes.exemplo/dominio/.env` declara `APP_ENV=` e documenta `production`, `staging` e `development`. Em `gestor/config.php`, um valor não vazio tem os espaços nas pontas removidos, passa para minúsculas e é gravado em `$_CONFIG['email']['ambiente']` sem lista de valores permitidos. Vazio ou ausente, o padrão é `production`, ou `development` quando `DEVELOPMENT_ENV` é verdadeiro.
+- Em `gestor/bibliotecas/comunicacao-fila.php`, `comunicacao_config()` consulta primeiro a configuração de e-mail, depois tenta `$_ENV['APP_ENV']` e recorre a `$_GESTOR['development-env']` como último fallback.
+- A trava de `gestor/bibliotecas/comunicacao.php` reconhece exatamente `production`, `prod` e `producao` como produção. Qualquer outro valor não vazio é tratado como ambiente fora de produção. Para desenvolvimento local, declare `APP_ENV=development`. Para homologação, use `APP_ENV=staging`.
+- Com `MAIL_REDIRECT_TO` válido, o envio troca TO/CC/BCC por uma única caixa de teste e inclui um prefixo de teste no assunto e o cabeçalho `X-Original-To`. Em produção, a trava bloqueia o destino válido e o fluxo de envio registra um aviso por requisição, salvo se `MAIL_REDIRECT_ALLOW_PRODUCTION=true`. O template define essa exceção como `false`.

@@ -91,6 +91,12 @@ verified_at: 5b4348ab       # git rev-parse --short HEAD do Core no momento da c
 - O build é idempotente. Rodar duas vezes sem mudar o Markdown não altera arquivo.
 - Referência de implementação: `conn2flow-site` (REQ-057 / BATCH-050) e Core `cli/src/Support/Docs/`.
 
+### Build a partir de `git archive origin/main` (publicar só o que está commitado)
+
+1. Antes de gerar `/docs/` a partir de um Core com árvore compartilhada ou alterações em andamento, extraia uma fonte limpa do commit aprovado: `git fetch origin` e `git archive origin/main -- ai-workspace/ | tar -x -C <dir-temporario>` (ou equivalente determinístico).
+2. Execute `docs:build` contra a fonte extraída, ou garanta que a fonte seja idêntica a `origin/main`, sem rascunhos nem arquivos não rastreados do working tree.
+3. Remova o diretório temporário ao final. Nunca publique documentação que não esteja commitada e integrada em `origin/main`.
+
 ## ⛔ Proibições
 
 - Documentar a partir de memória, do texto legado ou de outra doc sem abrir o código.

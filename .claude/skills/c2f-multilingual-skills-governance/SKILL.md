@@ -48,6 +48,8 @@ node scripts/skills/sync-skills.cjs --update-translation-hash <skill> <idioma> -
 node scripts/skills/sync-skills.cjs --repos conn2flow-ai-workspace --report completions/skills-audit.json
 ```
 
+Testes que leem a matriz (ex.: `pytest -q tools/mdd-client/tests`) devem rodar **depois** de reconhecer os hashes de tradução (`--update-translation-hash`), para evitar `DRIFT_WARNING` transitório durante a rodada. Ordem: sync → hashes → auditoria → `pytest`.
+
 Nunca atualize hashes automaticamente num sync normal, antes da revisão ou só para obter PASS. A proteção contra sobrescrita continua mesmo em drift. Renomear exige migrar o nome nos kits e no registro, preservando o histórico e revendo hashes; não crie dupla fonte de autoria.
 
 ## Novo idioma

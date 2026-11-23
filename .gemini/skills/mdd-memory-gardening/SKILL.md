@@ -34,6 +34,10 @@ Use o suporte MDD real do cliente; não invente ai:archive-mdd nem passe memory 
 
 ---
 
+### Auditoria de links pós-arquivamento: linha de base e órfãos
+
+Registre a linha de base de links órfãos **antes** do movimento. Depois, reporte separadamente os órfãos preexistentes em fontes históricas protegidas (`archive/original/` e `04-memory-engineering-execution.md`) e os órfãos introduzidos pelo lote. Qualquer reparo em originais protegidos exige autorização humana explícita.
+
 ## 🧠 Poda da Memória de Execução
 
 1. Meça bytes e linhas e leia a memória de execução completa (ou rode `c2f ai:prune-memories`).

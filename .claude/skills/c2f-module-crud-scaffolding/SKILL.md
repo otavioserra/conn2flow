@@ -1,0 +1,437 @@
+---
+name: c2f-module-crud-scaffolding
+description: "LEIA ANTES de criar, estruturar ou refatorar novos módulos administrativos e CRUDs no Conn2Flow. Se não ler: o módulo viola o padrão canônico modulos-grupos, quebra o histórico de auditoria e falha na sincronização determinística."
+user-invocable: false
+---
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar uma nova pasta em `modulos/` ou `gestor/modulos/` contendo controller `.php`, schema `.json`, script `.js` e `resources/`.
+- **SKIP APENAS SE**: Pequenos ajustes pontuais em módulos legados sem alteração de estrutura ou ciclo de vida.
+- **CONSEQUÊNCIA DE IGNORAR**: Módulos incompatíveis com o dispatcher de rotas, ausência de chave natural (`strategy: "natural_key"`), falha no snapshot de histórico (`banco_select_campos_antes_iniciar`) e perda de auditoria.
+
+---
+
+# Scaffolding Canônico de Módulos CRUD no Conn2Flow
+
+Consulte e aplique este guia arquitetural sempre que for criar ou refatorar um módulo administrativo no Conn2Flow. O módulo canônico de referência é `gestor/modulos/modulos-grupos/`.
+
+---
+
+## 1. Estrutura Padrão de Diretórios e Arquivos
+
+Todo módulo administrativo deve residir em `gestor/modulos/<modulo-id>/` ou `modulos/<modulo-id>/` com a seguinte composição obrigatória:
+
+```
+modulos/<modulo-id>/
+├── <modulo-id>.php         # Controller principal e dispatcher de ciclo de vida
+├── <modulo-id>.json        # Schema declarativo: bibliotecas, tabela, natural_key e recursos
+├── <modulo-id>.js          # Script JavaScript carregado pelo módulo no frontend
+├── cover.webp              # [Obrigatório] Capa 3D conceitual gerada via c2f-module-visual-assets
+└── resources/
+    ├── pt-br/
+    │   ├── pages/
+    │   │   ├── <modulo-id>/                     # Tela de listagem (opcao=listar)
+    │   │   ├── <modulo-id>-adicionar/           # Tela de inserção (opcao=adicionar)
+    │   │   ├── <modulo-id>-editar/              # Tela de edição (opcao=editar)
+    │   │   └── <modulo-id>-clonar/              # Tela de clonagem (opcao=clonar)
+    │   └── variables.json                       # Variáveis e labels multilíngues pt-br
+    └── en/
+        ├── pages/ ...
+        └── variables.json                       # Variáveis e labels multilíngues en
+```
+
+### 1.1 Identidade Visual e Capa Obrigatória (`c2f-module-visual-assets`)
+
+Todo novo módulo administrativo DEVE nascer com sua capa conceitual 3D padronizada, seguindo rigorosamente as diretrizes da skill `c2f-module-visual-assets`:
+- **Padrão Estético**: 3D isométrico, fundo azul meia-noite profundo, acentos ciano/violeta, vidro fosco e cerâmica suave (Design System V3.0). Sem texto, números ou logotipos.
+- **Formato e Resolução**: WebP 1024×1024 px (proporção 1:1), qualidade 90, método 6, peso máximo < 120 KB (alvo: 60 KB a 95 KB).
+- **Armazenamento Canônico**: Arquivo `gestor/assets/modulos/covers/<modulo-id>.webp` (e opcionalmente espelhado na raiz do módulo como `modulos/<modulo-id>/cover.webp`).
+- **Registro Obrigatório no Manifesto**: Toda nova capa deve ser cadastrada em `gestor/assets/modulos/covers/manifest.json` com `id`, `width`, `height`, `bytes` e hash `sha256` antes da homologação do módulo.
+
+---
+
+## 2. Schema Declarativo (`<modulo-id>.json`)
+
+O arquivo JSON define dependências de bibliotecas, mapeamento ORM/tabela e metadados de recursos:
+
+```json
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "meu_modulo_tabela",
+        "id": "id",
+        "id_numerico": "id_meu_modulo_tabela",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "config": {
+            "strategy": "natural_key",
+            "natural_key_columns": [
+                "language",
+                "id"
+            ],
+            "preserve_on_user_modified": [],
+            "insert_only": false
+        },
+        "deletar": []
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Meu Módulo",
+                    "id": "meu-modulo",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "meu-modulo/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Meu Módulo - Adicionar",
+                    "id": "meu-modulo-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "meu-modulo/adicionar/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Meu Módulo - Editar",
+                    "id": "meu-modulo-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "meu-modulo/editar/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Meu Módulo - Clonar",
+                    "id": "meu-modulo-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "meu-modulo/clonar/",
+                    "type": "system",
+                    "option": "clonar"
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}
+```
+
+---
+
+## 3. Anatomia do Controller PHP (`<modulo-id>.php`)
+
+### 3.1. Inicialização e Carregamento
+```php
+<?php
+
+global $_GESTOR;
+
+$_GESTOR['modulo-id']                      = 'meu-modulo';
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/meu-modulo.json'), true);
+```
+
+### 3.2. Função `_adicionar()`
+```php
+function meu_modulo_adicionar(){
+    global $_GESTOR;
+    
+    $modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+    
+    // 1. Gravar registro no Banco
+    if(isset($_GESTOR['adicionar-banco'])){
+        $usuario = gestor_usuario();
+        
+        // Validação obrigatória
+        interface_validacao_campos_obrigatorios(Array(
+            'campos' => Array(
+                Array(
+                    'regra' => 'texto-obrigatorio',
+                    'campo' => 'nome',
+                    'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-name-label')),
+                )
+            )
+        ));
+        
+        // Geração da Chave Natural
+        $id = banco_identificador(Array(
+            'id' => banco_escape_field($_REQUEST["nome"]),
+            'tabela' => Array(
+                'nome' => $modulo['tabela']['nome'],
+                'campo' => $modulo['tabela']['id'],
+                'id_nome' => $modulo['tabela']['id_numerico'],
+                'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+            ),
+        ));
+        
+        // Montagem dos Campos
+        $campos = null;
+        $campo_sem_aspas_simples = false;
+        
+        $campos[] = Array("id_usuarios", $usuario['id_usuarios'], $campo_sem_aspas_simples);
+        $campos[] = Array("nome", banco_escape_field($_REQUEST["nome"]), $campo_sem_aspas_simples);
+        $campos[] = Array("id", $id, $campo_sem_aspas_simples);
+        
+        // Campos de Controle Padrão
+        $campos[] = Array('language', $_GESTOR['linguagem-codigo'], $campo_sem_aspas_simples);
+        $campos[] = Array($modulo['tabela']['status'], 'A', $campo_sem_aspas_simples);
+        $campos[] = Array($modulo['tabela']['versao'], '1', $campo_sem_aspas_simples);
+        $campos[] = Array($modulo['tabela']['data_criacao'], 'NOW()', true);
+        $campos[] = Array($modulo['tabela']['data_modificacao'], 'NOW()', true);
+        
+        banco_insert_name($campos, $modulo['tabela']['nome']);
+        
+        gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
+    }
+    
+    // 2. Inclusão de JS e Validações no Frontend
+    gestor_pagina_javascript_incluir();
+    
+    $_GESTOR['interface']['adicionar']['finalizar'] = Array(
+        'formulario' => Array(
+            'validacao' => Array(
+                Array(
+                    'regra' => 'texto-obrigatorio',
+                    'campo' => 'nome',
+                    'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-name-label')),
+                )
+            )
+        )
+    );
+}
+```
+
+### 3.3. Função `_editar()`
+```php
+function meu_modulo_editar(){
+    global $_GESTOR;
+    
+    $modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+    $id = $_GESTOR['modulo-registro-id'];
+    
+    $camposBanco = Array('nome');
+    $camposBancoPadrao = Array(
+        $modulo['tabela']['status'],
+        $modulo['tabela']['versao'],
+        $modulo['tabela']['data_criacao'],
+        $modulo['tabela']['data_modificacao'],
+    );
+    $camposBancoEditar = array_merge($camposBanco, $camposBancoPadrao);
+    $camposBancoAntes = $camposBanco;
+    
+    // 1. Gravar Atualizações no Banco
+    if(isset($_GESTOR['atualizar-banco'])){
+        // Snapshot de dados anteriores
+        if(!banco_select_campos_antes_iniciar(
+            banco_campos_virgulas($camposBancoAntes),
+            $modulo['tabela']['nome'],
+            "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D'"
+        )){
+            interface_alerta(Array(
+                'redirect' => true,
+                'msg' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'alert-database-field-before-error'))
+            ));
+            gestor_redirecionar_raiz();
+        }
+        
+        // Validação obrigatória
+        interface_validacao_campos_obrigatorios(Array(
+            'campos' => Array(
+                Array(
+                    'regra' => 'texto-obrigatorio',
+                    'campo' => 'nome',
+                    'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-name-label')),
+                )
+            )
+        ));
+        
+        $editar = Array(
+            'tabela' => $modulo['tabela']['nome'],
+            'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'",
+        );
+        $alteracoes = [];
+        
+        // Comparação e Atualização de Campos
+        if(banco_select_campos_antes('nome') != (isset($_REQUEST['nome']) ? $_REQUEST['nome'] : NULL)){
+            $editar['dados'][] = "nome='" . banco_escape_field($_REQUEST['nome']) . "'";
+            if(!isset($_REQUEST['_gestor-nao-alterar-id'])){ $alterar_id = true; }
+            $alteracoes[] = Array('campo' => 'form-name-label', 'valor_antes' => banco_select_campos_antes('nome'), 'valor_depois' => banco_escape_field($_REQUEST['nome']));
+        }
+        
+        // Se mudou o nome, atualizar slug identificador natural
+        if(isset($alterar_id)){
+            $id_novo = banco_identificador(Array(
+                'id' => banco_escape_field($_REQUEST["nome"]),
+                'tabela' => Array(
+                    'nome' => $modulo['tabela']['nome'],
+                    'campo' => $modulo['tabela']['id'],
+                    'id_nome' => $modulo['tabela']['id_numerico'],
+                    'id_valor' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
+                    'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+                ),
+            ));
+            $alteracoes[] = Array('campo' => 'field-id', 'valor_antes' => $id, 'valor_depois' => $id_novo);
+            $editar['dados'][] = $modulo['tabela']['id']."='" . $id_novo . "'";
+            $_GESTOR['modulo-registro-id'] = $id_novo;
+        }
+        
+        // Executar Update e Salvar Histórico
+        if(isset($editar['dados'])){
+            $editar['dados'][] = $modulo['tabela']['versao']." = ".$modulo['tabela']['versao']." + 1";
+            $editar['dados'][] = $modulo['tabela']['data_modificacao']."=NOW()";
+            
+            banco_update(banco_campos_virgulas($editar['dados']), $editar['tabela'], $editar['extra']);
+            interface_historico_incluir(Array('alteracoes' => $alteracoes));
+        }
+        
+        gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
+    }
+    
+    // 2. Renderização da Interface
+    gestor_pagina_javascript_incluir();
+    
+    $retorno_bd = banco_select_editar(
+        banco_campos_virgulas($camposBancoEditar),
+        $modulo['tabela']['nome'],
+        "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'"
+    );
+    
+    if($_GESTOR['banco-resultado']){
+        $nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
+        $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#nome#', $nome);
+        
+        // Metadados Laterais
+        $status_atual = $retorno_bd[$modulo['tabela']['status']];
+        if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
+        if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
+        if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
+        if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($status_atual == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</b></div>' : '<div class="ui center aligned brown message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</b></div>')); }
+    } else {
+        gestor_redirecionar_raiz();
+    }
+    
+    // Finalizar Interface Editar
+    $_GESTOR['interface']['editar']['finalizar'] = Array(
+        'id' => $id,
+        'metaDados' => $metaDados,
+        'banco' => Array(
+            'nome' => $modulo['tabela']['nome'],
+            'id' => $modulo['tabela']['id'],
+            'status' => $modulo['tabela']['status'],
+        ),
+        'botoes' => Array(
+            'adicionar' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/adicionar/', 'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')), 'icon' => 'plus circle', 'cor' => 'blue'),
+            'clonar' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/clonar/?'.$modulo['tabela']['id'].'='.$id, 'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-clone')), 'icon' => 'clone', 'cor' => 'teal'),
+            'status' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=status&'.$modulo['tabela']['status'].'='.($status_atual == 'A' ? 'I' : 'A').'&'.$modulo['tabela']['id'].'='.$id.'&redirect='.urlencode($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id), 'rotulo' => ($status_atual == 'A' ? gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-desactive')) : gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-active'))), 'icon' => ($status_atual == 'A' ? 'eye' : 'eye slash'), 'cor' => ($status_atual == 'A' ? 'green' : 'brown')),
+            'excluir' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=excluir&'.$modulo['tabela']['id'].'='.$id, 'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-delete')), 'icon' => 'trash alternate', 'cor' => 'red'),
+        ),
+        'formulario' => Array(
+            'validacao' => Array(
+                Array('regra' => 'texto-obrigatorio', 'campo' => 'nome', 'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label'))),
+            )
+        )
+    );
+}
+```
+
+### 3.4. Função `_clonar()`
+Segue a mesma lógica de `_adicionar()`, recuperando os valores do registro original via `banco_select_editar()` e populando os campos no formulário.
+
+### 3.5. Função `_interfaces_padroes()` (Configuração da Listagem)
+```php
+function meu_modulo_interfaces_padroes(){
+    global $_GESTOR;
+    
+    $modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+    
+    switch($_GESTOR['opcao']){
+        case 'listar':
+            $_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+                'banco' => Array(
+                    'nome' => $modulo['tabela']['nome'],
+                    'campos' => Array('nome', $modulo['tabela']['data_criacao'], $modulo['tabela']['data_modificacao']),
+                    'id' => $modulo['tabela']['id'],
+                    'status' => $modulo['tabela']['status'],
+                    'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+                ),
+                'tabela' => Array(
+                    'rodape' => true,
+                    'colunas' => Array(
+                        Array('id' => 'nome', 'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')), 'ordenar' => 'asc'),
+                        Array('id' => $modulo['tabela']['data_criacao'], 'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')), 'formatar' => 'dataHora', 'nao_procurar' => true),
+                        Array('id' => $modulo['tabela']['data_modificacao'], 'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')), 'formatar' => 'dataHora', 'nao_procurar' => true),
+                    ),
+                ),
+                'opcoes' => Array(
+                    'editar' => Array('url' => 'editar/', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-edit')), 'icon' => 'edit', 'cor' => 'basic blue'),
+                    'clonar' => Array('url' => 'clonar/', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-clone')), 'icon' => 'clone', 'cor' => 'basic teal'),
+                    'ativar' => Array('opcao' => 'status', 'status_atual' => 'I', 'status_mudar' => 'A', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-active')), 'icon' => 'eye slash', 'cor' => 'basic brown'),
+                    'desativar' => Array('opcao' => 'status', 'status_atual' => 'A', 'status_mudar' => 'I', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-desactive')), 'icon' => 'eye', 'cor' => 'basic green'),
+                    'excluir' => Array('opcao' => 'excluir', 'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')), 'icon' => 'trash alternate', 'cor' => 'basic red'),
+                ),
+                'botoes' => Array(
+                    'adicionar' => Array('url' => 'adicionar/', 'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')), 'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')), 'icon' => 'plus circle', 'cor' => 'blue'),
+                ),
+            );
+        break;
+    }
+}
+```
+
+### 3.6. Dispatcher Central `_start()`
+
+O núcleo `interface` reserva quatro valores de `ajaxOpcao` (`listar`, `verificar-campo`, `backup-campos-mudou`, `historico-mais-resultados`). É proibido usá-los em endpoints AJAX customizados do módulo. Use ações específicas do módulo, como `listar-itens`.
+```php
+function meu_modulo_start(){
+    global $_GESTOR;
+    
+    gestor_incluir_bibliotecas();
+    
+    if($_GESTOR['ajax']){
+        interface_ajax_iniciar();
+        
+        switch($_GESTOR['ajax-opcao']){
+            // case 'minha-acao': meu_modulo_ajax_acao(); break;
+        }
+        
+        interface_ajax_finalizar();
+    } else {
+        meu_modulo_interfaces_padroes();
+        
+        interface_iniciar();
+        
+        switch($_GESTOR['opcao']){
+            case 'adicionar': meu_modulo_adicionar(); break;
+            case 'editar': meu_modulo_editar(); break;
+            case 'clonar': meu_modulo_clonar(); break;
+        }
+        
+        interface_finalizar();
+    }
+}
+
+meu_modulo_start();
+```
+
+---
+
+## 4. Regras Mandatórias de Engenharia
+
+1. **PROIBIDO Hardcode de Textos**: Todo e qualquer rótulo, título, tooltip ou mensagem de alerta deve vir de `gestor_variaveis(...)` (ver `c2f-variables-system`).
+2. **PROIBIDO Arquivos Estáticos Soltos**: Todas as telas devem residir no sistema de recursos em `resources/<lang>/pages/` (ver `c2f-resources-system`).
+3. **Sempre Usar Chave Natural**: Gerar slugs e IDs com `banco_identificador()` garantindo unicidade por idioma (`language = $_GESTOR['linguagem-codigo']`).
+4. **Sempre Usar Snapshot de Edição**: Toda gravação de edição DEVE iniciar com `banco_select_campos_antes_iniciar()` e registrar o log de alterações com `interface_historico_incluir()`.

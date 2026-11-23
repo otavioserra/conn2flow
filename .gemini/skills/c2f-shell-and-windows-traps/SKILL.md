@@ -21,7 +21,7 @@ user-invocable: false
 
 ---
 
-## ⛔ As 17 Armadilhas Críticas
+## ⛔ Armadilhas Críticas de Shell e Windows
 
 ### 1. Conversão Automática de Caminhos no Git Bash (MSYS Path Conversion)
 
@@ -399,13 +399,61 @@ Checkout com fim de linha CRLF lido pelo Linux faz falhar testes que executam sc
 > [!CAUTION]
 > NUNCA use `npx tailwindcss` ou `npx terser` em scripts automatizados de compilação ou rotinas repetitivas de build. Dependa estritamente das dependências locais em `node_modules/.bin/`.
 
-### 18. Junctions e git worktree remove (crítica)
+### 18. Remover worktree com junctions
 
-O BL-028 registra perda de vendor e node_modules em 2026-10-08: a remoção de worktrees no Windows atravessou Directory Junctions (mklink /J) e esvaziou destinos na árvore principal. Trate qualquer remoção como insegura até conferir os reparse points e suas referências.
+No Windows, faça toda a inspeção e remoção em uma única sessão do Prompt de Comando (CMD). Execute os blocos por etapa, substituindo os caminhos de exemplo por caminhos absolutos verificados.
 
-Antes de remover, confirme o caminho absoluto da worktree, que não é árvore principal nem origem do pipeline. Liste junctions com cmd /c "dir /AL <pasta>" (inspecione também nós internos, sem atravessar links). Confira referências de outras worktrees para dentro dela; se houver, preserve/reaponte primeiro. Desfaça cada junction individualmente com cmd /c "rmdir <pasta>\<atalho>" **sem /S**: isso remove apenas o atalho. Use caminhos literais previamente verificados e o CMD de ponta a ponta; nunca gere lista em PowerShell para executar exclusão por outro shell. Confirme que os links saíram, então execute git worktree remove. Nunca use --force para ultrapassar trabalho não integrado. Depois confira o conteúdo de vendor/node_modules nas árvores principais e nas worktrees restantes.
+1. Na árvore principal, confirme a worktree registrada e proteja a árvore principal e as origens dos pipelines. Confirme que o caminho e seus diretórios ancestrais são reais, que todos os commits da worktree estão integrados à `main` e que não há trabalho pendente, inclusive arquivos ignorados que precisam ser preservados.
 
-Não crie junction para outra worktree temporária; quando necessária, a referência é para a árvore principal. Confira a rotina de seis passos em mdd-memory-gardening.
+   ```bat
+   cd /d "C:\Projetos\repo"
+   git worktree list --porcelain
+   git -C "C:\Projetos\repo-lote" status --short --untracked-files=all --ignored=matching
+   git -C "C:\Projetos\repo-lote" merge-base --is-ancestor HEAD main
+   echo %ERRORLEVEL%
+   ```
+
+   O último comando deve retornar 0. Pare se houver trabalho único, destino incerto ou caminho protegido.
+
+2. Inventarie os links e os diretórios reais, um nível de cada vez. Repita os comandos em cada diretório real, inclusive subpastas de projeto e instalações reais de `vendor` e `node_modules`. Inspecione esses nomes pelo pai antes de entrar. Verifique também as outras worktrees e os destinos mostrados por `dir /AL`. Se outra árvore depender da worktree alvo, suspenda a remoção até resolver a referência e conferir a integridade dos destinos.
+
+   ```bat
+   dir /AL "C:\Projetos\repo-lote"
+   dir /A:D-L "C:\Projetos\repo-lote"
+   dir /AL "C:\Projetos\repo-lote\projeto"
+   dir /AL "C:\Projetos\repo"
+   ```
+
+   Nunca use `/S` para a enumeração. Registre o conteúdo e o destino de `vendor` e `node_modules` nas árvores que permanecerão, para comparar após a remoção.
+
+3. Remova cada entrada identificada como `<JUNCTION>` por seu caminho literal, individualmente e sem `/S`. Se houver outro tipo de reparse point ou falha de remoção, pare e preserve a árvore.
+
+   ```bat
+   rmdir "C:\Projetos\repo-lote\vendor"
+   rmdir "C:\Projetos\repo-lote\projeto\node_modules"
+   ```
+
+4. Repita `dir /AL` em todos os diretórios reais inventariados. Só prossiga com a ausência confirmada de links. Distinga ausência de entradas de erros de caminho ou acesso.
+
+5. Execute `git worktree remove` com o caminho conferido. Se o Git recusar a remoção, preserve a árvore e investigue. Após o sucesso, confira `git worktree prune --dry-run --verbose` e execute `git worktree prune` se a prévia listar apenas metadados descartáveis.
+
+   ```bat
+   git worktree remove "C:\Projetos\repo-lote"
+   git worktree prune --dry-run --verbose
+   git worktree prune
+   ```
+
+6. Confirme a ausência do alvo em `git worktree list --porcelain`. Em cada árvore restante, compare o conteúdo de `vendor` e `node_modules` com o inventário anterior e confira se as junctions mantidas resolvem para os destinos esperados.
+
+   ```bat
+   git worktree list --porcelain
+   dir "C:\Projetos\repo\vendor"
+   dir "C:\Projetos\repo\node_modules"
+   ```
+
+**Comandos proibidos nesta limpeza:** `rmdir /S`, `Remove-Item -Recurse`, `rm -rf` e enumeração no PowerShell seguida de exclusão no CMD. Nunca use `git worktree remove --force` para atropelar trabalho não integrado.
+
+Quando precisar criar uma junction para dependências compartilhadas, aponte para a árvore principal. Confira a rotina de manutenção em `mdd-memory-gardening`.
 
 ### 19. iconv //TRANSLIT não portável no PHP Windows
 
@@ -418,3 +466,20 @@ iconv('UTF-8', 'ASCII//TRANSLIT', $texto) pode substituir acentos por caracteres
 - Arquivos CRLF exigem ferramenta de edição segura ou script que leia bytes e preserve/normalize conscientemente os finais de linha; não aplique regex multilinha presumindo LF.
 - `grep -c $'\r'` pode produzir falso negativo no Windows/Git Bash. Confira bytes (`Path(...).read_bytes().count(b'\r\n')` ou PHP `bin2hex`); saída zero de grep não prova LF.
 - Na remoção Windows, use uma única shell de ponta a ponta; verifique caminhos absolutos e reparse points antes de excluir. Não enumere no PowerShell para passar exclusão ao CMD. Nunca atravesse junctions na limpeza.
+
+### 21. Como reconhecer um `index.lock` órfão no Windows
+
+1. **Sintoma**: `fatal: Unable to create '.../.git/index.lock': File exists` (ou `.git/worktrees/<nome>/index.lock`) após comando Git interrompido, timeout ou travamento no Windows/OneDrive.
+2. **Proibição**: nunca apague `index.lock` sem verificar se há `git.exe` ativo no repositório. Apagar um lock ativo corrompe o índice.
+3. **Diagnóstico obrigatório (PowerShell)**:
+   ```powershell
+   Get-CimInstance Win32_Process -Filter "Name='git.exe'" | Select-Object ProcessId, CreationDate, CommandLine
+   Get-Item -LiteralPath .git/index.lock | Select-Object FullName, Length, LastWriteTime
+   ```
+   Confirme que o timestamp do lock não muda.
+4. **Ação segura**: com `git.exe` ativo naquele repo/worktree, aguarde e nunca apague lock alheio. Sem nenhum `git.exe` atuando e com o arquivo parado (órfão), remova só o arquivo literal (`Remove-Item -LiteralPath .git/index.lock`) e confira com `git status --short` (e `git fsck` se a interrupção ocorreu durante gravação).
+
+### Busca de skills em pastas iniciadas por ponto
+
+Por padrão, o `glob(..., recursive=True)` do Python ignora pastas iniciadas por ponto, como `.gemini`, `.claude`, `.codex` e `.github`. Para varrer os kits de skills, use `os.walk` ou `Path.rglob`.
+Na matriz `conn2flow-ai-workspace`, rode `.\.venv-mdd\Scripts\pytest.exe -q tools/mdd-client/tests`.

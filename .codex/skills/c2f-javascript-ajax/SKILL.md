@@ -45,7 +45,7 @@ Em módulos modernos com JavaScript puro (Vanilla JS), utilize sempre o padrão 
 /**
  * Padrão Canônico de Requisição AJAX no Gestor (Vanilla JS)
  * @param {Object} state - Estado do módulo (deve conter opcao e moduleBaseUrl)
- * @param {string} ajaxOpcao - Ação a ser executada no backend (ex: 'salvar-dados', 'listar')
+ * @param {string} ajaxOpcao - Ação a ser executada no backend (ex: 'salvar-dados', 'listar-itens')
  * @param {Object} [extraData] - Parâmetros adicionais (objetos/arrays são serializados em JSON)
  * @returns {Promise<Object>} Resposta JSON do backend
  */
@@ -193,6 +193,17 @@ function modulo_ajax_minha_acao() {
 ```
 
 ---
+
+### Opções AJAX reservadas pelo núcleo (`interface`)
+
+O dispatcher de `interface` trata estes valores. Reutilizá-los como `ajaxOpcao` customizada do módulo colide com o núcleo e provoca HTTP 500. Use ações específicas do módulo, como `listar-itens` ou `salvar-dados`.
+
+| `ajaxOpcao` | Ação do núcleo |
+| --- | --- |
+| `listar` | Listagem da interface |
+| `verificar-campo` | Verificação de campo |
+| `backup-campos-mudou` | Backup de campos alterados |
+| `historico-mais-resultados` | Paginação do histórico |
 
 ## 📦 4. Padrão Legado com jQuery (`ajaxDefault`)
 

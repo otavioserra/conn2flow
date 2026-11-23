@@ -118,10 +118,22 @@ Nota de autoria: na via cirúrgica Core/banco, --core-resources preserva o dono 
 
 ## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
 
-- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Na rotina de alterações exclusivamente de projeto, use `./c2f project:deploy <id>`. Nessa rotina, `project:update-all` é proibido. Para sincronizar e validar alterações do Core no Lab de um projeto (`local: true`), use `./c2f project:update-all <id>` tanto em lote misto quanto em lote só de Core. Para atualizar o sistema/manager isolado, use `./c2f manager:update-all`. Na Categoria A, acrescente `--skip-css` aos comandos update-all.
 - Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
 - Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
 - DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.
+
+### Avanço concorrente da `main` após fast-forward aprovado
+
+1. Antes da integração e novamente antes de publicar, execute `git fetch origin`. Compare os SHAs atuais de `main` e `origin/main` com os SHAs registrados na aprovação e com a ponta aprovada da branch/worktree. Se a busca falhar ou faltar uma referência verificável, pare.
+
+2. Com as referências no ponto aprovado, execute o `git merge --ff-only` da ponta aprovada sobre uma `main` limpa. Na checagem pré-push, considere também o fast-forward local já realizado e confirme que `origin/main` continua no ponto esperado.
+
+3. Se qualquer `main` avançar, inspecione `git log --oneline <base>..origin/main` e `git diff --stat <base> origin/main`. Faça as mesmas comparações para a `main` local se ela avançou. Compare os caminhos e requisitos aprovados com a versão atual e rode as verificações pertinentes. Ancestralidade e estatísticas sozinhas não comprovam que uma alteração posterior preservou a entrega.
+
+4. Prossiga somente se a `main` atual contiver toda a entrega de forma verificável, sem conflitos, regressões ou perda de escopo. Se os commits já estiverem integrados, registre o resultado e dispense merge redundante. Use fast-forward quando possível. Um merge divergente exige autorização explícita além da aprovação original de fast-forward. Preserve o histórico e nunca force a publicação.
+
+5. Se faltar qualquer parte da entrega, surgir ambiguidade ou mudar uma referência entre a conferência e a operação, pare antes de merge ou push. Preserve a branch/worktree intacta e consulte o operador humano ou o Arquiteto Master.
 
 ## REP-002 — diagnóstico e rodadas
 

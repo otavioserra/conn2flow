@@ -63,3 +63,21 @@ with open(json_path, 'w', encoding='utf-8', newline='') as f:
 
 > [!CAUTION]
 > Sem a preservação do escape de barra, o `git diff` aponta alterações artificiais em **todas as linhas** do arquivo que contêm caminhos com `/`, poluindo o histórico e dificultando revisões.
+
+## Commit seletivo de partes de `*Data.json`
+
+1. Após gerar `*Data.json` (por exemplo, `PaginasData.json`, `ComponentesData.json`, `LayoutsData.json`, `TemplatesData.json` ou `ModulosData.json`), compare a base aprovada, o stage e o arquivo gerado. Inspecione adições, mudanças, reordenações e retiradas por entrada/ID. `git status` sozinho não demonstra o escopo do diff.
+
+2. Se houver mudanças de lotes diferentes, preserve o arquivo gerado e o stage existente. Reconstitua uma cópia a partir da base e aplique somente os registros autorizados, mantendo os demais registros e sua ordem. Use essa cópia para preparar o stage sem descartar trabalho paralelo no arquivo de trabalho. Use `git add -p -- caminho/ArquivoData.json` somente se os hunks forem independentes e o JSON no stage continuar válido.
+
+3. Preserve `\/`, UTF-8 e os finais de linha originais (LF ou CRLF). Se serializar com Python, use `ensure_ascii=False` e restaure os escapes de barra do formato PHP. Preserve os checksums e as versões que o pipeline gerou para os itens selecionados. Nunca calcule ou ajuste checksums manualmente.
+
+4. Antes do commit, valide a sintaxe do arquivo final e do blob do stage (`git show :caminho/ArquivoData.json`). Confira `git diff --cached -- caminho/ArquivoData.json` por ID e `git diff --cached` para todo o stage. Só prossiga se o conteúdo preparado estiver limitado ao lote.
+
+5. Se a autoria, o escopo de algum ID ou a legitimidade de uma retirada estiverem ambíguos, pare, preserve as duas versões e consulte o humano conforme a DEC-136.
+
+## Merge atômico: partes e manifest do mesmo lado
+
+1. Ao resolver conflitos de merge em recursos (`pages.json`, `components.json`, `layouts.json`, `templates.json` e arquivos físicos em `resources/<idioma>/...`), os arquivos físicos (HTML/CSS/MD) e a entrada correspondente no manifest devem vir do mesmo lado (`ours` ou `theirs`).
+2. É proibido misturar o corpo físico de um lado com metadados, versão ou checksum do outro.
+3. Se precisar combinar alterações dos dois lados no mesmo recurso, mescle o conteúdo conscientemente, limpe os checksums afetados no manifest e deixe o pipeline oficial recalcular (`atualizacao-dados-recursos.php`). Valide o JSON e o diff antes do commit.
