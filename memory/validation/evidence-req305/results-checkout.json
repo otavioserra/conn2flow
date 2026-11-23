@@ -1,0 +1,65 @@
+[
+  {
+    "nome": "parcelado: só Mercado Pago, sem botões alternativos, Stripe desmontado",
+    "ok": true,
+    "extra": {
+      "modalidades": true,
+      "selecionada": "installments",
+      "outros": [],
+      "grade": [],
+      "pagar": false,
+      "nota": "Pagamento processado pelo Mercado Pago. Os dados do cartão não passam pelos nossos servidores.",
+      "legenda": "Parcele em até 12x no cartão.",
+      "iframes": [
+        "iframe"
+      ],
+      "brick": true,
+      "pix": false,
+      "mensagem": null,
+      "largura": 1280
+    }
+  },
+  {
+    "nome": "parcelado: pagamento criado no servidor e aprovado",
+    "ok": true,
+    "extra": {
+      "status": "Ok",
+      "payment_status": "paid"
+    }
+  },
+  {
+    "nome": "parcelado: segue para a página de sucesso",
+    "ok": true
+  },
+  {
+    "nome": "à vista → Mercado Pago: Brick com Pix e Stripe/PayPal abaixo",
+    "ok": true,
+    "extra": {
+      "modalidades": true,
+      "selecionada": "cash",
+      "outros": [
+        "stripe-sandbox",
+        "paypal-sandbox"
+      ],
+      "grade": [],
+      "pagar": false,
+      "nota": "Pagamento processado pelo Mercado Pago. Os dados do cartão não passam pelos nossos servidores.",
+      "legenda": "Todas as formas de pagamento disponíveis.",
+      "iframes": [
+        "iframe"
+      ],
+      "brick": true,
+      "pix": false,
+      "mensagem": null,
+      "largura": 1280
+    }
+  },
+  {
+    "nome": "pix: QR Code e copia-e-cola na tela, pedido aguardando",
+    "ok": true,
+    "extra": {
+      "payment_status": "awaiting",
+      "codigo": "000201265800…"
+    }
+  }
+]

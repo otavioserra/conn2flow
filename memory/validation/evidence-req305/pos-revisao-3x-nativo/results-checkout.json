@@ -1,0 +1,44 @@
+[
+  {
+    "nome": "parcelado: só Mercado Pago, sem botões alternativos, Stripe desmontado",
+    "ok": true,
+    "extra": {
+      "modalidades": true,
+      "selecionada": "installments",
+      "outros": [],
+      "grade": [],
+      "pagar": false,
+      "nota": "Pagamento processado pelo Mercado Pago. Os dados do cartão não passam pelos nossos servidores.",
+      "legenda": "Parcele em até 12x no cartão.",
+      "iframes": [
+        "iframe"
+      ],
+      "brick": true,
+      "pix": false,
+      "mensagem": null,
+      "largura": 1280
+    }
+  },
+  {
+    "nome": "parcelado: inclui o número solicitado de parcelas",
+    "ok": true,
+    "extra": {
+      "solicitado": 3,
+      "brick": 3,
+      "enviado": 3,
+      "injetado": false
+    }
+  },
+  {
+    "nome": "parcelado: pagamento criado no servidor e aprovado",
+    "ok": true,
+    "extra": {
+      "status": "Ok",
+      "payment_status": "paid"
+    }
+  },
+  {
+    "nome": "parcelado: segue para a página de sucesso",
+    "ok": true
+  }
+]
