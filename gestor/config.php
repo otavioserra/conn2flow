@@ -379,6 +379,9 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'host' => Array('host.php'),
 	'paypal' => Array('paypal.php'),
 	'stripe' => Array('stripe.php'),
+	// req-301: Mercado Pago e contrato universal plug-and-play de gateways.
+	'mercadopago' => Array('mercadopago.php'),
+	'pagamentos-gateways' => Array('pagamentos-gateways.php'),
 	'variaveis' => Array('variaveis.php'),
 	'log' => Array('log.php'),
 	'autenticacao' => Array('autenticacao.php'),
