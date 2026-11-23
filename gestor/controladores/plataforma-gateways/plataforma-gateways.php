@@ -11,11 +11,17 @@
  * - /_gateways/paypal/webhook     - Webhooks do PayPal
  * - /_gateways/paypal/return      - Retorno de pagamento aprovado
  * - /_gateways/paypal/cancel      - Retorno de pagamento cancelado
+ * - /_gateways/stripe/webhook     - Webhooks do Stripe
+ * - /_gateways/{driver}/{webhook|return|cancel} - Qualquer driver de pagamentos-gateways
+ *   (ex.: mercadopago), também no modo modular /_gateways/{modulo}/{driver}/...
  * - /_gateways/{modulo}/endpoint  - Ponte para módulos privados
- * 
+ *
+ * REQ-301: todo hook de webhook recebe `$params['data']['canonical']` — o Envelope Canônico de
+ * `pagamentos_gateway_validar_e_normalizar_webhook()` —, ao lado dos campos legados intactos.
+ *
  * @package     Conn2Flow
  * @subpackage  Controladores
- * @version     2.0.0
+ * @version     2.1.0
  * @author      Conn2Flow
  * @since       2025
  * 
@@ -27,7 +33,7 @@ global $_CONFIG;
 
 $_GESTOR['modulo-id'] = 'plataforma-gateways';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = Array(
-    'versao' => '2.0.0',
+    'versao' => '2.1.0',
 );
 
 // =========================== CONFIGURAÇÕES DE SEGURANÇA ===========================
@@ -335,6 +341,217 @@ function plataforma_gateways_500($message = 'Internal Server Error') {
     plataforma_gateways_resposta_erro(500, $message);
 }
 
+// =========================== PONTE CANÔNICA (REQ-301) ===========================
+
+/**
+ * Gateways reconhecidos no primeiro segmento da rota: drivers registrados em
+ * pagamentos-gateways.php (stripe, mercadopago, paypal e extensões) + legados sem driver.
+ *
+ * @return string[]
+ */
+function plataforma_gateways_conhecidos() {
+    $conhecidos = Array('paypal', 'stripe', 'pagbank', 'pagseguro');
+    try {
+        gestor_incluir_biblioteca('pagamentos-gateways');
+        if (function_exists('pagamentos_gateways_drivers')) {
+            $conhecidos = array_merge($conhecidos, array_keys(pagamentos_gateways_drivers()));
+        }
+    } catch (Throwable $e) {
+        plataforma_gateways_log(Array('gateway' => 'system', 'endpoint' => 'drivers', 'status' => 'error', 'message' => 'Falha ao carregar drivers de pagamento', 'data' => Array('error' => $e->getMessage())));
+    }
+    return array_values(array_unique($conhecidos));
+}
+
+/**
+ * Decompõe o caminho em módulo, gateway e endpoint.
+ *
+ * Legacy:  /_gateways/{gateway}/{endpoint}
+ * Modular: /_gateways/{module_id}/{gateway}/{endpoint}
+ * Direto:  /_gateways/{module_id}/{endpoint} (gateway = endpoint do módulo)
+ *
+ * @param array $caminho Segmentos de `$_GESTOR['caminho']`.
+ * @param string[] $conhecidos
+ * @return array ['modulo' => ?string, 'gateway' => ?string, 'endpoint' => ?string]
+ */
+function plataforma_gateways_resolver_rota($caminho, $conhecidos) {
+    $gateway = isset($caminho[1]) ? strtolower((string)$caminho[1]) : null;
+    $endpoint = isset($caminho[2]) ? strtolower((string)$caminho[2]) : null;
+    $modulo = null;
+
+    if (!empty($gateway) && !in_array($gateway, $conhecidos, true)) {
+        $modulo = $gateway;
+        $gateway = isset($caminho[2]) ? strtolower((string)$caminho[2]) : null;
+        $endpoint = isset($caminho[3]) ? strtolower((string)$caminho[3]) : null;
+    }
+
+    return Array('modulo' => $modulo, 'gateway' => $gateway, 'endpoint' => $endpoint);
+}
+
+/**
+ * Monta o Envelope Canônico de um webhook sem nunca derrubar o fluxo legado.
+ *
+ * - Com `$eventoValidado` (o handler já conferiu a assinatura): só normaliza, `valid = true`.
+ * - Driver com validação local (Stripe, Mercado Pago): valida e normaliza no Core.
+ * - Driver com validação remota (PayPal): normaliza sem validar (`valid = false`); o módulo
+ *   continua validando com `needs_validation`.
+ *
+ * @return array|null Envelope ou null quando a biblioteca não está disponível.
+ */
+function plataforma_gateways_envelope_canonico($gateway, $payload, $headers, $query, $eventoValidado = null, $gatewayId = null) {
+    try {
+        gestor_incluir_biblioteca('pagamentos-gateways');
+        if (!function_exists('pagamentos_gateway_normalizar_evento')) return null;
+
+        if (is_array($eventoValidado)) {
+            return pagamentos_gateway_normalizar_evento($gateway, $eventoValidado, $query, true, $gatewayId);
+        }
+
+        $drivers = pagamentos_gateways_drivers();
+        if (!empty($drivers[$gateway]['validacao_local'])) {
+            return pagamentos_gateway_validar_e_normalizar_webhook($gateway, $payload, $headers, $query, $query['gateway_id'] ?? null);
+        }
+
+        $evento = json_decode((string)$payload, true);
+        return pagamentos_gateway_normalizar_evento($gateway, is_array($evento) ? $evento : Array(), $query, false, null);
+    } catch (Throwable $e) {
+        plataforma_gateways_log(Array('gateway' => $gateway, 'endpoint' => 'canonical', 'status' => 'error', 'message' => 'Falha ao montar envelope canônico', 'data' => Array('error' => $e->getMessage())));
+        return null;
+    }
+}
+
+/** Confirmação de recebimento comum aos webhooks que exigem `processed` (ver Stripe). */
+function plataforma_gateways_confirmar_recebimento($resultado) {
+    plataforma_gateways_stripe_confirmar_recebimento($resultado);
+}
+
+/**
+ * Webhook de qualquer driver de pagamentos-gateways sem handler dedicado (ex.: Mercado Pago).
+ *
+ * O Mercado Pago pode notificar com corpo JSON ou só com a query string (`?data.id=&type=`).
+ * Modo modular: entrega ao módulo com `needs_validation` e o envelope (já validado pelo Core
+ * quando o driver valida localmente). Modo legacy: exige envelope válido e faz broadcast.
+ */
+function plataforma_gateways_webhook_universal($gateway) {
+    global $_GESTOR;
+
+    $modulo_id = $_GESTOR['plataforma-gateways-modulo'] ?? null;
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        plataforma_gateways_log(Array('gateway' => $gateway, 'endpoint' => 'webhook', 'status' => 'error', 'message' => 'Método não permitido: ' . $_SERVER['REQUEST_METHOD']));
+        plataforma_gateways_resposta_erro(405, 'Method Not Allowed');
+    }
+
+    $payload = (string)file_get_contents('php://input');
+    $query = is_array($_GET) ? $_GET : Array();
+    $data = Array();
+
+    if ($payload !== '') {
+        $data = json_decode($payload, true);
+        if (!is_array($data)) {
+            plataforma_gateways_log(Array('gateway' => $gateway, 'endpoint' => 'webhook', 'status' => 'error', 'message' => 'JSON inválido: ' . json_last_error_msg()));
+            plataforma_gateways_400('Invalid JSON');
+        }
+    } elseif (empty($query)) {
+        plataforma_gateways_log(Array('gateway' => $gateway, 'endpoint' => 'webhook', 'status' => 'error', 'message' => 'Payload vazio'));
+        plataforma_gateways_400('Empty payload');
+    }
+
+    $headers = function_exists('getallheaders') ? (getallheaders() ?: Array()) : Array();
+    $canonical = plataforma_gateways_envelope_canonico($gateway, $payload, $headers, $query);
+
+    if (($canonical['error'] ?? null) === 'order-unavailable') {
+        plataforma_gateways_resposta_erro(503, 'Order temporarily unavailable');
+    }
+    if (($canonical['error'] ?? null) === 'invalid-resource-id') {
+        plataforma_gateways_400('Invalid Order ID');
+    }
+
+    $assinatura = '';
+    foreach ($headers as $hName => $hValue) {
+        if (in_array(strtolower($hName), Array('x-signature', 'stripe-signature'), true)) { $assinatura = $hValue; break; }
+    }
+
+    $dados = Array(
+        'event_type'       => $canonical['event_type'] ?? ($data['type'] ?? ($data['event_type'] ?? 'unknown')),
+        'resource'         => $canonical['resource'] ?? null,
+        'event_data'       => $data,
+        'needs_validation' => empty($canonical['valid']),
+        'signature_header' => $assinatura,
+        'raw_body'         => $payload,
+        'raw_headers'      => $headers,
+        'query_string'     => $query,
+        'canonical'        => $canonical,
+    );
+
+    // A validação de Mercado Pago é responsabilidade do Core também nas rotas modulares.
+    if (empty($canonical['valid']) && ($gateway === 'mercadopago' || empty($modulo_id))) {
+        plataforma_gateways_log(Array(
+            'gateway' => $gateway, 'endpoint' => 'webhook', 'status' => 'error',
+            'message' => 'Assinatura do webhook inválida ou gateway não configurado',
+            'data' => Array('event_type' => $dados['event_type'], 'error' => $canonical['error'] ?? null),
+        ));
+        plataforma_gateways_401('Invalid webhook signature');
+    }
+
+    if (!empty($modulo_id)) {
+        plataforma_gateways_log(Array(
+            'gateway' => $gateway, 'endpoint' => 'webhook', 'status' => 'info',
+            'message' => 'Webhook modular recebido — módulo: ' . $modulo_id,
+            'data' => Array('event_type' => $dados['event_type'], 'canonical_event' => $canonical['canonical_event'] ?? null, 'valid' => !empty($canonical['valid']), 'module' => $modulo_id),
+        ));
+
+        $resultado = plataforma_gateways_disparar_hook($gateway, 'webhook', $dados, $modulo_id);
+        plataforma_gateways_confirmar_recebimento($resultado);
+        plataforma_gateways_resposta_sucesso(Array('event_id' => $canonical['event_id'] ?? null, 'processed' => true, 'module' => $modulo_id));
+    }
+
+    plataforma_gateways_log(Array(
+        'gateway' => $gateway, 'endpoint' => 'webhook', 'status' => 'success',
+        'message' => 'Webhook validado', 'data' => Array('event_type' => $dados['event_type'], 'canonical_event' => $canonical['canonical_event'] ?? null, 'gateway_id' => $canonical['gateway_id'] ?? null),
+    ));
+
+    $resultado = plataforma_gateways_disparar_hook($gateway, 'webhook', $dados);
+    plataforma_gateways_confirmar_recebimento($resultado);
+    plataforma_gateways_resposta_sucesso(Array('event_id' => $canonical['event_id'] ?? null, 'processed' => true));
+}
+
+/**
+ * Retorno do navegador (return/cancel/pending) de qualquer driver sem handler dedicado.
+ * Checkout Pro do Mercado Pago: `?payment_id=&status=&external_reference=&collection_id=`.
+ * O retorno nunca confirma pagamento: o módulo sincroniza pela API (pagamentos_gateway_sincronizar).
+ */
+function plataforma_gateways_retorno_universal($gateway, $action) {
+    global $_GESTOR;
+
+    $modulo_id = $_GESTOR['plataforma-gateways-modulo'] ?? null;
+    $query = is_array($_GET) ? $_GET : Array();
+    $paymentId = $query['payment_id'] ?? ($query['collection_id'] ?? null);
+
+    plataforma_gateways_log(Array(
+        'gateway' => $gateway, 'endpoint' => $action, 'status' => 'info',
+        'message' => 'Retorno de pagamento recebido' . ($modulo_id ? ' (módulo: ' . $modulo_id . ')' : ''),
+        'data' => Array('payment_id' => $paymentId, 'status' => $query['status'] ?? null, 'module' => $modulo_id),
+    ));
+
+    $resultado = plataforma_gateways_disparar_hook($gateway, $action, Array(
+        'payment_id'         => $paymentId,
+        'status'             => $query['status'] ?? ($query['collection_status'] ?? null),
+        'external_reference' => $query['external_reference'] ?? null,
+        'query_string'       => $query,
+    ), $modulo_id);
+
+    if (isset($resultado['redirect_url'])) {
+        header('Location: ' . $resultado['redirect_url']);
+        exit;
+    }
+
+    $destino = $_GESTOR['url-raiz'] . ($action === 'cancel' ? 'checkout/cancelado/' : 'checkout/sucesso/');
+    if ($paymentId) $destino .= '?payment_id=' . urlencode((string)$paymentId);
+
+    header('Location: ' . $destino);
+    exit;
+}
+
 // =========================== PAYPAL - HANDLERS ===========================
 
 /**
@@ -396,6 +613,7 @@ function plataforma_gateways_stripe_webhook() {
             'needs_validation' => true,
             'signature_header' => $signature,
             'raw_body'         => $payload,
+            'canonical'        => plataforma_gateways_envelope_canonico('stripe', $payload, $headers, $_GET),
         ), $modulo_id);
 
         plataforma_gateways_stripe_confirmar_recebimento($resultadoWebhook);
@@ -432,6 +650,7 @@ function plataforma_gateways_stripe_webhook() {
         'event_type' => $evento['type'] ?? 'unknown',
         'resource'   => $evento['data']['object'] ?? null,
         'event_data' => $evento,
+        'canonical'  => plataforma_gateways_envelope_canonico('stripe', $payload, $headers, $_GET, $evento, stripe_obter_gateway_id()),
     ));
 
     plataforma_gateways_stripe_confirmar_recebimento($resultadoWebhook);
@@ -534,6 +753,7 @@ function plataforma_gateways_paypal_webhook() {
             'needs_validation' => true,
             'raw_headers'      => $headers,
             'raw_body'         => $payload,
+            'canonical'        => plataforma_gateways_envelope_canonico('paypal', $payload, $headers, $_GET),
         ), $modulo_id);
         
         // Retornar sucesso para o PayPal
@@ -551,7 +771,14 @@ function plataforma_gateways_paypal_webhook() {
     
     // Incluir biblioteca PayPal
     gestor_incluir_biblioteca('paypal');
-    
+
+    // REQ-149: sem `paypal.default` no .env, nada configura a biblioteca e a validação sempre
+    // falhava. A rota global passa a usar o gateway PayPal ativo do banco (o `webhook_id` dele).
+    if (empty($_CONFIG['paypal']['webhook_id'])) {
+        gestor_incluir_biblioteca('banco');
+        paypal_gateways_pagamentos_configurar(Array('tipo' => 'paypal'));
+    }
+
     // Validar assinatura do webhook
     $valido = paypal_validar_webhook(Array(
         'headers' => $headers,
@@ -606,6 +833,9 @@ function plataforma_gateways_paypal_webhook() {
         ),
     ));
     
+    // REQ-301: envelope canônico ao lado dos campos legados (assinatura já validada acima).
+    $evento['canonical'] = plataforma_gateways_envelope_canonico('paypal', $payload, $headers, $_GET, $data, paypal_obter_gateway_id());
+
     // Dispara hook para módulos processarem o evento (broadcast para todos)
     $resultado_hook = plataforma_gateways_disparar_hook('paypal', 'webhook', $evento);
     
@@ -907,7 +1137,8 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $
                     'data' => $data,
                 ));
 
-                if ($gateway === 'stripe' && $action === 'webhook' && is_array($resultado_modulo)) $resultado = $resultado_modulo;
+                // Webhooks confirmados por `processed` (Stripe e drivers universais) precisam do resultado.
+                if ($action === 'webhook' && is_array($resultado_modulo)) $resultado = $resultado_modulo;
                 
                 // Se o módulo retornou um resultado com redirect_url, usar ele
                 if (isset($resultado_modulo['redirect_url'])) {
@@ -919,7 +1150,7 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $
                     break;
                 }
             } catch (Exception $e) {
-                if ($gateway === 'stripe' && $action === 'webhook') $resultado = Array('processed' => false, 'reason' => 'receiver-error');
+                if ($action === 'webhook') $resultado = Array('processed' => false, 'reason' => 'receiver-error');
                 plataforma_gateways_log(Array(
                     'gateway' => $gateway,
                     'endpoint' => 'hook',
@@ -1056,20 +1287,14 @@ function plataforma_gateways_start() {
     // Formato legacy:  /_gateways/{gateway}/{endpoint}          — ex: /_gateways/paypal/webhook
     // Formato modular: /_gateways/{module_id}/{gateway}/{endpoint} — ex: /_gateways/pro-manager/paypal/webhook
     
-    $gateway = isset($_GESTOR['caminho'][1]) ? strtolower($_GESTOR['caminho'][1]) : null;
-    $endpoint = isset($_GESTOR['caminho'][2]) ? strtolower($_GESTOR['caminho'][2]) : null;
-    $modulo_id = null;
-    
-    // Gateways conhecidos pelo sistema
-    $known_gateways = Array('paypal', 'stripe', 'pagbank', 'pagseguro');
-    
-    // Se o primeiro segmento NÃO é um gateway conhecido, pode ser um module_id
-    // Nesse caso, o layout da URL é: /_gateways/{module_id}/{gateway}/{endpoint}
-    if (!empty($gateway) && !in_array($gateway, $known_gateways)) {
-        $modulo_id = $gateway;
-        $gateway   = isset($_GESTOR['caminho'][2]) ? strtolower($_GESTOR['caminho'][2]) : null;
-        $endpoint  = isset($_GESTOR['caminho'][3]) ? strtolower($_GESTOR['caminho'][3]) : null;
-    }
+    // Gateways conhecidos: drivers de pagamentos-gateways.php (REQ-301) + legados sem driver.
+    // Se o primeiro segmento NÃO é um gateway conhecido, é um module_id:
+    // /_gateways/{module_id}/{gateway}/{endpoint}
+    $known_gateways = plataforma_gateways_conhecidos();
+    $rota = plataforma_gateways_resolver_rota($_GESTOR['caminho'] ?? Array(), $known_gateways);
+    $gateway = $rota['gateway'];
+    $endpoint = $rota['endpoint'];
+    $modulo_id = $rota['modulo'];
     
     // Armazenar contexto de módulo para uso pelas funções handlers
     $_GESTOR['plataforma-gateways-modulo'] = $modulo_id;
@@ -1078,10 +1303,12 @@ function plataforma_gateways_start() {
     if (empty($gateway)) {
         plataforma_gateways_resposta_sucesso(Array(
             'service' => 'Conn2Flow Payment Gateways Platform',
-            'version' => '2.0.0',
+            'version' => '2.1.0',
             'endpoints' => Array(
                 'paypal_legacy' => '/_gateways/paypal/{webhook|return|cancel}',
                 'paypal_module' => '/_gateways/{module_id}/paypal/{webhook|return|cancel}',
+                'gateway_legacy' => '/_gateways/{gateway}/{webhook|return|cancel}',
+                'gateway_module' => '/_gateways/{module_id}/{gateway}/{webhook|return|cancel}',
                 'modules' => '/_gateways/{module_id}/{endpoint}',
             ),
         ));
@@ -1145,6 +1372,29 @@ function plataforma_gateways_start() {
             break;
             
         default:
+            // REQ-301: driver registrado sem handler dedicado (ex.: mercadopago).
+            if (in_array($gateway, $known_gateways, true)) {
+                switch ($endpoint) {
+                    case 'webhook':
+                        plataforma_gateways_webhook_universal($gateway);
+                        break;
+                    case 'return':
+                    case 'cancel':
+                    case 'pending':
+                        plataforma_gateways_retorno_universal($gateway, $endpoint);
+                        break;
+                    default:
+                        plataforma_gateways_log(Array(
+                            'gateway' => $gateway,
+                            'endpoint' => $endpoint,
+                            'status' => 'error',
+                            'message' => 'Endpoint não encontrado',
+                        ));
+                        plataforma_gateways_404('Gateway endpoint not found');
+                }
+                break;
+            }
+
             // Tentar como módulo direto
             plataforma_gateways_modulo_direto($gateway, $endpoint);
     }
@@ -1152,6 +1402,9 @@ function plataforma_gateways_start() {
 
 // =========================== INICIAR PLATAFORMA ===========================
 
-plataforma_gateways_start();
+// Testes unitários incluem o controlador só para exercitar as funções puras.
+if (!defined('PLATAFORMA_GATEWAYS_SEM_INICIAR')) {
+    plataforma_gateways_start();
+}
 
 ?>
