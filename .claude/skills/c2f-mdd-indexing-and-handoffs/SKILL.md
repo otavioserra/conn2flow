@@ -55,7 +55,17 @@ mdd meta set req-072 status IN-PROGRESS --path RAIZ_ABSOLUTA
 mdd meta get req-072 status --json --path RAIZ_ABSOLUTA
 ```
 
-Sem pasta, index regenera todos os index.md existentes sob memory/, incluindo arquivos históricos. Com pasta explícita, cria/reconstrói somente o índice local. Alvos aceitam caminho em memory/ ou nome/ID de arquivo único; ambiguidade falha e exige caminho explícito. Não altere o índice como se fosse fonte de autoria: a regeneração substitui seu conteúdo com tabela e links aos índices filhos. README, CURRENT, BATCH-INDEX, DECISION-LOG e VALIDATION-CHECKLIST são infraestrutura e não entram como registros.
+Sem pasta, index regenera todos os index.md existentes sob memory/, incluindo arquivos históricos. Com pasta explícita, cria/reconstrói somente o índice local. Não altere o índice como se fosse fonte de autoria: a regeneração substitui seu conteúdo com tabela e links aos índices filhos. README, CURRENT, BATCH-INDEX, DECISION-LOG e VALIDATION-CHECKLIST são infraestrutura e não entram como registros.
+
+Os comandos Python `mdd meta get/set` e Core PHP `php cli/c2f.php memory:get/set` procuram primeiro um caminho explícito sob `memory/`, depois o nome ou stem exato e, por último, o campo `id` do frontmatter YAML ou o prefixo do stem seguido de hífen e slug. Nome, stem e ID são comparados sem distinção de maiúsculas e minúsculas. Exemplos:
+
+```sh
+mdd meta get REP-004 status --json
+php cli/c2f.php memory:get REP-004 status --json
+mdd meta get memory/reports/REP-004-batch083-skills-learnings.md status --json
+```
+
+Se a etapa contiver mais de um candidato, o CLI lista os caminhos em ordem e pede um caminho explícito. Use o caminho relativo sob `memory/` também quando houver versões legadas.
 
 Fallback: primeiro `# Título`; ID do padrão `# ID — Título` ou nome do arquivo; primeiro parágrafo corrido, ignorando cabeçalhos, tabelas, listas e cercas de código, até 120 caracteres incluindo `...`; status da linha Status ou `indexed`/`archived`. YAML incompleto ou não suportado não bloqueia index/get: usa campos válidos e defaults. Mutação recusa cabeçalho inválido/duplicado sem descartar informação. Fallback não modifica o documento.
 

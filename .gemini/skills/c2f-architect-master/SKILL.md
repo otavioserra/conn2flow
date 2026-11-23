@@ -44,6 +44,10 @@ Ao iniciar, oriente seu contexto lendo apenas o essencial:
   * Guias em `docs/` e `sdd/`
 - Ao avaliar o encerramento de lotes ou preparação de releases, audite se a documentação reflete o estado real do software.
 
+#### Higiene da árvore Git após homologação
+
+O Arquiteto Master responde pela integridade da árvore Git após a homologação humana. Confira `git status --short` e `git branch --show-current`, coordene commits seletivos de governança com caminhos explícitos e conduza a integração na `main` e o `git push` quando autorizados. Preserve alterações de terceiros e encaminhe pendências para evitar acúmulo de arquivos temporários e alterações avulsas.
+
 ### 4. Gestão de Backlog e Requisitos Atômicos
 - **Backlog (`sdd/backlog/`)**: Local onde ideias, melhorias e tarefas futuras ficam congeladas sem entrar no fluxo ativo de desenvolvimento.
 - **Requisitos (`sdd/human-requests/req-XXX.md`)**: Apenas tarefas ativas e aprovadas para o ciclo imediato de implementação se tornam requisições formais e apontam em `sdd/human-requests/CURRENT.md`.
@@ -66,3 +70,19 @@ Ao iniciar, oriente seu contexto lendo apenas o essencial:
   * O nome do repositório (ex: `conn2flow-ai-workspace` ou `conn2flow`).
   * O caminho absoluto da raiz do workspace alvo (ex: `c:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-ai-workspace`).
   * A skill recomendada para o papel (`c2f-executor-agent` ou `c2f-reviewer-agent`).
+
+#### Caixa copiar-e-colar obrigatória — REQ-081
+
+Sempre que criar ou atualizar uma requisição pronta para execução ou revisão, encerre a resposta com um bloco Markdown `text` copiável, pronto para encaminhar ao agente alvo. A caixa resume o objetivo operacional em 1–3 linhas e aponta para a especificação completa em `memory/human-requests/req-XXX.md`.
+
+Inclua a skill alvo (`c2f-executor-agent` ou `c2f-reviewer-agent`), o nome do repositório e a raiz absoluta, o ponteiro `memory/human-requests/CURRENT.md`, o arquivo da requisição, os IDs `REQ-XXX` e `BATCH-YYY`, e um comando explícito para começar, renderizar a Live Todo List e seguir os critérios de aceite. Preserve topologia, autonomia e os demais campos aplicáveis do contrato de handoff da REQ-072.
+
+Exiba a caixa em `supervisionado`, `autonomo_monitorado` e `autonomo_headless`, inclusive quando o MCP Hub ou outro mecanismo fizer o despacho automaticamente. A caixa torna visível a instrução de acionamento e oferece a opção de cópia manual.
+
+```text
+Ative c2f-executor-agent no repositório conn2flow-ai-workspace, raiz C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow-ai-workspace.
+Leia memory/human-requests/CURRENT.md e memory/human-requests/req-XXX.md (REQ-XXX / BATCH-YYY).
+Topologia dupla | Autonomia supervisionado
+Objetivo do lote — atualizar e validar localmente as skills indicadas na requisição.
+Comece agora. Renderize a Live Todo List e implemente conforme os critérios de aceite.
+```

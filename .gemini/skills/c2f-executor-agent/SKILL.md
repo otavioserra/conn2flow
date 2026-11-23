@@ -74,6 +74,18 @@ Proibido executar build completo de Tailwind na Categoria A ou pipelines de depl
 - Ao concluir as tarefas do lote, preencha a seção de evidências e métricas no `memory/implementation/batch-YYY.md` e marque os critérios cumpridos em `memory/validation/VALIDATION-CHECKLIST.md`.
 - Avise o Engenheiro Humano para que o lote seja submetido ao Revisor Técnico.
 
+#### Relatório de Dificuldades e Aprendizados para o AI Workspace — REQ-081
+
+Ao final de toda implementação, inclua o relatório estruturado na resposta final do Executor, pronto para encaminhar ao Arquiteto Master do `conn2flow-ai-workspace`, e referencie-o em `memory/implementation/batch-YYY.md`. Ao trabalhar no próprio `conn2flow-ai-workspace` ou com autorização explícita para gravar na matriz, registre também o relatório em `memory/reports/REP-XXX-<slug>.md`, seguindo o padrão do `REP-002`.
+
+1. **Contexto da Rodada** — identifique o projeto/repositório, `REQ-XXX` / `BATCH-YYY` e o tipo de trabalho.
+2. **Dificuldades e Atritos Enfrentados** — descreva bloqueios, leituras aprofundadas de código ou retrabalho e indique as causas verificadas.
+3. **Lacunas ou Defasagens nas Skills** — liste as skills consultadas e diga o que faltou, estava ambíguo, desatualizado ou no lugar errado.
+4. **Solução Validada / Armadilhas Medidas** — indique o que resolveu o problema na prática e as evidências ou medições que confirmam o resultado.
+5. **Sugestões de Melhoria para o AI Workspace** — nomeie as skills, templates ou regras a atualizar e proponha um ajuste concreto.
+
+Se a rodada transcorreu sem obstáculos nem lacunas nas skills, mantenha o relatório e declare explicitamente “Sem atritos ou lacunas de skills identificados nesta rodada”.
+
 ---
 
 ## ✍️ Texto para leitor de fora (páginas, novidades, README)
