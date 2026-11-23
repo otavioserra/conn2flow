@@ -1579,6 +1579,9 @@ function gestor_pagina_301_registrar($id_paginas, $caminho){
  * @param string $params['title']       Título da página.
  * @param string $params['description'] Descrição/resumo.
  * @param string $params['image']       URL absoluta da imagem de compartilhamento.
+ * @param string $params['image_width'] Largura da imagem em px (REQ-303; omitida sem imagem).
+ * @param string $params['image_height'] Altura da imagem em px (REQ-303).
+ * @param string $params['image_type']  Tipo MIME da imagem, ex.: `image/webp` (REQ-303).
  * @param string $params['url']         URL canônica da página.
  * @param string $params['site_name']   Nome do site.
  * @param string $params['type']        Tipo OpenGraph (padrão `website`).
@@ -1588,13 +1591,18 @@ function gestor_pagina_301_registrar($id_paginas, $caminho){
 function gestor_open_graph_tags($params = false){
 	$valores = is_array($params) ? $params : Array();
 
+	// REQ-303: as propriedades estruturadas da imagem vêm logo depois de `og:image`; é assim que
+	// WhatsApp e Meta associam largura, altura e tipo à imagem certa.
 	$campos = Array(
-		'og:title'       => (string)($valores['title'] ?? ''),
-		'og:description' => (string)($valores['description'] ?? ''),
-		'og:image'       => (string)($valores['image'] ?? ''),
-		'og:url'         => (string)($valores['url'] ?? ''),
-		'og:site_name'   => (string)($valores['site_name'] ?? ''),
-		'og:type'        => (string)($valores['type'] ?? 'website'),
+		'og:title'        => (string)($valores['title'] ?? ''),
+		'og:description'  => (string)($valores['description'] ?? ''),
+		'og:image'        => (string)($valores['image'] ?? ''),
+		'og:image:width'  => (string)($valores['image_width'] ?? ''),
+		'og:image:height' => (string)($valores['image_height'] ?? ''),
+		'og:image:type'   => (string)($valores['image_type'] ?? ''),
+		'og:url'          => (string)($valores['url'] ?? ''),
+		'og:site_name'    => (string)($valores['site_name'] ?? ''),
+		'og:type'         => (string)($valores['type'] ?? 'website'),
 	);
 
 	$tags = Array();
@@ -1603,6 +1611,9 @@ function gestor_open_graph_tags($params = false){
 	foreach($campos as $propriedade => $conteudo){
 		$conteudo = trim(preg_replace('/\s+/', ' ', $conteudo));
 		if($conteudo === '') continue;
+
+		// Sem imagem, largura/altura/tipo não descrevem nada.
+		if(strpos($propriedade, 'og:image:') === 0 && !$temImagem) continue;
 
 		if($propriedade === 'og:image') $temImagem = true;
 
@@ -1617,6 +1628,128 @@ function gestor_open_graph_tags($params = false){
 	}
 
 	return $tags;
+}
+
+/**
+ * Converte a URL da imagem OpenGraph no arquivo físico do próprio site (REQ-303).
+ *
+ * Só resolve imagens servidas pelo próprio host. O prefixo de idioma (`en/`, `pt-br/`) é ignorado,
+ * porque o roteador entrega o mesmo arquivo com ou sem ele. Caminho com `..` é recusado.
+ *
+ * Função PURA (não lê disco).
+ *
+ * @param string $url     URL absoluta ou relativa da imagem.
+ * @param string $base    URL base do site sem idioma (`url-full-http-sem-lang`).
+ * @param array  $raizes  Mapa prefixo público => pasta física, ex.: ['assets/' => '/x/gestor/assets/'].
+ * @param array  $idiomas Códigos de idioma que podem aparecer como primeiro segmento.
+ * @return string Caminho físico, ou '' quando a imagem não é local.
+ */
+function gestor_open_graph_imagem_arquivo($url, $base, $raizes = Array(), $idiomas = Array()){
+	$url = trim((string)$url);
+	$base = rtrim(trim((string)$base), '/').'/';
+	if($url === '' || $base === '/' || !is_array($raizes) || !$raizes) return '';
+
+	$caminho = preg_replace('/[?#].*$/s', '', $url);
+
+	if(preg_match('#^(https?:)?//#i', $caminho)){
+		$hostBase = strtolower((string)parse_url($base, PHP_URL_HOST));
+		$hostImagem = strtolower((string)parse_url((preg_match('#^//#', $caminho) ? 'https:' : '').$caminho, PHP_URL_HOST));
+		if($hostBase === '' || $hostBase !== $hostImagem) return '';
+		$caminho = (string)parse_url((preg_match('#^//#', $caminho) ? 'https:' : '').$caminho, PHP_URL_PATH);
+	}
+
+	// Instalação em subpasta: `/sub/assets/x.webp` com base `https://host/sub/`.
+	$caminho = ltrim(rawurldecode($caminho), '/');
+	$prefixoBase = trim((string)parse_url($base, PHP_URL_PATH), '/');
+	if($prefixoBase !== '' && strpos($caminho, $prefixoBase.'/') === 0) $caminho = substr($caminho, strlen($prefixoBase) + 1);
+	if($caminho === '' || preg_match('#(^|/)\.\.(/|$)#', $caminho)) return '';
+
+	$segmentos = explode('/', $caminho);
+	if(count($segmentos) > 1 && in_array(strtolower($segmentos[0]), array_map('strtolower', (array)$idiomas), true)){
+		array_shift($segmentos);
+		$caminho = implode('/', $segmentos);
+	}
+
+	foreach($raizes as $prefixo => $pasta){
+		$prefixo = trim((string)$prefixo, '/').'/';
+		if(strpos($caminho, $prefixo) !== 0 || (string)$pasta === '') continue;
+		return rtrim((string)$pasta, '/\\').'/'.substr($caminho, strlen($prefixo));
+	}
+
+	return '';
+}
+
+/**
+ * Lê largura, altura e tipo MIME de uma imagem local para o OpenGraph (REQ-303).
+ *
+ * Só lê o cabeçalho do arquivo (`getimagesize`); não converte nem redimensiona nada.
+ * Aceita apenas os formatos que os leitores de preview conhecem.
+ *
+ * @param string $arquivo Caminho físico.
+ * @return array ['width' => int, 'height' => int, 'type' => string] ou [] quando não dá para ler.
+ */
+function gestor_open_graph_imagem_info($arquivo){
+	$arquivo = (string)$arquivo;
+	if($arquivo === '' || !is_file($arquivo) || !is_readable($arquivo)) return Array();
+
+	$info = @getimagesize($arquivo);
+	if(!is_array($info) || empty($info[0]) || empty($info[1])) return Array();
+
+	$tipo = strtolower((string)($info['mime'] ?? ''));
+	if(!in_array($tipo, Array('image/webp', 'image/png', 'image/jpeg', 'image/gif'), true)) return Array();
+
+	return Array('width' => (int)$info[0], 'height' => (int)$info[1], 'type' => $tipo);
+}
+
+/**
+ * Monta a URL canônica da página (REQ-303).
+ *
+ * - Sem querystring nem fragmento.
+ * - O idioma padrão não leva prefixo (`/pt-br/docs/` e `/docs/` apontam para `/docs/`); os demais
+ *   levam (`/en/docs/`).
+ * - Barra final em toda página; só quem termina numa extensão de arquivo e não tinha barra fica sem.
+ *
+ * Função PURA.
+ *
+ * @param array $params
+ * @param string $params['base']             URL base sem idioma (`url-full-http-sem-lang`).
+ * @param string $params['path']             Caminho da página, já sem o prefixo de idioma (`caminho-total`).
+ * @param string $params['language']         Idioma da página.
+ * @param string $params['default_language'] Idioma padrão do site.
+ * @return string URL canônica, ou '' sem base válida.
+ */
+function gestor_canonical_url($params = false){
+	$v = is_array($params) ? $params : Array();
+
+	$base = trim((string)($v['base'] ?? ''));
+	if(!preg_match('#^https?://[^/]+#i', $base)) return '';
+	$base = rtrim($base, '/').'/';
+
+	$bruto = preg_replace('/[?#].*$/s', '', (string)($v['path'] ?? ''));
+	$terminaComBarra = substr($bruto, -1) === '/';
+	$caminho = trim(preg_replace('#/+#', '/', $bruto), '/');
+
+	$idioma = strtolower(trim((string)($v['language'] ?? ''), '/'));
+	$padrao = strtolower(trim((string)($v['default_language'] ?? ''), '/'));
+	$prefixo = ($idioma !== '' && $idioma !== $padrao) ? $idioma.'/' : '';
+
+	$url = $base.$prefixo.$caminho;
+	if($caminho !== '' && ($terminaComBarra || !preg_match('/\.[a-z0-9]{1,8}$/i', $caminho))) $url .= '/';
+
+	return $url;
+}
+
+/**
+ * Detecta se um HTML já traz `<link rel="canonical">` (REQ-303), para o core não duplicar a tag.
+ *
+ * @param string|array $html
+ * @return bool
+ */
+function gestor_canonical_existe($html){
+	if(is_array($html)) $html = implode("\n", $html);
+	if(!is_string($html) || $html === '') return false;
+
+	return (bool)preg_match('/<link\b[^>]*\brel\s*=\s*("|\')?\s*canonical\b/i', $html);
 }
 
 /**

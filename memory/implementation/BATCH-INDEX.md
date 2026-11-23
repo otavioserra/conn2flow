@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-312 | implemented-pending-review | Canonical no head, `og:image:*` do arquivo local, `og:url` = canonical e links privados fora das docs da memória (REQ-303 / site REQ-156) | [BATCH-312.md](BATCH-312.md) | PHPUnit 14/14; suíte completa com o mesmo conjunto de 22 falhas da linha de base. Branch `feat/req-303-canonical-og-image` |
 | BATCH-311 | complete | Editbar / Site Toolbar: medição dinâmica da altura real e deslocamento de layout + elementos fixed/sticky no topo (REQ-302 / BL-051) | [BATCH-311.md](BATCH-311.md) | Vitest 721/721, PHPUnit 15/15. Publicação por SSH e minificados servidos confirmados no Chromium autenticado (`ia-parceria.local`). |
 | BATCH-310 | implemented-pending-review | `mercadopago.php`, contrato plug-and-play `pagamentos-gateways.php` e ponte canônica em `plataforma-gateways.php` (REQ-301) | [BATCH-310.md](BATCH-310.md) | `main`, sem commit; PHPUnit novo 22/22 (Windows + lab), suíte sem falha nova (21 CRLF); Vitest 716/716; smoke sandbox MP ok. |
 | BATCH-309 | implemented-pending-homologation | BL-049 confirmações, BL-048 select AJAX híbrido e BL-050 calendário de vagas (REQ-300) | [BATCH-309.md](BATCH-309.md) | `main`, sem commit; Vitest 716/716; Lab via lumix (agendamento público 6/6). |

@@ -158,6 +158,34 @@ final class SddSource
             return null;
         }
         $body = preg_replace('~/(?:home|root|var/www|opt)/[^\s)`\]>]+~i', '[REDACTED]', $body);
-        return $body;
+        if ($body === null) {
+            return null;
+        }
+        return self::unlinkPrivateTargets($body);
+    }
+
+    /**
+     * REQ-303: link para arquivo local (`file:`) ou cujo destino foi ocultado vira só o texto.
+     *
+     * Sem isto, `[x](file:///C:/Users/...)` saía como `<a href="file%3A///[REDACTED]">`: um link
+     * que não abre em lugar nenhum e ainda anuncia que havia um caminho privado ali.
+     */
+    public static function unlinkPrivateTargets(string $markdown): string
+    {
+        $texto = '\[((?:[^\[\]\n]|\[[^\[\]\n]*\])*)\]';
+        $alvo = '\(\s*<?\s*(?:file:[^\s)>]*|[^\s)>]*\[REDACTED\][^\s)>]*)\s*>?(?:\s+"[^"\n]*")?\s*\)';
+        $resultado = preg_replace_callback(
+            '~!?' . $texto . $alvo . '~i',
+            static fn (array $m): string => $m[1],
+            $markdown
+        );
+        if ($resultado === null) {
+            return $markdown;
+        }
+
+        // URL solta com parte ocultada (`https://[REDACTED].local/`) viraria link automático.
+        $semUrl = preg_replace('~(?:https?|file):/*[^\s<>"`]*\[REDACTED\][^\s<>"`)]*~i', '[REDACTED]', $resultado);
+
+        return $semUrl ?? $resultado;
     }
 }
