@@ -2610,22 +2610,6 @@ function gestor_open_graph_dados($params = false){
 }
 
 /**
- * URL canônica da requisição corrente (REQ-303).
- *
- * @return string URL pronta para `<link rel="canonical">` e `og:url`, ou '' sem base.
- */
-function gestor_canonical_dados(){
-	global $_GESTOR;
-
-	return gestor_canonical_url(Array(
-		'base' => (string)($_GESTOR['url-full-http-sem-lang'] ?? ''),
-		'path' => (string)($_GESTOR['caminho-total'] ?? ''),
-		'language' => (string)($_GESTOR['linguagem-codigo'] ?? ''),
-		'default_language' => (string)($_GESTOR['linguagem-padrao'] ?? ''),
-	));
-}
-
-/**
  * Resolve `description` e `keywords` da requisição corrente (req-112 / BATCH-112).
  *
  * Ordem: metadados próprios da página (`$_GESTOR['pagina#og']`) → `og_descricao` da própria página
@@ -3084,6 +3068,7 @@ function gestor_roteador(){
 
 	$campos[] = 'id';
 	$campos[] = 'id_paginas';
+	$campos[] = 'caminho';
 
 	// ===== Buscar no banco de dados o alvo da requisição
 	
@@ -3170,6 +3155,7 @@ function gestor_roteador(){
 		if($pagina_status_http !== null) http_response_code($pagina_status_http);
 
 		$_GESTOR['modulo'] = $paginas[0]['modulo'];
+		$_GESTOR['pagina#caminho'] = $paginas[0]['caminho'] ?? null;
 
 		// ===== Verificar linguagens de uma página
 

@@ -116,12 +116,21 @@ final class MarkdownRenderer extends \Parsedown
 
         if ($name === 'a' && isset($Element['attributes']['href'])) {
             $href = (string)$Element['attributes']['href'];
+            if (SddSource::isPrivateTarget($href)) {
+                return ($Element['handler'] ?? null) === 'line'
+                    ? $this->line($Element['text'], $Element['nonNestables'] ?? [])
+                    : self::escape($Element['text'] ?? '', true);
+            }
             $resolved = ($this->linkResolver)($href);
             $Element['attributes']['href'] = $resolved ?? $href;
             if (preg_match('#^https?://#i', $Element['attributes']['href'])) {
                 $Element['attributes']['target'] = '_blank';
                 $Element['attributes']['rel'] = 'noopener';
             }
+        }
+
+        if ($name === 'img' && SddSource::isPrivateTarget((string)($Element['attributes']['src'] ?? ''))) {
+            return self::escape($Element['attributes']['alt'] ?? '', true);
         }
 
         if ($name === 'pre') {

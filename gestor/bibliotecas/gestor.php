@@ -1739,6 +1739,18 @@ function gestor_canonical_url($params = false){
 	return $url;
 }
 
+/** URL canônica da página resolvida, mantendo a grafia cadastrada no banco (REQ-303). */
+function gestor_canonical_dados(){
+	global $_GESTOR;
+
+	return gestor_canonical_url(Array(
+		'base' => (string)($_GESTOR['url-full-http-sem-lang'] ?? ''),
+		'path' => (string)($_GESTOR['pagina#caminho'] ?? $_GESTOR['caminho-total'] ?? ''),
+		'language' => (string)($_GESTOR['linguagem-codigo'] ?? ''),
+		'default_language' => (string)($_GESTOR['linguagem-padrao'] ?? ''),
+	));
+}
+
 /**
  * Detecta se um HTML já traz `<link rel="canonical">` (REQ-303), para o core não duplicar a tag.
  *

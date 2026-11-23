@@ -3,9 +3,12 @@
 declare(strict_types=1);
 
 use Conn2Flow\Cli\Support\Docs\SddSource;
+use Conn2Flow\Cli\Support\Docs\MarkdownRenderer;
 use PHPUnit\Framework\TestCase;
 
 require_once CONN2FLOW_ROOT . '/cli/src/Support/Docs/SddSource.php';
+require_once CONN2FLOW_ROOT . '/cli/src/Support/Docs/DocsTheme.php';
+require_once CONN2FLOW_ROOT . '/cli/src/Support/Docs/MarkdownRenderer.php';
 
 /**
  * REQ-303 — `<link rel="canonical">` e largura/altura/tipo da imagem OpenGraph.
@@ -46,6 +49,32 @@ final class CanonicalOpenGraphImageReq303Test extends TestCase
     {
         self::assertSame('https://conn2flow.local/docs/', $this->canonica('docs/?utm_source=x&page=2'));
         self::assertSame('https://conn2flow.local/docs/mdd/', $this->canonica('docs//mdd#topo'));
+    }
+
+    public function testCanonicalUsaAGrafiaDoRegistroEmVezDaRequisicao(): void
+    {
+        global $_GESTOR;
+        $anterior = $_GESTOR;
+        try {
+            $_GESTOR['url-full-http-sem-lang'] = self::BASE;
+            $_GESTOR['linguagem-codigo'] = $_GESTOR['linguagem-padrao'] = 'pt-br';
+            $_GESTOR['pagina#caminho'] = 'docs/';
+            foreach (['docs/', 'Docs/', 'DOCS/'] as $caminho) {
+                $_GESTOR['caminho-total'] = $caminho;
+                self::assertSame(self::BASE . 'docs/', gestor_canonical_dados());
+            }
+
+            $_GESTOR['linguagem-codigo'] = 'en';
+            self::assertSame(self::BASE . 'en/docs/', gestor_canonical_dados());
+            $_GESTOR['linguagem-codigo'] = 'pt-br';
+            $_GESTOR['caminho-total'] = 'docs/mdd/implementation/batch-311/';
+            $_GESTOR['pagina#caminho'] = 'docs/mdd/implementation/BATCH-311/';
+            self::assertSame(self::BASE . 'docs/mdd/implementation/BATCH-311/', gestor_canonical_dados());
+            $_GESTOR['pagina#caminho'] = '';
+            self::assertSame(self::BASE, gestor_canonical_dados());
+        } finally {
+            $_GESTOR = $anterior;
+        }
     }
 
     public function testBarraFinalConsistenteMenosEmArquivo(): void
@@ -185,5 +214,41 @@ final class CanonicalOpenGraphImageReq303Test extends TestCase
         $md = '[GitHub](https://github.com/conn2flow/x) [doc](../modules/menus.md) [ancora](#topo)';
         self::assertSame($md, SddSource::unlinkPrivateTargets($md));
         self::assertSame($md, (new SddSource())->filter($md));
+    }
+
+    public function testRenderizaReferenciasPrivadasComoTextoEPreservaAsPublicas(): void
+    {
+        $markdown = <<<'MD'
+[**Guia interno**][PRIVATE], [private][], [private] e ![Imagem][private].
+
+[Guia público][public]
+
+[private]: <https://lab.exemplo.local/guia> 'Interno'
+[public]: https://github.com/conn2flow/conn2flow 'Público'
+MD;
+        $html = $this->renderDocs($markdown);
+        self::assertMatchesRegularExpression('~<strong[^>]*>Guia interno</strong>, private, private e Imagem\.~', $html);
+        self::assertStringContainsString('href="https://github.com/conn2flow/conn2flow"', $html);
+        self::assertSame(1, substr_count($html, '<a '));
+        self::assertStringNotContainsString('<img ', $html);
+        self::assertStringNotContainsString('[REDACTED]', $html);
+    }
+
+    public function testRenderizaLinkInlinePrivadoComTituloSimplesEParentesesComoTexto(): void
+    {
+        $markdown = "Veja [guia](file:///C:/Users/fulano/guia(1).md 'Interno') e "
+            . "[GitHub](https://github.com/conn2flow/conn2flow 'Público').";
+        $html = $this->renderDocs($markdown);
+        self::assertStringContainsString('Veja guia e <a ', $html);
+        self::assertStringContainsString('title="Público"', $html);
+        self::assertSame(1, substr_count($html, '<a '));
+        self::assertStringNotContainsString('[REDACTED]', $html);
+    }
+
+    private function renderDocs(string $markdown): string
+    {
+        $renderer = new MarkdownRenderer([], static fn (string $href): string => $href);
+
+        return $renderer->render((new SddSource())->filter($markdown))['html'];
     }
 }
