@@ -34,6 +34,16 @@ summary_short: "Canonical no head, og:image:width/height/type do arquivo local, 
 - Suíte completa (PHP 8.5, Windows): 2.037 testes, 21 falhas + 1 erro. Rodada também sem a mudança, com o JUnit comparado: **o mesmo conjunto de 22 testes** falha nas duas, então nenhuma falha é nova.
 - O WebP de teste é um cabeçalho VP8X montado em bytes, porque o PHP do Windows não tem GD com WebP.
 
+
+## Correção pós-revisão — 2026-11-23
+
+- Topologia dupla, autonomia `autonomo_monitorado`. Origem `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow`, branch `feat/req-303-canonical-og-image`. O commit `e644c3ca` foi preparado em clone temporário porque a raiz principal continha a REQ-304 em andamento.
+- O roteador lê `paginas.caminho` com os outros campos do registro e usa sua grafia na canonical e no `og:url` padrão. O caminho da requisição continua como fallback quando o registro não fornece o campo.
+- O sanitizador trata títulos inline em aspas simples e destinos com parênteses balanceados. O renderer reaproveita a resolução de referências do Parsedown e exibe o rótulo quando o destino é privado, inclusive a descrição alternativa das imagens. Links públicos mantêm o destino e o título.
+- Regressões PHP cobrem três grafias de `/docs/`, idioma não padrão, caminho cadastrado com maiúsculas, referências completas, colapsadas e curtas e link inline com título em aspas simples. Filtro de seis classes: 115 testes, 3.227 asserções e quatro depreciações do PHPUnit. `php -l` e `git diff --check` passaram.
+- Suíte completa no PHP 8.5.8: 2.021 testes contra 2.018 na base `8c2f2b72`. O comparativo dos JUnit confirma exatamente os mesmos 28 casos com falha, um erro e 11 testes ignorados.
+- Build de documentação isolado com fonte `e644c3ca`: 1.690 arquivos HTML de docs verificados com parser de HTML e zero destinos privados em `href` ou `src`.
+
 ## Pendências
 
 - Evidência do Lab: registrada no BATCH-149 do site (publicação por `project:update-all conn2flow-site-local`).
