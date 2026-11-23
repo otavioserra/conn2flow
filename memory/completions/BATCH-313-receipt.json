@@ -1,0 +1,17 @@
+{
+  "batch": "BATCH-313",
+  "req": "REQ-304",
+  "projeto": "conn2flow",
+  "raiz": "C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow",
+  "branch": "feat/req-304-comunicacao-fila-e-redirect",
+  "date": "2026-11-23",
+  "author": "executor",
+  "topologia": "triade",
+  "autonomia": "autonomo_monitorado",
+  "status": "ready-for-human-validation",
+  "rodada": 2,
+  "escopo": "POST/CSRF, trava do minuto entre HTTP e worker, finalização vinculada à reserva, REQ-203 e CSS bilíngue",
+  "evidencias": ["memory/implementation/BATCH-313.md", "memory/validation/evidence-req304/pos-revisao-css-audit.json"],
+  "revisao_independente": "RECOMMEND-APPROVAL para os critérios pós-revisão da REQ-304",
+  "pendencias": ["Homologação humana", "Confirmação da caixa de teste e capa do módulo, já registradas no lote"]
+}

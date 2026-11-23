@@ -1,0 +1,30 @@
+[
+    {
+        "id":  "admin-comunicacao",
+        "language":  "pt-br",
+        "layout_id":  "layout-administrativo-tailwind",
+        "residuos_fomantic":  0,
+        "usadas":  115,
+        "descobertas":  0,
+        "exemplos":  [
+
+                     ],
+        "stale":  false,
+        "sem_assinatura":  false,
+        "sem_css_proprio":  false
+    },
+    {
+        "id":  "admin-comunicacao",
+        "language":  "en",
+        "layout_id":  "layout-administrativo-tailwind",
+        "residuos_fomantic":  0,
+        "usadas":  115,
+        "descobertas":  0,
+        "exemplos":  [
+
+                     ],
+        "stale":  false,
+        "sem_assinatura":  false,
+        "sem_css_proprio":  false
+    }
+]
