@@ -77,6 +77,8 @@ final class ComunicacaoFilaReq304Test extends TestCase
 
         ComunicacaoReq304MailerDuble::$enviados = [];
         ComunicacaoReq304MailerDuble::$falhar = false;
+        // Estado estatico: um teste anterior troca a mensagem; sem reset o resultado depende da ordem.
+        ComunicacaoReq304MailerDuble::$erro = 'SMTP Error: Could not authenticate.';
 
         $this->agora = strtotime('2026-11-23 10:00:10');
         $this->logs = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'c2f-req304-' . bin2hex(random_bytes(4)) . DIRECTORY_SEPARATOR;

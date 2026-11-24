@@ -176,6 +176,12 @@ final class MemoryArchiveReq090Test extends TestCase
             . "[CASE](Implementation/BATCH-INDEX.md) [anchor](00-baseline.md#x) [web](https://example.com/a.md)\n"
             . "`[code](implementation/batch-001.md)`\n";
         $this->write('memory/README.md', $unrelated);
+        // [CASE] must stay untouched and resolvable on case-sensitive filesystems (Linux CI) too;
+        // on Windows/macOS the lowercase folder already answers for it.
+        if (!is_file($this->root . '/memory/Implementation/BATCH-INDEX.md')) {
+            mkdir($this->root . '/memory/Implementation', 0777, true);
+            $this->write('memory/Implementation/BATCH-INDEX.md', "# Case\n");
+        }
 
         self::assertSame(0, $this->archive(['--keep=1', '--folders=implementation']));
 
