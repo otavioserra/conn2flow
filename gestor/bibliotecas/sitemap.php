@@ -116,9 +116,17 @@ function sitemap_caminho_nao_indexavel($caminho){
 		'pagina-de-impressao',
 		'instalacao-sucesso',
 		'dashboard-site-toolbar',
+		// REQ-303: só abrem com o token do e-mail; sem ele, 302 para `forgot-password/`.
+		'redefine-password',
+		'reset-password',
+		'redefinir-senha',
 	);
 
 	if(in_array($caminho, $exatos, true)) return true;
+
+	// REQ-303: o mesmo vale com prefixo de idioma (`en/redefine-password`).
+	$semIdioma = preg_replace('#^[a-z]{2}(?:-[a-z]{2})?/#', '', $caminho);
+	if($semIdioma !== $caminho && in_array($semIdioma, $exatos, true)) return true;
 
 	// Telas de desfecho de fluxo: são o destino de um POST, não uma entrada de navegação — indexá-las
 	// leva o visitante a uma tela sem contexto (ou, no caso de `error`, a uma tela de erro).
@@ -150,6 +158,11 @@ function sitemap_caminho_nao_indexavel($caminho){
 	// `/checkout/download/` e `/subscription-checkout/` estavam indexados.
 	foreach(Array('cart', 'checkout') as $fluxo){
 		if($ultimo === $fluxo || substr($ultimo, -(strlen($fluxo) + 1)) === '-'.$fluxo) return true;
+
+		// REQ-303: etapa DENTRO do fluxo (`checkout/buyer/`) responde 302 para o carrinho sem sessão.
+		foreach(array_slice($segmentos, 0, -1) as $segmento){
+			if($segmento === $fluxo || substr($segmento, -(strlen($fluxo) + 1)) === '-'.$fluxo) return true;
+		}
 	}
 
 	// Área administrativa que porventura esteja marcada como pública (ex.: emissões de teste).

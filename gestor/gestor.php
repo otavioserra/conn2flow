@@ -1127,6 +1127,23 @@ function gestor_pagina_extra_head_e_javascript(){
 		}
 	}
 
+	// ===== REQ-303: `<link rel="canonical">` único — sem querystring e sem o prefixo do idioma padrão.
+	//       Fica de fora quando a página ou o layout já trazem a sua, em resposta de erro e onde a
+	//       página sai do índice (rota de sistema, site com acesso restrito).
+
+	$codigoHttp = (int)http_response_code();
+	if(
+		empty($_GESTOR['paginaIframe'])
+		&& ($codigoHttp === 0 || $codigoHttp < 400)
+		&& !gestor_site_acesso_restrito_ativo()
+		&& !gestor_pagina_rota_sistema((string)($_GESTOR['caminho-total'] ?? ''))
+		&& !gestor_canonical_existe($_GESTOR['html-extra-head'])
+		&& !gestor_canonical_existe((string)($_GESTOR['pagina'] ?? ''))
+	){
+		$canonica = gestor_canonical_dados();
+		if($canonica !== '') $_GESTOR['html-extra-head'][] = '<link rel="canonical" href="'.htmlspecialchars($canonica, ENT_QUOTES, 'UTF-8').'">'."\n";
+	}
+
 	// ===== req-111 (CR-001): rota de sistema não é conteúdo — sai do índice.
 	//       Enquanto o laço existiu, `cookies-is-mandatory/` foi entregue a buscador e a coletor no
 	//       lugar da página pedida; ela é `tipo=page`/`sem_permissao`, então nada impedia a indexação.
@@ -2548,23 +2565,47 @@ function gestor_open_graph_dados($params = false){
 	if(!existe($imagem)) $imagem = (string)($_CONFIG['site-og-image'] ?? '');
 
 	// Imagem relativa vira absoluta: o WhatsApp e o Meta descartam `og:image` sem host.
+	// REQ-303: a base é a SEM idioma — o arquivo é o mesmo em todo idioma, e `/en/assets/…` só
+	// funcionava porque o roteador tolera o prefixo.
+	$baseSemIdioma = (string)($_GESTOR['url-full-http-sem-lang'] ?? ($_GESTOR['url-full-http'] ?? ''));
 	if(existe($imagem) && !preg_match('#^(https?:)?//#i', $imagem)){
-		$imagem = rtrim((string)($_GESTOR['url-full-http'] ?? ''), '/').'/'.ltrim($imagem, '/');
+		$imagem = rtrim($baseSemIdioma, '/').'/'.ltrim($imagem, '/');
+	}
+
+	// REQ-303: largura, altura e tipo da imagem — do metadado da página ou lidos do arquivo local.
+	$imagemLargura = (string)($og['image_width'] ?? '');
+	$imagemAltura = (string)($og['image_height'] ?? '');
+	$imagemTipo = (string)($og['image_type'] ?? '');
+	if(existe($imagem) && (!existe($imagemLargura) || !existe($imagemAltura) || !existe($imagemTipo))){
+		$arquivo = gestor_open_graph_imagem_arquivo($imagem, $baseSemIdioma, Array(
+			'assets/' => (string)($_GESTOR['assets-path'] ?? ''),
+			'files/' => existe($_GESTOR['contents-path'] ?? '') ? rtrim((string)$_GESTOR['contents-path'], '/\\').'/files/' : '',
+		), (array)($_GESTOR['languages'] ?? Array()));
+		$info = gestor_open_graph_imagem_info($arquivo);
+		if($info){
+			if(!existe($imagemLargura)) $imagemLargura = (string)$info['width'];
+			if(!existe($imagemAltura)) $imagemAltura = (string)$info['height'];
+			if(!existe($imagemTipo)) $imagemTipo = $info['type'];
+		}
 	}
 
 	$url = (string)($og['url'] ?? '');
+	if(!existe($url)) $url = gestor_canonical_dados();
 	if(!existe($url)){
 		$caminho = (string)($_GESTOR['caminho-total'] ?? '');
 		$url = (string)($_GESTOR['url-full-http'] ?? '').ltrim($caminho, '/');
 	}
 
 	return Array(
-		'title'       => $titulo,
-		'description' => $descricao,
-		'image'       => $imagem,
-		'url'         => $url,
-		'site_name'   => $siteName,
-		'type'        => (string)($og['type'] ?? 'website'),
+		'title'        => $titulo,
+		'description'  => $descricao,
+		'image'        => $imagem,
+		'image_width'  => $imagemLargura,
+		'image_height' => $imagemAltura,
+		'image_type'   => $imagemTipo,
+		'url'          => $url,
+		'site_name'    => $siteName,
+		'type'         => (string)($og['type'] ?? 'website'),
 	);
 }
 
@@ -3027,6 +3068,7 @@ function gestor_roteador(){
 
 	$campos[] = 'id';
 	$campos[] = 'id_paginas';
+	$campos[] = 'caminho';
 
 	// ===== Buscar no banco de dados o alvo da requisição
 	
@@ -3113,6 +3155,7 @@ function gestor_roteador(){
 		if($pagina_status_http !== null) http_response_code($pagina_status_http);
 
 		$_GESTOR['modulo'] = $paginas[0]['modulo'];
+		$_GESTOR['pagina#caminho'] = $paginas[0]['caminho'] ?? null;
 
 		// ===== Verificar linguagens de uma página
 

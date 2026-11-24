@@ -429,4 +429,18 @@ final class SitemapTest extends TestCase
             self::assertFalse(sitemap_caminho_nao_indexavel($caminho), $caminho);
         }
     }
+
+    public function testEtapaDentroDoFluxoEPaginaDeTokenNaoEntramNoSitemap(): void
+    {
+        // REQ-303: medido no sitemap do Lab do conn2flow-site em 2026-11-23 — as quatro respondiam 302
+        // para qualquer visitante (sem carrinho / sem o token do e-mail).
+        foreach (['checkout/buyer', 'en/checkout/buyer/', 'subscription-checkout/dados', 'cart/resumo',
+            'redefine-password', 'en/redefine-password/', 'reset-password', 'redefinir-senha'] as $caminho) {
+            self::assertTrue(sitemap_caminho_nao_indexavel($caminho), $caminho);
+        }
+        // Continuam entrando: o pedido de nova senha e as telas de entrada (200 para buscadores).
+        foreach (['forgot-password', 'signin', 'en/signup', 'checkout-rapido-guia/passo-1', 'store/checkout-rapido-guia'] as $caminho) {
+            self::assertFalse(sitemap_caminho_nao_indexavel($caminho), $caminho);
+        }
+    }
 }

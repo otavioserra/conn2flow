@@ -1,5 +1,13 @@
 # Validation Checklist
 
+## BATCH-312 — REQ-303
+
+- [x] Canonical e `og:url` seguem a grafia do cadastro. Variantes de maiúsculas verificadas em PHPUnit e no Lab integrado.
+- [x] Links privados por referência e links inline com título em aspas simples viram texto. Regressões renderizadas passaram em PHPUnit e no gerador instalado no Lab.
+- [ ] Homologação humana.
+
+Detalhes e evidências em [BATCH-312](../implementation/BATCH-312.md).
+
 ## BATCH-311 — REQ-302
 
 - [x] Altura medida do iframe, atualização dinâmica e dropdown com altura independente do offset.

@@ -118,6 +118,8 @@ final class SddSource
         if (preg_match('/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|\b(?:password|senha|secret|api[_-]?key|access[_-]?token)\s*[:=]\s*[\x27\"]?[^\s\x27\"`]{8,}|\bBearer\s+[A-Za-z0-9._~+\/-]{12,}|\b(?:gh[pousr]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_-]{20,}|AKIA[A-Z0-9]{16})\b|\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/i', $body)) {
             return null;
         }
+        // Remova links file: antes que a ocultação do caminho altere seus parênteses.
+        $body = self::unlinkPrivateTargets($body);
         $patterns = [
             '~\b[A-Z]:[/\\\\]Users[/\\\\][^\s)`\]>]+~i',
             '~file:///?[A-Z]:[/\\\\]Users[/\\\\][^\s)`\]>]+~i',
@@ -158,6 +160,43 @@ final class SddSource
             return null;
         }
         $body = preg_replace('~/(?:home|root|var/www|opt)/[^\s)`\]>]+~i', '[REDACTED]', $body);
-        return $body;
+        if ($body === null) {
+            return null;
+        }
+        return self::unlinkPrivateTargets($body);
+    }
+
+    /**
+     * REQ-303: link para arquivo local (`file:`) ou cujo destino foi ocultado vira só o texto.
+     *
+     * Sem isto, `[x](file:///C:/Users/...)` saía como `<a href="file%3A///[REDACTED]">`: um link
+     * que não abre em lugar nenhum e ainda anuncia que havia um caminho privado ali.
+     */
+    public static function unlinkPrivateTargets(string $markdown): string
+    {
+        $texto = '\[((?:[^\[\]\n]|\[[^\[\]\n]*\])*)\]';
+        $alvo = <<<'REGEX'
+~!?%s\(\s*(?:<([^<>\n]+)>|((?:[^\s()<>]++|\([^\s()]+\))++))(?:[ \t]+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)~
+REGEX;
+        $resultado = preg_replace_callback(
+            sprintf($alvo, $texto),
+            static fn (array $m): string => self::isPrivateTarget($m[2] !== '' ? $m[2] : $m[3]) ? $m[1] : $m[0],
+            $markdown
+        );
+        if ($resultado === null) {
+            return $markdown;
+        }
+
+        // URL solta com parte ocultada (`https://[REDACTED].local/`) viraria link automático.
+        $semUrl = preg_replace('~(?:https?|file):/*[^\s<>"`]*\[REDACTED\][^\s<>"`)]*~i', '[REDACTED]', $resultado);
+
+        return $semUrl ?? $resultado;
+    }
+
+    public static function isPrivateTarget(string $target): bool
+    {
+        $target = rawurldecode(trim($target, "<> \t\n\r"));
+
+        return stripos($target, 'file:') === 0 || stripos($target, '[REDACTED]') !== false;
     }
 }
