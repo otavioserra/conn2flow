@@ -249,3 +249,12 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **Controlador com autostart no fim** (`plataforma_gateways_start()`): a guarda `PLATAFORMA_GATEWAYS_SEM_INICIAR` deixa o arnês incluir o arquivo e testar só funções puras. A REQ-265 extrai `plataforma_gateways_stripe_confirmar_recebimento` por regex, então ela precisa continuar autocontida.
 - **Números atravessando JSON entre processos** (`10.0` volta como `10`): em teste com subprocesso, comparar com `assertEquals`.
 - **`gateways_pagamentos` é tabela do `conn2flow-site`** (sem coluna `prioridade` até a REQ-149/151): o Core usa `banco_campo_existe` e ordenação em PHP como fallback.
+
+### REQ-223 / BATCH-232 e REQ-224 / BATCH-233 — lições recuperadas das worktrees (2026-10-04)
+
+Transferidas em 2026-11-24 pela REQ-155 / BATCH-148 do site, antes de remover as worktrees `conn2flow-req223` e `conn2flow-req224` (texto sem commit no antigo `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md`).
+
+- Em páginas Tailwind, `interface_formulario_campos()` marca selects nativos com `data-c2f-select`; JS legado de módulo precisa escutar `change` ou excluir esses selects antes de chamar Fomantic.
+- A publicação prefere `.min.js`; depois de alterar fonte, regenerar com Terser em LF e atualizar apenas as entradas correspondentes de `minify-manifest.json`.
+- `asset_version` usa tokens SHA-256 determinísticos sobre os arquivos do módulo/owner; a transformação Node reproduziu o algoritmo oficial sem atualizar manifests de módulos não relacionados.
+- Em recursos de página, resolva `tailwind_sources` a partir de `resources/<idioma>/pages/<id>/`; para o Dashboard, `../../../../dashboard.php` chega ao renderer. Cobrir os metadados e a existência do PHP no teste de contrato.
