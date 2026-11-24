@@ -1,0 +1,38 @@
+{
+  "ambiente": "conn2flow-site-local",
+  "branch_site": "lab/req-149-156",
+  "pedido": "261123-K2R6K7",
+  "order_id": "ORDTST01M8553VB287TM7N6EQ4PE7T9Q",
+  "consulta_anterior": {
+    "http": 200,
+    "status": "processed",
+    "status_detail": "accredited",
+    "total_amount": "1999.00",
+    "installments": 1
+  },
+  "reembolso": {
+    "metodo": "POST",
+    "path": "/v1/orders/ORDTST01M8553VB287TM7N6EQ4PE7T9Q/refund",
+    "corpo": {},
+    "http": 201,
+    "status": "refunded",
+    "refund_id": "REF01M855A5F1BYWTJ6S8TDN2H2FT",
+    "amount": "1999.00",
+    "refund_status": "processed"
+  },
+  "consulta_posterior": {
+    "http": 200,
+    "status": "refunded"
+  },
+  "webhook": {
+    "path": "/_gateways/mercadopago/webhook",
+    "type": "order",
+    "user_agent": "MercadoPago WebHook v1.0 order",
+    "horarios_acesso_brt": ["2026-11-23T18:34:42-03:00", "2026-11-23T18:34:43-03:00"],
+    "evento_validado_core": "order.refunded",
+    "evento_canonico": "payment.refunded",
+    "http_saida": 404,
+    "causa_despacho": "O hook do Social Apps encerrou o broadcast legado com Plataforma de webhook desconhecida, antes de orders.",
+    "payment_status_site_apos_reembolso": "paid"
+  }
+}

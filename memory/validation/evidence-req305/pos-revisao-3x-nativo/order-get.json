@@ -1,0 +1,10 @@
+{
+  "path": "/v1/orders/ORDTST01M855KPXN426AT2FRPMGK6QTV",
+  "http": 200,
+  "order": "261123-FDZF3H",
+  "order_id": "ORDTST01M855KPXN426AT2FRPMGK6QTV",
+  "status": "processed",
+  "status_detail": "accredited",
+  "total_amount": "150.00",
+  "installments": 3
+}

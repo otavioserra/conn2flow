@@ -1,0 +1,12 @@
+[
+  {
+    "http": 200,
+    "status": "Ok",
+    "code": null,
+    "payment_status": "paid",
+    "pix": false,
+    "status_detail": null,
+    "parcelasBrick": 3,
+    "parcelasEnviadas": 3
+  }
+]

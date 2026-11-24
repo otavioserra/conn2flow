@@ -1,0 +1,18 @@
+[
+  {
+    "http": 200,
+    "status": "Ok",
+    "code": null,
+    "payment_status": "paid",
+    "pix": false,
+    "status_detail": null
+  },
+  {
+    "http": 200,
+    "status": "Ok",
+    "code": null,
+    "payment_status": "awaiting",
+    "pix": true,
+    "status_detail": null
+  }
+]

@@ -8,6 +8,26 @@
 
 Detalhes e evidências em [BATCH-312](../implementation/BATCH-312.md).
 
+## BATCH-314 — REQ-305
+
+### Rodada 1 (executor, 2026-11-23)
+
+- [x] CA-1: `mercadopago.php` cria Cartão parcelado e Pix em `POST /v1/orders`, consulta (`GET /v1/orders/{id}`) e reembolsa (`POST /v1/orders/{id}/refund`, total e parcial) com fallback `/v1/payments` para id numérico — testes + Lab (criação).
+- [x] CA-2: webhook `type=order` validado por HMAC (manifesto com `data.id` em minúsculas) e resolvido por `GET /v1/orders` autenticado, envelope canônico para `orders`/`subscriptions` — testes (fachada e ponte do controlador). Evento real do painel não exercitado.
+- [x] CA-3: `MercadoPagoLibraryTest` + `PagamentosGatewaysInterfaceTest` 29/29 (373 asserções); suíte completa sem falha nova.
+- [ ] CA-4: Lab — Pix com QR na tela (`261123-8NG9HJ`) e cartão `APRO` no modo Pagamento Parcelado `paid` (`261123-4BU5C5`) sem 401, e-mails pela fila com `MAIL_REDIRECT_TO`. **Pendente:** pagamento com parcelas > 1 (cota diária do `form-comprador` esgotada pelos testes do dia).
+- [x] CA-5: evidências no BATCH-314; sem `git add -A`, sem commit, sem cópia manual; publicação só pelo pipeline; produção intocada.
+
+Detalhes: [BATCH-314](../implementation/BATCH-314.md). Evidências: `memory/validation/evidence-req305/`.
+
+### Rodada de revisão (2026-11-23)
+
+- [x] Revisão técnica consolidada em 2026-11-23 com parecer RECOMMEND-REVISION para o BATCH-314. [Parecer](../reviews/REVIEW-2026-11-23-BATCHES-313-314.md)
+- [x] Pós-revisão: envelope usa a Order autenticada e falha de GET invalida o evento, com HTTP 503 antes do despacho.
+- [x] Pós-revisão: cartão Mastercard em 3x nativos no Brick (`261123-FDZF3H`), GET autenticado confirma `installments=3`, e reembolso integral real de sandbox em outro pedido retornou HTTP 201.
+- [x] Pós-revisão: webhook genuíno `order.refunded` chegou ao Lab e o Core autenticou a Order.
+- [ ] A resposta HTTP 404 do Social Apps no broadcast legado impede a sincronização do estado no site. Homologação humana pendente.
+
 ## BATCH-313 — REQ-304
 
 - [x] CA-1: senha SMTP mascarada no log (`[pass] => ***`) e ausente do erro devolvido e do `payload_json` (inclusive com credencial efêmera) — PHPUnit.

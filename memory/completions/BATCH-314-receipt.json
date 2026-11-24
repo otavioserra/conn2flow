@@ -1,0 +1,16 @@
+{
+  "batch": "BATCH-314",
+  "req": "REQ-305",
+  "projeto": "conn2flow",
+  "raiz": "C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow",
+  "branch": "feat/req-305-mercadopago-orders-api",
+  "date": "2026-11-23",
+  "author": "executor",
+  "topologia": "triade",
+  "autonomia": "autonomo_monitorado",
+  "status": "implemented-pending-review",
+  "rodada": 2,
+  "escopo": "Envelope de Order autenticada, validação no checkout em 3x, reembolso sandbox e chegada de webhook",
+  "evidencias": ["memory/implementation/BATCH-314.md", "memory/validation/evidence-req305/pos-revisao-3x-nativo/order-get.json", "memory/validation/evidence-req305/pos-revisao-reembolso-webhook.json"],
+  "pendencias": ["Despacho legado no site interrompido por Social Apps com HTTP 404 após validação do Core", "Homologação humana"]
+}
