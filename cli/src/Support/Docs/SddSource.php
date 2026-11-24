@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Conn2Flow\Cli\Support\Docs;
 
-/** Fonte pública e conservadora do SDD do Core. Nunca lê SDD de projetos. */
+/** Fonte pública e conservadora da memória MDD do Core (memory/, fallback sdd/). Nunca lê a memória de projetos. */
 final class SddSource
 {
     private const FOLDERS = ['process', 'decisions', 'implementation', 'human-requests', 'validation'];
@@ -19,7 +19,7 @@ final class SddSource
         $docs = [];
         $warnings = [];
         if (!is_dir($root)) {
-            return ['docs' => [], 'warnings' => ['sdd/: fonte não encontrada.']];
+            return ['docs' => [], 'warnings' => ['memory/ (ou sdd/): fonte não encontrada.']];
         }
         $environmentFile = dirname($root) . '/dev-environment/data/environment.json';
         $environment = is_file($environmentFile) ? json_decode((string)file_get_contents($environmentFile), true) : null;
@@ -54,11 +54,11 @@ final class SddSource
             }
             $filtered = $this->filter($body);
             if ($filtered === null) {
-                $warnings[] = "sdd/{$relative}: excluído pelo filtro de conteúdo sensível.";
+                $warnings[] = basename($root) . "/{$relative}: excluído pelo filtro de conteúdo sensível.";
                 continue;
             }
             if ($filtered !== $body) {
-                $warnings[] = "sdd/{$relative}: dados sensíveis substituídos.";
+                $warnings[] = basename($root) . "/{$relative}: dados sensíveis substituídos.";
             }
             preg_match('/^#\s+(.+)$/m', $filtered, $heading);
             $title = trim($heading[1] ?? pathinfo($relative, PATHINFO_FILENAME));

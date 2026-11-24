@@ -9,14 +9,18 @@ use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
 
 /**
- * Enforces the "Rule of 10 Active Files" on the SDD root folders.
+ * Enforces the "Rule of 10 Active Files" on the MDD memory root folders.
  *
- * Keeps only the N most recent sequenced files inside sdd/human-requests/ and
- * sdd/implementation/, moving the older ones into their respective archive/
- * subfolder and deterministically rewriting every markdown link that pointed to
- * the old location, so no index reference is left orphaned.
+ * Keeps only the N most recent sequenced files inside memory/human-requests/,
+ * memory/implementation/ and memory/reports/ (legacy fallback: sdd/), moving the
+ * older ones into their respective archive/ subfolder and deterministically
+ * rewriting only the markdown links affected by those moves, so no index
+ * reference is left orphaned and unrelated links keep their exact text.
+ *
+ * MDD (Memory Driven Development) is the evolution of SDD: `ai:archive-memory`
+ * is the canonical name and `ai:archive-sdd` stays as a backward-compatible alias.
  */
-final class AiArchiveSddCommand implements CommandInterface
+final class AiArchiveMemoryCommand implements CommandInterface
 {
     private const DEFAULT_KEEP = 10;
 
@@ -33,7 +37,7 @@ final class AiArchiveSddCommand implements CommandInterface
     /**
      * Folders governed by the Rule of 10, with the files that are never moved.
      *
-     * @var array<int, array{dir: string, protected: array<int, string>}>
+     * @var array<int, array{dir: string, protected: array<int, string>, by_date?: bool}>
      */
     private const TARGET_FOLDERS = [
         [
@@ -43,6 +47,13 @@ final class AiArchiveSddCommand implements CommandInterface
         [
             'dir' => 'implementation',
             'protected' => ['BATCH-INDEX.md', 'README.md', 'INDEX.md', 'CURRENT.md'],
+        ],
+        [
+            // REQ-090: executor reports (REP-XXX, BL-XXX) follow the same window,
+            // ordered by frontmatter date because their prefixes mix.
+            'dir' => 'reports',
+            'protected' => ['README.md', 'INDEX.md'],
+            'by_date' => true,
         ],
     ];
 
@@ -80,38 +91,52 @@ final class AiArchiveSddCommand implements CommandInterface
 
     public function getName(): string
     {
-        return 'ai:archive-sdd';
+        return 'ai:archive-memory';
     }
 
     public function getDescription(): string
     {
-        return 'Apply the Rule of 10 to SDD folders, archiving old requests/batches and rewriting markdown links.';
+        return 'Apply the Rule of 10 to MDD memory folders, archiving old requests/batches/reports and rewriting affected markdown links.';
     }
 
     public function getAliases(): array
     {
-        return ['sdd:archive', 'ai:archive', 'ai:archive-memory', 'memory:archive'];
+        // ai:archive-sdd and sdd:archive are kept for backward compatibility (SDD → MDD).
+        return ['ai:archive-sdd', 'memory:archive', 'ai:archive', 'sdd:archive'];
     }
 
     public function getHelp(): string
     {
-        return "Usage: c2f ai:archive-sdd [options]\n\n" .
-               "Keeps only the most recent sequenced files in memory/human-requests/ and memory/implementation/ (fallback: sdd/).\n" .
-               "Older files are moved to the matching archive/ subfolder and every markdown link that\n" .
-               "referenced them (in BATCH-INDEX.md, VALIDATION-CHECKLIST.md, DECISION-LOG.md, CURRENT.md\n" .
-               "and any other .md under the selected memory/ or sdd/ tree) is rewritten to the new path.\n\n" .
+        return "Usage: c2f ai:archive-memory [options]   (alias: ai:archive-sdd)\n\n" .
+               "Keeps only the most recent sequenced files in memory/human-requests/, memory/implementation/\n" .
+               "and memory/reports/ (legacy fallback: sdd/). Older files are moved to the matching archive/\n" .
+               "subfolder. Only the markdown links affected by the moves are rewritten (links that point to a\n" .
+               "moved file, and the relative links inside each moved file); every other link keeps its exact text.\n\n" .
                "Options:\n" .
                "  --repo=PATH       Repository root to process (default: the current Core repository).\n" .
                "  --keep=N          How many sequenced files stay in each folder root (default: 10).\n" .
                "  --protect=A,B     Extra file names that must never be archived.\n" .
+               "  --folders=A,B     Governed folders to process (default: " . implode(',', self::folderNames()) . ").\n" .
+               "  --status=A,B      Only files whose status (frontmatter `status:` or a `**Status**:` line) is in the\n" .
+               "                    list may be archived, e.g. --status=HOMOLOGATED,REVIEWED. Other files are held in\n" .
+               "                    the root and occupy the active window, so pending reviews are never selected by\n" .
+               "                    numeric order alone.\n" .
                "  --repair-links    Also re-anchor links already broken by earlier manual archiving.\n" .
                "  --dry-run         Show the plan without moving files or rewriting links.\n" .
                "  --verbose         List every archived file and every rewritten link.";
     }
 
+    /**
+     * @return array<int, string>
+     */
+    private static function folderNames(): array
+    {
+        return array_map(static fn (array $target): string => $target['dir'], self::TARGET_FOLDERS);
+    }
+
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->title('Conn2Flow — SDD Archiving (Rule of 10)');
+        $output->title('Conn2Flow — MDD Memory Archiving (Rule of 10)');
 
         $repoPath = $this->resolveRepoPath($input);
         if ($repoPath === null) {
@@ -120,8 +145,8 @@ final class AiArchiveSddCommand implements CommandInterface
         }
 
         $memoryDir = is_dir($repoPath . '/memory') ? 'memory' : 'sdd';
-        $sddPath = $repoPath . '/' . $memoryDir;
-        if (!is_dir($sddPath)) {
+        $memoryPath = $repoPath . '/' . $memoryDir;
+        if (!is_dir($memoryPath)) {
             $output->error("No memory/ or sdd/ folder found at: {$repoPath}");
             return 1;
         }
@@ -140,11 +165,26 @@ final class AiArchiveSddCommand implements CommandInterface
 
         $extraProtected = $this->resolveExtraProtected($input);
 
+        $folders = $this->resolveFolders($input);
+        if ($folders === null) {
+            $output->error('Unknown --folders value. Allowed: ' . implode(', ', self::folderNames()) . '.');
+            return 1;
+        }
+
+        $statuses = $this->resolveStatuses($input);
+        if ($statuses !== []) {
+            $output->info('Archivable statuses: ' . implode(', ', $statuses));
+        }
+
         // 1. Build the move plan for every governed folder.
         $moves = [];
         $planRows = [];
 
         foreach (self::TARGET_FOLDERS as $target) {
+            if (!in_array($target['dir'], $folders, true)) {
+                continue;
+            }
+
             $target['dir'] = $memoryDir . '/' . $target['dir'];
             $folder = $repoPath . '/' . $target['dir'];
             if (!is_dir($folder)) {
@@ -153,37 +193,58 @@ final class AiArchiveSddCommand implements CommandInterface
             }
 
             $protected = $this->collectProtectedNames($folder, $target['protected'], $extraProtected);
-            $candidates = $this->collectSequencedFiles($folder, $protected);
+            $candidates = $this->collectSequencedFiles($folder, $protected, (bool) ($target['by_date'] ?? false));
 
             // Pinned requests/batches occupy slots of the active window, so the
             // folder root never exceeds --keep sequenced files in total.
             $pinned = $this->countPinnedSequencedFiles($folder, $protected);
             $budget = max(0, $keep - $pinned);
-
             $total = count($candidates) + $pinned;
+
+            // --status: files outside the archivable statuses are held in the root
+            // and consume the window first; only the oldest eligible files move.
+            $held = 0;
+            if ($statuses !== []) {
+                $eligible = [];
+                foreach ($candidates as $candidate) {
+                    $candidate['status'] = $this->readStatus($folder . '/' . $candidate['name']);
+                    if (in_array($candidate['status'], $statuses, true)) {
+                        $eligible[] = $candidate;
+                    } else {
+                        $held++;
+                    }
+                }
+                $candidates = $eligible;
+                $budget = max(0, $budget - $held);
+            }
+
             $toArchive = count($candidates) > $budget ? array_slice($candidates, $budget) : [];
 
             foreach ($toArchive as $candidate) {
                 $moves[] = [
                     'folder' => $target['dir'],
                     'name' => $candidate['name'],
+                    'status' => $candidate['status'] ?? $this->readStatus($folder . '/' . $candidate['name']),
                     'old' => $this->normalizePath($folder . '/' . $candidate['name']),
                     'new' => $this->normalizePath($folder . '/archive/' . $candidate['name']),
                 ];
             }
 
+            $keptInRoot = $total - count($toArchive);
             $planRows[] = [
                 $target['dir'],
                 (string) $total,
-                (string) min($total, $keep),
+                (string) $keptInRoot,
                 (string) count($toArchive),
-                count($toArchive) > 0 ? 'over the limit' : 'compliant',
+                count($toArchive) > 0
+                    ? 'over the limit'
+                    : ($keptInRoot > $keep ? "held by status ({$held})" : 'compliant'),
             ];
         }
 
         $output->section('Rule of 10 Analysis');
         $output->table(
-            ['SDD Folder', 'Sequenced', 'Kept in root', 'To archive', 'Status'],
+            ['Memory Folder', 'Sequenced', 'Kept in root', 'To archive', 'Status'],
             $planRows
         );
 
@@ -193,10 +254,10 @@ final class AiArchiveSddCommand implements CommandInterface
             $output->success('Every governed folder already respects the active window. Nothing to archive.');
 
             if ($repairLinks && !$dryRun) {
-                $this->runRepairPass($sddPath, $output, $verbose);
+                $this->runRepairPass($memoryPath, $output, $verbose);
             }
 
-            $orphans = $this->findBrokenLinks($sddPath);
+            $orphans = $this->findBrokenLinks($memoryPath);
             $this->reportBrokenLinks($output, $orphans);
             return empty($orphans) ? 0 : 1;
         }
@@ -205,9 +266,9 @@ final class AiArchiveSddCommand implements CommandInterface
             $output->section('Files selected for archiving');
             $moveRows = [];
             foreach ($moves as $move) {
-                $moveRows[] = [$move['folder'], $move['name'], $move['folder'] . '/archive/' . $move['name']];
+                $moveRows[] = [$move['folder'], $move['name'], $move['status'] ?: '-', $move['folder'] . '/archive/' . $move['name']];
             }
-            $output->table(['Folder', 'File', 'Destination'], $moveRows);
+            $output->table(['Folder', 'File', 'Status', 'Destination'], $moveRows);
         }
 
         if ($dryRun) {
@@ -215,8 +276,8 @@ final class AiArchiveSddCommand implements CommandInterface
             return 0;
         }
 
-        // 2. Snapshot every markdown file under sdd/ before moving anything.
-        $markdownFiles = $this->collectMarkdownFiles($sddPath);
+        // 2. Snapshot every markdown file under memory/ (or sdd/) before moving anything.
+        $markdownFiles = $this->collectMarkdownFiles($memoryPath);
 
         // 3. Physically move the files.
         $moveMap = [];
@@ -287,11 +348,11 @@ final class AiArchiveSddCommand implements CommandInterface
 
         // 5. Optional repair of links already broken by earlier manual archiving.
         if ($repairLinks) {
-            $this->runRepairPass($sddPath, $output, $verbose);
+            $this->runRepairPass($memoryPath, $output, $verbose);
         }
 
         // 6. Final integrity gate: no relative markdown link may stay orphaned.
-        $orphans = $this->findBrokenLinks($sddPath);
+        $orphans = $this->findBrokenLinks($memoryPath);
         $this->reportBrokenLinks($output, $orphans);
 
         if (!empty($orphans)) {
@@ -355,6 +416,60 @@ final class AiArchiveSddCommand implements CommandInterface
         return array_values(array_filter($names, static fn (string $name): bool => $name !== ''));
     }
 
+    /**
+     * @return array<int, string>|null Null when an unknown folder is requested.
+     */
+    private function resolveFolders(InputInterface $input): ?array
+    {
+        $raw = $input->getOption('folders');
+        if (!is_string($raw) || trim($raw) === '') {
+            return self::folderNames();
+        }
+
+        $requested = array_values(array_filter(array_map('trim', explode(',', $raw)), static fn (string $name): bool => $name !== ''));
+        foreach ($requested as $name) {
+            if (!in_array($name, self::folderNames(), true)) {
+                return null;
+            }
+        }
+
+        return $requested;
+    }
+
+    /**
+     * @return array<int, string> Upper-case statuses; empty means "no status filter".
+     */
+    private function resolveStatuses(InputInterface $input): array
+    {
+        $raw = $input->getOption('status');
+        if (!is_string($raw) || trim($raw) === '') {
+            return [];
+        }
+
+        $statuses = array_map(static fn (string $value): string => strtoupper(trim($value, " \t\"'`")), explode(',', $raw));
+
+        return array_values(array_unique(array_filter($statuses, static fn (string $value): bool => $value !== '')));
+    }
+
+    /**
+     * Reads a document status: YAML frontmatter `status:` first, then the first
+     * `**Status**:` bullet (legacy records). Returns '' when none is declared.
+     */
+    private function readStatus(string $file): string
+    {
+        $status = $this->readFrontmatterField($file, 'status');
+        if ($status !== '') {
+            return strtoupper($status);
+        }
+
+        $content = @file_get_contents($file, false, null, 0, 16384);
+        if ($content !== false && preg_match('/^\s*[*-]\s*\*\*Status\*\*\s*:\s*`?([A-Za-z0-9_-]+)/mi', $content, $match) === 1) {
+            return strtoupper($match[1]);
+        }
+
+        return '';
+    }
+
     // ------------------------------------------------------------------
     // Planning
     // ------------------------------------------------------------------
@@ -412,10 +527,15 @@ final class AiArchiveSddCommand implements CommandInterface
     /**
      * Sequenced files in the folder root, most recent first.
      *
+     * Folders that mix prefixes (reports/: REP-002 next to BL-028) are ordered by
+     * the frontmatter `date:` first, because their sequence numbers are not
+     * comparable; files without a date sort as the oldest. Other folders keep the
+     * numeric order.
+     *
      * @param array<string, true> $protected
-     * @return array<int, array{name: string, seq: int}>
+     * @return array<int, array{name: string, seq: int, date: string}>
      */
-    private function collectSequencedFiles(string $folder, array $protected): array
+    private function collectSequencedFiles(string $folder, array $protected, bool $byDate = false): array
     {
         $entries = scandir($folder);
         if ($entries === false) {
@@ -441,14 +561,38 @@ final class AiArchiveSddCommand implements CommandInterface
                 continue;
             }
 
-            $files[] = ['name' => $entry, 'seq' => (int) $matches['seq']];
+            $files[] = [
+                'name' => $entry,
+                'seq' => (int) $matches['seq'],
+                'date' => $byDate ? $this->readFrontmatterField($folder . '/' . $entry, 'date') : '',
+            ];
         }
 
         usort($files, static function (array $a, array $b): int {
-            return $b['seq'] <=> $a['seq'] ?: strcmp(strtolower($b['name']), strtolower($a['name']));
+            return strcmp($b['date'], $a['date'])
+                ?: ($b['seq'] <=> $a['seq'] ?: strcmp(strtolower($b['name']), strtolower($a['name'])));
         });
 
         return $files;
+    }
+
+    private function readFrontmatterField(string $file, string $field): string
+    {
+        $content = @file_get_contents($file, false, null, 0, 16384);
+        if ($content === false) {
+            return '';
+        }
+
+        $content = preg_replace('/^\xEF\xBB\xBF/', '', $content) ?? $content;
+        if (preg_match('/\A---\r?\n(.*?)\r?\n---\r?\n/s', $content, $frontmatter) !== 1) {
+            return '';
+        }
+
+        if (preg_match('/^' . preg_quote($field, '/') . ':\s*(.+?)\s*$/mi', $frontmatter[1], $match) !== 1) {
+            return '';
+        }
+
+        return trim($match[1], " \t\"'`");
     }
 
     /**
@@ -485,10 +629,10 @@ final class AiArchiveSddCommand implements CommandInterface
     /**
      * @return array<int, string>
      */
-    private function collectMarkdownFiles(string $sddPath): array
+    private function collectMarkdownFiles(string $memoryPath): array
     {
         $files = [];
-        $stack = [$sddPath];
+        $stack = [$memoryPath];
 
         while ($stack !== []) {
             $dir = array_pop($stack);
@@ -547,10 +691,16 @@ final class AiArchiveSddCommand implements CommandInterface
                 }
 
                 $target = $match[2] ?? '';
-                $rewritten = $this->rewriteTarget($target, $oldDir, $newDir, $moveMap);
+                // `[x](<target>)` destinations (generated index.md tables) keep their brackets.
+                [$inner, $wrapped] = $this->unwrapAngleTarget($target);
+                $rewritten = $this->rewriteTarget($inner, $oldDir, $newDir, $moveMap);
 
-                if ($rewritten === null || $rewritten === $target) {
+                if ($rewritten === null || $rewritten === $inner) {
                     return $match[0];
+                }
+
+                if ($wrapped) {
+                    $rewritten = '<' . $rewritten . '>';
                 }
 
                 $changes++;
@@ -590,15 +740,30 @@ final class AiArchiveSddCommand implements CommandInterface
         }
 
         $resolvedOld = $this->normalizePath($oldDir . '/' . rawurldecode($path));
-        $resolvedNew = $moveMap[$this->mapKey($resolvedOld)] ?? $resolvedOld;
+        $movedTarget = $moveMap[$this->mapKey($resolvedOld)] ?? null;
+        $documentMoved = $this->mapKey($oldDir) !== $this->mapKey($newDir);
 
-        if (!is_file($resolvedNew)) {
+        // REQ-090 / REP-011: only links affected by a move change. A document that
+        // stayed in place keeps the exact text of every link to a file that did not
+        // move (no normalization of `./`, `..`, case or trailing slashes).
+        if ($movedTarget === null && !$documentMoved) {
+            return null;
+        }
+
+        $resolvedNew = $movedTarget ?? $resolvedOld;
+
+        // Moved documents also re-anchor links to folders (e.g. `../scripts/`).
+        if (!file_exists($resolvedNew)) {
             return null;
         }
 
         $relative = $this->relativePath($newDir, $resolvedNew);
         if ($relative === null) {
             return null;
+        }
+
+        if (str_ends_with($path, '/') && !str_ends_with($relative, '/')) {
+            $relative .= '/';
         }
 
         return $relative . $anchor;
@@ -624,11 +789,11 @@ final class AiArchiveSddCommand implements CommandInterface
     /**
      * @return array<int, array<int, string>>
      */
-    private function findBrokenLinks(string $sddPath): array
+    private function findBrokenLinks(string $memoryPath): array
     {
         $broken = [];
 
-        foreach ($this->collectMarkdownFiles($sddPath) as $file) {
+        foreach ($this->collectMarkdownFiles($memoryPath) as $file) {
             $content = file_get_contents($file);
             if ($content === false) {
                 continue;
@@ -671,13 +836,27 @@ final class AiArchiveSddCommand implements CommandInterface
                 continue;
             }
 
-            $target = $match[2] ?? '';
+            [$target] = $this->unwrapAngleTarget($match[2] ?? '');
             if ($target !== '') {
                 $targets[] = $target;
             }
         }
 
         return $targets;
+    }
+
+    /**
+     * Splits a CommonMark `<destination>` into its inner target.
+     *
+     * @return array{0: string, 1: bool} Inner target and whether it was wrapped.
+     */
+    private function unwrapAngleTarget(string $target): array
+    {
+        if (strlen($target) > 2 && $target[0] === '<' && str_ends_with($target, '>')) {
+            return [substr($target, 1, -1), true];
+        }
+
+        return [$target, false];
     }
 
     /**
@@ -717,11 +896,11 @@ final class AiArchiveSddCommand implements CommandInterface
      *
      * @param array<int, array<int, string>> $repairRows
      */
-    private function repairBrokenLinks(string $sddPath, array &$repairRows): int
+    private function repairBrokenLinks(string $memoryPath, array &$repairRows): int
     {
         $repaired = 0;
 
-        foreach ($this->collectMarkdownFiles($sddPath) as $file) {
+        foreach ($this->collectMarkdownFiles($memoryPath) as $file) {
             $content = file_get_contents($file);
             if ($content === false) {
                 continue;
@@ -733,7 +912,7 @@ final class AiArchiveSddCommand implements CommandInterface
 
             $updated = (string) preg_replace_callback(
                 self::LINK_SCAN_PATTERN,
-                function (array $match) use ($dir, $sddPath, $label, &$changes, &$repairRows): string {
+                function (array $match) use ($dir, $memoryPath, $label, &$changes, &$repairRows): string {
                     if (($match[1] ?? '') !== '') {
                         return $match[0];
                     }
@@ -750,7 +929,7 @@ final class AiArchiveSddCommand implements CommandInterface
                         return $match[0];
                     }
 
-                    $fixed = $this->findRepairCandidate($path, $dir, $sddPath);
+                    $fixed = $this->findRepairCandidate($path, $dir, $memoryPath);
                     if ($fixed === null) {
                         return $match[0];
                     }
@@ -779,9 +958,9 @@ final class AiArchiveSddCommand implements CommandInterface
 
     /**
      * Deterministic candidate lookup: archive sibling, ancestor re-anchoring,
-     * then a unique basename match under sdd/.
+     * then a unique basename match under the selected memory/ (or sdd/) tree.
      */
-    private function findRepairCandidate(string $path, string $dir, string $sddPath): ?string
+    private function findRepairCandidate(string $path, string $dir, string $memoryPath): ?string
     {
         $decoded = rawurldecode($path);
         $resolved = $this->normalizePath($dir . '/' . $decoded);
@@ -815,10 +994,10 @@ final class AiArchiveSddCommand implements CommandInterface
             }
         }
 
-        return $this->findUniqueByBasename($sddPath, basename($decoded));
+        return $this->findUniqueByBasename($memoryPath, basename($decoded));
     }
 
-    private function findUniqueByBasename(string $sddPath, string $basename): ?string
+    private function findUniqueByBasename(string $memoryPath, string $basename): ?string
     {
         if (!str_ends_with(strtolower($basename), '.md')) {
             return null;
@@ -826,7 +1005,7 @@ final class AiArchiveSddCommand implements CommandInterface
 
         $matches = [];
 
-        foreach ($this->collectMarkdownFiles($sddPath) as $file) {
+        foreach ($this->collectMarkdownFiles($memoryPath) as $file) {
             if (strcasecmp(basename($file), $basename) === 0) {
                 $matches[] = $file;
             }
@@ -835,10 +1014,10 @@ final class AiArchiveSddCommand implements CommandInterface
         return count($matches) === 1 ? $matches[0] : null;
     }
 
-    private function runRepairPass(string $sddPath, OutputInterface $output, bool $verbose): void
+    private function runRepairPass(string $memoryPath, OutputInterface $output, bool $verbose): void
     {
         $repairRows = [];
-        $repaired = $this->repairBrokenLinks($sddPath, $repairRows);
+        $repaired = $this->repairBrokenLinks($memoryPath, $repairRows);
 
         if ($repaired === 0) {
             $output->info('Link repair: no previously broken relative link could be re-anchored.');

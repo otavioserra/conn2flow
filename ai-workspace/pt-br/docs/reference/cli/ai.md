@@ -1,39 +1,44 @@
 ---
-title: "CLI: IA e SDD"
+title: "CLI: IA e MDD"
 description: "Comandos c2f da família ai, argumentos e opções declarados no código."
 section: reference
 order: 20
 sources:
   - cli/src/Console/Application.php
-  - cli/src/Commands/AiArchiveSddCommand.php
+  - cli/src/Commands/AiArchiveMemoryCommand.php
   - cli/src/Commands/AiMcpSetupCommand.php
   - cli/src/Commands/AiPruneMemoriesCommand.php
   - cli/src/Commands/AiSyncCommand.php
 verified_at: b1a69317
 ---
 
-# CLI: IA e SDD
+# CLI: IA e MDD
 
 A família `ai:*` tem 4 comando(s) registrado(s) em Application.php.
 
 Execute php cli/c2f.php <comando> --help na raiz do Core para conferir a ajuda da versão instalada. O console usa contratos próprios; --help é interceptado antes de execute(). A sintaxe abaixo vem de cada comando.
 
-## `ai:archive-sdd`
+## `ai:archive-memory`
 
-Código: `cli/src/Commands/AiArchiveSddCommand.php`.
+Código: `cli/src/Commands/AiArchiveMemoryCommand.php`. Aliases: `ai:archive-sdd`, `memory:archive`, `ai:archive`, `sdd:archive`.
 
 ```text
-Usage: c2f ai:archive-sdd [options]
+Usage: c2f ai:archive-memory [options]   (alias: ai:archive-sdd)
 
-Keeps only the most recent sequenced files in sdd/human-requests/ and sdd/implementation/.
-Older files are moved to the matching archive/ subfolder and every markdown link that
-referenced them (in BATCH-INDEX.md, VALIDATION-CHECKLIST.md, DECISION-LOG.md, CURRENT.md
-and any other .md under sdd/) is rewritten to the new path.
+Keeps only the most recent sequenced files in memory/human-requests/, memory/implementation/
+and memory/reports/ (legacy fallback: sdd/). Older files are moved to the matching archive/
+subfolder. Only the markdown links affected by the moves are rewritten (links that point to a
+moved file, and the relative links inside each moved file); every other link keeps its exact text.
 
 Options:
   --repo=PATH       Repository root to process (default: the current Core repository).
   --keep=N          How many sequenced files stay in each folder root (default: 10).
   --protect=A,B     Extra file names that must never be archived.
+  --folders=A,B     Governed folders to process (default: human-requests,implementation,reports).
+  --status=A,B      Only files whose status (frontmatter `status:` or a `**Status**:` line) is in the
+                    list may be archived, e.g. --status=HOMOLOGATED,REVIEWED. Other files are held in
+                    the root and occupy the active window, so pending reviews are never selected by
+                    numeric order alone.
   --repair-links    Also re-anchor links already broken by earlier manual archiving.
   --dry-run         Show the plan without moving files or rewriting links.
   --verbose         List every archived file and every rewritten link.

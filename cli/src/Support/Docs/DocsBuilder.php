@@ -387,7 +387,7 @@ final class DocsBuilder
         $parts = explode('/', $rel);
         $section = array_search($parts[0], self::SECTION_ORDER, true);
         $sub = count($parts) > 2 ? $parts[1] : '';
-        // req-188: o `archive/` de uma pasta do SDD vem depois dos itens ativos dela ('~' ordena após letras).
+        // req-188: o `archive/` de uma pasta da memória MDD vem depois dos itens ativos dela ('~' ordena após letras).
         if (self::emArquivo($rel)) {
             $sub .= '/~archive';
         }
@@ -624,7 +624,7 @@ final class DocsBuilder
                         $leaves[] = $leaf;
                     }
                 }
-                // Itens arquivados de uma pasta do SDD: subgrupo recolhível no fim da pasta.
+                // Itens arquivados de uma pasta da memória MDD: subgrupo recolhível no fim da pasta.
                 if ($archived) {
                     $leaves[] = $header($section . '/' . $sub . '/archive', (string)($labels['subsections']['archive'] ?? 'Archive'), $archived);
                 }
@@ -721,7 +721,7 @@ final class DocsBuilder
         return $noExt === '.' ? '' : $noExt;
     }
 
-    /** `sdd/<pasta>/archive/<arquivo>.md`: histórico arquivado do SDD. */
+    /** `sdd/<pasta>/archive/<arquivo>.md`: histórico arquivado da memória MDD (o prefixo `sdd/` é o id interno estável). */
     private static function emArquivo(string $rel): bool
     {
         $parts = explode('/', $rel);
@@ -843,7 +843,7 @@ final class DocsBuilder
 
     /**
      * Resumo da geração lido pela tela do módulo no painel: quando, de que commit do core, quanto foi gerado
-     * e os avisos (inclusive as substituições do filtro do SDD).
+     * e os avisos (inclusive as substituições do filtro da memória MDD).
      *
      * @param array{warnings: list<string>, stats: array<string, int>} $plan
      */

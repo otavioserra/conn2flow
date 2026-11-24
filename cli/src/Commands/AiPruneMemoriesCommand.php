@@ -37,7 +37,7 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->title('Conn2Flow — SDD Memory Gardening');
+        $output->title('Conn2Flow — MDD Memory Gardening');
         $memFile = $this->rootPath . '/memory/MEMORIA-ENGENHARIA-EXECUCAO.md';
         if (!is_file($memFile)) {
             $memFile = $this->rootPath . '/sdd/MEMORIA-ENGENHARIA-EXECUCAO.md';

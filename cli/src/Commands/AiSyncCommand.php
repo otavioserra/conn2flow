@@ -84,7 +84,7 @@ final class AiSyncCommand implements CommandInterface
     public function getHelp(): string
     {
         return "Usage: c2f ai:sync [options]\n\n" .
-               'Verifies the integrity and contracts of the ' . count(self::REQUIRED_SKILLS) . " Core and MDD/SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
+               'Verifies the integrity and contracts of the ' . count(self::REQUIRED_SKILLS) . " Core and MDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
                "Options:\n" .
                "  --verbose     Display details of each verified skill contract.";
     }

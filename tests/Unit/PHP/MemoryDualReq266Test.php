@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Conn2Flow\Cli\Commands\AiArchiveSddCommand;
+use Conn2Flow\Cli\Commands\AiArchiveMemoryCommand;
 use Conn2Flow\Cli\Commands\AiPruneMemoriesCommand;
 use Conn2Flow\Cli\Commands\AiSyncCommand;
 use Conn2Flow\Cli\Console\Input;
@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 foreach (['Contracts/CommandInterface.php', 'Contracts/InputInterface.php', 'Contracts/OutputInterface.php',
-    'Console/Input.php', 'Commands/BaseProcessCommand.php', 'Commands/AiArchiveSddCommand.php',
+    'Console/Input.php', 'Commands/BaseProcessCommand.php', 'Commands/AiArchiveMemoryCommand.php',
     'Commands/AiPruneMemoriesCommand.php', 'Commands/AiSyncCommand.php'] as $file) {
     require_once CONN2FLOW_ROOT . '/cli/src/' . $file;
 }
@@ -57,7 +57,7 @@ final class MemoryDualReq266Test extends TestCase
                 "[Request](human-requests/req-001.md)\n[Batch](implementation/BATCH-001.md)\n");
         }
         // --repo must determine the selected tree even when the command root has none.
-        $command = new AiArchiveSddCommand($this->root . '/unused');
+        $command = new AiArchiveMemoryCommand($this->root . '/unused');
         $output = $this->createMock(OutputInterface::class);
         $output->expects(self::never())->method('error');
         $output->expects(self::never())->method('warning');
