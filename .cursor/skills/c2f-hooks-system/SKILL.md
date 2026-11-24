@@ -128,9 +128,32 @@ SELECT * FROM hooks WHERE namespace = 'meu-modulo' ORDER BY prioridade;
 > [!IMPORTANT]
 > Nunca insira ou atualize registros diretamente na tabela `hooks` via SQL. A tabela é **sobrescrita integralmente** a cada sincronização. Alterações manuais serão perdidas no próximo deploy.
 
+---
+
+## 7. Hooks de Broadcast Multi-Provedor (`plataforma_gateways`)
+
+`plataforma_gateways_disparar_hook()` (`gestor/controladores/plataforma-gateways/plataforma-gateways.php`) lê `hooks.plataforma_gateways` no JSON de cada módulo ativo, inclui o arquivo indicado e chama `<modulo_id_com_underscores>_plataforma_gateways()` com `['gateway' => ..., 'action' => ..., 'data' => ...]`. Na rota legada (`/_gateways/{gateway}/{endpoint}`) não há módulo alvo: o evento é **transmitido a todos os módulos**, em sequência, até um deles devolver `processed => true`.
+
+- **Guarda no início**: o listener confere se o gateway e a ação são do seu módulo e retorna imediatamente caso contrário.
+- **Nunca encerre a requisição por evento alheio**: sem `echo`, `header()`, `http_response_code()`, `exit` ou `die` quando o gateway não for seu. Isso interrompe o laço e bloqueia os demais módulos da fila. A resposta HTTP é emitida pelo controlador `plataforma-gateways`.
+- **Retorne `processed => true` somente quando tratou o evento**. Esse retorno encerra o broadcast e é usado na confirmação do webhook. Sem nenhum `processed`, o Core responde `503` para provocar a reentrega pelo provedor (`401` quando o motivo é assinatura inválida).
+
+```php
+function meu_modulo_plataforma_gateways(array $params) {
+    $gateway = $params['gateway'] ?? '';
+    if ($gateway !== 'mercadopago') return null; // evento de outro gateway: segue a fila
+
+    if (($params['action'] ?? '') === 'webhook') {
+        // ... tratar o evento já validado pelo Core ...
+        return ['processed' => true];
+    }
+    return null;
+}
+```
+
 ## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
 
-- Projeto: `./c2f project:deploy <id>` é o padrão (95% dos casos). Core: `./c2f manager:update-all`. `./c2f project:update-all <id>` é proibido na rotina de projeto; permitido exclusivamente em lote que altera Core e projeto simultaneamente.
+- Na rotina de alterações exclusivamente de projeto, use `./c2f project:deploy <id>`; nela, `project:update-all` é proibido. Para sincronizar e validar alterações do Core no Lab de um projeto (`local: true`), use `./c2f project:update-all <id>` tanto em lote misto quanto em lote só de Core. Para atualizar o sistema/manager isolado, use `./c2f manager:update-all`. Na Categoria A, acrescente `--skip-css` aos comandos update-all; `project:deploy` não aceita essa flag.
 - Antes de deploy, confira `git branch --show-current` e `git status --short` na origem; não publique trabalho alheio/inacabado. Confira o destino e sua autorização. Categoria B (skills/documentação/testes/memória): somente checks locais, sem deploy. Execução sequencial, foreground, logs e locks continuam obrigatórios.
 - Worktrees por conveniência são proibidas. Só criar com concorrência multi-agente comprovada no mesmo repositório; em dúvida, consultar o humano antes. Registre raiz original, caminho temporário e concorrência na requisição e lote. Ao concluir/homologar, audite trabalho único, integração na main e junctions, então `git worktree remove <caminho>` e `git worktree prune`. Nunca use força para destruir trabalho não integrado; preserve e reporte impedimentos.
 - DEC-136: manter por padrão; nada é removido (arquivo, `status='D'`, `DELETE`) sem confirmação explícita do operador humano. Retirada vira choque pendente; `--confirmar-retirada` só quando pedido pelo operador. Fonte incompleta não autoriza retirada.

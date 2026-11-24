@@ -19,7 +19,7 @@ Trate `$ARGUMENTS` como o delta operacional desde a última rodada.
 
 1. Releia primeiro os artefatos ou arquivos explicitamente citados no delta.
 2. Releia `memory/implementation/BATCH-INDEX.md`, o batch atual e `memory/validation/VALIDATION-CHECKLIST.md`.
-3. Se o delta mudar requisito, recarregue `mdd-workflow` e mova para change request antes de reescrever sdd numerado.
+3. Se o delta mudar requisito, recarregue `mdd-workflow` e mova para change request antes de reescrever os documentos normativos numerados de `memory/`.
 4. Se o delta for só feedback de round, mantenha documentos normativos numerados estáveis.
 
 ## Delta atual

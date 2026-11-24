@@ -124,7 +124,7 @@ Em ambientes de homologação/Lab onde o agente possui credenciais de leitura de
 
 ## ⛔ Regras Invioláveis de Inspeção:
 1. **EXCLUSIVO PARA AMBIENTE LOCAL DE TESTES**: NUNCA execute inspeção, auth ou scraping automatizado em URLs de produção.
-2. **Registro no SDD**: As evidências de inspeção (JSON do `page:inspect` e screenshots) DEVEM ser registradas diretamente no `VALIDATION-CHECKLIST.md` do repositório em vez de marcar "pendente do operador".
+2. **Registro no MDD**: As evidências de inspeção (JSON do `page:inspect` e screenshots) DEVEM ser registradas diretamente no `VALIDATION-CHECKLIST.md` do repositório em vez de marcar "pendente do operador".
 3. **Tear Down Obrigatório**: SEMPRE finalize restaurando o ambiente com `c2f env:set production --project=<projectID>`.
 
 ## Inspeção ativa com Chrome DevTools MCP
@@ -171,7 +171,7 @@ Deploy de outro agente em andamento produz 500/503 passageiros. Veja a Regra #10
 
 ### Guarde os scripts
 
-Script de validação escrito durante o lote vai para `sdd/validation/` do repositório, com o JSON do resultado. Script que fica só na pasta temporária da sessão não pode ser repetido por ninguém.
+Script de validação escrito durante o lote vai para `memory/validation/` do repositório, com o JSON do resultado. Script que fica só na pasta temporária da sessão não pode ser repetido por ninguém.
 
 ## REQ-077 — Pipeline, worktrees e preservação (DEC-136)
 

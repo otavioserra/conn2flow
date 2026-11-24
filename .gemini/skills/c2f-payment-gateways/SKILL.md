@@ -186,6 +186,13 @@ function processar_webhook($event_id, $pedido_id) {
 
 O endpoint de webhook utiliza o padrão `<modulo>.ajax.public.php` (ver `c2f-gestor-functions` §11) para receber requisições sem autenticação de sessão, mas **obrigatoriamente** valida a assinatura criptográfica do gateway.
 
+### 5.4 Reenvio/Teste de Webhook Assinado do Mercado Pago (HMAC-SHA256)
+
+O roteiro completo (rota, cabeçalhos, manifest, cálculo do HMAC, `curl` de envio e leitura dos códigos HTTP) fica na subskill [`subskills/mercadopago-webhook-hmac.md`](subskills/mercadopago-webhook-hmac.md). Leia-a antes de reenviar ou simular um webhook do Mercado Pago.
+
+- O Core valida a assinatura em `mercadopago_validar_webhook()` (`gestor/bibliotecas/mercadopago.php`), também nas rotas modulares: o módulo não revalida a assinatura.
+- Leia o `webhook_secret` da configuração local sem imprimi-lo nem registrá-lo, e use apenas IDs fictícios ou de sandbox.
+
 ---
 
 ## 6. Carregamento Condicional de SDKs

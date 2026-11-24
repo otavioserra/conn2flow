@@ -8,7 +8,7 @@ user-invocable: true
 
 # ⚡ Gatilho Obrigatório
 - **TRIGGER**: Pedido para documentar, corrigir ou migrar documentação (biblioteca, módulo, API, CLI, hook, guia); rodar a rotina periódica de docs; publicar as docs no site `/docs/`; criar ou alterar `docs.config.json` de um projeto.
-- **SKIP APENAS SE**: Edição de artefatos SDD (`sdd/`), README de repositório ou docblocks de código sem relação com `ai-workspace/<idioma>/docs/`.
+- **SKIP APENAS SE**: Edição de artefatos MDD (`memory/`), README de repositório ou docblocks de código sem relação com `ai-workspace/<idioma>/docs/`.
 - **CONSEQUÊNCIA DE IGNORAR**: Documentação defasada ou alucinada (escrita a partir do texto antigo), docs sem `verified_at` invisíveis ao ranking, tradução divergente, e páginas editadas no painel sobrescritas no próximo build.
 
 Complementa a `c2f-documentation-governance` (princípio da autoridade do código). Esta skill é o **procedimento**.
@@ -63,7 +63,7 @@ verified_at: 5b4348ab       # git rev-parse --short HEAD do Core no momento da c
    - `php cli/c2f.php docs:build --project=conn2flow-site-local`, depois `php cli/c2f.php project:deploy conn2flow-site-local`;
    - confira as páginas (HTTP 200, `c2f page:inspect ... --screenshot`).
    - O deploy de **produção é do operador**.
-8. Registre no SDD do lote e atualize a memória de execução.
+8. Registre no relatório do lote (`memory/implementation/batch-YYY.md`) e atualize a memória de execução.
 
 ## 4. Escrita
 

@@ -18,7 +18,7 @@ Trate `$ARGUMENTS` como a demanda nova a ser classificada e executada.
 ## Antes de agir
 
 1. Carregue `mdd-workflow`.
-2. Identifique a âncora mais concreta da tarefa: sdd, batch, review, validation, decision, arquivo de código ou `memory/human-requests/`.
+2. Identifique a âncora mais concreta da tarefa: spec (`memory/SPEC.md`), batch, review, validation, decision, arquivo de código ou `memory/human-requests/`.
 3. Leia o contexto mínimo inicial: `memory/README.md`, `memory/process/00-START-HERE.md`, `memory/process/01-WORKFLOW.md`, `memory/implementation/BATCH-INDEX.md`, o batch atual, `memory/validation/VALIDATION-CHECKLIST.md` e `memory/decisions/DECISION-LOG.md`.
 4. Se a entrada vier de `memory/human-requests/`, leia primeiro esse intake.
 

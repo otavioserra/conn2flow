@@ -30,7 +30,18 @@ mdd compact --path RAIZ_ABSOLUTA          # auditoria, sem escrita
 mdd compact --path RAIZ_ABSOLUTA --apply  # somente manutenção autorizada
 ```
 
-Use o suporte MDD real do cliente; não invente ai:archive-mdd nem passe memory ao arquivador legado. Preserve original integral e síntese rastreável em memory/raw/archive/original/ e memory/raw/archive/compacted/ antes de podar memory/04-memory-engineering-execution.md. Atualize índices via mdd index e valide links.
+Para a Regra dos 10 nas raízes, use o arquivador do Core `ai:archive-memory` (alias legado `ai:archive-sdd`), nunca script ad hoc: ele move os arquivos e reescreve só os links afetados na mesma operação.
+
+```sh
+php cli/c2f.php ai:archive-memory --repo=RAIZ_ABSOLUTA --keep=10 --status=HOMOLOGATED,REVIEWED --dry-run   # plano
+php cli/c2f.php ai:archive-memory --repo=RAIZ_ABSOLUTA --keep=10 --status=HOMOLOGATED,REVIEWED            # execução
+```
+
+- Governa `memory/human-requests/`, `memory/implementation/` e `memory/reports/` (`--folders=A,B` limita). Em `reports/` a ordem segue o `date:` do frontmatter, porque prefixos `REP-`/`BL-` se misturam.
+- `--status` só deixa arquivar os status listados. Os demais ficam na raiz e ocupam a janela ativa, então pendente nunca sai por ordem numérica. Os ponteiros ativos de `CURRENT.md` são protegidos; `--protect=A,B` protege outros.
+- Exige o Core `6e146f7aa8b6` ou posterior; versão anterior não trata `reports/` nem `--status`. Não invente `ai:archive-mdd`.
+
+Preserve original integral e síntese rastreável em memory/raw/archive/original/ e memory/raw/archive/compacted/ antes de podar memory/04-memory-engineering-execution.md. Atualize índices via mdd index e valide links.
 
 ---
 
@@ -62,7 +73,7 @@ Esta seção é manutenção de worktrees, independente do gatilho de poda de me
 5. Confira vendor/node_modules das árvores principais e demais worktrees; só então apague branch local integrada com git branch -d (nunca -D) e rode git worktree prune.
 6. Registre árvores removidas/preservadas, motivos e integridade dos destinos. Atualize árvore principal com git merge --ff-only origin/main apenas se estiver limpa e a atualização estiver autorizada; divergência exige avaliação, nunca mescla automática de trabalho alheio.
 
-Na governança MDD, aplique o teto ativo de 50 KB da memory/02-policy.md antes de ampliar documento; preserve original e síntese. Não execute o arquivador legado na matriz migrada presumindo compatibilidade. mdd compact particiona documentos grandes e gera extratos estruturais; não substitui a síntese semântica autorizada da memória de execução.
+Na governança MDD, aplique o teto ativo de 50 KB da memory/02-policy.md antes de ampliar documento; preserve original e síntese. Na matriz migrada, o arquivador é o `ai:archive-memory` acima; não presuma compatibilidade de Core anterior. mdd compact particiona documentos grandes e gera extratos estruturais; não substitui a síntese semântica autorizada da memória de execução.
 
 
 ## REQ-071: canonical engineering memories

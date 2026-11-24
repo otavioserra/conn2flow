@@ -1,6 +1,6 @@
 ---
 name: project-validation
-description: "LEIA ANTES de validar qualquer alteração de código ou fechar um lote SDD. Se não ler: testes incompletos deixam passar regressões graves e o lote é concluído sem evidências verificáveis."
+description: "LEIA ANTES de validar qualquer alteração de código ou fechar um lote MDD. Se não ler: testes incompletos deixam passar regressões graves e o lote é concluído sem evidências verificáveis."
 user-invocable: false
 ---
 
@@ -19,7 +19,7 @@ Use esta skill quando a tarefa exigir validação do batch atual.
 
 1. Comece pela menor checagem capaz de falsificar o slice atual.
 2. Prefira validação alinhada ao batch e ao checklist de validation antes de rodar suites maiores.
-3. Registre evidência e pendências no artefato certo (`sdd/validation/VALIDATION-CHECKLIST.md`).
+3. Registre evidência e pendências no artefato certo (`memory/validation/VALIDATION-CHECKLIST.md`).
 4. Se o repositório tiver comandos específicos de teste, lint, build ou Docker, utilize-os para coletar evidências objetivas.
 
 ---

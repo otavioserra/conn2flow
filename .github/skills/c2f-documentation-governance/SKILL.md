@@ -7,7 +7,7 @@ user-invocable: false
 # Governança e Verificação de Documentação (`c2f-documentation-governance`)
 
 # ⚡ Gatilho Obrigatório
-- **TRIGGER**: Criar, atualizar ou validar qualquer documento técnico em `docs/`, `sdd/` ou guias de arquitetura.
+- **TRIGGER**: Criar, atualizar ou validar qualquer documento técnico em `docs/`, `memory/` ou guias de arquitetura.
 - **SKIP APENAS SE**: Correção de pequenos erros de digitação (typos) em arquivos que não alterem contratos normativos.
 - **CONSEQUÊNCIA DE IGNORAR**: Doc drift (documentação desatualizada), propagação de premissas falsas e violação do Princípio da Autoridade do Código-Fonte.
 
@@ -33,9 +33,9 @@ Sempre que utilizar uma documentação para orientar uma implementação ou cria
 
 ---
 
-## 3. Manutenção da Documentação em Tarefas SDD
+## 3. Manutenção da Documentação em Tarefas MDD
 
-- Ao adicionar novos parâmetros, funções centrais, hooks ou rotas, atualize a documentação correspondente sob `ai-workspace/` ou `sdd/`.
+- Ao adicionar novos parâmetros, funções centrais, hooks ou rotas, atualize a documentação correspondente sob `ai-workspace/` ou `memory/`.
 - Registre depreciações ou quebras de contrato no log do lote (`batch-XXX.md`) e atualize os guias técnicos afetados.
 
 ---
