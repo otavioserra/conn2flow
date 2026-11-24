@@ -15,6 +15,13 @@ user-invocable: false
 
 Consulte e aplique este guia arquitetural sempre que for criar ou refatorar um módulo administrativo no Conn2Flow. O módulo canônico de referência é `gestor/modulos/modulos-grupos/`.
 
+## 📚 Subskills (leitura sob demanda)
+
+| Subskill | Leia quando |
+| --- | --- |
+| [`subskills/schema-declarativo.md`](subskills/schema-declarativo.md) | criar ou alterar o `<modulo-id>.json` (tabela, `natural_key`, páginas e variáveis) |
+| [`subskills/controller-escrita-e-historico.md`](subskills/controller-escrita-e-historico.md) | implementar `_adicionar()`, `_editar()` ou `_clonar()` |
+
 ---
 
 ## 1. Estrutura Padrão de Diretórios e Arquivos
@@ -52,84 +59,11 @@ Todo novo módulo administrativo DEVE nascer com sua capa conceitual 3D padroniz
 
 ## 2. Schema Declarativo (`<modulo-id>.json`)
 
-O arquivo JSON define dependências de bibliotecas, mapeamento ORM/tabela e metadados de recursos:
+O JSON declara `versao`, `bibliotecas` (ex.: `interface`, `html`), o mapeamento da `tabela` e os `resources` por idioma. Exemplo completo: **`subskills/schema-declarativo.md`**.
 
-```json
-{
-    "versao": "1.0.0",
-    "bibliotecas": [
-        "interface",
-        "html"
-    ],
-    "tabela": {
-        "nome": "meu_modulo_tabela",
-        "id": "id",
-        "id_numerico": "id_meu_modulo_tabela",
-        "status": "status",
-        "versao": "versao",
-        "data_criacao": "data_criacao",
-        "data_modificacao": "data_modificacao",
-        "config": {
-            "strategy": "natural_key",
-            "natural_key_columns": [
-                "language",
-                "id"
-            ],
-            "preserve_on_user_modified": [],
-            "insert_only": false
-        },
-        "deletar": []
-    },
-    "resources": {
-        "pt-br": {
-            "layouts": [],
-            "pages": [
-                {
-                    "name": "Meu Módulo",
-                    "id": "meu-modulo",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "meu-modulo/",
-                    "type": "system",
-                    "option": "listar",
-                    "root": true
-                },
-                {
-                    "name": "Meu Módulo - Adicionar",
-                    "id": "meu-modulo-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "meu-modulo/adicionar/",
-                    "type": "system",
-                    "option": "adicionar"
-                },
-                {
-                    "name": "Meu Módulo - Editar",
-                    "id": "meu-modulo-editar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "meu-modulo/editar/",
-                    "type": "system",
-                    "option": "editar"
-                },
-                {
-                    "name": "Meu Módulo - Clonar",
-                    "id": "meu-modulo-clonar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "meu-modulo/clonar/",
-                    "type": "system",
-                    "option": "clonar"
-                }
-            ],
-            "components": [],
-            "variables": [
-                {
-                    "id": "form-name-label",
-                    "value": "Nome",
-                    "type": "string"
-                }
-            ]
-        }
-    }
-}
-```
+- `tabela` nomeia as colunas de controle: `id` (slug), `id_numerico`, `status`, `versao`, `data_criacao`, `data_modificacao`.
+- `tabela.config` usa `"strategy": "natural_key"` com `natural_key_columns` (`["language", "id"]`), `preserve_on_user_modified` e `insert_only`. Sem a chave natural a sincronização deixa de ser determinística.
+- `resources.<lang>.pages` declara as quatro telas (`listar` com `root: true`, `adicionar`, `editar`, `clonar`) com `layout-administrativo-do-gestor` e `type: system`; `variables` declara os rótulos consumidos por `gestor_variaveis()`.
 
 ---
 
@@ -145,211 +79,14 @@ $_GESTOR['modulo-id']                      = 'meu-modulo';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/meu-modulo.json'), true);
 ```
 
-### 3.2. Função `_adicionar()`
-```php
-function meu_modulo_adicionar(){
-    global $_GESTOR;
-    
-    $modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-    
-    // 1. Gravar registro no Banco
-    if(isset($_GESTOR['adicionar-banco'])){
-        $usuario = gestor_usuario();
-        
-        // Validação obrigatória
-        interface_validacao_campos_obrigatorios(Array(
-            'campos' => Array(
-                Array(
-                    'regra' => 'texto-obrigatorio',
-                    'campo' => 'nome',
-                    'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-name-label')),
-                )
-            )
-        ));
-        
-        // Geração da Chave Natural
-        $id = banco_identificador(Array(
-            'id' => banco_escape_field($_REQUEST["nome"]),
-            'tabela' => Array(
-                'nome' => $modulo['tabela']['nome'],
-                'campo' => $modulo['tabela']['id'],
-                'id_nome' => $modulo['tabela']['id_numerico'],
-                'where' => "language='".$_GESTOR['linguagem-codigo']."'",
-            ),
-        ));
-        
-        // Montagem dos Campos
-        $campos = null;
-        $campo_sem_aspas_simples = false;
-        
-        $campos[] = Array("id_usuarios", $usuario['id_usuarios'], $campo_sem_aspas_simples);
-        $campos[] = Array("nome", banco_escape_field($_REQUEST["nome"]), $campo_sem_aspas_simples);
-        $campos[] = Array("id", $id, $campo_sem_aspas_simples);
-        
-        // Campos de Controle Padrão
-        $campos[] = Array('language', $_GESTOR['linguagem-codigo'], $campo_sem_aspas_simples);
-        $campos[] = Array($modulo['tabela']['status'], 'A', $campo_sem_aspas_simples);
-        $campos[] = Array($modulo['tabela']['versao'], '1', $campo_sem_aspas_simples);
-        $campos[] = Array($modulo['tabela']['data_criacao'], 'NOW()', true);
-        $campos[] = Array($modulo['tabela']['data_modificacao'], 'NOW()', true);
-        
-        banco_insert_name($campos, $modulo['tabela']['nome']);
-        
-        gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
-    }
-    
-    // 2. Inclusão de JS e Validações no Frontend
-    gestor_pagina_javascript_incluir();
-    
-    $_GESTOR['interface']['adicionar']['finalizar'] = Array(
-        'formulario' => Array(
-            'validacao' => Array(
-                Array(
-                    'regra' => 'texto-obrigatorio',
-                    'campo' => 'nome',
-                    'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-name-label')),
-                )
-            )
-        )
-    );
-}
-```
+### 3.2–3.4. Funções `_adicionar()`, `_editar()` e `_clonar()`
 
-### 3.3. Função `_editar()`
-```php
-function meu_modulo_editar(){
-    global $_GESTOR;
-    
-    $modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-    $id = $_GESTOR['modulo-registro-id'];
-    
-    $camposBanco = Array('nome');
-    $camposBancoPadrao = Array(
-        $modulo['tabela']['status'],
-        $modulo['tabela']['versao'],
-        $modulo['tabela']['data_criacao'],
-        $modulo['tabela']['data_modificacao'],
-    );
-    $camposBancoEditar = array_merge($camposBanco, $camposBancoPadrao);
-    $camposBancoAntes = $camposBanco;
-    
-    // 1. Gravar Atualizações no Banco
-    if(isset($_GESTOR['atualizar-banco'])){
-        // Snapshot de dados anteriores
-        if(!banco_select_campos_antes_iniciar(
-            banco_campos_virgulas($camposBancoAntes),
-            $modulo['tabela']['nome'],
-            "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D'"
-        )){
-            interface_alerta(Array(
-                'redirect' => true,
-                'msg' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'alert-database-field-before-error'))
-            ));
-            gestor_redirecionar_raiz();
-        }
-        
-        // Validação obrigatória
-        interface_validacao_campos_obrigatorios(Array(
-            'campos' => Array(
-                Array(
-                    'regra' => 'texto-obrigatorio',
-                    'campo' => 'nome',
-                    'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-name-label')),
-                )
-            )
-        ));
-        
-        $editar = Array(
-            'tabela' => $modulo['tabela']['nome'],
-            'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'",
-        );
-        $alteracoes = [];
-        
-        // Comparação e Atualização de Campos
-        if(banco_select_campos_antes('nome') != (isset($_REQUEST['nome']) ? $_REQUEST['nome'] : NULL)){
-            $editar['dados'][] = "nome='" . banco_escape_field($_REQUEST['nome']) . "'";
-            if(!isset($_REQUEST['_gestor-nao-alterar-id'])){ $alterar_id = true; }
-            $alteracoes[] = Array('campo' => 'form-name-label', 'valor_antes' => banco_select_campos_antes('nome'), 'valor_depois' => banco_escape_field($_REQUEST['nome']));
-        }
-        
-        // Se mudou o nome, atualizar slug identificador natural
-        if(isset($alterar_id)){
-            $id_novo = banco_identificador(Array(
-                'id' => banco_escape_field($_REQUEST["nome"]),
-                'tabela' => Array(
-                    'nome' => $modulo['tabela']['nome'],
-                    'campo' => $modulo['tabela']['id'],
-                    'id_nome' => $modulo['tabela']['id_numerico'],
-                    'id_valor' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-                    'where' => "language='".$_GESTOR['linguagem-codigo']."'",
-                ),
-            ));
-            $alteracoes[] = Array('campo' => 'field-id', 'valor_antes' => $id, 'valor_depois' => $id_novo);
-            $editar['dados'][] = $modulo['tabela']['id']."='" . $id_novo . "'";
-            $_GESTOR['modulo-registro-id'] = $id_novo;
-        }
-        
-        // Executar Update e Salvar Histórico
-        if(isset($editar['dados'])){
-            $editar['dados'][] = $modulo['tabela']['versao']." = ".$modulo['tabela']['versao']." + 1";
-            $editar['dados'][] = $modulo['tabela']['data_modificacao']."=NOW()";
-            
-            banco_update(banco_campos_virgulas($editar['dados']), $editar['tabela'], $editar['extra']);
-            interface_historico_incluir(Array('alteracoes' => $alteracoes));
-        }
-        
-        gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
-    }
-    
-    // 2. Renderização da Interface
-    gestor_pagina_javascript_incluir();
-    
-    $retorno_bd = banco_select_editar(
-        banco_campos_virgulas($camposBancoEditar),
-        $modulo['tabela']['nome'],
-        "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'"
-    );
-    
-    if($_GESTOR['banco-resultado']){
-        $nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
-        $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#nome#', $nome);
-        
-        // Metadados Laterais
-        $status_atual = $retorno_bd[$modulo['tabela']['status']];
-        if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
-        if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
-        if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
-        if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($status_atual == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</b></div>' : '<div class="ui center aligned brown message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</b></div>')); }
-    } else {
-        gestor_redirecionar_raiz();
-    }
-    
-    // Finalizar Interface Editar
-    $_GESTOR['interface']['editar']['finalizar'] = Array(
-        'id' => $id,
-        'metaDados' => $metaDados,
-        'banco' => Array(
-            'nome' => $modulo['tabela']['nome'],
-            'id' => $modulo['tabela']['id'],
-            'status' => $modulo['tabela']['status'],
-        ),
-        'botoes' => Array(
-            'adicionar' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/adicionar/', 'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')), 'icon' => 'plus circle', 'cor' => 'blue'),
-            'clonar' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/clonar/?'.$modulo['tabela']['id'].'='.$id, 'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-clone')), 'icon' => 'clone', 'cor' => 'teal'),
-            'status' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=status&'.$modulo['tabela']['status'].'='.($status_atual == 'A' ? 'I' : 'A').'&'.$modulo['tabela']['id'].'='.$id.'&redirect='.urlencode($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id), 'rotulo' => ($status_atual == 'A' ? gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-desactive')) : gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-active'))), 'icon' => ($status_atual == 'A' ? 'eye' : 'eye slash'), 'cor' => ($status_atual == 'A' ? 'green' : 'brown')),
-            'excluir' => Array('url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=excluir&'.$modulo['tabela']['id'].'='.$id, 'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-delete')), 'icon' => 'trash alternate', 'cor' => 'red'),
-        ),
-        'formulario' => Array(
-            'validacao' => Array(
-                Array('regra' => 'texto-obrigatorio', 'campo' => 'nome', 'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label'))),
-            )
-        )
-    );
-}
-```
+Código completo de referência: **`subskills/controller-escrita-e-historico.md`**. O mínimo obrigatório:
 
-### 3.4. Função `_clonar()`
-Segue a mesma lógica de `_adicionar()`, recuperando os valores do registro original via `banco_select_editar()` e populando os campos no formulário.
+- **`_adicionar()`** (gatilho `$_GESTOR['adicionar-banco']`): valida no servidor com `interface_validacao_campos_obrigatorios()`, gera o slug com `banco_identificador()` filtrado por `language='".$_GESTOR['linguagem-codigo']."'`, grava `id_usuarios`, `language`, status `A`, versão `1` e `NOW()` nas datas via `banco_insert_name()` e redireciona para `editar/`. Repete a validação no frontend em `$_GESTOR['interface']['adicionar']['finalizar']`.
+- **`_editar()`** (gatilho `$_GESTOR['atualizar-banco']`): abre com `banco_select_campos_antes_iniciar()` (falha = `interface_alerta` + `gestor_redirecionar_raiz()`), compara cada campo com `banco_select_campos_antes()`, acumula `$alteracoes`, regenera o slug com `id_valor` quando o nome muda (salvo `_gestor-nao-alterar-id`), incrementa `versao`, grava `data_modificacao=NOW()` e chama `interface_historico_incluir(Array('alteracoes' => $alteracoes))`. Toda consulta filtra `status!='D'` e o idioma.
+- **Renderização de `_editar()`**: `banco_select_editar()`; sem resultado, `gestor_redirecionar_raiz()`. Preenche `metaDados` (datas, versão, status) e os botões `adicionar`, `clonar`, `status` e `excluir` em `$_GESTOR['interface']['editar']['finalizar']`.
+- **`_clonar()`**: mesma lógica de `_adicionar()`, carregando o registro original com `banco_select_editar()`.
 
 ### 3.5. Função `_interfaces_padroes()` (Configuração da Listagem)
 ```php

@@ -33,6 +33,16 @@ node scripts/skills/sync-skills.cjs --repos conn2flow-ai-workspace --report comp
 
 Revise o diff da variante em relação à fonte e incorpore a atualização preservando a customização legítima. Reconheça o novo par de hashes com `mdd sync --customize <kit>/skills/<skill>/SKILL.md --matrix <matriz> --path <destino>` e repita a auditoria.
 
+## Rollout nos satélites
+
+Por padrão, o comando simula o rollout em worktrees de `origin/main`. Revise o relatório e use `--apply` quando a publicação estiver autorizada. Sem `--skills`, o script seleciona o catálogo inteiro. `--repos` limita os satélites, e repositórios sem `origin` são pulados.
+
+```sh
+node scripts/skills/rollout-satellites.cjs --dry-run --repos conn2flow,lumix --skills c2f-shell-and-windows-traps,c2f-multilingual-skills-governance --report completions/rollout.json
+```
+
+O rollout sincroniza só os kits presentes na worktree, valida sucessores ignorados e atualiza os hashes de variantes reconhecidas via `mdd sync --customize`. A publicação usa fast-forward após conferir a base remota. O script audita reparse points no Windows e remove as worktrees temporárias. Se um commit criado não tiver integração confirmada, o relatório informa a worktree preservada para inspeção.
+
 ## Hash pairing e revisão
 
 O registro `scripts/skills/translated.json` mapeia idioma → skill → `source_sha256`, `translated_at` e `translator`. O SHA-256 identifica a fonte PT-BR revisada. O sincronizador converte CRLF para LF em memória antes de calcular o hash e comparar cópias de skills. O conteúdo gravado mantém os bytes da fonte, e os hashes de reconhecimento de customizações continuam usando os bytes exatos.
@@ -62,3 +72,4 @@ Crie os kits do idioma com a mesma estrutura; traduza cada procedimento completo
 - **Tradução**: a subskill traduzida fica no mesmo caminho relativo do template do idioma. O `source_sha256` da skill cobre o `SKILL.md` e todas as suas subskills, então mudar uma subskill PT-BR gera `DRIFT_WARNING` até a revisão EN e o `--update-translation-hash`.
 - **Índice**: `node scripts/skills/generate-skills-index.cjs` gera `.gemini/skills/index.md` (personas, core, governança, linhas, bytes, *budget* e subskills). Rode-o depois de criar, renomear ou mudar o tamanho de uma skill; `--check` falha se o índice estiver desatualizado.
 - **Renomear**: registre o par legado → canônico em `renamedSkills` no `sync-skills.cjs` e renomeie a chave em `translated.json`. O sincronizador move a pasta inteira, sem cópia, só quando o nome novo é selecionado, e recusa migrar se os dois nomes coexistirem. Aliases ativos: `c2f-architect-master` → `c2f-persona-architect`, `c2f-executor-agent` → `c2f-persona-executor`, `c2f-reviewer-agent` → `c2f-persona-reviewer`, além dos quatro aliases `sdd-*` → `mdd-*` da REQ-075. **Ordem obrigatória (REP-010)**: renomeie a chave em `scripts/skills/translated.json` (e registre a tradução de skill nova) **antes** do primeiro `--apply`; se o sync rodar antes, ele move a pasta EN pelo alias e grava o PT-BR por cima da tradução.
+- **Sucessor ignorado pelo Git (FB-004)**: se o kit do destino ignora `.claude/skills/*` com whitelist, o rename tira o legado rastreado e o sucessor fica fora do Git; o commit grava só a deleção. Depois do `--apply` com rename, rode `git check-ignore --no-index -v <kit>/skills/<sucessor>/SKILL.md` em cada sucessor. Sucessor ignorado que deve ser versionado entra com `git add -f <kit>/skills/<sucessor>/` (só esse caminho; não altere o `.gitignore`). Antes do push, compare `git ls-tree -r --name-only origin/main -- <kit>/skills` com o mesmo comando em `HEAD` e ligue cada legado removido a um sucessor rastreado. Deleção sem sucessor no commit bloqueia o push.

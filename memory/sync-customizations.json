@@ -1,22 +1,22 @@
 {
   ".claude/skills/c2f-multilingual-skills-governance/SKILL.md": {
-    "local_sha256": "8a4e3242f354c9fa6a6a02ce68f89d606f81e6a8a1993441b81fb9dd465b9226",
-    "seed_sha256": "1062387d43054eeb2ec07ac131465a7b89644f7218fb5d652271f2e30070a1fe"
+    "local_sha256": "3932685446f4e77c5946579353b02592ac67dc2713bbf0504b8bf8031ef5c307",
+    "seed_sha256": "135ba57335fcc727fe3dd2bda4af179ae157a7a10a1acf56361b8bd2c2d3a334"
   },
   ".codex/skills/c2f-multilingual-skills-governance/SKILL.md": {
-    "local_sha256": "8a4e3242f354c9fa6a6a02ce68f89d606f81e6a8a1993441b81fb9dd465b9226",
-    "seed_sha256": "1062387d43054eeb2ec07ac131465a7b89644f7218fb5d652271f2e30070a1fe"
+    "local_sha256": "3932685446f4e77c5946579353b02592ac67dc2713bbf0504b8bf8031ef5c307",
+    "seed_sha256": "135ba57335fcc727fe3dd2bda4af179ae157a7a10a1acf56361b8bd2c2d3a334"
   },
   ".cursor/skills/c2f-multilingual-skills-governance/SKILL.md": {
-    "local_sha256": "8a4e3242f354c9fa6a6a02ce68f89d606f81e6a8a1993441b81fb9dd465b9226",
-    "seed_sha256": "1062387d43054eeb2ec07ac131465a7b89644f7218fb5d652271f2e30070a1fe"
+    "local_sha256": "3932685446f4e77c5946579353b02592ac67dc2713bbf0504b8bf8031ef5c307",
+    "seed_sha256": "135ba57335fcc727fe3dd2bda4af179ae157a7a10a1acf56361b8bd2c2d3a334"
   },
   ".gemini/skills/c2f-multilingual-skills-governance/SKILL.md": {
-    "local_sha256": "8a4e3242f354c9fa6a6a02ce68f89d606f81e6a8a1993441b81fb9dd465b9226",
-    "seed_sha256": "1062387d43054eeb2ec07ac131465a7b89644f7218fb5d652271f2e30070a1fe"
+    "local_sha256": "3932685446f4e77c5946579353b02592ac67dc2713bbf0504b8bf8031ef5c307",
+    "seed_sha256": "135ba57335fcc727fe3dd2bda4af179ae157a7a10a1acf56361b8bd2c2d3a334"
   },
   ".github/skills/c2f-multilingual-skills-governance/SKILL.md": {
-    "local_sha256": "8a4e3242f354c9fa6a6a02ce68f89d606f81e6a8a1993441b81fb9dd465b9226",
-    "seed_sha256": "1062387d43054eeb2ec07ac131465a7b89644f7218fb5d652271f2e30070a1fe"
+    "local_sha256": "3932685446f4e77c5946579353b02592ac67dc2713bbf0504b8bf8031ef5c307",
+    "seed_sha256": "135ba57335fcc727fe3dd2bda4af179ae157a7a10a1acf56361b8bd2c2d3a334"
   }
 }
