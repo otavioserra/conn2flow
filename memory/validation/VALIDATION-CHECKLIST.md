@@ -2,6 +2,8 @@
 
 ## BATCH-312 — REQ-303
 
+- [x] **completed / merged-to-main** (2026-11-24): REQ-303 integrada na `main` em ordem 303 -> 304 -> 301 -> 305 e publicada com `git push origin main`; consolidacao homologada pelo Engenheiro Chefe Humano.
+
 - [x] Canonical e `og:url` seguem a grafia do cadastro. Variantes de maiúsculas verificadas em PHPUnit e no Lab integrado.
 - [x] Links privados por referência e links inline com título em aspas simples viram texto. Regressões renderizadas passaram em PHPUnit e no gerador instalado no Lab.
 - [ ] Homologação humana.
@@ -9,6 +11,8 @@
 Detalhes e evidências em [BATCH-312](../implementation/BATCH-312.md).
 
 ## BATCH-314 — REQ-305
+
+- [x] **completed / merged-to-main** (2026-11-24): REQ-305 integrada na `main` em ordem 303 -> 304 -> 301 -> 305 e publicada com `git push origin main`; consolidacao homologada pelo Engenheiro Chefe Humano.
 
 ### Rodada 1 (executor, 2026-11-23)
 
@@ -29,6 +33,8 @@ Detalhes: [BATCH-314](../implementation/BATCH-314.md). Evidências: `memory/vali
 - [ ] A resposta HTTP 404 do Social Apps no broadcast legado impede a sincronização do estado no site. Homologação humana pendente.
 
 ## BATCH-313 — REQ-304
+
+- [x] **completed / merged-to-main** (2026-11-24): REQ-304 integrada na `main` em ordem 303 -> 304 -> 301 -> 305 e publicada com `git push origin main`; consolidacao homologada pelo Engenheiro Chefe Humano.
 
 - [x] CA-1: senha SMTP mascarada no log (`[pass] => ***`) e ausente do erro devolvido e do `payload_json` (inclusive com credencial efêmera) — PHPUnit.
 - [x] CA-2: `MAIL_REDIRECT_TO` troca TO/CC/BCC, prefixa `[TESTE → ...]`, grava `X-Original-To`; travado em produção (e sem APP_ENV); campo em admin-environment e admin-comunicacao lendo o mesmo `.env` — PHPUnit + Lab.
@@ -60,6 +66,8 @@ Detalhes: [BATCH-313](../implementation/BATCH-313.md). Evidências: `memory/vali
 - [ ] Conferência da persistência em banco após um salvamento efetivo.
 
 ## BATCH-310 — REQ-301
+
+- [x] **completed / merged-to-main** (2026-11-24): REQ-301 integrada na `main` em ordem 303 -> 304 -> 301 -> 305 e publicada com `git push origin main`; consolidacao homologada pelo Engenheiro Chefe Humano.
 
 - [x] `mercadopago.php`: Bearer, idempotência em POST, cartão/Pix/Boleto, consulta, reembolso total/parcial, HMAC `x-signature` pelo manifesto oficial (inclusive notificação só por query) e status canônicos.
 - [x] `pagamentos-gateways.php`: drivers stripe/mercadopago/paypal + extensão por filtro; ordem prioridade → padrão → id com fallback sem a coluna; capacidades (Stripe BR sem parcelas, MP até 12, PayPal configurável).
