@@ -566,6 +566,22 @@ function formulario_controlador($params = false){
 }
 
 /**
+ * Decide se a submissão dispara o e-mail genérico de notificação.
+ *
+ * Desligado quando o chamador passa `enviarEmail => false` ou quando o schema do formulário
+ * declara `"email": { "enabled": false }`. Qualquer outro valor mantém o envio (padrão).
+ *
+ * @param mixed $enviarEmail Parâmetro `enviarEmail` de formulario_processador().
+ * @param array|null $emailData Bloco `email` do `fields_schema`.
+ * @return bool
+ */
+function formulario_email_habilitado($enviarEmail = null, $emailData = null){
+	if($enviarEmail === false) return false;
+	if(is_array($emailData) && array_key_exists('enabled', $emailData) && $emailData['enabled'] === false) return false;
+	return true;
+}
+
+/**
  * Processador de Formulários.
  *
  * Função processador de formulários no backend, processamento de dados, integração com banco de dados, etc.
@@ -1021,6 +1037,21 @@ function formulario_processador($params = false){
 	
 	// ===== Cadastrar o acesso para controle de bloqueios e rate limiting
 	formulario_acesso_cadastrar(['tipo' => $formId, 'antispam' => ($acesso['status'] == 'antispam'), 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+
+	// ===== Formulário que não notifica (ex.: dados do comprador no caixa): a submissão fica
+	// registrada para auditoria, mas o e-mail genérico não sai.
+	if(!formulario_email_habilitado($enviarEmail ?? null, $emailData)){
+		$fieldsValuesFinal = Array('fields' => $fieldsValues ?? Array(), 'email_status' => 'email-disabled');
+		banco_update_campo('fields_values', json_encode($fieldsValuesFinal, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+		banco_update_executar('forms_submissions', "WHERE id_forms_submissions='" . $form_last_id . "'");
+
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'success',
+			'form_last_id' => $form_last_id,
+			'redirect' => $redirectSuccess
+		);
+		return true;
+	}
 
 	// ===== Remetentes e Destinatários dos emails.
 
