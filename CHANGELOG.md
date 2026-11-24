@@ -5,6 +5,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.18] - 2026-11-24
+
+### Added
+- Pluggable Payment Gateways (`REQ-301` / `BATCH-310`): `mercadopago.php` library, universal `pagamentos-gateways.php` contract (priority, installment capabilities, render modes, sync, refund) and canonical bridge in `plataforma-gateways.php`; per-form generic e-mail toggle (`"email": {"enabled": false}` / `enviarEmail => false`) in `formulario.php`.
+- Mercado Pago Orders API v1 (`REQ-305` / `BATCH-314`): card (installments), Pix and refunds via `/v1/orders`; webhook `type=order` validated by HMAC and resolved through an authenticated `GET /v1/orders`.
+- Messaging Evolution (`REQ-304` / `BATCH-313`): `MAIL_REDIRECT_TO` (locked outside non-production), automatic `AltBody` and timeout, multi-channel `comunicacao_mensagens` table with `comunicacao.drivers` contract, hybrid queue with rate limit and exponential retry via `admin-cron`, and the new `admin-comunicacao` module (history, preview, resend, settings).
+- SEO (`REQ-303` / `BATCH-312`): `<link rel="canonical">` in head, `og:image:width/height/type` read from the local file, `og:url` = canonical, flow-step and token pages excluded from the sitemap, memory docs without private links.
+- Editbar / Site Toolbar (`REQ-302` / `BATCH-311`): dynamic measurement of the real toolbar height and offset of the main layout and top `fixed`/`sticky` elements.
+
+### Fixed
+- SMTP password no longer leaks into logs or the persisted payload (`REQ-304`).
+- `admin-comunicacao` e-mail preview replaces `src="cid:..."` with a `data:` URI of the original embedded image, so the logo no longer appears broken in the preview iframe (`REQ-304`).
+- Queue mutations require POST + CSRF and queue reservations are serialized by a MySQL lock (`REQ-304`).
+
+### Notes
+- Team Management (`REQ-297`) was already shipped in 3.0.16 and is part of this line.
+
 ## [3.0.17] - 2026-11-05
 
 ### Added

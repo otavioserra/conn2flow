@@ -5,6 +5,23 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.18] - 2026-11-24
+
+### Added
+- Gateways de Pagamento Plug-and-Play (`REQ-301` / `BATCH-310`): biblioteca `mercadopago.php`, contrato universal `pagamentos-gateways.php` (prioridade, parcelamento, modos de renderização, sincronização, reembolso) e ponte canônica em `plataforma-gateways.php`; toggle de e-mail genérico por formulário (`"email": {"enabled": false}` / `enviarEmail => false`) em `formulario.php`.
+- Mercado Pago na Orders API v1 (`REQ-305` / `BATCH-314`): cartão (parcelado), Pix e reembolso via `/v1/orders`; webhook `type=order` validado por HMAC e resolvido por `GET /v1/orders` autenticado.
+- Evolução da Mensageria (`REQ-304` / `BATCH-313`): `MAIL_REDIRECT_TO` (travado fora de ambiente não produtivo), `AltBody` automático e timeout, tabela multi-canal `comunicacao_mensagens` com contrato `comunicacao.drivers`, fila híbrida com rate limit e retry exponencial via `admin-cron` e novo módulo `admin-comunicacao` (histórico, preview, reenvio e configurações).
+- SEO (`REQ-303` / `BATCH-312`): `<link rel="canonical">` no head, `og:image:width/height/type` lidos do arquivo local, `og:url` = canonical, etapas de fluxo e páginas de token fora do sitemap, docs da memória sem links privados.
+- Editbar / Site Toolbar (`REQ-302` / `BATCH-311`): medição dinâmica da altura real da barra e deslocamento do layout principal e de elementos `fixed`/`sticky` no topo.
+
+### Fixed
+- Senha SMTP não vaza mais para o log nem para o payload persistido (`REQ-304`).
+- Preview de e-mail do `admin-comunicacao` troca `src="cid:..."` por `data:` URI da imagem original embutida, e a logomarca deixa de aparecer quebrada no iframe (`REQ-304`).
+- Mutações da fila exigem POST + CSRF e as reservas da fila são serializadas por trava MySQL (`REQ-304`).
+
+### Notes
+- A Equipe (`REQ-297`) já foi publicada na 3.0.16 e integra esta linha.
+
 ## [3.0.17] - 2026-11-05
 
 ### Added
