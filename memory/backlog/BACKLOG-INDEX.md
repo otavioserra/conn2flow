@@ -37,6 +37,8 @@
 | [BL-046](BL-046-logo-configuravel-admin-environment.md) | Feature/Core/Interface | IN-DISCUSSION | Logo do painel configurável na aba Site do `admin-environment` | Definir armazenamento do arquivo e abrangência; promover depois das frentes atuais | 2026-10-30 |
 | [BL-047](BL-047-topo-do-painel-diferente-entre-projetos.md) | Bug visual/Tailwind | IN-DISCUSSION | Topo do painel com aparência diferente entre projetos | Confirmar por que a folha do `admin-topbar-tailwind` não chega às páginas do Photon | 2026-10-30 |
 | [BL-051](BL-051-editbar-deslocamento-dinamico-layout-e-elementos-fixos.md) | Bug visual/UX/Core | PROMOTED | Editbar / Site Toolbar: deslocamento dinâmico do layout principal e de elementos fixos/sticky no topo (ex.: `ia-parceria.local`) | Promovido para [req-302.md](../human-requests/req-302.md) (BATCH-311) | 2026-11-18 |
+| [BL-052](BL-052-preservacao-datas-criacao-modificacao-deploy.md) | Bug/Architecture/Core | IN-DISCUSSION | Sincronização de banco: preservação de `data_criacao` e `data_modificacao` em deploys de recursos e publicações (`ON UPDATE CURRENT_TIMESTAMP`) | Aguardando priorização; documentar padrão de datas fixas no JSON e blindar `UPDATE` de campos técnicos/derivados | 2026-11-19 |
+| BL-053 | Bug/Updates/Assets | READY | `admin-atualizacoes`: botão "Sobrescrever" na aba Choques atualiza o arquivo em `modulos/` mas não republica `public_html/dist/` (JS/CSS estáticos ficam defasados até novo deploy) | Ao resolver choques de arquivos estáticos (`*.js`, `*.css`) com "Sobrescrever", disparar automaticamente a republicação de `dist/` | 2026-11-23 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 

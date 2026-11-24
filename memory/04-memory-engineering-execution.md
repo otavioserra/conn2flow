@@ -239,3 +239,13 @@ BATCH-249 a BATCH-266 (2026-10-05 a 2026-10-07: harmonização e auditoria human
 - **Testar como outro usuário sem senha**: `c2f auth:cookie --project=<id> --user=<id> --out=<jar>`; para Playwright, ler o jar no script em vez de passar o cookie pela conversa.
 - **`node_modules` não existe na árvore principal**: `assets:minify` avisa e não gera o `.min.js`. `npm ci` (ignorado no git) antes de minificar.
 - **Suíte completa no checkout CRLF**: 21 falhas + 1 erro de ambiente (Dashboard Req247/251/258, Manutencao Req210, RSA). Comparar sempre com os arquivos tocados antes de concluir regressão.
+
+### REQ-301 / BATCH-310 — Mercado Pago e contrato plug-and-play de gateways (2026-11-10)
+
+- **As 21 falhas CRLF também aparecem no `ssh lab`**: ele lê a mesma árvore em `/mnt/c` (CRLF do `core.autocrlf=true`). Só o Windows acrescenta o erro RSA. Prova de que não é regressão: os arquivos dos testes não estão no diff.
+- **cURL do PHP do Windows sem CA** (`unable to get local issuer certificate`): para smoke real, `php -d "curl.cainfo=C:/Program Files/Git/mingw64/etc/ssl/certs/ca-bundle.crt"`.
+- **`json_encode([])` sai `[]`**: corpo vazio para API JSON que espera objeto precisa de `new stdClass()` (`{}`).
+- **O PHP troca `?data.id=` por `$_GET['data_id']`**: o webhook do Mercado Pago tem de ler as duas grafias e também `data.id` do corpo.
+- **Controlador com autostart no fim** (`plataforma_gateways_start()`): a guarda `PLATAFORMA_GATEWAYS_SEM_INICIAR` deixa o arnês incluir o arquivo e testar só funções puras. A REQ-265 extrai `plataforma_gateways_stripe_confirmar_recebimento` por regex, então ela precisa continuar autocontida.
+- **Números atravessando JSON entre processos** (`10.0` volta como `10`): em teste com subprocesso, comparar com `assertEquals`.
+- **`gateways_pagamentos` é tabela do `conn2flow-site`** (sem coluna `prioridade` até a REQ-149/151): o Core usa `banco_campo_existe` e ordenação em PHP como fallback.
