@@ -219,7 +219,7 @@ function admin_comunicacao_ajax_detalhe(){
 
 	// O preview vai para um iframe `sandbox` sem scripts nem mesma origem; aqui só se escolhe O QUE mostrar.
 	if($linha['canal'] === 'email'){
-		$html = (string)($payload['message']['body'] ?? '');
+		$html = comunicacao_email_preview_html((string)($payload['message']['body'] ?? ''), (array)($payload['message']['embeddedImgs'] ?? Array()));
 		$anexos = Array();
 		foreach((array)($payload['message']['attachments'] ?? Array()) as $a){
 			$anexos[] = (string)($a['nome'] ?? basename((string)($a['caminho'] ?? '')));

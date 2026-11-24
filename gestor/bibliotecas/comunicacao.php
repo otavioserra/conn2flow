@@ -169,6 +169,54 @@ function comunicacao_html_para_texto($html){
 	return trim($texto);
 }
 
+/**
+ * HTML do e-mail pronto para preview em iframe (admin-comunicacao).
+ *
+ * O e-mail real referencia as imagens embutidas por `src="cid:..."`, que so o cliente de e-mail
+ * resolve. No iframe de preview o `cid:` quebra a imagem; aqui cada `cid:` com imagem conhecida
+ * em `$embeddedImgs` vira `data:` URI (so PNG/JPEG/GIF/WebP legiveis e ate 2 MB; SVG nao entra).
+ * Um `cid:` sem imagem correspondente fica intacto. O HTML enviado nao e alterado.
+ *
+ * @param string $html Corpo do e-mail como enviado.
+ * @param array $embeddedImgs Lista de imagens (`cid`, `caminho`, `imagemTmpCaminho`).
+ * @return string
+ */
+function comunicacao_email_preview_html($html, $embeddedImgs = Array()){
+	$html = (string)$html;
+	if(stripos($html, 'cid:') === false) return $html;
+
+	$permitidos = Array('image/png', 'image/jpeg', 'image/gif', 'image/webp');
+	$mapa = Array();
+	foreach((array)$embeddedImgs as $img){
+		if(!is_array($img) || empty($img['cid'])) continue;
+		$cid = strtolower(trim(preg_replace('/^cid:/i', '', (string)$img['cid'])));
+		if($cid === '') continue;
+		foreach(Array('imagemTmpCaminho', 'caminho') as $campo){
+			$arquivo = (string)($img[$campo] ?? '');
+			if($arquivo === '' || !is_file($arquivo) || !is_readable($arquivo) || filesize($arquivo) > 2097152) continue;
+			$dados = file_get_contents($arquivo);
+			if($dados === false) continue;
+			$mime = (new finfo(FILEINFO_MIME_TYPE))->buffer($dados);
+			if(!in_array($mime, $permitidos, true)) continue;
+			$mapa[$cid] = 'data:' . $mime . ';base64,' . base64_encode($dados);
+			break;
+		}
+	}
+	if(!$mapa) return $html;
+
+	return preg_replace_callback(
+		'/(\bsrc\s*=\s*)(["\']?)cid:([^"\'\s>]+)\2/i',
+		static function(array $m) use ($mapa){
+			$cid = strtolower(rawurldecode($m[3]));
+			if(!isset($mapa[$cid])) $cid = strtolower($m[3]);
+			if(!isset($mapa[$cid])) return $m[0];
+			$aspas = $m[2] !== '' ? $m[2] : '"';
+			return $m[1] . $aspas . $mapa[$cid] . $aspas;
+		},
+		$html
+	) ?? $html;
+}
+
 /** Remove a senha SMTP de qualquer texto (mensagens de erro do PHPMailer, por exemplo). */
 function comunicacao_texto_sem_segredo($texto, $server){
 	$texto = (string)$texto;

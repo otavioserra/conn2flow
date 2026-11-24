@@ -413,6 +413,38 @@ final class ComunicacaoFilaReq304Test extends TestCase
         self::assertStringNotContainsString('programa de emails compatível', $enviado['altBody'], 'A frase generica antiga nao e mais o AltBody.');
     }
 
+    public function testPreviewSubstituiCidPorDataUriDaImagemOriginal(): void
+    {
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==');
+        $arquivo = $this->logs . 'logo.png';
+        file_put_contents($arquivo, $png);
+        $imgs = [['cid' => 'cid:logomarca', 'caminho' => $arquivo, 'nome' => 'logo.png']];
+
+        $html = '<p>Oi</p><img src="cid:logomarca" alt="x"><img src=\'cid:logomarca\'><img src="cid:outra">';
+        $preview = comunicacao_email_preview_html($html, $imgs);
+        $dataUri = 'data:image/png;base64,' . base64_encode($png);
+
+        self::assertStringContainsString('<img src="' . $dataUri . '" alt="x">', $preview);
+        self::assertStringContainsString("<img src='" . $dataUri . "'>", $preview);
+        self::assertStringNotContainsString('cid:logomarca', $preview);
+        self::assertStringContainsString('src="cid:outra"', $preview, 'cid sem imagem conhecida fica intacto.');
+        self::assertStringContainsString('cid:logomarca', $html, 'O HTML enviado nao e alterado.');
+    }
+
+    public function testPreviewIgnoraArquivoAusenteESvgENaoMexeSemCid(): void
+    {
+        $svg = $this->logs . 'x.svg';
+        file_put_contents($svg, '<svg xmlns="http://www.w3.org/2000/svg"></svg>');
+        $imgs = [
+            ['cid' => 'a', 'caminho' => $this->logs . 'nao-existe.png'],
+            ['cid' => 'b', 'caminho' => $svg],
+        ];
+        $html = '<img src="cid:a"><img src="cid:b">';
+
+        self::assertSame($html, comunicacao_email_preview_html($html, $imgs));
+        self::assertSame('<p>sem imagem</p>', comunicacao_email_preview_html('<p>sem imagem</p>', $imgs));
+    }
+
     public function testAltBodyExplicitoDoChamadorPrevalece(): void
     {
         $payload = $this->payload([['email' => 'c@x.test']]);
