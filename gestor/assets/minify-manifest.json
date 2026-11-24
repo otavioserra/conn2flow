@@ -164,15 +164,20 @@
         "origem": 112,
         "minificado": 32
     },
+    "gestor/modulos/admin-comunicacao/admin-comunicacao.js": {
+        "sha1": "aa34e04b7e535159bb6b134f41db7381492151b6",
+        "origem": 19619,
+        "minificado": 11363
+    },
     "gestor/modulos/admin-cron/admin-cron.js": {
         "sha1": "84d7d71a3456033c2c32898322e68a8e4c992079",
         "origem": 20896,
         "minificado": 10561
     },
     "gestor/modulos/admin-environment/admin-environment.js": {
-        "sha1": "7bb2624fa48bacd805e2a074b24ead7ab1f6151f",
-        "origem": 38399,
-        "minificado": 19408
+        "sha1": "879fb98025f0bee96d8e7b7f23363f8c5d1eb34a",
+        "origem": 38474,
+        "minificado": 19466
     },
     "gestor/modulos/admin-ia/admin-ia.js": {
         "sha1": "54eb974fe733fed3c7b9244e3e4c29d162fe1684",

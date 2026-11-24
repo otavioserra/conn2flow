@@ -21,6 +21,10 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "admin-comunicacao"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "admin-environment"
     },
     {

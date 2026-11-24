@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.5",
+    "versao": "1.0.6",
     "bibliotecas": [
         "interface",
         "html"
@@ -17,7 +17,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.40",
+                    "version": "1.41",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -43,10 +43,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "4227f9e09e711629dae5a9cb0c157caa",
+                        "html": "239195dae2508260233e486a5f3a8433",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "dc472bf59f044a26d44daab00dce9099"
+                        "combined": "09138ca15c7c0eb5ff46cb4f5dee992d"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -372,6 +372,46 @@
                     "id": "tip-bypass-revoke-all",
                     "value": "Invalidates the passes of every browser, on any device",
                     "type": "string"
+                },
+                {
+                    "id": "email-redirect-label",
+                    "value": "Redirect test e-mails (MAIL_REDIRECT_TO)",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-placeholder",
+                    "value": "E.g. qa@yourdomain.com (empty turns it off)",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-help",
+                    "value": "Outside production, ALL e-mails (To, Cc and Bcc) go only to this address, with the subject \"[TESTE → original recipient]\" and the X-Original-To header. In production (APP_ENV=production) the value is ignored. The same field is shown in Communication.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-state-active",
+                    "value": "Redirect ON: e-mails do not reach the real recipients.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-state-blocked",
+                    "value": "Redirect LOCKED: this installation is in production and the value is ignored.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-state-off",
+                    "value": "Redirect off: e-mails go to the real recipients.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-post-required",
+                    "value": "This action requires a POST request.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-invalid",
+                    "value": "The test redirect address is not a valid e-mail.",
+                    "type": "string"
                 }
             ]
         },
@@ -386,7 +426,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.42",
+                    "version": "1.43",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -412,10 +452,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "02005c45a781c05ef6b312f0571a42cc",
+                        "html": "dfa0c31174c4624d40b14776cb89523c",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "f08f486b671ac3ec84594261c80392da"
+                        "combined": "d7bc483ce12d8c3a6db1dc4067e11ebe"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -741,9 +781,49 @@
                     "id": "tip-bypass-revoke-all",
                     "value": "Invalida os passes de todos os navegadores, em qualquer dispositivo",
                     "type": "string"
+                },
+                {
+                    "id": "email-redirect-label",
+                    "value": "Redirecionar e-mails de teste (MAIL_REDIRECT_TO)",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-placeholder",
+                    "value": "Ex: qa@seudominio.com (vazio desliga)",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-help",
+                    "value": "Fora de produção, TODOS os e-mails (Para, Cc e Cco) vão só para este endereço, com o assunto \"[TESTE → destinatário original]\" e o cabeçalho X-Original-To. Em produção (APP_ENV=production) o valor é ignorado. O mesmo campo aparece em Comunicação.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-state-active",
+                    "value": "Redirecionamento ATIVO: os e-mails não chegam aos destinatários reais.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-state-blocked",
+                    "value": "Redirecionamento TRAVADO: esta instalação está em produção e o valor é ignorado.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-state-off",
+                    "value": "Redirecionamento desligado: os e-mails vão para os destinatários reais.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-post-required",
+                    "value": "Esta ação exige uma requisição POST.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-redirect-invalid",
+                    "value": "O endereço de redirecionamento de teste não é um e-mail válido.",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "a108c077c3c48ee0"
+    "asset_version": "f1bba79abbdfca7d"
 }

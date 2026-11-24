@@ -224,6 +224,9 @@ function auditoriaTemColuna(mysqli $c, string $tabela, string $coluna): bool
 $tabelas = ['paginas', 'layouts', 'componentes', 'templates'];
 $relatorio = [];
 $cssLayouts = [];
+// O roteador inclui esta folha nas páginas com o layout administrativo Tailwind do Core.
+$arquivoControles = $gestorPath . '/assets/interface/controles.css';
+$cssControles = is_readable($arquivoControles) ? (string)file_get_contents($arquivoControles) : '';
 
 // Cascata do layout: é o contexto sob o qual o CSS de uma página foi gerado.
 if ($res = $conexao->query("SELECT id, language, css_precompiled FROM layouts WHERE status!='D'")) {
@@ -267,7 +270,9 @@ foreach ($tabelas as $tabela) {
         $layoutId = $temLayout ? (string)($linha['layout_id'] ?? '') : '';
         $baseline = $layoutId !== '' ? ($cssLayouts[$layoutId . '|' . $lang] ?? '') : '';
 
-        $cssDisponivel = $baseline . "\n"
+        $layoutAdministrativo = $tabela === 'layouts' ? (string)$linha['id'] : $layoutId;
+        $controles = str_starts_with($layoutAdministrativo, 'layout-administrativo-tailwind') ? $cssControles : '';
+        $cssDisponivel = $controles . "\n" . $baseline . "\n"
             . (string)($linha['css_precompiled'] ?? '') . "\n"
             . (string)($linha['css_compiled'] ?? '') . "\n"
             . (string)($linha['css'] ?? '');

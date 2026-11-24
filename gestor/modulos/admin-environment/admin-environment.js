@@ -255,6 +255,7 @@ $(document).ready(function () {
             email_from_name: $('#email_from_name').val(),
             email_reply_to: $('#email_reply_to').val(),
             email_reply_to_name: $('#email_reply_to_name').val(),
+            mail_redirect_to: $.trim($('#mail_redirect_to').val() || ''),
             language_default: $('#language_default').val(),
             language_widget_active: $('#language_widget_active').is(':checked') ? 'true' : 'false',
             language_auto_detect: $('#language_auto_detect').is(':checked') ? 'true' : 'false',

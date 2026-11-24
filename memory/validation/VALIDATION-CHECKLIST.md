@@ -8,6 +8,28 @@
 
 Detalhes e evidências em [BATCH-312](../implementation/BATCH-312.md).
 
+## BATCH-313 — REQ-304
+
+- [x] CA-1: senha SMTP mascarada no log (`[pass] => ***`) e ausente do erro devolvido e do `payload_json` (inclusive com credencial efêmera) — PHPUnit.
+- [x] CA-2: `MAIL_REDIRECT_TO` troca TO/CC/BCC, prefixa `[TESTE → ...]`, grava `X-Original-To`; travado em produção (e sem APP_ENV); campo em admin-environment e admin-comunicacao lendo o mesmo `.env` — PHPUnit + Lab.
+- [x] CA-3: `comunicacao_email()` retrocompatível; falha SMTP e limite por minuto enfileiram; worker com reserva atômica, backoff 1/5/15/60, travados e retenção — PHPUnit 32/32.
+- [x] CA-4: `comunicacao_mensagens` migrada no Lab; contrato `comunicacao.drivers` com driver `email` e canal extra por hook real — PHPUnit + Lab.
+- [x] CA-5: admin-comunicacao bilíngue: listagem, filtros, preview `sandbox=""`, reenvio, configurações, banner; 1280/390 px sem overflow, console limpo — `memory/validation/req304-browser.cjs` 11/11.
+- [x] CA-6: suíte completa com as mesmas 22 falhas da base (2.069 testes); Lab com migration, `APP_ENV=staging` e `MAIL_REDIRECT_TO=otavio@conn2flow.com`; e-mail para `test_user_validacao@testuser.com` enviado e redirecionado (histórico ids 1 e 2).
+- [x] CA-7: sem `git add -A`, sem cópia manual; publicação só pelo pipeline; evidências no BATCH-313.
+- [ ] Operador confirma as 2 mensagens `[TESTE → test_user_validacao@testuser.com]` em `otavio@conn2flow.com`.
+- [ ] Capa do módulo `admin-comunicacao` (c2f-module-visual-assets).
+- [ ] Revisão técnica e homologação humana.
+
+Detalhes: [BATCH-313](../implementation/BATCH-313.md). Evidências: `memory/validation/evidence-req304/`.
+
+### Rodada de revisão (2026-11-23)
+
+- [x] Revisão técnica consolidada em 2026-11-23 com parecer RECOMMEND-REVISION para o BATCH-313. [Parecer](../reviews/REVIEW-2026-11-23-BATCHES-313-314.md)
+- [x] Pós-revisão: mutações exigem POST e CSRF. Lab confirmou GET 405, POST sem token 403 e recusa ao perfil consumidores.
+- [x] Pós-revisão: reservas HTTP/worker compartilham trava MySQL, revalidam vencimento e preservam a tentativa vigente. Sonda no Lab com duas conexões e testes de regressão verdes.
+- [x] Pós-revisão: REQ-203 verde com 40 vínculos. CSS de Comunicação pt-br/en com assinatura atual e zero classes descobertas. [Evidência](evidence-req304/pos-revisao-css-audit.json)
+
 ## BATCH-311 — REQ-302
 
 - [x] Altura medida do iframe, atualização dinâmica e dropdown com altura independente do offset.

@@ -14,5 +14,21 @@
         "user_modified": 0,
         "versao": 1,
         "checksum": "c791707bc095f6fb397480b5e70e1c11"
+    },
+    {
+        "id": "comunicacao-fila-processar",
+        "nome": "Fila de comunicação",
+        "descricao": "Envia as mensagens pendentes respeitando o limite por minuto, reagenda falhas com espera crescente (1, 5, 15 e 60 min), recupera envios travados e apaga o histórico antigo conforme a retenção.",
+        "modulo": "admin-comunicacao",
+        "frequencia": "minutario",
+        "expressao_cron": "* * * * *",
+        "funcao_callback": "admin_comunicacao_cron_fila",
+        "parametros": null,
+        "ativo": 1,
+        "origem": "modulo",
+        "status": "A",
+        "user_modified": 0,
+        "versao": 1,
+        "checksum": "74d584a2a8997487fd2a120c6296a2d0"
     }
 ]

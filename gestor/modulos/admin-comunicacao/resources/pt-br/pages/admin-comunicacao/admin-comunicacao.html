@@ -1,0 +1,224 @@
+<div id="admin-comunicacao-painel" class="w-full text-slate-800"
+    data-config="#config_json#"
+    data-canais="#canais_json#"
+    data-tabela-disponivel="#tabela_disponivel#"
+    data-msg-empty="@[[table-empty]]@"
+    data-msg-generic-error="@[[api-error-generic]]@"
+    data-msg-confirm-cancel="@[[msg-confirm-cancel]]@"
+    data-msg-confirm-resend="@[[msg-confirm-resend]]@"
+    data-msg-page="@[[pagination-page]]@"
+    data-msg-redirected-from="@[[label-redirected-from]]@"
+    data-msg-attempts="@[[label-attempts]]@"
+    data-msg-next-try="@[[label-next-try]]@"
+    data-label-view="@[[action-view]]@"
+    data-label-resend="@[[action-resend]]@"
+    data-label-cancel="@[[action-cancel]]@"
+    data-label-status-pendente="@[[status-pendente]]@"
+    data-label-status-enviando="@[[status-enviando]]@"
+    data-label-status-enviado="@[[status-enviado]]@"
+    data-label-status-falhou="@[[status-falhou]]@"
+    data-label-status-cancelado="@[[status-cancelado]]@"
+    data-label-none="@[[label-none]]@">
+
+    <header class="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+            <h1 class="text-xl font-semibold text-slate-900">@[[page-title]]@</h1>
+            <p class="mt-1 text-sm text-slate-500">@[[page-subtitle]]@</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" id="com-btn-atualizar" class="c2fc-botao" data-c2f-dica="@[[button-refresh-tooltip]]@" data-c2f-dica-pos="bottom right">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 6.7 3L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-6.7-3L3 16" /><path d="M3 21v-5h5" /></svg>
+                @[[button-refresh]]@
+            </button>
+        </div>
+    </header>
+
+    <!-- Banner do modo teste: visível sempre que MAIL_REDIRECT_TO estiver ativo (ou travado em produção). -->
+    <div id="com-banner" class="mb-4 rounded-lg border-2 px-4 py-3 text-sm font-medium #banner_classe#" role="alert">
+        <div class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 size-5 shrink-0" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+            <span id="com-banner-texto">#banner_texto#</span>
+        </div>
+    </div>
+
+    <div id="com-tabela-aviso" class="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800 #tabela_aviso_classe#">@[[msg-table-missing]]@</div>
+
+    <div id="com-mensagem" class="mb-4 hidden rounded-lg border px-4 py-3 text-sm" role="status" aria-live="polite"></div>
+
+    <section class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[card-sent-today]]@</p>
+            <p class="mt-2 text-2xl font-semibold text-emerald-600" id="com-stat-enviados">#stat_enviados_hoje#</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[card-queued]]@</p>
+            <p class="mt-2 text-2xl font-semibold text-sky-700" id="com-stat-fila">#stat_na_fila#</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[card-failed]]@</p>
+            <p class="mt-2 text-2xl font-semibold text-rose-600" id="com-stat-falhas">#stat_falhas#</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p class="text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[card-rate]]@</p>
+            <p class="mt-2 text-2xl font-semibold text-slate-900" id="com-stat-limite">#stat_limite#</p>
+        </div>
+    </section>
+
+    <!-- Abas -->
+    <div class="mb-4 flex gap-2 border-b border-slate-200" role="tablist">
+        <button type="button" role="tab" class="-mb-px border-b-2 border-sky-700 px-4 py-2 text-sm font-semibold text-sky-800" data-aba="fila" aria-selected="true">@[[tab-queue]]@</button>
+        <button type="button" role="tab" class="-mb-px border-b-2 border-transparent px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900" data-aba="config" aria-selected="false">@[[tab-settings]]@</button>
+    </div>
+
+    <!-- Aba 1: Fila & Histórico -->
+    <div data-painel="fila" role="tabpanel">
+        <section class="mb-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
+            <div class="lg:col-span-2">
+                <label for="com-filtro-busca" class="sr-only">@[[filter-search-placeholder]]@</label>
+                <input type="search" id="com-filtro-busca" placeholder="@[[filter-search-placeholder]]@" class="c2fc-campo-entrada">
+            </div>
+            <div>
+                <label for="com-filtro-status" class="sr-only">@[[filter-status-label]]@</label>
+                <select id="com-filtro-status" class="c2fc-campo-selecao">
+                    <option value="">@[[filter-status-all]]@</option>
+                    <option value="pendente">@[[status-pendente]]@</option>
+                    <option value="enviando">@[[status-enviando]]@</option>
+                    <option value="enviado">@[[status-enviado]]@</option>
+                    <option value="falhou">@[[status-falhou]]@</option>
+                    <option value="cancelado">@[[status-cancelado]]@</option>
+                </select>
+            </div>
+            <div>
+                <label for="com-filtro-canal" class="sr-only">@[[filter-channel-label]]@</label>
+                <select id="com-filtro-canal" class="c2fc-campo-selecao">
+                    <option value="">@[[filter-channel-all]]@</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label for="com-filtro-de" class="sr-only">@[[filter-date-from]]@</label>
+                    <input type="date" id="com-filtro-de" class="c2fc-campo-entrada" data-c2f-dica="@[[filter-date-from]]@" data-c2f-dica-pos="top left">
+                </div>
+                <div>
+                    <label for="com-filtro-ate" class="sr-only">@[[filter-date-to]]@</label>
+                    <input type="date" id="com-filtro-ate" class="c2fc-campo-entrada" data-c2f-dica="@[[filter-date-to]]@" data-c2f-dica-pos="top right">
+                </div>
+            </div>
+        </section>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+            <table class="min-w-full divide-y divide-slate-200 text-sm">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[table-col-date]]@</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[table-col-channel]]@</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[table-col-recipient]]@</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[table-col-subject]]@</th>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[table-col-status]]@</th>
+                        <th scope="col" class="px-4 py-3 text-right text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[table-col-actions]]@</th>
+                    </tr>
+                </thead>
+                <tbody id="com-tabela-corpo" class="divide-y divide-slate-100"></tbody>
+            </table>
+        </div>
+
+        <nav class="mt-3 flex items-center justify-between gap-3 text-sm text-slate-600" aria-label="@[[pagination-label]]@">
+            <span id="com-paginacao-info"></span>
+            <div class="flex gap-2">
+                <button type="button" id="com-pagina-anterior" class="c2fc-botao c2fc-botao-pequeno">@[[pagination-prev]]@</button>
+                <button type="button" id="com-pagina-proxima" class="c2fc-botao c2fc-botao-pequeno">@[[pagination-next]]@</button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Aba 2: Configurações -->
+    <div class="hidden" data-painel="config" role="tabpanel">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <form id="com-form-config" class="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm" autocomplete="off">
+                <h2 class="text-base font-semibold text-slate-900">@[[settings-title]]@</h2>
+
+                <div class="space-y-1.5">
+                    <label for="com-cfg-modo" class="text-sm font-medium text-slate-700">@[[settings-mode-label]]@</label>
+                    <select id="com-cfg-modo" class="c2fc-campo-selecao">
+                        <option value="hibrido">@[[settings-mode-hibrido]]@</option>
+                        <option value="sempre_fila">@[[settings-mode-sempre-fila]]@</option>
+                    </select>
+                    <p class="text-xs text-slate-500">@[[settings-mode-help]]@</p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div class="space-y-1.5">
+                        <label for="com-cfg-rate" class="text-sm font-medium text-slate-700">@[[settings-rate-label]]@</label>
+                        <input type="number" min="1" max="1000" id="com-cfg-rate" class="c2fc-campo-entrada">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label for="com-cfg-tentativas" class="text-sm font-medium text-slate-700">@[[settings-attempts-label]]@</label>
+                        <input type="number" min="1" max="10" id="com-cfg-tentativas" class="c2fc-campo-entrada">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label for="com-cfg-retencao" class="text-sm font-medium text-slate-700">@[[settings-retention-label]]@</label>
+                        <input type="number" min="0" max="3650" id="com-cfg-retencao" class="c2fc-campo-entrada">
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500">@[[settings-retry-help]]@</p>
+
+                <div class="space-y-1.5 rounded-lg border border-amber-200 bg-amber-50/60 p-3">
+                    <label for="com-cfg-redirect" class="text-sm font-medium text-slate-800">@[[settings-redirect-label]]@</label>
+                    <input type="email" id="com-cfg-redirect" placeholder="@[[settings-redirect-placeholder]]@" class="c2fc-campo-entrada">
+                    <p class="text-xs text-slate-600">@[[settings-redirect-help]]@</p>
+                    <p class="text-xs font-semibold text-slate-700">APP_ENV: <span id="com-cfg-ambiente"></span></p>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" id="com-btn-salvar" class="c2fc-botao c2fc-botao-primario">@[[button-save]]@</button>
+                </div>
+            </form>
+
+            <form id="com-form-teste" class="h-fit space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm" autocomplete="off">
+                <h2 class="text-base font-semibold text-slate-900">@[[test-title]]@</h2>
+                <p class="text-sm text-slate-600">@[[test-help]]@</p>
+                <div class="space-y-1.5">
+                    <label for="com-teste-destino" class="text-sm font-medium text-slate-700">@[[test-recipient-label]]@</label>
+                    <input type="email" id="com-teste-destino" value="#teste_destino#" class="c2fc-campo-entrada" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" id="com-btn-testar" class="c2fc-botao">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" /></svg>
+                        @[[button-send-test]]@
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: visualizar mensagem -->
+    <div id="com-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4" role="dialog" aria-modal="true" aria-labelledby="com-modal-titulo">
+        <div class="flex max-h-full w-full max-w-4xl flex-col overflow-hidden rounded-xl bg-white shadow-xl">
+            <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+                <h2 id="com-modal-titulo" class="truncate text-base font-semibold text-slate-900">@[[modal-title]]@</h2>
+                <button type="button" id="com-modal-fechar" class="c2fc-botao c2fc-botao-icone c2fc-botao-pequeno" aria-label="@[[button-close]]@" data-c2f-dica="@[[button-close]]@" data-c2f-dica-pos="bottom right">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="overflow-y-auto p-5">
+                <dl class="mb-4 grid grid-cols-1 gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+                    <div><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-recipient]]@</dt><dd id="com-det-destinatario" class="break-all text-slate-900"></dd></div>
+                    <div><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-original]]@</dt><dd id="com-det-original" class="break-all text-slate-900"></dd></div>
+                    <div><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-sender]]@</dt><dd id="com-det-remetente" class="break-all text-slate-900"></dd></div>
+                    <div><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-status]]@</dt><dd id="com-det-status" class="text-slate-900"></dd></div>
+                    <div><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-attempts]]@</dt><dd id="com-det-tentativas" class="text-slate-900"></dd></div>
+                    <div><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-dates]]@</dt><dd id="com-det-datas" class="text-slate-900"></dd></div>
+                    <div class="sm:col-span-2"><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-attachments]]@</dt><dd id="com-det-anexos" class="break-all text-slate-900"></dd></div>
+                    <div class="sm:col-span-2"><dt class="text-xs font-semibold text-slate-500 uppercase">@[[detail-error]]@</dt><dd id="com-det-erro" class="whitespace-pre-wrap break-all font-mono text-xs text-rose-700"></dd></div>
+                </dl>
+                <p class="mb-2 text-xs font-semibold text-slate-500 uppercase">@[[detail-preview]]@</p>
+                <!-- sandbox sem tokens: sem scripts, sem formulários e sem a origem do painel. -->
+                <iframe id="com-det-preview" title="@[[detail-preview]]@" sandbox="" referrerpolicy="no-referrer" class="h-96 w-full rounded-lg border border-slate-200 bg-white"></iframe>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-slate-200 px-5 py-3">
+                <button type="button" id="com-det-cancelar" class="c2fc-botao hidden">@[[action-cancel]]@</button>
+                <button type="button" id="com-det-reenviar" class="c2fc-botao c2fc-botao-primario hidden">@[[action-resend]]@</button>
+            </div>
+        </div>
+    </div>
+</div>

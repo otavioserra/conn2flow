@@ -1,0 +1,78 @@
+{
+  "origin": "https://conn2flow.local/",
+  "results": [
+    {
+      "name": "admin-environment-redirect",
+      "ok": true,
+      "valor": "otavio@conn2flow.com",
+      "estado": "Redirecionamento ATIVO: os e-mails não chegam aos destinatár"
+    },
+    {
+      "name": "banner-modo-teste",
+      "ok": true,
+      "texto": "MODO TESTE ATIVO: todos os e-mails estão sendo redirecionados para otavio@conn2flow.com. Nenhuma mensagem chega aos destinatários reais."
+    },
+    {
+      "name": "admin-comunicacao-desktop",
+      "ok": true,
+      "largura": 1280,
+      "overflow": 0,
+      "screenshot": "memory/validation/evidence-req304/admin-comunicacao-desktop.png"
+    },
+    {
+      "name": "configuracoes-carregadas",
+      "ok": true,
+      "modo": "hibrido",
+      "rate": 30,
+      "tentativas": 4,
+      "retencao": 90,
+      "ambiente": "staging"
+    },
+    {
+      "name": "email-teste-enviado",
+      "ok": true,
+      "id": 1,
+      "status": "enviado",
+      "mensagem": "E-mail de teste enviado."
+    },
+    {
+      "name": "historico-linha",
+      "ok": true,
+      "linha": "2026-11-23 19:50 E-mail otavio@conn2flow.com redirecionado de test_user_validacao@testuser.com Teste de comunicação 2026-11-23 19:50:05 Enviado Tentativas: 1 de 4 Ver Reenviar agora"
+    },
+    {
+      "name": "modal-preview",
+      "ok": true,
+      "destinatario": "otavio@conn2flow.com",
+      "original": "test_user_validacao@testuser.com",
+      "sandbox": "",
+      "srcdocBytes": 511,
+      "iframeAltura": 384
+    },
+    {
+      "name": "reenvio",
+      "ok": true,
+      "idOriginal": 1,
+      "idNovo": 2,
+      "status": "enviado"
+    },
+    {
+      "name": "busca-destinatario-original",
+      "ok": true,
+      "linhas": 2
+    },
+    {
+      "name": "admin-comunicacao-mobile",
+      "ok": true,
+      "largura": 390,
+      "overflow": 0,
+      "screenshot": "memory/validation/evidence-req304/admin-comunicacao-mobile.png"
+    },
+    {
+      "name": "console-limpo",
+      "ok": true,
+      "erros": 0
+    }
+  ],
+  "errors": []
+}

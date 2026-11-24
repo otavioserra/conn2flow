@@ -1,0 +1,1060 @@
+{
+    "versao": "1.0.2",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": [],
+    "cron": [
+        {
+            "id": "comunicacao-fila-processar",
+            "nome": "Fila de comunicação",
+            "descricao": "Envia as mensagens pendentes respeitando o limite por minuto, reagenda falhas com espera crescente (1, 5, 15 e 60 min), recupera envios travados e apaga o histórico antigo conforme a retenção.",
+            "frequencia": "minutario",
+            "expressao_cron": "* * * * *",
+            "funcao": "admin_comunicacao_cron_fila",
+            "ativo": true
+        }
+    ],
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Comunicação",
+                    "id": "admin-comunicacao",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "admin-comunicacao/",
+                    "type": "system",
+                    "option": "painel",
+                    "root": true,
+                    "version": "1.4",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-comunicacao.js",
+                        "../../../../admin-comunicacao.php"
+                    ],
+                    "tailwind_sources_reason": "REQ-304: as etiquetas de status e os botões das linhas são montados em runtime pelo admin-comunicacao.js, e as cores do banner de modo teste vêm do admin-comunicacao.php; sem escanear os dois, o precompiled sai sem essas utilities.",
+                    "tailwind_dependencies": [
+                        {
+                            "id": "menu-principal-sistema-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-carregando-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-alerta-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-304: componentes globais montados dinamicamente na página administrativa.",
+                    "checksum": {
+                        "html": "5d8f6e7cf2f22445bbbfe203f0c47542",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "5d8f6e7cf2f22445bbbfe203f0c47542"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "page-title",
+                    "value": "Comunicação",
+                    "type": "string"
+                },
+                {
+                    "id": "page-subtitle",
+                    "value": "Fila, histórico e configurações das mensagens enviadas pelo sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "button-refresh",
+                    "value": "Atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "button-refresh-tooltip",
+                    "value": "Recarrega a lista e os indicadores",
+                    "type": "string"
+                },
+                {
+                    "id": "banner-redirect-active",
+                    "value": "MODO TESTE ATIVO: todos os e-mails estão sendo redirecionados para #destino#. Nenhuma mensagem chega aos destinatários reais.",
+                    "type": "string"
+                },
+                {
+                    "id": "banner-redirect-blocked",
+                    "value": "MAIL_REDIRECT_TO está preenchido, mas esta instalação está em produção: o redirecionamento está TRAVADO e os e-mails vão para os destinatários reais.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-table-missing",
+                    "value": "A tabela comunicacao_mensagens ainda não existe nesta instalação. Rode a atualização do banco (migrations) para ativar a fila e o histórico; até lá os e-mails seguem saindo direto.",
+                    "type": "string"
+                },
+                {
+                    "id": "card-sent-today",
+                    "value": "Enviados hoje",
+                    "type": "string"
+                },
+                {
+                    "id": "card-queued",
+                    "value": "Na fila",
+                    "type": "string"
+                },
+                {
+                    "id": "card-failed",
+                    "value": "Falhas",
+                    "type": "string"
+                },
+                {
+                    "id": "card-rate",
+                    "value": "Limite por minuto",
+                    "type": "string"
+                },
+                {
+                    "id": "tab-queue",
+                    "value": "Fila e histórico",
+                    "type": "string"
+                },
+                {
+                    "id": "tab-settings",
+                    "value": "Configurações",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-search-placeholder",
+                    "value": "Buscar por destinatário ou assunto",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-status-label",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-status-all",
+                    "value": "Todos os status",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-channel-label",
+                    "value": "Canal",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-channel-all",
+                    "value": "Todos os canais",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-date-from",
+                    "value": "Desde",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-date-to",
+                    "value": "Até",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-date",
+                    "value": "Criada em",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-channel",
+                    "value": "Canal",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-recipient",
+                    "value": "Destinatário",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-subject",
+                    "value": "Assunto",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-actions",
+                    "value": "Ações",
+                    "type": "string"
+                },
+                {
+                    "id": "table-empty",
+                    "value": "Nenhuma mensagem encontrada com estes filtros.",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-label",
+                    "value": "Paginação",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-page",
+                    "value": "Página #pagina# de #paginas# · #total# mensagem(ns)",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-prev",
+                    "value": "Anterior",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-next",
+                    "value": "Próxima",
+                    "type": "string"
+                },
+                {
+                    "id": "status-pendente",
+                    "value": "Na fila",
+                    "type": "string"
+                },
+                {
+                    "id": "status-enviando",
+                    "value": "Enviando",
+                    "type": "string"
+                },
+                {
+                    "id": "status-enviado",
+                    "value": "Enviado",
+                    "type": "string"
+                },
+                {
+                    "id": "status-falhou",
+                    "value": "Falhou",
+                    "type": "string"
+                },
+                {
+                    "id": "status-cancelado",
+                    "value": "Cancelado",
+                    "type": "string"
+                },
+                {
+                    "id": "label-redirected-from",
+                    "value": "redirecionado de #original#",
+                    "type": "string"
+                },
+                {
+                    "id": "label-attempts",
+                    "value": "Tentativas: #n# de #max#",
+                    "type": "string"
+                },
+                {
+                    "id": "label-next-try",
+                    "value": "Próxima tentativa: #data#",
+                    "type": "string"
+                },
+                {
+                    "id": "label-none",
+                    "value": "—",
+                    "type": "string"
+                },
+                {
+                    "id": "action-view",
+                    "value": "Ver",
+                    "type": "string"
+                },
+                {
+                    "id": "action-resend",
+                    "value": "Reenviar agora",
+                    "type": "string"
+                },
+                {
+                    "id": "action-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-confirm-cancel",
+                    "value": "Cancelar esta mensagem? Ela sai da fila e não será enviada.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-confirm-resend",
+                    "value": "Reenviar esta mensagem agora? Uma nova entrada será criada no histórico.",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title",
+                    "value": "Mensagem",
+                    "type": "string"
+                },
+                {
+                    "id": "button-close",
+                    "value": "Fechar",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-recipient",
+                    "value": "Destinatário efetivo",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-original",
+                    "value": "Destinatário original",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-sender",
+                    "value": "Remetente",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-attempts",
+                    "value": "Tentativas",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-dates",
+                    "value": "Criada → enviada",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-attachments",
+                    "value": "Anexos",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-error",
+                    "value": "Último erro",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-preview",
+                    "value": "Pré-visualização",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-title",
+                    "value": "Configurações da fila",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-label",
+                    "value": "Modo de disparo",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-hibrido",
+                    "value": "Híbrido (envia na hora e usa a fila em falha ou limite)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-sempre-fila",
+                    "value": "Sempre pela fila (envio pelo agendador)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-help",
+                    "value": "No modo híbrido, o e-mail sai na hora enquanto o limite por minuto não é atingido; se o SMTP falhar, volta para a fila. Em \"sempre pela fila\", quem envia é a rotina agendada a cada minuto.",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-rate-label",
+                    "value": "Envios por minuto",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-attempts-label",
+                    "value": "Máximo de tentativas",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-retention-label",
+                    "value": "Dias de histórico",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-retry-help",
+                    "value": "Depois de cada falha, a próxima tentativa espera 1, 5, 15 e 60 minutos. O histórico de mensagens enviadas ou canceladas é apagado depois dos dias configurados (0 mantém tudo); falhas nunca são apagadas automaticamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-redirect-label",
+                    "value": "Redirecionar e-mails de teste (MAIL_REDIRECT_TO)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-redirect-placeholder",
+                    "value": "Ex: qa@seudominio.com (vazio desliga)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-redirect-help",
+                    "value": "Fora de produção, todos os e-mails vão só para este endereço, com o assunto \"[TESTE → destinatário original]\". Em produção o valor é ignorado. É o mesmo campo do Admin Environment.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-save",
+                    "value": "Salvar configurações",
+                    "type": "string"
+                },
+                {
+                    "id": "test-title",
+                    "value": "Enviar e-mail de teste",
+                    "type": "string"
+                },
+                {
+                    "id": "test-help",
+                    "value": "Passa pelo mesmo caminho de qualquer e-mail do sistema: SMTP configurado, fila, limite por minuto e redirecionamento de teste. O resultado aparece no histórico.",
+                    "type": "string"
+                },
+                {
+                    "id": "test-recipient-label",
+                    "value": "Destinatário",
+                    "type": "string"
+                },
+                {
+                    "id": "button-send-test",
+                    "value": "Enviar teste",
+                    "type": "string"
+                },
+                {
+                    "id": "test-email-subject",
+                    "value": "Teste de comunicação",
+                    "type": "string"
+                },
+                {
+                    "id": "test-email-title",
+                    "value": "Teste de comunicação",
+                    "type": "string"
+                },
+                {
+                    "id": "test-email-body",
+                    "value": "Este e-mail foi enviado pelo módulo Comunicação para validar o SMTP, a fila e o redirecionamento de teste.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-generic",
+                    "value": "Não foi possível concluir a ação. Tente novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-not-found",
+                    "value": "Mensagem não encontrada.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-cancel-invalid",
+                    "value": "Só é possível cancelar mensagens que ainda estão na fila.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-cancel-success",
+                    "value": "Mensagem cancelada.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-invalid",
+                    "value": "Só é possível reenviar mensagens enviadas ou com falha.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-sent",
+                    "value": "Mensagem reenviada.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-queued",
+                    "value": "Mensagem colocada na fila para reenvio.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-failed",
+                    "value": "O reenvio falhou. Veja o erro no histórico.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-config-invalid",
+                    "value": "Revise os valores: modo híbrido ou sempre pela fila, envios por minuto entre 1 e 1000, tentativas entre 1 e 10 e histórico entre 0 e 3650 dias.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-post-required",
+                    "value": "Esta ação exige uma requisição POST.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-redirect-invalid",
+                    "value": "O endereço de redirecionamento de teste não é um e-mail válido.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-config-save-error",
+                    "value": "Não foi possível gravar o arquivo .env desta instalação.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-config-saved",
+                    "value": "Configurações salvas.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-invalid",
+                    "value": "Informe um e-mail de destino válido.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-disabled",
+                    "value": "O envio de e-mail está desativado nesta instalação (EMAIL_ACTIVE).",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-sent",
+                    "value": "E-mail de teste enviado.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-queued",
+                    "value": "E-mail de teste aceito e colocado na fila.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-failed",
+                    "value": "O e-mail de teste falhou. Veja o erro no histórico.",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Communication",
+                    "id": "admin-comunicacao",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "admin-comunicacao/",
+                    "type": "system",
+                    "option": "painel",
+                    "root": true,
+                    "version": "1.4",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-comunicacao.js",
+                        "../../../../admin-comunicacao.php"
+                    ],
+                    "tailwind_sources_reason": "REQ-304: status badges and row buttons are built at runtime by admin-comunicacao.js, and the test-mode banner colors come from admin-comunicacao.php; without scanning both the precompiled bundle misses those utilities.",
+                    "tailwind_dependencies": [
+                        {
+                            "id": "menu-principal-sistema-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-carregando-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-alerta-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-304: global components mounted dynamically on the admin page.",
+                    "checksum": {
+                        "html": "5d8f6e7cf2f22445bbbfe203f0c47542",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "5d8f6e7cf2f22445bbbfe203f0c47542"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "page-title",
+                    "value": "Communication",
+                    "type": "string"
+                },
+                {
+                    "id": "page-subtitle",
+                    "value": "Queue, history and settings of the messages sent by the system",
+                    "type": "string"
+                },
+                {
+                    "id": "button-refresh",
+                    "value": "Refresh",
+                    "type": "string"
+                },
+                {
+                    "id": "button-refresh-tooltip",
+                    "value": "Reloads the list and the indicators",
+                    "type": "string"
+                },
+                {
+                    "id": "banner-redirect-active",
+                    "value": "TEST MODE ON: every e-mail is being redirected to #destino#. No message reaches the real recipients.",
+                    "type": "string"
+                },
+                {
+                    "id": "banner-redirect-blocked",
+                    "value": "MAIL_REDIRECT_TO is filled in, but this installation is in production: the redirect is LOCKED and e-mails go to the real recipients.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-table-missing",
+                    "value": "The comunicacao_mensagens table does not exist on this installation yet. Run the database update (migrations) to turn on the queue and the history; until then e-mails keep being sent directly.",
+                    "type": "string"
+                },
+                {
+                    "id": "card-sent-today",
+                    "value": "Sent today",
+                    "type": "string"
+                },
+                {
+                    "id": "card-queued",
+                    "value": "Queued",
+                    "type": "string"
+                },
+                {
+                    "id": "card-failed",
+                    "value": "Failed",
+                    "type": "string"
+                },
+                {
+                    "id": "card-rate",
+                    "value": "Limit per minute",
+                    "type": "string"
+                },
+                {
+                    "id": "tab-queue",
+                    "value": "Queue and history",
+                    "type": "string"
+                },
+                {
+                    "id": "tab-settings",
+                    "value": "Settings",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-search-placeholder",
+                    "value": "Search by recipient or subject",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-status-label",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-status-all",
+                    "value": "All statuses",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-channel-label",
+                    "value": "Channel",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-channel-all",
+                    "value": "All channels",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-date-from",
+                    "value": "From",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-date-to",
+                    "value": "To",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-date",
+                    "value": "Created",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-channel",
+                    "value": "Channel",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-recipient",
+                    "value": "Recipient",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-subject",
+                    "value": "Subject",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-actions",
+                    "value": "Actions",
+                    "type": "string"
+                },
+                {
+                    "id": "table-empty",
+                    "value": "No message found with these filters.",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-label",
+                    "value": "Pagination",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-page",
+                    "value": "Page #pagina# of #paginas# · #total# message(s)",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-prev",
+                    "value": "Previous",
+                    "type": "string"
+                },
+                {
+                    "id": "pagination-next",
+                    "value": "Next",
+                    "type": "string"
+                },
+                {
+                    "id": "status-pendente",
+                    "value": "Queued",
+                    "type": "string"
+                },
+                {
+                    "id": "status-enviando",
+                    "value": "Sending",
+                    "type": "string"
+                },
+                {
+                    "id": "status-enviado",
+                    "value": "Sent",
+                    "type": "string"
+                },
+                {
+                    "id": "status-falhou",
+                    "value": "Failed",
+                    "type": "string"
+                },
+                {
+                    "id": "status-cancelado",
+                    "value": "Cancelled",
+                    "type": "string"
+                },
+                {
+                    "id": "label-redirected-from",
+                    "value": "redirected from #original#",
+                    "type": "string"
+                },
+                {
+                    "id": "label-attempts",
+                    "value": "Attempts: #n# of #max#",
+                    "type": "string"
+                },
+                {
+                    "id": "label-next-try",
+                    "value": "Next attempt: #data#",
+                    "type": "string"
+                },
+                {
+                    "id": "label-none",
+                    "value": "—",
+                    "type": "string"
+                },
+                {
+                    "id": "action-view",
+                    "value": "View",
+                    "type": "string"
+                },
+                {
+                    "id": "action-resend",
+                    "value": "Resend now",
+                    "type": "string"
+                },
+                {
+                    "id": "action-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-confirm-cancel",
+                    "value": "Cancel this message? It leaves the queue and will not be sent.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-confirm-resend",
+                    "value": "Resend this message now? A new entry will be created in the history.",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title",
+                    "value": "Message",
+                    "type": "string"
+                },
+                {
+                    "id": "button-close",
+                    "value": "Close",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-recipient",
+                    "value": "Effective recipient",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-original",
+                    "value": "Original recipient",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-sender",
+                    "value": "Sender",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-attempts",
+                    "value": "Attempts",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-dates",
+                    "value": "Created → sent",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-attachments",
+                    "value": "Attachments",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-error",
+                    "value": "Last error",
+                    "type": "string"
+                },
+                {
+                    "id": "detail-preview",
+                    "value": "Preview",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-title",
+                    "value": "Queue settings",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-label",
+                    "value": "Sending mode",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-hibrido",
+                    "value": "Hybrid (sends right away, uses the queue on failure or limit)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-sempre-fila",
+                    "value": "Always through the queue (sent by the scheduler)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-mode-help",
+                    "value": "In hybrid mode the e-mail goes out right away while the per-minute limit is not reached; if SMTP fails, it goes back to the queue. In \"always through the queue\", the task scheduled every minute does the sending.",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-rate-label",
+                    "value": "Sends per minute",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-attempts-label",
+                    "value": "Maximum attempts",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-retention-label",
+                    "value": "History days",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-retry-help",
+                    "value": "After each failure the next attempt waits 1, 5, 15 and 60 minutes. The history of sent or cancelled messages is deleted after the configured days (0 keeps everything); failures are never deleted automatically.",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-redirect-label",
+                    "value": "Redirect test e-mails (MAIL_REDIRECT_TO)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-redirect-placeholder",
+                    "value": "E.g. qa@yourdomain.com (empty turns it off)",
+                    "type": "string"
+                },
+                {
+                    "id": "settings-redirect-help",
+                    "value": "Outside production, every e-mail goes only to this address, with the subject \"[TESTE → original recipient]\". In production the value is ignored. It is the same field as in Admin Environment.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-save",
+                    "value": "Save settings",
+                    "type": "string"
+                },
+                {
+                    "id": "test-title",
+                    "value": "Send a test e-mail",
+                    "type": "string"
+                },
+                {
+                    "id": "test-help",
+                    "value": "Goes through the same path as any system e-mail: configured SMTP, queue, per-minute limit and test redirect. The result shows up in the history.",
+                    "type": "string"
+                },
+                {
+                    "id": "test-recipient-label",
+                    "value": "Recipient",
+                    "type": "string"
+                },
+                {
+                    "id": "button-send-test",
+                    "value": "Send test",
+                    "type": "string"
+                },
+                {
+                    "id": "test-email-subject",
+                    "value": "Communication test",
+                    "type": "string"
+                },
+                {
+                    "id": "test-email-title",
+                    "value": "Communication test",
+                    "type": "string"
+                },
+                {
+                    "id": "test-email-body",
+                    "value": "This e-mail was sent by the Communication module to validate SMTP, the queue and the test redirect.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-generic",
+                    "value": "The action could not be completed. Please try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-not-found",
+                    "value": "Message not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-cancel-invalid",
+                    "value": "Only messages still in the queue can be cancelled.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-cancel-success",
+                    "value": "Message cancelled.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-invalid",
+                    "value": "Only sent or failed messages can be resent.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-sent",
+                    "value": "Message resent.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-queued",
+                    "value": "Message queued for resending.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-resend-failed",
+                    "value": "The resend failed. See the error in the history.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-config-invalid",
+                    "value": "Check the values: hybrid or always-queue mode, sends per minute between 1 and 1000, attempts between 1 and 10 and history between 0 and 3650 days.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-post-required",
+                    "value": "This action requires a POST request.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-redirect-invalid",
+                    "value": "The test redirect address is not a valid e-mail.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-config-save-error",
+                    "value": "The .env file of this installation could not be written.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-config-saved",
+                    "value": "Settings saved.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-invalid",
+                    "value": "Enter a valid recipient e-mail.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-disabled",
+                    "value": "E-mail sending is turned off on this installation (EMAIL_ACTIVE).",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-sent",
+                    "value": "Test e-mail sent.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-queued",
+                    "value": "Test e-mail accepted and queued.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-test-failed",
+                    "value": "The test e-mail failed. See the error in the history.",
+                    "type": "string"
+                }
+            ]
+        }
+    },
+    "asset_version": "b29060c806f836ba"
+}
