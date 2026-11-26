@@ -5,6 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.20] - 2026-11-26
+
+### Added
+- UI 3.0 tabs (`data-c2f-abas`) wrap onto new lines instead of scrolling sideways. Below 640 px, groups with three or more tabs show a compact section picker with the active tab's name and icon. Choosing an option clicks the original tab, so module handlers and the remembered tab keep working. Opt out with `data-c2f-abas-sem-seletor-mobile`.
+- Modal `<dialog>` windows and drawers close when the user clicks the backdrop. A text selection dragged from inside the dialog does not close it, dialogs opened with `show()` are not affected, and `data-c2f-sem-fechar-fora` turns the behavior off.
+
+### Changed
+- `c2fControles.aviso` is the single UI 3.0 notice (toast): an icon per type, a repeated message replaces the previous one, at most three on screen, the timer pauses on hover, and notices appear above an open modal `<dialog>`.
+- Control styles are scoped to their containers, so generic module rules such as `button { background: … }` no longer override the tab picker or the notice close button.
+
 ## [3.0.19] - 2026-11-26
 
 ### Added

@@ -5,6 +5,16 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.20] - 2026-11-26
+
+### Added
+- As abas da interface 3.0 (`data-c2f-abas`) quebram linha em vez de rolar para o lado. Abaixo de 640 px, grupos com três ou mais abas mostram um seletor compacto de seção com o nome e o ícone da aba ativa. Escolher uma opção clica na aba original, então os eventos dos módulos e a aba lembrada continuam funcionando. Para desligar, use `data-c2f-abas-sem-seletor-mobile`.
+- Janelas `<dialog>` modais e gavetas fecham com um clique no fundo. Uma seleção de texto arrastada de dentro do diálogo não o fecha, diálogos abertos com `show()` não são afetados e `data-c2f-sem-fechar-fora` desliga o comportamento.
+
+### Changed
+- `c2fControles.aviso` passa a ser o aviso (toast) único da interface 3.0: ícone por tipo, mensagem repetida substitui a anterior, no máximo três na tela, tempo pausado ao passar o mouse e exibição por cima de um `<dialog>` modal aberto.
+- Os estilos dos controles ficam restritos aos seus contêineres, e regras genéricas de módulos como `button { background: … }` deixam de sobrescrever o seletor de abas e o botão de fechar do aviso.
+
 ## [3.0.19] - 2026-11-26
 
 ### Added
