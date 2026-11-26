@@ -48,6 +48,17 @@ user-invocable: false
 ```
 O deploy publica o projeto via `deploy-project-v2.sh`. Não atribua a ele as oito etapas de `project:update-all` nem a flag `--skip-css`, que o wrapper de deploy não repassa. A Regra #8 cobre os lotes com alterações do Core que precisam de validação no Lab de um projeto.
 
+### Regra de `dist/`, `css:rebuild` e `assets:publish` por Modo de Deploy (Lab/SSH vs HTTP-Only)
+
+- **Lab (`local: true`) ou remoto com SSH (`deploy_mode="ssh"` + `ssh_public_path`):** `c2f css:rebuild --project=<id>` e `c2f assets:publish --project=<id>` aplicam-se normalmente quando necessários (ou via `project:update-all` quando houver mudança do Core).
+- **Remoto HTTP-only (`local: false`, sem SSH — `project:deploy <id>` via `/_api/project/update`):**
+  - **Proibido** exigir ou rodar `c2f css:rebuild --project=<id>` ou `c2f assets:publish --project=<id>` contra o servidor remoto (exigem `.env` local ou `ssh_public_path` e falham em HTTP-only).
+  - Derivados (`*.precompiled.css`, `*.min.js`) são compilados/minificados localmente antes (Categoria C ou JS) e empacotados no ZIP do `project:deploy`.
+  - No destino, `public_html/dist/` é ressincronizado dentro do próprio `/_api/project/update` (sem CLI online nem SSH), com resumo em `installation.dist` (`criado`, `verificados`, `publicados`, `atualizados`, `inalterados`, `falhas`), conforme a `REQ-306` do Core (biblioteca PHP base que cria e atualiza `dist/`).
+- **`dist/.manifest.json`:**
+  - **`HTTP 404`** (servidor anterior à `REQ-306`, `dist/` não inicializado): **NUNCA classificar como bloqueio ou risco de JS antigo.** O runtime faz fallback para o controlador `arquivo-estatico`, servindo os arquivos novos de `gestor/` entregues pelo `project:deploy`.
+  - **`HTTP 200`** (Labs, SSH ou servidor com `REQ-306`): entrega via `dist/` ativa; valide que o hash (`sha1`)/versão do asset alterado foi atualizado e confira `installation.dist`.
+
 > [!IMPORTANT]
 > **Prevenção do Estado Híbrido Pós-Deploy**:
 > Na Categoria C, `css:rebuild` recalcula o CSS derivado (`css_precompiled` e `css_compiled`) a partir do HTML real no banco. Na Categoria A, sem alteração das fontes de CSS, `--skip-css` dispensa esta etapa; não force um rebuild separado. Isso preserva a correspondência entre HTML e CSS sem build desnecessário.
