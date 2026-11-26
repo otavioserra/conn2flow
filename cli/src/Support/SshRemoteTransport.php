@@ -130,7 +130,7 @@ final class SshRemoteTransport
      * Linha de comando `rsync` que envia um diretório local para a VM.
      * Ambos os caminhos são tratados como diretórios (barra final obrigatória no rsync).
      */
-    public function buildRsyncCommand(string $localDirectory, string $remoteDirectory, bool $delete = false): string
+    public function buildRsyncCommand(string $localDirectory, string $remoteDirectory, bool $delete = false, array $excludes = []): string
     {
         $local = rtrim(str_replace('\\', '/', $localDirectory), '/') . '/';
         $remote = $this->requireAbsolutePath($remoteDirectory, 'remote directory') . '/';
@@ -138,6 +138,9 @@ final class SshRemoteTransport
         $options = ['-az'];
         if ($delete) {
             $options[] = '--delete';
+        }
+        foreach ($excludes as $exclude) {
+            $options[] = '--exclude=' . escapeshellarg($exclude);
         }
 
         $options[] = '-e';

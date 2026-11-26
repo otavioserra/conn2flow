@@ -32,24 +32,6 @@ use Throwable;
  */
 final class AssetsPublishCommand implements CommandInterface
 {
-    /** Extensões entregues diretamente pelo servidor web. Lista de PERMISSÃO. */
-    private const EXTENSOES = [
-        'js', 'css',
-        'png', 'jpg', 'jpeg', 'webp', 'gif', 'svg', 'ico', 'bmp', 'avif',
-        'woff', 'woff2', 'ttf', 'otf', 'eot',
-        'mp4', 'webm', 'ogg', 'mp3',
-        'webmanifest',
-    ];
-
-    /**
-     * Arquivos de `gestor/assets/` que são insumo do pipeline, não asset de página.
-     * Publicá-los exporia o inventário interno do build na pasta pública.
-     */
-    private const NAO_PUBLICAR = [
-        'asset-versions.json',
-        'minify-manifest.json',
-    ];
-
     private string $rootPath;
     private ?string $projectGestorPath = null;
 
@@ -84,7 +66,7 @@ final class AssetsPublishCommand implements CommandInterface
                "                 deploy_mode=\"ssh\", publishes locally and rsyncs into ssh_public_path.\n" .
                "  --public=PATH  DocumentRoot to publish into. Defaults to PUBLIC_PATH in gestor/.env.\n" .
                "  --dev          Publish the authored JavaScript instead of the .min.js derivative.\n" .
-               "  --clean        Remove files under dist/ that are no longer in the manifest.\n" .
+               "  --clean        Remove obsolete managed assets locally and mirror staging over SSH.\n" .
                "  --dry-run      Report what would be published, writing nothing.\n" .
                "  --opcional     Used by pipelines: a missing DocumentRoot is reported, not an error.\n" .
                "  --confirmar-remoto  Required to push dist/ to a VM over SSH.\n" .
@@ -95,7 +77,8 @@ final class AssetsPublishCommand implements CommandInterface
     {
         $output->title('Conn2Flow — Publicação de assets estáticos (dist/)');
 
-        $this->carregarContratoDeMapeamento();
+        require_once dirname(__DIR__, 3) . '/gestor/bibliotecas/dist-publicacao.php';
+        $this->projectGestorPath = null;
 
         $remoto = $this->resolverAlvoDeProjeto($input, $output);
         if ($remoto === false) {
@@ -105,7 +88,7 @@ final class AssetsPublishCommand implements CommandInterface
         // Publicação remota: o `dist/` é montado numa área de staging local e enviado por rsync,
         // para que a etapa continue idempotente e verificável antes de tocar na VM.
         $publicPath = $remoto !== null
-            ? $this->prepararStaging($remoto['staging'], $output)
+            ? rtrim(str_replace('\\', '/', $remoto['staging']), '/') . '/'
             : $this->resolverPublicPath($input, $output);
 
         if ($publicPath === null) {
@@ -123,124 +106,33 @@ final class AssetsPublishCommand implements CommandInterface
         }
         $output->writeln('');
 
-        $fontes = $this->descobrirFontes();
-        if ($fontes === []) {
-            $output->warning('Nenhum asset publicável encontrado em gestor/assets ou gestor/modulos.');
-            return 0;
-        }
+        $resumo = dist_publicar_completo($this->rootPath . '/gestor', $distPath, [
+            'projeto' => $this->projectGestorPath,
+            'preferir_minificado' => $preferirMinificado,
+            'limpar' => $input->hasOption('clean'),
+            'simular' => $dryRun,
+            'relatar' => static function (string $acao, string $caminho) use ($output, $dryRun): void {
+                if ($acao === 'falha') {
+                    $output->warning('Falha ao publicar: ' . $caminho);
+                } elseif ($dryRun) {
+                    $output->writeln('  [dry-run] ' . $acao . ' ' . $caminho);
+                }
+            },
+        ]);
 
-        if (!$dryRun && !$this->garantirDiretorio($distPath)) {
-            $output->error("Não foi possível criar o diretório de publicação: {$distPath}");
-            return 1;
-        }
-
-        $manifestoPath = $distPath . '.manifest.json';
-        $manifestoAnterior = [];
-        if (is_file($manifestoPath)) {
-            $decodificado = json_decode((string)file_get_contents($manifestoPath), true);
-            if (is_array($decodificado) && isset($decodificado['arquivos']) && is_array($decodificado['arquivos'])) {
-                $manifestoAnterior = $decodificado['arquivos'];
-            }
-        }
-
-        $arquivos = [];
-        $publicados = 0;
-        $inalterados = 0;
-        $falhas = [];
-        $bytes = 0;
-
-        foreach ($fontes as $urlRelativa => $origem) {
-            $fisico = $preferirMinificado ? $this->preferirMinificado($origem) : $origem;
-
-            $conteudo = @file_get_contents($fisico);
-            if ($conteudo === false) {
-                $falhas[] = $urlRelativa;
-                continue;
-            }
-
-            $hash = sha1($conteudo);
-            $destino = $distPath . str_replace('/', DIRECTORY_SEPARATOR, $urlRelativa);
-
-            $registro = [
-                'sha1' => $hash,
-                'bytes' => strlen($conteudo),
-                // Token curto de cache busting: muda somente quando o conteúdo publicado muda.
-                'v' => substr($hash, 0, 16),
-                'fonte' => $this->relativoAoGestor($fisico),
-            ];
-
-            $atual = is_file($destino) && ($manifestoAnterior[$urlRelativa]['sha1'] ?? null) === $hash;
-
-            if ($atual) {
-                $inalterados++;
-                $arquivos[$urlRelativa] = $registro;
-                $bytes += strlen($conteudo);
-                continue;
-            }
-
-            if ($dryRun) {
-                $output->writeln('  [dry-run] ' . $urlRelativa);
-                $arquivos[$urlRelativa] = $registro;
-                $publicados++;
-                $bytes += strlen($conteudo);
-                continue;
-            }
-
-            if (!$this->garantirDiretorio(dirname($destino) . DIRECTORY_SEPARATOR)
-                || file_put_contents($destino, $conteudo) === false) {
-                $falhas[] = $urlRelativa;
-                $output->writeln('  FALHA     ' . $urlRelativa);
-                continue;
-            }
-
-            $arquivos[$urlRelativa] = $registro;
-            $publicados++;
-            $bytes += strlen($conteudo);
-        }
-
-        ksort($arquivos);
-
-        if (!$dryRun) {
-            $this->gravarHtaccess($distPath);
-        }
-
-        $removidos = 0;
-        if ($input->hasOption('clean')) {
-            $removidos = $this->limpar($distPath, $arquivos, $dryRun, $output);
-        }
-
-        if (!$dryRun) {
-            $manifesto = [
-                'versao' => 1,
-                'gerado_em' => date('c'),
-                'minificado' => $preferirMinificado,
-                'arquivos' => $arquivos,
-            ];
-
-            if (file_put_contents(
-                $manifestoPath,
-                json_encode($manifesto, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n"
-            ) === false) {
-                $output->error("Não foi possível gravar o manifesto em {$manifestoPath}");
-                return 1;
-            }
-        }
-
-        $output->writeln('');
         $output->writeln(sprintf(
-            'publicados: %d | ja atuais: %d | removidos: %d | falhas: %d | total: %.1f KB',
-            $publicados,
-            $inalterados,
-            $removidos,
-            count($falhas),
-            $bytes / 1024
+            'publicados: %d | atualizados: %d | ja atuais: %d | removidos: %d | falhas: %d | total: %.1f KB',
+            $resumo['publicados'],
+            $resumo['atualizados'],
+            $resumo['inalterados'],
+            $resumo['removidos'],
+            $resumo['falhas'],
+            $resumo['bytes'] / 1024
         ));
 
-        if ($falhas !== []) {
-            // Sem o arquivo em dist/, a URL antiga continua resolvendo pelo controlador estático:
-            // o site não quebra, apenas perde a entrega direta desses arquivos.
-            $output->warning('Não publicados (seguem sendo servidos pelo arquivo-estatico): '
-                . implode(', ', array_slice($falhas, 0, 8)));
+        if ($resumo['falhas'] > 0) {
+            $output->error('A publicação encontrou falhas em ' . $distPath);
+            return 1;
         }
 
         if (!$dryRun) {
@@ -252,18 +144,6 @@ final class AssetsPublishCommand implements CommandInterface
         }
 
         return 0;
-    }
-
-    private function prepararStaging(string $staging, OutputInterface $output): ?string
-    {
-        $normalizado = rtrim(str_replace('\\', '/', $staging), '/') . '/';
-
-        if (!is_dir($normalizado) && !mkdir($normalizado, 0775, true) && !is_dir($normalizado)) {
-            $output->error("Não foi possível criar a área de staging: {$normalizado}");
-            return null;
-        }
-
-        return $normalizado;
     }
 
     /**
@@ -337,7 +217,7 @@ final class AssetsPublishCommand implements CommandInterface
         $destino = $transport->publicPath() . '/dist';
 
         $mkdir = $transport->buildEnsureDirectoryCommand($destino);
-        $rsync = $transport->buildRsyncCommand($distPath, $destino, $input->hasOption('clean'));
+        $rsync = $transport->buildRsyncCommand($distPath, $destino, $input->hasOption('clean'), ['/.publish.lock']);
         if (PHP_OS_FAMILY === 'Windows') {
             // Reuse the pipeline's paired cwRsync/OpenSSH and Cygwin path handling.
             $script = $this->rootPath . '/ai-workspace/en/scripts/projects/publish-project-assets.sh';
@@ -402,17 +282,6 @@ final class AssetsPublishCommand implements CommandInterface
         return $codigo;
     }
 
-    /** Carrega o contrato de mapeamento compartilhado com o runtime do gestor. */
-    private function carregarContratoDeMapeamento(): void
-    {
-        if (function_exists('recursos_dist_mapear_fonte')) {
-            return;
-        }
-
-        require_once $this->rootPath . DIRECTORY_SEPARATOR . 'gestor' . DIRECTORY_SEPARATOR
-            . 'bibliotecas' . DIRECTORY_SEPARATOR . 'recursos.php';
-    }
-
     /**
      * DocumentRoot de publicação: opção explícita, `PUBLIC_PATH` do `.env` ou nada.
      * Nunca adivinhamos o diretório: escrever na pasta errada de um servidor compartilhado é pior
@@ -473,187 +342,4 @@ final class AssetsPublishCommand implements CommandInterface
         return null;
     }
 
-    /**
-     * Assets publicáveis, indexados pelo caminho que terão na URL.
-     *
-     * @return array<string, string> caminho na URL => caminho físico de origem
-     */
-    private function descobrirFontes(): array
-    {
-        $gestor = $this->rootPath . DIRECTORY_SEPARATOR . 'gestor';
-        $fontes = [];
-
-        foreach (array_unique(array_filter([$gestor, $this->projectGestorPath])) as $gestor) {
-            foreach (['assets', 'modulos'] as $raiz) {
-                $base = $gestor . DIRECTORY_SEPARATOR . $raiz;
-                if (!is_dir($base)) {
-                    continue;
-                }
-
-                $iterador = new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
-                    \RecursiveIteratorIterator::SELF_FIRST
-                );
-
-                foreach ($iterador as $item) {
-                    if (!$item->isFile() || $item->isLink()) {
-                        continue;
-                    }
-
-                    $nome = $item->getFilename();
-                    if (in_array($nome, self::NAO_PUBLICAR, true)) {
-                        continue;
-                    }
-
-                    $extensao = strtolower($item->getExtension());
-                    if (!in_array($extensao, self::EXTENSOES, true)) {
-                        continue;
-                    }
-
-                    // `X.min.js` com `X.js` ao lado é DERIVADO, não asset independente: ele já será
-                    // publicado como `X.js` por `preferirMinificado()`. Publicá-lo também sob nome
-                    // próprio duplicaria o arquivo na pasta pública sem nenhuma URL que o peça.
-                    // Terceiros que só distribuem o minificado (datatables, jQuery Mask) não têm par
-                    // e continuam entrando normalmente.
-                    if (substr($nome, -7) === '.min.js'
-                        && is_file(substr($item->getPathname(), 0, -7) . '.js')) {
-                        continue;
-                    }
-
-                    $relativo = $raiz . '/' . str_replace('\\', '/', substr($item->getPathname(), strlen($base) + 1));
-                    $url = recursos_dist_mapear_fonte($relativo);
-                    if ($url === '') {
-                        continue;
-                    }
-
-                    $fontes[$url] = $item->getPathname();
-                }
-            }
-        }
-        ksort($fontes);
-
-        return $fontes;
-    }
-
-    /**
-     * Escolhe o derivado `.min.js` quando ele existe — a mesma decisão que
-     * `arquivo_estatico_preferir_minificado()` toma em runtime, antecipada para o build.
-     */
-    private function preferirMinificado(string $arquivo): string
-    {
-        if (substr($arquivo, -3) !== '.js' || substr($arquivo, -7) === '.min.js') {
-            return $arquivo;
-        }
-
-        $minificado = substr($arquivo, 0, -3) . '.min.js';
-
-        // Arquivo vazio significa minificação interrompida no meio: o de autoria é maior, porém correto.
-        return (is_file($minificado) && filesize($minificado) > 0) ? $minificado : $arquivo;
-    }
-
-    /**
-     * Grava o `.htaccess` de cache dentro de `dist/` — paridade com o `location /dist/` do Nginx.
-     *
-     * Fica DENTRO do diretório de propósito: escopar por diretório no `.htaccess` da raiz exigiria
-     * a diretiva `<If>`, que só existe no Apache 2.4 e derruba o site inteiro com 500 no 2.2. Aqui
-     * o escopo vem da própria localização do arquivo, e os `IfModule` tornam o bloco inerte onde os
-     * módulos não estão carregados. No Nginx o arquivo é ignorado e o template já nega ocultos.
-     *
-     * O cache é longo com segurança porque toda URL emitida carrega `?v=<hash do conteúdo>`.
-     */
-    private function gravarHtaccess(string $distPath): void
-    {
-        $conteudo = "# Conn2Flow req-028 - gerado por `c2f assets:publish`. Nao editar a mao.\n"
-            . "# Cache longo dos assets publicados; a URL carrega ?v=<hash>, entao nunca serve\n"
-            . "# conteudo antigo. No Nginx este arquivo e inerte (ver location /dist/ no template).\n"
-            . "<IfModule mod_expires.c>\n"
-            . "\tExpiresActive On\n"
-            . "\tExpiresDefault \"access plus 1 year\"\n"
-            . "</IfModule>\n"
-            . "<IfModule mod_headers.c>\n"
-            . "\tHeader set Cache-Control \"public, max-age=31536000, immutable\"\n"
-            . "</IfModule>\n"
-            . "# O diretorio guarda apenas assets: nenhum deles deve ser executado pelo servidor.\n"
-            . "<IfModule mod_php.c>\n"
-            . "\tphp_flag engine off\n"
-            . "</IfModule>\n"
-            . "Options -Indexes -ExecCGI\n"
-            . "\n"
-            . "# O manifesto (.manifest.json) e este proprio arquivo sao internos do build.\n"
-            . "<FilesMatch \"^\\.\">\n"
-            . "\t<IfModule mod_authz_core.c>\n"
-            . "\t\tRequire all denied\n"
-            . "\t</IfModule>\n"
-            . "\t<IfModule !mod_authz_core.c>\n"
-            . "\t\tOrder allow,deny\n"
-            . "\t\tDeny from all\n"
-            . "\t</IfModule>\n"
-            . "</FilesMatch>\n";
-
-        @file_put_contents($distPath . '.htaccess', $conteudo);
-    }
-
-    private function relativoAoGestor(string $absoluto): string
-    {
-        $absoluto = str_replace('\\', '/', $absoluto);
-        foreach (array_filter([$this->rootPath . '/gestor', $this->projectGestorPath]) as $gestor) {
-            $gestor = rtrim(str_replace('\\', '/', $gestor), '/') . '/';
-            if (strpos($absoluto, $gestor) === 0) return substr($absoluto, strlen($gestor));
-        }
-        return basename($absoluto);
-    }
-
-    private function garantirDiretorio(string $diretorio): bool
-    {
-        return is_dir($diretorio) || @mkdir($diretorio, 0755, true) || is_dir($diretorio);
-    }
-
-    /**
-     * Remove de `dist/` o que não está mais no manifesto novo.
-     *
-     * @param array<string, array<string, mixed>> $arquivos
-     */
-    private function limpar(string $distPath, array $arquivos, bool $dryRun, OutputInterface $output): int
-    {
-        if (!is_dir($distPath)) {
-            return 0;
-        }
-
-        $removidos = 0;
-        $iterador = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($distPath, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($iterador as $item) {
-            $relativo = str_replace('\\', '/', substr($item->getPathname(), strlen($distPath)));
-
-            // Diretórios ficam para o fim (CHILD_FIRST) e só somem quando esvaziam; eles não
-            // entram na contagem, que reporta arquivos removidos.
-            if ($item->isDir()) {
-                if (!$dryRun) {
-                    @rmdir($item->getPathname());
-                }
-                continue;
-            }
-
-            // O manifesto indexa o diretório e o .htaccess define sua política de cache: os dois
-            // são gerados por este comando, não entram no manifesto e nunca são removidos por ele.
-            if ($relativo === '.manifest.json' || $relativo === '.htaccess' || isset($arquivos[$relativo])) {
-                continue;
-            }
-
-            if ($dryRun) {
-                $output->writeln('  [dry-run] remover ' . $relativo);
-                $removidos++;
-                continue;
-            }
-
-            if (@unlink($item->getPathname())) {
-                $removidos++;
-            }
-        }
-
-        return $removidos;
-    }
 }
