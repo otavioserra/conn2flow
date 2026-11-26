@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.10",
+    "versao": "1.0.11",
     "bibliotecas": [
         "interface",
         "html"
@@ -2448,5 +2448,5 @@
             ]
         }
     },
-    "asset_version": "fae57615f783f702"
+    "asset_version": "59a8f6c500ce70cf"
 }

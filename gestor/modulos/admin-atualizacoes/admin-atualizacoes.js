@@ -129,19 +129,10 @@ $(document).ready(function () {
     // req-245 / BATCH-254: aba Automático — interruptor, período, opções e estado da atualização automática.
     (function atualizacaoAutomatica() {
         const painel = document.getElementById('atualizacoes-auto');
-        const modos = document.getElementById('atualizacoes-modos');
-        if (!painel || !modos) return;
+        if (!painel) return;
         const url = gestor.raiz + String(gestor.moduloCaminho).replace(/\/+$/, '') + '/';
         const mensagem = document.getElementById('auto-mensagem');
         const estado = document.getElementById('auto-estado');
-        const chave = 'c2f-admin-atualizacoes-modo';
-
-        // A aba aberta é lembrada neste navegador.
-        const abas = window.c2fControles && (window.c2fControles.de(modos) || window.c2fControles.criar('abas', modos));
-        if (abas) {
-            try { if (localStorage.getItem(chave) === 'automatico') abas.definir('automatico', true); } catch (e) { /* armazenamento indisponível */ }
-            abas.on('mudou', function (nome) { try { localStorage.setItem(chave, nome); } catch (e) { /* idem */ } });
-        }
 
         function avisar(texto, erro) {
             mensagem.textContent = texto || '';

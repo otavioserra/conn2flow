@@ -41,6 +41,8 @@ const espera = () => new Promise((r) => setTimeout(r, 0));
 
 beforeEach(() => {
   document.body.innerHTML = '';
+  window.history.replaceState(null, '', '/');
+  window.sessionStorage.clear();
   window.gestor = { controlesTextos: { ok: 'OK', cancelar: 'Cancelar', buscar: 'Buscar…', semResultado: 'Nenhum resultado' } };
 });
 
@@ -155,6 +157,87 @@ describe('select', () => {
 });
 
 describe('abas', () => {
+  const grupo = (atributos = '', interno = '') => `
+    <div data-c2f-abas ${atributos}>
+      <div><button data-c2f-aba="a" aria-selected="true">A</button><button data-c2f-aba="b">B</button><button data-c2f-aba="c">C</button></div>
+      <div data-c2f-painel="a">${interno}</div><div data-c2f-painel="b"></div><div data-c2f-painel="c"></div>
+    </div>`;
+
+  function montar(c, html, url) {
+    window.history.replaceState(null, '', url);
+    document.body.innerHTML = html;
+    const elementos = Array.from(document.querySelectorAll('[data-c2f-abas]'));
+    return elementos.map((el) => c.criar('abas', el));
+  }
+
+  it('restaura depois de recarregar ou retornar à rota e salva pelo teclado', () => {
+    const c = carregar();
+    const html = grupo('id="ficha"');
+    let [abas] = montar(c, html, '/ficha/');
+    abas.botoes[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(abas.valor()).toBe('b');
+    expect(window.sessionStorage.getItem('c2f:abas:/ficha/:ficha')).toBe('b');
+    expect(montar(c, html, '/ficha/editar/')[0].valor()).toBe('a');
+    [abas] = montar(carregar(), html, '/ficha/');
+    expect(abas.valor()).toBe('b');
+    expect(abas.botoes[1].tabIndex).toBe(0);
+    expect(abas.paineis[1].hidden).toBe(false);
+  });
+
+  it('isola grupos por chave, índice e parâmetro, inclusive em abas aninhadas', () => {
+    const c = carregar();
+    const html = grupo('id="outer" data-c2f-abas-chave="ficha" data-c2f-abas-param="id"', grupo()) + grupo();
+    let [ficha, interna, outra] = montar(c, html, '/ficha/?id=1&x=2');
+    interna.botoes[1].click();
+    expect(ficha.valor()).toBe('a');
+    ficha.botoes[2].click();
+    expect(interna.valor()).toBe('b');
+    expect(outra.valor()).toBe('a');
+    expect(montar(c, html, '/ficha/?id=2&x=2').map((abas) => abas.valor())).toEqual(['a', 'b', 'a']);
+    expect(montar(c, html, '/ficha/?id=1&x=9').map((abas) => abas.valor())).toEqual(['c', 'b', 'a']);
+    expect(window.sessionStorage.getItem('c2f:abas:/ficha/:ficha?param=id:["1"]')).toBe('c');
+  });
+
+  it('prioriza tab e hash válidos e notifica listeners de conteúdo lazy', () => {
+    const c = carregar();
+    const html = grupo('data-c2f-abas-escopo="query"');
+    montar(c, html, '/ficha/?id=1&tipo=x')[0].botoes[1].click();
+    const mudou = vi.fn();
+    document.body.addEventListener('c2f:mudou', mudou);
+    try {
+      expect(montar(c, html, '/ficha/?tipo=x&tab=c&id=1#b')[0].valor()).toBe('c');
+      expect(mudou.mock.lastCall[0].detail.valor).toBe('c');
+      expect(montar(c, html, '/ficha/?tab=inválida&id=1&tipo=x#%63')[0].valor()).toBe('c');
+      expect(montar(c, html, '/ficha/?tipo=x&id=1#%ZZ')[0].valor()).toBe('b');
+      expect(montar(c, html, '/ficha/?id=2&tipo=x')[0].valor()).toBe('a');
+    } finally {
+      document.body.removeEventListener('c2f:mudou', mudou);
+    }
+  });
+
+  it('respeita opt-out e usa o HTML quando a aba salva sumiu ou o storage falha', () => {
+    const c = carregar();
+    const html = grupo('id="grupo"');
+    window.sessionStorage.setItem('c2f:abas:/ficha/:grupo', 'removida');
+    expect(montar(c, html, '/ficha/')[0].valor()).toBe('a');
+    const semMemoria = grupo('id="grupo" data-c2f-abas-sem-memoria');
+    montar(c, semMemoria, '/ficha/')[0].botoes[1].click();
+    expect(window.sessionStorage.getItem('c2f:abas:/ficha/:grupo')).toBe('removida');
+    expect(montar(c, semMemoria, '/ficha/?tab=c')[0].valor()).toBe('c');
+
+    const storage = vi.spyOn(window, 'sessionStorage', 'get').mockImplementation(() => {
+      throw new DOMException('Storage indisponível', 'SecurityError');
+    });
+    try {
+      const [abas] = montar(c, html, '/ficha/');
+      expect(abas.valor()).toBe('a');
+      abas.botoes[1].click();
+      expect(abas.valor()).toBe('b');
+    } finally {
+      storage.mockRestore();
+    }
+  });
+
   it('liga botões e painéis por data-c2f-aba / data-c2f-painel, com setas', () => {
     const c = carregar();
     document.body.innerHTML = '<div data-c2f-abas><div><button data-c2f-aba="a">A</button><button data-c2f-aba="b">B</button></div><div data-c2f-painel="a">pa</div><div data-c2f-painel="b">pb</div></div>';
