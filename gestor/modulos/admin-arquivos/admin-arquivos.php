@@ -503,12 +503,65 @@ function admin_arquivos_ler_pasta($dirRel, $paginaAtual, $filtros){
 function admin_arquivos_query_seletor($prefixo = '?'){
 	global $_GESTOR;
 	if (empty($_GESTOR['paginaIframe'])) return '';
+	if (isset($_GESTOR['admin-arquivos-provider'])) {
+		return $prefixo . htmlspecialchars(http_build_query([
+			'paginaIframe' => 'sim', 'provider' => $_GET['provider'], 'context' => $_GET['context'] ?? '',
+		]), ENT_QUOTES, 'UTF-8');
+	}
 	return $prefixo . 'paginaIframe=sim' . (admin_arquivos_selecao_multipla() ? '&multiplo=sim' : '');
 }
 
 function admin_arquivos_selecao_multipla(){
 	global $_GESTOR;
 	return !empty($_GESTOR['paginaIframe']) && isset($_REQUEST['multiplo']) && $_REQUEST['multiplo'] === 'sim';
+}
+
+/**
+ * A URL do seletor pode apontar para um provedor externo ao acervo local.
+ * O callback recebe a operação, o provedor, o contexto opaco e os campos POST.
+ * Um provedor explícito sem resposta nunca usa o armazenamento padrão.
+ */
+function admin_arquivos_provider($operation){
+	$provider = $_GET['provider'] ?? '';
+	$context = $_GET['context'] ?? '';
+	if (!is_string($provider) || !preg_match('/\A[a-z0-9][a-z0-9-]{0,63}\z/', $provider)
+		|| !is_string($context) || strlen($context) > 512) return null;
+	$input = $operation === 'conteudo' ? ['arquivo' => $_GET['arquivo'] ?? null] : $_POST;
+	$result = hook_apply_filters('admin-arquivos', 'provider.request', null, $operation, $provider, $context, $input);
+	return is_array($result) ? $result : null;
+}
+
+function admin_arquivos_provider_response(){
+	global $_GESTOR;
+	header('Cache-Control: private, no-store');
+	if ($_GESTOR['ajax']) {
+		$operation = $_GESTOR['ajax-opcao'];
+		$_GESTOR['ajax-json'] = ($_SERVER['REQUEST_METHOD'] === 'POST' &&
+			in_array($operation, ['navegar', 'uploadFile', 'excluir', 'metadados'], true)
+			? admin_arquivos_provider($operation) : null) ?? ['status' => 'Erro'];
+		return true;
+	}
+	if (isset($_GET['arquivo'])) {
+		$result = $_SERVER['REQUEST_METHOD'] === 'GET' ? admin_arquivos_provider('conteudo') : null;
+		$mime = $result['mime'] ?? '';
+		if (!in_array($mime, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'], true)
+			|| !is_string($result['content'] ?? null)) {
+			http_response_code(404);
+			exit;
+		}
+		header('X-Content-Type-Options: nosniff');
+		header('Content-Type: '.$mime);
+		echo $result['content'];
+		exit;
+	}
+	$picker = !empty($_GESTOR['paginaIframe']) && $_GESTOR['opcao'] === 'listar-arquivos'
+		? admin_arquivos_provider('seletor') : null;
+	if ($picker === null || ($picker['status'] ?? '') !== 'Ok') {
+		http_response_code(404);
+		exit;
+	}
+	$_GESTOR['admin-arquivos-provider'] = ['uploadInParent' => !empty($picker['uploadInParent'])];
+	return false;
 }
 
 function admin_arquivos_i18n(){
@@ -519,7 +572,7 @@ function admin_arquivos_i18n(){
 		'folder-new','folder-rename','folder-delete','folder-name-placeholder',
 		'folder-not-empty-confirm','delete-confirm','delete-selected','select-all',
 		'view-large','view-list','view-small','view-medium','breadcrumb-root',
-		'thumbs-processing','col-name','col-date','col-type','col-size','empty-folder',
+		'thumbs-processing','col-name','col-date','col-type','col-size','empty-folder','open-new-tab',
 		'upload-error-size','upload-error-extension','copied','preview-size',
 		'destination-folder','create-here',
 		// req-240
@@ -572,6 +625,7 @@ function admin_arquivos_listar_arquivos(){
 
 	$_GESTOR['javascript-vars']['adminArquivos'] = Array(
 		'contentsUrl' => $_GESTOR['url-full'],
+		'provider' => $_GESTOR['admin-arquivos-provider'] ?? null,
 		'dirExplicito' => $dirExplicito,
 		'dirInicial' => ($dirExplicito ? admin_arquivos_dir($_REQUEST['dir']) : admin_arquivos_escopo()),
 		'escopo' => admin_arquivos_escopo(),
@@ -1210,6 +1264,8 @@ function admin_arquivos_start(){
 	global $_GESTOR;
 
 	gestor_incluir_bibliotecas();
+
+	if ((isset($_GET['provider']) || isset($_POST['provider'])) && admin_arquivos_provider_response()) return;
 
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();

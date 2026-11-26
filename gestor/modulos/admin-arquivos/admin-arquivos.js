@@ -134,6 +134,8 @@ $(document).ready(function () {
 	if (typeof gestor === 'undefined' || !gestor.adminArquivos) return;
 
 	var cfg = gestor.adminArquivos;
+	var listUrl = gestor.raiz + gestor.moduloId + '/' + (cfg.provider ? window.location.search : '');
+	var pickerOrigin = cfg.provider ? window.location.origin : '*';
 	// req-240: no seletor (iframe) o corpo ganha a margem do gerenciador; o layout de iframe não a traz.
 	if (cfg.paginaIframe && document.body) document.body.classList.add('c2f-arquivos-iframe');
 	// req-242: aberto para escolher várias imagens, o título diz o que fazer.
@@ -163,7 +165,7 @@ $(document).ready(function () {
 		// raiz, obrigando o usuário a refazer o caminho a cada seleção de arquivo.
 		// Precedência: pasta explícita na URL (`?dir=`, ex.: botão "Adicionar" da listagem) > cache > raiz.
 		var dirInicial = cfg.dirInicial || '';
-		if (!cfg.dirExplicito) {
+		if (!cfg.dirExplicito && !cfg.provider) {
 			var dirSalvo = localStorage.getItem(LS_DIR);
 			if (dirSalvo !== null) dirInicial = dirSalvo;
 		}
@@ -179,6 +181,7 @@ $(document).ready(function () {
 
 		// Mantém o href do botão "Adicionar" apontando para a pasta atual.
 		function atualizarAddHref() {
+			if (cfg.provider) return;
 			var href = gestor.raiz + gestor.moduloId + '/adicionar/?dir=' + encodeURIComponent(estado.dir);
 			if (cfg.paginaIframe) href += '&paginaIframe=sim' + (cfg.selecaoMultipla ? '&multiplo=sim' : '');
 			$('.c2f-folder-tools a[data-id="adicionar"]').attr('href', href);
@@ -189,6 +192,13 @@ $(document).ready(function () {
 		var $breadcrumb = $('#c2f-breadcrumb');
 		var $barra = $('#c2f-thumbs-bar');
 		var $more = $('#c2f-more');
+		if (cfg.provider) {
+			$('#c2f-new-folder, #c2f-cut-selected, #c2f-delete-selected, .c2f-filter-accordion').hide();
+			$('.c2f-folder-tools a[data-id="adicionar"]').toggle(cfg.provider.uploadInParent).on('click', function (event) {
+				event.preventDefault();
+				window.parent.postMessage({ moduloId: gestor.moduloId, action: 'provider-upload' }, pickerOrigin);
+			});
+		}
 
 		// ===== Filtros server-side
 
@@ -289,9 +299,10 @@ $(document).ready(function () {
 				: '<button class="rounded-lg border bg-white p-1.5 c2f-copy text-sm font-medium shadow-sm transition-colors hover:bg-slate-100 border-slate-300" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i data-lucide="link" class="size-4" aria-hidden="true"></i></button>';
 			return '' +
 				'<div class="c2f-item c2f-file" data-tipo="arquivo" data-caminho="' + cam + '" data-nome="' + adminArquivosEsc(a.nome) + '"' +
-				'     data-url="' + adminArquivosEsc(a.url) + '" data-mime="' + adminArquivosEsc(a.mime) + '" data-tipoarq="' + adminArquivosEsc(a.tipo) + '">' +
+				'     data-url="' + adminArquivosEsc(a.url) + '" data-mime="' + adminArquivosEsc(a.mime) + '" data-tipoarq="' + adminArquivosEsc(a.tipo) + '"' +
+				(a.deletable ? ' data-deletable="true"' : '') + '>' +
 				'  <div class="c2f-check"><input type="checkbox" class="c2f-sel" aria-label="' + adminArquivosEsc(a.nome) + '"></div>' +
-				'  <div class="c2f-thumb"><img class="c2f-img" data-caminho="' + cam + '" src="' + adminArquivosEsc(img) + '" alt="' + adminArquivosEsc(a.nome) + '"></div>' +
+				'  <div class="c2f-thumb"><img class="c2f-img"' + (cfg.provider ? ' loading="lazy"' : '') + ' data-caminho="' + cam + '" src="' + adminArquivosEsc(img) + '" alt="' + adminArquivosEsc(a.nome) + '"></div>' +
 				'  <div class="c2f-meta">' +
 				'    <div class="c2f-name" title="' + adminArquivosEsc(a.nome) + '">' + adminArquivosEsc(a.nome) + '</div>' +
 				'    <div class="c2f-sub c2f-col-date">' + adminArquivosEsc(a.data) + '</div>' +
@@ -323,6 +334,9 @@ $(document).ready(function () {
 				$lista.append(html);
 			} else {
 				$lista.html(html);
+			}
+			if (cfg.provider) {
+				$lista.find('.c2f-rename, .c2f-file:not([data-deletable]) .c2f-del').hide();
 			}
 
 			// BATCH-140: todo re-render (trocar de modo, filtrar, paginar) reconstrói o HTML e os
@@ -402,7 +416,7 @@ $(document).ready(function () {
 			$('#gestor-listener').trigger('carregar_abrir');
 			$.ajax({
 				type: 'POST',
-				url: gestor.raiz + gestor.moduloId + '/',
+				url: listUrl,
 				data: {
 					opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'navegar',
 					dir: estado.dir, pagina: estado.pagina, filtros: JSON.stringify(filtros)
@@ -413,10 +427,12 @@ $(document).ready(function () {
 						estado.dir = dados.dir;
 						// BATCH-102: grava também no picker — a pasta corrente é a mesma árvore e o
 						// usuário espera voltar onde parou na próxima seleção de arquivo.
-						localStorage.setItem(LS_DIR, estado.dir);
+						if (!cfg.provider) localStorage.setItem(LS_DIR, estado.dir);
 						atualizarAddHref();
 						renderLista(dados, append);
 						renderUso(dados.uso);
+					} else if (cfg.provider) {
+						alertaSimples(dados.message || t('empty-folder'));
 					} else {
 						console.log('ERROR - listar - ' + dados.status);
 					}
@@ -479,7 +495,8 @@ $(document).ready(function () {
 					nome: $i.attr('data-nome'),
 					mime: $i.attr('data-mime'),
 					data: $i.find('.c2f-col-date').first().text(),
-					thumb: $i.find('.c2f-img').attr('src')
+					thumb: $i.find('.c2f-img').attr('src'),
+					deletable: $i.attr('data-deletable') === 'true'
 				});
 			});
 			return arr;
@@ -535,7 +552,7 @@ $(document).ready(function () {
 				// REQ-243: no seletor de várias imagens a visualização ampliada também só marca o arquivo.
 				if (cfg.paginaIframe && cfg.selecaoMultipla && marcarPeloCaminho(it.caminho)) { $m[0].close(); return; }
 				var dados = { id: it.caminho, caminho: it.caminho, imgSrc: it.thumb, nome: it.nome, data: it.data, tipo: it.mime };
-				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), '*');
+				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), pickerOrigin);
 				$m[0].close();
 			});
 
@@ -573,6 +590,11 @@ $(document).ready(function () {
 
 			$m.on('click', '.c2f-gal-del', function () {
 				var it = galeriaItemAtual(); if (!it) return;
+				if (cfg.provider) {
+					$m[0].close();
+					excluirItens([{ caminho: it.caminho, tipo: 'arquivo' }]);
+					return;
+				}
 				window.c2fControles.dialogo.confirmar(t('delete-confirm'), { perigo: true }).then(function (confirmado) {
 					if (!confirmado) return;
 					$.ajax({
@@ -602,6 +624,10 @@ $(document).ready(function () {
 			var $m = $('#c2f-gallery-modal');
 			$m.find('.c2f-gallery-img').attr('src', it.url).attr('alt', it.nome);
 			$m.find('.c2f-gal-open').attr('href', it.url);
+			if (cfg.provider) {
+				$m.find('.c2f-gal-rename').hide();
+				$m.find('.c2f-gal-del').toggle(it.deletable);
+			}
 			$m.find('.c2f-gallery-name').text(it.nome);
 			$m.find('.c2f-gallery-counter').text('(' + (galeria.idx + 1) + ' / ' + galeria.itens.length + ')');
 			var strip = '';
@@ -667,7 +693,7 @@ $(document).ready(function () {
 				tipo: $item.attr('data-mime')
 			};
 			var messageParent = { moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) };
-			window.parent.postMessage(JSON.stringify(messageParent), '*');
+			window.parent.postMessage(JSON.stringify(messageParent), pickerOrigin);
 		});
 
 		$lista.on('click', '.c2f-del', function (e) {
@@ -774,11 +800,11 @@ $(document).ready(function () {
 		$('#c2f-pick-tray-confirm').on('click', function () {
 			if (arquivosSelecionados().length === 0) return;
 			$('#c2f-pick-selected').trigger('click');
-			window.parent.postMessage(adminArquivosMensagemSeletor('concluir'), '*');
+			window.parent.postMessage(adminArquivosMensagemSeletor('concluir'), pickerOrigin);
 		});
 		$('#c2f-pick-tray-cancel').on('click', function () {
 			limparSelecao();
-			window.parent.postMessage(adminArquivosMensagemSeletor('cancelar'), '*');
+			window.parent.postMessage(adminArquivosMensagemSeletor('cancelar'), pickerOrigin);
 		});
 
 		// Zera a seleção no estado E no DOM (itens e "selecionar todos"), para que o próximo lote comece limpo.
@@ -799,7 +825,7 @@ $(document).ready(function () {
 			// objeto único por evento. Enviar array quebraria todos eles de uma vez.
 			for (var i = 0; i < arquivos.length; i++) {
 				var dados = adminArquivosPayloadPicker(arquivos[i]);
-				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), '*');
+				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), pickerOrigin);
 			}
 
 			limparSelecao();
@@ -896,9 +922,13 @@ $(document).ready(function () {
 			window.c2fControles.dialogo.confirmar(t('delete-confirm'), { perigo: true }).then(function (confirmado) {
 				if (!confirmado) return;
 				$.ajax({
-					type: 'POST', url: gestor.raiz + gestor.moduloId + '/', dataType: 'json',
+					type: 'POST', url: listUrl, dataType: 'json',
 					data: { opcao: 'listar-arquivos', ajax: 'sim', ajaxOpcao: 'excluir', itens: JSON.stringify(itens), recursivo: recursivo ? 'true' : 'false' },
 					success: function (resp) {
+						if (cfg.provider) {
+							if (resp.status !== 'Ok') { alertaSimples(resp.message || t('empty-folder')); return; }
+							window.parent.postMessage({ moduloId: gestor.moduloId, action: 'provider-files-changed' }, window.location.origin);
+						}
 						var naoVazias = [];
 						if (resp && resp.resultados) {
 							for (var k = 0; k < resp.resultados.length; k++) {
