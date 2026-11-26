@@ -31,6 +31,15 @@ The internal observarSelects observer initializes selects inserted after page lo
 
 c2fControles.formatado allows only b, strong, i, em, u, br and code, without attributes. Percentage and currency masks are loaded by controles_incluir: they display pt-BR numbers and submit decimals with a dot during formdata; percentages are limited to 0–100 with two decimal places.
 
+## Single pattern for tabs, dialogs and notices (REQ-308)
+
+Modules and projects consume these behaviors instead of reimplementing them.
+
+- **Tabs (`data-c2f-abas`)**: from 640 px up the strip wraps, with no horizontal scrolling. Below 640 px, groups with 3 or more tabs replace the strip with a compact picker: a "Current section" label (`controles-secao-atual`, or `data-c2f-abas-rotulo-mobile` on the group), the active tab's name and icon, and a panel listing every tab (two columns from 4 tabs). A picker-only icon is an `[data-c2f-aba-icone]` element inside the tab; otherwise the first `<svg>` is used. Choosing clicks the original tab; when a module changes `aria-selected`, `hidden` or `disabled` itself, the picker follows. Opt-out: `data-c2f-abas-sem-seletor-mobile`. A module that stores the tab itself uses `data-c2f-abas-sem-memoria`.
+- **Modal `<dialog>`**: every `<dialog>` opened with `showModal()` closes on a backdrop click, as long as the gesture starts and ends outside the box (selecting text and releasing outside does not close it, nor does a keyboard click). It first dispatches a cancelable `cancel`, then calls `dialog.close()`, so cleanup in the `close` event also runs. Opt-out: `data-c2f-sem-fechar-fora`.
+- **Notices (`c2fControles.aviso(message, type, time | {tempo})`)**: types `sucesso|erro|alerta|info` or `success|error|warning|info`; one icon per type; the same message does not stack; at most 3; the timer pauses on hover; with a modal `<dialog>` open the notice shows inside it. The distance from the bottom edge is the `--c2fc-avisos-base` token.
+- **Confirmations**: `c2fControles.dialogo.confirmar|alerta|perguntar` (Promise). The alert does not close from the backdrop.
+
 ## Generated function reference
 
 <!-- c2f:extract:start -->

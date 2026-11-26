@@ -36,7 +36,8 @@
 
     var PADRAO = { ok: 'OK', cancelar: 'Cancel', buscar: 'Search…', semResultado: 'No results', carregando: 'Loading…',
         fechar: 'Close', selecione: 'Select…', confirmar: 'Confirm', remover: 'Remove', atencao: 'Attention',
-        mesAnterior: 'Previous month', proximoMes: 'Next month', disponivel: 'Available', indisponivel: 'Unavailable' };
+        mesAnterior: 'Previous month', proximoMes: 'Next month', disponivel: 'Available', indisponivel: 'Unavailable',
+        secaoAtual: 'Current section' };
 
     function texto(chave) {
         var t = (global.gestor && global.gestor.controlesTextos) || {};
@@ -231,19 +232,101 @@
         perguntar: function (mensagem, valor, opcoes) { return dialogo('perguntar', mensagem, valor, opcoes); }
     };
 
+    // =========================================================================== <dialog> ao clicar fora
+
+    // REQ-308: todo <dialog> aberto com showModal() (modal, drawer, lightbox) fecha com clique no fundo, em
+    // qualquer módulo ou projeto, sem código no módulo. Só fecha se o gesto COMEÇA e TERMINA fora da caixa:
+    // selecionar texto dentro e soltar o mouse no fundo não fecha. Clique sintetizado por teclado
+    // (clientX/Y = 0) também não. Antes de fechar dispara `cancel` (cancelável, como o Esc): o módulo pode
+    // impedir com preventDefault(). Fecha com dialog.close(), então a limpeza no evento `close` vale igual.
+    // Opt-out: `data-c2f-sem-fechar-fora` no <dialog> (alertas bloqueantes, formulários que não podem sumir).
+    function dialogoModal(d) {
+        try { return d.matches(':modal'); } catch (e) { return !!d.open; }
+    }
+    function dialogoFora(ev) {
+        var d = ev.target;
+        if (!d || d.tagName !== 'DIALOG' || !d.open || d.hasAttribute('data-c2f-sem-fechar-fora') || !dialogoModal(d)) return null;
+        if (ev.clientX === 0 && ev.clientY === 0) return null;
+        var r = d.getBoundingClientRect();
+        var fora = ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom;
+        return fora ? d : null;
+    }
+    var gestoFora = null;
+    function inicioGesto(ev) { gestoFora = dialogoFora(ev); }
+    document.addEventListener('pointerdown', inicioGesto, true);
+    document.addEventListener('mousedown', function (ev) { if (!global.PointerEvent) inicioGesto(ev); }, true);
+    document.addEventListener('click', function (ev) {
+        var d = gestoFora;
+        gestoFora = null;
+        if (!d || ev.target !== d || dialogoFora(ev) !== d) return;
+        var cancelar;
+        try { cancelar = new Event('cancel', { cancelable: true }); } catch (e) { cancelar = document.createEvent('Event'); cancelar.initEvent('cancel', false, true); }
+        if (d.dispatchEvent(cancelar)) d.close();
+    }, true);
+
     // =========================================================================== avisos e carregando
 
+    // REQ-308: o aviso (toast) é o único da plataforma. Tipos em português ou inglês (`success`, `error`,
+    // `warning`, `info`), ícone por tipo, a mesma mensagem não empilha, no máximo 3 na tela e o tempo pausa
+    // com o mouse em cima. Projeto muda posição/cores por tokens (`--c2fc-avisos-base`, ver controles.css).
+    var TIPOS_AVISO = { success: 'sucesso', error: 'erro', warning: 'alerta', info: 'info', sucesso: 'sucesso', erro: 'erro', alerta: 'alerta' };
+    var ICONES_AVISO = {
+        sucesso: ['M20 6 9 17l-5-5'],
+        erro: ['M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20Z', 'm15 9-6 6', 'm9 9 6 6'],
+        alerta: ['m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3', 'M12 9v4', 'M12 17h.01'],
+        info: ['M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20Z', 'M12 16v-4', 'M12 8h.01']
+    };
+    var MAXIMO_AVISOS = 3;
+
+    function iconeSvg(caminhos, classe) {
+        var ns = 'http://www.w3.org/2000/svg';
+        var svg = document.createElementNS(ns, 'svg');
+        var attrs = { 'class': classe, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true', focusable: 'false' };
+        Object.keys(attrs).forEach(function (k) { svg.setAttribute(k, attrs[k]); });
+        caminhos.forEach(function (d) { var p = document.createElementNS(ns, 'path'); p.setAttribute('d', d); svg.appendChild(p); });
+        return svg;
+    }
+
     function aviso(mensagem, tipo, ms) {
+        var opcoes = ms && typeof ms === 'object' ? ms : { tempo: ms };
+        tipo = TIPOS_AVISO[tipo] || 'info';
+        var conteudo = String(mensagem === undefined || mensagem === null ? '' : mensagem);
         var area = document.querySelector('.c2fc-avisos');
-        if (!area) { area = el('div', { 'class': 'c2fc-avisos', 'aria-live': 'polite' }); document.body.appendChild(area); }
-        var item = el('div', { 'class': 'c2fc-aviso' + (tipo && tipo !== 'info' ? ' c2fc-aviso-' + tipo : ''), role: tipo === 'erro' ? 'alert' : 'status' },
-            [el('span', { text: String(mensagem) })]);
-        var fechar = function () { if (item.parentNode) item.parentNode.removeChild(item); };
-        item.appendChild(el('button', { type: 'button', 'aria-label': texto('fechar'), text: '×', onclick: fechar }));
+        if (!area) area = el('div', { 'class': 'c2fc-avisos', 'aria-live': 'polite' });
+        // Com um <dialog> modal aberto (top layer), a área entra nele; senão o aviso ficaria por trás do fundo.
+        var destino = modalAberto() || document.body;
+        if (area.parentNode !== destino) destino.appendChild(area);
+        Array.prototype.slice.call(area.children).forEach(function (antigo) {
+            if (antigo.getAttribute('data-c2fc-mensagem') === conteudo && antigo.c2fcFechar) antigo.c2fcFechar();
+        });
+        while (area.children.length >= MAXIMO_AVISOS) {
+            var primeiro = area.firstElementChild;
+            if (primeiro.c2fcFechar) primeiro.c2fcFechar(); else area.removeChild(primeiro);
+        }
+        var item = el('div', { 'class': 'c2fc-aviso' + (tipo !== 'info' ? ' c2fc-aviso-' + tipo : ''), role: tipo === 'erro' ? 'alert' : 'status', 'data-c2fc-mensagem': conteudo },
+            [iconeSvg(ICONES_AVISO[tipo], 'c2fc-aviso-icone'), el('span', { 'class': 'c2fc-aviso-texto', text: conteudo })]);
+        var relogio = null;
+        var fechar = function () {
+            clearTimeout(relogio);
+            if (item.parentNode) item.parentNode.removeChild(item);
+        };
+        item.c2fcFechar = fechar;
+        item.appendChild(el('button', { type: 'button', 'class': 'c2fc-aviso-fechar', 'aria-label': texto('fechar'), text: '×', onclick: fechar }));
+        var tempo = opcoes.tempo === 0 ? 0 : (opcoes.tempo || (tipo === 'erro' ? 8000 : 4500));
+        function armar() { clearTimeout(relogio); if (tempo > 0) relogio = setTimeout(fechar, tempo); }
+        item.addEventListener('mouseenter', function () { clearTimeout(relogio); });
+        item.addEventListener('mouseleave', armar);
         area.appendChild(item);
-        if (ms !== 0) setTimeout(fechar, ms || (tipo === 'erro' ? 8000 : 4000));
+        armar();
         return fechar;
     }
+
+    // O modal que hospedava os avisos fechou: eles voltam para o próximo modal aberto ou para a página.
+    // `close` não borbulha, mas passa pela captura do documento.
+    document.addEventListener('close', function (ev) {
+        var area = document.querySelector('.c2fc-avisos');
+        if (area && ev.target && ev.target.tagName === 'DIALOG' && ev.target.contains(area)) (modalAberto() || document.body).appendChild(area);
+    }, true);
 
     var carregandoPagina = 0;
 
@@ -664,8 +747,10 @@
                     self.botoes[j].focus();
                 });
             });
-            if (this.botoes[0] && this.botoes[0].parentNode) { this.botoes[0].parentNode.setAttribute('role', 'tablist'); this.botoes[0].parentNode.classList.add('c2fc-abas-lista'); }
+            this.lista = this.botoes[0] ? this.botoes[0].parentNode : null;
+            if (this.lista) { this.lista.setAttribute('role', 'tablist'); this.lista.classList.add('c2fc-abas-lista'); }
             this.paineis.forEach(function (p) { p.setAttribute('role', 'tabpanel'); });
+            if (this.lista && this.botoes.length >= 3 && !this.elemento.hasAttribute('data-c2f-abas-sem-seletor-mobile')) this._montarSeletor();
             var query = new global.URLSearchParams(global.location.search);
             var hash = global.location.hash.slice(1);
             try { hash = decodeURIComponent(hash); } catch (e) { hash = ''; }
@@ -700,10 +785,131 @@
             if (!silencioso && this.chaveMemoria && this.encontrar(nome)) {
                 try { global.sessionStorage.setItem(this.chaveMemoria, nome); } catch (e) { /* armazenamento indisponível */ }
             }
+            this._sincronizarSeletor();
             if (!silencioso && antes !== nome) this.emitir('mudou', nome);
             return this;
+        },
+
+        /**
+         * REQ-308: abaixo de 640 px a faixa de abas (3 ou mais) dá lugar a um seletor compacto: botão com o
+         * rótulo "Seção atual" (ou `data-c2f-abas-rotulo-mobile`), o nome e o ícone da aba ativa e uma seta,
+         * que abre um painel com todas as abas (grade de 2 colunas a partir de 4). Escolher, Esc ou clique
+         * fora fecha. O painel espelha as abas: texto, ícone (`[data-c2f-aba-icone]`, que só aparece aqui, ou
+         * o primeiro <svg>), `hidden` e `disabled`. A escolha CLICA na aba original, então módulos que
+         * escutam o clique da aba continuam funcionando. Se o módulo troca a aba por conta própria
+         * (aria-selected), o seletor acompanha (MutationObserver). Opt-out: `data-c2f-abas-sem-seletor-mobile`.
+         */
+        _montarSeletor: function () {
+            var self = this;
+            var idPainel = idNovo('c2fc-abas-p-');
+            this.gatilhoIcone = el('span', { 'class': 'c2fc-abas-gatilho-icone', 'aria-hidden': 'true' });
+            this.gatilhoAtual = el('strong', { 'class': 'c2fc-abas-gatilho-atual' });
+            var rotulo = this.elemento.getAttribute('data-c2f-abas-rotulo-mobile') || texto('secaoAtual');
+            var gatilho = this.gatilho = el('button', { type: 'button', 'class': 'c2fc-abas-gatilho', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': idPainel }, [
+                this.gatilhoIcone,
+                el('span', { 'class': 'c2fc-abas-gatilho-texto' }, [el('small', { text: rotulo }), this.gatilhoAtual]),
+                iconeSvg(['m6 9 6 6 6-6'], 'c2fc-abas-chevron')
+            ]);
+            var painel = this.painelSeletor = el('div', { 'class': 'c2fc-abas-painel', id: idPainel, role: 'group', 'aria-label': this.lista.getAttribute('aria-label') || rotulo, hidden: true });
+            this.opcoesSeletor = this.botoes.map(function (b) {
+                var o = el('button', { type: 'button', 'class': 'c2fc-abas-opcao', 'data-c2f-abas-opcao': b.getAttribute('data-c2f-aba') });
+                o.addEventListener('click', function () {
+                    self._abrirSeletor(false);
+                    if (!b.disabled) b.click();
+                    gatilho.focus();
+                });
+                painel.appendChild(o);
+                return o;
+            });
+            this.seletor = el('div', { 'class': 'c2fc-abas-seletor' }, [gatilho, painel]);
+            this.lista.parentNode.insertBefore(this.seletor, this.lista);
+            this.lista.classList.add('c2fc-abas-com-seletor');
+
+            gatilho.addEventListener('click', function () { self._abrirSeletor(gatilho.getAttribute('aria-expanded') !== 'true'); });
+            this.seletor.addEventListener('keydown', function (ev) {
+                if (gatilho.getAttribute('aria-expanded') !== 'true') return;
+                if (ev.key === 'Escape') {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    self._abrirSeletor(false);
+                    gatilho.focus();
+                    return;
+                }
+                var passo = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[ev.key];
+                if (!passo) return;
+                var visiveis = self.opcoesSeletor.filter(function (o) { return !o.hidden && !o.disabled; });
+                if (!visiveis.length) return;
+                ev.preventDefault();
+                var i = visiveis.indexOf(document.activeElement);
+                visiveis[(i + passo + visiveis.length) % visiveis.length].focus();
+            });
+            this.foraSeletor = function (ev) { if (self.seletor && !self.seletor.contains(ev.target)) self._abrirSeletor(false); };
+            document.addEventListener('click', this.foraSeletor);
+            if (typeof global.MutationObserver === 'function') {
+                var agendado = false;
+                this.observador = new global.MutationObserver(function () {
+                    if (agendado) return;
+                    agendado = true;
+                    Promise.resolve().then(function () { agendado = false; self._sincronizarSeletor(); });
+                });
+                this.botoes.forEach(function (b) {
+                    self.observador.observe(b, { attributes: true, attributeFilter: ['aria-selected', 'hidden', 'disabled', 'class'], childList: true, characterData: true, subtree: true });
+                });
+            }
+        },
+        _abrirSeletor: function (sim) {
+            if (!this.seletor) return;
+            this.painelSeletor.hidden = !sim;
+            this.gatilho.setAttribute('aria-expanded', sim ? 'true' : 'false');
+            this.seletor.classList.toggle('c2fc-abas-seletor-aberto', !!sim);
+            if (!sim) return;
+            this._sincronizarSeletor();
+            var atual = this.opcoesSeletor.filter(function (o) { return o.getAttribute('aria-current') === 'true'; })[0];
+            if (atual && atual.focus) atual.focus();
+        },
+        _sincronizarSeletor: function () {
+            if (!this.seletor) return;
+            var self = this;
+            var ativa = this.botoes.filter(function (b) { return b.getAttribute('aria-selected') === 'true'; })[0]
+                || this.botoes.filter(function (b) { return b.classList.contains('active'); })[0];
+            var visiveis = 0;
+            this.botoes.forEach(function (b, i) {
+                var o = self.opcoesSeletor[i];
+                while (o.firstChild) o.removeChild(o.firstChild);
+                var icone = abaIcone(b);
+                if (icone) o.appendChild(icone);
+                o.appendChild(el('span', { text: abaRotulo(b) }));
+                o.hidden = !!b.hidden;
+                o.disabled = !!b.disabled;
+                if (!o.hidden) visiveis++;
+                if (b === ativa) o.setAttribute('aria-current', 'true'); else o.removeAttribute('aria-current');
+            });
+            this.painelSeletor.classList.toggle('c2fc-abas-painel-grade', visiveis >= 4);
+            this.gatilhoAtual.textContent = ativa ? abaRotulo(ativa) : '';
+            while (this.gatilhoIcone.firstChild) this.gatilhoIcone.removeChild(this.gatilhoIcone.firstChild);
+            var iconeAtivo = ativa ? abaIcone(ativa) : null;
+            if (iconeAtivo) this.gatilhoIcone.appendChild(iconeAtivo);
+        },
+        destruir: function () {
+            if (this.observador) this.observador.disconnect();
+            if (this.foraSeletor) document.removeEventListener('click', this.foraSeletor);
+            if (this.seletor && this.seletor.parentNode) this.seletor.parentNode.removeChild(this.seletor);
+            if (this.lista) this.lista.classList.remove('c2fc-abas-com-seletor');
+            this.seletor = null;
+            Controle.prototype.destruir.call(this);
         }
     });
+
+    function abaRotulo(b) {
+        return (b.getAttribute('data-c2f-aba-rotulo') || b.textContent || '').replace(/\s+/g, ' ').trim();
+    }
+    function abaIcone(b) {
+        var icone = b.querySelector('[data-c2f-aba-icone]') || b.querySelector('svg');
+        if (!icone) return null;
+        var copia = icone.cloneNode(true);
+        if (copia.removeAttribute) { copia.removeAttribute('data-c2f-aba-icone'); copia.removeAttribute('id'); }
+        return copia;
+    }
 
     // =========================================================================== calendário
 

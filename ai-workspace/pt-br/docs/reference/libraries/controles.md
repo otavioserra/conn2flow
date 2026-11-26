@@ -31,6 +31,15 @@ O observador interno observarSelects monta selects inseridos depois da carga e r
 
 c2fControles.formatado permite somente b, strong, i, em, u, br e code, sem atributos. As máscaras percentual e moeda são carregadas por controles_incluir: exibem números no padrão pt-BR e enviam decimais com ponto no evento formdata; percentual limita 0–100 com duas casas.
 
+## Padrão único de abas, diálogos e avisos (REQ-308)
+
+Módulos e projetos consomem estes comportamentos; não reimplementam.
+
+- **Abas (`data-c2f-abas`)**: a partir de 640 px a faixa quebra linha, sem rolagem lateral. Abaixo de 640 px, grupos com 3 ou mais abas trocam a faixa por um seletor compacto: rótulo "Seção atual" (`controles-secao-atual`, ou `data-c2f-abas-rotulo-mobile` no grupo), nome e ícone da aba ativa e um painel com todas as abas (grade de 2 colunas a partir de 4). Ícone só do seletor: elemento `[data-c2f-aba-icone]` dentro da aba; sem ele, vale o primeiro `<svg>`. A escolha clica na aba original; se o módulo troca `aria-selected`, `hidden` ou `disabled` por conta própria, o seletor acompanha. Opt-out: `data-c2f-abas-sem-seletor-mobile`. Módulo que guarda a aba por conta própria usa `data-c2f-abas-sem-memoria`.
+- **`<dialog>` modal**: todo `<dialog>` aberto com `showModal()` fecha com clique no fundo, desde que o gesto comece e termine fora da caixa (selecionar texto e soltar fora não fecha; clique de teclado também não). Antes dispara `cancel` cancelável e depois `dialog.close()`: a limpeza feita no evento `close` vale também aqui. Opt-out: `data-c2f-sem-fechar-fora`.
+- **Avisos (`c2fControles.aviso(mensagem, tipo, tempo | {tempo})`)**: tipos `sucesso|erro|alerta|info` ou `success|error|warning|info`; ícone por tipo; a mesma mensagem não empilha; no máximo 3; o tempo pausa com o mouse em cima; com um `<dialog>` modal aberto o aviso aparece dentro dele. A distância da borda inferior é o token `--c2fc-avisos-base`.
+- **Confirmações**: `c2fControles.dialogo.confirmar|alerta|perguntar` (Promise). O alerta não fecha pelo fundo.
+
 ## Referência extraída de funções
 
 <!-- c2f:extract:start -->

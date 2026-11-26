@@ -771,6 +771,11 @@
         "type": "string"
     },
     {
+        "id": "controles-secao-atual",
+        "value": "Seção atual",
+        "type": "string"
+    },
+    {
         "id": "list-tailwind-search",
         "value": "Buscar",
         "type": "string",
