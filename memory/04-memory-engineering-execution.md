@@ -16,6 +16,15 @@
 
 ## Tarefas recentes
 
+### REQ-308 / BATCH-317 — abas, <dialog> e aviso únicos na UI 3.0 (2026-11-26)
+
+- **Padrão do operador**: comportamento de UI repetido em projeto (abas, modal, alerta, toast) mora no `controles.js`; o projeto só declara marcação. Toast próprio do projeto (`photonToast`) foi absorvido pelo `aviso`.
+- **Regra genérica de módulo vence controle do core** (`.pep button` 0,1,1 > `.c2fc-x` 0,1,0): todo botão que o core injeta em tela alheia precisa de seletor escopado no contêiner (`.c2fc-abas-seletor .c2fc-abas-opcao`, `.c2fc-avisos .c2fc-aviso button`) e `margin/padding` explícitos.
+- **Aviso no `<body>` fica atrás de `<dialog>` modal** (top layer): a área entra no `modalAberto()` e volta no `close` (captura em `document`; `close` não borbulha). O `close` é assíncrono no Chrome: E2E precisa `waitForFunction`.
+- **Seletor que segue o módulo**: módulo que troca `aria-selected` à mão continua certo graças ao `MutationObserver` do `Abas`; a opção do seletor CLICA a aba original (não chama só `definir`). Painel controlado por classe `hidden` + core controlando o atributo `hidden`: a troca programática do módulo precisa chamar `c2fControles.de(el).definir(nome, true)`, senão o `[hidden]` do Tailwind (!important) esconde o painel.
+- `controles.css` tem teste que proíbe hex da paleta de ação fora dos tokens (`req300-controles`): ícone de info usa `#38bdf8`.
+- `project:update-all` no PowerShell (`c2f.ps1`) falha passando caminho Windows ao bash; usar o Git Bash. Depois dele, restaurar o ruído (tokens de módulos alheios, `.tailwind-build-manifest.json`, `*Data.json`/`precompiled.css` só de fim de linha).
+
 ### REQ-300 / BATCH-308 e 309 — UI 3.0 tematizável e backlogs de controles (2026-11-05)
 
 - **Cor de ação dos controles é token** (`--c2fc-acao*` em `:root` do `controles.css`); projeto redefine com `html:root` (vence em qualquer ordem). Trocar hex por token: provar equivalência resolvendo os tokens pelos padrões.

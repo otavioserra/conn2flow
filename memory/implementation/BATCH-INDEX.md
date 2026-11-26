@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-317 | implemented-pending-review | UI 3.0: abas responsivas com seletor compacto no mobile, <dialog> modal que fecha ao clicar fora e aviso (toast) único (REQ-308) | [BATCH-317.md](BATCH-317.md) | Vitest 743/743 (18 novos), 0 derivados desatualizados; Lab via lumix REQ-142 com Playwright 1280/960/390 verde. Branch `feat/req-308-ui3-abas-mobile-e-dialog-backdrop`, commit local sem push. |
 | BATCH-316 | published-pending-homologation | Consolidação da `main` e release Gestor 3.0.19 (REQ-307) | [BATCH-316.md](BATCH-316.md) | GitHub Actions `success` e SHA-256 conferido. Pronto para atualização pelo painel do Dev. |
 | BATCH-315 | implemented-pending-review | Publicação completa de `dist/` via PHP e memória de abas UI 3.0 (REQ-306) | [BATCH-315.md](BATCH-315.md) | PHPUnit focado 76/76, HTTP local e Vitest 725/725. Suíte PHP completa com os mesmos casos de falha da `main`. |
 | BATCH-314 | implemented-pending-review | Mercado Pago na Orders API v1: criação Cartão/Pix/Boleto em `POST /v1/orders`, consulta/reembolso por `ORD...` com fallback numérico, `external_reference` reversível, webhooks `type=order` com HMAC + `GET /v1/orders` (REQ-305) | [BATCH-314.md](BATCH-314.md) | PHPUnit 29/29; suíte com as falhas da base; Lab 5/5 (Pix com QR, cartão no modo parcelado `paid`) sem 401; > 1x pendente da cota do formulário. Branch `feat/req-305-mercadopago-orders-api`, sem commit |
