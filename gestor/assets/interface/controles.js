@@ -624,12 +624,35 @@
 
     // =========================================================================== abas
 
+    function chaveMemoriaAbas(elemento, query) {
+        if (elemento.hasAttribute('data-c2f-abas-sem-memoria')) return null;
+        var grupo = elemento.getAttribute('data-c2f-abas-chave') || elemento.id;
+        var indice = Array.prototype.indexOf.call(document.querySelectorAll('[data-c2f-abas]'), elemento);
+        if (!grupo && indice < 0) return null;
+
+        var chave = 'c2f:abas:' + global.location.pathname + ':' + (grupo ? encodeURIComponent(grupo) : '@' + indice);
+        var parametro = elemento.getAttribute('data-c2f-abas-param');
+        if (parametro) return chave + '?param=' + encodeURIComponent(parametro) + ':' + JSON.stringify(query.getAll(parametro));
+        if (elemento.getAttribute('data-c2f-abas-escopo') === 'query') {
+            query.delete('tab');
+            query.sort();
+            return chave + '?query=' + query.toString();
+        }
+        return chave;
+    }
+
     /** Abas: botões [data-c2f-aba="x"] e painéis [data-c2f-painel="x"] dentro do elemento. */
     var Abas = estender(Controle, {
         montar: function () {
             var self = this;
-            this.botoes = Array.prototype.slice.call(this.elemento.querySelectorAll('[data-c2f-aba]'));
-            this.paineis = Array.prototype.slice.call(this.elemento.querySelectorAll('[data-c2f-painel]'));
+            function pertenceAoGrupo(item) {
+                for (var pai = item.parentElement; pai && pai !== self.elemento; pai = pai.parentElement) {
+                    if (pai.hasAttribute('data-c2f-abas')) return false;
+                }
+                return true;
+            }
+            this.botoes = Array.prototype.filter.call(this.elemento.querySelectorAll('[data-c2f-aba]'), pertenceAoGrupo);
+            this.paineis = Array.prototype.filter.call(this.elemento.querySelectorAll('[data-c2f-painel]'), pertenceAoGrupo);
             this.botoes.forEach(function (b, i) {
                 b.setAttribute('role', 'tab');
                 b.classList.add('c2fc-aba');
@@ -643,8 +666,27 @@
             });
             if (this.botoes[0] && this.botoes[0].parentNode) { this.botoes[0].parentNode.setAttribute('role', 'tablist'); this.botoes[0].parentNode.classList.add('c2fc-abas-lista'); }
             this.paineis.forEach(function (p) { p.setAttribute('role', 'tabpanel'); });
-            var inicial = this.botoes.filter(function (b) { return b.getAttribute('aria-selected') === 'true'; })[0] || this.botoes[0];
-            if (inicial) this.definir(inicial.getAttribute('data-c2f-aba'), true);
+            var query = new global.URLSearchParams(global.location.search);
+            var hash = global.location.hash.slice(1);
+            try { hash = decodeURIComponent(hash); } catch (e) { hash = ''; }
+            var tab = query.get('tab');
+            this.chaveMemoria = chaveMemoriaAbas(this.elemento, query);
+            var salva = null;
+            if (this.chaveMemoria) {
+                try { salva = global.sessionStorage.getItem(this.chaveMemoria); } catch (e) { /* armazenamento indisponível */ }
+            }
+            var inicial = this.encontrar(tab) || (hash && this.encontrar(hash)) || this.encontrar(salva);
+            if (this.opcoes.aoMudar) this.on('mudou', this.opcoes.aoMudar);
+            if (inicial) {
+                this.definir(inicial.getAttribute('data-c2f-aba'), true);
+                this.emitir('mudou', this.valor());
+            } else {
+                inicial = this.botoes.filter(function (b) { return b.getAttribute('aria-selected') === 'true'; })[0] || this.botoes[0];
+                if (inicial) this.definir(inicial.getAttribute('data-c2f-aba'), true);
+            }
+        },
+        encontrar: function (nome) {
+            return this.botoes.find(function (b) { return b.getAttribute('data-c2f-aba') === nome; });
         },
         valor: function () { var a = this.botoes.filter(function (b) { return b.getAttribute('aria-selected') === 'true'; })[0]; return a ? a.getAttribute('data-c2f-aba') : null; },
         definir: function (nome, silencioso) {
@@ -655,6 +697,9 @@
                 b.setAttribute('tabindex', sim ? '0' : '-1');
             });
             this.paineis.forEach(function (p) { p.hidden = p.getAttribute('data-c2f-painel') !== nome; });
+            if (!silencioso && this.chaveMemoria && this.encontrar(nome)) {
+                try { global.sessionStorage.setItem(this.chaveMemoria, nome); } catch (e) { /* armazenamento indisponível */ }
+            }
             if (!silencioso && antes !== nome) this.emitir('mudou', nome);
             return this;
         }

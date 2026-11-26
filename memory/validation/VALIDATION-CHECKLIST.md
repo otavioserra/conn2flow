@@ -1,5 +1,18 @@
 # Validation Checklist
 
+## BATCH-315 — REQ-306
+
+### Rodada 1 em 26 de novembro de 2026
+
+- [x] PHPUnit cobre criação inicial, asset novo, atualização por SHA-1, mtime preservado, seleção de minificado, exclusões, traversal, limpeza e repetição após falha parcial.
+- [x] Dois uploads multipart reais verificam `data.installation.dist` e o conteúdo publicado com comandos externos indisponíveis. A finalização web do Core também cria `dist/.manifest.json` na fixture.
+- [x] CLI usa a biblioteca compartilhada. As suítes REQ-028, REQ-264 e REQ-050 passaram. A sintaxe do script de deploy passou e o log identifica o servidor de destino como publicador.
+- [x] Vitest cobre persistência e precedência de abas. Minificados e manifesto foram regenerados e verificados. Auditoria das telas registrada no relatório do lote.
+- [x] Evidências e commits seletivos locais registrados. A suíte completa PHP reproduziu o erro OpenSSL, as 21 falhas e os nove skips da `main`.
+- [ ] Revisão do Macro-Arquiteto e homologação humana.
+
+Detalhes em [BATCH-315](../implementation/BATCH-315.md).
+
 ## BATCH-312 — REQ-303
 
 - [x] **completed / merged-to-main** (2026-11-24): REQ-303 integrada na `main` em ordem 303 -> 304 -> 301 -> 305 e publicada com `git push origin main`; consolidacao homologada pelo Engenheiro Chefe Humano.
