@@ -1,5 +1,15 @@
 # Validation Checklist
 
+## BATCH-317 — REQ-308
+
+- [x] Abas: seletor compacto gerado com ≥ 3 abas, sincronizado com `definir()`, restauração REQ-306 e troca feita pelo módulo; opt-out e `destruir()` (Vitest).
+- [x] `<dialog>` modal fecha no fundo só com gesto começando e terminando fora; arrasto de dentro, teclado, `show()`, opt-out e `cancel` com `preventDefault` não fecham (Vitest + Playwright no drawer da Busca Clínica).
+- [x] Aviso único: tipos PT/EN, ícone, sem repetição, até 3, pausa no hover, dentro do modal aberto e de volta no `close` (Vitest + Playwright).
+- [x] Vitest 743/743, minificados coerentes, lint PHP; Lab via lumix 1280/960/390 sem erro de console.
+- [ ] Revisão do Macro-Arquiteto, homologação humana e release do core.
+
+Detalhes em [BATCH-317](../implementation/BATCH-317.md).
+
 ## BATCH-316 — REQ-307
 
 - [x] `main` sincronizada por fast-forward e apenas as duas branches autorizadas integradas por `--no-ff`.

@@ -23,6 +23,8 @@
     --c2fc-disponivel: #15803d;
     --c2fc-disponivel-claro: #f0fdf4;
     --c2fc-disponivel-borda: #86efac;
+    /* REQ-308: distância dos avisos (toasts) da borda inferior; layout com barra inferior no mobile sobe. */
+    --c2fc-avisos-base: 16px;
 }
 
 /* Container de página do painel: largura e respiro por variável. Sem variável, os valores de sempre
@@ -191,16 +193,29 @@ a.c2fc-rotulo:hover { border-color: var(--c2fc-acao-realce); background: var(--c
 .c2fc-selo-inativo { background: #fffbeb; color: #92400e; }
 
 /* ---------- avisos rápidos */
-.c2fc-avisos { position: fixed; right: 16px; bottom: 16px; z-index: 100030; display: flex; flex-direction: column; gap: 8px; max-width: min(380px, calc(100vw - 32px)); }
-.c2fc-aviso { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: #0f172a; color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(0,0,0,.25); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-.c2fc-aviso-sucesso { background: #166534; }
-.c2fc-aviso-erro { background: #991b1b; }
-.c2fc-aviso-alerta { background: #92400e; }
-.c2fc-aviso button { margin-left: auto; background: none; border: 0; color: inherit; font-size: 18px; line-height: 1; cursor: pointer; opacity: .8; }
+/* REQ-308: o toast da plataforma (homologado no SnapPhoton, REQ-137): fundo escuro, faixa e ícone na cor do
+   tipo. Posição pelo token `--c2fc-avisos-base`. */
+.c2fc-avisos { position: fixed; right: 16px; bottom: calc(var(--c2fc-avisos-base, 16px) + env(safe-area-inset-bottom, 0px)); z-index: 100030; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; width: min(384px, calc(100vw - 32px)); pointer-events: none; }
+.c2fc-aviso { pointer-events: auto; display: flex; gap: 12px; align-items: flex-start; width: 100%; box-sizing: border-box; padding: 12px 12px 12px 16px; border: 1px solid #38bdf8; border-left-width: 4px; border-radius: 12px; background: #0f172a; color: #f8fafc; box-shadow: 0 10px 25px -5px rgba(15,23,42,.35), 0 8px 10px -6px rgba(15,23,42,.25); font: 600 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; animation: c2fc-aviso-entra .22s ease-out; }
+.c2fc-aviso-icone { flex: none; width: 20px; height: 20px; margin-top: 1px; color: #38bdf8; }
+.c2fc-aviso-texto { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.c2fc-aviso-sucesso { border-color: #10b981; }
+.c2fc-aviso-sucesso .c2fc-aviso-icone { color: #34d399; }
+.c2fc-aviso-erro { border-color: #f43f5e; }
+.c2fc-aviso-erro .c2fc-aviso-icone { color: #fb7185; }
+.c2fc-aviso-alerta { border-color: #f59e0b; }
+.c2fc-aviso-alerta .c2fc-aviso-icone { color: #fbbf24; }
+@keyframes c2fc-aviso-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .c2fc-aviso { animation: none; } }
+@media (max-width: 639.98px) { .c2fc-avisos { left: 16px; width: auto; } }
+/* Escopo em .c2fc-avisos: vence regras genéricas de botão do módulo/projeto (ex.: `.pep button`), inclusive
+   quando o aviso entra num <dialog> do módulo. */
+.c2fc-avisos .c2fc-aviso button { flex: none; margin: 0 0 0 auto; padding: 2px 6px; min-width: 0; min-height: 0; border: 0; border-radius: 6px; background: none; box-shadow: none; color: inherit; font-family: inherit; font-size: 18px; font-weight: 400; line-height: 1; cursor: pointer; opacity: .8; }
+.c2fc-avisos .c2fc-aviso button:hover { opacity: 1; background: rgba(148,163,184,.2); }
 .c2fc-aviso { flex-wrap: wrap; }
-.c2fc-aviso button.c2fc-aviso-acao { margin-left: 0; border: 1px solid rgba(255,255,255,.5); border-radius: 6px; padding: 4px 10px; font-size: 13px; opacity: 1; }
-.c2fc-aviso button.c2fc-aviso-acao:hover { background: rgba(255,255,255,.15); }
-.c2fc-aviso button.c2fc-aviso-acao:first-of-type { margin-left: auto; }
+.c2fc-avisos .c2fc-aviso button.c2fc-aviso-acao { margin-left: 0; border: 1px solid rgba(255,255,255,.5); border-radius: 6px; padding: 4px 10px; font-size: 13px; opacity: 1; }
+.c2fc-avisos .c2fc-aviso button.c2fc-aviso-acao:hover { background: rgba(255,255,255,.15); }
+.c2fc-avisos .c2fc-aviso button.c2fc-aviso-acao:first-of-type { margin-left: auto; }
 
 /* ---------- select */
 .c2fc-select { position: relative; display: block; width: 100%; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -242,6 +257,38 @@ a.c2fc-rotulo:hover { border-color: var(--c2fc-acao-realce); background: var(--c
 a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
 .c2fc-painel-aba { padding: 16px; border: 1px solid #e2e8f0; border-top: 0; border-radius: 0 0 12px 12px; background: #fff; }
 .c2fc-abas-lista.c2fc-anexa { margin-bottom: 0; }
+
+/* REQ-308: abas responsivas, iguais em todo módulo e projeto. A partir de 640 px a faixa quebra linha
+   (nunca rola na lateral); abaixo, o seletor compacto que o controle `Abas` gera (3+ abas). Ícone marcado
+   com [data-c2f-aba-icone] só aparece no seletor. */
+.c2fc-abas-lista { max-width: 100%; overflow-x: visible; }
+.c2fc-abas-lista [data-c2f-aba-icone] { display: none; }
+.c2fc-abas-seletor { display: none; position: relative; margin-bottom: 12px; }
+.c2fc-abas-seletor .c2fc-abas-gatilho { display: flex; margin: 0; align-items: center; gap: 12px; width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1px solid var(--c2fc-acao-borda); border-radius: 12px; background: #fff; color: #0f172a; font-family: inherit; text-align: left; cursor: pointer; box-shadow: 0 1px 2px rgba(15,23,42,.06); }
+.c2fc-abas-seletor .c2fc-abas-gatilho:focus-visible { outline: 2px solid var(--c2fc-acao); outline-offset: 2px; }
+.c2fc-abas-seletor .c2fc-abas-gatilho-icone { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--c2fc-acao-claro); color: var(--c2fc-acao-escuro); }
+.c2fc-abas-seletor .c2fc-abas-gatilho-icone:empty { display: none; }
+.c2fc-abas-seletor .c2fc-abas-gatilho-icone svg, .c2fc-abas-seletor .c2fc-abas-opcao svg { flex: none; width: 18px; height: 18px; }
+.c2fc-abas-seletor .c2fc-abas-gatilho-texto { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; }
+.c2fc-abas-seletor .c2fc-abas-gatilho-texto small { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--c2fc-acao-escuro); }
+.c2fc-abas-seletor .c2fc-abas-gatilho-atual { overflow: hidden; font-size: 15px; font-weight: 700; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+.c2fc-abas-seletor .c2fc-abas-chevron { flex: none; width: 18px; height: 18px; color: #475569; transition: transform .15s ease; }
+.c2fc-abas-seletor .c2fc-abas-gatilho[aria-expanded="true"] .c2fc-abas-chevron { transform: rotate(180deg); }
+.c2fc-abas-seletor .c2fc-abas-painel { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 40; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 8px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; box-shadow: 0 18px 36px -12px rgba(15,23,42,.3); }
+.c2fc-abas-seletor .c2fc-abas-painel.c2fc-abas-painel-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.c2fc-abas-seletor .c2fc-abas-painel[hidden] { display: none; }
+.c2fc-abas-seletor .c2fc-abas-opcao { display: flex; margin: 0; width: 100%; box-sizing: border-box; align-items: center; gap: 8px; min-width: 0; min-height: 44px; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; color: #334155; font-family: inherit; font-size: 13px; font-weight: 600; line-height: 1.2; text-align: left; cursor: pointer; }
+.c2fc-abas-seletor .c2fc-abas-opcao span { min-width: 0; overflow-wrap: anywhere; }
+.c2fc-abas-seletor .c2fc-abas-opcao:hover:not(:disabled) { border-color: var(--c2fc-acao-borda); background: var(--c2fc-acao-claro); }
+.c2fc-abas-seletor .c2fc-abas-opcao[aria-current="true"] { border-color: var(--c2fc-acao); background: var(--c2fc-acao-claro); color: var(--c2fc-acao-texto); box-shadow: inset 0 0 0 1px var(--c2fc-acao); }
+.c2fc-abas-seletor .c2fc-abas-opcao:disabled { opacity: .5; cursor: not-allowed; }
+.c2fc-abas-seletor .c2fc-abas-opcao[hidden] { display: none; }
+.c2fc-abas-seletor .c2fc-abas-opcao:focus-visible { outline: 2px solid var(--c2fc-acao); outline-offset: 1px; }
+@media (max-width: 639.98px) {
+    .c2fc-abas-seletor { display: block; }
+    /* A troca é estrutural: vence a regra de exibição que o módulo ou projeto der à faixa. */
+    .c2fc-abas-lista.c2fc-abas-com-seletor { display: none !important; }
+}
 
 /* ---------- dica (tooltip)
    `data-c2f-dica` + `data-c2f-dica-pos`, ou, sem o Fomantic na página (`html.c2fc-sem-fomantic`, ligado

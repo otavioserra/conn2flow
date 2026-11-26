@@ -14,7 +14,7 @@
 function controles_textos(){
 	$textos = Array();
 	foreach(Array('ok', 'cancelar', 'buscar', 'semResultado' => 'sem-resultado', 'carregando', 'fechar', 'selecione', 'confirmar', 'remover', 'atencao',
-		'mesAnterior' => 'mes-anterior', 'proximoMes' => 'proximo-mes', 'disponivel', 'indisponivel') as $chave => $id){
+		'mesAnterior' => 'mes-anterior', 'proximoMes' => 'proximo-mes', 'disponivel', 'indisponivel', 'secaoAtual' => 'secao-atual') as $chave => $id){
 		if(is_int($chave)) $chave = $id;
 		$valor = (string)gestor_variaveis(Array('id' => 'controles-' . $id));
 		if($valor !== '') $textos[$chave] = $valor;

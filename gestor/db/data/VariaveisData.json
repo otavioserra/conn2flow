@@ -1324,6 +1324,15 @@
     },
     {
         "language": "pt-br",
+        "modulo": null,
+        "id": "controles-secao-atual",
+        "valor": "Seção atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "interface",
         "id": "list-tailwind-search",
         "valor": "Buscar",
@@ -3289,6 +3298,15 @@
         "modulo": null,
         "id": "controles-indisponivel",
         "valor": "Unavailable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-secao-atual",
+        "valor": "Current section",
         "tipo": "string",
         "grupo": null,
         "descricao": null
