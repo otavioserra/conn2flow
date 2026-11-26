@@ -5,6 +5,11 @@ on:
     tags:
       - 'gestor-v*'
   workflow_dispatch:
+    inputs:
+      confirmar-retirada:
+        description: 'Confirmar a exclusão de releases e tags anteriores da mesma série'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -251,7 +256,7 @@ jobs:
             gestor.zip.sha256
 
       - name: Clean up older tags and releases in the same series
-        if: success()
+        if: ${{ success() && github.event_name == 'workflow_dispatch' && inputs['confirmar-retirada'] }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

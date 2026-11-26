@@ -5,6 +5,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [3.0.19] - 2026-11-26
+
+### Added
+- O seletor de arquivos `admin-arquivos` aceita provedores com escopo próprio pelo gancho `admin-arquivos/provider.request`. Quando aberto sem provedor, usa a lista padrão de arquivos.
+- As abas da interface 3.0 lembram a aba ativa durante a sessão do navegador. Uma aba indicada pela URL tem prioridade sobre a seleção salva.
+
+### Fixed
+- Atualizações de projeto por `/_api/project/update` e pelo atualizador do sistema passam a publicar `public_html/dist/` e seu manifesto no servidor de destino, sem precisar de SSH ou de um comando adicional no destino. O CLI usa a mesma biblioteca PHP de publicação, e arquivos ausentes na origem são preservados.
+
 ## [3.0.18] - 2026-11-24
 
 ### Added

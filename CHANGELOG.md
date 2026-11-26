@@ -5,6 +5,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.19] - 2026-11-26
+
+### Added
+- The `admin-arquivos` file picker supports scoped file providers through the `admin-arquivos/provider.request` hook. Pickers opened without a provider continue to use the standard file list.
+- The UI 3.0 tabs remember the active tab for the browser session. A tab specified through the URL takes priority over the saved selection.
+
+### Fixed
+- Project updates through `/_api/project/update` and the system updater now publish `public_html/dist/` and its manifest on the destination server, without requiring SSH or a separate CLI command there. The CLI uses the same PHP publishing library, and files absent from the source are preserved.
+
 ## [3.0.18] - 2026-11-24
 
 ### Added
