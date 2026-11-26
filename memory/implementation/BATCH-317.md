@@ -1,7 +1,7 @@
 ---
 id: "BATCH-317"
 title: "REQ-308 — UI 3.0: abas responsivas, <dialog> que fecha ao clicar fora e aviso único"
-status: "implemented-pending-review"
+status: "released"
 date: "2026-11-26"
 author: "executor"
 target_repo: "conn2flow"

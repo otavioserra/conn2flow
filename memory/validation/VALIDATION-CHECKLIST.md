@@ -1,12 +1,23 @@
 # Validation Checklist
 
+## BATCH-318 — REQ-309
+
+- [x] `main` = `origin/main` (`88d0b08e`) e apenas `feat/req-308-ui3-abas-mobile-e-dialog-backdrop` integrada por `--no-ff` (`185550f5`).
+- [x] Vitest 743/743 (após normalizar EOL no teste da REQ-308, `b5f7d107`); PHPUnit completo 2.102 sem falhas sobre export LF + `OPENSSL_CONF` (no checkout Windows, só as 22 da linha de base); `assets:minify --verificar` 0 desatualizados; `php -l` e `bash -n` (70 scripts) limpos.
+- [x] Versão 3.0.20, Changelogs e READMEs; commit `96cf6386` e tag anotada `gestor-v3.0.20`.
+- [x] Workflow `45892164924` em `success`; ZIP com SHA-256 conferido, versão 3.0.20, controles e manifestos idênticos aos da tag; `gestor-v3.0.19`/`3.0.18` preservadas.
+- [ ] Revisão do Macro-Arquiteto e homologação humana da atualização no Dev.
+
+Detalhes em [BATCH-318](../implementation/BATCH-318.md).
+
 ## BATCH-317 — REQ-308
 
 - [x] Abas: seletor compacto gerado com ≥ 3 abas, sincronizado com `definir()`, restauração REQ-306 e troca feita pelo módulo; opt-out e `destruir()` (Vitest).
 - [x] `<dialog>` modal fecha no fundo só com gesto começando e terminando fora; arrasto de dentro, teclado, `show()`, opt-out e `cancel` com `preventDefault` não fecham (Vitest + Playwright no drawer da Busca Clínica).
 - [x] Aviso único: tipos PT/EN, ícone, sem repetição, até 3, pausa no hover, dentro do modal aberto e de volta no `close` (Vitest + Playwright).
 - [x] Vitest 743/743, minificados coerentes, lint PHP; Lab via lumix 1280/960/390 sem erro de console.
-- [ ] Revisão do Macro-Arquiteto, homologação humana e release do core.
+- [x] Release do core: publicado na `gestor-v3.0.20` (BATCH-318).
+- [ ] Revisão do Macro-Arquiteto e homologação humana.
 
 Detalhes em [BATCH-317](../implementation/BATCH-317.md).
 

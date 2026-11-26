@@ -40,6 +40,8 @@
 | BATCH-314 | REQ-305 — Mercado Pago na Orders API v1 (/v1/orders): criação, consulta, reembolso e webhooks type=order | mercadopago.php cria Cartão/Pix/Boleto em POST /v1/orders, consulta e reembolsa por ORD... com fallback numérico legado, webhooks type=order validados por HMAC e resolvidos por GET /v1/orders; PHPUnit 29/29; Lab: Pix com QR e cartão no modo parcelado pagos sem 401. | [source](<BATCH-314.md>) | implemented-pending-review |
 | BATCH-315 | REQ-306 — Publicação de dist/ por PHP e memória de abas UI 3.0 | API, atualizador e CLI compartilham a publicação de dist/. O controle de abas restaura a seleção por rota, grupo e contexto de query. | [source](<BATCH-315.md>) | implemented-pending-review |
 | BATCH-316 | REQ-307 — Consolidação e release Gestor 3.0.19 | Consolidação da main e publicação do release Gestor 3.0.19 com validação de testes e artefatos. | [source](<BATCH-316.md>) | published-pending-homologation |
+| BATCH-317 | REQ-308 — UI 3.0: abas responsivas, &lt;dialog&gt; que fecha ao clicar fora e aviso único | Abas com seletor compacto no mobile, fechamento seguro de &lt;dialog&gt; pelo fundo e o toast homologado do SnapPhoton viram padrão do controles.js; o lumix (REQ-142) só consome. | [source](<BATCH-317.md>) | released |
+| BATCH-318 | REQ-309 — Consolidação da REQ-308 e release Gestor 3.0.20 | REQ-308 integrada na main e Gestor 3.0.20 publicado com a UI 3.0 de abas, diálogos e avisos; CI success e SHA-256 conferido. | [source](<BATCH-318.md>) | published-pending-homologation |
 | RELATORIO-REQ-297 | REQ-297: relatório ao Arquiteto-Chefe | A REQ-297 cresceu para módulo Equipe, perfis por conta, dados por organização e autoria clínica no Photon. | [source](<RELATORIO-REQ-297-ARQUITETO.md>) | ready-for-review |
 
 ## Directories

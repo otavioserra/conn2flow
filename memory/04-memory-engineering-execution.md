@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### REQ-309 / BATCH-318 — release Gestor 3.0.20 (2026-11-26)
+
+- **"PHPUnit 100% verde" no Windows**: as 21 falhas da base são CRLF (fonte em LF no índice, cópia CRLF). Prova antes da tag: `git -c core.autocrlf=false archive HEAD | tar -x -C <scratch>`, junction do `vendor`, `OPENSSL_CONF=<php>\extras\ssl\openssl.cnf` → 2.102 sem falhas. Desfazer a junction (`cmd /c rmdir`) antes do `rm -rf` do export.
+- **Teste que passou na branch pode falhar depois do checkout**: o Git regrava a cópia em CRLF. Teste que lê fonte e procura `"\n"` deve normalizar `\r\n` (corrigido no `req308-controles`).
+- `CURRENT.md` alterado pelo operador barra `git checkout main`: `git stash push -- <arquivo>`, merge, `stash pop`.
+- Release: workflow por tag não retira versões anteriores (retirada só com `workflow_dispatch` + confirmação). README tem "Status/Situação" com versão própria além do selo; o CI só confere `v$VERSION` em algum ponto.
+
 ### REQ-308 / BATCH-317 — abas, <dialog> e aviso únicos na UI 3.0 (2026-11-26)
 
 - **Padrão do operador**: comportamento de UI repetido em projeto (abas, modal, alerta, toast) mora no `controles.js`; o projeto só declara marcação. Toast próprio do projeto (`photonToast`) foi absorvido pelo `aviso`.
