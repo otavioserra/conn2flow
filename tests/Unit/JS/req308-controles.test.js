@@ -153,7 +153,7 @@ describe('REQ-308: abas com seletor compacto no mobile', () => {
   });
 
   it('CSS: faixa quebra linha sem rolagem lateral e troca pelo seletor abaixo de 640 px', () => {
-    const css = readFileSync(resolve(process.cwd(), 'gestor/assets/interface/controles.css'), 'utf8');
+    const css = readFileSync(resolve(process.cwd(), 'gestor/assets/interface/controles.css'), 'utf8').replace(/\r\n/g, '\n');
     expect(css).toMatch(/\.c2fc-abas-lista \{ display: flex; flex-wrap: wrap;/);
     expect(css).toMatch(/\.c2fc-abas-lista \{ max-width: 100%; overflow-x: visible; \}/);
     const mobile = css.slice(css.indexOf('@media (max-width: 639.98px) {\n    .c2fc-abas-seletor'));
