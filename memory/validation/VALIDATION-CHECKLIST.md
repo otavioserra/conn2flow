@@ -1,5 +1,14 @@
 # Validation Checklist
 
+## BATCH-316 — REQ-307
+
+- [x] `main` sincronizada por fast-forward e apenas as duas branches autorizadas integradas por `--no-ff`.
+- [x] Minificação com zero derivados desatualizados, PHPUnit focado 165/165, Vitest 725/725, lint PHP e `bash -n` aprovados.
+- [x] Changelogs, READMEs e versão do Gestor publicados no padrão da `3.0.18`.
+- [x] Workflow de `gestor-v3.0.19` concluído em `success`. ZIP, SHA-256 e manifestos conferidos. `gestor-v3.0.18` preservado.
+- [x] Evidências, SHAs e links registrados no [BATCH-316](../implementation/BATCH-316.md).
+- [ ] Homologação humana da atualização no Dev.
+
 ## BATCH-315 — REQ-306
 
 ### Rodada 1 em 26 de novembro de 2026
