@@ -82,6 +82,7 @@ HTML_SANITIZE=true
 | **Performance HTML** | `html_sanitize` | `.env` |
 | **OAuth** | `oauth_google_client_id`, `oauth_google_secret` | `.env` |
 | **Email/SMTP** | `smtp_host`, `smtp_port`, `smtp_user`, `smtp_pass` | `.env` |
+| **Internacionalização / Idiomas** | `LANGUAGES` (`$_GESTOR['languages']`), `LANGUAGE_DEFAULT`, `LANGUAGE_COOKIE`, `LANGUAGE_WIDGET_ACTIVE`, `LANGUAGE_AUTO_DETECT` | `.env` → `config.php` |
 | **Pagamentos** | `paypal_client_id`, `stripe_key` | `.env` |
 | **APIs Externas** | `openai_api_key`, `anthropic_api_key` | `.env` |
 
@@ -106,3 +107,15 @@ gestor/
 - Em `gestor/bibliotecas/comunicacao-fila.php`, `comunicacao_config()` consulta primeiro a configuração de e-mail, depois tenta `$_ENV['APP_ENV']` e recorre a `$_GESTOR['development-env']` como último fallback.
 - A trava de `gestor/bibliotecas/comunicacao.php` reconhece exatamente `production`, `prod` e `producao` como produção. Qualquer outro valor não vazio é tratado como ambiente fora de produção. Para desenvolvimento local, declare `APP_ENV=development`. Para homologação, use `APP_ENV=staging`.
 - Com `MAIL_REDIRECT_TO` válido, o envio troca TO/CC/BCC por uma única caixa de teste e inclui um prefixo de teste no assunto e o cabeçalho `X-Original-To`. Em produção, a trava bloqueia o destino válido e o fluxo de envio registra um aviso por requisição, salvo se `MAIL_REDIRECT_ALLOW_PRODUCTION=true`. O template define essa exceção como `false`.
+
+## 6. Internacionalização / Idiomas
+
+- `LANGUAGES` é a lista CSV dos códigos ativos, por exemplo `pt-br,en,es`. O `gestor/config.php` carrega a lista do `.env` em `$_GESTOR['languages']`.
+- `LANGUAGE_DEFAULT` define o idioma padrão da instalação, por exemplo `pt-br`.
+- `LANGUAGE_COOKIE` define o prefixo do nome do cookie de preferência de idioma. O Core acrescenta o sufixo de host.
+- `LANGUAGE_WIDGET_ACTIVE` ativa ou desativa o widget seletor de idiomas.
+- `LANGUAGE_AUTO_DETECT` habilita a detecção automática de idioma pelo navegador.
+
+**Ativação obrigatória** — páginas, módulos e variáveis de um idioma ausente em `LANGUAGES` ficam invisíveis no seletor do painel, em `/admin-environment/` e no roteamento do Core mesmo após a sincronização no SQL.
+
+Siga `c2f-multilingual-system` para o checklist completo, incluindo `resources.map.php`, `language-label-<codigo>` em todos os idiomas ativos e o alerta no recibo para atualização manual do `.env` em Dev/Staging/Produção.

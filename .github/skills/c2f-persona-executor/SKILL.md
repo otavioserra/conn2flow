@@ -1,4 +1,4 @@
-﻿---
+---
 name: c2f-persona-executor
 description: "Ative no início de conversas onde o agente atua como Micro-Executor Tático. Estabelece execução rigorosa de lotes MDD, Live Todo List visível, compilação de recursos e proibição de git add -A ou cópias manuais."
 user-invocable: true
@@ -66,6 +66,12 @@ Proibido executar build completo de Tailwind na Categoria A ou pipelines de depl
 ### 3. Padrão Canônico de Recursos e Variáveis
 - Todo texto, mensagem de alerta, rótulo ou erro DEVE ser registrado no sistema de variáveis (`resources/<lang>/variables.json` ou `<modulo>.json`) e consumido via `gestor_variaveis()`. Proibidas strings hardcoded em controllers.
 - Todo HTML/CSS estático de páginas e componentes deve residir em `resources/` e ser sincronizado via `./c2f resources:sync`. O runtime consome dados do SQL, não do disco.
+
+#### Ativação de Novo Idioma (Validação E2E Real)
+
+- Ao traduzir ou ativar um idioma (`es`, `de`, `fr`), confira `LANGUAGES` no `.env` e registre no relatório do lote o alerta de atualização manual em Dev/Staging/Produção. Confira `resources.map.php`, os rótulos `language-label-<codigo>` em todos os idiomas ativos e substitua listas hardcoded como `['pt-br', 'en']` pela leitura de `$_GESTOR['languages']`.
+- Em navegador autenticado, confira `<lang>` em `#language_default` na aba Linguagem de `/admin-environment/`. Use o seletor real de idiomas do painel para alternar `pt-br → <lang> → pt-br` e confira a interface traduzida sem chaves cruas. O lote exige as duas verificações além de eventuais testes por URL/cookie direto.
+- Consulte `c2f-multilingual-system` e `c2f-environment-configuration`.
 
 ### 4. Execução Sequencial e Desbufferizada
 - Comandos CLI de compilação em lote (`manager:update-all`, `project:update-all`, `css:rebuild`, `resources:sync`) devem executar um por vez em foreground com logs desbufferizados, sem supressão de warnings PHP.
